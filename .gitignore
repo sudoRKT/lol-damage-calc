@@ -14,5 +14,7 @@ dist/
 .claude/*.tmp.*
 # Per-agent write audit produced by .claude/hooks/boundary-audit.sh — a run record, not source.
 .claude/boundary-audit.log
+.claude/boundary-owners.tsv
+.claude/boundary-owners.tsv.lock
 
 # NOTE: /curated/ is the irreplaceable source and MUST be version-controlled. Never ignore it.
