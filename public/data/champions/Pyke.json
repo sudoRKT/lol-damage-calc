@@ -1,0 +1,36 @@
+{
+  "apiname": "Pyke",
+  "name": "Pyke",
+  "id": 555,
+  "stats": {
+    "hp_base": 670,
+    "hp_lvl": 110,
+    "mp_base": 415,
+    "mp_lvl": 50,
+    "arm_base": 37,
+    "arm_lvl": 4.7,
+    "mr_base": 32,
+    "mr_lvl": 2.05,
+    "ad_base": 62,
+    "ad_lvl": 2,
+    "as_base": 0.667,
+    "as_lvl": 2.5,
+    "as_ratio": 0.666999995708465,
+    "range": 150,
+    "rangetype": "Melee",
+    "adaptivetype": "Physical"
+  },
+  "abilityNames": {
+    "P": "Gift of the Drowned Ones",
+    "Q": "Bone Skewer",
+    "W": "Ghostwater Dive",
+    "E": "Phantom Undertow",
+    "R": "Death from Below"
+  },
+  "provenance": {
+    "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+    "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+    "patch": "16.16.1",
+    "fetched": "2026-08-12T21:46:05.922Z"
+  }
+}

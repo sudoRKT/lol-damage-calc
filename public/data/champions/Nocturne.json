@@ -1,0 +1,36 @@
+{
+  "apiname": "Nocturne",
+  "name": "Nocturne",
+  "id": 56,
+  "stats": {
+    "hp_base": 655,
+    "hp_lvl": 109,
+    "mp_base": 275,
+    "mp_lvl": 35,
+    "arm_base": 38,
+    "arm_lvl": 4.2,
+    "mr_base": 32,
+    "mr_lvl": 1.55,
+    "ad_base": 62,
+    "ad_lvl": 2.6,
+    "as_base": 0.721,
+    "as_lvl": 2.7,
+    "as_ratio": 0.721,
+    "range": 125,
+    "rangetype": "Melee",
+    "adaptivetype": "Physical"
+  },
+  "abilityNames": {
+    "P": "Umbra Blades",
+    "Q": "Duskbringer",
+    "W": "Shroud of Darkness",
+    "E": "Unspeakable Horror",
+    "R": "Paranoia"
+  },
+  "provenance": {
+    "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+    "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+    "patch": "16.16.1",
+    "fetched": "2026-08-12T21:46:05.922Z"
+  }
+}

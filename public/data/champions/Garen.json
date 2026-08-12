@@ -1,0 +1,36 @@
+{
+  "apiname": "Garen",
+  "name": "Garen",
+  "id": 86,
+  "stats": {
+    "hp_base": 690,
+    "hp_lvl": 98,
+    "mp_base": 0,
+    "mp_lvl": 0,
+    "arm_base": 38,
+    "arm_lvl": 4.2,
+    "mr_base": 32,
+    "mr_lvl": 1.55,
+    "ad_base": 69,
+    "ad_lvl": 4.5,
+    "as_base": 0.625,
+    "as_lvl": 3.65,
+    "as_ratio": 0.625,
+    "range": 175,
+    "rangetype": "Melee",
+    "adaptivetype": "Physical"
+  },
+  "abilityNames": {
+    "P": "Perseverance",
+    "Q": "Decisive Strike",
+    "W": "Courage",
+    "E": "Judgment",
+    "R": "Demacian Justice"
+  },
+  "provenance": {
+    "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+    "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+    "patch": "16.16.1",
+    "fetched": "2026-08-12T21:46:05.922Z"
+  }
+}

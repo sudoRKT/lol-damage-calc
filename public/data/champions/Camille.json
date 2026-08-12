@@ -1,0 +1,36 @@
+{
+  "apiname": "Camille",
+  "name": "Camille",
+  "id": 164,
+  "stats": {
+    "hp_base": 650,
+    "hp_lvl": 99,
+    "mp_base": 339,
+    "mp_lvl": 52,
+    "arm_base": 35,
+    "arm_lvl": 4.5,
+    "mr_base": 32,
+    "mr_lvl": 2.05,
+    "ad_base": 68,
+    "ad_lvl": 3.8,
+    "as_base": 0.644,
+    "as_lvl": 2.5,
+    "as_ratio": 0.643999993801116,
+    "range": 125,
+    "rangetype": "Melee",
+    "adaptivetype": "Physical"
+  },
+  "abilityNames": {
+    "P": "Adaptive Defenses",
+    "Q": "Precision Protocol",
+    "W": "Tactical Sweep",
+    "E": "Hookshot",
+    "R": "The Hextech Ultimatum"
+  },
+  "provenance": {
+    "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+    "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+    "patch": "16.16.1",
+    "fetched": "2026-08-12T21:46:05.922Z"
+  }
+}

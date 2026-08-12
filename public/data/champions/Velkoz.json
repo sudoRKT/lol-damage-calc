@@ -1,0 +1,36 @@
+{
+  "apiname": "Velkoz",
+  "name": "Vel'Koz",
+  "id": 161,
+  "stats": {
+    "hp_base": 590,
+    "hp_lvl": 102,
+    "mp_base": 469,
+    "mp_lvl": 21,
+    "arm_base": 22,
+    "arm_lvl": 4.7,
+    "mr_base": 30,
+    "mr_lvl": 1.3,
+    "ad_base": 55,
+    "ad_lvl": 3.1416,
+    "as_base": 0.643,
+    "as_lvl": 1.59,
+    "as_ratio": 0.625,
+    "range": 525,
+    "rangetype": "Ranged",
+    "adaptivetype": "Magic"
+  },
+  "abilityNames": {
+    "P": "Organic Deconstruction",
+    "Q": "Plasma Fission",
+    "W": "Void Rift",
+    "E": "Tectonic Disruption",
+    "R": "Life Form Disintegration Ray"
+  },
+  "provenance": {
+    "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+    "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+    "patch": "16.16.1",
+    "fetched": "2026-08-12T21:46:05.922Z"
+  }
+}

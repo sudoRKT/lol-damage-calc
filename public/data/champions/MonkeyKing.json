@@ -1,0 +1,36 @@
+{
+  "apiname": "MonkeyKing",
+  "name": "Wukong",
+  "id": 62,
+  "stats": {
+    "hp_base": 610,
+    "hp_lvl": 99,
+    "mp_base": 330,
+    "mp_lvl": 65,
+    "arm_base": 31,
+    "arm_lvl": 4.7,
+    "mr_base": 28,
+    "mr_lvl": 2.05,
+    "ad_base": 66,
+    "ad_lvl": 3.5,
+    "as_base": 0.69,
+    "as_lvl": 3,
+    "as_ratio": 0.657999992370605,
+    "range": 175,
+    "rangetype": "Melee",
+    "adaptivetype": "Physical"
+  },
+  "abilityNames": {
+    "P": "Stone Skin",
+    "Q": "Crushing Blow",
+    "W": "Warrior Trickster",
+    "E": "Nimbus Strike",
+    "R": "Cyclone"
+  },
+  "provenance": {
+    "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+    "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+    "patch": "16.16.1",
+    "fetched": "2026-08-12T21:46:05.922Z"
+  }
+}

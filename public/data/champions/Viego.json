@@ -1,0 +1,36 @@
+{
+  "apiname": "Viego",
+  "name": "Viego",
+  "id": 234,
+  "stats": {
+    "hp_base": 630,
+    "hp_lvl": 109,
+    "mp_base": 0,
+    "mp_lvl": 0,
+    "arm_base": 34,
+    "arm_lvl": 4.6,
+    "mr_base": 32,
+    "mr_lvl": 2.05,
+    "ad_base": 57,
+    "ad_lvl": 3.5,
+    "as_base": 0.658,
+    "as_lvl": 2.75,
+    "as_ratio": 0.658,
+    "range": 200,
+    "rangetype": "Melee",
+    "adaptivetype": "Physical"
+  },
+  "abilityNames": {
+    "P": "Sovereign's Domination",
+    "Q": "Blade of the Ruined King",
+    "W": "Spectral Maw",
+    "E": "Harrowed Path",
+    "R": "Heartbreaker"
+  },
+  "provenance": {
+    "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+    "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+    "patch": "16.16.1",
+    "fetched": "2026-08-12T21:46:05.922Z"
+  }
+}

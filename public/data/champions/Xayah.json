@@ -1,0 +1,36 @@
+{
+  "apiname": "Xayah",
+  "name": "Xayah",
+  "id": 498,
+  "stats": {
+    "hp_base": 630,
+    "hp_lvl": 107,
+    "mp_base": 340,
+    "mp_lvl": 40,
+    "arm_base": 25,
+    "arm_lvl": 4.2,
+    "mr_base": 30,
+    "mr_lvl": 1.3,
+    "ad_base": 60,
+    "ad_lvl": 3.5,
+    "as_base": 0.658,
+    "as_lvl": 3.9,
+    "as_ratio": 0.658,
+    "range": 525,
+    "rangetype": "Ranged",
+    "adaptivetype": "Physical"
+  },
+  "abilityNames": {
+    "P": "Clean Cuts",
+    "Q": "Double Daggers",
+    "W": "Deadly Plumage",
+    "E": "Bladecaller",
+    "R": "Featherstorm"
+  },
+  "provenance": {
+    "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+    "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+    "patch": "16.16.1",
+    "fetched": "2026-08-12T21:46:05.922Z"
+  }
+}

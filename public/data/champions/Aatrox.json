@@ -1,0 +1,36 @@
+{
+  "apiname": "Aatrox",
+  "name": "Aatrox",
+  "id": 266,
+  "stats": {
+    "hp_base": 650,
+    "hp_lvl": 114,
+    "mp_base": 0,
+    "mp_lvl": 0,
+    "arm_base": 38,
+    "arm_lvl": 4.8,
+    "mr_base": 32,
+    "mr_lvl": 2.05,
+    "ad_base": 60,
+    "ad_lvl": 5,
+    "as_base": 0.651,
+    "as_lvl": 2.5,
+    "as_ratio": 0.651,
+    "range": 175,
+    "rangetype": "Melee",
+    "adaptivetype": "Physical"
+  },
+  "abilityNames": {
+    "P": "Deathbringer Stance",
+    "Q": "The Darkin Blade",
+    "W": "Infernal Chains",
+    "E": "Umbral Dash",
+    "R": "World Ender"
+  },
+  "provenance": {
+    "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+    "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+    "patch": "16.16.1",
+    "fetched": "2026-08-12T21:46:05.922Z"
+  }
+}

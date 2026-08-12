@@ -1,0 +1,6230 @@
+[
+  {
+    "apiname": "Aatrox",
+    "name": "Aatrox",
+    "id": 266,
+    "stats": {
+      "hp_base": 650,
+      "hp_lvl": 114,
+      "mp_base": 0,
+      "mp_lvl": 0,
+      "arm_base": 38,
+      "arm_lvl": 4.8,
+      "mr_base": 32,
+      "mr_lvl": 2.05,
+      "ad_base": 60,
+      "ad_lvl": 5,
+      "as_base": 0.651,
+      "as_lvl": 2.5,
+      "as_ratio": 0.651,
+      "range": 175,
+      "rangetype": "Melee",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Deathbringer Stance",
+      "Q": "The Darkin Blade",
+      "W": "Infernal Chains",
+      "E": "Umbral Dash",
+      "R": "World Ender"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Ahri",
+    "name": "Ahri",
+    "id": 103,
+    "stats": {
+      "hp_base": 590,
+      "hp_lvl": 104,
+      "mp_base": 418,
+      "mp_lvl": 25,
+      "arm_base": 21,
+      "arm_lvl": 4.2,
+      "mr_base": 30,
+      "mr_lvl": 1.3,
+      "ad_base": 53,
+      "ad_lvl": 3,
+      "as_base": 0.668,
+      "as_lvl": 2.2,
+      "as_ratio": 0.625,
+      "range": 550,
+      "rangetype": "Ranged",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "Essence Theft",
+      "Q": "Orb of Deception",
+      "W": "Fox-Fire",
+      "E": "Charm",
+      "R": "Spirit Rush"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Akali",
+    "name": "Akali",
+    "id": 84,
+    "stats": {
+      "hp_base": 600,
+      "hp_lvl": 119,
+      "mp_base": 200,
+      "mp_lvl": 0,
+      "arm_base": 23,
+      "arm_lvl": 4.7,
+      "mr_base": 37,
+      "mr_lvl": 2.05,
+      "ad_base": 62,
+      "ad_lvl": 3.3,
+      "as_base": 0.625,
+      "as_lvl": 3.2,
+      "as_ratio": 0.625,
+      "range": 125,
+      "rangetype": "Melee",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Assassin's Mark",
+      "Q": "Five Point Strike",
+      "W": "Twilight Shroud",
+      "E": "Shuriken Flip",
+      "R": "Perfect Execution"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Akshan",
+    "name": "Akshan",
+    "id": 166,
+    "stats": {
+      "hp_base": 610,
+      "hp_lvl": 107,
+      "mp_base": 350,
+      "mp_lvl": 40,
+      "arm_base": 26,
+      "arm_lvl": 4.7,
+      "mr_base": 30,
+      "mr_lvl": 1.3,
+      "ad_base": 52,
+      "ad_lvl": 3,
+      "as_base": 0.638,
+      "as_lvl": 4,
+      "as_ratio": 0.4,
+      "range": 500,
+      "rangetype": "Ranged",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Dirty Fighting",
+      "Q": "Avengerang",
+      "W": "Going Rogue",
+      "E": "Heroic Swing",
+      "R": "Comeuppance"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Alistar",
+    "name": "Alistar",
+    "id": 12,
+    "stats": {
+      "hp_base": 685,
+      "hp_lvl": 120,
+      "mp_base": 350,
+      "mp_lvl": 40,
+      "arm_base": 40,
+      "arm_lvl": 4.7,
+      "mr_base": 32,
+      "mr_lvl": 2.05,
+      "ad_base": 62,
+      "ad_lvl": 3.75,
+      "as_base": 0.625,
+      "as_lvl": 2.125,
+      "as_ratio": 0.625,
+      "range": 125,
+      "rangetype": "Melee",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "Triumphant Roar",
+      "Q": "Pulverize",
+      "W": "Headbutt",
+      "E": "Trample",
+      "R": "Unbreakable Will"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Ambessa",
+    "name": "Ambessa",
+    "id": 799,
+    "stats": {
+      "hp_base": 630,
+      "hp_lvl": 110,
+      "mp_base": 200,
+      "mp_lvl": 0,
+      "arm_base": 35,
+      "arm_lvl": 4.9,
+      "mr_base": 32,
+      "mr_lvl": 2.05,
+      "ad_base": 63,
+      "ad_lvl": 3,
+      "as_base": 0.625,
+      "as_lvl": 2.5,
+      "as_ratio": 0.625,
+      "range": 125,
+      "rangetype": "Melee",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Drakehound's Step",
+      "Q": "Cunning Sweep",
+      "W": "Repudiation",
+      "E": "Lacerate",
+      "R": "Public Execution"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Amumu",
+    "name": "Amumu",
+    "id": 32,
+    "stats": {
+      "hp_base": 685,
+      "hp_lvl": 94,
+      "mp_base": 285,
+      "mp_lvl": 40,
+      "arm_base": 33,
+      "arm_lvl": 4,
+      "mr_base": 32,
+      "mr_lvl": 2.05,
+      "ad_base": 57,
+      "ad_lvl": 3.8,
+      "as_base": 0.736,
+      "as_lvl": 2.18,
+      "as_ratio": 0.638000011444091,
+      "range": 125,
+      "rangetype": "Melee",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "Cursed Touch",
+      "Q": "Bandage Toss",
+      "W": "Despair",
+      "E": "Tantrum",
+      "R": "Curse of the Sad Mummy"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Anivia",
+    "name": "Anivia",
+    "id": 34,
+    "stats": {
+      "hp_base": 550,
+      "hp_lvl": 92,
+      "mp_base": 495,
+      "mp_lvl": 45,
+      "arm_base": 19,
+      "arm_lvl": 4.1,
+      "mr_base": 30,
+      "mr_lvl": 1.3,
+      "ad_base": 51,
+      "ad_lvl": 3.2,
+      "as_base": 0.658,
+      "as_lvl": 1.68,
+      "as_ratio": 0.625,
+      "range": 600,
+      "rangetype": "Ranged",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "Rebirth",
+      "Q": "Flash Frost",
+      "W": "Crystallize",
+      "E": "Frostbite",
+      "R": "Glacial Storm"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Annie",
+    "name": "Annie",
+    "id": 1,
+    "stats": {
+      "hp_base": 560,
+      "hp_lvl": 96,
+      "mp_base": 418,
+      "mp_lvl": 25,
+      "arm_base": 23,
+      "arm_lvl": 4,
+      "mr_base": 30,
+      "mr_lvl": 1.3,
+      "ad_base": 50,
+      "ad_lvl": 2.65,
+      "as_base": 0.61,
+      "as_lvl": 1.36,
+      "as_ratio": 0.625,
+      "range": 625,
+      "rangetype": "Ranged",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "Pyromania",
+      "Q": "Disintegrate",
+      "W": "Incinerate",
+      "E": "Molten Shield",
+      "R": "Summon: Tibbers"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Aphelios",
+    "name": "Aphelios",
+    "id": 523,
+    "stats": {
+      "hp_base": 600,
+      "hp_lvl": 102,
+      "mp_base": 348,
+      "mp_lvl": 42,
+      "arm_base": 26,
+      "arm_lvl": 4.2,
+      "mr_base": 30,
+      "mr_lvl": 1.3,
+      "ad_base": 55,
+      "ad_lvl": 2.3,
+      "as_base": 0.665,
+      "as_lvl": 2.1,
+      "as_ratio": 0.658,
+      "range": 550,
+      "rangetype": "Ranged",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "The Hitman and the Seer",
+      "Q": "Weapons of the Faithful",
+      "W": "Phase",
+      "E": "Weapon Queue System",
+      "R": "Moonlight Vigil"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Ashe",
+    "name": "Ashe",
+    "id": 22,
+    "stats": {
+      "hp_base": 610,
+      "hp_lvl": 101,
+      "mp_base": 280,
+      "mp_lvl": 35,
+      "arm_base": 26,
+      "arm_lvl": 4.6,
+      "mr_base": 30,
+      "mr_lvl": 1.3,
+      "ad_base": 59,
+      "ad_lvl": 3.5,
+      "as_base": 0.658,
+      "as_lvl": 3,
+      "as_ratio": 0.657999992370605,
+      "range": 600,
+      "rangetype": "Ranged",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Frost Shot",
+      "Q": "Ranger's Focus",
+      "W": "Volley",
+      "E": "Hawkshot",
+      "R": "Enchanted Crystal Arrow"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "AurelionSol",
+    "name": "Aurelion Sol",
+    "id": 136,
+    "stats": {
+      "hp_base": 600,
+      "hp_lvl": 90,
+      "mp_base": 530,
+      "mp_lvl": 40,
+      "arm_base": 22,
+      "arm_lvl": 4,
+      "mr_base": 30,
+      "mr_lvl": 1.3,
+      "ad_base": 58,
+      "ad_lvl": 3.2,
+      "as_base": 0.625,
+      "as_lvl": 1.5,
+      "as_ratio": 0.625,
+      "range": 550,
+      "rangetype": "Ranged",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "Cosmic Creator",
+      "Q": "Breath of Light",
+      "W": "Astral Flight",
+      "E": "Singularity",
+      "R": "Falling Star"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Aurora",
+    "name": "Aurora",
+    "id": 893,
+    "stats": {
+      "hp_base": 607,
+      "hp_lvl": 110,
+      "mp_base": 475,
+      "mp_lvl": 30,
+      "arm_base": 23,
+      "arm_lvl": 4.5,
+      "mr_base": 32,
+      "mr_lvl": 1.3,
+      "ad_base": 53,
+      "ad_lvl": 3,
+      "as_base": 0.668,
+      "as_lvl": 2,
+      "as_ratio": 0.668,
+      "range": 550,
+      "rangetype": "Ranged",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "Spirit Abjuration",
+      "Q": "Twofold Hex",
+      "W": "Across the Veil",
+      "E": "The Weirding",
+      "R": "Between Worlds"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Azir",
+    "name": "Azir",
+    "id": 268,
+    "stats": {
+      "hp_base": 575,
+      "hp_lvl": 108,
+      "mp_base": 320,
+      "mp_lvl": 40,
+      "arm_base": 25,
+      "arm_lvl": 5,
+      "mr_base": 30,
+      "mr_lvl": 1.3,
+      "ad_base": 56,
+      "ad_lvl": 3.5,
+      "as_base": 0.625,
+      "as_lvl": 5,
+      "as_ratio": 0.694,
+      "range": 525,
+      "rangetype": "Ranged",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "Shurima's Legacy",
+      "Q": "Conquering Sands",
+      "W": "Arise!",
+      "E": "Shifting Sands",
+      "R": "Emperor's Divide"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Bard",
+    "name": "Bard",
+    "id": 432,
+    "stats": {
+      "hp_base": 630,
+      "hp_lvl": 103,
+      "mp_base": 350,
+      "mp_lvl": 50,
+      "arm_base": 34,
+      "arm_lvl": 5,
+      "mr_base": 30,
+      "mr_lvl": 1.3,
+      "ad_base": 52,
+      "ad_lvl": 3,
+      "as_base": 0.658,
+      "as_lvl": 2,
+      "as_ratio": 0.658,
+      "range": 500,
+      "rangetype": "Ranged",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "Traveler's Call",
+      "Q": "Cosmic Binding",
+      "W": "Caretaker's Shrine",
+      "E": "Magical Journey",
+      "R": "Tempered Fate"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Belveth",
+    "name": "Bel'Veth",
+    "id": 200,
+    "stats": {
+      "hp_base": 580,
+      "hp_lvl": 110,
+      "mp_base": 0,
+      "mp_lvl": 0,
+      "arm_base": 28,
+      "arm_lvl": 5,
+      "mr_base": 32,
+      "mr_lvl": 2.05,
+      "ad_base": 55,
+      "ad_lvl": 1.5,
+      "as_base": 0.67,
+      "as_lvl": 0,
+      "as_ratio": 0.67,
+      "range": 150,
+      "rangetype": "Melee",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Death in Lavender",
+      "Q": "Void Surge",
+      "W": "Above and Below",
+      "E": "Royal Maelstrom",
+      "R": "Endless Banquet"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Blitzcrank",
+    "name": "Blitzcrank",
+    "id": 53,
+    "stats": {
+      "hp_base": 600,
+      "hp_lvl": 109,
+      "mp_base": 267,
+      "mp_lvl": 40,
+      "arm_base": 37,
+      "arm_lvl": 4.7,
+      "mr_base": 32,
+      "mr_lvl": 2.05,
+      "ad_base": 62,
+      "ad_lvl": 3.5,
+      "as_base": 0.625,
+      "as_lvl": 1.13,
+      "as_ratio": 0.625,
+      "range": 125,
+      "rangetype": "Melee",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Mana Barrier",
+      "Q": "Rocket Grab",
+      "W": "Overdrive",
+      "E": "Power Fist",
+      "R": "Static Field"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Brand",
+    "name": "Brand",
+    "id": 63,
+    "stats": {
+      "hp_base": 570,
+      "hp_lvl": 105,
+      "mp_base": 469,
+      "mp_lvl": 21,
+      "arm_base": 24,
+      "arm_lvl": 4.2,
+      "mr_base": 30,
+      "mr_lvl": 1.3,
+      "ad_base": 57,
+      "ad_lvl": 3,
+      "as_base": 0.681,
+      "as_lvl": 2,
+      "as_ratio": 0.625,
+      "range": 550,
+      "rangetype": "Ranged",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "Blaze",
+      "Q": "Sear",
+      "W": "Pillar of Flame",
+      "E": "Conflagration",
+      "R": "Pyroclasm"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Braum",
+    "name": "Braum",
+    "id": 201,
+    "stats": {
+      "hp_base": 610,
+      "hp_lvl": 112,
+      "mp_base": 311,
+      "mp_lvl": 45,
+      "arm_base": 35,
+      "arm_lvl": 5,
+      "mr_base": 32,
+      "mr_lvl": 2.05,
+      "ad_base": 55,
+      "ad_lvl": 3.2,
+      "as_base": 0.644,
+      "as_lvl": 3.5,
+      "as_ratio": 0.643999993801116,
+      "range": 125,
+      "rangetype": "Melee",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "Concussive Blows",
+      "Q": "Winter's Bite",
+      "W": "Stand Behind Me",
+      "E": "Unbreakable",
+      "R": "Glacial Fissure"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Briar",
+    "name": "Briar",
+    "id": 233,
+    "stats": {
+      "hp_base": 625,
+      "hp_lvl": 95,
+      "mp_base": 0,
+      "mp_lvl": 0,
+      "arm_base": 30,
+      "arm_lvl": 4.5,
+      "mr_base": 32,
+      "mr_lvl": 2.05,
+      "ad_base": 60,
+      "ad_lvl": 2.5,
+      "as_base": 0.644,
+      "as_lvl": 2,
+      "as_ratio": 0.669,
+      "range": 125,
+      "rangetype": "Melee",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Crimson Curse",
+      "Q": "Head Rush",
+      "W": "Blood Frenzy",
+      "E": "Chilling Scream",
+      "R": "Certain Death"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Caitlyn",
+    "name": "Caitlyn",
+    "id": 51,
+    "stats": {
+      "hp_base": 580,
+      "hp_lvl": 107,
+      "mp_base": 315,
+      "mp_lvl": 40,
+      "arm_base": 27,
+      "arm_lvl": 4.7,
+      "mr_base": 30,
+      "mr_lvl": 1.3,
+      "ad_base": 62,
+      "ad_lvl": 3.8,
+      "as_base": 0.681,
+      "as_lvl": 4,
+      "as_ratio": 0.625,
+      "range": 650,
+      "rangetype": "Ranged",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Headshot",
+      "Q": "Piltover Peacemaker",
+      "W": "Yordle Snap Trap",
+      "E": "90 Caliber Net",
+      "R": "Ace in the Hole"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Camille",
+    "name": "Camille",
+    "id": 164,
+    "stats": {
+      "hp_base": 650,
+      "hp_lvl": 99,
+      "mp_base": 339,
+      "mp_lvl": 52,
+      "arm_base": 35,
+      "arm_lvl": 4.5,
+      "mr_base": 32,
+      "mr_lvl": 2.05,
+      "ad_base": 68,
+      "ad_lvl": 3.8,
+      "as_base": 0.644,
+      "as_lvl": 2.5,
+      "as_ratio": 0.643999993801116,
+      "range": 125,
+      "rangetype": "Melee",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Adaptive Defenses",
+      "Q": "Precision Protocol",
+      "W": "Tactical Sweep",
+      "E": "Hookshot",
+      "R": "The Hextech Ultimatum"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Cassiopeia",
+    "name": "Cassiopeia",
+    "id": 69,
+    "stats": {
+      "hp_base": 630,
+      "hp_lvl": 98,
+      "mp_base": 480,
+      "mp_lvl": 40,
+      "arm_base": 18,
+      "arm_lvl": 4.7,
+      "mr_base": 32,
+      "mr_lvl": 1.3,
+      "ad_base": 53,
+      "ad_lvl": 3,
+      "as_base": 0.647,
+      "as_lvl": 1.5,
+      "as_ratio": 0.647000014781951,
+      "range": 550,
+      "rangetype": "Ranged",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "Serpentine Grace",
+      "Q": "Noxious Blast",
+      "W": "Miasma",
+      "E": "Twin Fang",
+      "R": "Petrifying Gaze"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Chogath",
+    "name": "Cho'Gath",
+    "id": 31,
+    "stats": {
+      "hp_base": 644,
+      "hp_lvl": 94,
+      "mp_base": 270,
+      "mp_lvl": 60,
+      "arm_base": 38,
+      "arm_lvl": 4.5,
+      "mr_base": 32,
+      "mr_lvl": 2.05,
+      "ad_base": 69,
+      "ad_lvl": 4.2,
+      "as_base": 0.658,
+      "as_lvl": 1.44,
+      "as_ratio": 0.625,
+      "range": 125,
+      "rangetype": "Melee",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "Carnivore",
+      "Q": "Rupture",
+      "W": "Feral Scream",
+      "E": "Vorpal Spikes",
+      "R": "Feast"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Corki",
+    "name": "Corki",
+    "id": 42,
+    "stats": {
+      "hp_base": 610,
+      "hp_lvl": 100,
+      "mp_base": 350,
+      "mp_lvl": 40,
+      "arm_base": 27,
+      "arm_lvl": 4.5,
+      "mr_base": 30,
+      "mr_lvl": 1.3,
+      "ad_base": 52,
+      "ad_lvl": 2.5,
+      "as_base": 0.644,
+      "as_lvl": 2.8,
+      "as_ratio": 0.644,
+      "range": 550,
+      "rangetype": "Ranged",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Hextech Munitions",
+      "Q": "Phosphorus Bomb",
+      "W": "Valkyrie",
+      "E": "Gatling Gun",
+      "R": "Missile Barrage"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Darius",
+    "name": "Darius",
+    "id": 122,
+    "stats": {
+      "hp_base": 652,
+      "hp_lvl": 114,
+      "mp_base": 263,
+      "mp_lvl": 58,
+      "arm_base": 37,
+      "arm_lvl": 5.2,
+      "mr_base": 32,
+      "mr_lvl": 2.05,
+      "ad_base": 64,
+      "ad_lvl": 5,
+      "as_base": 0.625,
+      "as_lvl": 1,
+      "as_ratio": 0.625,
+      "range": 175,
+      "rangetype": "Melee",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Hemorrhage",
+      "Q": "Decimate",
+      "W": "Crippling Strike",
+      "E": "Apprehend",
+      "R": "Noxian Guillotine"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Diana",
+    "name": "Diana",
+    "id": 131,
+    "stats": {
+      "hp_base": 640,
+      "hp_lvl": 109,
+      "mp_base": 375,
+      "mp_lvl": 25,
+      "arm_base": 31,
+      "arm_lvl": 4.3,
+      "mr_base": 32,
+      "mr_lvl": 2.05,
+      "ad_base": 57,
+      "ad_lvl": 3,
+      "as_base": 0.625,
+      "as_lvl": 2,
+      "as_ratio": 0.694,
+      "range": 150,
+      "rangetype": "Melee",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "Moonsilver Blade",
+      "Q": "Crescent Strike",
+      "W": "Pale Cascade",
+      "E": "Lunar Rush",
+      "R": "Moonfall"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "DrMundo",
+    "name": "Dr. Mundo",
+    "id": 36,
+    "stats": {
+      "hp_base": 640,
+      "hp_lvl": 103,
+      "mp_base": 0,
+      "mp_lvl": 0,
+      "arm_base": 32,
+      "arm_lvl": 4.5,
+      "mr_base": 29,
+      "mr_lvl": 2.3,
+      "ad_base": 61,
+      "ad_lvl": 2.5,
+      "as_base": 0.67,
+      "as_lvl": 3.3,
+      "as_ratio": 0.625,
+      "range": 125,
+      "rangetype": "Melee",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Goes Where He Pleases",
+      "Q": "Infected Bonesaw",
+      "W": "Heart Zapper",
+      "E": "Blunt Force Trauma",
+      "R": "Maximum Dosage"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Draven",
+    "name": "Draven",
+    "id": 119,
+    "stats": {
+      "hp_base": 675,
+      "hp_lvl": 104,
+      "mp_base": 361,
+      "mp_lvl": 39,
+      "arm_base": 29,
+      "arm_lvl": 4.5,
+      "mr_base": 30,
+      "mr_lvl": 1.3,
+      "ad_base": 62,
+      "ad_lvl": 3.4,
+      "as_base": 0.679,
+      "as_lvl": 2.7,
+      "as_ratio": 0.67900002002716,
+      "range": 550,
+      "rangetype": "Ranged",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "League of Draven",
+      "Q": "Spinning Axe",
+      "W": "Blood Rush",
+      "E": "Stand Aside",
+      "R": "Whirling Death"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Ekko",
+    "name": "Ekko",
+    "id": 245,
+    "stats": {
+      "hp_base": 655,
+      "hp_lvl": 99,
+      "mp_base": 280,
+      "mp_lvl": 70,
+      "arm_base": 32,
+      "arm_lvl": 4.2,
+      "mr_base": 32,
+      "mr_lvl": 2.05,
+      "ad_base": 58,
+      "ad_lvl": 3,
+      "as_base": 0.688,
+      "as_lvl": 3.3,
+      "as_ratio": 0.625,
+      "range": 125,
+      "rangetype": "Melee",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "Z-Drive Resonance",
+      "Q": "Timewinder",
+      "W": "Parallel Convergence",
+      "E": "Phase Dive",
+      "R": "Chronobreak"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Elise",
+    "name": "Elise",
+    "id": 60,
+    "stats": {
+      "hp_base": 620,
+      "hp_lvl": 109,
+      "mp_base": 324,
+      "mp_lvl": 50,
+      "arm_base": 30,
+      "arm_lvl": 4.5,
+      "mr_base": 30,
+      "mr_lvl": 1.3,
+      "ad_base": 55,
+      "ad_lvl": 3,
+      "as_base": 0.625,
+      "as_lvl": 1.75,
+      "as_ratio": 0.625,
+      "range": 550,
+      "rangetype": "Ranged",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "Spider Queen",
+      "Q": "Neurotoxin",
+      "W": "Volatile Spiderling",
+      "E": "Cocoon",
+      "R": "Spider Form"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Evelynn",
+    "name": "Evelynn",
+    "id": 28,
+    "stats": {
+      "hp_base": 642,
+      "hp_lvl": 98,
+      "mp_base": 315,
+      "mp_lvl": 42,
+      "arm_base": 37,
+      "arm_lvl": 4.7,
+      "mr_base": 32,
+      "mr_lvl": 2.05,
+      "ad_base": 61,
+      "ad_lvl": 3,
+      "as_base": 0.667,
+      "as_lvl": 2.1,
+      "as_ratio": 0.666999995708465,
+      "range": 125,
+      "rangetype": "Melee",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "Demon Shade",
+      "Q": "Hate Spike",
+      "W": "Allure",
+      "E": "Whiplash",
+      "R": "Last Caress"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Ezreal",
+    "name": "Ezreal",
+    "id": 81,
+    "stats": {
+      "hp_base": 600,
+      "hp_lvl": 102,
+      "mp_base": 375,
+      "mp_lvl": 70,
+      "arm_base": 24,
+      "arm_lvl": 4.2,
+      "mr_base": 30,
+      "mr_lvl": 1.3,
+      "ad_base": 60,
+      "ad_lvl": 3.75,
+      "as_base": 0.625,
+      "as_lvl": 2.5,
+      "as_ratio": 0.625,
+      "range": 550,
+      "rangetype": "Ranged",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Rising Spell Force",
+      "Q": "Mystic Shot",
+      "W": "Essence Flux",
+      "E": "Arcane Shift",
+      "R": "Trueshot Barrage"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Fiddlesticks",
+    "name": "Fiddlesticks",
+    "id": 9,
+    "stats": {
+      "hp_base": 650,
+      "hp_lvl": 106,
+      "mp_base": 500,
+      "mp_lvl": 28,
+      "arm_base": 34,
+      "arm_lvl": 4.7,
+      "mr_base": 30,
+      "mr_lvl": 1.3,
+      "ad_base": 55,
+      "ad_lvl": 2.65,
+      "as_base": 0.625,
+      "as_lvl": 2.11,
+      "as_ratio": 0.625,
+      "range": 480,
+      "rangetype": "Ranged",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "A Harmless Scarecrow",
+      "Q": "Terrify",
+      "W": "Bountiful Harvest",
+      "E": "Reap",
+      "R": "Crowstorm"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Fiora",
+    "name": "Fiora",
+    "id": 114,
+    "stats": {
+      "hp_base": 620,
+      "hp_lvl": 99,
+      "mp_base": 300,
+      "mp_lvl": 60,
+      "arm_base": 33,
+      "arm_lvl": 4.7,
+      "mr_base": 32,
+      "mr_lvl": 2.05,
+      "ad_base": 66,
+      "ad_lvl": 3.3,
+      "as_base": 0.69,
+      "as_lvl": 3.2,
+      "as_ratio": 0.689999997615814,
+      "range": 150,
+      "rangetype": "Melee",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Duelist's Dance",
+      "Q": "Lunge",
+      "W": "Riposte",
+      "E": "Bladework",
+      "R": "Grand Challenge"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Fizz",
+    "name": "Fizz",
+    "id": 105,
+    "stats": {
+      "hp_base": 640,
+      "hp_lvl": 106,
+      "mp_base": 317,
+      "mp_lvl": 52,
+      "arm_base": 26,
+      "arm_lvl": 4.6,
+      "mr_base": 32,
+      "mr_lvl": 2.05,
+      "ad_base": 58,
+      "ad_lvl": 3,
+      "as_base": 0.658,
+      "as_lvl": 3.1,
+      "as_ratio": 0.657999992370605,
+      "range": 175,
+      "rangetype": "Melee",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "Nimble Fighter",
+      "Q": "Urchin Strike",
+      "W": "Seastone Trident",
+      "E": "Playful",
+      "R": "Chum the Waters"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Galio",
+    "name": "Galio",
+    "id": 3,
+    "stats": {
+      "hp_base": 600,
+      "hp_lvl": 126,
+      "mp_base": 410,
+      "mp_lvl": 40,
+      "arm_base": 24,
+      "arm_lvl": 4.7,
+      "mr_base": 32,
+      "mr_lvl": 2.05,
+      "ad_base": 59,
+      "ad_lvl": 3.5,
+      "as_base": 0.625,
+      "as_lvl": 1.5,
+      "as_ratio": 0.625,
+      "range": 150,
+      "rangetype": "Melee",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "Colossal Smash",
+      "Q": "Winds of War",
+      "W": "Shield of Durand",
+      "E": "Justice Punch",
+      "R": "Hero's Entrance"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Gangplank",
+    "name": "Gangplank",
+    "id": 41,
+    "stats": {
+      "hp_base": 630,
+      "hp_lvl": 114,
+      "mp_base": 280,
+      "mp_lvl": 60,
+      "arm_base": 31,
+      "arm_lvl": 4.7,
+      "mr_base": 32,
+      "mr_lvl": 2.05,
+      "ad_base": 64,
+      "ad_lvl": 4.2,
+      "as_base": 0.658,
+      "as_lvl": 3.2,
+      "as_ratio": 0.69,
+      "range": 125,
+      "rangetype": "Melee",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Trial by Fire",
+      "Q": "Parrrley",
+      "W": "Remove Scurvy",
+      "E": "Powder Keg",
+      "R": "Cannon Barrage"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Garen",
+    "name": "Garen",
+    "id": 86,
+    "stats": {
+      "hp_base": 690,
+      "hp_lvl": 98,
+      "mp_base": 0,
+      "mp_lvl": 0,
+      "arm_base": 38,
+      "arm_lvl": 4.2,
+      "mr_base": 32,
+      "mr_lvl": 1.55,
+      "ad_base": 69,
+      "ad_lvl": 4.5,
+      "as_base": 0.625,
+      "as_lvl": 3.65,
+      "as_ratio": 0.625,
+      "range": 175,
+      "rangetype": "Melee",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Perseverance",
+      "Q": "Decisive Strike",
+      "W": "Courage",
+      "E": "Judgment",
+      "R": "Demacian Justice"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Gnar",
+    "name": "Gnar",
+    "id": 150,
+    "stats": {
+      "hp_base": 540,
+      "hp_lvl": 79,
+      "mp_base": 100,
+      "mp_lvl": 0,
+      "arm_base": 32,
+      "arm_lvl": 3.7,
+      "mr_base": 30,
+      "mr_lvl": 1.3,
+      "ad_base": 60,
+      "ad_lvl": 3.2,
+      "as_base": 0.625,
+      "as_lvl": 6,
+      "as_ratio": 0.625,
+      "range": 175,
+      "rangetype": "Ranged",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Rage Gene",
+      "Q": "Boomerang Throw",
+      "W": "Hyper",
+      "E": "Hop",
+      "R": "GNAR!"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Gragas",
+    "name": "Gragas",
+    "id": 79,
+    "stats": {
+      "hp_base": 640,
+      "hp_lvl": 115,
+      "mp_base": 400,
+      "mp_lvl": 47,
+      "arm_base": 38,
+      "arm_lvl": 5,
+      "mr_base": 32,
+      "mr_lvl": 2.05,
+      "ad_base": 64,
+      "ad_lvl": 3.5,
+      "as_base": 0.675,
+      "as_lvl": 2.05,
+      "as_ratio": 0.625,
+      "range": 125,
+      "rangetype": "Melee",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "Happy Hour",
+      "Q": "Barrel Roll",
+      "W": "Drunken Rage",
+      "E": "Body Slam",
+      "R": "Explosive Cask"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Graves",
+    "name": "Graves",
+    "id": 104,
+    "stats": {
+      "hp_base": 625,
+      "hp_lvl": 106,
+      "mp_base": 325,
+      "mp_lvl": 40,
+      "arm_base": 33,
+      "arm_lvl": 4.6,
+      "mr_base": 30,
+      "mr_lvl": 1.3,
+      "ad_base": 66,
+      "ad_lvl": 4,
+      "as_base": 0.475,
+      "as_lvl": 3,
+      "as_ratio": 0.490000009536743,
+      "range": 425,
+      "rangetype": "Ranged",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "New Destiny",
+      "Q": "End of the Line",
+      "W": "Smoke Screen",
+      "E": "Quickdraw",
+      "R": "Collateral Damage"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Gwen",
+    "name": "Gwen",
+    "id": 887,
+    "stats": {
+      "hp_base": 620,
+      "hp_lvl": 115,
+      "mp_base": 330,
+      "mp_lvl": 40,
+      "arm_base": 39,
+      "arm_lvl": 4.9,
+      "mr_base": 32,
+      "mr_lvl": 2.05,
+      "ad_base": 63,
+      "ad_lvl": 3,
+      "as_base": 0.69,
+      "as_lvl": 2.25,
+      "as_ratio": 0.69,
+      "range": 150,
+      "rangetype": "Melee",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "A Thousand Cuts",
+      "Q": "Snip Snip!",
+      "W": "Hallowed Mist",
+      "E": "Skip 'n Slash",
+      "R": "Needlework"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Hecarim",
+    "name": "Hecarim",
+    "id": 120,
+    "stats": {
+      "hp_base": 625,
+      "hp_lvl": 106,
+      "mp_base": 280,
+      "mp_lvl": 40,
+      "arm_base": 32,
+      "arm_lvl": 5.45,
+      "mr_base": 32,
+      "mr_lvl": 2.05,
+      "ad_base": 66,
+      "ad_lvl": 3.7,
+      "as_base": 0.67,
+      "as_lvl": 2.5,
+      "as_ratio": 0.6700000166893,
+      "range": 175,
+      "rangetype": "Melee",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Warpath",
+      "Q": "Rampage",
+      "W": "Spirit of Dread",
+      "E": "Devastating Charge",
+      "R": "Onslaught of Shadows"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Heimerdinger",
+    "name": "Heimerdinger",
+    "id": 74,
+    "stats": {
+      "hp_base": 558,
+      "hp_lvl": 105,
+      "mp_base": 385,
+      "mp_lvl": 20,
+      "arm_base": 19,
+      "arm_lvl": 4.2,
+      "mr_base": 30,
+      "mr_lvl": 1.3,
+      "ad_base": 56,
+      "ad_lvl": 2.7,
+      "as_base": 0.658,
+      "as_lvl": 1.36,
+      "as_ratio": 0.625,
+      "range": 550,
+      "rangetype": "Ranged",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "Hextech Affinity",
+      "Q": "H-28G Evolution Turret",
+      "W": "Hextech Micro-Rockets",
+      "E": "CH-2 Electron Storm Grenade",
+      "R": "UPGRADE!!!"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Hwei",
+    "name": "Hwei",
+    "id": 910,
+    "stats": {
+      "hp_base": 580,
+      "hp_lvl": 109,
+      "mp_base": 480,
+      "mp_lvl": 30,
+      "arm_base": 21,
+      "arm_lvl": 4.7,
+      "mr_base": 30,
+      "mr_lvl": 1.3,
+      "ad_base": 54,
+      "ad_lvl": 3.3,
+      "as_base": 0.69,
+      "as_lvl": 2.5,
+      "as_ratio": 0.658,
+      "range": 550,
+      "rangetype": "Ranged",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "Signature of the Visionary",
+      "Q": "Subject: Disaster",
+      "W": "Subject: Serenity",
+      "E": "Subject: Torment",
+      "R": "Spiraling Despair"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Illaoi",
+    "name": "Illaoi",
+    "id": 420,
+    "stats": {
+      "hp_base": 656,
+      "hp_lvl": 115,
+      "mp_base": 350,
+      "mp_lvl": 50,
+      "arm_base": 35,
+      "arm_lvl": 5,
+      "mr_base": 32,
+      "mr_lvl": 2.05,
+      "ad_base": 65,
+      "ad_lvl": 5,
+      "as_base": 0.625,
+      "as_lvl": 2.5,
+      "as_ratio": 0.625,
+      "range": 125,
+      "rangetype": "Melee",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Prophet of an Elder God",
+      "Q": "Tentacle Smash",
+      "W": "Harsh Lesson",
+      "E": "Test of Spirit",
+      "R": "Leap of Faith"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Irelia",
+    "name": "Irelia",
+    "id": 39,
+    "stats": {
+      "hp_base": 630,
+      "hp_lvl": 115,
+      "mp_base": 350,
+      "mp_lvl": 50,
+      "arm_base": 36,
+      "arm_lvl": 4.7,
+      "mr_base": 30,
+      "mr_lvl": 2.05,
+      "ad_base": 65,
+      "ad_lvl": 3.5,
+      "as_base": 0.656,
+      "as_lvl": 2.5,
+      "as_ratio": 0.656000018119812,
+      "range": 200,
+      "rangetype": "Melee",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Ionian Fervor",
+      "Q": "Bladesurge",
+      "W": "Defiant Dance",
+      "E": "Flawless Duet",
+      "R": "Vanguard's Edge"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Ivern",
+    "name": "Ivern",
+    "id": 427,
+    "stats": {
+      "hp_base": 630,
+      "hp_lvl": 99,
+      "mp_base": 450,
+      "mp_lvl": 60,
+      "arm_base": 27,
+      "arm_lvl": 4.7,
+      "mr_base": 30,
+      "mr_lvl": 1.3,
+      "ad_base": 50,
+      "ad_lvl": 3,
+      "as_base": 0.644,
+      "as_lvl": 3.4,
+      "as_ratio": 0.643999993801116,
+      "range": 475,
+      "rangetype": "Ranged",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "Friend of the Forest",
+      "Q": "Rootcaller",
+      "W": "Brushmaker",
+      "E": "Triggerseed",
+      "R": "Daisy!"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Janna",
+    "name": "Janna",
+    "id": 40,
+    "stats": {
+      "hp_base": 570,
+      "hp_lvl": 90,
+      "mp_base": 360,
+      "mp_lvl": 50,
+      "arm_base": 28,
+      "arm_lvl": 4.5,
+      "mr_base": 30,
+      "mr_lvl": 1.3,
+      "ad_base": 47,
+      "ad_lvl": 2.5,
+      "as_base": 0.625,
+      "as_lvl": 3,
+      "as_ratio": 0.625,
+      "range": 550,
+      "rangetype": "Ranged",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "Tailwind",
+      "Q": "Howling Gale",
+      "W": "Zephyr",
+      "E": "Eye of the Storm",
+      "R": "Monsoon"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "JarvanIV",
+    "name": "Jarvan IV",
+    "id": 59,
+    "stats": {
+      "hp_base": 640,
+      "hp_lvl": 104,
+      "mp_base": 300,
+      "mp_lvl": 55,
+      "arm_base": 36,
+      "arm_lvl": 4.6,
+      "mr_base": 32,
+      "mr_lvl": 2.05,
+      "ad_base": 64,
+      "ad_lvl": 3,
+      "as_base": 0.658,
+      "as_lvl": 2.5,
+      "as_ratio": 0.657999992370605,
+      "range": 175,
+      "rangetype": "Melee",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Martial Cadence",
+      "Q": "Dragon Strike",
+      "W": "Golden Aegis",
+      "E": "Demacian Standard",
+      "R": "Cataclysm"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Jax",
+    "name": "Jax",
+    "id": 24,
+    "stats": {
+      "hp_base": 650,
+      "hp_lvl": 103,
+      "mp_base": 339,
+      "mp_lvl": 52,
+      "arm_base": 36,
+      "arm_lvl": 4.2,
+      "mr_base": 32,
+      "mr_lvl": 2.05,
+      "ad_base": 68,
+      "ad_lvl": 4.25,
+      "as_base": 0.638,
+      "as_lvl": 3.4,
+      "as_ratio": 0.638000011444091,
+      "range": 125,
+      "rangetype": "Melee",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Relentless Assault",
+      "Q": "Leap Strike",
+      "W": "Empower",
+      "E": "Counter Strike",
+      "R": "Grandmaster-at-Arms"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Jayce",
+    "name": "Jayce",
+    "id": 126,
+    "stats": {
+      "hp_base": 590,
+      "hp_lvl": 109,
+      "mp_base": 375,
+      "mp_lvl": 45,
+      "arm_base": 22,
+      "arm_lvl": 5,
+      "mr_base": 30,
+      "mr_lvl": 1.3,
+      "ad_base": 59,
+      "ad_lvl": 4.25,
+      "as_base": 0.658,
+      "as_lvl": 3,
+      "as_ratio": 0.657999992370605,
+      "range": 125,
+      "rangetype": "Ranged",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Hextech Capacitor",
+      "Q": "To the Skies!",
+      "W": "Lightning Field",
+      "E": "Thundering Blow",
+      "R": "Transform Mercury Cannon"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Jhin",
+    "name": "Jhin",
+    "id": 202,
+    "stats": {
+      "hp_base": 655,
+      "hp_lvl": 107,
+      "mp_base": 300,
+      "mp_lvl": 50,
+      "arm_base": 24,
+      "arm_lvl": 4.7,
+      "mr_base": 30,
+      "mr_lvl": 1.3,
+      "ad_base": 61,
+      "ad_lvl": 4.4,
+      "as_base": 0.625,
+      "as_lvl": 3,
+      "as_ratio": 0,
+      "range": 550,
+      "rangetype": "Ranged",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Whisper",
+      "Q": "Dancing Grenade",
+      "W": "Deadly Flourish",
+      "E": "Captive Audience",
+      "R": "Curtain Call"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Jinx",
+    "name": "Jinx",
+    "id": 222,
+    "stats": {
+      "hp_base": 630,
+      "hp_lvl": 105,
+      "mp_base": 260,
+      "mp_lvl": 50,
+      "arm_base": 26,
+      "arm_lvl": 4.2,
+      "mr_base": 30,
+      "mr_lvl": 1.3,
+      "ad_base": 59,
+      "ad_lvl": 3.25,
+      "as_base": 0.625,
+      "as_lvl": 1,
+      "as_ratio": 0.625,
+      "range": 525,
+      "rangetype": "Ranged",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Get Excited!",
+      "Q": "Switcheroo!",
+      "W": "Zap!",
+      "E": "Flame Chompers!",
+      "R": "Super Mega Death Rocket!"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "KSante",
+    "name": "K'Sante",
+    "id": 897,
+    "stats": {
+      "hp_base": 625,
+      "hp_lvl": 120,
+      "mp_base": 320,
+      "mp_lvl": 60,
+      "arm_base": 36,
+      "arm_lvl": 5.2,
+      "mr_base": 30,
+      "mr_lvl": 2.1,
+      "ad_base": 64,
+      "ad_lvl": 3.5,
+      "as_base": 0.688,
+      "as_lvl": 2.5,
+      "as_ratio": 0.625,
+      "range": 150,
+      "rangetype": "Melee",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Dauntless Instinct",
+      "Q": "Ntofo Strikes",
+      "W": "Path Maker",
+      "E": "Footwork",
+      "R": "All Out"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Kaisa",
+    "name": "Kai'Sa",
+    "id": 145,
+    "stats": {
+      "hp_base": 640,
+      "hp_lvl": 102,
+      "mp_base": 345,
+      "mp_lvl": 40,
+      "arm_base": 25,
+      "arm_lvl": 4.2,
+      "mr_base": 30,
+      "mr_lvl": 1.3,
+      "ad_base": 59,
+      "ad_lvl": 2.6,
+      "as_base": 0.644,
+      "as_lvl": 1.8,
+      "as_ratio": 0.643999993801116,
+      "range": 525,
+      "rangetype": "Ranged",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "Second Skin",
+      "Q": "Icathian Rain",
+      "W": "Void Seeker",
+      "E": "Supercharge",
+      "R": "Killer Instinct"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Kalista",
+    "name": "Kalista",
+    "id": 429,
+    "stats": {
+      "hp_base": 560,
+      "hp_lvl": 114,
+      "mp_base": 300,
+      "mp_lvl": 45,
+      "arm_base": 24,
+      "arm_lvl": 5.2,
+      "mr_base": 30,
+      "mr_lvl": 1.3,
+      "ad_base": 57,
+      "ad_lvl": 4.75,
+      "as_base": 0.694,
+      "as_lvl": 4.5,
+      "as_ratio": 0.694000005722045,
+      "range": 525,
+      "rangetype": "Ranged",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Martial Poise",
+      "Q": "Pierce",
+      "W": "Sentinel",
+      "E": "Rend",
+      "R": "Fate's Call"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Karma",
+    "name": "Karma",
+    "id": 43,
+    "stats": {
+      "hp_base": 630,
+      "hp_lvl": 109,
+      "mp_base": 374,
+      "mp_lvl": 40,
+      "arm_base": 28,
+      "arm_lvl": 5,
+      "mr_base": 30,
+      "mr_lvl": 1.3,
+      "ad_base": 49,
+      "ad_lvl": 3,
+      "as_base": 0.625,
+      "as_lvl": 2.3,
+      "as_ratio": 0.625,
+      "range": 525,
+      "rangetype": "Ranged",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "Gathering Fire",
+      "Q": "Inner Flame",
+      "W": "Focused Resolve",
+      "E": "Inspire",
+      "R": "Mantra"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Karthus",
+    "name": "Karthus",
+    "id": 30,
+    "stats": {
+      "hp_base": 620,
+      "hp_lvl": 110,
+      "mp_base": 467,
+      "mp_lvl": 31,
+      "arm_base": 21,
+      "arm_lvl": 4.7,
+      "mr_base": 30,
+      "mr_lvl": 1.3,
+      "ad_base": 46,
+      "ad_lvl": 3.25,
+      "as_base": 0.625,
+      "as_lvl": 2.11,
+      "as_ratio": 0.625,
+      "range": 450,
+      "rangetype": "Ranged",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "Death Defied",
+      "Q": "Lay Waste",
+      "W": "Wall of Pain",
+      "E": "Defile",
+      "R": "Requiem"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Kassadin",
+    "name": "Kassadin",
+    "id": 38,
+    "stats": {
+      "hp_base": 646,
+      "hp_lvl": 113,
+      "mp_base": 400,
+      "mp_lvl": 87,
+      "arm_base": 21,
+      "arm_lvl": 4,
+      "mr_base": 30,
+      "mr_lvl": 1.3,
+      "ad_base": 59,
+      "ad_lvl": 3.9,
+      "as_base": 0.64,
+      "as_lvl": 3.7,
+      "as_ratio": 0.639999985694885,
+      "range": 150,
+      "rangetype": "Melee",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "Void Stone",
+      "Q": "Null Sphere",
+      "W": "Nether Blade",
+      "E": "Force Pulse",
+      "R": "Riftwalk"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Katarina",
+    "name": "Katarina",
+    "id": 55,
+    "stats": {
+      "hp_base": 672,
+      "hp_lvl": 108,
+      "mp_base": 0,
+      "mp_lvl": 0,
+      "arm_base": 32,
+      "arm_lvl": 4.7,
+      "mr_base": 32,
+      "mr_lvl": 2.05,
+      "ad_base": 58,
+      "ad_lvl": 3.2,
+      "as_base": 0.658,
+      "as_lvl": 2.74,
+      "as_ratio": 0.657999992370605,
+      "range": 125,
+      "rangetype": "Melee",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "Voracity",
+      "Q": "Bouncing Blade",
+      "W": "Preparation",
+      "E": "Shunpo",
+      "R": "Death Lotus"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Kayle",
+    "name": "Kayle",
+    "id": 10,
+    "stats": {
+      "hp_base": 670,
+      "hp_lvl": 92,
+      "mp_base": 330,
+      "mp_lvl": 50,
+      "arm_base": 26,
+      "arm_lvl": 4.2,
+      "mr_base": 22,
+      "mr_lvl": 1.3,
+      "ad_base": 50,
+      "ad_lvl": 2.5,
+      "as_base": 0.625,
+      "as_lvl": 1.5,
+      "as_ratio": 0.666999995708465,
+      "range": 175,
+      "rangetype": "Melee",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Divine Ascent",
+      "Q": "Radiant Blast",
+      "W": "Celestial Blessing",
+      "E": "Starfire Spellblade",
+      "R": "Divine Judgment"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Kayn",
+    "name": "Kayn",
+    "id": 141,
+    "stats": {
+      "hp_base": 655,
+      "hp_lvl": 103,
+      "mp_base": 410,
+      "mp_lvl": 50,
+      "arm_base": 38,
+      "arm_lvl": 4.5,
+      "mr_base": 32,
+      "mr_lvl": 2.05,
+      "ad_base": 68,
+      "ad_lvl": 3.3,
+      "as_base": 0.669,
+      "as_lvl": 2.7,
+      "as_ratio": 0.669000029563903,
+      "range": 175,
+      "rangetype": "Melee",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "The Darkin Scythe",
+      "Q": "Reaping Slash",
+      "W": "Blade's Reach",
+      "E": "Shadow Step",
+      "R": "Umbral Trespass"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Kennen",
+    "name": "Kennen",
+    "id": 85,
+    "stats": {
+      "hp_base": 580,
+      "hp_lvl": 98,
+      "mp_base": 200,
+      "mp_lvl": 0,
+      "arm_base": 29,
+      "arm_lvl": 4.95,
+      "mr_base": 30,
+      "mr_lvl": 1.3,
+      "ad_base": 48,
+      "ad_lvl": 3.75,
+      "as_base": 0.625,
+      "as_lvl": 3.4,
+      "as_ratio": 0.689999997615814,
+      "range": 550,
+      "rangetype": "Ranged",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "Mark of the Storm",
+      "Q": "Thundering Shuriken",
+      "W": "Electrical Surge",
+      "E": "Lightning Rush",
+      "R": "Slicing Maelstrom"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Khazix",
+    "name": "Kha'Zix",
+    "id": 121,
+    "stats": {
+      "hp_base": 643,
+      "hp_lvl": 99,
+      "mp_base": 327,
+      "mp_lvl": 40,
+      "arm_base": 32,
+      "arm_lvl": 4.2,
+      "mr_base": 32,
+      "mr_lvl": 2.05,
+      "ad_base": 60,
+      "ad_lvl": 3.1,
+      "as_base": 0.668,
+      "as_lvl": 2.7,
+      "as_ratio": 0.667999982833862,
+      "range": 125,
+      "rangetype": "Melee",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Unseen Threat",
+      "Q": "Taste Their Fear",
+      "W": "Void Spike",
+      "E": "Leap",
+      "R": "Void Assault"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Kindred",
+    "name": "Kindred",
+    "id": 203,
+    "stats": {
+      "hp_base": 595,
+      "hp_lvl": 104,
+      "mp_base": 300,
+      "mp_lvl": 35,
+      "arm_base": 29,
+      "arm_lvl": 4.7,
+      "mr_base": 30,
+      "mr_lvl": 1.3,
+      "ad_base": 65,
+      "ad_lvl": 3.25,
+      "as_base": 0.625,
+      "as_lvl": 3.5,
+      "as_ratio": 0.625,
+      "range": 500,
+      "rangetype": "Ranged",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Mark of the Kindred",
+      "Q": "Dance of Arrows",
+      "W": "Wolf's Frenzy",
+      "E": "Mounting Dread",
+      "R": "Lamb's Respite"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Kled",
+    "name": "Kled",
+    "id": 240,
+    "stats": {
+      "hp_base": 410,
+      "hp_lvl": 84,
+      "mp_base": 100,
+      "mp_lvl": 0,
+      "arm_base": 35,
+      "arm_lvl": 5.2,
+      "mr_base": 28,
+      "mr_lvl": 2.05,
+      "ad_base": 65,
+      "ad_lvl": 3.5,
+      "as_base": 0.625,
+      "as_lvl": 3.5,
+      "as_ratio": 0.625,
+      "range": 250,
+      "rangetype": "Melee",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Skaarl the Cowardly Lizard",
+      "Q": "Bear Trap on a Rope",
+      "W": "Violent Tendencies",
+      "E": "Jousting",
+      "R": "Chaaaaaaaarge!!!"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "KogMaw",
+    "name": "Kog'Maw",
+    "id": 96,
+    "stats": {
+      "hp_base": 635,
+      "hp_lvl": 99,
+      "mp_base": 325,
+      "mp_lvl": 40,
+      "arm_base": 24,
+      "arm_lvl": 4.45,
+      "mr_base": 30,
+      "mr_lvl": 1.3,
+      "ad_base": 61,
+      "ad_lvl": 3.1,
+      "as_base": 0.665,
+      "as_lvl": 2.65,
+      "as_ratio": 0.665000021457672,
+      "range": 500,
+      "rangetype": "Ranged",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Icathian Surprise",
+      "Q": "Caustic Spittle",
+      "W": "Bio-Arcane Barrage",
+      "E": "Void Ooze",
+      "R": "Living Artillery"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Leblanc",
+    "name": "LeBlanc",
+    "id": 7,
+    "stats": {
+      "hp_base": 598,
+      "hp_lvl": 108,
+      "mp_base": 400,
+      "mp_lvl": 25,
+      "arm_base": 22,
+      "arm_lvl": 4.2,
+      "mr_base": 30,
+      "mr_lvl": 1.3,
+      "ad_base": 55,
+      "ad_lvl": 2.2,
+      "as_base": 0.658,
+      "as_lvl": 2.35,
+      "as_ratio": 0.4,
+      "range": 525,
+      "rangetype": "Ranged",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "Mirror Image 2",
+      "Q": "Sigil of Malice",
+      "W": "Distortion",
+      "E": "Ethereal Chains",
+      "R": "Mimic"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "LeeSin",
+    "name": "Lee Sin",
+    "id": 64,
+    "stats": {
+      "hp_base": 645,
+      "hp_lvl": 108,
+      "mp_base": 200,
+      "mp_lvl": 0,
+      "arm_base": 36,
+      "arm_lvl": 4.5,
+      "mr_base": 32,
+      "mr_lvl": 2.05,
+      "ad_base": 66,
+      "ad_lvl": 3.4,
+      "as_base": 0.651,
+      "as_lvl": 3,
+      "as_ratio": 0.651000022888183,
+      "range": 125,
+      "rangetype": "Melee",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Flurry",
+      "Q": "Sonic Wave",
+      "W": "Safeguard",
+      "E": "Tempest",
+      "R": "Dragon's Rage"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Leona",
+    "name": "Leona",
+    "id": 89,
+    "stats": {
+      "hp_base": 646,
+      "hp_lvl": 101,
+      "mp_base": 302,
+      "mp_lvl": 40,
+      "arm_base": 43,
+      "arm_lvl": 4.8,
+      "mr_base": 32,
+      "mr_lvl": 2.05,
+      "ad_base": 60,
+      "ad_lvl": 3,
+      "as_base": 0.625,
+      "as_lvl": 2.9,
+      "as_ratio": 0.625,
+      "range": 125,
+      "rangetype": "Melee",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Sunlight",
+      "Q": "Shield of Daybreak",
+      "W": "Eclipse",
+      "E": "Zenith Blade",
+      "R": "Solar Flare"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Lillia",
+    "name": "Lillia",
+    "id": 876,
+    "stats": {
+      "hp_base": 605,
+      "hp_lvl": 105,
+      "mp_base": 410,
+      "mp_lvl": 50,
+      "arm_base": 22,
+      "arm_lvl": 4.5,
+      "mr_base": 32,
+      "mr_lvl": 1.55,
+      "ad_base": 61,
+      "ad_lvl": 3.1,
+      "as_base": 0.625,
+      "as_lvl": 2.7,
+      "as_ratio": 0.625,
+      "range": 325,
+      "rangetype": "Melee",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "Dream-Laden Bough",
+      "Q": "Blooming Blows",
+      "W": "Watch Out! Eep!",
+      "E": "Swirlseed",
+      "R": "Lilting Lullaby"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Lissandra",
+    "name": "Lissandra",
+    "id": 127,
+    "stats": {
+      "hp_base": 620,
+      "hp_lvl": 110,
+      "mp_base": 475,
+      "mp_lvl": 30,
+      "arm_base": 22,
+      "arm_lvl": 4.2,
+      "mr_base": 30,
+      "mr_lvl": 1.3,
+      "ad_base": 55,
+      "ad_lvl": 2.7,
+      "as_base": 0.656,
+      "as_lvl": 1.5,
+      "as_ratio": 0.625,
+      "range": 550,
+      "rangetype": "Ranged",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "Iceborn Subjugation",
+      "Q": "Ice Shard",
+      "W": "Ring of Frost",
+      "E": "Glacial Path",
+      "R": "Frozen Tomb"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Locke",
+    "name": "Locke",
+    "id": 805,
+    "stats": {
+      "hp_base": 620,
+      "hp_lvl": 109,
+      "mp_base": 280,
+      "mp_lvl": 70,
+      "arm_base": 32,
+      "arm_lvl": 4.2,
+      "mr_base": 32,
+      "mr_lvl": 2.05,
+      "ad_base": 58,
+      "ad_lvl": 3,
+      "as_base": 0.688,
+      "as_lvl": 3.3,
+      "as_ratio": 0.625,
+      "range": 125,
+      "rangetype": "Melee",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "Silver Stake",
+      "Q": "Ritual Nails",
+      "W": "Soul Ignition",
+      "E": "Ashen Pursuit",
+      "R": "Purgatory"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Lucian",
+    "name": "Lucian",
+    "id": 236,
+    "stats": {
+      "hp_base": 641,
+      "hp_lvl": 100,
+      "mp_base": 320,
+      "mp_lvl": 43,
+      "arm_base": 28,
+      "arm_lvl": 4.2,
+      "mr_base": 30,
+      "mr_lvl": 1.3,
+      "ad_base": 60,
+      "ad_lvl": 2.5,
+      "as_base": 0.638,
+      "as_lvl": 2.5,
+      "as_ratio": 0.638000011444091,
+      "range": 500,
+      "rangetype": "Ranged",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Lightslinger",
+      "Q": "Piercing Light",
+      "W": "Ardent Blaze",
+      "E": "Relentless Pursuit",
+      "R": "The Culling"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Lulu",
+    "name": "Lulu",
+    "id": 117,
+    "stats": {
+      "hp_base": 565,
+      "hp_lvl": 92,
+      "mp_base": 350,
+      "mp_lvl": 55,
+      "arm_base": 26,
+      "arm_lvl": 4.6,
+      "mr_base": 30,
+      "mr_lvl": 1.3,
+      "ad_base": 47,
+      "ad_lvl": 2.6,
+      "as_base": 0.625,
+      "as_lvl": 2.25,
+      "as_ratio": 0.625,
+      "range": 550,
+      "rangetype": "Ranged",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "Pix, Faerie Companion",
+      "Q": "Glitterlance",
+      "W": "Whimsy",
+      "E": "Help, Pix!",
+      "R": "Wild Growth"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Lux",
+    "name": "Lux",
+    "id": 99,
+    "stats": {
+      "hp_base": 580,
+      "hp_lvl": 99,
+      "mp_base": 440,
+      "mp_lvl": 23.5,
+      "arm_base": 21,
+      "arm_lvl": 5.2,
+      "mr_base": 30,
+      "mr_lvl": 1.3,
+      "ad_base": 54,
+      "ad_lvl": 3.3,
+      "as_base": 0.669,
+      "as_lvl": 3,
+      "as_ratio": 0.625,
+      "range": 550,
+      "rangetype": "Ranged",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "Illumination",
+      "Q": "Light Binding",
+      "W": "Prismatic Barrier",
+      "E": "Lucent Singularity",
+      "R": "Final Spark"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Malphite",
+    "name": "Malphite",
+    "id": 54,
+    "stats": {
+      "hp_base": 665,
+      "hp_lvl": 104,
+      "mp_base": 280,
+      "mp_lvl": 60,
+      "arm_base": 40,
+      "arm_lvl": 4.95,
+      "mr_base": 28,
+      "mr_lvl": 2.05,
+      "ad_base": 62,
+      "ad_lvl": 4,
+      "as_base": 0.736,
+      "as_lvl": 3.4,
+      "as_ratio": 0.638000011444091,
+      "range": 125,
+      "rangetype": "Melee",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "Granite Shield",
+      "Q": "Seismic Shard",
+      "W": "Thunderclap",
+      "E": "Ground Slam",
+      "R": "Unstoppable Force"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Malzahar",
+    "name": "Malzahar",
+    "id": 90,
+    "stats": {
+      "hp_base": 580,
+      "hp_lvl": 101,
+      "mp_base": 375,
+      "mp_lvl": 28,
+      "arm_base": 18,
+      "arm_lvl": 4.7,
+      "mr_base": 30,
+      "mr_lvl": 1.3,
+      "ad_base": 55,
+      "ad_lvl": 3,
+      "as_base": 0.625,
+      "as_lvl": 1.5,
+      "as_ratio": 0.625,
+      "range": 500,
+      "rangetype": "Ranged",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "Void Shift",
+      "Q": "Call of the Void",
+      "W": "Void Swarm",
+      "E": "Malefic Visions",
+      "R": "Nether Grasp"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Maokai",
+    "name": "Maokai",
+    "id": 57,
+    "stats": {
+      "hp_base": 665,
+      "hp_lvl": 109,
+      "mp_base": 375,
+      "mp_lvl": 43,
+      "arm_base": 35,
+      "arm_lvl": 5.2,
+      "mr_base": 32,
+      "mr_lvl": 2.05,
+      "ad_base": 64,
+      "ad_lvl": 3.3,
+      "as_base": 0.8,
+      "as_lvl": 2.125,
+      "as_ratio": 0.694999992847442,
+      "range": 125,
+      "rangetype": "Melee",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "Sap Magic",
+      "Q": "Bramble Smash",
+      "W": "Twisted Advance",
+      "E": "Sapling Toss",
+      "R": "Nature's Grasp"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "MasterYi",
+    "name": "Master Yi",
+    "id": 11,
+    "stats": {
+      "hp_base": 640,
+      "hp_lvl": 105,
+      "mp_base": 251,
+      "mp_lvl": 42,
+      "arm_base": 33,
+      "arm_lvl": 4.5,
+      "mr_base": 32,
+      "mr_lvl": 2.05,
+      "ad_base": 65,
+      "ad_lvl": 2.5,
+      "as_base": 0.679,
+      "as_lvl": 2.5,
+      "as_ratio": 0.67900002002716,
+      "range": 175,
+      "rangetype": "Melee",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Double Strike",
+      "Q": "Alpha Strike",
+      "W": "Meditate",
+      "E": "Wuju Style",
+      "R": "Highlander"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Mel",
+    "name": "Mel",
+    "id": 800,
+    "stats": {
+      "hp_base": 630,
+      "hp_lvl": 99,
+      "mp_base": 480,
+      "mp_lvl": 28,
+      "arm_base": 21,
+      "arm_lvl": 5.2,
+      "mr_base": 30,
+      "mr_lvl": 1.3,
+      "ad_base": 54,
+      "ad_lvl": 3.3,
+      "as_base": 0.625,
+      "as_lvl": 2.5,
+      "as_ratio": 0.625,
+      "range": 550,
+      "rangetype": "Ranged",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "Searing Brilliance",
+      "Q": "Radiant Volley",
+      "W": "Rebuttal",
+      "E": "Solar Snare",
+      "R": "Golden Eclipse"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Milio",
+    "name": "Milio",
+    "id": 902,
+    "stats": {
+      "hp_base": 560,
+      "hp_lvl": 88,
+      "mp_base": 365,
+      "mp_lvl": 43,
+      "arm_base": 26,
+      "arm_lvl": 4.6,
+      "mr_base": 30,
+      "mr_lvl": 1.3,
+      "ad_base": 48,
+      "ad_lvl": 3.2,
+      "as_base": 0.625,
+      "as_lvl": 3,
+      "as_ratio": 0.625,
+      "range": 525,
+      "rangetype": "Ranged",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "Fired Up!",
+      "Q": "Ultra Mega Fire Kick",
+      "W": "Cozy Campfire",
+      "E": "Warm Hugs",
+      "R": "Breath of Life"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "MissFortune",
+    "name": "Miss Fortune",
+    "id": 21,
+    "stats": {
+      "hp_base": 625,
+      "hp_lvl": 100,
+      "mp_base": 300,
+      "mp_lvl": 40,
+      "arm_base": 25,
+      "arm_lvl": 4,
+      "mr_base": 30,
+      "mr_lvl": 1.3,
+      "ad_base": 55,
+      "ad_lvl": 2.4,
+      "as_base": 0.656,
+      "as_lvl": 3,
+      "as_ratio": 0.656000018119812,
+      "range": 550,
+      "rangetype": "Ranged",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Love Tap",
+      "Q": "Double Up",
+      "W": "Strut",
+      "E": "Make It Rain",
+      "R": "Bullet Time"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Mordekaiser",
+    "name": "Mordekaiser",
+    "id": 82,
+    "stats": {
+      "hp_base": 645,
+      "hp_lvl": 104,
+      "mp_base": 0,
+      "mp_lvl": 0,
+      "arm_base": 37,
+      "arm_lvl": 4.2,
+      "mr_base": 32,
+      "mr_lvl": 2.05,
+      "ad_base": 61,
+      "ad_lvl": 4,
+      "as_base": 0.625,
+      "as_lvl": 1,
+      "as_ratio": 0.625,
+      "range": 175,
+      "rangetype": "Melee",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "Darkness Rise",
+      "Q": "Obliterate",
+      "W": "Indestructible",
+      "E": "Death's Grasp",
+      "R": "Realm of Death"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Morgana",
+    "name": "Morgana",
+    "id": 25,
+    "stats": {
+      "hp_base": 630,
+      "hp_lvl": 104,
+      "mp_base": 340,
+      "mp_lvl": 60,
+      "arm_base": 25,
+      "arm_lvl": 4.2,
+      "mr_base": 30,
+      "mr_lvl": 1.3,
+      "ad_base": 56,
+      "ad_lvl": 3.5,
+      "as_base": 0.625,
+      "as_lvl": 1.53,
+      "as_ratio": 0.625,
+      "range": 450,
+      "rangetype": "Ranged",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "Soul Siphon",
+      "Q": "Dark Binding",
+      "W": "Tormented Shadow",
+      "E": "Black Shield",
+      "R": "Soul Shackles"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Naafiri",
+    "name": "Naafiri",
+    "id": 950,
+    "stats": {
+      "hp_base": 610,
+      "hp_lvl": 105,
+      "mp_base": 400,
+      "mp_lvl": 55,
+      "arm_base": 28,
+      "arm_lvl": 4.2,
+      "mr_base": 32,
+      "mr_lvl": 2.05,
+      "ad_base": 55,
+      "ad_lvl": 2,
+      "as_base": 0.663,
+      "as_lvl": 2.1,
+      "as_ratio": 0.625,
+      "range": 125,
+      "rangetype": "Melee",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "We Are More",
+      "Q": "Darkin Daggers",
+      "W": "The Call of the Pack",
+      "E": "Eviscerate",
+      "R": "Hounds' Pursuit"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Nami",
+    "name": "Nami",
+    "id": 267,
+    "stats": {
+      "hp_base": 560,
+      "hp_lvl": 88,
+      "mp_base": 365,
+      "mp_lvl": 43,
+      "arm_base": 29,
+      "arm_lvl": 5.2,
+      "mr_base": 30,
+      "mr_lvl": 1.3,
+      "ad_base": 54,
+      "ad_lvl": 3.1,
+      "as_base": 0.644,
+      "as_lvl": 2.61,
+      "as_ratio": 0.643999993801116,
+      "range": 550,
+      "rangetype": "Ranged",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "Surging Tides",
+      "Q": "Aqua Prison",
+      "W": "Ebb and Flow",
+      "E": "Tidecaller's Blessing",
+      "R": "Tidal Wave"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Nasus",
+    "name": "Nasus",
+    "id": 75,
+    "stats": {
+      "hp_base": 650,
+      "hp_lvl": 104,
+      "mp_base": 326,
+      "mp_lvl": 62,
+      "arm_base": 34,
+      "arm_lvl": 4.7,
+      "mr_base": 32,
+      "mr_lvl": 2.05,
+      "ad_base": 67,
+      "ad_lvl": 4,
+      "as_base": 0.638,
+      "as_lvl": 3.48,
+      "as_ratio": 0.638000011444091,
+      "range": 125,
+      "rangetype": "Melee",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Soul Eater",
+      "Q": "Siphoning Strike",
+      "W": "Wither",
+      "E": "Spirit Fire",
+      "R": "Fury of the Sands"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Nautilus",
+    "name": "Nautilus",
+    "id": 111,
+    "stats": {
+      "hp_base": 646,
+      "hp_lvl": 100,
+      "mp_base": 400,
+      "mp_lvl": 47,
+      "arm_base": 39,
+      "arm_lvl": 4.95,
+      "mr_base": 32,
+      "mr_lvl": 2.05,
+      "ad_base": 61,
+      "ad_lvl": 3.3,
+      "as_base": 0.706,
+      "as_lvl": 1,
+      "as_ratio": 0.611999988555908,
+      "range": 175,
+      "rangetype": "Melee",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "Staggering Blow",
+      "Q": "Dredge Line",
+      "W": "Titan's Wrath",
+      "E": "Riptide",
+      "R": "Depth Charge"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Neeko",
+    "name": "Neeko",
+    "id": 518,
+    "stats": {
+      "hp_base": 610,
+      "hp_lvl": 104,
+      "mp_base": 450,
+      "mp_lvl": 30,
+      "arm_base": 21,
+      "arm_lvl": 5.2,
+      "mr_base": 30,
+      "mr_lvl": 1.3,
+      "ad_base": 48,
+      "ad_lvl": 2.5,
+      "as_base": 0.625,
+      "as_lvl": 3.5,
+      "as_ratio": 0.67,
+      "range": 550,
+      "rangetype": "Ranged",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "Inherent Glamour",
+      "Q": "Blooming Burst",
+      "W": "Shapesplitter",
+      "E": "Tangle-Barbs",
+      "R": "Pop Blossom"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Nidalee",
+    "name": "Nidalee",
+    "id": 76,
+    "stats": {
+      "hp_base": 610,
+      "hp_lvl": 109,
+      "mp_base": 295,
+      "mp_lvl": 45,
+      "arm_base": 32,
+      "arm_lvl": 5,
+      "mr_base": 30,
+      "mr_lvl": 1.45,
+      "ad_base": 58,
+      "ad_lvl": 3.5,
+      "as_base": 0.638,
+      "as_lvl": 3.22,
+      "as_ratio": 0.638000011444091,
+      "range": 525,
+      "rangetype": "Ranged",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "Prowl",
+      "Q": "Javelin Toss",
+      "W": "Bushwhack",
+      "E": "Primal Surge",
+      "R": "Aspect of the Cougar"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Nilah",
+    "name": "Nilah",
+    "id": 895,
+    "stats": {
+      "hp_base": 570,
+      "hp_lvl": 101,
+      "mp_base": 350,
+      "mp_lvl": 35,
+      "arm_base": 27,
+      "arm_lvl": 4.2,
+      "mr_base": 32,
+      "mr_lvl": 2.05,
+      "ad_base": 58,
+      "ad_lvl": 2,
+      "as_base": 0.697,
+      "as_lvl": 1.25,
+      "as_ratio": 0.67,
+      "range": 225,
+      "rangetype": "Melee",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Joy Unending",
+      "Q": "Formless Blade",
+      "W": "Jubilant Veil",
+      "E": "Slipstream",
+      "R": "Apotheosis"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Nocturne",
+    "name": "Nocturne",
+    "id": 56,
+    "stats": {
+      "hp_base": 655,
+      "hp_lvl": 109,
+      "mp_base": 275,
+      "mp_lvl": 35,
+      "arm_base": 38,
+      "arm_lvl": 4.2,
+      "mr_base": 32,
+      "mr_lvl": 1.55,
+      "ad_base": 62,
+      "ad_lvl": 2.6,
+      "as_base": 0.721,
+      "as_lvl": 2.7,
+      "as_ratio": 0.721,
+      "range": 125,
+      "rangetype": "Melee",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Umbra Blades",
+      "Q": "Duskbringer",
+      "W": "Shroud of Darkness",
+      "E": "Unspeakable Horror",
+      "R": "Paranoia"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Nunu",
+    "name": "Nunu & Willump",
+    "id": 20,
+    "stats": {
+      "hp_base": 610,
+      "hp_lvl": 90,
+      "mp_base": 280,
+      "mp_lvl": 42,
+      "arm_base": 29,
+      "arm_lvl": 4.2,
+      "mr_base": 32,
+      "mr_lvl": 2.05,
+      "ad_base": 61,
+      "ad_lvl": 3,
+      "as_base": 0.625,
+      "as_lvl": 2.25,
+      "as_ratio": 0.625,
+      "range": 125,
+      "rangetype": "Melee",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "Call of the Freljord",
+      "Q": "Consume",
+      "W": "Biggest Snowball Ever!",
+      "E": "Snowball Barrage",
+      "R": "Absolute Zero"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Olaf",
+    "name": "Olaf",
+    "id": 2,
+    "stats": {
+      "hp_base": 645,
+      "hp_lvl": 119,
+      "mp_base": 316,
+      "mp_lvl": 50,
+      "arm_base": 35,
+      "arm_lvl": 4.2,
+      "mr_base": 32,
+      "mr_lvl": 2.05,
+      "ad_base": 68,
+      "ad_lvl": 4.7,
+      "as_base": 0.72,
+      "as_lvl": 2.7,
+      "as_ratio": 0.694,
+      "range": 125,
+      "rangetype": "Melee",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Berserker Rage",
+      "Q": "Undertow",
+      "W": "Tough It Out",
+      "E": "Reckless Swing",
+      "R": "Ragnarok"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Orianna",
+    "name": "Orianna",
+    "id": 61,
+    "stats": {
+      "hp_base": 565,
+      "hp_lvl": 110,
+      "mp_base": 418,
+      "mp_lvl": 25,
+      "arm_base": 20,
+      "arm_lvl": 4.2,
+      "mr_base": 26,
+      "mr_lvl": 1.3,
+      "ad_base": 44,
+      "ad_lvl": 2.6,
+      "as_base": 0.658,
+      "as_lvl": 3.5,
+      "as_ratio": 0.657999992370605,
+      "range": 525,
+      "rangetype": "Ranged",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "Clockwork Windup",
+      "Q": "Command: Attack",
+      "W": "Command: Dissonance",
+      "E": "Command: Protect",
+      "R": "Command: Shockwave"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Ornn",
+    "name": "Ornn",
+    "id": 516,
+    "stats": {
+      "hp_base": 660,
+      "hp_lvl": 109,
+      "mp_base": 341,
+      "mp_lvl": 65,
+      "arm_base": 33,
+      "arm_lvl": 5.2,
+      "mr_base": 32,
+      "mr_lvl": 2.05,
+      "ad_base": 69,
+      "ad_lvl": 3.5,
+      "as_base": 0.625,
+      "as_lvl": 2,
+      "as_ratio": 0.625,
+      "range": 175,
+      "rangetype": "Melee",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Living Forge",
+      "Q": "Volcanic Rupture",
+      "W": "Bellows Breath",
+      "E": "Searing Charge",
+      "R": "Call of the Forge God"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Pantheon",
+    "name": "Pantheon",
+    "id": 80,
+    "stats": {
+      "hp_base": 650,
+      "hp_lvl": 109,
+      "mp_base": 317,
+      "mp_lvl": 31,
+      "arm_base": 40,
+      "arm_lvl": 4.95,
+      "mr_base": 28,
+      "mr_lvl": 2.05,
+      "ad_base": 64,
+      "ad_lvl": 3.3,
+      "as_base": 0.658,
+      "as_lvl": 2.95,
+      "as_ratio": 0.658,
+      "range": 175,
+      "rangetype": "Melee",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Mortal Will",
+      "Q": "Comet Spear",
+      "W": "Shield Vault",
+      "E": "Aegis Assault",
+      "R": "Grand Starfall"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Poppy",
+    "name": "Poppy",
+    "id": 78,
+    "stats": {
+      "hp_base": 610,
+      "hp_lvl": 110,
+      "mp_base": 300,
+      "mp_lvl": 45,
+      "arm_base": 35,
+      "arm_lvl": 5,
+      "mr_base": 32,
+      "mr_lvl": 2.05,
+      "ad_base": 56,
+      "ad_lvl": 4,
+      "as_base": 0.658,
+      "as_lvl": 2.5,
+      "as_ratio": 0.625,
+      "range": 125,
+      "rangetype": "Melee",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Iron Ambassador",
+      "Q": "Hammer Shock",
+      "W": "Steadfast Presence",
+      "E": "Heroic Charge",
+      "R": "Keeper's Verdict"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Pyke",
+    "name": "Pyke",
+    "id": 555,
+    "stats": {
+      "hp_base": 670,
+      "hp_lvl": 110,
+      "mp_base": 415,
+      "mp_lvl": 50,
+      "arm_base": 37,
+      "arm_lvl": 4.7,
+      "mr_base": 32,
+      "mr_lvl": 2.05,
+      "ad_base": 62,
+      "ad_lvl": 2,
+      "as_base": 0.667,
+      "as_lvl": 2.5,
+      "as_ratio": 0.666999995708465,
+      "range": 150,
+      "rangetype": "Melee",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Gift of the Drowned Ones",
+      "Q": "Bone Skewer",
+      "W": "Ghostwater Dive",
+      "E": "Phantom Undertow",
+      "R": "Death from Below"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Qiyana",
+    "name": "Qiyana",
+    "id": 246,
+    "stats": {
+      "hp_base": 590,
+      "hp_lvl": 115,
+      "mp_base": 375,
+      "mp_lvl": 60,
+      "arm_base": 31,
+      "arm_lvl": 4.5,
+      "mr_base": 32,
+      "mr_lvl": 2.05,
+      "ad_base": 64,
+      "ad_lvl": 3.1,
+      "as_base": 0.688,
+      "as_lvl": 2.1,
+      "as_ratio": 0.625,
+      "range": 150,
+      "rangetype": "Melee",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Royal Privilege",
+      "Q": "Edge of Ixtal",
+      "W": "Terrashape",
+      "E": "Audacity",
+      "R": "Supreme Display of Talent"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Quinn",
+    "name": "Quinn",
+    "id": 133,
+    "stats": {
+      "hp_base": 565,
+      "hp_lvl": 107,
+      "mp_base": 269,
+      "mp_lvl": 35,
+      "arm_base": 28,
+      "arm_lvl": 4.7,
+      "mr_base": 30,
+      "mr_lvl": 1.3,
+      "ad_base": 59,
+      "ad_lvl": 3.2,
+      "as_base": 0.668,
+      "as_lvl": 3.1,
+      "as_ratio": 0.667999982833862,
+      "range": 525,
+      "rangetype": "Ranged",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Harrier",
+      "Q": "Blinding Assault",
+      "W": "Heightened Senses",
+      "E": "Vault",
+      "R": "Behind Enemy Lines"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Rakan",
+    "name": "Rakan",
+    "id": 497,
+    "stats": {
+      "hp_base": 610,
+      "hp_lvl": 99,
+      "mp_base": 315,
+      "mp_lvl": 50,
+      "arm_base": 30,
+      "arm_lvl": 4.9,
+      "mr_base": 32,
+      "mr_lvl": 2.05,
+      "ad_base": 62,
+      "ad_lvl": 3.5,
+      "as_base": 0.635,
+      "as_lvl": 3,
+      "as_ratio": 0.634999990463256,
+      "range": 300,
+      "rangetype": "Melee",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "Fey Feathers",
+      "Q": "Gleaming Quill",
+      "W": "Grand Entrance",
+      "E": "Battle Dance",
+      "R": "The Quickness"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Rammus",
+    "name": "Rammus",
+    "id": 33,
+    "stats": {
+      "hp_base": 645,
+      "hp_lvl": 100,
+      "mp_base": 310,
+      "mp_lvl": 33,
+      "arm_base": 35,
+      "arm_lvl": 4.5,
+      "mr_base": 32,
+      "mr_lvl": 2.05,
+      "ad_base": 65,
+      "ad_lvl": 2.75,
+      "as_base": 0.7,
+      "as_lvl": 2.215,
+      "as_ratio": 0.625,
+      "range": 125,
+      "rangetype": "Melee",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Spiked Shell",
+      "Q": "Powerball",
+      "W": "Defensive Ball Curl",
+      "E": "Frenzying Taunt",
+      "R": "Soaring Slam"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "RekSai",
+    "name": "Rek'Sai",
+    "id": 421,
+    "stats": {
+      "hp_base": 600,
+      "hp_lvl": 99,
+      "mp_base": 100,
+      "mp_lvl": 0,
+      "arm_base": 35,
+      "arm_lvl": 4.5,
+      "mr_base": 32,
+      "mr_lvl": 2.05,
+      "ad_base": 62,
+      "ad_lvl": 3,
+      "as_base": 0.667,
+      "as_lvl": 2,
+      "as_ratio": 0.666999995708465,
+      "range": 175,
+      "rangetype": "Melee",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Fury of the Xer'Sai",
+      "Q": "Queen's Wrath",
+      "W": "Burrow",
+      "E": "Furious Bite",
+      "R": "Void Rush"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Rell",
+    "name": "Rell",
+    "id": 526,
+    "stats": {
+      "hp_base": 620,
+      "hp_lvl": 104,
+      "mp_base": 320,
+      "mp_lvl": 40,
+      "arm_base": 30,
+      "arm_lvl": 4,
+      "mr_base": 28,
+      "mr_lvl": 1.8,
+      "ad_base": 55,
+      "ad_lvl": 3,
+      "as_base": 0.625,
+      "as_lvl": 2,
+      "as_ratio": 0.625,
+      "range": 175,
+      "rangetype": "Melee",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "Break the Mold",
+      "Q": "Shattering Strike",
+      "W": "Ferromancy: Crash Down",
+      "E": "Full Tilt",
+      "R": "Magnet Storm"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Renata",
+    "name": "Renata Glasc",
+    "id": 888,
+    "stats": {
+      "hp_base": 545,
+      "hp_lvl": 94,
+      "mp_base": 350,
+      "mp_lvl": 50,
+      "arm_base": 27,
+      "arm_lvl": 4.7,
+      "mr_base": 30,
+      "mr_lvl": 1.3,
+      "ad_base": 49,
+      "ad_lvl": 3,
+      "as_base": 0.625,
+      "as_lvl": 2.11,
+      "as_ratio": 0.625,
+      "range": 550,
+      "rangetype": "Ranged",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "Leverage",
+      "Q": "Handshake",
+      "W": "Bailout",
+      "E": "Loyalty Program",
+      "R": "Hostile Takeover"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Renekton",
+    "name": "Renekton",
+    "id": 58,
+    "stats": {
+      "hp_base": 660,
+      "hp_lvl": 111,
+      "mp_base": 100,
+      "mp_lvl": 0,
+      "arm_base": 35,
+      "arm_lvl": 5.2,
+      "mr_base": 28,
+      "mr_lvl": 2.05,
+      "ad_base": 69,
+      "ad_lvl": 4.15,
+      "as_base": 0.665,
+      "as_lvl": 2.75,
+      "as_ratio": 0.665000021457672,
+      "range": 125,
+      "rangetype": "Melee",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Reign of Anger",
+      "Q": "Cull the Meek",
+      "W": "Ruthless Predator",
+      "E": "Slice and Dice",
+      "R": "Dominus"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Rengar",
+    "name": "Rengar",
+    "id": 107,
+    "stats": {
+      "hp_base": 590,
+      "hp_lvl": 104,
+      "mp_base": 4,
+      "mp_lvl": 0,
+      "arm_base": 34,
+      "arm_lvl": 4.2,
+      "mr_base": 32,
+      "mr_lvl": 2.05,
+      "ad_base": 68,
+      "ad_lvl": 3,
+      "as_base": 0.667,
+      "as_lvl": 3,
+      "as_ratio": 0.666999995708465,
+      "range": 125,
+      "rangetype": "Melee",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Unseen Predator",
+      "Q": "Savagery",
+      "W": "Battle Roar",
+      "E": "Bola Strike",
+      "R": "Thrill of the Hunt"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Riven",
+    "name": "Riven",
+    "id": 92,
+    "stats": {
+      "hp_base": 630,
+      "hp_lvl": 100,
+      "mp_base": 0,
+      "mp_lvl": 0,
+      "arm_base": 33,
+      "arm_lvl": 4.4,
+      "mr_base": 32,
+      "mr_lvl": 2.05,
+      "ad_base": 64,
+      "ad_lvl": 3,
+      "as_base": 0.625,
+      "as_lvl": 3.5,
+      "as_ratio": 0.625,
+      "range": 125,
+      "rangetype": "Melee",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Runic Blade",
+      "Q": "Broken Wings",
+      "W": "Ki Burst",
+      "E": "Valor",
+      "R": "Blade of the Exile"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Rumble",
+    "name": "Rumble",
+    "id": 68,
+    "stats": {
+      "hp_base": 640,
+      "hp_lvl": 105,
+      "mp_base": 150,
+      "mp_lvl": 0,
+      "arm_base": 36,
+      "arm_lvl": 4.7,
+      "mr_base": 28,
+      "mr_lvl": 1.55,
+      "ad_base": 64,
+      "ad_lvl": 3.2,
+      "as_base": 0.644,
+      "as_lvl": 1.85,
+      "as_ratio": 0.643999993801116,
+      "range": 125,
+      "rangetype": "Melee",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "Junkyard Titan",
+      "Q": "Flamespitter",
+      "W": "Scrap Shield",
+      "E": "Electro Harpoon",
+      "R": "The Equalizer"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Ryze",
+    "name": "Ryze",
+    "id": 13,
+    "stats": {
+      "hp_base": 620,
+      "hp_lvl": 124,
+      "mp_base": 300,
+      "mp_lvl": 70,
+      "arm_base": 22,
+      "arm_lvl": 4.2,
+      "mr_base": 32,
+      "mr_lvl": 1.3,
+      "ad_base": 55,
+      "ad_lvl": 3,
+      "as_base": 0.658,
+      "as_lvl": 2.11,
+      "as_ratio": 0.625,
+      "range": 550,
+      "rangetype": "Ranged",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "Arcane Mastery",
+      "Q": "Overload",
+      "W": "Rune Prison",
+      "E": "Spell Flux",
+      "R": "Realm Warp"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Samira",
+    "name": "Samira",
+    "id": 360,
+    "stats": {
+      "hp_base": 630,
+      "hp_lvl": 108,
+      "mp_base": 349,
+      "mp_lvl": 38,
+      "arm_base": 26,
+      "arm_lvl": 4.7,
+      "mr_base": 30,
+      "mr_lvl": 1.3,
+      "ad_base": 57,
+      "ad_lvl": 3,
+      "as_base": 0.658,
+      "as_lvl": 3.3,
+      "as_ratio": 0.658,
+      "range": 500,
+      "rangetype": "Ranged",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Daredevil Impulse",
+      "Q": "Flair",
+      "W": "Blade Whirl",
+      "E": "Wild Rush",
+      "R": "Inferno Trigger"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Sejuani",
+    "name": "Sejuani",
+    "id": 113,
+    "stats": {
+      "hp_base": 630,
+      "hp_lvl": 114,
+      "mp_base": 400,
+      "mp_lvl": 40,
+      "arm_base": 34,
+      "arm_lvl": 5.45,
+      "mr_base": 32,
+      "mr_lvl": 2.05,
+      "ad_base": 66,
+      "ad_lvl": 4,
+      "as_base": 0.688,
+      "as_lvl": 3.5,
+      "as_ratio": 0.625,
+      "range": 150,
+      "rangetype": "Melee",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "Fury of the North",
+      "Q": "Arctic Assault",
+      "W": "Winter's Wrath",
+      "E": "Permafrost",
+      "R": "Glacial Prison"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Senna",
+    "name": "Senna",
+    "id": 235,
+    "stats": {
+      "hp_base": 530,
+      "hp_lvl": 89,
+      "mp_base": 350,
+      "mp_lvl": 45,
+      "arm_base": 25,
+      "arm_lvl": 4,
+      "mr_base": 30,
+      "mr_lvl": 1.3,
+      "ad_base": 50,
+      "ad_lvl": 0,
+      "as_base": 0.625,
+      "as_lvl": 2.6,
+      "as_ratio": 0.4,
+      "range": 600,
+      "rangetype": "Ranged",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Absolution",
+      "Q": "Piercing Darkness",
+      "W": "Last Embrace",
+      "E": "Curse of the Black Mist",
+      "R": "Dawning Shadow"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Seraphine",
+    "name": "Seraphine",
+    "id": 147,
+    "stats": {
+      "hp_base": 570,
+      "hp_lvl": 95,
+      "mp_base": 360,
+      "mp_lvl": 40,
+      "arm_base": 26,
+      "arm_lvl": 4.2,
+      "mr_base": 30,
+      "mr_lvl": 1.3,
+      "ad_base": 50,
+      "ad_lvl": 3,
+      "as_base": 0.669,
+      "as_lvl": 2,
+      "as_ratio": 0.625,
+      "range": 525,
+      "rangetype": "Ranged",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "Stage Presence",
+      "Q": "High Note",
+      "W": "Surround Sound",
+      "E": "Beat Drop",
+      "R": "Encore"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Sett",
+    "name": "Sett",
+    "id": 875,
+    "stats": {
+      "hp_base": 670,
+      "hp_lvl": 114,
+      "mp_base": 0,
+      "mp_lvl": 0,
+      "arm_base": 33,
+      "arm_lvl": 4.7,
+      "mr_base": 28,
+      "mr_lvl": 2.05,
+      "ad_base": 60,
+      "ad_lvl": 4,
+      "as_base": 0.625,
+      "as_lvl": 1.75,
+      "as_ratio": 0.625,
+      "range": 125,
+      "rangetype": "Melee",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Pit Grit",
+      "Q": "Knuckle Down",
+      "W": "Haymaker",
+      "E": "Facebreaker",
+      "R": "The Show Stopper"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Shaco",
+    "name": "Shaco",
+    "id": 35,
+    "stats": {
+      "hp_base": 630,
+      "hp_lvl": 99,
+      "mp_base": 297,
+      "mp_lvl": 40,
+      "arm_base": 30,
+      "arm_lvl": 4,
+      "mr_base": 32,
+      "mr_lvl": 2.05,
+      "ad_base": 63,
+      "ad_lvl": 3,
+      "as_base": 0.694,
+      "as_lvl": 3,
+      "as_ratio": 0.694000005722045,
+      "range": 125,
+      "rangetype": "Melee",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Backstab",
+      "Q": "Deceive",
+      "W": "Jack in the Box",
+      "E": "Two-Shiv Poison",
+      "R": "Hallucinate"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Shen",
+    "name": "Shen",
+    "id": 98,
+    "stats": {
+      "hp_base": 610,
+      "hp_lvl": 99,
+      "mp_base": 400,
+      "mp_lvl": 0,
+      "arm_base": 34,
+      "arm_lvl": 4.2,
+      "mr_base": 32,
+      "mr_lvl": 2.05,
+      "ad_base": 64,
+      "ad_lvl": 3,
+      "as_base": 0.751,
+      "as_lvl": 3,
+      "as_ratio": 0.651000022888183,
+      "range": 125,
+      "rangetype": "Melee",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Ki Barrier",
+      "Q": "Twilight Assault",
+      "W": "Spirit's Refuge",
+      "E": "Shadow Dash",
+      "R": "Stand United"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Shyvana",
+    "name": "Shyvana",
+    "id": 102,
+    "stats": {
+      "hp_base": 625,
+      "hp_lvl": 95,
+      "mp_base": 100,
+      "mp_lvl": 0,
+      "arm_base": 35,
+      "arm_lvl": 4,
+      "mr_base": 32,
+      "mr_lvl": 2.05,
+      "ad_base": 62,
+      "ad_lvl": 4,
+      "as_base": 0.638,
+      "as_lvl": 2,
+      "as_ratio": 0.638,
+      "range": 150,
+      "rangetype": "Melee",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Scalemail",
+      "Q": "Emberstrike",
+      "W": "Inferno Aegis",
+      "E": "Molten Burst",
+      "R": "Dragon's Descent"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Singed",
+    "name": "Singed",
+    "id": 27,
+    "stats": {
+      "hp_base": 650,
+      "hp_lvl": 96,
+      "mp_base": 330,
+      "mp_lvl": 45,
+      "arm_base": 34,
+      "arm_lvl": 4.2,
+      "mr_base": 32,
+      "mr_lvl": 2.05,
+      "ad_base": 63,
+      "ad_lvl": 3.4,
+      "as_base": 0.7,
+      "as_lvl": 1.9,
+      "as_ratio": 0.69,
+      "range": 125,
+      "rangetype": "Melee",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "Noxious Slipstream",
+      "Q": "Poison Trail",
+      "W": "Mega Adhesive",
+      "E": "Fling",
+      "R": "Insanity Potion"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Sion",
+    "name": "Sion",
+    "id": 14,
+    "stats": {
+      "hp_base": 655,
+      "hp_lvl": 87,
+      "mp_base": 400,
+      "mp_lvl": 52,
+      "arm_base": 36,
+      "arm_lvl": 4.2,
+      "mr_base": 32,
+      "mr_lvl": 2.05,
+      "ad_base": 68,
+      "ad_lvl": 4,
+      "as_base": 0.679,
+      "as_lvl": 1.3,
+      "as_ratio": 0.67900002002716,
+      "range": 175,
+      "rangetype": "Melee",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Glory in Death",
+      "Q": "Decimating Smash",
+      "W": "Soul Furnace",
+      "E": "Roar of the Slayer",
+      "R": "Unstoppable Onslaught"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Sivir",
+    "name": "Sivir",
+    "id": 15,
+    "stats": {
+      "hp_base": 600,
+      "hp_lvl": 104,
+      "mp_base": 340,
+      "mp_lvl": 45,
+      "arm_base": 30,
+      "arm_lvl": 4,
+      "mr_base": 30,
+      "mr_lvl": 1.3,
+      "ad_base": 60,
+      "ad_lvl": 2.5,
+      "as_base": 0.625,
+      "as_lvl": 1.6,
+      "as_ratio": 0.625,
+      "range": 500,
+      "rangetype": "Ranged",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Fleet of Foot",
+      "Q": "Boomerang Blade",
+      "W": "Ricochet",
+      "E": "Spell Shield",
+      "R": "On the Hunt"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Skarner",
+    "name": "Skarner",
+    "id": 72,
+    "stats": {
+      "hp_base": 630,
+      "hp_lvl": 110,
+      "mp_base": 320,
+      "mp_lvl": 40,
+      "arm_base": 33,
+      "arm_lvl": 4.5,
+      "mr_base": 32,
+      "mr_lvl": 2.05,
+      "ad_base": 63,
+      "ad_lvl": 5,
+      "as_base": 0.625,
+      "as_lvl": 2,
+      "as_ratio": 0.625,
+      "range": 150,
+      "rangetype": "Melee",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Threads of Vibration",
+      "Q": "Shattered Earth",
+      "W": "Seismic Bastion",
+      "E": "Ixtal's Impact",
+      "R": "Impale"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Smolder",
+    "name": "Smolder",
+    "id": 901,
+    "stats": {
+      "hp_base": 575,
+      "hp_lvl": 100,
+      "mp_base": 300,
+      "mp_lvl": 40,
+      "arm_base": 24,
+      "arm_lvl": 4,
+      "mr_base": 30,
+      "mr_lvl": 1.3,
+      "ad_base": 58,
+      "ad_lvl": 2.3,
+      "as_base": 0.638,
+      "as_lvl": 4,
+      "as_ratio": 0.638,
+      "range": 550,
+      "rangetype": "Ranged",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Dragon Practice",
+      "Q": "Super Scorcher Breath",
+      "W": "Achooo!",
+      "E": "Flap, Flap, Flap",
+      "R": "MMOOOMMMM!"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Sona",
+    "name": "Sona",
+    "id": 37,
+    "stats": {
+      "hp_base": 550,
+      "hp_lvl": 91,
+      "mp_base": 340,
+      "mp_lvl": 45,
+      "arm_base": 26,
+      "arm_lvl": 4.2,
+      "mr_base": 30,
+      "mr_lvl": 1.3,
+      "ad_base": 49,
+      "ad_lvl": 3,
+      "as_base": 0.644,
+      "as_lvl": 2.3,
+      "as_ratio": 0.643999993801116,
+      "range": 550,
+      "rangetype": "Ranged",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "Power Chord",
+      "Q": "Hymn of Valor",
+      "W": "Aria of Perseverance",
+      "E": "Song of Celerity",
+      "R": "Crescendo"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Soraka",
+    "name": "Soraka",
+    "id": 16,
+    "stats": {
+      "hp_base": 605,
+      "hp_lvl": 88,
+      "mp_base": 425,
+      "mp_lvl": 40,
+      "arm_base": 32,
+      "arm_lvl": 5,
+      "mr_base": 30,
+      "mr_lvl": 1.3,
+      "ad_base": 50,
+      "ad_lvl": 3,
+      "as_base": 0.625,
+      "as_lvl": 2.14,
+      "as_ratio": 0.625,
+      "range": 550,
+      "rangetype": "Ranged",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "Salvation",
+      "Q": "Starcall",
+      "W": "Astral Infusion",
+      "E": "Equinox",
+      "R": "Wish"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Swain",
+    "name": "Swain",
+    "id": 50,
+    "stats": {
+      "hp_base": 595,
+      "hp_lvl": 99,
+      "mp_base": 400,
+      "mp_lvl": 29,
+      "arm_base": 25,
+      "arm_lvl": 4.7,
+      "mr_base": 31,
+      "mr_lvl": 1.55,
+      "ad_base": 58,
+      "ad_lvl": 2.7,
+      "as_base": 0.625,
+      "as_lvl": 2.11,
+      "as_ratio": 0.625,
+      "range": 525,
+      "rangetype": "Ranged",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "Ravenous Flock",
+      "Q": "Death's Hand",
+      "W": "Vision of Empire",
+      "E": "Nevermove",
+      "R": "Demonic Ascension"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Sylas",
+    "name": "Sylas",
+    "id": 517,
+    "stats": {
+      "hp_base": 600,
+      "hp_lvl": 122,
+      "mp_base": 400,
+      "mp_lvl": 70,
+      "arm_base": 29,
+      "arm_lvl": 5.2,
+      "mr_base": 32,
+      "mr_lvl": 2.55,
+      "ad_base": 61,
+      "ad_lvl": 3,
+      "as_base": 0.645,
+      "as_lvl": 3.5,
+      "as_ratio": 0.644999980926513,
+      "range": 175,
+      "rangetype": "Melee",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "Petricite Burst",
+      "Q": "Chain Lash",
+      "W": "Kingslayer",
+      "E": "Abscond",
+      "R": "Hijack"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Syndra",
+    "name": "Syndra",
+    "id": 134,
+    "stats": {
+      "hp_base": 583,
+      "hp_lvl": 100,
+      "mp_base": 480,
+      "mp_lvl": 40,
+      "arm_base": 25,
+      "arm_lvl": 4,
+      "mr_base": 30,
+      "mr_lvl": 1.3,
+      "ad_base": 54,
+      "ad_lvl": 2.9,
+      "as_base": 0.658,
+      "as_lvl": 2,
+      "as_ratio": 0.625,
+      "range": 550,
+      "rangetype": "Ranged",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "Transcendent",
+      "Q": "Dark Sphere",
+      "W": "Force of Will",
+      "E": "Scatter the Weak",
+      "R": "Unleashed Power"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "TahmKench",
+    "name": "Tahm Kench",
+    "id": 223,
+    "stats": {
+      "hp_base": 640,
+      "hp_lvl": 103,
+      "mp_base": 325,
+      "mp_lvl": 50,
+      "arm_base": 39,
+      "arm_lvl": 4.7,
+      "mr_base": 32,
+      "mr_lvl": 2.05,
+      "ad_base": 56,
+      "ad_lvl": 3.2,
+      "as_base": 0.658,
+      "as_lvl": 2.5,
+      "as_ratio": 0.657999992370605,
+      "range": 175,
+      "rangetype": "Melee",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "An Acquired Taste",
+      "Q": "Tongue Lash",
+      "W": "Abyssal Dive",
+      "E": "Thick Skin",
+      "R": "Devour"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Taliyah",
+    "name": "Taliyah",
+    "id": 163,
+    "stats": {
+      "hp_base": 550,
+      "hp_lvl": 104,
+      "mp_base": 470,
+      "mp_lvl": 30,
+      "arm_base": 18,
+      "arm_lvl": 4.7,
+      "mr_base": 28,
+      "mr_lvl": 1.3,
+      "ad_base": 58,
+      "ad_lvl": 3.3,
+      "as_base": 0.658,
+      "as_lvl": 1.36,
+      "as_ratio": 0.625,
+      "range": 525,
+      "rangetype": "Ranged",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "Rock Surfing",
+      "Q": "Threaded Volley",
+      "W": "Seismic Shove",
+      "E": "Unraveled Earth",
+      "R": "Weaver's Wall"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Talon",
+    "name": "Talon",
+    "id": 91,
+    "stats": {
+      "hp_base": 658,
+      "hp_lvl": 109,
+      "mp_base": 400,
+      "mp_lvl": 37,
+      "arm_base": 30,
+      "arm_lvl": 4.7,
+      "mr_base": 36,
+      "mr_lvl": 2.05,
+      "ad_base": 68,
+      "ad_lvl": 3.1,
+      "as_base": 0.625,
+      "as_lvl": 2.9,
+      "as_ratio": 0.625,
+      "range": 125,
+      "rangetype": "Melee",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Blade's End",
+      "Q": "Noxian Diplomacy",
+      "W": "Rake",
+      "E": "Assassin's Path",
+      "R": "Shadow Assault"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Taric",
+    "name": "Taric",
+    "id": 44,
+    "stats": {
+      "hp_base": 645,
+      "hp_lvl": 99,
+      "mp_base": 300,
+      "mp_lvl": 60,
+      "arm_base": 40,
+      "arm_lvl": 4.3,
+      "mr_base": 28,
+      "mr_lvl": 2.05,
+      "ad_base": 55,
+      "ad_lvl": 3.5,
+      "as_base": 0.625,
+      "as_lvl": 2,
+      "as_ratio": 0.625,
+      "range": 150,
+      "rangetype": "Melee",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Bravado",
+      "Q": "Starlight's Touch",
+      "W": "Bastion",
+      "E": "Dazzle",
+      "R": "Cosmic Radiance"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Teemo",
+    "name": "Teemo",
+    "id": 17,
+    "stats": {
+      "hp_base": 615,
+      "hp_lvl": 104,
+      "mp_base": 334,
+      "mp_lvl": 25,
+      "arm_base": 24,
+      "arm_lvl": 4.5,
+      "mr_base": 30,
+      "mr_lvl": 1.3,
+      "ad_base": 54,
+      "ad_lvl": 3,
+      "as_base": 0.69,
+      "as_lvl": 3.38,
+      "as_ratio": 0.689999997615814,
+      "range": 500,
+      "rangetype": "Ranged",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "Guerrilla Warfare",
+      "Q": "Blinding Dart",
+      "W": "Move Quick",
+      "E": "Toxic Shot",
+      "R": "Noxious Trap"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Thresh",
+    "name": "Thresh",
+    "id": 412,
+    "stats": {
+      "hp_base": 620,
+      "hp_lvl": 120,
+      "mp_base": 274,
+      "mp_lvl": 44,
+      "arm_base": 33,
+      "arm_lvl": 0,
+      "mr_base": 30,
+      "mr_lvl": 1.55,
+      "ad_base": 56,
+      "ad_lvl": 2.2,
+      "as_base": 0.625,
+      "as_lvl": 3.5,
+      "as_ratio": 0.625,
+      "range": 450,
+      "rangetype": "Ranged",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Damnation",
+      "Q": "Death Sentence",
+      "W": "Dark Passage",
+      "E": "Flay",
+      "R": "The Box"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Tristana",
+    "name": "Tristana",
+    "id": 18,
+    "stats": {
+      "hp_base": 640,
+      "hp_lvl": 102,
+      "mp_base": 300,
+      "mp_lvl": 32,
+      "arm_base": 30,
+      "arm_lvl": 4,
+      "mr_base": 28,
+      "mr_lvl": 1.3,
+      "ad_base": 60,
+      "ad_lvl": 3.4,
+      "as_base": 0.656,
+      "as_lvl": 1.5,
+      "as_ratio": 0.694,
+      "range": 550,
+      "rangetype": "Ranged",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Draw a Bead",
+      "Q": "Rapid Fire",
+      "W": "Rocket Jump",
+      "E": "Explosive Charge",
+      "R": "Buster Shot"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Trundle",
+    "name": "Trundle",
+    "id": 48,
+    "stats": {
+      "hp_base": 650,
+      "hp_lvl": 110,
+      "mp_base": 340,
+      "mp_lvl": 45,
+      "arm_base": 37,
+      "arm_lvl": 4.5,
+      "mr_base": 32,
+      "mr_lvl": 2.05,
+      "ad_base": 68,
+      "ad_lvl": 4.5,
+      "as_base": 0.67,
+      "as_lvl": 2.9,
+      "as_ratio": 0.6700000166893,
+      "range": 175,
+      "rangetype": "Melee",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "King's Tribute",
+      "Q": "Chomp",
+      "W": "Frozen Domain",
+      "E": "Pillar of Ice",
+      "R": "Subjugate"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Tryndamere",
+    "name": "Tryndamere",
+    "id": 23,
+    "stats": {
+      "hp_base": 696,
+      "hp_lvl": 108,
+      "mp_base": 100,
+      "mp_lvl": 0,
+      "arm_base": 33,
+      "arm_lvl": 4.8,
+      "mr_base": 32,
+      "mr_lvl": 2.05,
+      "ad_base": 66,
+      "ad_lvl": 4.5,
+      "as_base": 0.67,
+      "as_lvl": 3.4,
+      "as_ratio": 0.725,
+      "range": 175,
+      "rangetype": "Melee",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Battle Fury",
+      "Q": "Bloodlust",
+      "W": "Mocking Shout",
+      "E": "Spinning Slash",
+      "R": "Undying Rage"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "TwistedFate",
+    "name": "Twisted Fate",
+    "id": 4,
+    "stats": {
+      "hp_base": 604,
+      "hp_lvl": 108,
+      "mp_base": 333,
+      "mp_lvl": 39,
+      "arm_base": 24,
+      "arm_lvl": 4.35,
+      "mr_base": 30,
+      "mr_lvl": 1.3,
+      "ad_base": 52,
+      "ad_lvl": 2.5,
+      "as_base": 0.625,
+      "as_lvl": 2.5,
+      "as_ratio": 0.651000022888183,
+      "range": 525,
+      "rangetype": "Ranged",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "Loaded Dice",
+      "Q": "Wild Cards",
+      "W": "Pick a Card",
+      "E": "Stacked Deck",
+      "R": "Destiny"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Twitch",
+    "name": "Twitch",
+    "id": 29,
+    "stats": {
+      "hp_base": 630,
+      "hp_lvl": 98,
+      "mp_base": 300,
+      "mp_lvl": 40,
+      "arm_base": 27,
+      "arm_lvl": 4,
+      "mr_base": 30,
+      "mr_lvl": 1.3,
+      "ad_base": 59,
+      "ad_lvl": 3,
+      "as_base": 0.679,
+      "as_lvl": 3,
+      "as_ratio": 0.67900002002716,
+      "range": 550,
+      "rangetype": "Ranged",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Deadly Venom",
+      "Q": "Ambush",
+      "W": "Venom Cask",
+      "E": "Contaminate",
+      "R": "Spray and Pray"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Udyr",
+    "name": "Udyr",
+    "id": 77,
+    "stats": {
+      "hp_base": 664,
+      "hp_lvl": 92,
+      "mp_base": 271,
+      "mp_lvl": 50,
+      "arm_base": 31,
+      "arm_lvl": 4.7,
+      "mr_base": 32,
+      "mr_lvl": 2.05,
+      "ad_base": 62,
+      "ad_lvl": 4,
+      "as_base": 0.65,
+      "as_lvl": 3,
+      "as_ratio": 0.6499999761581421,
+      "range": 125,
+      "rangetype": "Melee",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Bridge Between",
+      "Q": "Wilding Claw",
+      "W": "Iron Mantle",
+      "E": "Blazing Stampede",
+      "R": "Wingborne Storm"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Urgot",
+    "name": "Urgot",
+    "id": 6,
+    "stats": {
+      "hp_base": 655,
+      "hp_lvl": 102,
+      "mp_base": 340,
+      "mp_lvl": 45,
+      "arm_base": 36,
+      "arm_lvl": 5,
+      "mr_base": 32,
+      "mr_lvl": 2.05,
+      "ad_base": 63,
+      "ad_lvl": 4,
+      "as_base": 0.625,
+      "as_lvl": 3.75,
+      "as_ratio": 0.625,
+      "range": 350,
+      "rangetype": "Ranged",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Echoing Flames",
+      "Q": "Corrosive Charge",
+      "W": "Purge",
+      "E": "Disdain",
+      "R": "Fear Beyond Death"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Varus",
+    "name": "Varus",
+    "id": 110,
+    "stats": {
+      "hp_base": 600,
+      "hp_lvl": 105,
+      "mp_base": 320,
+      "mp_lvl": 40,
+      "arm_base": 24,
+      "arm_lvl": 4,
+      "mr_base": 30,
+      "mr_lvl": 1.3,
+      "ad_base": 59,
+      "ad_lvl": 3.4,
+      "as_base": 0.658,
+      "as_lvl": 3.5,
+      "as_ratio": 0.657999992370605,
+      "range": 575,
+      "rangetype": "Ranged",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Living Vengeance",
+      "Q": "Piercing Arrow",
+      "W": "Blighted Quiver",
+      "E": "Hail of Arrows",
+      "R": "Chain of Corruption"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Vayne",
+    "name": "Vayne",
+    "id": 67,
+    "stats": {
+      "hp_base": 550,
+      "hp_lvl": 103,
+      "mp_base": 232,
+      "mp_lvl": 35,
+      "arm_base": 23,
+      "arm_lvl": 4.6,
+      "mr_base": 30,
+      "mr_lvl": 1.3,
+      "ad_base": 60,
+      "ad_lvl": 2.35,
+      "as_base": 0.658,
+      "as_lvl": 3.3,
+      "as_ratio": 0.657999992370605,
+      "range": 550,
+      "rangetype": "Ranged",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Night Hunter",
+      "Q": "Tumble",
+      "W": "Silver Bolts",
+      "E": "Condemn",
+      "R": "Final Hour"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Veigar",
+    "name": "Veigar",
+    "id": 45,
+    "stats": {
+      "hp_base": 580,
+      "hp_lvl": 108,
+      "mp_base": 490,
+      "mp_lvl": 26,
+      "arm_base": 18,
+      "arm_lvl": 5.2,
+      "mr_base": 32,
+      "mr_lvl": 1.3,
+      "ad_base": 52,
+      "ad_lvl": 2.7,
+      "as_base": 0.625,
+      "as_lvl": 2.24,
+      "as_ratio": 0.625,
+      "range": 550,
+      "rangetype": "Ranged",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "Phenomenal Evil Power",
+      "Q": "Baleful Strike",
+      "W": "Dark Matter",
+      "E": "Event Horizon",
+      "R": "Primordial Burst"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Velkoz",
+    "name": "Vel'Koz",
+    "id": 161,
+    "stats": {
+      "hp_base": 590,
+      "hp_lvl": 102,
+      "mp_base": 469,
+      "mp_lvl": 21,
+      "arm_base": 22,
+      "arm_lvl": 4.7,
+      "mr_base": 30,
+      "mr_lvl": 1.3,
+      "ad_base": 55,
+      "ad_lvl": 3.1416,
+      "as_base": 0.643,
+      "as_lvl": 1.59,
+      "as_ratio": 0.625,
+      "range": 525,
+      "rangetype": "Ranged",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "Organic Deconstruction",
+      "Q": "Plasma Fission",
+      "W": "Void Rift",
+      "E": "Tectonic Disruption",
+      "R": "Life Form Disintegration Ray"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Vex",
+    "name": "Vex",
+    "id": 711,
+    "stats": {
+      "hp_base": 590,
+      "hp_lvl": 104,
+      "mp_base": 490,
+      "mp_lvl": 32,
+      "arm_base": 23,
+      "arm_lvl": 4.45,
+      "mr_base": 28,
+      "mr_lvl": 1.3,
+      "ad_base": 54,
+      "ad_lvl": 2.75,
+      "as_base": 0.669,
+      "as_lvl": 1,
+      "as_ratio": 0.625,
+      "range": 550,
+      "rangetype": "Ranged",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "Doom 'n Gloom",
+      "Q": "Mistral Bolt",
+      "W": "Personal Space",
+      "E": "Looming Darkness",
+      "R": "Shadow Surge"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Vi",
+    "name": "Vi",
+    "id": 254,
+    "stats": {
+      "hp_base": 655,
+      "hp_lvl": 105,
+      "mp_base": 295,
+      "mp_lvl": 65,
+      "arm_base": 30,
+      "arm_lvl": 4.7,
+      "mr_base": 32,
+      "mr_lvl": 2.05,
+      "ad_base": 63,
+      "ad_lvl": 3.5,
+      "as_base": 0.644,
+      "as_lvl": 2,
+      "as_ratio": 0.643999993801116,
+      "range": 125,
+      "rangetype": "Melee",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Blast Shield",
+      "Q": "Vault Breaker",
+      "W": "Denting Blows",
+      "E": "Relentless Force",
+      "R": "Cease and Desist"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Viego",
+    "name": "Viego",
+    "id": 234,
+    "stats": {
+      "hp_base": 630,
+      "hp_lvl": 109,
+      "mp_base": 0,
+      "mp_lvl": 0,
+      "arm_base": 34,
+      "arm_lvl": 4.6,
+      "mr_base": 32,
+      "mr_lvl": 2.05,
+      "ad_base": 57,
+      "ad_lvl": 3.5,
+      "as_base": 0.658,
+      "as_lvl": 2.75,
+      "as_ratio": 0.658,
+      "range": 200,
+      "rangetype": "Melee",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Sovereign's Domination",
+      "Q": "Blade of the Ruined King",
+      "W": "Spectral Maw",
+      "E": "Harrowed Path",
+      "R": "Heartbreaker"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Viktor",
+    "name": "Viktor",
+    "id": 112,
+    "stats": {
+      "hp_base": 600,
+      "hp_lvl": 100,
+      "mp_base": 405,
+      "mp_lvl": 45,
+      "arm_base": 23,
+      "arm_lvl": 4.4,
+      "mr_base": 30,
+      "mr_lvl": 1.3,
+      "ad_base": 53,
+      "ad_lvl": 3,
+      "as_base": 0.658,
+      "as_lvl": 2.11,
+      "as_ratio": 0.657999992370605,
+      "range": 525,
+      "rangetype": "Ranged",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "Glorious Evolution",
+      "Q": "Siphon Power",
+      "W": "Gravity Field",
+      "E": "Hextech Ray",
+      "R": "Arcane Storm"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Vladimir",
+    "name": "Vladimir",
+    "id": 8,
+    "stats": {
+      "hp_base": 600,
+      "hp_lvl": 110,
+      "mp_base": 2,
+      "mp_lvl": 0,
+      "arm_base": 24,
+      "arm_lvl": 4.5,
+      "mr_base": 30,
+      "mr_lvl": 1.3,
+      "ad_base": 55,
+      "ad_lvl": 3,
+      "as_base": 0.658,
+      "as_lvl": 2,
+      "as_ratio": 0.657999992370605,
+      "range": 450,
+      "rangetype": "Ranged",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "Crimson Pact",
+      "Q": "Transfusion",
+      "W": "Sanguine Pool",
+      "E": "Tides of Blood",
+      "R": "Hemoplague"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Volibear",
+    "name": "Volibear",
+    "id": 106,
+    "stats": {
+      "hp_base": 650,
+      "hp_lvl": 104,
+      "mp_base": 350,
+      "mp_lvl": 70,
+      "arm_base": 35,
+      "arm_lvl": 5.2,
+      "mr_base": 32,
+      "mr_lvl": 2.05,
+      "ad_base": 65,
+      "ad_lvl": 3.5,
+      "as_base": 0.625,
+      "as_lvl": 2,
+      "as_ratio": 0.7,
+      "range": 150,
+      "rangetype": "Melee",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "The Relentless Storm",
+      "Q": "Thundering Smash",
+      "W": "Frenzied Maul",
+      "E": "Sky Splitter",
+      "R": "Stormbringer"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Warwick",
+    "name": "Warwick",
+    "id": 19,
+    "stats": {
+      "hp_base": 620,
+      "hp_lvl": 99,
+      "mp_base": 280,
+      "mp_lvl": 35,
+      "arm_base": 33,
+      "arm_lvl": 4.4,
+      "mr_base": 32,
+      "mr_lvl": 2.05,
+      "ad_base": 65,
+      "ad_lvl": 2.5,
+      "as_base": 0.638,
+      "as_lvl": 2,
+      "as_ratio": 0.638000011444091,
+      "range": 125,
+      "rangetype": "Melee",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Eternal Hunger",
+      "Q": "Jaws of the Beast",
+      "W": "Blood Hunt",
+      "E": "Primal Howl",
+      "R": "Infinite Duress"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "MonkeyKing",
+    "name": "Wukong",
+    "id": 62,
+    "stats": {
+      "hp_base": 610,
+      "hp_lvl": 99,
+      "mp_base": 330,
+      "mp_lvl": 65,
+      "arm_base": 31,
+      "arm_lvl": 4.7,
+      "mr_base": 28,
+      "mr_lvl": 2.05,
+      "ad_base": 66,
+      "ad_lvl": 3.5,
+      "as_base": 0.69,
+      "as_lvl": 3,
+      "as_ratio": 0.657999992370605,
+      "range": 175,
+      "rangetype": "Melee",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Stone Skin",
+      "Q": "Crushing Blow",
+      "W": "Warrior Trickster",
+      "E": "Nimbus Strike",
+      "R": "Cyclone"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Xayah",
+    "name": "Xayah",
+    "id": 498,
+    "stats": {
+      "hp_base": 630,
+      "hp_lvl": 107,
+      "mp_base": 340,
+      "mp_lvl": 40,
+      "arm_base": 25,
+      "arm_lvl": 4.2,
+      "mr_base": 30,
+      "mr_lvl": 1.3,
+      "ad_base": 60,
+      "ad_lvl": 3.5,
+      "as_base": 0.658,
+      "as_lvl": 3.9,
+      "as_ratio": 0.658,
+      "range": 525,
+      "rangetype": "Ranged",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Clean Cuts",
+      "Q": "Double Daggers",
+      "W": "Deadly Plumage",
+      "E": "Bladecaller",
+      "R": "Featherstorm"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Xerath",
+    "name": "Xerath",
+    "id": 101,
+    "stats": {
+      "hp_base": 596,
+      "hp_lvl": 106,
+      "mp_base": 400,
+      "mp_lvl": 22,
+      "arm_base": 22,
+      "arm_lvl": 4.7,
+      "mr_base": 30,
+      "mr_lvl": 1.3,
+      "ad_base": 55,
+      "ad_lvl": 3,
+      "as_base": 0.658,
+      "as_lvl": 1.36,
+      "as_ratio": 0.625,
+      "range": 525,
+      "rangetype": "Ranged",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "Mana Surge",
+      "Q": "Arcanopulse",
+      "W": "Eye of Destruction",
+      "E": "Shocking Orb",
+      "R": "Rite of the Arcane"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "XinZhao",
+    "name": "Xin Zhao",
+    "id": 5,
+    "stats": {
+      "hp_base": 620,
+      "hp_lvl": 106,
+      "mp_base": 274,
+      "mp_lvl": 55,
+      "arm_base": 35,
+      "arm_lvl": 4.4,
+      "mr_base": 32,
+      "mr_lvl": 2.05,
+      "ad_base": 63,
+      "ad_lvl": 3,
+      "as_base": 0.645,
+      "as_lvl": 3.5,
+      "as_ratio": 0.644999980926513,
+      "range": 175,
+      "rangetype": "Melee",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Determination",
+      "Q": "Three Talon Strike",
+      "W": "Wind Becomes Lightning",
+      "E": "Audacious Charge",
+      "R": "Crescent Guard"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Yasuo",
+    "name": "Yasuo",
+    "id": 157,
+    "stats": {
+      "hp_base": 590,
+      "hp_lvl": 110,
+      "mp_base": 100,
+      "mp_lvl": 0,
+      "arm_base": 32,
+      "arm_lvl": 4.6,
+      "mr_base": 32,
+      "mr_lvl": 2.05,
+      "ad_base": 60,
+      "ad_lvl": 2.5,
+      "as_base": 0.697,
+      "as_lvl": 3.5,
+      "as_ratio": 0.6700000166893,
+      "range": 175,
+      "rangetype": "Melee",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Way of the Wanderer",
+      "Q": "Steel Tempest",
+      "W": "Wind Wall",
+      "E": "Sweeping Blade",
+      "R": "Last Breath"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Yone",
+    "name": "Yone",
+    "id": 777,
+    "stats": {
+      "hp_base": 620,
+      "hp_lvl": 105,
+      "mp_base": 500,
+      "mp_lvl": 0,
+      "arm_base": 33,
+      "arm_lvl": 4.6,
+      "mr_base": 32,
+      "mr_lvl": 2.05,
+      "ad_base": 62,
+      "ad_lvl": 2,
+      "as_base": 0.625,
+      "as_lvl": 3.5,
+      "as_ratio": 0.625,
+      "range": 175,
+      "rangetype": "Melee",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Way of the Hunter",
+      "Q": "Mortal Steel",
+      "W": "Spirit Cleave",
+      "E": "Soul Unbound",
+      "R": "Fate Sealed"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Yorick",
+    "name": "Yorick",
+    "id": 83,
+    "stats": {
+      "hp_base": 650,
+      "hp_lvl": 114,
+      "mp_base": 300,
+      "mp_lvl": 60,
+      "arm_base": 36,
+      "arm_lvl": 4.5,
+      "mr_base": 32,
+      "mr_lvl": 2.05,
+      "ad_base": 62,
+      "ad_lvl": 5,
+      "as_base": 0.625,
+      "as_lvl": 2,
+      "as_ratio": 0.625,
+      "range": 175,
+      "rangetype": "Melee",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Shepherd of Souls",
+      "Q": "Last Rites",
+      "W": "Dark Procession",
+      "E": "Mourning Mist",
+      "R": "Eulogy of the Isles"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Yunara",
+    "name": "Yunara",
+    "id": 804,
+    "stats": {
+      "hp_base": 590,
+      "hp_lvl": 110,
+      "mp_base": 275,
+      "mp_lvl": 45,
+      "arm_base": 25,
+      "arm_lvl": 4.4,
+      "mr_base": 30,
+      "mr_lvl": 1.3,
+      "ad_base": 55,
+      "ad_lvl": 3,
+      "as_base": 0.65,
+      "as_lvl": 2,
+      "as_ratio": 0.65,
+      "range": 575,
+      "rangetype": "Ranged",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Vow of the First Lands",
+      "Q": "Cultivation of Spirit",
+      "W": "Arc of Judgment",
+      "E": "Kanmei's Steps",
+      "R": "Transcend One's Self"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Yuumi",
+    "name": "Yuumi",
+    "id": 350,
+    "stats": {
+      "hp_base": 500,
+      "hp_lvl": 69,
+      "mp_base": 440,
+      "mp_lvl": 45,
+      "arm_base": 25,
+      "arm_lvl": 4.2,
+      "mr_base": 25,
+      "mr_lvl": 1.1,
+      "ad_base": 49,
+      "ad_lvl": 3.1,
+      "as_base": 0.625,
+      "as_lvl": 1,
+      "as_ratio": 0.625,
+      "range": 425,
+      "rangetype": "Ranged",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "Feline Friendship",
+      "Q": "Prowling Projectile",
+      "W": "You and Me!",
+      "E": "Zoomies",
+      "R": "Final Chapter"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Zaahen",
+    "name": "Zaahen",
+    "id": 904,
+    "stats": {
+      "hp_base": 640,
+      "hp_lvl": 114,
+      "mp_base": 350,
+      "mp_lvl": 55,
+      "arm_base": 36,
+      "arm_lvl": 5,
+      "mr_base": 32,
+      "mr_lvl": 2.05,
+      "ad_base": 63,
+      "ad_lvl": 4,
+      "as_base": 0.625,
+      "as_lvl": 2.5,
+      "as_ratio": 0.625,
+      "range": 175,
+      "rangetype": "Melee",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Cultivation of War",
+      "Q": "The Darkin Glaive",
+      "W": "Dreaded Return",
+      "E": "Aureate Rush",
+      "R": "Grim Deliverance"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Zac",
+    "name": "Zac",
+    "id": 154,
+    "stats": {
+      "hp_base": 685,
+      "hp_lvl": 109,
+      "mp_base": 0,
+      "mp_lvl": 0,
+      "arm_base": 33,
+      "arm_lvl": 5.2,
+      "mr_base": 32,
+      "mr_lvl": 2.05,
+      "ad_base": 60,
+      "ad_lvl": 3.4,
+      "as_base": 0.736,
+      "as_lvl": 1.6,
+      "as_ratio": 0.638000011444091,
+      "range": 175,
+      "rangetype": "Melee",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "Cell Division",
+      "Q": "Stretching Strikes",
+      "W": "Unstable Matter",
+      "E": "Elastic Slingshot",
+      "R": "Let's Bounce!"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Zed",
+    "name": "Zed",
+    "id": 238,
+    "stats": {
+      "hp_base": 654,
+      "hp_lvl": 99,
+      "mp_base": 200,
+      "mp_lvl": 0,
+      "arm_base": 32,
+      "arm_lvl": 4.7,
+      "mr_base": 29,
+      "mr_lvl": 2.05,
+      "ad_base": 63,
+      "ad_lvl": 3.4,
+      "as_base": 0.651,
+      "as_lvl": 3.3,
+      "as_ratio": 0.651000022888183,
+      "range": 125,
+      "rangetype": "Melee",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Contempt for the Weak",
+      "Q": "Razor Shuriken",
+      "W": "Living Shadow",
+      "E": "Shadow Slash",
+      "R": "Death Mark"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Zeri",
+    "name": "Zeri",
+    "id": 221,
+    "stats": {
+      "hp_base": 600,
+      "hp_lvl": 110,
+      "mp_base": 250,
+      "mp_lvl": 45,
+      "arm_base": 24,
+      "arm_lvl": 4.2,
+      "mr_base": 30,
+      "mr_lvl": 1.3,
+      "ad_base": 56,
+      "ad_lvl": 2,
+      "as_base": 0.658,
+      "as_lvl": 2,
+      "as_ratio": 0.625,
+      "range": 550,
+      "rangetype": "Ranged",
+      "adaptivetype": "Physical"
+    },
+    "abilityNames": {
+      "P": "Living Battery",
+      "Q": "Burst Fire",
+      "W": "Ultrashock Laser",
+      "E": "Spark Surge",
+      "R": "Lightning Crash"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Ziggs",
+    "name": "Ziggs",
+    "id": 115,
+    "stats": {
+      "hp_base": 606,
+      "hp_lvl": 106,
+      "mp_base": 480,
+      "mp_lvl": 23.5,
+      "arm_base": 21,
+      "arm_lvl": 4.7,
+      "mr_base": 30,
+      "mr_lvl": 1.3,
+      "ad_base": 55,
+      "ad_lvl": 3.1,
+      "as_base": 0.656,
+      "as_lvl": 2,
+      "as_ratio": 0.656000018119812,
+      "range": 550,
+      "rangetype": "Ranged",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "Short Fuse",
+      "Q": "Bouncing Bomb",
+      "W": "Satchel Charge",
+      "E": "Hexplosive Minefield",
+      "R": "Mega Inferno Bomb"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Zilean",
+    "name": "Zilean",
+    "id": 26,
+    "stats": {
+      "hp_base": 574,
+      "hp_lvl": 96,
+      "mp_base": 452,
+      "mp_lvl": 50,
+      "arm_base": 24,
+      "arm_lvl": 5,
+      "mr_base": 30,
+      "mr_lvl": 1.3,
+      "ad_base": 52,
+      "ad_lvl": 3,
+      "as_base": 0.658,
+      "as_lvl": 2.13,
+      "as_ratio": 0.625,
+      "range": 550,
+      "rangetype": "Ranged",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "Time in a Bottle",
+      "Q": "Time Bomb",
+      "W": "Rewind",
+      "E": "Time Warp",
+      "R": "Chronoshift"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Zoe",
+    "name": "Zoe",
+    "id": 142,
+    "stats": {
+      "hp_base": 630,
+      "hp_lvl": 106,
+      "mp_base": 425,
+      "mp_lvl": 25,
+      "arm_base": 21,
+      "arm_lvl": 4.7,
+      "mr_base": 30,
+      "mr_lvl": 1.3,
+      "ad_base": 58,
+      "ad_lvl": 3.3,
+      "as_base": 0.658,
+      "as_lvl": 2.5,
+      "as_ratio": 0.625,
+      "range": 550,
+      "rangetype": "Ranged",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "More Sparkles!",
+      "Q": "Paddle Star!",
+      "W": "Spell Thief",
+      "E": "Sleepy Trouble Bubble",
+      "R": "Portal Jump"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "apiname": "Zyra",
+    "name": "Zyra",
+    "id": 143,
+    "stats": {
+      "hp_base": 574,
+      "hp_lvl": 93,
+      "mp_base": 418,
+      "mp_lvl": 25,
+      "arm_base": 29,
+      "arm_lvl": 4.2,
+      "mr_base": 30,
+      "mr_lvl": 1.3,
+      "ad_base": 53,
+      "ad_lvl": 3.2,
+      "as_base": 0.681,
+      "as_lvl": 2.11,
+      "as_ratio": 0.625,
+      "range": 575,
+      "rangetype": "Ranged",
+      "adaptivetype": "Magic"
+    },
+    "abilityNames": {
+      "P": "Garden of Thorns",
+      "Q": "Deadly Spines",
+      "W": "Rampant Growth",
+      "E": "Grasping Roots",
+      "R": "Stranglethorns"
+    },
+    "provenance": {
+      "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+      "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  }
+]

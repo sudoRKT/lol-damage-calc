@@ -1,0 +1,3881 @@
+[
+  {
+    "id": 8020,
+    "name": "Abyssal Mask",
+    "gold": {
+      "total": 2650,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatSpellBlockMod": 45,
+      "FlatHPPoolMod": 350
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/8020.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 2522,
+    "name": "Actualizer",
+    "gold": {
+      "total": 2800,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatMPPoolMod": 300,
+      "FlatMagicDamageMod": 90
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/2522.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3113,
+    "name": "Aether Wisp",
+    "gold": {
+      "total": 900,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatMagicDamageMod": 30,
+      "PercentMovementSpeedMod": 0.04
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3113.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 1052,
+    "name": "Amplifying Tome",
+    "gold": {
+      "total": 400,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatMagicDamageMod": 20
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/1052.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3003,
+    "name": "Archangel's Staff",
+    "gold": {
+      "total": 2900,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatMPPoolMod": 600,
+      "FlatMagicDamageMod": 70
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3003.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3504,
+    "name": "Ardent Censer",
+    "gold": {
+      "total": 2200,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatMagicDamageMod": 45,
+      "PercentMovementSpeedMod": 0.04
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3504.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3174,
+    "name": "Armored Advance",
+    "gold": {
+      "total": 1200,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatMovementSpeedMod": 45,
+      "FlatArmorMod": 35
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3174.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 6696,
+    "name": "Axiom Arc",
+    "gold": {
+      "total": 2750,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatPhysicalDamageMod": 55
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/6696.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 1038,
+    "name": "B. F. Sword",
+    "gold": {
+      "total": 1300,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatPhysicalDamageMod": 40
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/1038.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 6660,
+    "name": "Bami's Cinder",
+    "gold": {
+      "total": 900,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatHPPoolMod": 150
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/6660.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 4642,
+    "name": "Bandleglass Mirror",
+    "gold": {
+      "total": 900,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatMagicDamageMod": 20
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/4642.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 2524,
+    "name": "Bandlepipes",
+    "gold": {
+      "total": 2300,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatSpellBlockMod": 20,
+      "FlatHPPoolMod": 200,
+      "FlatArmorMod": 20
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/2524.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3102,
+    "name": "Banshee's Veil",
+    "gold": {
+      "total": 3000,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatSpellBlockMod": 40,
+      "FlatMagicDamageMod": 105
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3102.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 2520,
+    "name": "Bastionbreaker",
+    "gold": {
+      "total": 3000,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatPhysicalDamageMod": 55
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/2520.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3006,
+    "name": "Berserker's Greaves",
+    "gold": {
+      "total": 1100,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatMovementSpeedMod": 45,
+      "PercentAttackSpeedMod": 0.3
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3006.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3071,
+    "name": "Black Cleaver",
+    "gold": {
+      "total": 3000,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatHPPoolMod": 400,
+      "FlatPhysicalDamageMod": 45
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3071.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 2503,
+    "name": "Blackfire Torch",
+    "gold": {
+      "total": 2800,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatMPPoolMod": 600,
+      "FlatMagicDamageMod": 80
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/2503.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3153,
+    "name": "Blade of The Ruined King",
+    "gold": {
+      "total": 3200,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatPhysicalDamageMod": 40,
+      "PercentAttackSpeedMod": 0.25,
+      "PercentLifeStealMod": 0.1
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3153.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 1026,
+    "name": "Blasting Wand",
+    "gold": {
+      "total": 850,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatMagicDamageMod": 45
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/1026.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 4630,
+    "name": "Blighting Jewel",
+    "gold": {
+      "total": 1100,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatMagicDamageMod": 25
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/4630.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 8010,
+    "name": "Bloodletter's Curse",
+    "gold": {
+      "total": 2900,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatHPPoolMod": 400,
+      "FlatMagicDamageMod": 65
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/8010.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3877,
+    "name": "Bloodsong",
+    "gold": {
+      "total": 400,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatHPPoolMod": 200
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3877.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3072,
+    "name": "Bloodthirster",
+    "gold": {
+      "total": 3400,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatPhysicalDamageMod": 80,
+      "PercentLifeStealMod": 0.15
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3072.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 1001,
+    "name": "Boots",
+    "gold": {
+      "total": 300,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatMovementSpeedMod": 25
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/1001.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3009,
+    "name": "Boots of Swiftness",
+    "gold": {
+      "total": 1000,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatMovementSpeedMod": 55
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3009.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3076,
+    "name": "Bramble Vest",
+    "gold": {
+      "total": 800,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatArmorMod": 30
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3076.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 2141,
+    "name": "Cappa Juice",
+    "gold": {
+      "total": 300,
+      "purchasable": true
+    },
+    "stats": {},
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/2141.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3803,
+    "name": "Catalyst of Aeons",
+    "gold": {
+      "total": 1300,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatMPPoolMod": 375,
+      "FlatHPPoolMod": 300
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3803.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3133,
+    "name": "Caulfield's Warhammer",
+    "gold": {
+      "total": 1050,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatPhysicalDamageMod": 20
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3133.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3869,
+    "name": "Celestial Opposition",
+    "gold": {
+      "total": 400,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatHPPoolMod": 200
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3869.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 1031,
+    "name": "Chain Vest",
+    "gold": {
+      "total": 800,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatArmorMod": 40
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/1031.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3173,
+    "name": "Chainlaced Crushers",
+    "gold": {
+      "total": 1250,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatSpellBlockMod": 25,
+      "FlatMovementSpeedMod": 45
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3173.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 6609,
+    "name": "Chempunk Chainsword",
+    "gold": {
+      "total": 3000,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatHPPoolMod": 450,
+      "FlatPhysicalDamageMod": 45
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/6609.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 1018,
+    "name": "Cloak of Agility",
+    "gold": {
+      "total": 600,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatCritChanceMod": 0.15
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/1018.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 1029,
+    "name": "Cloth Armor",
+    "gold": {
+      "total": 300,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatArmorMod": 15
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/1029.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 2055,
+    "name": "Control Ward",
+    "gold": {
+      "total": 75,
+      "purchasable": true
+    },
+    "stats": {},
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/2055.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 4629,
+    "name": "Cosmic Drive",
+    "gold": {
+      "total": 3000,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatHPPoolMod": 350,
+      "FlatMagicDamageMod": 70,
+      "PercentMovementSpeedMod": 0.04
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/4629.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3171,
+    "name": "Crimson Lucidity",
+    "gold": {
+      "total": 900,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatMovementSpeedMod": 45
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3171.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3137,
+    "name": "Cryptbloom",
+    "gold": {
+      "total": 3000,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatMagicDamageMod": 75
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3137.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3801,
+    "name": "Crystalline Bracer",
+    "gold": {
+      "total": 800,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatHPPoolMod": 200
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3801.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 1083,
+    "name": "Cull",
+    "gold": {
+      "total": 450,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatPhysicalDamageMod": 7
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/1083.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 1042,
+    "name": "Dagger",
+    "gold": {
+      "total": 250,
+      "purchasable": true
+    },
+    "stats": {
+      "PercentAttackSpeedMod": 0.1
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/1042.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 1082,
+    "name": "Dark Seal",
+    "gold": {
+      "total": 350,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatHPPoolMod": 50,
+      "FlatMagicDamageMod": 15
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/1082.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 6621,
+    "name": "Dawncore",
+    "gold": {
+      "total": 2500,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatMagicDamageMod": 45
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/6621.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3742,
+    "name": "Dead Man's Plate",
+    "gold": {
+      "total": 2900,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatHPPoolMod": 350,
+      "FlatArmorMod": 55,
+      "PercentMovementSpeedMod": 0.04
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3742.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 6333,
+    "name": "Death's Dance",
+    "gold": {
+      "total": 3300,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatArmorMod": 50,
+      "FlatPhysicalDamageMod": 60
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/6333.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 1055,
+    "name": "Doran's Blade",
+    "gold": {
+      "total": 450,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatHPPoolMod": 80,
+      "FlatPhysicalDamageMod": 10
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/1055.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 1086,
+    "name": "Doran's Bow",
+    "gold": {
+      "total": 400,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatPhysicalDamageMod": 8,
+      "PercentAttackSpeedMod": 0.15
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/1086.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 1120,
+    "name": "Doran's Helm",
+    "gold": {
+      "total": 450,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatSpellBlockMod": 8,
+      "FlatHPPoolMod": 150,
+      "FlatArmorMod": 8
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/1120.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 1056,
+    "name": "Doran's Ring",
+    "gold": {
+      "total": 400,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatHPPoolMod": 90,
+      "FlatMagicDamageMod": 18
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/1056.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 1054,
+    "name": "Doran's Shield",
+    "gold": {
+      "total": 450,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatHPPoolMod": 110,
+      "FlatHPRegenMod": 0.8
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/1054.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3870,
+    "name": "Dream Maker",
+    "gold": {
+      "total": 400,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatHPPoolMod": 200
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3870.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 2510,
+    "name": "Dusk and Dawn",
+    "gold": {
+      "total": 3100,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatHPPoolMod": 300,
+      "FlatMagicDamageMod": 60,
+      "PercentAttackSpeedMod": 0.2
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/2510.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 6620,
+    "name": "Echoes of Helia",
+    "gold": {
+      "total": 2200,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatHPPoolMod": 200,
+      "FlatMagicDamageMod": 35
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/6620.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 6692,
+    "name": "Eclipse",
+    "gold": {
+      "total": 2900,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatPhysicalDamageMod": 60
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/6692.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3814,
+    "name": "Edge of Night",
+    "gold": {
+      "total": 3000,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatHPPoolMod": 250,
+      "FlatPhysicalDamageMod": 50
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3814.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 2138,
+    "name": "Elixir of Iron",
+    "gold": {
+      "total": 500,
+      "purchasable": true
+    },
+    "stats": {},
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/2138.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 2139,
+    "name": "Elixir of Sorcery",
+    "gold": {
+      "total": 500,
+      "purchasable": true
+    },
+    "stats": {},
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/2139.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 2140,
+    "name": "Elixir of Wrath",
+    "gold": {
+      "total": 500,
+      "purchasable": true
+    },
+    "stats": {},
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/2140.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 2517,
+    "name": "Endless Hunger",
+    "gold": {
+      "total": 3100,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatPhysicalDamageMod": 65
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/2517.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3508,
+    "name": "Essence Reaver",
+    "gold": {
+      "total": 3050,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatCritChanceMod": 0.25,
+      "FlatPhysicalDamageMod": 50
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3508.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3123,
+    "name": "Executioner's Calling",
+    "gold": {
+      "total": 800,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatPhysicalDamageMod": 15
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3123.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3073,
+    "name": "Experimental Hexplate",
+    "gold": {
+      "total": 3000,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatHPPoolMod": 450,
+      "FlatPhysicalDamageMod": 40,
+      "PercentAttackSpeedMod": 0.2
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3073.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 1004,
+    "name": "Faerie Charm",
+    "gold": {
+      "total": 200,
+      "purchasable": true
+    },
+    "stats": {},
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/1004.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 2508,
+    "name": "Fated Ashes",
+    "gold": {
+      "total": 900,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatMagicDamageMod": 30
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/2508.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 2512,
+    "name": "Fiendhunter Bolts",
+    "gold": {
+      "total": 2650,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatCritChanceMod": 0.25,
+      "PercentAttackSpeedMod": 0.45,
+      "PercentMovementSpeedMod": 0.04
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/2512.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3108,
+    "name": "Fiendish Codex",
+    "gold": {
+      "total": 850,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatMagicDamageMod": 25
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3108.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3114,
+    "name": "Forbidden Idol",
+    "gold": {
+      "total": 600,
+      "purchasable": true
+    },
+    "stats": {},
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3114.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 4401,
+    "name": "Force of Nature",
+    "gold": {
+      "total": 2800,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatSpellBlockMod": 55,
+      "FlatHPPoolMod": 400,
+      "PercentMovementSpeedMod": 0.04
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/4401.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3110,
+    "name": "Frozen Heart",
+    "gold": {
+      "total": 2500,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatMPPoolMod": 400,
+      "FlatArmorMod": 75
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3110.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 1011,
+    "name": "Giant's Belt",
+    "gold": {
+      "total": 900,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatHPPoolMod": 350
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/1011.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3024,
+    "name": "Glacial Buckler",
+    "gold": {
+      "total": 900,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatMPPoolMod": 300,
+      "FlatArmorMod": 25
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3024.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 2022,
+    "name": "Glowing Mote",
+    "gold": {
+      "total": 250,
+      "purchasable": true
+    },
+    "stats": {},
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/2022.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3008,
+    "name": "Gluttonous Greaves",
+    "gold": {
+      "total": 1000,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatMovementSpeedMod": 45
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3008.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3026,
+    "name": "Guardian Angel",
+    "gold": {
+      "total": 3200,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatArmorMod": 45,
+      "FlatPhysicalDamageMod": 55
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3026.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3177,
+    "name": "Guardian's Blade",
+    "gold": {
+      "total": 950,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatHPPoolMod": 150,
+      "FlatPhysicalDamageMod": 30
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3177.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3184,
+    "name": "Guardian's Hammer",
+    "gold": {
+      "total": 950,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatHPPoolMod": 150,
+      "FlatPhysicalDamageMod": 25,
+      "PercentLifeStealMod": 0.05
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3184.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 2051,
+    "name": "Guardian's Horn",
+    "gold": {
+      "total": 950,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatHPPoolMod": 150,
+      "FlatHPRegenMod": 4
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/2051.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3112,
+    "name": "Guardian's Orb",
+    "gold": {
+      "total": 950,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatHPPoolMod": 150,
+      "FlatMagicDamageMod": 50
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3112.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3124,
+    "name": "Guinsoo's Rageblade",
+    "gold": {
+      "total": 3000,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatMagicDamageMod": 30,
+      "FlatPhysicalDamageMod": 30,
+      "PercentAttackSpeedMod": 0.25
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3124.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3172,
+    "name": "Gunmetal Greaves",
+    "gold": {
+      "total": 1100,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatMovementSpeedMod": 45,
+      "PercentAttackSpeedMod": 0.45,
+      "PercentLifeStealMod": 0.05
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3172.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 1102,
+    "name": "Gustwalker Hatchling",
+    "gold": {
+      "total": 450,
+      "purchasable": true
+    },
+    "stats": {},
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/1102.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3147,
+    "name": "Haunting Guise",
+    "gold": {
+      "total": 1300,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatHPPoolMod": 200,
+      "FlatMagicDamageMod": 30
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3147.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 2003,
+    "name": "Health Potion",
+    "gold": {
+      "total": 50,
+      "purchasable": true
+    },
+    "stats": {},
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/2003.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3051,
+    "name": "Hearthbound Axe",
+    "gold": {
+      "total": 1200,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatPhysicalDamageMod": 20,
+      "PercentAttackSpeedMod": 0.2
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3051.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3084,
+    "name": "Heartsteel",
+    "gold": {
+      "total": 3000,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatHPPoolMod": 900
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3084.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3155,
+    "name": "Hexdrinker",
+    "gold": {
+      "total": 1300,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatSpellBlockMod": 25,
+      "FlatPhysicalDamageMod": 25
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3155.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 2523,
+    "name": "Hexoptics C44",
+    "gold": {
+      "total": 2800,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatCritChanceMod": 0.25,
+      "FlatPhysicalDamageMod": 55
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/2523.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3145,
+    "name": "Hextech Alternator",
+    "gold": {
+      "total": 1100,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatMagicDamageMod": 45
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3145.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3146,
+    "name": "Hextech Gunblade",
+    "gold": {
+      "total": 3000,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatMagicDamageMod": 80,
+      "FlatPhysicalDamageMod": 40
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3146.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3152,
+    "name": "Hextech Rocketbelt",
+    "gold": {
+      "total": 2650,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatHPPoolMod": 350,
+      "FlatMagicDamageMod": 60
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3152.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 6664,
+    "name": "Hollow Radiance",
+    "gold": {
+      "total": 2800,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatSpellBlockMod": 40,
+      "FlatHPPoolMod": 400
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/6664.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 4628,
+    "name": "Horizon Focus",
+    "gold": {
+      "total": 2700,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatMagicDamageMod": 75
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/4628.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 6697,
+    "name": "Hubris",
+    "gold": {
+      "total": 2800,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatPhysicalDamageMod": 55
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/6697.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3181,
+    "name": "Hullbreaker",
+    "gold": {
+      "total": 3000,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatHPPoolMod": 500,
+      "FlatPhysicalDamageMod": 40,
+      "PercentMovementSpeedMod": 0.04
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3181.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 6662,
+    "name": "Iceborn Gauntlet",
+    "gold": {
+      "total": 2900,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatHPPoolMod": 300,
+      "FlatArmorMod": 50
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/6662.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3168,
+    "name": "Immortal Path",
+    "gold": {
+      "total": 1000,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatMovementSpeedMod": 45
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3168.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 6673,
+    "name": "Immortal Shieldbow",
+    "gold": {
+      "total": 3000,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatCritChanceMod": 0.25,
+      "FlatPhysicalDamageMod": 55
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/6673.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 4005,
+    "name": "Imperial Mandate",
+    "gold": {
+      "total": 2400,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatMagicDamageMod": 60
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/4005.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3031,
+    "name": "Infinity Edge",
+    "gold": {
+      "total": 3500,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatCritChanceMod": 0.25,
+      "FlatPhysicalDamageMod": 75
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3031.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3158,
+    "name": "Ionian Boots of Lucidity",
+    "gold": {
+      "total": 900,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatMovementSpeedMod": 45
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3158.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 6665,
+    "name": "Jak'Sho, The Protean",
+    "gold": {
+      "total": 3200,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatSpellBlockMod": 45,
+      "FlatHPPoolMod": 350,
+      "FlatArmorMod": 45
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/6665.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 2504,
+    "name": "Kaenic Rookern",
+    "gold": {
+      "total": 2900,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatSpellBlockMod": 80,
+      "FlatHPPoolMod": 400
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/2504.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3067,
+    "name": "Kindlegem",
+    "gold": {
+      "total": 800,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatHPPoolMod": 200
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3067.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3109,
+    "name": "Knight's Vow",
+    "gold": {
+      "total": 2300,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatHPPoolMod": 200,
+      "FlatArmorMod": 40
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3109.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 6672,
+    "name": "Kraken Slayer",
+    "gold": {
+      "total": 3000,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatPhysicalDamageMod": 45,
+      "PercentAttackSpeedMod": 0.4,
+      "PercentMovementSpeedMod": 0.04
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/6672.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3035,
+    "name": "Last Whisper",
+    "gold": {
+      "total": 1450,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatPhysicalDamageMod": 20
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3035.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 6653,
+    "name": "Liandry's Torment",
+    "gold": {
+      "total": 3000,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatHPPoolMod": 300,
+      "FlatMagicDamageMod": 60
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/6653.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3100,
+    "name": "Lich Bane",
+    "gold": {
+      "total": 2900,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatMagicDamageMod": 100,
+      "PercentMovementSpeedMod": 0.06
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3100.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3190,
+    "name": "Locket of the Iron Solari",
+    "gold": {
+      "total": 2200,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatSpellBlockMod": 30,
+      "FlatHPPoolMod": 200,
+      "FlatArmorMod": 30
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3190.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 1036,
+    "name": "Long Sword",
+    "gold": {
+      "total": 350,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatPhysicalDamageMod": 10
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/1036.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3036,
+    "name": "Lord Dominik's Regards",
+    "gold": {
+      "total": 3300,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatCritChanceMod": 0.25,
+      "FlatPhysicalDamageMod": 35
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3036.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3802,
+    "name": "Lost Chapter",
+    "gold": {
+      "total": 1200,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatMPPoolMod": 300,
+      "FlatMagicDamageMod": 40
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3802.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 6655,
+    "name": "Luden's Echo",
+    "gold": {
+      "total": 2750,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatMPPoolMod": 600,
+      "FlatMagicDamageMod": 100
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/6655.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3118,
+    "name": "Malignance",
+    "gold": {
+      "total": 2700,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatMPPoolMod": 600,
+      "FlatMagicDamageMod": 90
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3118.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3004,
+    "name": "Manamune",
+    "gold": {
+      "total": 2900,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatMPPoolMod": 500,
+      "FlatPhysicalDamageMod": 35
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3004.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3156,
+    "name": "Maw of Malmortius",
+    "gold": {
+      "total": 3100,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatSpellBlockMod": 40,
+      "FlatPhysicalDamageMod": 60
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3156.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3041,
+    "name": "Mejai's Soulstealer",
+    "gold": {
+      "total": 1500,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatHPPoolMod": 100,
+      "FlatMagicDamageMod": 20
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3041.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3139,
+    "name": "Mercurial Scimitar",
+    "gold": {
+      "total": 3200,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatSpellBlockMod": 35,
+      "FlatPhysicalDamageMod": 50,
+      "PercentLifeStealMod": 0.1
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3139.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3111,
+    "name": "Mercury's Treads",
+    "gold": {
+      "total": 1250,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatSpellBlockMod": 20,
+      "FlatMovementSpeedMod": 45
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3111.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3222,
+    "name": "Mikael's Blessing",
+    "gold": {
+      "total": 2300,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatHPPoolMod": 250
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3222.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 6617,
+    "name": "Moonstone Renewer",
+    "gold": {
+      "total": 2200,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatHPPoolMod": 200,
+      "FlatMagicDamageMod": 25
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/6617.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3165,
+    "name": "Morellonomicon",
+    "gold": {
+      "total": 2850,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatHPPoolMod": 350,
+      "FlatMagicDamageMod": 75
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3165.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3033,
+    "name": "Mortal Reminder",
+    "gold": {
+      "total": 3000,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatCritChanceMod": 0.25,
+      "FlatPhysicalDamageMod": 35
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3033.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 1103,
+    "name": "Mosstomper Seedling",
+    "gold": {
+      "total": 450,
+      "purchasable": true
+    },
+    "stats": {},
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/1103.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3115,
+    "name": "Nashor's Tooth",
+    "gold": {
+      "total": 2900,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatMagicDamageMod": 80,
+      "PercentAttackSpeedMod": 0.5
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3115.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 6675,
+    "name": "Navori Flickerblade",
+    "gold": {
+      "total": 2650,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatCritChanceMod": 0.25,
+      "PercentAttackSpeedMod": 0.4,
+      "PercentMovementSpeedMod": 0.04
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/6675.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 1058,
+    "name": "Needlessly Large Rod",
+    "gold": {
+      "total": 1200,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatMagicDamageMod": 65
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/1058.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 1057,
+    "name": "Negatron Cloak",
+    "gold": {
+      "total": 850,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatSpellBlockMod": 45
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/1057.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 6670,
+    "name": "Noonquiver",
+    "gold": {
+      "total": 1300,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatCritChanceMod": 0.2,
+      "FlatPhysicalDamageMod": 15
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/6670.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 1033,
+    "name": "Null-Magic Mantle",
+    "gold": {
+      "total": 400,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatSpellBlockMod": 20
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/1033.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3916,
+    "name": "Oblivion Orb",
+    "gold": {
+      "total": 800,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatMagicDamageMod": 25
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3916.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 2501,
+    "name": "Overlord's Bloodmail",
+    "gold": {
+      "total": 3300,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatHPPoolMod": 550,
+      "FlatPhysicalDamageMod": 30
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/2501.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3044,
+    "name": "Phage",
+    "gold": {
+      "total": 1100,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatHPPoolMod": 200,
+      "FlatPhysicalDamageMod": 15
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3044.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3046,
+    "name": "Phantom Dancer",
+    "gold": {
+      "total": 2650,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatCritChanceMod": 0.25,
+      "PercentAttackSpeedMod": 0.65,
+      "PercentMovementSpeedMod": 0.1
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3046.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 1037,
+    "name": "Pickaxe",
+    "gold": {
+      "total": 875,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatPhysicalDamageMod": 25
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/1037.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3047,
+    "name": "Plated Steelcaps",
+    "gold": {
+      "total": 1200,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatMovementSpeedMod": 45,
+      "FlatArmorMod": 25
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3047.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 6698,
+    "name": "Profane Hydra",
+    "gold": {
+      "total": 2850,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatPhysicalDamageMod": 55
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/6698.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 2525,
+    "name": "Protoplasm Harness",
+    "gold": {
+      "total": 2600,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatHPPoolMod": 600
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/2525.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3140,
+    "name": "Quicksilver Sash",
+    "gold": {
+      "total": 1300,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatSpellBlockMod": 30
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3140.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3089,
+    "name": "Rabadon's Deathcap",
+    "gold": {
+      "total": 3500,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatMagicDamageMod": 130
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3089.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3143,
+    "name": "Randuin's Omen",
+    "gold": {
+      "total": 2700,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatHPPoolMod": 350,
+      "FlatArmorMod": 75
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3143.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3094,
+    "name": "Rapid Firecannon",
+    "gold": {
+      "total": 2650,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatCritChanceMod": 0.25,
+      "PercentAttackSpeedMod": 0.35,
+      "PercentMovementSpeedMod": 0.04
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3094.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3074,
+    "name": "Ravenous Hydra",
+    "gold": {
+      "total": 3300,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatPhysicalDamageMod": 65,
+      "PercentLifeStealMod": 0.12
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3074.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 6690,
+    "name": "Rectrix",
+    "gold": {
+      "total": 775,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatPhysicalDamageMod": 15,
+      "PercentMovementSpeedMod": 0.04
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/6690.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 1043,
+    "name": "Recurve Bow",
+    "gold": {
+      "total": 700,
+      "purchasable": true
+    },
+    "stats": {
+      "PercentAttackSpeedMod": 0.15
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/1043.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3107,
+    "name": "Redemption",
+    "gold": {
+      "total": 2300,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatMagicDamageMod": 30
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3107.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 2031,
+    "name": "Refillable Potion",
+    "gold": {
+      "total": 150,
+      "purchasable": true
+    },
+    "stats": {},
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/2031.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 1006,
+    "name": "Rejuvenation Bead",
+    "gold": {
+      "total": 300,
+      "purchasable": true
+    },
+    "stats": {},
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/1006.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 4633,
+    "name": "Riftmaker",
+    "gold": {
+      "total": 3100,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatHPPoolMod": 350,
+      "FlatMagicDamageMod": 70
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/4633.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 6657,
+    "name": "Rod of Ages",
+    "gold": {
+      "total": 2600,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatMPPoolMod": 500,
+      "FlatHPPoolMod": 350,
+      "FlatMagicDamageMod": 45
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/6657.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 1028,
+    "name": "Ruby Crystal",
+    "gold": {
+      "total": 400,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatHPPoolMod": 150
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/1028.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3085,
+    "name": "Runaan's Hurricane",
+    "gold": {
+      "total": 2650,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatCritChanceMod": 0.25,
+      "PercentAttackSpeedMod": 0.4,
+      "PercentMovementSpeedMod": 0.05
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3085.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3116,
+    "name": "Rylai's Crystal Scepter",
+    "gold": {
+      "total": 2600,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatHPPoolMod": 400,
+      "FlatMagicDamageMod": 65
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3116.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 1027,
+    "name": "Sapphire Crystal",
+    "gold": {
+      "total": 300,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatMPPoolMod": 300
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/1027.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 1101,
+    "name": "Scorchclaw Pup",
+    "gold": {
+      "total": 450,
+      "purchasable": true
+    },
+    "stats": {},
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/1101.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3144,
+    "name": "Scout's Slingshot",
+    "gold": {
+      "total": 600,
+      "purchasable": true
+    },
+    "stats": {
+      "PercentAttackSpeedMod": 0.2
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3144.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 2420,
+    "name": "Seeker's Armguard",
+    "gold": {
+      "total": 1600,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatMagicDamageMod": 40,
+      "FlatArmorMod": 25
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/2420.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 6695,
+    "name": "Serpent's Fang",
+    "gold": {
+      "total": 2500,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatPhysicalDamageMod": 55
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/6695.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3134,
+    "name": "Serrated Dirk",
+    "gold": {
+      "total": 1000,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatPhysicalDamageMod": 20
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3134.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 6694,
+    "name": "Serylda's Grudge",
+    "gold": {
+      "total": 3000,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatPhysicalDamageMod": 45
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/6694.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 4645,
+    "name": "Shadowflame",
+    "gold": {
+      "total": 3200,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatMagicDamageMod": 110
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/4645.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 2421,
+    "name": "Shattered Armguard",
+    "gold": {
+      "total": 1600,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatMagicDamageMod": 40,
+      "FlatArmorMod": 25
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/2421.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3057,
+    "name": "Sheen",
+    "gold": {
+      "total": 900,
+      "purchasable": true
+    },
+    "stats": {},
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3057.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 2065,
+    "name": "Shurelya's Battlesong",
+    "gold": {
+      "total": 2200,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatMagicDamageMod": 50,
+      "PercentMovementSpeedMod": 0.04
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/2065.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3876,
+    "name": "Solstice Sleigh",
+    "gold": {
+      "total": 400,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatHPPoolMod": 200
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3876.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3020,
+    "name": "Sorcerer's Shoes",
+    "gold": {
+      "total": 1100,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatMovementSpeedMod": 45
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3020.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3161,
+    "name": "Spear of Shojin",
+    "gold": {
+      "total": 3100,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatHPPoolMod": 450,
+      "FlatPhysicalDamageMod": 45
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3161.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3211,
+    "name": "Spectre's Cowl",
+    "gold": {
+      "total": 1250,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatSpellBlockMod": 35,
+      "FlatHPPoolMod": 200
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3211.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3175,
+    "name": "Spellslinger's Shoes",
+    "gold": {
+      "total": 1100,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatMovementSpeedMod": 45
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3175.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3065,
+    "name": "Spirit Visage",
+    "gold": {
+      "total": 2700,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatSpellBlockMod": 50,
+      "FlatHPPoolMod": 400
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3065.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 6616,
+    "name": "Staff of Flowing Water",
+    "gold": {
+      "total": 2250,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatMagicDamageMod": 35
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/6616.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3087,
+    "name": "Statikk Shiv",
+    "gold": {
+      "total": 3000,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatMagicDamageMod": 45,
+      "FlatPhysicalDamageMod": 45,
+      "PercentAttackSpeedMod": 0.3,
+      "PercentMovementSpeedMod": 0.04
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3087.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 2019,
+    "name": "Steel Sigil",
+    "gold": {
+      "total": 1100,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatArmorMod": 30,
+      "FlatPhysicalDamageMod": 15
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/2019.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3053,
+    "name": "Sterak's Gage",
+    "gold": {
+      "total": 3200,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatHPPoolMod": 400
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3053.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3097,
+    "name": "Stormrazor",
+    "gold": {
+      "total": 3200,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatCritChanceMod": 0.25,
+      "FlatPhysicalDamageMod": 50,
+      "PercentAttackSpeedMod": 0.2
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3097.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 4646,
+    "name": "Stormsurge",
+    "gold": {
+      "total": 2800,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatMagicDamageMod": 90,
+      "PercentMovementSpeedMod": 0.06
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/4646.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 6631,
+    "name": "Stridebreaker",
+    "gold": {
+      "total": 3300,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatHPPoolMod": 450,
+      "FlatPhysicalDamageMod": 40,
+      "PercentAttackSpeedMod": 0.25
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/6631.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 6610,
+    "name": "Sundered Sky",
+    "gold": {
+      "total": 3100,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatHPPoolMod": 450,
+      "FlatPhysicalDamageMod": 45
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/6610.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3068,
+    "name": "Sunfire Aegis",
+    "gold": {
+      "total": 2800,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatHPPoolMod": 350,
+      "FlatArmorMod": 50
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3068.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3170,
+    "name": "Swiftmarch",
+    "gold": {
+      "total": 1000,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatMovementSpeedMod": 65
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3170.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3070,
+    "name": "Tear of the Goddess",
+    "gold": {
+      "total": 400,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatMPPoolMod": 240
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3070.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3302,
+    "name": "Terminus",
+    "gold": {
+      "total": 3000,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatPhysicalDamageMod": 30,
+      "PercentAttackSpeedMod": 0.35
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3302.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 2020,
+    "name": "The Brutalizer",
+    "gold": {
+      "total": 1337,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatPhysicalDamageMod": 25
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/2020.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 6676,
+    "name": "The Collector",
+    "gold": {
+      "total": 3000,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatCritChanceMod": 0.25,
+      "FlatPhysicalDamageMod": 50
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/6676.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3075,
+    "name": "Thornmail",
+    "gold": {
+      "total": 2450,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatHPPoolMod": 150,
+      "FlatArmorMod": 75
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3075.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3077,
+    "name": "Tiamat",
+    "gold": {
+      "total": 1200,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatPhysicalDamageMod": 25
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3077.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3748,
+    "name": "Titanic Hydra",
+    "gold": {
+      "total": 3300,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatHPPoolMod": 600,
+      "FlatPhysicalDamageMod": 40
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3748.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3078,
+    "name": "Trinity Force",
+    "gold": {
+      "total": 3333,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatHPPoolMod": 333,
+      "FlatPhysicalDamageMod": 36,
+      "PercentAttackSpeedMod": 0.3
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3078.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 2021,
+    "name": "Tunneler",
+    "gold": {
+      "total": 1150,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatHPPoolMod": 250,
+      "FlatPhysicalDamageMod": 15
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/2021.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3179,
+    "name": "Umbral Glaive",
+    "gold": {
+      "total": 2800,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatPhysicalDamageMod": 60
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3179.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 2502,
+    "name": "Unending Despair",
+    "gold": {
+      "total": 2800,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatHPPoolMod": 400,
+      "FlatArmorMod": 50
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/2502.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 1053,
+    "name": "Vampiric Scepter",
+    "gold": {
+      "total": 900,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatPhysicalDamageMod": 15,
+      "PercentLifeStealMod": 0.07
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/1053.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 4632,
+    "name": "Verdant Barrier",
+    "gold": {
+      "total": 1600,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatSpellBlockMod": 25,
+      "FlatMagicDamageMod": 40
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/4632.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3135,
+    "name": "Void Staff",
+    "gold": {
+      "total": 3000,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatMagicDamageMod": 95
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3135.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 6699,
+    "name": "Voltaic Cyclosword",
+    "gold": {
+      "total": 3000,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatPhysicalDamageMod": 55
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/6699.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3082,
+    "name": "Warden's Mail",
+    "gold": {
+      "total": 1000,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatArmorMod": 40
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3082.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3083,
+    "name": "Warmog's Armor",
+    "gold": {
+      "total": 3100,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatHPPoolMod": 1000
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3083.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 2526,
+    "name": "Whispering Circlet",
+    "gold": {
+      "total": 2250,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatMPPoolMod": 300,
+      "FlatHPPoolMod": 200
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/2526.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3066,
+    "name": "Winged Moonplate",
+    "gold": {
+      "total": 800,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatHPPoolMod": 200,
+      "PercentMovementSpeedMod": 0.04
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3066.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3119,
+    "name": "Winter's Approach",
+    "gold": {
+      "total": 2400,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatMPPoolMod": 500,
+      "FlatHPPoolMod": 550
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3119.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3091,
+    "name": "Wit's End",
+    "gold": {
+      "total": 2800,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatSpellBlockMod": 45,
+      "PercentAttackSpeedMod": 0.5
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3091.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3865,
+    "name": "World Atlas",
+    "gold": {
+      "total": 400,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatHPPoolMod": 30
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3865.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3142,
+    "name": "Youmuu's Ghostblade",
+    "gold": {
+      "total": 2800,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatPhysicalDamageMod": 55,
+      "PercentMovementSpeedMod": 0.04
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3142.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3032,
+    "name": "Yun Tal Wildarrows",
+    "gold": {
+      "total": 3000,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatPhysicalDamageMod": 50,
+      "PercentAttackSpeedMod": 0.45
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3032.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3871,
+    "name": "Zaz'Zak's Realmspike",
+    "gold": {
+      "total": 400,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatHPPoolMod": 200
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3871.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3086,
+    "name": "Zeal",
+    "gold": {
+      "total": 1200,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatCritChanceMod": 0.15,
+      "PercentAttackSpeedMod": 0.15,
+      "PercentMovementSpeedMod": 0.04
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3086.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3050,
+    "name": "Zeke's Convergence",
+    "gold": {
+      "total": 2200,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatSpellBlockMod": 25,
+      "FlatHPPoolMod": 300,
+      "FlatArmorMod": 25
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3050.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  },
+  {
+    "id": 3157,
+    "name": "Zhonya's Hourglass",
+    "gold": {
+      "total": 3250,
+      "purchasable": true
+    },
+    "stats": {
+      "FlatMagicDamageMod": 105,
+      "FlatArmorMod": 50
+    },
+    "icon": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/item/3157.png",
+    "provenance": {
+      "source": "Riot Data Dragon — item.json",
+      "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "patch": "16.16.1",
+      "fetched": "2026-08-12T21:46:05.922Z"
+    }
+  }
+]

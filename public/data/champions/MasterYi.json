@@ -1,0 +1,36 @@
+{
+  "apiname": "MasterYi",
+  "name": "Master Yi",
+  "id": 11,
+  "stats": {
+    "hp_base": 640,
+    "hp_lvl": 105,
+    "mp_base": 251,
+    "mp_lvl": 42,
+    "arm_base": 33,
+    "arm_lvl": 4.5,
+    "mr_base": 32,
+    "mr_lvl": 2.05,
+    "ad_base": 65,
+    "ad_lvl": 2.5,
+    "as_base": 0.679,
+    "as_lvl": 2.5,
+    "as_ratio": 0.67900002002716,
+    "range": 175,
+    "rangetype": "Melee",
+    "adaptivetype": "Physical"
+  },
+  "abilityNames": {
+    "P": "Double Strike",
+    "Q": "Alpha Strike",
+    "W": "Meditate",
+    "E": "Wuju Style",
+    "R": "Highlander"
+  },
+  "provenance": {
+    "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+    "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+    "patch": "16.16.1",
+    "fetched": "2026-08-12T21:46:05.922Z"
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "apiname": "Warwick",
+  "name": "Warwick",
+  "id": 19,
+  "stats": {
+    "hp_base": 620,
+    "hp_lvl": 99,
+    "mp_base": 280,
+    "mp_lvl": 35,
+    "arm_base": 33,
+    "arm_lvl": 4.4,
+    "mr_base": 32,
+    "mr_lvl": 2.05,
+    "ad_base": 65,
+    "ad_lvl": 2.5,
+    "as_base": 0.638,
+    "as_lvl": 2,
+    "as_ratio": 0.638000011444091,
+    "range": 125,
+    "rangetype": "Melee",
+    "adaptivetype": "Physical"
+  },
+  "abilityNames": {
+    "P": "Eternal Hunger",
+    "Q": "Jaws of the Beast",
+    "W": "Blood Hunt",
+    "E": "Primal Howl",
+    "R": "Infinite Duress"
+  },
+  "provenance": {
+    "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+    "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+    "patch": "16.16.1",
+    "fetched": "2026-08-12T21:46:05.922Z"
+  }
+}

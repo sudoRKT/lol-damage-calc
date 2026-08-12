@@ -1,0 +1,36 @@
+{
+  "apiname": "Pantheon",
+  "name": "Pantheon",
+  "id": 80,
+  "stats": {
+    "hp_base": 650,
+    "hp_lvl": 109,
+    "mp_base": 317,
+    "mp_lvl": 31,
+    "arm_base": 40,
+    "arm_lvl": 4.95,
+    "mr_base": 28,
+    "mr_lvl": 2.05,
+    "ad_base": 64,
+    "ad_lvl": 3.3,
+    "as_base": 0.658,
+    "as_lvl": 2.95,
+    "as_ratio": 0.658,
+    "range": 175,
+    "rangetype": "Melee",
+    "adaptivetype": "Physical"
+  },
+  "abilityNames": {
+    "P": "Mortal Will",
+    "Q": "Comet Spear",
+    "W": "Shield Vault",
+    "E": "Aegis Assault",
+    "R": "Grand Starfall"
+  },
+  "provenance": {
+    "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+    "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+    "patch": "16.16.1",
+    "fetched": "2026-08-12T21:46:05.922Z"
+  }
+}

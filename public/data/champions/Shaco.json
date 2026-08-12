@@ -1,0 +1,36 @@
+{
+  "apiname": "Shaco",
+  "name": "Shaco",
+  "id": 35,
+  "stats": {
+    "hp_base": 630,
+    "hp_lvl": 99,
+    "mp_base": 297,
+    "mp_lvl": 40,
+    "arm_base": 30,
+    "arm_lvl": 4,
+    "mr_base": 32,
+    "mr_lvl": 2.05,
+    "ad_base": 63,
+    "ad_lvl": 3,
+    "as_base": 0.694,
+    "as_lvl": 3,
+    "as_ratio": 0.694000005722045,
+    "range": 125,
+    "rangetype": "Melee",
+    "adaptivetype": "Physical"
+  },
+  "abilityNames": {
+    "P": "Backstab",
+    "Q": "Deceive",
+    "W": "Jack in the Box",
+    "E": "Two-Shiv Poison",
+    "R": "Hallucinate"
+  },
+  "provenance": {
+    "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+    "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+    "patch": "16.16.1",
+    "fetched": "2026-08-12T21:46:05.922Z"
+  }
+}

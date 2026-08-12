@@ -1,0 +1,36 @@
+{
+  "apiname": "Nidalee",
+  "name": "Nidalee",
+  "id": 76,
+  "stats": {
+    "hp_base": 610,
+    "hp_lvl": 109,
+    "mp_base": 295,
+    "mp_lvl": 45,
+    "arm_base": 32,
+    "arm_lvl": 5,
+    "mr_base": 30,
+    "mr_lvl": 1.45,
+    "ad_base": 58,
+    "ad_lvl": 3.5,
+    "as_base": 0.638,
+    "as_lvl": 3.22,
+    "as_ratio": 0.638000011444091,
+    "range": 525,
+    "rangetype": "Ranged",
+    "adaptivetype": "Magic"
+  },
+  "abilityNames": {
+    "P": "Prowl",
+    "Q": "Javelin Toss",
+    "W": "Bushwhack",
+    "E": "Primal Surge",
+    "R": "Aspect of the Cougar"
+  },
+  "provenance": {
+    "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+    "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+    "patch": "16.16.1",
+    "fetched": "2026-08-12T21:46:05.922Z"
+  }
+}

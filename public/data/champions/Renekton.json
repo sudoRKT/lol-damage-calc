@@ -1,0 +1,36 @@
+{
+  "apiname": "Renekton",
+  "name": "Renekton",
+  "id": 58,
+  "stats": {
+    "hp_base": 660,
+    "hp_lvl": 111,
+    "mp_base": 100,
+    "mp_lvl": 0,
+    "arm_base": 35,
+    "arm_lvl": 5.2,
+    "mr_base": 28,
+    "mr_lvl": 2.05,
+    "ad_base": 69,
+    "ad_lvl": 4.15,
+    "as_base": 0.665,
+    "as_lvl": 2.75,
+    "as_ratio": 0.665000021457672,
+    "range": 125,
+    "rangetype": "Melee",
+    "adaptivetype": "Physical"
+  },
+  "abilityNames": {
+    "P": "Reign of Anger",
+    "Q": "Cull the Meek",
+    "W": "Ruthless Predator",
+    "E": "Slice and Dice",
+    "R": "Dominus"
+  },
+  "provenance": {
+    "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+    "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+    "patch": "16.16.1",
+    "fetched": "2026-08-12T21:46:05.922Z"
+  }
+}

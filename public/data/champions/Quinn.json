@@ -1,0 +1,36 @@
+{
+  "apiname": "Quinn",
+  "name": "Quinn",
+  "id": 133,
+  "stats": {
+    "hp_base": 565,
+    "hp_lvl": 107,
+    "mp_base": 269,
+    "mp_lvl": 35,
+    "arm_base": 28,
+    "arm_lvl": 4.7,
+    "mr_base": 30,
+    "mr_lvl": 1.3,
+    "ad_base": 59,
+    "ad_lvl": 3.2,
+    "as_base": 0.668,
+    "as_lvl": 3.1,
+    "as_ratio": 0.667999982833862,
+    "range": 525,
+    "rangetype": "Ranged",
+    "adaptivetype": "Physical"
+  },
+  "abilityNames": {
+    "P": "Harrier",
+    "Q": "Blinding Assault",
+    "W": "Heightened Senses",
+    "E": "Vault",
+    "R": "Behind Enemy Lines"
+  },
+  "provenance": {
+    "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+    "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+    "patch": "16.16.1",
+    "fetched": "2026-08-12T21:46:05.922Z"
+  }
+}

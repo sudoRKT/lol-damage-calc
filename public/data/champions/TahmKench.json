@@ -1,0 +1,36 @@
+{
+  "apiname": "TahmKench",
+  "name": "Tahm Kench",
+  "id": 223,
+  "stats": {
+    "hp_base": 640,
+    "hp_lvl": 103,
+    "mp_base": 325,
+    "mp_lvl": 50,
+    "arm_base": 39,
+    "arm_lvl": 4.7,
+    "mr_base": 32,
+    "mr_lvl": 2.05,
+    "ad_base": 56,
+    "ad_lvl": 3.2,
+    "as_base": 0.658,
+    "as_lvl": 2.5,
+    "as_ratio": 0.657999992370605,
+    "range": 175,
+    "rangetype": "Melee",
+    "adaptivetype": "Magic"
+  },
+  "abilityNames": {
+    "P": "An Acquired Taste",
+    "Q": "Tongue Lash",
+    "W": "Abyssal Dive",
+    "E": "Thick Skin",
+    "R": "Devour"
+  },
+  "provenance": {
+    "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
+    "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+    "patch": "16.16.1",
+    "fetched": "2026-08-12T21:46:05.922Z"
+  }
+}
