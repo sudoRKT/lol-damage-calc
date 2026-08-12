@@ -212,18 +212,41 @@ describe('gate 3 — the sum guard (the Aatrox check)', () => {
     expect(r.findings.every((f) => /double-counts/.test(f.message))).toBe(true);
   });
 
-  it('rejects a stored Total/Maximum summary row', () => {
+  it('rejects a stored Total summary row', () => {
     const r = gateSumGuard(
       file([
         ability({
           components: [
             comp({ id: 'd', label: 'True Damage', relation: { kind: 'adds' } }),
-            comp({ id: 't', label: 'Maximum True Damage', relation: { kind: 'adds' } }),
+            comp({ id: 't', label: 'Total True Damage', relation: { kind: 'adds' } }),
           ],
         }),
       ]),
     );
     expect(r.findings.some((f) => /not independent damage/.test(f.message))).toBe(true);
+  });
+
+  it('does NOT reject a Minimum/Maximum pair — those are real damage', () => {
+    // Evidence-led correction. Treating Minimum/Maximum as summaries dropped every damage row
+    // from 32 abilities, each of which would then have dealt zero. They are stored, and the
+    // alternativeTo relation is what stops them being summed.
+    const r = gateSumGuard(
+      file([
+        ability({
+          champion: 'Veigar',
+          abilityName: 'Primordial Burst',
+          components: [
+            comp({ id: 'min', label: 'Minimum Magic Damage', relation: { kind: 'adds' } }),
+            comp({
+              id: 'max',
+              label: 'Maximum Magic Damage',
+              relation: { kind: 'alternativeTo', componentId: 'min' },
+            }),
+          ],
+        }),
+      ]),
+    );
+    expect(r.failed).toBe(0);
   });
 
   it('leaves single-component abilities alone — the hazard cannot exist there', () => {

@@ -18,3 +18,7 @@ dist/
 .claude/boundary-owners.tsv.lock
 
 # NOTE: /curated/ is the irreplaceable source and MUST be version-controlled. Never ignore it.
+
+# Draft curated entries produced by scripts/extract. Proposals only — the real
+# curated file is /curated/, which no script may write.
+build/

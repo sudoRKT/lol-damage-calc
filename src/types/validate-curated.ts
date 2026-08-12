@@ -78,9 +78,18 @@ const RATIO_STATS = new Set([
  * Label fragments that mark a component as a CONDITIONAL VARIANT of another rather than an
  * addition to it. Derived by scanning all 1085 ability templates on 2026-08-12: 94 components
  * carry one of these. Aatrox Q is the worst case — three casts x (normal, sweetspot).
+ *
+ * "first cast" / "second cast" / "third cast" are deliberately NOT here. They mark a position
+ * in a sequence, not a variant: Aatrox really can cast Q three times in one combo, so those
+ * three rows do add. It is the sweetspot row for each cast that is the alternative. Putting
+ * sequence positions in this list made every row of Aatrox Q look like a variant of nothing,
+ * and the proposal collapsed back to 'adds' — the exact failure the list exists to prevent.
+ *
+ * The classifier imports this rather than keeping its own copy, so a proposal can never be
+ * made against a different list from the one that judges it.
  */
-const ALTERNATIVE_MARKERS =
-  /\b(reduced|sweetspot|edge|handle|outer|inner|falloff|passthrough|secondary|subsequent|empowered|enhanced|critical|charged|uncharged|evolved|recast|melee|ranged|cone|first cast|second cast|third cast)\b/i;
+export const ALTERNATIVE_MARKERS =
+  /\b(reduced|sweetspot|edge|handle|outer|inner|falloff|passthrough|secondary|subsequent|empowered|enhanced|critical|charged|uncharged|evolved|recast|melee|ranged|cone)\b/i;
 
 /**
  * Damage rows that apply only to minions, monsters or other non-champion targets. This is a
@@ -90,9 +99,18 @@ const ALTERNATIVE_MARKERS =
 const NON_CHAMPION =
   /\b(minion|monster|non-champion|non champion|nonchampion|non-epic|epic|turret|ward)s?\b/i;
 
-/** Summary rows the wiki renders for the reader's convenience. They are arithmetic on other
- *  rows, not independent damage, and storing them would double-count. */
-const DERIVED_ROW = /^(total|maximum|minimum|max|min)\b/i;
+/**
+ * Summary rows the wiki renders for the reader's convenience. They are arithmetic on other
+ * rows, not independent damage, and storing them would double-count.
+ *
+ * Only "Total". A "Minimum"/"Maximum" prefix does NOT make a row a summary — on a charge-up
+ * ability the Minimum row IS the damage and the Maximum row is its fully-charged form. An
+ * earlier version of this pattern included them and would have dropped every damage row from
+ * 32 abilities (Veigar R, Jhin R, Riven R, Vi Q, Varus Q, Sion Q and R among them), shipping
+ * each as zero damage. Those pairs are handled by `relation: alternativeTo` instead, so they
+ * are stored but never summed.
+ */
+const DERIVED_ROW = /^total\b/i;
 
 function isFiniteNumber(v: unknown): v is number {
   return typeof v === 'number' && Number.isFinite(v);
