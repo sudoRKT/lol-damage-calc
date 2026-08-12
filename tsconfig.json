@@ -20,7 +20,14 @@
     "verbatimModuleSyntax": true,
     "noEmit": true,
 
-    "types": ["vitest/globals"]
+    // The data-pipeline scripts under scripts/ are run directly by Node (v26 strips types
+    // natively), so their relative imports must carry the .ts extension. Safe here only
+    // because noEmit is true — nothing is compiled to disk.
+    "allowImportingTsExtensions": true,
+
+    "types": ["vitest/globals", "node"]
   },
-  "include": ["src"]
+  // scripts/ is typechecked too, so the generated data files are held to the same frozen
+  // shapes in src/types/ that the app is.
+  "include": ["src", "scripts"]
 }

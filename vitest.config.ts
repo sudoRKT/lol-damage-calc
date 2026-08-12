@@ -11,7 +11,11 @@ export default mergeConfig(
     test: {
       globals: true,
       environment: 'node',
-      include: ['src/**/*.{test,spec}.ts', 'tests/**/*.{test,spec}.ts'],
+      include: [
+        'src/**/*.{test,spec}.ts',
+        'scripts/**/*.{test,spec}.ts',
+        'tests/**/*.{test,spec}.ts',
+      ],
     },
   }),
 );

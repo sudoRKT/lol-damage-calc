@@ -12,5 +12,7 @@ dist/
 # Claude local (personal) settings are not shared; settings.json IS shared.
 .claude/settings.local.json
 .claude/*.tmp.*
+# Per-agent write audit produced by .claude/hooks/boundary-audit.sh — a run record, not source.
+.claude/boundary-audit.log
 
 # NOTE: /curated/ is the irreplaceable source and MUST be version-controlled. Never ignore it.
