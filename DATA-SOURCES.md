@@ -110,12 +110,37 @@ All six returned HTTP 200 this session.
 In Data Dragon, `attackdamageperlevel` reads **0 for all 173 champions** — confirmed in
 both the summary file and the per-champion detail file. Concrete case: Aatrox's Data
 Dragon `attackdamageperlevel` = **0**, but the wiki's `dam_lvl` = **5** (the correct
-value). Every *other* growth stat in Data Dragon is fine — Aatrox `hpperlevel` 114,
-`armorperlevel` 4.8, `spellblockperlevel` 2.05, `attackspeedperlevel` 2.5 — it is
-specifically AD-per-level that is blanked out, across the entire roster.
+value). This one is a *structural* fault: the field is blanked out across the entire
+roster, in every patch, and it will not fix itself.
 
-**Rule: champion base statistics and per-level growth come from the wiki module, never
-from Data Dragon.** Data Dragon is used for champions only as an art/asset source.
+### ⚠️ CORRECTION (2026-08-12): "every other growth stat is fine" was FALSE
+
+This section previously said every other growth stat in Data Dragon was fine. **It is not,
+and the reason is the opposite of the AD case: the wiki module lags a patch behind.**
+
+Patch 26.16 (Data Dragon `16.16.1`, released 2026-08-12) changed base magic resistance for
+28 champions. Data Dragon carried the new values the same day. **The wiki module did not** —
+its highest `changes` marker is still V26.15. So for one patch window, the wiki is wrong
+about every stat that patch touched:
+
+- **28 champions' magic resistance** — wiki `30 / 1.3`, Data Dragon `33 / 1.1` (Tristana
+  `28 / 1.3` vs `33 / 1.1`). All 28 are marksmen. That is a 3-point magic-resist gap on
+  every ranged target at level 1, and it moves damage numbers.
+- **Bel'Veth health growth** — wiki `110`, Data Dragon `105`. The patch notes say "Health
+  growth reduced to 105 from 110", so Data Dragon is right here too.
+
+**The two faults point in opposite directions and must be handled separately:**
+
+| Fault | Which source is wrong | Nature | Handling |
+|---|---|---|---|
+| `attackdamageperlevel` = 0 | Data Dragon | Structural, permanent | Always take AD growth from the wiki |
+| Stats changed by the newest patch | Wiki module | Temporary, self-healing next edit | Take the changed stat from Data Dragon for that window |
+
+**Revised rule: champion base statistics and per-level growth come from the wiki module by
+default, because of the AD-growth fault — but the wiki is NOT authoritative for a stat the
+current patch has just changed.** Before trusting a champion stat, check whether the current
+patch touched it (the patch page `V<season>.<patch>` on the wiki lists this explicitly) and
+whether the module's `changes` marker has caught up. See §12 and §13 for the full evidence.
 
 ---
 
@@ -177,8 +202,41 @@ way, among 26 total.
 
 As a belt-and-braces check, **deduplicate by item name** afterward and, where a name still has
 two survivors, keep the canonical low id. Cross-referencing the official wiki module's
-classic-SR mode flag is an equivalent, more explicit alternative to the id cutoff. The
-corrected pool is **222 distinct items**, not 248.
+classic-SR mode flag is an equivalent, more explicit alternative to the id cutoff.
+
+### The corrected pool is 209 distinct items — NOT 222 (corrected 2026-08-12)
+
+An earlier version of this document said the corrected pool was 222. **That was wrong, and the
+error is worth understanding because the number 222 is real — it just measures the wrong thing.**
+222 is the count of distinct *names* under the **broken** filter, before the id cutoff is applied.
+It is not the size of the classic pool.
+
+The full funnel, re-observed twice on 2026-08-12 (once by the pipeline, once independently):
+
+| Stage | Entries | Distinct names |
+|---|---|---|
+| `item.json` total | 868 | — |
+| `maps["11"] == true` | 316 | — |
+| `+ gold.purchasable` | 254 | — |
+| `+ gold.total > 0` | **248** | **222** ← the broken filter's numbers |
+| `+ id < 200000` | 212 | **209** |
+| `+ dedupe by name` | **209** | **209** ← the corrected pool |
+
+The gap is 13, and it is not rounding error: **13 item names exist only above the id cutoff.**
+They are Arena-exclusive gear with no classic Summoner's Rift counterpart, so dropping them is
+correct — a damage tool for classic SR must not offer them:
+
+Atma's Reckoning · Cloak of Starry Night · Crown of the Shattered Queen · Cruelty ·
+Demon King's Crown · Flesheater · Gambler's Blade · Gargoyle Stoneplate ·
+Shield of Molten Stone · Sword of Blossoming Dawn · Sword of the Divine ·
+Veigar's Talisman of Ascension · Zephyr
+
+The three names that the final dedupe step removes are jungle-pet tiers, not mode variants:
+Scorchclaw Pup (kept 1101, dropped 1107), Gustwalker Hatchling (kept 1102, dropped 1106),
+Mosstomper Seedling (kept 1103, dropped 1105).
+
+**If a future fetch yields 222, the id cutoff is not being applied.** If it yields 248, neither
+the cutoff nor the dedupe is.
 
 On the drop side the filter is safe for a damage tool: the only map-11 purchasable entries it
 excludes are six zero-gold trinkets/quest items (Stealth Ward, Farsight Alteration, Oracle
@@ -410,13 +468,25 @@ consequence of the documented formula, not an assumption.
 **The single most important lesson in this document: authority is per-field, not
 per-source.** Neither the wiki nor Data Dragon is "the correct source" in general. Each has
 fields it is right about and fields it is wrong about, and the two have been caught being
-wrong in *opposite* directions. The table below records the winner for every field settled so
-far, with the evidence. Every row was established by fetching both sources and comparing —
-none is assumed.
+wrong in *opposite* directions.
+
+**Read this table as a record of what has been checked, not as a guarantee.** Every row below
+was established by fetching both sources and comparing, on the date given. It says nothing
+about a field nobody has examined, and — as the magic-resistance case in §3 proved — a row can
+be too broad: "champion base stats and per-level growth" was recorded as a win for the wiki,
+and that turned out to be true of *attack-damage growth* and false of *any stat the current
+patch just changed*. A row is a finding about the fields actually compared. Widening it to
+neighbouring fields is exactly the mistake this table exists to prevent.
+
+**Authority is also time-dependent, not just field-dependent.** The wiki module updates by
+hand and can sit a patch behind; Data Dragon ships with the patch. A field the wiki wins in
+general it can still lose in the days after a patch that changed it.
 
 | Field | Authoritative source | Evidence (why the other loses) |
 |---|---|---|
-| Champion base stats & per-level growth | **Official wiki** (`Module:ChampionData/data`) | Data Dragon reports `attackdamageperlevel` = **0 for all 173 champions** (e.g. Aatrox 0 vs wiki 5); other stale base stats too (Volibear base AD 60 vs correct 65). See §3. |
+| Champion **attack-damage** growth (`dam_lvl`) | **Official wiki** (`Module:ChampionData/data`) | Data Dragon reports `attackdamageperlevel` = **0 for all 173 champions** (e.g. Aatrox 0 vs wiki 5). Structural and permanent. See §3. |
+| Champion base stats & growth **that the current patch just changed** | **Data Dragon** | The wiki module lags. Patch 26.16 moved 28 marksmen to `33 / 1.1` magic resistance and Bel'Veth health growth to 105; Data Dragon carried all of it the same day, the module still read the old values. Settled against the wiki's **own patch page** `V26.16`. See §3, §14. |
+| Champion base stats & growth, otherwise | **Official wiki** (`Module:ChampionData/data`) | Checked for hp/armor/MR/AS base and growth outside the current patch window; wiki agreed with Data Dragon. Also catches stale Data Dragon base stats (Volibear base AD 60 vs correct 65). |
 | Item gold cost | **Data Dragon** (`item.json`) | The wiki is stale here: **Redemption** wiki **2250g** vs Data Dragon **2300g**, and the recipe sums to exactly 2300 (850 + 850 + 600). See §5, Check 1. |
 | Item stat values (AD/AP/HP/haste/etc.) | **Data Dragon** (`item.json`), confirmed current for 16.16.1 | Cross-checked recently-changed items (Essence Reaver, Statikk Shiv, Black Cleaver) against the wiki `Module:ItemData/data`; all stats matched. Wiki agrees but is redundant. |
 | Rune stat values | **Data Dragon** (`runesReforged.json`), confirmed current for 16.16.1 | Recently-changed runes (Aftershock, Arcane Comet, Cash Back, Hail of Blades, Press the Attack) matched the wiki's live-rendered values. Numbers are in prose (see §6). |
@@ -459,3 +529,83 @@ the live (current-patch) value and, for level-scaled numbers, the level-18 value
 patch-history entry and not a level-20 extrapolation. Where possible, settle the number
 against an independent source (Data Dragon for item/rune stats) rather than a single rendered
 page.
+
+---
+
+## 14. Investigations closed on 2026-08-12
+
+Two questions were investigated to a conclusion on this date. Both are recorded here so nobody
+repeats the work, and so the two loose ends are not mistaken for settled facts.
+
+### 14.1 Marksman magic resistance — settled in Data Dragon's favour, with two exceptions
+
+**Question.** The wiki module and Data Dragon disagreed about base magic resistance and its
+growth for 28 champions. Which is right?
+
+**Answer: Data Dragon, for 26 of the 28. Two cannot be settled from available sources.**
+
+The decisive source turned out to be **the wiki's own patch page**, which contradicts the
+wiki's own data module. Evidence, in the order it was gathered:
+
+1. **Data Dragon changed the value in exactly this patch.** Ashe's `spellblock` /
+   `spellblockperlevel` read `30 / 1.3` in every one of the 25 previous patches sampled
+   (15.15.1 through 16.15.1) and `33 / 1.1` in 16.16.1. A melee control champion (Aatrox) was
+   unchanged at `32 / 2.05` throughout, so this is not a wholesale reshuffle of the file.
+2. **The wiki's patch page documents the change.** `V26.16` (released 2026-08-12) states, per
+   champion: "Base magic resistance increased to 33 from 30. Magic resistance growth reduced to
+   1.1 from 1.3." Fetched as raw wikitext via `api.php`, not as a rendered page.
+   URL: `https://wiki.leagueoflegends.com/en-us/api.php?action=query&redirects=1&prop=revisions&titles=V26.16&rvslots=main&rvprop=content&format=json&formatversion=2`
+3. **Data Dragon matches those notes for 26 of the 27 champions the notes name.**
+4. **The wiki data module carries the pre-patch values**, consistent with its highest `changes`
+   marker being V26.15 — one patch behind.
+5. **A third dataset (Meraki Analytics) also reads `30 / 1.3`** — also stale, and therefore not
+   an independent confirmation of the wiki, just the same lag.
+
+**The two that are NOT settled. Do not treat either as verified:**
+
+- **Tristana.** The patch notes say base magic resistance **31** (from 28). Data Dragon says
+  **33**. Riot's prose and Riot's CDN disagree with each other, and the wiki module is stale on
+  both. No source available here breaks the tie.
+- **Twitch.** Data Dragon moved him `30 → 33`. **The patch notes never mention Twitch at all.**
+  Either the notes omit him or the CDN value is wrong.
+
+**What would settle them:** a reading of the live game client's own character records. The
+obvious route — CommunityDragon's `game/data/characters/<name>/<name>.bin.json` — was tried and
+does not work: the stat keys in that dump are hashed (`{b0ad034f}` and similar) and are not
+readable without a hash table, and CommunityDragon's readable champion endpoint carries no
+stats at all. The alternatives are the in-client practice tool (not available on this project)
+or simply waiting for the wiki module to catch up next patch and re-comparing.
+
+> **⚠️ OPEN DEFECT — the generated data does not yet reflect this finding.**
+> `scripts/fetch/` still takes **all** champion stats from the wiki module, so
+> `public/data/champions.json` currently carries the stale pre-patch magic resistance for all
+> 28 champions listed above, and Bel'Veth's health growth as 110 rather than 105. **Any damage
+> figure computed against a ranged target from this data is wrong by 3 magic resistance at
+> level 1.** Applying the rule in §3 to the pipeline is a deliberate change to its
+> source-selection policy — including how the two unsettled cases above are handled — and had
+> not been made when this was written. Do not treat `public/data` as correct on these fields
+> until it has.
+
+### 14.2 Minimum damage floor — investigated, and no such rule exists
+
+**Question.** `SPECIFICATION.md` §3.7 required the engine to model "minimum damage floors".
+Does League have a game-wide rule that a damage instance always deals at least some minimum?
+
+**Answer: no. No such rule was found, and the specification requirement has been removed.**
+
+Searched on 2026-08-12, all on `wiki.leagueoflegends.com`: the **Damage** article, the **Damage
+modifier** article, the **Armor** article, the **Basic attack** article, plus a general web
+search for a documented minimum. None states a floor, a clamp, or a lower bound on a damage
+instance. The Armor article's own formulas make the point directly: the damage multiplier
+approaches zero asymptotically as armor rises, with no stated minimum.
+
+The only floors that *are* documented are on **resistances**, not on damage — flat reduction may
+drive a resistance negative; both percentage steps are skipped once a resistance is at or below
+zero; flat penetration stops at zero and cannot pull a negative value back up. Those are
+implemented and tested in the engine.
+
+**Consequence:** "minimum damage floors" was removed from `SPECIFICATION.md` §3.7 and from its
+§8 test-suite list, and from the same list in `CLAUDE.md`. A specification requiring something
+the game does not have is a defect, and it would have sent every future agent looking for a
+rule that is not there. If a per-ability minimum ever turns up, it belongs in the curated
+override file for that ability, not as an engine-wide rule.
