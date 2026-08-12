@@ -25,7 +25,11 @@ export interface StatBlock {
   attackDamage: { base: number; bonus: number; total: number };
   abilityPower: number;
   critChance: number; // 0..1
-  critDamage: number; // multiplier, e.g. 1.75
+  /** Total critical-strike damage as a multiplier of normal damage. BASE IS 2.0 (200%),
+   *  raised from 1.75 in patch V26.01, 2026-01-08. Item bonuses add to it rather than
+   *  multiplying, so 2.0 + 0.35 + 0.10 = 2.45.
+   *  https://wiki.leagueoflegends.com/en-us/Critical_strike (read 2026-08-12) */
+  critDamage: number;
   attackSpeed: number;
   adaptiveType: 'physical' | 'magic';
 }

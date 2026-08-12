@@ -46,6 +46,9 @@ export interface Champion {
   id: number;
   stats: ChampionBaseStats;
   abilityNames: Partial<Record<AbilitySlot, string>>;
+  /** Data Dragon portrait filename, e.g. "Aatrox.png" — matches Item.icon and Rune.icon.
+   *  A champion is only in the roster once this asset exists (DATA-SOURCES §1). */
+  icon: string;
   provenance: Provenance;
 }
 

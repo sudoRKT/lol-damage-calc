@@ -239,6 +239,10 @@ export function joinChampions(
       id: winner.id,
       stats: winner.stats,
       abilityNames: winner.abilityNames,
+      // Data Dragon names every champion portrait "<apiname>.png". Safe to build rather
+      // than look up, because roster membership is already gated on the apiname existing
+      // in Data Dragon a few lines above.
+      icon: `${winner.apiname}.png`,
       provenance,
     });
   }
