@@ -321,6 +321,16 @@ in the interface alongside any result it contributes to:
 
 The simulator never presents a derived figure as though it were verified.
 
+**Contested base statistics.** The same principle extends to a champion's base statistics,
+which come from two sources that can disagree. Where a disagreement is settled by evidence,
+the settled value is used silently. Where nothing settles it — the sources conflict and no
+patch note explains the difference — the champion is marked *contested*: the value that
+ships with the patch is used, and **any result involving that champion carries a visible
+note that one of its base statistics is disputed between Riot's own sources, and is never
+presented as verified.** The disputed field, both observed values, and the evidence for each
+are recorded in the generated data so the note can name what is in doubt rather than warn
+vaguely. The rule that produces these flags is DATA-SOURCES.md §15.
+
 **Known-answer test suite.** A hand-authored set of scenarios whose expected values are
 established without access to the game client, from three sources in descending order of
 authority: unit tests written directly from documented formulas — the resistance

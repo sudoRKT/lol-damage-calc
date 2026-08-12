@@ -576,15 +576,9 @@ readable without a hash table, and CommunityDragon's readable champion endpoint 
 stats at all. The alternatives are the in-client practice tool (not available on this project)
 or simply waiting for the wiki module to catch up next patch and re-comparing.
 
-> **⚠️ OPEN DEFECT — the generated data does not yet reflect this finding.**
-> `scripts/fetch/` still takes **all** champion stats from the wiki module, so
-> `public/data/champions.json` currently carries the stale pre-patch magic resistance for all
-> 28 champions listed above, and Bel'Veth's health growth as 110 rather than 105. **Any damage
-> figure computed against a ranged target from this data is wrong by 3 magic resistance at
-> level 1.** Applying the rule in §3 to the pipeline is a deliberate change to its
-> source-selection policy — including how the two unsettled cases above are handled — and had
-> not been made when this was written. Do not treat `public/data` as correct on these fields
-> until it has.
+> **RESOLVED.** This finding is now applied by the pipeline. See §15 for the policy that
+> implements it. As of the run on 2026-08-12, Ashe reads `33 / 1.1`, Bel'Veth's health growth
+> reads 105, and Tristana and Twitch are flagged `contested` rather than silently resolved.
 
 ### 14.2 Minimum damage floor — investigated, and no such rule exists
 
@@ -609,3 +603,93 @@ implemented and tested in the engine.
 the game does not have is a defect, and it would have sent every future agent looking for a
 rule that is not there. If a per-ability minimum ever turns up, it belongs in the curated
 override file for that ability, not as an engine-wide rule.
+
+---
+
+## 15. The source policy (set 2026-08-12)
+
+§12 established that authority is per-field. §3 and §14.1 established that it is also
+**per-patch**: the wiki module is updated by hand and can sit a patch behind, while Data
+Dragon ships with the patch. This section is the rule that follows, as the pipeline
+implements it in `scripts/fetch/overrides.ts`.
+
+### The rule
+
+1. **The wiki module is the default** for champion base statistics and per-level growth.
+2. **Where Data Dragon disagrees AND the current patch notes document a change whose new
+   value matches Data Dragon, Data Dragon wins** that field for that champion. Status:
+   `confirmed`.
+3. **Where the two disagree and nothing resolves it, neither is taken silently.** Data
+   Dragon's value is used — it ships with the patch — and the champion is flagged
+   `contested`. Any result involving a contested champion must carry a visible note that
+   one of its base statistics is disputed between Riot's own sources, and must never be
+   presented as verified (SPECIFICATION §8).
+4. **Attack-damage growth is never overridden.** Data Dragon reports 0 for every champion
+   in every patch (§3). That is a structural fault, not a patch disagreement, and no patch
+   note can make Data Dragon win it. `assertNoStructuralOverrides` enforces this.
+5. **Every override records its own evidence** — both observed values, the status, the
+   reason in plain English, the source URL, the literal patch-note line where one confirmed
+   it, and the condition under which it should be retired.
+
+### Why the patch notes are the tie-break
+
+They are the one current, human-authored statement of what Riot changed, they live on the
+same wiki whose data module is stale, and they are fetchable as raw wikitext. Patch 26.16 is
+the worked example: the module read `30 / 1.3` for 28 marksmen while the notes and Data
+Dragon both said `33 / 1.1`.
+
+The article title is derived, not hard-coded: **minor number from Data Dragon** (`16.16.1` →
+16), **major from the wiki's own newest `changes` marker** (`V26.15` → 26), giving `V26.16`.
+The two number the same patch differently and the offset is not a constant worth trusting.
+
+If the article does not exist yet — the wiki sometimes ships data before prose — the pipeline
+does not fail. Nothing can be confirmed, so **every** disagreement becomes `contested` and is
+surfaced. That degrades loudly, which is the correct direction.
+
+### Overrides retire themselves
+
+There is **no hand-maintained override list**, and there must never be one. Overrides are
+derived from live evidence on every run: the moment the wiki module catches up, the two
+sources agree, and no override is produced at all. Two guards make a violation of that loud
+rather than silent, and both are also unit tests:
+
+- `assertOverridesDocumented` — **override-has-recorded-reason.** Fails the run if any
+  override lacks a reason, a source, or a retirement condition, or claims patch-note
+  confirmation without quoting the note.
+- `assertNoRedundantOverrides` — **override-not-redundant.** Fails the run if any override's
+  two observed values are equal, which is the shape a stale override takes. Unreachable by
+  construction, which is exactly why it is asserted: if it ever fires, something has started
+  carrying overrides forward instead of re-deriving them.
+
+### What this produced on 2026-08-12 (patch 16.16.1, notes V26.16)
+
+**59 overrides across 30 champions: 54 confirmed, 5 contested.** Verified after the run:
+Ashe `mr_base` 33 and `mr_lvl` 1.1; Bel'Veth `hp_lvl` 105; Ashe `ad_lvl` still 3.5 from the
+wiki, not the 0 Data Dragon reports.
+
+The five contested, none of which were resolved by picking the tidier number:
+
+| Champion | Stat | Wiki | Data Dragon | Why it is contested |
+|---|---|---|---|---|
+| Tristana | `mr_base` | 28 | 33 | The patch note says **31**. Riot's prose and Riot's CDN disagree. |
+| Twitch | `mr_base` | 30 | 33 | The notes never mention Twitch at all. |
+| Twitch | `mr_lvl` | 1.3 | 1.1 | As above. |
+| Jhin | `as_lvl` | 3 | 0 | Long-standing disagreement, unrelated to this patch, explained by no note. |
+| Kled | `range` | 250 | 125 | Kled has two forms; which range belongs to the canonical row is unclear. |
+
+Jhin and Kled were **not** part of the original finding — they surfaced only once every
+comparable field was swept rather than just the ones already known. Neither has been resolved.
+
+**Alternate forms are excluded from comparison entirely.** A form with a fractional wiki id
+reuses the canonical champion's apiname ("Kled & Skaarl" is 240.1 reusing "Kled") and Data
+Dragon has no separate record for it, so diffing its stats against the canonical champion's
+compares two different things. Doing so manufactured two meaningless contested flags before
+it was excluded.
+
+### Where the flags live
+
+`public/data/overrides.json` is the full ledger, one entry per overridden field with its
+evidence. `manifest.json` carries `contestedChampions` — the apinames the interface must warn
+on — and the counts. The flag is a **sidecar rather than a field on `Champion`**, because the
+type contract in `src/types/` is frozen and lead-owned; the interface joins by apiname. If the
+UI work needs it inside the champion record, that is a contract change for the lead to make.

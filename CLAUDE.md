@@ -53,6 +53,16 @@ Never edit a test to make the engine pass. If engine and test disagree, assume t
 engine is wrong until shown otherwise. Any figure that cannot be established from the
 three sources above is `derived` at best, never `verified`.
 
+**Source authority is time-dependent, not just field-dependent.** Neither the wiki nor Data
+Dragon is right in general, and which one is right about a given field can change in the days
+after a patch. The wiki's champion data module is updated by hand and routinely sits a patch
+behind; Data Dragon ships with the patch. So a field the wiki normally wins it can still lose
+in that window — this is not hypothetical, it is how 28 champions ended up with wrong magic
+resistance. The tie-break is the wiki's own patch-notes article, which is current even when
+its data module is not. Where nothing resolves a disagreement, take neither silently: use the
+value that ships with the patch, flag it `contested`, and surface it. The full rule, and the
+two guards that stop stale overrides accumulating, are in DATA-SOURCES.md §15.
+
 ## Non-negotiables from the spec
 
 - Resistance-modifier order is fixed: flat reduction, then percentage reduction, then
@@ -116,6 +126,36 @@ The site's look is a defined deliverable, not something that emerges from the bu
   of these, say so and produce a different direction.
 - Concentrate animation on the combo resolving against the target's health. Keep motion
   restrained everywhere else.
+
+## The guards
+
+Four mechanical guards run on this project. A safety system nobody has written down is one
+nobody can audit, so this is the written record. **Only the lead session may change any of
+them**, and changing one is a deliberate act to be stated plainly, never a side effect of
+making a task easier. If a guard blocks legitimate work, say so and propose a fix — do not
+route around it, and do not weaken it to get unblocked.
+
+| Guard | What it blocks | Who it applies to |
+|---|---|---|
+| `.claude/hooks/protect-curated.sh` | Writes and deletes targeting the top-level `/curated/` tree, whether by file tool or by an obvious destructive shell command | Everyone, lead included |
+| Read-only filesystem permissions on `/curated/` | Any write to that directory, including one buried inside a script that no hook can inspect | Every process on the machine |
+| `.claude/hooks/boundary-audit.sh` | An agent writing outside its assigned directory, and any agent pushing to the remote | Agents only — the lead is unaffected |
+| `permissions.deny` in `.claude/settings.json` | Editing `/curated/` or `DESIGN.md`; `git reset`/`checkout`/`clean`; installing or removing dependencies; `rm -rf`; `chmod` | Everyone, lead included |
+
+Two things worth knowing about how these fit together:
+
+- **The directory partition is enforced per agent, two ways.** An agent spawned from a named
+  role (`.claude/agents/engine.md`, `.claude/agents/data-pipeline.md`) is held to that role's
+  directory. An agent spawned without one claims an area on its first write and is then locked
+  to it — so the partition holds even when the role definitions were not loaded. Every write,
+  allowed or refused, is appended to `.claude/boundary-audit.log`, which is the audit trail:
+  it records which agent wrote which file, and whether any agent tried to reach across.
+- **Publishing is a lead action.** Agents are refused `git push` by the hook rather than by a
+  blanket rule, so the lead can still do its job. Agents are also instructed not to commit.
+
+**Known limit, stated rather than papered over:** the hooks inspect tool calls. A write buried
+inside a Node or Python subprocess is invisible to them. `/curated/` is defended against that
+case by the read-only filesystem permissions; nothing else in the tree is.
 
 ## Parallel execution
 
