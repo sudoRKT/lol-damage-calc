@@ -33,7 +33,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -70,7 +70,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -107,7 +107,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -121,8 +121,8 @@
       "mp_lvl": 40,
       "arm_base": 26,
       "arm_lvl": 4.7,
-      "mr_base": 30,
-      "mr_lvl": 1.3,
+      "mr_base": 33,
+      "mr_lvl": 1.1,
       "ad_base": 52,
       "ad_lvl": 3,
       "as_base": 0.638,
@@ -144,7 +144,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -181,7 +181,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -218,7 +218,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -255,7 +255,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -292,7 +292,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -329,7 +329,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -343,8 +343,8 @@
       "mp_lvl": 42,
       "arm_base": 26,
       "arm_lvl": 4.2,
-      "mr_base": 30,
-      "mr_lvl": 1.3,
+      "mr_base": 33,
+      "mr_lvl": 1.1,
       "ad_base": 55,
       "ad_lvl": 2.3,
       "as_base": 0.665,
@@ -366,7 +366,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -380,8 +380,8 @@
       "mp_lvl": 35,
       "arm_base": 26,
       "arm_lvl": 4.6,
-      "mr_base": 30,
-      "mr_lvl": 1.3,
+      "mr_base": 33,
+      "mr_lvl": 1.1,
       "ad_base": 59,
       "ad_lvl": 3.5,
       "as_base": 0.658,
@@ -403,7 +403,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -440,7 +440,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -477,7 +477,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -514,7 +514,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -551,7 +551,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -560,7 +560,7 @@
     "id": 200,
     "stats": {
       "hp_base": 580,
-      "hp_lvl": 110,
+      "hp_lvl": 105,
       "mp_base": 0,
       "mp_lvl": 0,
       "arm_base": 28,
@@ -588,7 +588,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -625,7 +625,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -662,7 +662,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -699,7 +699,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -736,7 +736,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -750,8 +750,8 @@
       "mp_lvl": 40,
       "arm_base": 27,
       "arm_lvl": 4.7,
-      "mr_base": 30,
-      "mr_lvl": 1.3,
+      "mr_base": 33,
+      "mr_lvl": 1.1,
       "ad_base": 62,
       "ad_lvl": 3.8,
       "as_base": 0.681,
@@ -773,7 +773,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -810,7 +810,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -847,7 +847,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -884,7 +884,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -898,8 +898,8 @@
       "mp_lvl": 40,
       "arm_base": 27,
       "arm_lvl": 4.5,
-      "mr_base": 30,
-      "mr_lvl": 1.3,
+      "mr_base": 33,
+      "mr_lvl": 1.1,
       "ad_base": 52,
       "ad_lvl": 2.5,
       "as_base": 0.644,
@@ -921,7 +921,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -958,7 +958,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -995,7 +995,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -1032,7 +1032,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -1046,8 +1046,8 @@
       "mp_lvl": 39,
       "arm_base": 29,
       "arm_lvl": 4.5,
-      "mr_base": 30,
-      "mr_lvl": 1.3,
+      "mr_base": 33,
+      "mr_lvl": 1.1,
       "ad_base": 62,
       "ad_lvl": 3.4,
       "as_base": 0.679,
@@ -1069,7 +1069,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -1106,7 +1106,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -1143,7 +1143,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -1180,7 +1180,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -1194,8 +1194,8 @@
       "mp_lvl": 70,
       "arm_base": 24,
       "arm_lvl": 4.2,
-      "mr_base": 30,
-      "mr_lvl": 1.3,
+      "mr_base": 33,
+      "mr_lvl": 1.1,
       "ad_base": 60,
       "ad_lvl": 3.75,
       "as_base": 0.625,
@@ -1217,7 +1217,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -1254,7 +1254,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -1291,7 +1291,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -1328,7 +1328,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -1365,7 +1365,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -1402,7 +1402,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -1439,7 +1439,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -1476,7 +1476,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -1513,7 +1513,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -1527,8 +1527,8 @@
       "mp_lvl": 40,
       "arm_base": 33,
       "arm_lvl": 4.6,
-      "mr_base": 30,
-      "mr_lvl": 1.3,
+      "mr_base": 33,
+      "mr_lvl": 1.1,
       "ad_base": 66,
       "ad_lvl": 4,
       "as_base": 0.475,
@@ -1550,7 +1550,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -1587,7 +1587,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -1624,7 +1624,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -1661,7 +1661,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -1698,7 +1698,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -1735,7 +1735,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -1772,7 +1772,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -1809,7 +1809,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -1846,7 +1846,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -1883,7 +1883,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -1920,7 +1920,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -1957,7 +1957,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -1971,12 +1971,12 @@
       "mp_lvl": 50,
       "arm_base": 24,
       "arm_lvl": 4.7,
-      "mr_base": 30,
-      "mr_lvl": 1.3,
+      "mr_base": 33,
+      "mr_lvl": 1.1,
       "ad_base": 61,
       "ad_lvl": 4.4,
       "as_base": 0.625,
-      "as_lvl": 3,
+      "as_lvl": 0,
       "as_ratio": 0,
       "range": 550,
       "rangetype": "Ranged",
@@ -1994,7 +1994,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -2008,8 +2008,8 @@
       "mp_lvl": 50,
       "arm_base": 26,
       "arm_lvl": 4.2,
-      "mr_base": 30,
-      "mr_lvl": 1.3,
+      "mr_base": 33,
+      "mr_lvl": 1.1,
       "ad_base": 59,
       "ad_lvl": 3.25,
       "as_base": 0.625,
@@ -2031,7 +2031,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -2068,7 +2068,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -2082,8 +2082,8 @@
       "mp_lvl": 40,
       "arm_base": 25,
       "arm_lvl": 4.2,
-      "mr_base": 30,
-      "mr_lvl": 1.3,
+      "mr_base": 33,
+      "mr_lvl": 1.1,
       "ad_base": 59,
       "ad_lvl": 2.6,
       "as_base": 0.644,
@@ -2105,7 +2105,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -2119,8 +2119,8 @@
       "mp_lvl": 45,
       "arm_base": 24,
       "arm_lvl": 5.2,
-      "mr_base": 30,
-      "mr_lvl": 1.3,
+      "mr_base": 33,
+      "mr_lvl": 1.1,
       "ad_base": 57,
       "ad_lvl": 4.75,
       "as_base": 0.694,
@@ -2142,7 +2142,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -2179,7 +2179,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -2216,7 +2216,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -2253,7 +2253,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -2290,7 +2290,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -2327,7 +2327,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -2364,7 +2364,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -2401,7 +2401,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -2438,7 +2438,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -2452,8 +2452,8 @@
       "mp_lvl": 35,
       "arm_base": 29,
       "arm_lvl": 4.7,
-      "mr_base": 30,
-      "mr_lvl": 1.3,
+      "mr_base": 33,
+      "mr_lvl": 1.1,
       "ad_base": 65,
       "ad_lvl": 3.25,
       "as_base": 0.625,
@@ -2475,7 +2475,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -2496,7 +2496,7 @@
       "as_base": 0.625,
       "as_lvl": 3.5,
       "as_ratio": 0.625,
-      "range": 250,
+      "range": 125,
       "rangetype": "Melee",
       "adaptivetype": "Physical"
     },
@@ -2512,7 +2512,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -2526,8 +2526,8 @@
       "mp_lvl": 40,
       "arm_base": 24,
       "arm_lvl": 4.45,
-      "mr_base": 30,
-      "mr_lvl": 1.3,
+      "mr_base": 33,
+      "mr_lvl": 1.1,
       "ad_base": 61,
       "ad_lvl": 3.1,
       "as_base": 0.665,
@@ -2549,7 +2549,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -2586,7 +2586,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -2623,7 +2623,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -2660,7 +2660,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -2697,7 +2697,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -2734,7 +2734,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -2771,7 +2771,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -2785,8 +2785,8 @@
       "mp_lvl": 43,
       "arm_base": 28,
       "arm_lvl": 4.2,
-      "mr_base": 30,
-      "mr_lvl": 1.3,
+      "mr_base": 33,
+      "mr_lvl": 1.1,
       "ad_base": 60,
       "ad_lvl": 2.5,
       "as_base": 0.638,
@@ -2808,7 +2808,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -2845,7 +2845,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -2882,7 +2882,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -2919,7 +2919,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -2956,7 +2956,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -2993,7 +2993,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -3030,7 +3030,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -3067,7 +3067,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -3104,7 +3104,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -3118,8 +3118,8 @@
       "mp_lvl": 40,
       "arm_base": 25,
       "arm_lvl": 4,
-      "mr_base": 30,
-      "mr_lvl": 1.3,
+      "mr_base": 33,
+      "mr_lvl": 1.1,
       "ad_base": 55,
       "ad_lvl": 2.4,
       "as_base": 0.656,
@@ -3141,7 +3141,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -3178,7 +3178,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -3215,7 +3215,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -3252,7 +3252,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -3289,7 +3289,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -3326,7 +3326,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -3363,7 +3363,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -3400,7 +3400,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -3437,7 +3437,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -3474,7 +3474,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -3511,7 +3511,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -3548,7 +3548,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -3585,7 +3585,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -3622,7 +3622,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -3659,7 +3659,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -3696,7 +3696,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -3733,7 +3733,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -3770,7 +3770,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -3807,7 +3807,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -3821,8 +3821,8 @@
       "mp_lvl": 35,
       "arm_base": 28,
       "arm_lvl": 4.7,
-      "mr_base": 30,
-      "mr_lvl": 1.3,
+      "mr_base": 33,
+      "mr_lvl": 1.1,
       "ad_base": 59,
       "ad_lvl": 3.2,
       "as_base": 0.668,
@@ -3844,7 +3844,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -3881,7 +3881,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -3918,7 +3918,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -3955,7 +3955,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -3992,7 +3992,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -4029,7 +4029,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -4066,7 +4066,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -4103,7 +4103,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -4140,7 +4140,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -4177,7 +4177,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -4214,7 +4214,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -4228,8 +4228,8 @@
       "mp_lvl": 38,
       "arm_base": 26,
       "arm_lvl": 4.7,
-      "mr_base": 30,
-      "mr_lvl": 1.3,
+      "mr_base": 33,
+      "mr_lvl": 1.1,
       "ad_base": 57,
       "ad_lvl": 3,
       "as_base": 0.658,
@@ -4251,7 +4251,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -4288,7 +4288,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -4302,8 +4302,8 @@
       "mp_lvl": 45,
       "arm_base": 25,
       "arm_lvl": 4,
-      "mr_base": 30,
-      "mr_lvl": 1.3,
+      "mr_base": 33,
+      "mr_lvl": 1.1,
       "ad_base": 50,
       "ad_lvl": 0,
       "as_base": 0.625,
@@ -4325,7 +4325,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -4362,7 +4362,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -4399,7 +4399,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -4436,7 +4436,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -4473,7 +4473,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -4510,7 +4510,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -4547,7 +4547,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -4584,7 +4584,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -4598,8 +4598,8 @@
       "mp_lvl": 45,
       "arm_base": 30,
       "arm_lvl": 4,
-      "mr_base": 30,
-      "mr_lvl": 1.3,
+      "mr_base": 33,
+      "mr_lvl": 1.1,
       "ad_base": 60,
       "ad_lvl": 2.5,
       "as_base": 0.625,
@@ -4621,7 +4621,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -4658,7 +4658,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -4672,8 +4672,8 @@
       "mp_lvl": 40,
       "arm_base": 24,
       "arm_lvl": 4,
-      "mr_base": 30,
-      "mr_lvl": 1.3,
+      "mr_base": 33,
+      "mr_lvl": 1.1,
       "ad_base": 58,
       "ad_lvl": 2.3,
       "as_base": 0.638,
@@ -4695,7 +4695,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -4732,7 +4732,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -4769,7 +4769,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -4806,7 +4806,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -4843,7 +4843,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -4880,7 +4880,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -4917,7 +4917,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -4954,7 +4954,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -4991,7 +4991,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -5028,7 +5028,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -5065,7 +5065,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -5102,7 +5102,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -5116,8 +5116,8 @@
       "mp_lvl": 32,
       "arm_base": 30,
       "arm_lvl": 4,
-      "mr_base": 28,
-      "mr_lvl": 1.3,
+      "mr_base": 33,
+      "mr_lvl": 1.1,
       "ad_base": 60,
       "ad_lvl": 3.4,
       "as_base": 0.656,
@@ -5139,7 +5139,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -5176,7 +5176,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -5213,7 +5213,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -5250,7 +5250,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -5264,8 +5264,8 @@
       "mp_lvl": 40,
       "arm_base": 27,
       "arm_lvl": 4,
-      "mr_base": 30,
-      "mr_lvl": 1.3,
+      "mr_base": 33,
+      "mr_lvl": 1.1,
       "ad_base": 59,
       "ad_lvl": 3,
       "as_base": 0.679,
@@ -5287,7 +5287,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -5324,7 +5324,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -5361,7 +5361,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -5375,8 +5375,8 @@
       "mp_lvl": 40,
       "arm_base": 24,
       "arm_lvl": 4,
-      "mr_base": 30,
-      "mr_lvl": 1.3,
+      "mr_base": 33,
+      "mr_lvl": 1.1,
       "ad_base": 59,
       "ad_lvl": 3.4,
       "as_base": 0.658,
@@ -5398,7 +5398,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -5412,8 +5412,8 @@
       "mp_lvl": 35,
       "arm_base": 23,
       "arm_lvl": 4.6,
-      "mr_base": 30,
-      "mr_lvl": 1.3,
+      "mr_base": 33,
+      "mr_lvl": 1.1,
       "ad_base": 60,
       "ad_lvl": 2.35,
       "as_base": 0.658,
@@ -5435,7 +5435,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -5472,7 +5472,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -5509,7 +5509,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -5546,7 +5546,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -5583,7 +5583,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -5620,7 +5620,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -5657,7 +5657,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -5694,7 +5694,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -5731,7 +5731,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -5768,7 +5768,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -5805,7 +5805,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -5819,8 +5819,8 @@
       "mp_lvl": 40,
       "arm_base": 25,
       "arm_lvl": 4.2,
-      "mr_base": 30,
-      "mr_lvl": 1.3,
+      "mr_base": 33,
+      "mr_lvl": 1.1,
       "ad_base": 60,
       "ad_lvl": 3.5,
       "as_base": 0.658,
@@ -5842,7 +5842,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -5879,7 +5879,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -5916,7 +5916,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -5953,7 +5953,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -5990,7 +5990,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -6027,7 +6027,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -6041,8 +6041,8 @@
       "mp_lvl": 45,
       "arm_base": 25,
       "arm_lvl": 4.4,
-      "mr_base": 30,
-      "mr_lvl": 1.3,
+      "mr_base": 33,
+      "mr_lvl": 1.1,
       "ad_base": 55,
       "ad_lvl": 3,
       "as_base": 0.65,
@@ -6064,7 +6064,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -6101,7 +6101,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -6138,7 +6138,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -6175,7 +6175,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -6212,7 +6212,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -6226,8 +6226,8 @@
       "mp_lvl": 45,
       "arm_base": 24,
       "arm_lvl": 4.2,
-      "mr_base": 30,
-      "mr_lvl": 1.3,
+      "mr_base": 33,
+      "mr_lvl": 1.1,
       "ad_base": 56,
       "ad_lvl": 2,
       "as_base": 0.658,
@@ -6249,7 +6249,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -6286,7 +6286,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -6323,7 +6323,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -6360,7 +6360,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   },
   {
@@ -6397,7 +6397,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:02:02.235Z"
+      "fetched": "2026-08-12T22:15:21.439Z"
     }
   }
 ]

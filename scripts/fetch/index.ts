@@ -18,6 +18,13 @@ import {
   parseChampionModule,
 } from './champions.ts';
 import { filterItems, type RawItemMap } from './items.ts';
+import {
+  assertNoRedundantOverrides,
+  assertNoStructuralOverrides,
+  assertOverridesDocumented,
+  buildOverrides,
+} from './overrides.ts';
+import { fetchPatchNotes } from './patch-notes.ts';
 import { parseRunes, type RawRuneTree } from './runes.ts';
 import {
   championPortraitUrl,
@@ -44,7 +51,16 @@ async function writeJson(relativePath: string, value: unknown): Promise<number> 
 }
 
 interface DataDragonChampionSummary {
-  data: Record<string, { id: string; key: string; name: string; image: { full: string } }>;
+  data: Record<
+    string,
+    {
+      id: string;
+      key: string;
+      name: string;
+      image: { full: string };
+      stats: Record<string, number>;
+    }
+  >;
 }
 
 export async function run(): Promise<void> {
@@ -75,13 +91,54 @@ export async function run(): Promise<void> {
   const ddNames = new Set(Object.keys(ddChampions.data));
   console.log(`data dragon champion.json: ${ddNames.size} champions`);
 
+  // 3a. THE SOURCE POLICY (DATA-SOURCES §3, §15). The wiki module is the default, but it
+  //     is updated by hand and can sit a patch behind Data Dragon. The current patch's
+  //     notes are the tie-break: a disagreement the notes confirm goes to Data Dragon; a
+  //     disagreement nothing explains is applied but flagged `contested` rather than
+  //     silently resolved. Overrides are derived fresh every run, so they retire
+  //     themselves the moment the wiki catches up.
+  const patchNotes = await fetchPatchNotes(patch, highest?.raw ?? null);
+  console.log(
+    patchNotes.found
+      ? `patch notes ${patchNotes.title}: ${patchNotes.changes.length} documented stat changes`
+      : `patch notes ${patchNotes.title}: NOT PUBLISHED YET — every source disagreement will be ` +
+          `flagged contested rather than confirmed`,
+  );
+
+  const ddStats: Record<string, Record<string, number>> = {};
+  for (const [apiname, entry] of Object.entries(ddChampions.data)) ddStats[apiname] = entry.stats;
+
+  const { champions: resolvedWiki, overrides, contestedApinames } = buildOverrides(
+    wikiChampions,
+    ddStats,
+    patchNotes.changes,
+    patchNotes.found,
+    patchNotes.url,
+  );
+  assertOverridesDocumented(overrides); // no override without a recorded reason and source
+  assertNoRedundantOverrides(overrides); // no override whose two sources already agree
+  assertNoStructuralOverrides(overrides); // attack-damage growth is never overridden
+
+  const confirmedCount = overrides.filter((o) => o.status === 'confirmed').length;
+  const contestedCount = overrides.length - confirmedCount;
+  console.log(
+    `source overrides: ${overrides.length} (${confirmedCount} confirmed by patch notes, ` +
+      `${contestedCount} contested) across ${new Set(overrides.map((o) => o.apiname)).size} champions`,
+  );
+  for (const override of overrides.filter((o) => o.status === 'contested')) {
+    console.log(
+      `  CONTESTED ${override.championName} ${override.stat}: wiki ${override.wikiValue}, ` +
+        `data dragon ${override.dataDragonValue} — using ${override.applied}, flagged to the user`,
+    );
+  }
+
   const championProvenance: Provenance = {
     source: 'League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)',
     url: WIKI_CHAMPION_MODULE_URL,
     patch,
     fetched,
   };
-  const { champions, withheld } = joinChampions(wikiChampions, ddNames, championProvenance);
+  const { champions, withheld } = joinChampions(resolvedWiki, ddNames, championProvenance);
   console.log(`champions kept: ${champions.length}; withheld: ${withheld.length}`);
   for (const entry of withheld) {
     console.log(`  withheld "${entry.wikiName}" — ${entry.reason}`);
@@ -124,6 +181,10 @@ export async function run(): Promise<void> {
   files.push('items.json');
   await writeJson('runes.json', { trees, runes });
   files.push('runes.json');
+  // The override ledger is a sidecar rather than a field on Champion, because the Champion
+  // shape in src/types/ is frozen and lead-owned. The interface joins it by apiname.
+  await writeJson('overrides.json', overrides);
+  files.push('overrides.json');
   for (const champion of champions) {
     const relative = `champions/${champion.apiname}.json`;
     await writeJson(relative, champion);
@@ -139,6 +200,26 @@ export async function run(): Promise<void> {
       items: items.length,
       runes: runes.length,
       runeTrees: trees.length,
+      statOverrides: overrides.length,
+      statOverridesConfirmed: confirmedCount,
+      statOverridesContested: contestedCount,
+    },
+    /**
+     * Champions carrying at least one base statistic that Riot's own sources disagree
+     * about. SPECIFICATION §8: any result involving one of these must show a visible note
+     * that a base statistic is disputed, and must not be presented as verified. The
+     * per-field detail, with evidence, is in overrides.json.
+     */
+    contestedChampions: contestedApinames,
+    sourcePolicy: {
+      summary:
+        'Champion base stats come from the wiki module by default. Where Data Dragon disagrees ' +
+        'and the current patch notes confirm Data Dragon, Data Dragon wins that field. Where ' +
+        'nothing resolves the disagreement, Data Dragon is used and the champion is flagged ' +
+        'contested. Attack-damage growth is never overridden — Data Dragon reports 0 for every ' +
+        'champion in every patch.',
+      patchNotes: { title: patchNotes.title, url: patchNotes.url, found: patchNotes.found },
+      documentedIn: 'DATA-SOURCES.md §3 and §15',
     },
     files: [...files, 'manifest.json'],
     sources: {
@@ -163,7 +244,8 @@ export async function run(): Promise<void> {
     championsWithheld: withheld,
     wikiHighestChangesPatch: highest?.raw ?? null,
     notes: [
-      'Champion base stats and per-level growth come from the wiki module, never from Data Dragon (attackdamageperlevel reads 0 there for every champion). DATA-SOURCES §3.',
+      'Champion base stats and per-level growth come from the wiki module by default, EXCEPT where the current patch notes confirm a Data Dragon value the wiki has not caught up to. Attack-damage growth is always the wiki, never Data Dragon (it reads 0 there for every champion). DATA-SOURCES §3, §15.',
+      'contestedChampions carry a base statistic Riot\'s own sources disagree about. Results involving them must show a visible note and must not be presented as verified. SPECIFICATION §8.',
       'The patch shown to users is versions.json[0]. The realm file rune field (7.23.1) is the retired rune system and is never displayed. DATA-SOURCES §8.',
       'Ability damage, item passive values, rune values and stat shards are NOT in these files — they are curated. DATA-SOURCES §9.',
     ],

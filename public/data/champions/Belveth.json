@@ -4,7 +4,7 @@
   "id": 200,
   "stats": {
     "hp_base": 580,
-    "hp_lvl": 110,
+    "hp_lvl": 105,
     "mp_base": 0,
     "mp_lvl": 0,
     "arm_base": 28,
@@ -32,6 +32,6 @@
     "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
     "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
     "patch": "16.16.1",
-    "fetched": "2026-08-12T22:02:02.235Z"
+    "fetched": "2026-08-12T22:15:21.439Z"
   }
 }
