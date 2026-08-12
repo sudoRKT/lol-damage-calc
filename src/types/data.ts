@@ -107,16 +107,49 @@ export interface DamageClassification {
 // ---------------------------------------------------------------------------
 
 /**
- * A per-rank value is stored ONE of two ways — never by guessing the middle ranks
- * (DATA-SOURCES §11, "The X to Y interpolation rule"):
- *   - `linear`  : the wiki's `X to Y` shorthand, expanded with the documented linear rule
- *                 value(rank) = from + (to - from) / (ranks - 1) * (rank - 1).
- *   - `explicit`: a literal per-rank list, used verbatim, for any ability whose ranks are
- *                 not an even linear progression (e.g. Kayle R 675/675/775).
+ * A scaling value is stored in ONE of four ways — never by guessing the middle steps
+ * (DATA-SOURCES §11, "The X to Y interpolation rule").
+ *
+ * Two scale by ABILITY RANK:
+ *   - `linear`   : the wiki's `X to Y` shorthand, expanded with the documented linear rule
+ *                  value(rank) = from + (to - from) / (ranks - 1) * (rank - 1).
+ *   - `explicit` : a literal per-rank list, used verbatim, for any ability whose ranks are
+ *                  not an even linear progression (e.g. Kayle R 675/675/775).
+ *
+ * Two scale by CHAMPION LEVEL. These exist because 95 measured damage sources — almost all
+ * of them innate passives, including Caitlyn Headshot, Darius Hemorrhage and Ziggs Short
+ * Fuse — do not scale by ability rank at all, and could not otherwise be represented:
+ *   - `byLevel`         : the wiki's `{{pp|X to Y for N|L1 to L2}}` shorthand.
+ *   - `byLevelExplicit` : `{{pp|v1;v2;…|l1;l2;…}}` — literal values at literal levels.
+ *
+ * AUTHORITY FOR THE LEVEL RULE: it is the SAME linear rule, on a different axis.
+ * `Module:Ability progression` expands both `{{ap}}` (rank) and `{{pp}}` (level) through one
+ * shared helper, `string_to_formula`:
+ *     value(x) = start + (finish - start) / (times - 1) * (x - 1)
+ * `ap` walks ranks; `pp` walks levels, taking its step count from a `for N` suffix and its
+ * level positions from a second argument. Read from the module source on 2026-08-12 at
+ * https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:Ability%20progression&rvslots=main&rvprop=content&format=json&formatversion=2
+ * We read this rule; we do not invent one. Worked example — Caitlyn Headshot
+ * `{{pp|60 to 100 for 3|1 to 13}}` → 60 / 80 / 100 at levels 1 / 7 / 13.
  */
 export type Scaling =
   | { scaling: 'linear'; from: number; to: number }
-  | { scaling: 'explicit'; perRank: number[] };
+  | { scaling: 'explicit'; perRank: number[] }
+  | {
+      scaling: 'byLevel';
+      from: number;
+      to: number;
+      /** Inclusive champion levels of the first and last step, e.g. [1, 13]. */
+      atLevels: [number, number];
+      /** How many distinct values across that span (the `for N` suffix). */
+      steps: number;
+    }
+  | {
+      scaling: 'byLevelExplicit';
+      values: number[];
+      /** Champion level at which each value takes effect; same length as `values`. */
+      atLevels: number[];
+    };
 
 /** Stats an ability ratio can scale from. */
 export type RatioStat =
@@ -133,9 +166,34 @@ export type RatioStat =
   | 'magicResist'
   | 'bonusMagicResist'
   | 'maxMana'
-  | 'currentMana';
+  | 'currentMana'
+  /** A persistent accumulation the user enters up front (SPECIFICATION §3.3) — Nasus Q
+   *  stacks, Veigar stacks, Cho'Gath Feast stacks. Requires `Ratio.counter`. */
+  | 'stacks';
 
-export type Ratio = { stat: RatioStat } & Scaling;
+export type Ratio = {
+  stat: RatioStat;
+  /** Required when `stat` is 'stacks'. Names the counter, and must match a key the scenario
+   *  supplies in ChampionConfig.persistent (e.g. 'nasusQ'). */
+  counter?: string;
+} & Scaling;
+
+/**
+ * How a component combines with the others on the same ability.
+ *
+ * This exists because 94 measured components are ALTERNATIVES, not additions: Darius Q hits
+ * with the blade OR the handle, Zed Q deals full OR reduced damage, Aatrox Q has a normal and
+ * a sweetspot value for each of three casts. A plain list gives an engine no way to know that,
+ * and summing them would hand Aatrox six casts' worth of Q damage — a plausible wrong number,
+ * which is the exact failure this project exists to prevent.
+ *
+ * Default is 'adds'. The validator REQUIRES this field to be stated explicitly on every
+ * component of any ability carrying two or more components, so the intent is always recorded
+ * rather than inferred from a default.
+ */
+export type ComponentRelation =
+  | { kind: 'adds' }
+  | { kind: 'alternativeTo'; componentId: string };
 
 export interface AbilityComponent {
   id: string;
@@ -143,6 +201,11 @@ export interface AbilityComponent {
   damageType: DamageType;
   base: Scaling;
   ratios: Ratio[];
+  relation?: ComponentRelation;
+  /** Number of times this component lands in one cast — for the 131 measured components
+   *  labelled "per tick / per spin / per bolt". One entry with a count, not N copies.
+   *  Absent means 1. */
+  hits?: number;
 }
 
 /** The seven instance types the combo parser distinguishes (SPECIFICATION §3.4). */
@@ -179,4 +242,70 @@ export interface CuratedAbility {
   verification: VerificationStatus;
   notes?: string;
   provenance: Provenance;
+  /** Set when this entry belongs to a form that is its own roster entry (SPECIFICATION §6,
+   *  plan §4) — e.g. 'Kayn (Rhaast)'. Absent for the champion's base form. */
+  form?: string;
+  /** The wiki revision id the numbers were read from. Makes a stale entry identifiable
+   *  after a patch rather than merely suspected (DATA-SOURCES §15). */
+  sourceRevision?: number;
+}
+
+/** A curated item passive or active. Data Dragon carries the flat stats; the VALUES inside a
+ *  passive live only in description text (DATA-SOURCES §5), so they are curated here. */
+export interface CuratedItemEffect {
+  itemId: number;
+  itemName: string;
+  /** 'pass' / 'pass2' / 'act' — matches the keys in Module:ItemData/data/<Item Name>. */
+  key: string;
+  name: string;
+  kind: 'passive' | 'active';
+  /** Present only when the effect deals damage. Absent for pure stat or utility passives. */
+  components?: AbilityComponent[];
+  /** Flat stat grants the effect confers, e.g. { critDamage: 0.3 } for Infinity Edge. */
+  grants?: Record<string, number>;
+  stackYields?: StackYields;
+  verification: VerificationStatus;
+  notes?: string;
+  provenance: Provenance;
+}
+
+/** A curated rune value. Every number in runesReforged.json is embedded in prose
+ *  (DATA-SOURCES §6), and no wiki rune data module exists — confirmed by enumerating all
+ *  683 Module: pages on 2026-08-12. These are hand-authored and cannot be otherwise. */
+export interface CuratedRune {
+  runeId: number;
+  runeName: string;
+  tree: RuneTree;
+  components?: AbilityComponent[];
+  grants?: Record<string, number>;
+  stackYields?: StackYields;
+  verification: VerificationStatus;
+  notes?: string;
+  provenance: Provenance;
+}
+
+// ---------------------------------------------------------------------------
+// File-level container. Nothing on disk is valid unless it matches this shape and
+// passes the runtime validator in src/types/validate-curated.ts.
+// ---------------------------------------------------------------------------
+
+/** A champion excluded from the product by decision, not by omission. Surfaced in the
+ *  interface as a deliberate state (SPECIFICATION §11, plan §5) — never a silent gap. */
+export interface CuratedExclusion {
+  champion: string;
+  reason: string;
+  decidedOn: string;
+}
+
+export interface CuratedFile {
+  /** Schema version of this file's shape. Bumped only by the lead. */
+  version: number;
+  /** Data Dragon patch the entries were authored against. */
+  patch: string;
+  fetched: string;
+  abilities: CuratedAbility[];
+  itemEffects: CuratedItemEffect[];
+  runes: CuratedRune[];
+  shards: StatShard[];
+  exclusions: CuratedExclusion[];
 }
