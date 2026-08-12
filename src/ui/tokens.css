@@ -1,0 +1,84 @@
+/*
+ * Design tokens — "Bench Test". The single source of truth for colour, type, spacing,
+ * radius, border, elevation. Seeded from DESIGN.md. LEAD-owned; frozen.
+ *
+ * THE RESERVED-HUE LAW (DESIGN.md §1): the only hues in this product are the three damage
+ * types, lethal-magenta, and the transient recent-damage gold. Everything else — surfaces,
+ * text, borders, interaction, verification status — is neutral (graphite / steel / bone).
+ * Do NOT add a hue. Distinguish things with brightness, weight, border, glyph, or label.
+ *
+ * Fonts are declared here as family variables with system fallbacks. The self-hosted
+ * @fontsource faces (Saira / IBM Plex Sans / JetBrains Mono, all OFL 1.1) are wired in when
+ * the UI area is built; until then components render in the fallbacks.
+ */
+
+:root {
+  /* ---- Surfaces and structure (neutral) ---- */
+  --bg-base: #1e242c; /* graphite — the page canvas (never pure black) */
+  --bg-well: #171c22; /* inset: inputs, the plot, table wells */
+  --bg-panel: #262e38; /* default raised surface */
+  --bg-panel-raised: #2e3742; /* hover / selected / popover surface */
+  --line-subtle: #2e3742; /* faint internal separators, grid lines */
+  --line-steel: #3a4551; /* default 1px border */
+  --line-strong: #55626f; /* emphasis border, plot zero axis */
+
+  /* ---- Text (neutral) ---- */
+  --text-primary: #ede9de; /* bone — primary text (12.9:1 on base) */
+  --text-secondary: #9aa4af; /* steel text — captions, units (6.2:1) */
+  --text-muted: #6b7580; /* disabled / placeholder ONLY (3.3:1) */
+
+  /* ---- Damage-type hues (semantic — this is the data) ---- */
+  --dmg-physical: #e8833a; /* physical (5.8:1 on base, AA) */
+  --dmg-magic: #3da9e0; /* magic (5.9:1, AA) */
+  --dmg-true: #f0ece0; /* true — warm near-white (AAA) */
+
+  /* ---- Special markers ---- */
+  --lethal: #e0457b; /* lethal magenta — LARGE/BOLD only (3.9:1) */
+  --flash-recent: #f4d06f; /* transient "recent damage" ghost only */
+  --hp-trace: #c3ccd6; /* remaining-HP line — cool neutral grey */
+
+  /* ---- Type families ---- */
+  --font-display: 'Saira', system-ui, sans-serif;
+  --font-body: 'IBM Plex Sans', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'Cascadia Code', monospace;
+
+  /* ---- Type scale (size / line-height). See DESIGN.md §3. ---- */
+  --type-display-xl: 2rem; /* 32px */ --lh-display-xl: 1.15;
+  --type-display-l: 1.5rem; /* 24px */ --lh-display-l: 1.2;
+  --type-display-m: 1.125rem; /* 18px */ --lh-display-m: 1.25;
+  --type-eyebrow: 0.6875rem; /* 11px */ --lh-eyebrow: 1.2; --ls-eyebrow: 0.06em;
+  --type-body-l: 0.9375rem; /* 15px */ --lh-body-l: 1.5;
+  --type-body-m: 0.8125rem; /* 13px */ --lh-body-m: 1.45;
+  --type-body-s: 0.6875rem; /* 11px */ --lh-body-s: 1.4;
+  --type-num-hero: 1.75rem; /* 28px */ --lh-num-hero: 1.1;
+  --type-num-l: 1rem; /* 16px */ --lh-num-l: 1.15;
+  --type-num-m: 0.8125rem; /* 13px */ --lh-num-m: 1.2;
+  --type-num-s: 0.6875rem; /* 11px */ --lh-num-s: 1.2;
+
+  /* ---- Spacing scale (4px base) ---- */
+  --space-0: 2px;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+
+  /* ---- Radius (nothing exceeds 4px — this is an instrument) ---- */
+  --radius-cell: 0px; /* table cells, the plot grid */
+  --radius-control: 2px; /* inputs, buttons, chips */
+  --radius-panel: 4px; /* panel / bezel corners */
+
+  /* ---- Borders ---- */
+  --border-hair: 1px solid var(--line-subtle);
+  --border-steel: 1px solid var(--line-steel);
+  --border-strong: 1px solid var(--line-strong);
+  --border-active: 2px solid var(--text-primary); /* selected = bone, not a hue */
+
+  /* ---- Elevation (restrained; real shadow only for popovers) ---- */
+  --elev-0: none;
+  --elev-1: 0 1px 2px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  --elev-2: 0 6px 20px rgba(0, 0, 0, 0.5);
+}

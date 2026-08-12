@@ -1,0 +1,496 @@
+# DESIGN.md — "Bench Test"
+
+The design token file required by SPECIFICATION.md §10.1. This is the single source of
+truth for colour, type, spacing, radius, borders, elevation, motion, the signature
+element, and how official game art is used.
+
+**Every agent building interface work reads this file first and derives every colour,
+type size, and spacing value from it. Do not introduce a colour, typeface, size, radius,
+or spacing value that is not defined here.** If you need something this file does not
+provide, raise it with the lead session — do not invent it locally. That is what keeps
+two agents building two different components from producing two different-looking
+products.
+
+Token names below are the names to use in code (CSS custom properties / a shared token
+module). Two components referring to `--dmg-magic` will always be the same blue.
+
+---
+
+## 0. The direction in one paragraph
+
+The product is a cold, precise measuring instrument — closer to a fighting-game
+frame-data table or an oscilloscope than to the League client. It is dense on purpose:
+tables, a step chart, resistance math shown in full. Its one source of warmth is
+**meaningful colour** — every damage figure is coloured by its damage type, which is
+League's own convention made structural, not decoration. The look is graphite and steel
+with three semantic damage hues, read at a glance by an analyst on a second monitor.
+
+---
+
+## 1. The reserved-hue law (read this before the palette)
+
+**The only hues in this product are: the three damage types (physical / magic / true),
+lethal-magenta, and the transient recent-damage gold. Nothing else is coloured.**
+
+Every other surface — backgrounds, panels, text, borders, interaction states (hover /
+selected / focus / disabled), and verification status (verified / derived / incomplete)
+— is neutral: graphite, steel, and bone. Interaction and status are shown with
+**brightness, weight, border, glyph, and label — never with a new hue.**
+
+If you find yourself wanting a green "success" or a red "error" or a blue "link" colour:
+stop. Use a neutral surface plus a glyph and a label. Hue is reserved for data meaning
+only. This one rule, followed literally, is what makes concurrently built components look
+like one instrument.
+
+---
+
+## 2. Colour tokens
+
+Hex values are exact. "Used for" and "Never used for" are binding.
+
+### Surfaces and structure (neutral)
+
+| Token | Hex | Name | Used for | Never used for |
+|---|---|---|---|---|
+| `--bg-base` | `#1E242C` | Graphite | The page canvas behind everything | Not pure black — never use `#000` as a background |
+| `--bg-well` | `#171C22` | Well | Inset areas: input fields, the plot background, table wells | Raised surfaces |
+| `--bg-panel` | `#262E38` | Panel steel | The default raised instrument surface: cards, config panels, table headers | The page canvas |
+| `--bg-panel-raised` | `#2E3742` | Raised steel | Hover state of a panel, selected rows, the surface of popovers/menus | Large static fills (too light to read text against comfortably at length) |
+| `--line-subtle` | `#2E3742` | Hair line | Internal grid lines, faint separators inside a panel | Primary component borders |
+| `--line-steel` | `#3A4551` | Steel line | The default 1px border on panels, inputs, chips, table cells | — |
+| `--line-strong` | `#55626F` | Strong line | Emphasis borders, the plot's zero axis, hovered control borders | Decoration |
+
+### Text (neutral)
+
+| Token | Hex | Name | Used for | Contrast on `--bg-base` |
+|---|---|---|---|---|
+| `--text-primary` | `#EDE9DE` | Bone | All primary text, headings, body | 12.9 : 1 (AAA) |
+| `--text-secondary` | `#9AA4AF` | Steel text | Secondary labels, captions, axis numbers, units | 6.2 : 1 (AA) |
+| `--text-muted` | `#6B7580` | Muted | Disabled controls, placeholder text, hints **only** | 3.3 : 1 — below AA body; permitted only for disabled/placeholder, which WCAG exempts |
+
+### Damage-type hues (semantic — this is the data)
+
+| Token | Hex | Name | Used for | Contrast on `--bg-base` |
+|---|---|---|---|---|
+| `--dmg-physical` | `#E8833A` | Physical orange | Physical damage values, their burndown risers, their icon-chip underlines | 5.8 : 1 (AA) |
+| `--dmg-magic` | `#3DA9E0` | Magic cyan | Magic damage values, risers, chip underlines | 5.9 : 1 (AA) |
+| `--dmg-true` | `#F0ECE0` | True bone-white | True damage values, risers, chip underlines | ~13 : 1 (AAA) |
+
+Note on true damage: it is a **warm** near-white. The HP trace (below) is a **cool**
+grey. That warm/cool split keeps true-damage marks distinct from the neutral HP line
+even for red-green colourblind viewers (the difference is on the blue-yellow axis, which
+red-green deficiency preserves). The mandatory `T` tag (§8) is the definitive cue.
+
+### Special markers
+
+| Token | Hex | Name | Used for | Rule |
+|---|---|---|---|---|
+| `--lethal` | `#E0457B` | Lethal magenta | The LETHAL vertical rule, kill callouts, a defeated total | Contrast on base is 3.9 : 1 — **large/bold only** (≥ 24px, or ≥ 18.66px bold). Never magenta small body text. Never any damage type. |
+| `--flash-recent` | `#F4D06F` | Recent gold | The transient "just-lost HP" ghost on the burndown only | Transient and motion-carried; never a static fill, never a value colour. Tuned yellower/brighter than physical orange so the two never read as the same thing. |
+| `--hp-trace` | `#C3CCD6` | HP grey | The remaining-HP line and its plateaus in the burndown | Neutral cool grey; never a damage value |
+
+### Contrast — how these were checked
+
+The ratios above are WCAG 2.1 relative-luminance ratios I computed by hand from the hex
+values against `--bg-base`, not estimates. Binding consequences: **body text uses only
+bone or steel-text**; **damage hues clear AA (≥ 4.5) for normal text**; **magenta is
+large/bold only**; **muted grey is disabled/placeholder only**. Any new pairing an agent
+introduces must be checked the same way before use.
+
+---
+
+## 3. Typography
+
+Three typefaces. All three are licensed under the **SIL Open Font License 1.1**, which
+permits commercial use, embedding, and self-hosting at no cost.
+
+**Recommended loading: self-host** (do not hot-link Google Fonts). A self-hosted static
+app makes no third-party font request, which keeps first paint under local control (§13)
+and avoids a third-party data flow that the cookie/consent surface (§15) would otherwise
+have to cover. Install via the Fontsource packages and import the specific weights, or
+download the families from Google Fonts / the source repos and serve the `woff2` files
+yourself.
+
+| Face | Role | Licence | Fontsource package | Source repo | Google Fonts |
+|---|---|---|---|---|---|
+| **Saira** | Display / headers | OFL 1.1 (Omnibus-Type) | `@fontsource/saira` | github.com/Omnibus-Type/Saira | fonts.google.com/specimen/Saira |
+| **IBM Plex Sans** | Body / labels | OFL 1.1 (IBM) | `@fontsource/ibm-plex-sans` | github.com/IBM/plex | fonts.google.com/specimen/IBM+Plex+Sans |
+| **JetBrains Mono** | Numbers / tables | OFL 1.1 (JetBrains) | `@fontsource/jetbrains-mono` | github.com/JetBrains/JetBrainsMono | fonts.google.com/specimen/JetBrains+Mono |
+
+**Why each was chosen for this product**
+
+- **Saira (display)** — a technical, slightly condensed grotesque. It packs into narrow
+  headers and rail labels without shouting, and it reads as engineered instrumentation
+  rather than editorial or decorative. It is the instrument's nameplate voice.
+- **IBM Plex Sans (body)** — drawn for IBM's engineering documentation: literate but
+  machined. Chosen specifically instead of Inter so the interface does not carry the
+  generic-SaaS fingerprint Inter now signals.
+- **JetBrains Mono (numbers)** — built for dense readouts, with unambiguous `0 O 1 l`
+  (its zero is dotted by default) and monospaced-so-inherently-tabular figures. In a tool
+  whose entire worth is a column of numbers being right and aligned, the numeric face is
+  the most important type decision, and this one is engineered for exactly this job.
+
+### Weights to load (keep to these — do not add weights)
+
+- Saira: **500** (Medium), **600** (SemiBold)
+- IBM Plex Sans: **400** (Regular), **500** (Medium), **600** (SemiBold)
+- JetBrains Mono: **400** (Regular), **500** (Medium), **700** (Bold)
+
+### Type scale (rem with px at a 16px root; line-heights are unitless)
+
+| Token | Face / weight | Size | Line-height | Use |
+|---|---|---|---|---|
+| `--type-display-xl` | Saira 600 | 2rem / 32px | 1.15 | Page title; the attacker-vs-defender matchup header |
+| `--type-display-l` | Saira 600 | 1.5rem / 24px | 1.2 | Panel and section headers |
+| `--type-display-m` | Saira 500 | 1.125rem / 18px | 1.25 | Subsection labels, tab labels |
+| `--type-eyebrow` | Saira 500 | 0.6875rem / 11px | 1.2 | Uppercase micro-labels; letter-spacing **+0.06em**; `--text-secondary` |
+| `--type-body-l` | IBM Plex Sans 400 | 0.9375rem / 15px | 1.5 | Primary body, form field labels |
+| `--type-body-m` | IBM Plex Sans 400 | 0.8125rem / 13px | 1.45 | Dense table body text, secondary copy |
+| `--type-body-s` | IBM Plex Sans 500 | 0.6875rem / 11px | 1.4 | Chip labels, axis captions, footnotes |
+| `--type-num-hero` | JetBrains Mono 700 | 1.75rem / 28px | 1.1 | The rolling combo total |
+| `--type-num-l` | JetBrains Mono 500 | 1rem / 16px | 1.15 | Per-instance damage values in the breakdown |
+| `--type-num-m` | JetBrains Mono 400 | 0.8125rem / 13px | 1.2 | Running totals, secondary figures, table number cells |
+| `--type-num-s` | JetBrains Mono 400 | 0.6875rem / 11px | 1.2 | Axis ticks, small stat readouts |
+
+### Type feature rules
+
+- Anywhere IBM Plex Sans or Saira renders numbers, enable tabular, lining figures:
+  `font-variant-numeric: tabular-nums lining-nums;`. JetBrains Mono is monospaced, so its
+  figures are already tabular — leave it alone.
+- Damage-type tags (§8) render in JetBrains Mono regardless of the surrounding face.
+- Display text is never letter-spaced except the `--type-eyebrow` role.
+
+---
+
+## 4. Spacing scale
+
+A 4px base unit. Use only these steps. Layout is dense: prefer the smaller steps inside
+panels and reserve the larger steps for separating major regions.
+
+| Token | Value | Typical use |
+|---|---|---|
+| `--space-0` | 2px | Hairline insets, tag offset from its number |
+| `--space-1` | 4px | Tightest gap; icon-to-label inside a chip |
+| `--space-2` | 8px | Table cell vertical padding; gaps between related controls |
+| `--space-3` | 12px | Control inner padding; row rhythm |
+| `--space-4` | 16px | Panel inner padding; default gap between fields |
+| `--space-5` | 24px | Gap between panels; grid gutter; rail gutter |
+| `--space-6` | 32px | Separation between major sections |
+| `--space-7` | 48px | Top/bottom page regions |
+| `--space-8` | 64px | Rare; large vertical breaks on wide layouts |
+
+Defaults an agent can rely on: panel padding `--space-4`; table cell padding
+`--space-2` vertical / `--space-3` horizontal; grid and rail gutters `--space-5`.
+
+---
+
+## 5. Radius, borders, elevation
+
+This direction is an instrument. It reads as machined metal, not soft cards. Rounding is
+minimal and functional.
+
+### Radius (nothing exceeds 4px)
+
+| Token | Value | Applies to |
+|---|---|---|
+| `--radius-cell` | 0px | Table cells, the plot grid, anything that aligns to a hard grid |
+| `--radius-control` | 2px | Inputs, buttons, chips, icon-chips, toggles |
+| `--radius-panel` | 4px | The outer corners of a panel / the instrument bezel |
+
+2px on interactive elements is deliberate: it softens cut-sheet-metal edges just enough
+to signal "interactive" without drifting toward the pill-shaped rounded-card look, and
+the hard 0px grid on tables keeps columns reading as a precise readout. This is **not**
+the banned zero-radius broadsheet look — that ban is about hairline rules on a
+white/broadsheet layout; here borders are steel on graphite and carry visible weight.
+Status dots and the champion-portrait "active" indicator are circles (they are glyphs,
+not surfaces) and are exempt from the 4px cap.
+
+### Borders (the primary means of separation)
+
+| Token | Value | Use |
+|---|---|---|
+| `--border-hair` | 1px solid `--line-subtle` | Internal separators within a panel |
+| `--border-steel` | 1px solid `--line-steel` | The default border on panels, inputs, chips, cells |
+| `--border-strong` | 1px solid `--line-strong` | Emphasis; hovered control borders |
+| `--border-active` | 2px solid `--text-primary` | Selected / active control (a bone border, not a hue) |
+
+The instrument separates regions with **visible borders**, not drop shadows. Reach for a
+border before a shadow.
+
+### Elevation (restrained — real shadow is the exception)
+
+| Token | Value | Use |
+|---|---|---|
+| `--elev-0` | none | Panels at rest — they sit by border + surface contrast |
+| `--elev-1` | `0 1px 2px rgba(0,0,0,0.40)` + `inset 0 1px 0 rgba(255,255,255,0.03)` | A barely-raised panel; the top inset highlight reads as a machined edge |
+| `--elev-2` | `0 6px 20px rgba(0,0,0,0.50)` | Popovers, dropdown pickers, menus — the only genuine shadow in the product |
+
+No coloured shadows. No glows anywhere except the burndown-specific effects defined in
+§7. If it is not a popover, it does not get `--elev-2`.
+
+---
+
+## 6. Verification status and interaction states (neutral, per §1)
+
+Because hue is reserved for damage data, both of these are shown without colour.
+
+**Verification status** (SPECIFICATION §8, shown on every ability that contributes to a
+result) — a neutral glyph plus a text label, in `--text-secondary`:
+
+- **Verified** — `●` filled dot + label "Verified"
+- **Derived** — `◐` half dot + label "Derived"
+- **Incomplete** — `○` open dot + label "Incomplete" (may pair with `⚠` at the same
+  neutral colour)
+
+Never colour these. A verified figure and a derived figure differ by glyph and label,
+never by turning something green or amber.
+
+**Interaction states** — brightness and weight, never hue:
+
+- Rest: `--bg-panel`, `--border-steel`
+- Hover: `--bg-panel-raised`, `--border-strong`
+- Selected / active: `--border-active` (2px bone)
+- Focus-visible: 2px bone outline (`--text-primary`) offset 2px — always visible,
+  keyboard navigation is required (§10)
+- Disabled: `--text-muted`, 50% opacity, no border emphasis
+
+---
+
+## 7. Signature element — the HP burndown
+
+This is the one place the animation budget is spent (§10.1) and the product's remembered
+object. It renders the combo resolving against the defender's health as a **burndown /
+combo waterfall**: a stepped chart of remaining HP falling to zero, with the steps
+coloured by damage type. Specified here in enough detail to build without further
+decisions.
+
+### Layout and axes
+
+- A rectangular plot inside a `--bg-well` panel with `--border-steel` and
+  `--radius-panel`.
+- **Y axis** = HP, linear, `0` at the bottom and the defender's effective max HP at the
+  top. Horizontal grid lines at rounded HP intervals in `--line-subtle`; the **zero line
+  is `--line-strong`**. Y tick labels in `--type-num-s`, `--text-secondary`.
+- **X axis** = **sequence** — one equal-width column per combo instance, left to right,
+  plus a final `+DoT` column when DoT applies. It is an ordinal sequence, **not time**.
+  A caption under the axis reads "sequence — not elapsed time" (SPECIFICATION §3.2). X
+  labels in `--type-body-s`.
+
+### The trace and the coloured steps
+
+For each instance *i*, with remaining-HP-before `Rᵢ` and this instance's damage `dᵢ`:
+
+- **Tread (horizontal):** a 2px line in `--hp-trace` at height `Rᵢ`, spanning column *i*.
+  This is the remaining-HP plateau — neutral grey.
+- **Riser (vertical):** at the right edge of column *i*, a 3px line dropping from `Rᵢ`
+  to `max(0, Rᵢ − dᵢ)`, coloured by the instance's **damage type**
+  (`--dmg-physical` / `--dmg-magic` / `--dmg-true`). Riser height is proportional to
+  `dᵢ`, so the eye reads damage magnitude directly.
+- **Label:** the value `dᵢ` with its mandatory damage-type tag (§8), in `--type-num-l`,
+  in the damage-type colour, placed beside its riser.
+
+So: grey plateaus mark where HP sits; coloured drops are the hits. A combo is a staircase
+descending from full HP toward zero, tinted by what did the damage.
+
+### The rolling total
+
+Above or beside the plot, the cumulative combo total in `--type-num-hero`
+(`--text-primary`, bone). As each step lands it **rolls** odometer-style to the new
+value (§8: this total is a sum across damage types, so it is **type-agnostic — bone, no
+tag**). Directly under it, a thin **composition bar** shows the physical/magic/true split
+of the total as three segments in the damage hues, each segment carrying its `P`/`M`/`T`
+tag so the split is colourblind-safe.
+
+### The LETHAL rule (magenta) at the zero crossing
+
+- The first instance *i* whose cumulative damage ≥ the defender's current HP is the kill.
+  At that column boundary, draw a **2px solid `--lethal` vertical rule** spanning the full
+  plot height.
+- A callout chip sits at the top of the rule: `LETHAL · instance i`, bone text on
+  `--bg-panel` with a 2px `--lethal` border. (Magenta is large/bold here, satisfying its
+  contrast rule.)
+- If the burst never crosses zero, draw no rule; the final tread ends above zero and a
+  chip reads `SURVIVES · {remaining} HP` with a `--border-steel` (neutral) border.
+
+### The hatched DoT tail
+
+- Damage over time is never folded into burst (SPECIFICATION §3.8). After the last burst
+  column, an appended `+DoT` column draws a **riser filled with a 45° diagonal hatch**,
+  in the DoT source's damage hue at ~50% saturation. The **hatch pattern is the
+  non-colour cue** that separates DoT from burst — consistent with the colourblind
+  philosophy of this whole product.
+- If burst alone survives but burst + DoT kills, draw a **second, dashed `--lethal`
+  rule** at the DoT crossing labelled `LETHAL +DoT · after combo`.
+- Both verdicts are always printed as text below the plot, e.g.
+  `Burst: SURVIVES 512 HP` and `Burst + DoT: LETHAL` — the two-verdict requirement made
+  literal.
+
+### The trailing recent-damage ghost (grafted from Direction 3)
+
+When a step appears during playback, the band it just removed — the rectangle between the
+old plateau `Rᵢ` and the new plateau `Rᵢ − dᵢ`, across column *i* — briefly fills with
+`--flash-recent` at ~35% opacity, then eases out to zero over **600ms**. This is the
+in-game "recent damage" catch-up: you see the chunk that was just taken, then it fades.
+It is transient and positional; **motion carries it**, so no one has to classify it as a
+colour, and it is absent from the settled/static chart. It never appears as a value.
+
+### Interaction
+
+Hovering or keyboard-focusing a riser freezes it and opens an `--elev-2` popover showing
+that instance's full resistance-modifier math in the fixed order (flat reduction →
+percentage reduction → percentage penetration → flat penetration → multiplier → final
+value), every figure carrying its damage-type tag.
+
+### ASCII schematic (orientation only — not to scale)
+
+```
+  TOTAL  2 480            ← --type-num-hero, odometer roll, bone, no tag
+  split  [██ P ][███ M ][█ T ]   ← composition bar, tagged segments
+
+  HP                                          · = --hp-trace plateau
+ 6000 ┼· · ·                                  ╲ = coloured riser (by type)
+      │     ╲ 214 P
+ 5000 ┼      · · · ·
+      │           ╲ 180 M
+ 4000 ┼            · · · · · ·
+      │                     ╲ 240 T
+ 3000 ┼                      · · ·
+      │  LETHAL · inst 4 →   ┃ ╲ 96 P
+    0 ┼──────────────────────┃──╳──╱╱╱╱  ← magenta rule; hatch = DoT tail
+        inst1   inst2   inst3 ┃ inst4  +DoT
+                    sequence — not elapsed time
+```
+
+---
+
+## 7a. Layout and the ad slots (locked)
+
+**Layout decision (locked).** The page uses a stacked arrangement: attacker and defender
+configuration panels across the top row, and the HP burndown full-width below them. This
+keeps the top row's width requirement near ~900px, which lets the two §16 vertical ad
+rails appear at roughly a **1280px** viewport instead of ~1440px — so laptop and
+half-width second-monitor users see the rails. Below ~1280px the rails hide (per §16, they
+render only where they don't compress the calculator) and the layout goes single-column.
+The top and bottom banners are horizontal bands and render at effectively any desktop
+width. The §16 slots are fixed-dimension reserved containers so ad loading causes no
+layout shift (§13).
+
+---
+
+## 8. Damage type is never conveyed by colour alone (hard rule)
+
+**Every rendered damage value carries a damage-type tag as well as its colour.** The tag
+is the definitive channel; colour is the fast, redundant one.
+
+### The cue: a `P` / `M` / `T` letter tag
+
+- **`P`** = Physical, **`M`** = Magic, **`T`** = True.
+- Rendered in **JetBrains Mono**, at **0.7em**, immediately after the number, separated by
+  a thin space, in the **same colour as the number** (the letter, not its colour, is the
+  cue). Example forms: `214 P`, `180 M`, `240 T`.
+- It is **mandatory and never suppressed** — in the per-instance table, the burndown riser
+  labels, the composition bar segments, tooltips, and the damage-versus-armor and
+  damage-versus-level curves. The only figure without a tag is a **multi-type aggregate
+  total**, which is bone with no tag and is instead broken down by the tagged composition
+  bar.
+- **Screen readers:** the tag is visual; expose the full word to assistive technology via
+  an accessible label so `214 P` is announced as "214 physical damage." The letter is
+  never the only machine-readable signal.
+- **Icon-chips carry the tag too** (§9): a combat icon's damage-type underline is paired
+  with a small `P`/`M`/`T` corner tag, so the chip is colourblind-safe on the same terms
+  as the values.
+
+### Why a letter tag (and not a glyph, or a border style)
+
+- `P`/`M`/`T` map directly onto words League players already use — physical, magic, true —
+  so no legend is needed.
+- Three distinct letterforms stay unambiguous at 11px, where three small geometric glyphs
+  (▲/◆/●) blur together.
+- Text survives copy-paste and screen readers and expands cleanly to full words; a glyph
+  does not.
+- A border style (solid/dashed/dotted) is a second *visual-only* channel that also fails
+  low-vision users and cannot ride alongside a floating combat number; the letter can.
+
+The DoT hatch (§7) and the verification glyphs (§6) follow the same philosophy: meaning is
+never left to colour alone.
+
+---
+
+## 9. Official game art (Data Dragon)
+
+Art is demoted to functional data-chips and semantic markers — it serves the readout, it
+is never framed or gilded (that ornamental treatment belonged to a rejected direction).
+
+### Icons as data-chips
+
+- Ability, item, and rune icons render as small squares: **32px** in the combo builder,
+  **24px** in tables, **20px** inline. `--radius-control` (2px), `--border-steel`.
+- A **combat-relevant** icon-chip carries a **2px bottom underline in its damage-type
+  colour** *and* a small `P`/`M`/`T` corner tag (§8). The underline is the fast cue; the
+  tag makes it colourblind-safe.
+- A **non-damaging** ability/item/utility chip gets a neutral `--line-steel` underline and
+  no tag (or an em-dash marker) — visibly "no damage type," not an omission.
+- Hover brightens the chip (`--bg-panel-raised`); it never changes hue.
+
+### Portraits tinted until active
+
+- Champion portraits are **desaturated and tinted toward `--bg-panel`** (low chroma) while
+  the champion is unselected or inactive — this is a display filter, not an edit to the
+  asset (§15). They resolve to **full colour only for the two active combatants**
+  (attacker and defender), directing the eye to the two champions in play and keeping the
+  dense build/picker lists calm.
+- Portrait sizes: **64px** nameplate (the two combatants), **40px** picker/list rows.
+  Square, `--border-steel`, `--radius-panel`. The active combatant's portrait takes
+  `--border-active` (2px bone) and a circular status dot if a state is attached.
+
+### Attribution
+
+Data Dragon art is used within the asset usage permitted by SPECIFICATION §15. The art
+itself is never recoloured beyond the desaturation display filter above.
+
+---
+
+## 10. Motion
+
+**The budget is concentrated on the HP burndown (§7). Everywhere else motion is
+functional and ≤ 140ms.** No parallax, no idle/ambient motion, no decorative loops.
+
+### What animates
+
+| Motion | Duration | Easing |
+|---|---|---|
+| Burndown trace drawing in (per step, staggered) | 120ms per step | ease-out `cubic-bezier(0.2, 0, 0, 1)` |
+| Rolling total odometer | 300ms | linear |
+| Recent-damage ghost fade (§7) | 600ms | ease-out (slow) |
+| LETHAL rule strike-in | 180ms | ease-out |
+| Popover / menu / picker open-close | 140ms | ease-out |
+| Control hover / toggle | 90ms | ease-out |
+
+### What does not animate
+
+Panels, tables, layout, and champion/item/rune selection change **instantly**. Table row
+highlight on hover is instant. There are no page transitions and no loading choreography
+beyond a static skeleton where data is still lazy-loading (§13).
+
+### Reduced motion
+
+Honour `prefers-reduced-motion: reduce`: render the burndown in its **final settled
+state immediately** — no trace draw, no odometer roll, no recent-damage ghost — and keep
+only opacity fades of ≤ 100ms for popovers. The chart must be fully readable with all
+motion disabled.
+
+---
+
+## 11. Quick reference for an agent starting a component
+
+1. Backgrounds: `--bg-base` behind everything, `--bg-panel` for raised surfaces,
+   `--bg-well` for inputs and the plot.
+2. Text: bone `--text-primary`, secondary `--text-secondary`. Never invent a text colour.
+3. A damage number is **always** `{value}` in its damage hue **plus** its `P`/`M`/`T` tag.
+   No exceptions except multi-type totals (bone, no tag, with a composition bar).
+4. Need to show success/error/status/interaction? Use a **neutral surface + glyph +
+   label**, never a new hue (§1, §6).
+5. Borders before shadows. `--elev-2` is popovers only.
+6. Radius: 0 on grid/table cells, 2px on controls, 4px on panel corners. Nothing higher.
+7. Numbers in JetBrains Mono; headers in Saira; everything else IBM Plex Sans.
+8. Keyboard focus is always visible; the interface works with motion disabled.

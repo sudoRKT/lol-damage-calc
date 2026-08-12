@@ -1,0 +1,16 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+.vite/
+
+# Editor / OS
+.DS_Store
+*.local
+
+# Claude local (personal) settings are not shared; settings.json IS shared.
+.claude/settings.local.json
+.claude/*.tmp.*
+
+# NOTE: /curated/ is the irreplaceable source and MUST be version-controlled. Never ignore it.
