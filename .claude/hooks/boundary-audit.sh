@@ -44,6 +44,25 @@ command -v jq >/dev/null 2>&1 || exit 0
 tool="$(jq -r '.tool_name // empty' <<<"$input")"
 case "$tool" in
   Write | Edit | MultiEdit | NotebookEdit) ;;
+  Bash)
+    # Publishing is a lead action. An agent has no business pushing to the remote, and
+    # unlike a file write there is no undo. The lead (empty agent_id) is unaffected.
+    bash_agent="$(jq -r '.agent_id // empty' <<<"$input")"
+    if [ -n "$bash_agent" ]; then
+      cmd="$(jq -r '.tool_input.command // empty' <<<"$input")"
+      if printf '%s' "$cmd" | grep -Eq '(^|[^[:alnum:]_-])git[[:space:]]+([^|;&]*[[:space:]])?push([[:space:]]|$)'; then
+        printf '%s\tBLOCK\t%s\t%s\tBash\tgit push\tagents may not push\n' \
+          "$(date -Is)" "$(jq -r '.agent_type // empty' <<<"$input")" "${bash_agent:0:12}" >>"$log"
+        {
+          echo "BLOCKED by boundary-audit hook: an agent may not push to the remote."
+          echo "Pushing is outward-facing and cannot be undone. The lead session publishes."
+          echo "Report your work as pass and fail counts instead; the lead commits and pushes."
+        } >&2
+        exit 2
+      fi
+    fi
+    exit 0
+    ;;
   *) exit 0 ;;
 esac
 
