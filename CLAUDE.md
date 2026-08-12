@@ -41,8 +41,9 @@ established from three substitute sources, in descending order of authority:
 1. **Formula tests.** Large parts of the engine are deterministic arithmetic that can
    be tested without the game: the armor and MR multipliers, the four-step
    resistance-modifier order, adaptive force resolution, crit, execute thresholds,
-   minimum damage floors, and the rounding point. Write these as unit tests taken
-   directly from the documented formulas, not from engine output.
+   and the rounding point. Write these as unit tests taken directly from the documented
+   formulas, not from engine output. (A "minimum damage floor" was listed here until
+   2026-08-12; it was investigated and no such game-wide rule exists — DATA-SOURCES §14.)
 2. **Worked examples** published in the League wiki's damage and mechanics articles.
 3. **Cross-checks against existing public damage calculators.** Where the engine and a
    third-party calculator disagree, that is a finding to surface, not something to

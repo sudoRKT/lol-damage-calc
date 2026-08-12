@@ -155,7 +155,6 @@ The engine resolves the following:
 - Damage amplification, with additive and multiplicative amplification handled distinctly
 - Lifesteal, omnivamp, and spell vamp on the attacker
 - Healing effects on the defender
-- Minimum damage floors
 
 Rounding behaviour is fixed and documented at a single point in the engine, so that
 accumulated rounding across a multi-instance combo remains consistent with in-client values.
@@ -326,7 +325,7 @@ The simulator never presents a derived figure as though it were verified.
 established without access to the game client, from three sources in descending order of
 authority: unit tests written directly from documented formulas — the resistance
 multipliers, the four-step modifier order, adaptive force resolution, critical strike,
-execute thresholds, minimum damage floors, and the rounding point; worked examples
+execute thresholds, and the rounding point; worked examples
 published in the wiki's damage and mechanics articles; and cross-checks against existing
 public damage calculators. These define correctness. They are never modified to
 accommodate the engine. They run automatically against every change, and a failure blocks
