@@ -1979,3 +1979,70 @@ and after this session the cheap half of it is gone — what remains is dominate
 whose number the source never labels and 29 whose payload sits outside the run that names it.
 **23 entries can never be completed by anyone.** No status above `derived` exists anywhere on the
 roster, because gate 5 has never been run.
+
+---
+
+## 28. The values nothing had checked — a third round-trip (2026-08-13)
+
+### The question
+
+26 abilities carried damage that no gate could reach. A component recovered from prose whose
+value is a **flat ratio** has no leveling row in the ability box and no progression block to
+re-render, so both existing round-trips were blind to it. Asked plainly: is any round-trip
+possible for them at all, or can they never be gate-2 confirmed?
+
+### The answer: they are rendered, and not where anyone had looked
+
+The same `action=parse` call that produces the leveling rows also renders the ability's
+**description**, and the wiki's own Lua resolves every value into it:
+
+```
+Blitzcrank E   deal 100% AD (+ 25% AP) bonus physical damage
+Zed P          deal 5% / 7.5% / 10% (based on level) of the target's maximum health
+Nocturne P     dealing 120% AD physical damage to the target and nearby enemies
+```
+
+`parseRenderedProse` reads `div.ability-info-description` — and only that, since the patch-history
+section elsewhere in the same document is the §13 trap. `roundTripProse` then requires every
+figure a component asserts to appear in that text **in the order it asserts them**. Order is what
+makes it meaningful: these sentences are full of cooldowns, durations and ranges, so a bare
+"does this number appear" test would pass on a coincidence.
+
+| Figure | Count | Definition |
+|---|---:|---|
+| prose components checked against the rendered description | **56** | every component the prose path produced |
+| **matched** | **56** | every asserted figure printed, in order |
+| disagreeing | **0** | |
+| no figures to check | 0 | |
+| abilities with prose components now carrying gate-2 evidence | **52 of 52** | was 26 of 52 |
+
+**The 26 with no evidence is now 0.** Roster-wide, entries holding components that no round-trip
+can compare fall from **35 to 9**.
+
+### What this check is, and what it is not
+
+It is deliberately the weakest of the three and must not be read as their equal. It confirms that
+the figures we stored are the figures the wiki prints for that ability, in that order. It does
+**not** confirm that we attached them to the right stat, nor that we did not miss a term the wiki
+also printed. A pass here is evidence, not proof — which is exactly why gate 5 exists.
+
+### Two corrections it forced, both found by running it
+
+- **The description summarises rather than enumerates.** A varying value prints as a range —
+  `26 – 196 (based on level)` — not as eighteen numbers. A first cut demanded every step and
+  failed on **34 of 56** components. The expectation is now the ENDS of each series, and the
+  middle steps are checked by `roundTripLevelScaled` against the wiki's full expansion wherever a
+  progression block exists (27 of the 56).
+- **The upper end of that range is the level-20 value.** Ziggs Short Fuse prints `20 – 184`; 184
+  is level 20 and the correct level-18 figure is 160. This failed on a further 10 abilities. A
+  level-scaled series therefore contributes only its FIRST value to this check. Storing 184 to
+  make the check pass would have imported the extrapolation the project refuses (§13) — the check
+  was changed, never the value.
+
+### The 9 that remain, and what they mean
+
+Nine entries still hold components no round-trip can compare — among them Aurelion Sol W,
+Caitlyn W, and the Heimerdinger and Nidalee abilities whose rank counts the wiki will not render
+(§22). For those, **gate 2 can never confirm them, and their only route to `verified` is gate 5**:
+an independent re-derivation by an agent that does not share this pipeline's code. That is not a
+gap to be closed by more parsing; it is the reason the project has a fifth gate.
