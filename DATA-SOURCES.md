@@ -3247,3 +3247,93 @@ destruction **3** · untargetability-only **32** · health-pool properties **2**
 steal" **19**, distinct from the **4** that GRANT life steal or omnivamp.
 
 The census is `build/proposed-curated/defensive-census.json`.
+
+---
+
+## 41. The contract pass — twelve gaps closed in one change (2026-08-13)
+
+Four concurrent areas each hit the same wall: the work was no longer blocked on extracting values,
+it was blocked on shapes the frozen contract could not express. Every one was RAISED rather than
+worked around, which is the partition doing its job. This closed all twelve in a single pass with
+no agents running.
+
+| # | Gap | What it releases |
+|---|---|---|
+| 1 | `Scaling` gains a **`byRangeType`** arm — two values chosen by the holder's range type | **12 item effects** |
+| 2 | `CuratedItemEffect.overTime` — an item effect whose damage recurs | **7 item effects** |
+| 3 | `ReportedDamageType` gains **`'mixed'`**, and `InstanceResult.byType` carries the split | **13 abilities** |
+| 4 | **`CuratedDefensiveEffect`** — kind, three activation buckets, an optional or by-reference value, an owner | the whole defender model, **218 effects** |
+| 5 | `CuratedItemEffect.unresolvable` | the 52 permanent effects can say why |
+| 6 | `CuratedItemEffect.appliesAs` — on-hit, Spellblade, active, … | **20 of the 28** extracted effects become sequenceable |
+| 7 | `InstanceResult.afterPreMitigationReduction` | pre-mitigation flat reduction has an honest home |
+| 8 | `StatBlock.penetration` | penetration stops being an argument beside the stat block |
+| 9 | `StatBlock` base/bonus split on armor and magic resistance | percentage **bonus** armor penetration becomes modellable |
+| 10 | `ReportedDamageType` gains **`'none'`** | a non-damaging instance stops being labelled `'true'` |
+| 11 | **`ResistanceSteps`** — the four-step order, step by step | the burndown popover can show §3.6 instead of describing it |
+| 12 | `CuratedFile.defensiveEffects` | the defender census has somewhere to land |
+
+**Two design rules the additions carry, both learned from the measurements that motivated them:**
+
+- **`byRangeType` is never defaulted.** `valueAt` throws when it meets one without a range type,
+  because picking either arm understates half the roster. The range type is a fact the scenario
+  knows and the data does not.
+- **`'not-stated'` is a real activation, not a placeholder.** Two defensive effects state a
+  condition this engine cannot represent — Xin Zhao R's is a DISTANCE, Kayn P's is a location
+  outside combat. A two-way field would have forced them to be guessed.
+
+### 41.1 The three decisions
+
+**ROUNDING — the accurate total wins.** Rounded output is never fed back into arithmetic: the
+burst total is rounded ONCE from the unrounded sum. Three instances of 150 / 166.67 / 187.5 display
+as 150 / 167 / 188, whose column reads **505**, while the total is **504**. The alternative lets
+rounding accumulate across a long combo and does not match the game, where damage applies unrounded
+and only the display rounds. **CONSEQUENCE, BINDING ON THE INTERFACE: the per-instance column must
+never be presented as something to add up. `runningTotal` is the authoritative figure and belongs
+on every row.** Recorded on `InstanceResult.final`.
+
+**REDUCTION ORDER — percentage before flat, and it is disclosed.** No source states the order. On
+200 damage with a 25% and a 30-point reduction the two readings give **120** and **127.5** — 6%, not
+a rounding artefact. The engine applies percentage first and **says so in `ENGINE_EXCLUSIONS`, which
+is attached to every result**, so a user knows one ordering rests on a convention. To be settled by
+cross-checking a public calculator (CLAUDE.md's third source), where a disagreement is a finding to
+surface rather than reconcile.
+
+**DATA DRAGON ATTRIBUTIONS — adopted.** Where Data Dragon's prose attributes a stat the wiki leaves
+silent, that is a source STATING a fact, not an inference from convention. This does not weaken §16:
+the rule remains that an owner is never inferred from a verb or a convention, and 22 references with
+a holder-implying verb stay unresolved.
+
+**§37.3 re-measured. DEFINITION: an effect is permanently unresolvable when at least one
+owner-required stat reference in its prose is attributed by NEITHER source.**
+
+| Figure | Before | After |
+|---|---:|---:|
+| unattributed owner references | 82 | **75** |
+| effects carrying ≥1 | **56** | **52** |
+
+**Four effects leave the permanently-unresolvable set** — Black Cleaver ("the target's Armor"),
+Bloodletter's Curse ("their Magic Resist"), Overlord's Bloodmail and Riftmaker. **Heartsteel stays:**
+Data Dragon attributes one of its stats and not the other, and an effect is permanently incomplete
+if ANY of its owners is.
+
+### 41.2 The composition bar was wrong for a reason worth recording
+
+A 570/200/120 split rendered as three near-identical segments. **The grow factors were always
+correct.** `flex-grow` distributes only FREE space, and with the default `flex-basis: auto` each
+segment started at its own tag's width — which is about the same for P, M and T. Adding
+`flex-basis: 0` makes the factors govern the whole width.
+
+The values and the tags were right and the bar said something else, **which is worse than no bar**:
+DESIGN.md §7 has the bar carry the split visually and the tags carry it definitively. Pinned by a
+test that reads the declaration out of the stylesheet, because jsdom computes no layout and a width
+assertion would have been theatre.
+
+### 41.3 What now needs re-running
+
+- **The full-roster batch**, to repopulate `verification/measurements.json` — no stored figure
+  changed, but the harvester can now express shapes it previously refused, so the counts may move.
+- **The item-value extraction**, which can now store the 12 range-split and 7 over-time effects it
+  refused: **19 of the 35 refusals are releasable**, taking the extracted set from 28 toward 47.
+- **The defensive census**, which can now propose entries rather than only count them.
+- **Nothing in the engine or the interface is invalidated.** 875 tests were green before this pass
+  and are green after it; the additions are additive and every existing field kept its meaning.

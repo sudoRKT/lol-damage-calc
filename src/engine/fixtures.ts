@@ -95,13 +95,23 @@ export function statBlock(opts: Partial<StatBlock> = {}): StatBlock {
     hp: opts.hp ?? 1000,
     maxHp: opts.maxHp ?? opts.hp ?? 1000,
     armor: opts.armor ?? 0,
+    // A fixture's resistances are all "base" unless a test says otherwise: the split exists for
+    // percentage BONUS penetration, and a fixture that silently invented a bonus portion would
+    // make that effect look modelled when the test never asked for it.
+    armorBase: opts.armor ?? 0,
+    armorBonus: 0,
     magicResist: opts.magicResist ?? 0,
+    magicResistBase: opts.magicResist ?? 0,
+    magicResistBonus: 0,
     attackDamage,
     abilityPower: opts.abilityPower ?? 0,
     critChance: opts.critChance ?? 0,
     critDamage: opts.critDamage ?? 2,
     attackSpeed: opts.attackSpeed ?? 0.625,
     adaptiveType: opts.adaptiveType ?? 'physical',
+    // No penetration unless a test asks. Stated rather than omitted so a fixture never leaves a
+    // reader wondering whether the attacker carried some.
+    penetration: { flatArmor: 0, percentArmor: 0, percentBonusArmor: 0, flatMagic: 0, percentMagic: 0 },
   };
 }
 

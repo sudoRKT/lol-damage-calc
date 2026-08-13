@@ -23,7 +23,7 @@
 
 import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { CSSProperties } from 'react';
-import type { DamageByType, DamageType, Result } from '../../types';
+import type { DamageByType, DamageType, ReportedDamageType, Result } from '../../types';
 import { AggregateTotal, DamageValue, VerificationStatusMark } from '../primitives';
 import {
   buildBurndownModel,
@@ -199,6 +199,18 @@ export interface HpBurndownProps {
   result: Result;
   /** Heading text. The chart is a figure and needs a name; the page supplies the wording. */
   title?: string;
+}
+
+/**
+ * The one damage type a figure can be tagged with, or null.
+ *
+ * `ReportedDamageType` gained `'mixed'` and `'none'` on 2026-08-13. Neither can carry a P/M/T tag:
+ * a mixed instance is rendered bone and untagged with a composition bar (DESIGN.md §8), and a
+ * no-damage instance has no figure to tag at all. Narrowing here rather than casting means a new
+ * arm on that union fails the typecheck instead of silently rendering as physical.
+ */
+function singleDamageType(t: ReportedDamageType): DamageType | null {
+  return t === 'mixed' || t === 'none' ? null : t;
 }
 
 export function HpBurndown({ result, title = 'HP burndown' }: HpBurndownProps) {
@@ -508,13 +520,16 @@ function ResistancePopover({ id, column }: { id: string; column: BurndownColumn 
     >
       <p className="burn__pop-title">{column.sourceLabel}</p>
 
+      {/* A mixed or no-damage instance carries no single hue. `singleDamageType` narrows the
+          union; there is no fixture with either arm yet, and when one exists the popover must
+          render it bone and untagged rather than pick a colour. */}
       {instance ? (
         <dl className="burn__steps">
           <dt>Raw</dt>
           <dd>
             <DamageValue
               value={instance.raw}
-              damageType={instance.damageType}
+              damageType={singleDamageType(instance.damageType) ?? 'true'}
               size="m"
               spokenContext="before mitigation"
             />
@@ -523,7 +538,7 @@ function ResistancePopover({ id, column }: { id: string; column: BurndownColumn 
           <dd>
             <DamageValue
               value={instance.afterResistances}
-              damageType={instance.damageType}
+              damageType={singleDamageType(instance.damageType) ?? 'true'}
               size="m"
               spokenContext="after resistances"
             />
@@ -532,7 +547,7 @@ function ResistancePopover({ id, column }: { id: string; column: BurndownColumn 
           <dd>
             <DamageValue
               value={instance.afterReductions}
-              damageType={instance.damageType}
+              damageType={singleDamageType(instance.damageType) ?? 'true'}
               size="m"
               spokenContext="after reductions"
             />
@@ -541,7 +556,7 @@ function ResistancePopover({ id, column }: { id: string; column: BurndownColumn 
           <dd>
             <DamageValue
               value={instance.final}
-              damageType={instance.damageType}
+              damageType={singleDamageType(instance.damageType) ?? 'true'}
               size="m"
               spokenContext="applied"
             />

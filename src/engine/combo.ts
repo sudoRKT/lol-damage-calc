@@ -172,9 +172,23 @@ export interface ComboPlan {
  * they are added to every result rather than left to a caller to remember.
  */
 export const ENGINE_EXCLUSIONS: readonly string[] = [
+  // AN ASSUMPTION, NOT AN EXCLUSION, AND IT IS SHOWN ON EVERY RESULT. Decided 2026-08-13.
+  //
+  // The wiki's damage-reduction article states that reductions stack multiplicatively and that
+  // some flat reductions apply after resistances, but NEVER states whether percentage or flat
+  // goes first. On 200 damage with a 25% and a 30-point reduction the two readings give 120 and
+  // 127.5 — a 6% difference, not a rounding artefact. The engine applies percentage first.
+  //
+  // It is listed here rather than hidden because a user is owed the knowledge that one ordering
+  // in their result rests on a convention rather than a source. It is settled by cross-checking a
+  // public calculator (CLAUDE.md's third source of authority), and a disagreement there is a
+  // FINDING TO SURFACE, never something to quietly reconcile.
+  'The order of percentage against flat damage reduction — the engine applies percentage first, ' +
+    'which no source states. Awaiting a cross-check against a public calculator',
   'Pre-mitigation flat damage reduction (for example Amumu Tantrum, Fizz Nimble Fighter) — ' +
-    'the result has no field for it between raw damage and resistances',
-  'Percentage BONUS armor penetration — the stat block carries no base/bonus armor split',
+    'the result now has a field for it (afterPreMitigationReduction) but no effect is modelled yet',
+  'Percentage BONUS armor penetration — modellable now that the stat block carries a base/bonus ' +
+    'armor split, but not yet wired',
   'Shields, of any of the three kinds',
   'Damage amplification, additive or multiplicative',
   'Lifesteal, omnivamp and spell vamp on the attacker, and healing on the defender',
@@ -246,6 +260,10 @@ export function runCombo(plan: ComboPlan): Result {
       sourceLabel: instance.sourceLabel,
       icon: instance.icon ?? null,
       instanceType: instance.instanceType,
+      // Pre-mitigation flat reduction is not modelled yet (it is in ENGINE_EXCLUSIONS), so this
+      // equals `raw`. The field exists so that when it IS modelled it has an honest home, rather
+      // than being folded into a checkpoint that means something else.
+      afterPreMitigationReduction: resolved.raw,
       damageType,
       raw: resolved.raw,
       afterResistances,

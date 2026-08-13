@@ -141,6 +141,14 @@
   flex-direction: column;
   gap: var(--space-0);
   min-width: 0;
+  /* FLEX-BASIS 0 IS WHAT MAKES THE BAR PROPORTIONAL, and its absence was a real defect.
+     `flex-grow` is set inline from the split, but grow only distributes FREE space — with the
+     default `flex-basis: auto` each segment starts at its own tag's width, which is about the
+     same for P, M and T, so a 570/200/120 split rendered as three near-identical segments. The
+     values and the tags were right and the bar lengths said something else, which is worse than
+     no bar: DESIGN.md §7 has the bar carry the split visually and the tags carry it definitively.
+     Found by the burndown work, 2026-08-13. */
+  flex-basis: 0;
 }
 
 .comp__bar {

@@ -1,7 +1,13 @@
 // The Result — the full output of the engine. Every field maps to a SPECIFICATION §11
 // output. LEAD-owned; frozen part of the engine contract.
 
-import type { DamageType, InstanceType, Unresolvable, VerificationStatus } from './data';
+import type {
+  DamageType,
+  InstanceType,
+  ReportedDamageType,
+  Unresolvable,
+  VerificationStatus,
+} from './data';
 import type { Scenario } from './scenario';
 
 /**
@@ -60,8 +66,18 @@ export interface StatBlock {
   level: number;
   hp: number; // current hp at entry (may be below maxHp — a "moment in time", §3.3)
   maxHp: number;
+  /**
+   * Total armor. `armorBase` and `armorBonus` split it, and the split is NOT cosmetic:
+   * **percentage BONUS armor penetration cannot be resolved without it** — it applies to the
+   * bonus portion alone, so a single total makes the effect unmodellable. Raised twice by the
+   * engine before this existed. `armorBase + armorBonus === armor` is a validator rule.
+   */
   armor: number;
+  armorBase: number;
+  armorBonus: number;
   magicResist: number;
+  magicResistBase: number;
+  magicResistBonus: number;
   attackDamage: { base: number; bonus: number; total: number };
   abilityPower: number;
   critChance: number; // 0..1
@@ -72,6 +88,48 @@ export interface StatBlock {
   critDamage: number;
   attackSpeed: number;
   adaptiveType: 'physical' | 'magic';
+  /**
+   * PENETRATION THE ATTACKER CARRIES. Added 2026-08-13.
+   *
+   * The stat block had none, so the combo runner took penetration as a separate argument beside
+   * it — which meant the resolved stat block a user is shown did not include a stat their build
+   * gives them. These are the attacker's side of §3.6's four-step order, steps 3 and 4.
+   *
+   * `percentBonusArmor` is separate from `percentArmor` because they are different effects that
+   * apply to different portions, which is what the base/bonus split above exists to serve.
+   */
+  penetration: {
+    flatArmor: number;
+    percentArmor: number;
+    percentBonusArmor: number;
+    flatMagic: number;
+    percentMagic: number;
+  };
+}
+
+/**
+ * THE FOUR-STEP RESISTANCE MODIFIER ORDER, step by step. Added 2026-08-13.
+ *
+ * SPECIFICATION §3.6 fixes the order — flat reduction, percentage reduction, percentage
+ * penetration, flat penetration — and DESIGN.md §7 requires the burndown's popover to SHOW it.
+ * The result carried three checkpoints (raw, after resistances, after reductions), so the
+ * interface could state the order in words but could not show a figure for any step, and
+ * fabricating one was refused.
+ *
+ * Every field is the resistance value AFTER that step, so a reader can follow it downward.
+ * Absent entirely for true damage, which meets no resistance at all — an absent breakdown and a
+ * breakdown of zeroes are different claims.
+ */
+export interface ResistanceSteps {
+  /** The defender's resistance before anything is applied. */
+  starting: number;
+  afterFlatReduction: number;
+  afterPercentReduction: number;
+  afterPercentPenetration: number;
+  /** After flat penetration (lethality). This is the value the multiplier is taken against. */
+  afterFlatPenetration: number;
+  /** `100 / (100 + r)` for positive r, `2 − 100 / (100 − r)` for negative (§3.6). */
+  multiplier: number;
 }
 
 export interface InstanceResult {
@@ -80,11 +138,46 @@ export interface InstanceResult {
   sourceLabel: string; // e.g. "Q — The Darkin Blade (1st cast)"
   icon: string | null; // Data Dragon icon filename for the chip, or null
   instanceType: InstanceType;
-  damageType: DamageType;
+  /**
+   * `'mixed'` when this instance dealt more than one type at once — 13 abilities do
+   * (see ReportedDamageType) — and `'none'` when it dealt nothing. A mixed instance MUST carry
+   * `byType`; the interface renders it bone and untagged with a composition bar, exactly as it
+   * renders the burst total (DESIGN.md §8).
+   */
+  damageType: ReportedDamageType;
+  /** REQUIRED when `damageType` is 'mixed'. Absent otherwise — a single-type instance already
+   *  says its type, and a byType with two zeroes in it invites a bar with empty segments. */
+  byType?: DamageByType;
   raw: number; // pre-mitigation
+  /**
+   * After PRE-MITIGATION flat reduction, before resistances. Added 2026-08-13.
+   *
+   * Some reductions are subtracted from the raw figure before armor or magic resistance is
+   * applied (Amumu's Tantrum, Fizz's Nimble Fighter). There was no field between `raw` and
+   * `afterResistances`, so they had nowhere honest to sit and were not modelled at all.
+   * Equal to `raw` when none applies.
+   */
+  afterPreMitigationReduction: number;
   afterResistances: number;
+  /** The four steps behind `afterResistances`. Absent for true damage. */
+  resistanceSteps?: ResistanceSteps;
   afterReductions: number;
-  final: number; // rounded damage actually applied
+  /**
+   * The rounded damage actually applied.
+   *
+   * ROUNDING, DECIDED 2026-08-13 AND BINDING. Rounded output is never fed back into arithmetic:
+   * the burst total is rounded ONCE from the unrounded sum, not summed from these. The
+   * consequence is deliberate and must be designed around — **the per-instance column may be off
+   * by a point or two from its own sum, and must never be presented as something to add up.**
+   * Three instances of 150 / 166.67 / 187.5 display as 150 / 167 / 188, whose column reads 505,
+   * while the burst total is 504.
+   *
+   * The alternative — summing the rounded figures — lets rounding accumulate across a long combo,
+   * which is worse in a tool whose value is the numbers being right, and it does not match the
+   * game, where damage applies unrounded and only the display rounds. **`runningTotal` is the
+   * authoritative figure and belongs on every row.**
+   */
+  final: number;
   crit: boolean;
   stateSnapshot: Record<string, number | boolean>; // shred / stacks that applied here
   verification: VerificationStatus;

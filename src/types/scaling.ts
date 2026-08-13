@@ -61,6 +61,14 @@ export function expandByRank(s: Scaling, maxRank: number): number[] {
       throw new ScalingError(
         `'${s.scaling}' scales with champion level, not ability rank — use valueAtLevel`,
       );
+    case 'byRangeType':
+      // Expanding this by rank is meaningless: it is two values chosen by WHO holds it, not a
+      // progression. A caller wanting a rank series must pick the arm first, which requires the
+      // range type, which is `valueAt`'s job.
+      throw new ScalingError(
+        "'byRangeType' states two values chosen by the holder's range type, not a rank " +
+          'progression — resolve the arm with valueAt before expanding',
+      );
   }
 }
 
@@ -110,7 +118,23 @@ export function valueAtLevel(s: Scaling, level: number): number {
 
 /** Value of any Scaling given both indices. Rank-scaled reads `rank`; level-scaled reads
  *  `level`. Having one entry point keeps callers from having to branch on the arm. */
-export function valueAt(s: Scaling, opts: { rank: number; maxRank: number; level: number }): number {
+export function valueAt(
+  s: Scaling,
+  opts: { rank: number; maxRank: number; level: number; rangeType?: 'Melee' | 'Ranged' },
+): number {
+  // A RANGE-SPLIT VALUE IS NEVER GUESSED. The source states two numbers and says which champion
+  // gets which; picking one without knowing the holder's range type understates every champion of
+  // the other kind. The range type is a fact the scenario knows and the data does not, so it must
+  // be supplied — and its absence is an error rather than a default (DATA-SOURCES §39).
+  if (s.scaling === 'byRangeType') {
+    if (opts.rangeType === undefined) {
+      throw new ScalingError(
+        'this value differs for melee and ranged holders and no range type was supplied; ' +
+          'it is not defaulted, because either choice is wrong for half the roster',
+      );
+    }
+    return valueAt(opts.rangeType === 'Melee' ? s.melee : s.ranged, opts);
+  }
   if (isLevelScaled(s)) return valueAtLevel(s, opts.level);
   const values = expandByRank(s, opts.maxRank);
   const v = values[opts.rank - 1];

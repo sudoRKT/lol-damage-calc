@@ -60,27 +60,42 @@ export const MOCK_RESULT: Result = {
     level: 11,
     hp: 2010,
     maxHp: 2010,
+    // 38 base + 54 from the build; the split is what percentage BONUS armor penetration needs.
     armor: 92,
+    armorBase: 38,
+    armorBonus: 54,
     magicResist: 52,
+    magicResistBase: 32,
+    magicResistBonus: 20,
     attackDamage: { base: 110, bonus: 80, total: 190 },
     abilityPower: 0,
     critChance: 0.5,
     critDamage: 1.75,
     attackSpeed: 0.92,
     adaptiveType: 'physical',
+    // No penetration in this scenario. The field is stated rather than omitted so a reader can
+    // see the attacker carries none, rather than wonder whether it was modelled.
+    penetration: { flatArmor: 0, percentArmor: 0, percentBonusArmor: 0, flatMagic: 0, percentMagic: 0 },
   },
   defenderStats: {
     level: 11,
     hp: 800, // entered already damaged — a "moment in time" (§3.3)
     maxHp: 1850,
     armor: 100,
+    armorBase: 60,
+    armorBonus: 40,
     magicResist: 50,
+    magicResistBase: 35,
+    magicResistBonus: 15,
     attackDamage: { base: 120, bonus: 20, total: 140 },
     abilityPower: 0,
     critChance: 0,
     critDamage: 1.75,
     attackSpeed: 0.7,
     adaptiveType: 'physical',
+    // No penetration in this scenario. The field is stated rather than omitted so a reader can
+    // see the attacker carries none, rather than wonder whether it was modelled.
+    penetration: { flatArmor: 0, percentArmor: 0, percentBonusArmor: 0, flatMagic: 0, percentMagic: 0 },
   },
   perInstance: [
     {
@@ -91,6 +106,8 @@ export const MOCK_RESULT: Result = {
       instanceType: 'damaging-ability',
       damageType: 'physical',
       raw: 300,
+      // No pre-mitigation flat reduction applies in this scenario, so it equals `raw`.
+      afterPreMitigationReduction: 300,
       afterResistances: 250,
       afterReductions: 240,
       final: 240,
@@ -106,6 +123,8 @@ export const MOCK_RESULT: Result = {
       instanceType: 'basic-attack',
       damageType: 'physical',
       raw: 235,
+      // No pre-mitigation flat reduction applies in this scenario, so it equals `raw`.
+      afterPreMitigationReduction: 235,
       afterResistances: 190,
       afterReductions: 180,
       final: 180,
@@ -121,6 +140,8 @@ export const MOCK_RESULT: Result = {
       instanceType: 'damaging-ability',
       damageType: 'magic',
       raw: 240,
+      // No pre-mitigation flat reduction applies in this scenario, so it equals `raw`.
+      afterPreMitigationReduction: 240,
       afterResistances: 205,
       afterReductions: 200,
       final: 200,
@@ -146,6 +167,8 @@ export const MOCK_RESULT: Result = {
       // reading it would have learned the opposite of the rule. Found by the interface area's
       // result-consistency sweep, which now checks the whole class rather than this entry.
       raw: 0,
+      // No pre-mitigation flat reduction applies in this scenario, so it equals `raw`.
+      afterPreMitigationReduction: 0,
       afterResistances: 0,
       afterReductions: 0,
       final: 0,
@@ -167,6 +190,8 @@ export const MOCK_RESULT: Result = {
       instanceType: 'basic-attack',
       damageType: 'physical',
       raw: 195,
+      // No pre-mitigation flat reduction applies in this scenario, so it equals `raw`.
+      afterPreMitigationReduction: 195,
       afterResistances: 158,
       afterReductions: 150,
       final: 150,

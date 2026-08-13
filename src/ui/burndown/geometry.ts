@@ -154,7 +154,17 @@ export function buildBurndownModel(result: Result): BurndownModel {
     const hpBefore = Math.max(0, startHp - cumBefore);
     const hpAfter = Math.max(0, startHp - cumAfter);
 
-    running[instance.damageType] += damage;
+    // A mixed instance spreads across types and a no-damage one adds to none. Neither can index
+    // a three-key split, so the union is narrowed rather than cast — a new arm must fail the
+    // typecheck, not land silently in `physical`.
+    if (instance.damageType === 'mixed') {
+      const split = instance.byType ?? { physical: 0, magic: 0, true: 0 };
+      running.physical += split.physical;
+      running.magic += split.magic;
+      running.true += split.true;
+    } else if (instance.damageType !== 'none') {
+      running[instance.damageType] += damage;
+    }
     cumulativeByType.push({ ...running });
 
     columns.push({
@@ -168,7 +178,13 @@ export function buildBurndownModel(result: Result): BurndownModel {
       treadFraction: frac(hpBefore),
       riserTop: frac(hpBefore),
       riserBottom: frac(hpAfter),
-      damageType: instance.damageType,
+      // The riser's hue. Null for a mixed or no-damage instance: DESIGN.md §8 renders a
+      // multi-type figure bone and untagged with a composition bar, and a no-damage instance has
+      // no figure to colour.
+      damageType:
+        instance.damageType === 'mixed' || instance.damageType === 'none'
+          ? null
+          : instance.damageType,
       segments: [],
       verification: instance.verification,
       incompleteReason: instance.incompleteReason,
@@ -388,7 +404,14 @@ export function auditResult(result: Result): ResultFinding[] {
         detail: `instance ${inst.index} (${inst.sourceLabel}): runningTotal delta ${delta} but final ${inst.final}`,
       });
     }
-    byType[inst.damageType] += inst.final;
+    if (inst.damageType === 'mixed') {
+      const split = inst.byType ?? { physical: 0, magic: 0, true: 0 };
+      byType.physical += split.physical;
+      byType.magic += split.magic;
+      byType.true += split.true;
+    } else if (inst.damageType !== 'none') {
+      byType[inst.damageType] += inst.final;
+    }
 
     // SPECIFICATION §8: "An incomplete ability contributes no damage to a result."
     if (inst.verification === 'incomplete' && inst.final !== 0) {

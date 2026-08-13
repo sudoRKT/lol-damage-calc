@@ -2,6 +2,22 @@
 // See DATA-SOURCES.md and the technical-foundation plan §2. LEAD-owned; frozen.
 
 export type DamageType = 'physical' | 'magic' | 'true';
+
+/**
+ * A damage type as a RESULT reports it, which needs two arms the data does not.
+ *
+ * - `'mixed'` — one instance dealt more than one type at once. **13 abilities do this**
+ *   (DEFINITION: an entry whose additive components carry more than one distinct damage type;
+ *   measured over 937 pages, 2026-08-13): Akshan P, Gangplank R, K'Sante W, Katarina R,
+ *   Lucian P, Rek'Sai E, Shyvana Q, Syndra W, Tristana E, Yone P/W/R, Zaahen E. Picking one
+ *   would send damage through the wrong resistance, so the engine refused the whole instance.
+ *   A mixed instance MUST carry `byType`, and the interface shows it the way every other
+ *   multi-type figure is shown: bone, untagged, with a tagged composition bar (DESIGN.md §8).
+ * - `'none'` — the instance dealt nothing. Previously such an instance was given `'true'`,
+ *   which applies no mitigation and so could not be mis-mitigated, but it is the wrong WORD
+ *   for "this dealt nothing" and a reader of the result could not tell the two apart.
+ */
+export type ReportedDamageType = DamageType | 'mixed' | 'none';
 export type RangeType = 'Melee' | 'Ranged';
 export type AdaptiveType = 'Physical' | 'Magic';
 /**
@@ -220,6 +236,27 @@ export type Scaling =
       values: number[];
       /** Champion level at which each value takes effect; same length as `values`. */
       atLevels: number[];
+    }
+  | {
+      /**
+       * TWO VALUES, CHOSEN BY THE HOLDER'S RANGE TYPE. Added 2026-08-13.
+       *
+       * The wiki writes these as `{{rd|melee|ranged}}` and they are not a scaling axis at all —
+       * nothing varies with rank or level. The source states two numbers and says which champion
+       * gets which, and a single-valued field cannot hold that. **12 item effects are refused for
+       * this reason alone** (DATA-SOURCES §39), and they are refused rather than stored at one of
+       * the two values, because storing the melee figure understates every ranged champion and
+       * vice versa.
+       *
+       * Each arm is itself a `Scaling`, because a range-split value may ALSO scale — an item
+       * whose melee figure grows with level and whose ranged figure does not is expressible.
+       *
+       * `valueAt` REFUSES this arm unless it is given a range type. It never picks one: the
+       * champion's `rangetype` is a fact the scenario knows and the data does not.
+       */
+      scaling: 'byRangeType';
+      melee: Scaling;
+      ranged: Scaling;
     };
 
 /** Stats an ability ratio can scale from. */
@@ -520,9 +557,112 @@ export interface CuratedAbility {
 
 /** A curated item passive or active. Data Dragon carries the flat stats; the VALUES inside a
  *  passive live only in description text (DATA-SOURCES §5), so they are curated here. */
+/**
+ * A DEFENSIVE KIT EFFECT — something a champion's own kit does to damage they RECEIVE.
+ * Added 2026-08-13. This is the shape the entire defender model was blocked on.
+ *
+ * SPECIFICATION §5 requires the defender modelled in full, never by generic or averaged values,
+ * and splits these by activation. A census over all 937 ability pages (DATA-SOURCES §40) measured
+ * what the shape actually has to hold, and two of its findings changed the design:
+ *
+ * 1. **§5's two-way split needs THREE buckets.** 6 effects are always-active, 210 are
+ *    conditional, and 2 state a condition this engine cannot represent (Xin Zhao R's is a
+ *    DISTANCE; Kayn P's is a location outside combat). A two-way field would force those two to
+ *    be guessed one way or the other. `'not-stated'` is a real answer, not a placeholder.
+ * 2. **A value may be absent or stated only by reference.** 17 effects have no value at all — a
+ *    spell shield blocks one ability, an invulnerability blocks everything — and 5 state theirs
+ *    as "the same amount" or "equal to the health cost". The source states the value; it does not
+ *    state a figure. Forcing a number here would mean inventing one.
+ *
+ * The headline for the interface: **210 of 218 are toggles**, so the defender panel needs on the
+ * order of two hundred controls rather than a handful.
+ */
+export interface CuratedDefensiveEffect {
+  champion: string;
+  slot: AbilitySlot;
+  abilityName: string;
+  /** The nine kinds the census measured. Each is a different thing to do to incoming damage. */
+  kind:
+    | 'damage-reduction'
+    | 'type-specific-reduction'
+    | 'resistance-grant'
+    | 'shield'
+    | 'spell-shield'
+    | 'immunity'
+    | 'execute-threshold'
+    | 'heal'
+    | 'max-health-grant';
+  /**
+   * §5's split, with the third bucket the census proved is needed.
+   *
+   * `'always-active'` bakes into the defender's resolved stat block. `'conditional'` is exposed
+   * as a toggle. `'not-stated'` is neither: the source states a condition this engine has no way
+   * to represent, and the effect is NOT applied — refusing is the honest outcome, and it says why.
+   */
+  activation: 'always-active' | 'conditional' | 'not-stated';
+  /** Present when `activation` is 'conditional' or 'not-stated'. What has to be true, in the
+   *  source's own terms, so the interface can label the toggle with the real condition. */
+  condition?: string;
+  /**
+   * The value, when the source states a figure. Absent for the 17 with none.
+   * A `byRangeType` scaling is permitted here for the same reason it is on ability damage.
+   */
+  value?: Scaling;
+  /** What the value is a share OF, when it is a share. Requires an owner on the same ten stats
+   *  §16 refuses without one — a "15% armor" reduction is meaningless until someone says whose. */
+  ratios?: Ratio[];
+  /**
+   * Set INSTEAD of `value` when the source states the amount only by reference to another
+   * quantity — "heals for the same amount", "equal to the health cost". The source HAS stated
+   * it; there is simply no figure to store, and this records what it pointed at.
+   */
+  valueByReference?: string;
+  /** Facts no source states — the 24 confirmed effects carrying an unattributed stat. */
+  unresolvable?: Unresolvable[];
+  verification: VerificationStatus;
+  provenance: Provenance;
+}
+
 export interface CuratedItemEffect {
   itemId: number;
   itemName: string;
+  /**
+   * Facts this effect needs that NO SOURCE STATES. Added 2026-08-13.
+   *
+   * **56 item and rune effects carry a stat the source attributes to nobody** (DATA-SOURCES
+   * §37.3) — the mana-stacking family, the burn family, the shred family and four runes. They
+   * had nowhere to say so, so an interface could only show them as "not yet modelled", which
+   * promises work that no effort can deliver. Same shape and same meaning as the ability side.
+   */
+  unresolvable?: Unresolvable[];
+  /**
+   * HOW THIS EFFECT REACHES ITS TARGET. Added 2026-08-13.
+   *
+   * An item effect is not a cast — it fires on a basic attack, on the next ability after one,
+   * on an active, or continuously. **20 of the 28 extracted effects are on-hit or Spellblade**
+   * (DATA-SOURCES §39), and a combo builder cannot sequence them without knowing which: an
+   * on-hit rider belongs to the basic attack that carried it, not to a step of its own.
+   *
+   * `'unstated'` is a real value, not a placeholder. Where the source does not say, it says so.
+   */
+  appliesAs?: 'on-hit' | 'on-attack' | 'spellblade' | 'active' | 'continuous' | 'periodic' | 'unstated';
+  /**
+   * DAMAGE OVER TIME. Added 2026-08-13.
+   *
+   * **7 item effects state that their damage recurs** and had no field to say so (DATA-SOURCES
+   * §39) — the burn family, chiefly. SPECIFICATION §3.8 makes this consequential rather than
+   * cosmetic: damage over time is NEVER folded into the burst total, it is reported as its own
+   * line stating the total across the effect's full duration, and the survival verdict is given
+   * twice. An effect marked here contributes to the DoT line and to nothing else.
+   *
+   * `totalInstances` is how many times it lands over its full duration, WHERE THE SOURCE STATES
+   * IT. Absent means the source does not, and the engine may not invent a count — the same rule
+   * that governs a variable ability hit count (§38).
+   *
+   * The engine models sequence and not time (§3.2), so no interval is recorded here. An interval
+   * would be a time value the engine has nowhere to put and no way to honour.
+   */
+  overTime?: { totalInstances?: number; sourceSays: string };
   /** The effect's key in Module:ItemData/data/<Item Name>. Observed live 2026-08-13 across all
    *  209 classic items: 'pass', 'pass2', 'pass3' (8 effects), 'act', 'consume' (7 effects). This
    *  comment listed only 'pass' / 'pass2' / 'act' until then. The field is a plain string, so the
@@ -576,6 +716,9 @@ export interface CuratedFile {
   patch: string;
   fetched: string;
   abilities: CuratedAbility[];
+  /** Defensive kit effects — what a champion's own abilities do to damage they RECEIVE.
+   *  Optional so an existing file stays valid; SPECIFICATION §5 needs it populated. */
+  defensiveEffects?: CuratedDefensiveEffect[];
   itemEffects: CuratedItemEffect[];
   runes: CuratedRune[];
   shards: StatShard[];

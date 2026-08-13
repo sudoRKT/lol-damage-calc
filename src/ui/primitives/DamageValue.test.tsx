@@ -18,6 +18,8 @@
 // algorithm a browser uses, with `aria-hidden` subtrees excluded. If the hidden full-word
 // span were deleted, the cell's name would collapse to "214 P" and every test here fails.
 
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { describe, expect, it, afterEach } from 'vitest';
 import { cleanup, render, screen, within } from '@testing-library/react';
 import type { ReactNode } from 'react';
@@ -90,6 +92,9 @@ describe('damage-value/announced-as-full-word', () => {
     const missing: string[] = [];
     for (const f of figures) {
       cleanup();
+      // The sweep walks a real Result, whose instances now carry `ReportedDamageType`. A mixed
+      // or no-damage figure is not tagged at all, so it is not part of this population.
+      if (f.t === 'mixed' || f.t === 'none') continue;
       inCell(<DamageValue value={f.v} damageType={f.t} />);
       const expected = `${f.v} ${word[f.t]} damage`;
       if (!screen.queryByRole('cell', { name: expected })) missing.push(expected);
@@ -225,6 +230,18 @@ describe('aggregate-total/multi-type', () => {
     expect(() =>
       render(<AggregateTotal total={890} byType={{ physical: 570, magic: 200, true: 100 }} />),
     ).toThrow(/sums to 870 but total is 890/);
+  });
+
+  it('declares flex-basis 0, without which the grow factors do not govern the widths', () => {
+    // REGRESSION. The grow factors were always correct and the bar was still wrong: with the
+    // default `flex-basis: auto` a segment starts at its tag's width and grow only shares out
+    // what is left, so a 570/200/120 split rendered as three near-identical segments. jsdom
+    // computes no layout, so this reads the declaration out of the stylesheet rather than
+    // measuring a width it cannot measure.
+    const css = readFileSync(join(import.meta.dirname, 'primitives.css'), 'utf8');
+    const seg = /\.comp__seg\s*\{([^}]*)\}/.exec(css);
+    expect(seg, '.comp__seg rule not found').not.toBeNull();
+    expect(seg![1]).toMatch(/flex-basis:\s*0\s*;/);
   });
 
   it('sizes composition segments in proportion — data, never a design token', () => {
