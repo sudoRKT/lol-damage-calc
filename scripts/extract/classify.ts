@@ -185,7 +185,9 @@ export interface RowIssue {
     | 'unknown-stat'
     | 'no-value'
     | 'unresolved-owner'
-    | 'coefficient-shape';
+    | 'coefficient-shape'
+    | 'split-payload'
+    | 'schema-invalid';
   detail: string;
 }
 
@@ -220,6 +222,35 @@ export function hasCoefficientShape(value: string): boolean {
   if (!OWNED_HEALTH_PAYLOAD.test(raw) && !OWNED_HEALTH_PAYLOAD.test(plainText(raw))) return false;
   COEFFICIENT_GROUP.lastIndex = 0;
   return COEFFICIENT_GROUP.test(raw);
+}
+
+/**
+ * True when an `{{as|…}}` body opens a parenthesised group it never closes — the signature of
+ * ONE expression split across several blocks.
+ *
+ * K'Sante W writes a single value as four blocks:
+ *   {{ap|45 to 165}} {{as|(+ 8%|hp}} {{as|(+ 2% per 100 bonus armor)}}
+ *                    {{as|(+ 2% per 100 bonus magic resistance)}} {{as|of target's maximum health)}}
+ * It reads "8% (+2% per 100 bonus armor) (+2% per 100 MR) of the target's maximum health". Read
+ * block by block, the first block's `(+ 8%` names no stat, the multiplier blocks look like
+ * ordinary ratios, and the stat name arrives alone in the fourth. The result was an armor ratio
+ * of 2 stored in place of an 8% health payload — on all three of K'Sante W's damage rows —
+ * while the entry claimed `derived`.
+ *
+ * Unbalanced parentheses are the reliable tell and cost nothing to check. This does NOT repair
+ * the row; it refuses to let it pass as understood, which is the whole point.
+ */
+export function hasSplitPayload(value: string): boolean {
+  for (const b of findBlocks(value, 'as')) {
+    const body = splitArgs(b.inner)[0] ?? '';
+    let depth = 0;
+    for (const ch of body) {
+      if (ch === '(') depth += 1;
+      else if (ch === ')') depth -= 1;
+    }
+    if (depth !== 0) return true;
+  }
+  return false;
 }
 
 /** True when this `{{as|…}}` body is a "per 100 X" multiplier rather than a payload ratio. */
@@ -427,6 +458,18 @@ export function classifyRow(
         });
       }
     } else if (issue) issues.push(issue);
+  }
+
+  if (hasSplitPayload(value)) {
+    issues.push({
+      kind: 'split-payload',
+      detail:
+        'one expression is split across several {{as}} blocks (unbalanced parentheses), so the ' +
+        `stat and its percentage were read separately and what is stored is not the ability: ${value
+          .replace(/\s+/g, ' ')
+          .trim()
+          .slice(0, 110)}`,
+    });
   }
 
   // The coefficient shape is now expressible via Ratio.multipliers, so it is only a defect

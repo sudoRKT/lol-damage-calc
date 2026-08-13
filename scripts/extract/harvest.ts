@@ -12,12 +12,13 @@
 import type {
   AbilitySlot,
   CuratedAbility,
+  CuratedFile,
   DamageType,
   InstanceType,
   Provenance,
 } from '../../src/types/data.ts';
 import { expandByRank, isLevelScaled } from '../../src/types/scaling.ts';
-import { compareExpansion } from '../../src/types/validate-curated.ts';
+import { compareExpansion, gateSchema } from '../../src/types/validate-curated.ts';
 import { classifyRow, proposeRelations, type RowIssue, type ShapeId } from './classify.ts';
 import { renderAbility, type RenderedRow } from './render.ts';
 import { parseFields, parseVardefines, statRows } from './wikitext.ts';
@@ -150,6 +151,28 @@ export function draftFromTemplate(src: TemplateSource, patch: string, fetched: s
     provenance,
     ...(src.revisionId !== undefined ? { sourceRevision: src.revisionId } : {}),
   };
+
+  // NOTHING THAT FAILS GATE 1 MAY CLAIM BETTER THAN 'incomplete'.
+  //
+  // A structurally invalid entry is not "extracted from source, not independently confirmed" —
+  // it is broken, and 21 entries were sitting at 'derived' while failing the schema: fourteen
+  // with two components sharing an id (so one silently shadows the other and gate 2 compares
+  // the wrong one), plus rank-count and missing-counter failures. A wrong number inside a
+  // 'derived' entry is the exact failure this project exists to prevent, so the demotion is a
+  // rule rather than a list of fixes.
+  //
+  // This does NOT repair the entry. It refuses to let it pass as understood.
+  const oneEntry: CuratedFile = {
+    version: 1, patch, fetched, abilities: [entry],
+    itemEffects: [], runes: [], shards: [], exclusions: [],
+  };
+  const schema = gateSchema(oneEntry);
+  if (schema.failed > 0) {
+    entry.verification = 'incomplete';
+    for (const f of schema.findings) {
+      issues.push({ kind: 'schema-invalid', detail: f.message.slice(0, 120) });
+    }
+  }
 
   return { entry, shapes, issues, droppedRows, needsHandAuthoring, droppedEveryDamageRow };
 }

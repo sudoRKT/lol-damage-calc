@@ -10,6 +10,7 @@ import {
   parseRatio,
   proposeRelations,
   hasCoefficientShape,
+  hasSplitPayload,
   ratioOwnerOf,
   ratioStatOf,
   shapeOf,
@@ -181,6 +182,33 @@ describe('the coefficient shape the library does not have', () => {
       3,
     );
     expect(r.issues.map((i) => i.kind)).toContain('coefficient-shape');
+  });
+});
+
+describe('one expression split across blocks (K\'Sante W)', () => {
+  // Literal row fetched 2026-08-13. One value, four blocks: the stat name arrives alone in
+  // the fourth, so block-by-block reading stored an armor ratio of 2 in place of an 8%
+  // health payload — while the entry claimed 'derived'.
+  const KSANTE_W =
+    "{{ap|45 to 165}} {{as|(+ 8%|hp}} {{as|(+ 2% per 100 '''bonus''' armor)}} {{as|(+ 2% per 100 '''bonus''' magic resistance)}} {{as|of target's '''maximum''' health)}}";
+
+  it('spots the unbalanced-parenthesis signature', () => {
+    expect(hasSplitPayload(KSANTE_W)).toBe(true);
+  });
+
+  it('does not fire on ordinary rows, including multi-block ones', () => {
+    expect(hasSplitPayload('{{ap|80 to 240}} {{as|(+ 75% AP)}}')).toBe(false);
+    expect(
+      hasSplitPayload("{{as|{{ap|10 to 20}}% {{as|(+ 2.5% per 100 AP)}} of target's health}}"),
+    ).toBe(false);
+    expect(
+      hasSplitPayload("{{as|{{ap|6 to 8}}% of target's health}} {{as|(+ 1.5% per 100 AP)}}"),
+    ).toBe(false);
+  });
+
+  it('raises an issue, which drives the ability to incomplete', () => {
+    const r = row('Physical Damage', KSANTE_W, 5, 'physical');
+    expect(r.issues.map((i) => i.kind)).toContain('split-payload');
   });
 });
 

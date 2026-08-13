@@ -1242,3 +1242,56 @@ correct outcome for now — the error moved from silent to loud.
 list's length is itself a statement of its rank count, and should win over the slot's `maxrank`.
 That is reading the source, not inferring — but it changes how every explicit list in the game is
 validated, so it is a decision, not a tidy-up.
+
+---
+
+## 23. Nothing that fails gate 1 may claim better than `incomplete` (2026-08-13)
+
+### K'Sante W, and the general rule behind it
+
+§21 recorded K'Sante W as storing a bonus-armor ratio of **2** in place of its real **8% of the
+target's maximum health** payload, on all three of its damage rows — while the entry claimed
+`derived`. A known-wrong number inside a `derived` entry is the failure this project exists to
+prevent, so it is stopped mechanically rather than by hand.
+
+**The detector: unbalanced parentheses inside an `{{as|…}}` body.** That is the signature of one
+expression split across several blocks:
+
+```
+{{ap|45 to 165}} {{as|(+ 8%|hp}} {{as|(+ 2% per 100 bonus armor)}}
+                 {{as|(+ 2% per 100 bonus magic resistance)}} {{as|of target's maximum health)}}
+```
+
+The first block opens a group it never closes; the stat name arrives alone in the fourth. The
+row now raises `split-payload` and the ability drops to `incomplete`. **This does not repair the
+row** — reading it correctly needs the multiplier lifting to span blocks, which is still open.
+
+### The sweep, and what it found
+
+**DEFINITION: an entry is wrongly-confident when it comes out `derived` or `verified` while
+carrying the signature of a defect recorded in this document.** Swept over the same 937-page set
+as §19, after alias dedupe:
+
+| Check | Before | After |
+|---|---:|---:|
+| split-payload (§21, K'Sante W) | 3 rows on 1 ability | **0** |
+| coefficient-shape unread (§17) | 0 | **0** |
+| **fails gate 1 yet claims `derived`** | **21** | **0** |
+| two components sharing a label (§21) | 14 | **0** |
+
+The 21 were the real find, and they were not all K'Sante-shaped:
+
+- **14 with two components sharing an id** — Akali E, Anivia Q, Evelynn Q, Graves Q, Malzahar R,
+  Mel E, Sejuani W, Smolder Q, Sylas Q, Talon W, Twisted Fate W, Vel'Koz W, Vex R, Viktor E. One
+  component silently shadows the other, and gate 2 then compares the wrong one — which is
+  exactly the Malzahar R misalignment recorded in §21, now explained.
+- **6 rank-count failures** — Heimerdinger W and E, Karma Q Soulflare, Nidalee Q/W/E (§22).
+- **1 missing stack counter** — Nasus Q Siphoning Strike.
+
+**The rule now enforced in the harvester:** an entry that fails gate 1 is forced to `incomplete`
+and each schema finding is recorded as an issue on it. A structurally invalid entry is not
+"extracted from source, not independently confirmed" — it is broken, and may not describe itself
+as anything better.
+
+**Effect on the roster: `derived` 788 → 767, `incomplete` 149 → 170.** Twenty-one entries traded
+a confident wrong number for an honest admission.
