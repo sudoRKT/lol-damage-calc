@@ -25,6 +25,16 @@ export interface RawItem {
   gold?: { total?: number; purchasable?: boolean };
   stats?: Record<string, number>;
   image?: { full?: string };
+  /**
+   * Data Dragon's display HTML for the item.
+   *
+   * NOT a source of effect values — DATA-SOURCES §37.1 established that its wording has drifted
+   * from the wiki's, and as of 16.16.1 its current descriptions state most passives without any
+   * number at all ("Attacks deal bonus magic damage"). It is declared here because it is the
+   * only SECOND statement of an item effect Riot publishes, so it is the one cross-check
+   * available for a value the wiki alone supplies (`effect-owner-crosscheck.ts`).
+   */
+  description?: string;
 }
 
 export type RawItemMap = Record<string, RawItem>;

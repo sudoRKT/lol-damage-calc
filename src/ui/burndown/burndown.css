@@ -1,0 +1,519 @@
+/*
+ * The HP burndown — the product's signature element (DESIGN.md §7, SPECIFICATION §10.1).
+ *
+ * EVERY value here traces to DESIGN.md. The trace is re-checked mechanically on every test
+ * run by `../primitives/token-audit.test.ts`, which reads this file. Four literals are
+ * allow-listed there by name, each because DESIGN.md §7 states it verbatim: the tread's 2px,
+ * the riser's 3px, the LETHAL rule's 2px and the callout chip's 2px border.
+ *
+ * WHAT IS AND IS NOT IN HERE. Everything positional — where a tread sits, how tall a riser
+ * is, where the LETHAL rule crosses — is DATA, computed in geometry.ts and applied as an
+ * inline style. Nothing in this file knows a health value. Nothing in the component knows a
+ * colour.
+ *
+ * MOTION. Every duration and easing below is quoted from DESIGN.md §10 and no other motion
+ * exists. Every animated element's RESTING state is its FINAL state, and the animations run
+ * `backwards` from a collapsed keyframe — so `animation: none` under
+ * `prefers-reduced-motion: reduce` leaves the settled chart, which is exactly what §10 asks
+ * for. The reduced-motion block at the bottom of this file is the whole implementation.
+ */
+
+@import '../tokens.css';
+
+/* --------------------------------------------------------------------------
+ * Shell
+ * -------------------------------------------------------------------------- */
+
+.burn {
+  font-family: var(--font-body);
+  font-size: var(--type-body-l);
+  font-weight: var(--weight-body);
+  color: var(--text-primary);
+}
+
+.burn__head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-5);
+  margin-bottom: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.burn__title {
+  font-family: var(--font-display);
+  font-weight: var(--weight-display);
+  font-size: var(--type-display-l);
+  line-height: var(--lh-display-l);
+  margin: 0 0 var(--space-2);
+}
+
+.burn__patch {
+  font-family: var(--font-mono);
+  font-size: var(--type-num-s);
+  line-height: var(--lh-num-s);
+  font-weight: var(--weight-num);
+  color: var(--text-secondary);
+}
+
+/* --------------------------------------------------------------------------
+ * The callout chips (DESIGN.md §7). Neutral by default: SURVIVES takes --border-steel.
+ * -------------------------------------------------------------------------- */
+
+.burn__chip {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  background: var(--bg-panel);
+  border: var(--border-steel);
+  border-radius: var(--radius-control);
+  padding: var(--space-2) var(--space-3);
+  font-family: var(--font-display);
+  font-weight: var(--weight-display);
+  font-size: var(--type-display-m);
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+/* DESIGN.md §7: "bone text on --bg-panel with a 2px --lethal border". The text stays bone —
+ * the magenta is the border, and the chip's own words carry the meaning. */
+.burn__chip--lethal {
+  border: 2px solid var(--lethal);
+}
+
+/* --------------------------------------------------------------------------
+ * The plot: a --bg-well panel (DESIGN.md §7 "a rectangular plot inside a --bg-well panel")
+ * -------------------------------------------------------------------------- */
+
+.burn__plot {
+  background: var(--bg-well);
+  border: var(--border-steel);
+  border-radius: var(--radius-panel);
+  padding: var(--space-4);
+}
+
+.burn__frame {
+  display: flex;
+  gap: var(--space-2);
+}
+
+/* The y axis rail. Width comes from the spacing scale: DESIGN.md defines no width scale, and
+ * --space-7 (48px) holds the widest tick this product prints. */
+.burn__yaxis {
+  position: relative;
+  flex: none;
+  inline-size: var(--space-7);
+}
+
+.burn__ytick {
+  position: absolute;
+  inset-inline-end: 0;
+  font-family: var(--font-mono);
+  font-size: var(--type-num-s);
+  line-height: var(--lh-num-s);
+  font-weight: var(--weight-num);
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+/* The plot area. Its height is composed from the spacing scale for the same reason as the
+ * axis width — DESIGN.md fixes no plot height. RAISED as an open point rather than invented
+ * quietly: if a plot-size token is wanted, it belongs in DESIGN.md, not here. */
+.burn__area {
+  position: relative;
+  flex: 1;
+  block-size: calc(var(--space-8) * 5);
+  min-inline-size: 0;
+}
+
+.burn__gridline {
+  position: absolute;
+  inset-inline: 0;
+  border-block-start: var(--border-hair);
+}
+
+/* DESIGN.md §7: "the zero line is --line-strong". */
+.burn__zero {
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: 0;
+  border-block-start: var(--border-strong);
+}
+
+/* --------------------------------------------------------------------------
+ * Columns — X IS SEQUENCE, NOT TIME (SPECIFICATION §3.2). Equal width, always.
+ * -------------------------------------------------------------------------- */
+
+.burn__cols {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.burn__col {
+  position: relative;
+  flex: 1 1 0;
+  min-inline-size: 0;
+}
+
+/* DESIGN.md §7: "a 2px line in --hp-trace at height Rᵢ, spanning column i". Grey, neutral —
+ * --hp-trace is explicitly "never a damage value", so this is not a reserved hue. */
+.burn__tread {
+  position: absolute;
+  inset-inline: 0;
+  block-size: 2px;
+  background: var(--hp-trace);
+  transform-origin: left center;
+  animation: burn-draw-tread 120ms cubic-bezier(0.2, 0, 0, 1) backwards;
+}
+
+/* DESIGN.md §7: "a 3px line dropping from Rᵢ to max(0, Rᵢ − dᵢ)", at the right edge of the
+ * column, coloured by the instance's damage type. */
+.burn__bar {
+  position: absolute;
+  inset-inline-end: 0;
+  inline-size: 3px;
+  transform-origin: center top;
+  animation: burn-draw-riser 120ms cubic-bezier(0.2, 0, 0, 1) backwards;
+}
+
+.burn__bar--physical {
+  background: var(--dmg-physical);
+}
+.burn__bar--magic {
+  background: var(--dmg-magic);
+}
+.burn__bar--true {
+  background: var(--dmg-true);
+}
+
+/* The hit and focus target. Transparent: the visible mark is the 3px bar, which is far too
+ * thin to point at, so the target straddles the column boundary and carries a minimum height
+ * from the spacing scale. It is a real <button>, so keyboard focus is native (DESIGN.md §6:
+ * "keyboard navigation is required"). */
+.burn__riser {
+  position: absolute;
+  inset-inline-end: calc(var(--space-2) * -1);
+  inline-size: var(--space-4);
+  min-block-size: var(--space-5);
+  padding: 0;
+  margin: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.burn__riser:focus-visible {
+  outline: 2px solid var(--text-primary);
+  outline-offset: 2px;
+}
+
+/* The riser's value, placed beside it (DESIGN.md §7). It sits INSIDE its own column, to the
+ * left of the riser, in the empty space under that column's tread — so it can never overlap
+ * the next column's label and never spills outside the plot. */
+.burn__label {
+  position: absolute;
+  inset-inline-end: var(--space-3);
+  white-space: nowrap;
+  text-align: right;
+  animation: burn-fade-in 120ms cubic-bezier(0.2, 0, 0, 1) backwards;
+}
+
+/* DESIGN.md §7, the trailing recent-damage ghost: the band just removed briefly fills with
+ * --flash-recent at ~35% opacity and eases out over 600ms. Its resting opacity is 0 — it is
+ * transient and motion-carried, and it is ABSENT from the settled chart, which is also what
+ * makes it correct to drop entirely under reduced motion. */
+.burn__ghost {
+  position: absolute;
+  inset-inline: 0;
+  opacity: 0;
+  background: var(--flash-recent);
+  animation: burn-ghost 600ms ease-out;
+}
+
+/* --------------------------------------------------------------------------
+ * The DoT tail. THE HATCH IS THE NON-COLOUR CUE (DESIGN.md §7), not decoration: it is what
+ * separates damage over time from burst without relying on hue at all.
+ * -------------------------------------------------------------------------- */
+
+.burn__hatch {
+  /* ~50% saturation, DESIGN.md §7 — expressed as a filter over the damage-type token rather
+   * than as a second, invented colour value. No new hex enters the product. */
+  filter: saturate(0.5);
+  animation: burn-draw-riser 120ms cubic-bezier(0.2, 0, 0, 1) backwards;
+}
+
+/* The hatched riser is wider than a burst riser because DESIGN.md §7 says the DoT riser is
+ * "filled with" a hatch, and a 45° hatch cannot be read inside a 3px line. */
+.burn__hatch--riser {
+  position: absolute;
+  inset-inline-end: 0;
+  inline-size: var(--space-3);
+  transform-origin: center top;
+}
+
+/* The same hatch as a small swatch beside the +DoT value, so the cue is present wherever a
+ * DoT figure is — including when the riser has no height left to draw because the burst
+ * already reached zero. */
+.burn__hatch--swatch {
+  display: inline-block;
+  inline-size: var(--space-3);
+  block-size: var(--space-3);
+  vertical-align: middle;
+}
+
+.burn__hatch--physical {
+  background: repeating-linear-gradient(
+    45deg,
+    var(--dmg-physical) 0 var(--space-0),
+    transparent var(--space-0) var(--space-1)
+  );
+}
+.burn__hatch--magic {
+  background: repeating-linear-gradient(
+    45deg,
+    var(--dmg-magic) 0 var(--space-0),
+    transparent var(--space-0) var(--space-1)
+  );
+}
+.burn__hatch--true {
+  background: repeating-linear-gradient(
+    45deg,
+    var(--dmg-true) 0 var(--space-0),
+    transparent var(--space-0) var(--space-1)
+  );
+}
+
+/* --------------------------------------------------------------------------
+ * The LETHAL rule (DESIGN.md §7)
+ * -------------------------------------------------------------------------- */
+
+/* The positioner. It carries the inline translate that keeps the stroke inside the plot, so
+ * the strike-in animation below can own `transform` without fighting it. */
+.burn__rule {
+  position: absolute;
+  inset-block: 0;
+}
+
+.burn__rule-stroke {
+  position: absolute;
+  inset-block: 0;
+  transform-origin: center top;
+  animation: burn-strike 180ms ease-out backwards;
+}
+
+.burn__rule-stroke--lethal {
+  border-inline-start: 2px solid var(--lethal);
+}
+
+/* DESIGN.md §7: "a second, DASHED --lethal rule" when burst survives but burst + DoT kills.
+ * Dashed is the non-colour cue that separates the two rules; they are never told apart by
+ * colour, because they are the same colour. */
+.burn__rule-stroke--dot {
+  border-inline-start: 2px dashed var(--lethal);
+}
+
+.burn__callout {
+  position: absolute;
+  inset-block-start: 0;
+  white-space: nowrap;
+  animation: burn-fade-in 180ms ease-out backwards;
+}
+
+/* --------------------------------------------------------------------------
+ * X axis and caption
+ * -------------------------------------------------------------------------- */
+
+.burn__xaxis {
+  display: flex;
+  margin-inline-start: calc(var(--space-7) + var(--space-2));
+  margin-block-start: var(--space-2);
+  list-style: none;
+  padding: 0;
+}
+
+.burn__xlabel {
+  flex: 1 1 0;
+  min-inline-size: 0;
+  text-align: center;
+  font-family: var(--font-body);
+  font-size: var(--type-body-s);
+  line-height: var(--lh-body-s);
+  font-weight: var(--weight-body-medium);
+  color: var(--text-secondary);
+}
+
+/* SPECIFICATION §3.2, quoted verbatim by DESIGN.md §7 as the axis caption. */
+.burn__caption {
+  margin: var(--space-2) 0 0;
+  text-align: center;
+  font-family: var(--font-body);
+  font-size: var(--type-body-s);
+  line-height: var(--lh-body-s);
+  font-weight: var(--weight-body-medium);
+  color: var(--text-secondary);
+}
+
+/* --------------------------------------------------------------------------
+ * Both verdicts, always printed as text (DESIGN.md §7). A two-row readout: scope, verdict.
+ * -------------------------------------------------------------------------- */
+
+.burn__verdicts {
+  border-collapse: collapse;
+  margin-block-start: var(--space-4);
+}
+
+.burn__verdicts th,
+.burn__verdicts td {
+  text-align: left;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-cell);
+}
+
+.burn__verdicts th {
+  font-family: var(--font-display);
+  font-weight: var(--weight-display-medium);
+  font-size: var(--type-eyebrow);
+  line-height: var(--lh-eyebrow);
+  letter-spacing: var(--ls-eyebrow);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.burn__verdicts td {
+  font-family: var(--font-display);
+  font-weight: var(--weight-display);
+  font-size: var(--type-display-m);
+  line-height: var(--lh-display-m);
+  color: var(--text-primary);
+}
+
+/* --------------------------------------------------------------------------
+ * The resistance-math popover (DESIGN.md §7 "Interaction"). --elev-2 is the only genuine
+ * shadow in the product and popovers are the only thing that gets it (§5).
+ * -------------------------------------------------------------------------- */
+
+.burn__pop {
+  position: absolute;
+  z-index: 1;
+  background: var(--bg-panel-raised);
+  border: var(--border-steel);
+  border-radius: var(--radius-panel);
+  box-shadow: var(--elev-2);
+  padding: var(--space-3);
+  inline-size: max-content;
+  max-inline-size: calc(var(--space-8) * 4);
+  animation: burn-fade-in 140ms ease-out;
+}
+
+.burn__pop-title {
+  font-family: var(--font-body);
+  font-size: var(--type-body-m);
+  line-height: var(--lh-body-m);
+  font-weight: var(--weight-body-strong);
+  margin: 0 0 var(--space-2);
+}
+
+.burn__steps {
+  margin: 0;
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: var(--space-1) var(--space-3);
+  align-items: baseline;
+}
+
+.burn__steps dt {
+  font-family: var(--font-body);
+  font-size: var(--type-body-s);
+  line-height: var(--lh-body-s);
+  font-weight: var(--weight-body-medium);
+  color: var(--text-secondary);
+}
+
+.burn__steps dd {
+  margin: 0;
+  text-align: right;
+}
+
+.burn__pop-note {
+  margin: var(--space-3) 0 0;
+  font-family: var(--font-body);
+  font-size: var(--type-body-s);
+  line-height: var(--lh-body-s);
+  font-weight: var(--weight-body-medium);
+  color: var(--text-secondary);
+}
+
+/* --------------------------------------------------------------------------
+ * Motion (DESIGN.md §10). Nothing else in this file animates.
+ * -------------------------------------------------------------------------- */
+
+@keyframes burn-draw-tread {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+@keyframes burn-draw-riser {
+  from {
+    transform: scaleY(0);
+  }
+}
+
+@keyframes burn-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes burn-strike {
+  from {
+    opacity: 0;
+    transform: scaleY(0);
+  }
+}
+
+@keyframes burn-ghost {
+  from {
+    opacity: 0.35;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* Hovering or keyboard-focusing a riser FREEZES it (DESIGN.md §7 "Interaction"). */
+.burn__col:hover .burn__tread,
+.burn__col:hover .burn__bar,
+.burn__col:hover .burn__hatch,
+.burn__col:focus-within .burn__tread,
+.burn__col:focus-within .burn__bar,
+.burn__col:focus-within .burn__hatch {
+  animation-play-state: paused;
+}
+
+/*
+ * DESIGN.md §10, reduced motion: "render the burndown in its FINAL SETTLED STATE immediately
+ * — no trace draw, no odometer roll, no recent-damage ghost."
+ *
+ * This is the whole of it, and it works because every animated element's resting style IS
+ * its settled style. Switching the animations off cannot leave anything half-drawn, missing
+ * or invisible; the one element it removes entirely is the ghost, whose resting opacity is
+ * 0 and which §7 says is absent from the settled chart anyway. The odometer is switched off
+ * in the component, which reads the same media query.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .burn__tread,
+  .burn__bar,
+  .burn__hatch,
+  .burn__label,
+  .burn__ghost,
+  .burn__rule-stroke,
+  .burn__callout,
+  .burn__pop {
+    animation: none;
+  }
+}

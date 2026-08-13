@@ -1,12 +1,28 @@
-// Internal barrel for the calculation engine's formula layer.
+// Barrel for the calculation engine.
 //
-// These are the deterministic arithmetic primitives described in SPECIFICATION §3.6 and
-// §3.7. The engine's PUBLIC entry point — simulate(scenario) -> Result — and the sequential
-// combo runner are deliberately NOT defined here; that interface is the lead's to set.
+// TWO LAYERS LIVE HERE.
 //
-// What is NOT in this layer, and why, is written up beside each item:
+// 1. The FORMULA LAYER — the deterministic arithmetic primitives of SPECIFICATION §3.6 and
+//    §3.7: resistances, the fixed four-step modifier order, adaptive force, crit, execute,
+//    per-level champion statistics, the component evaluator, and rounding.
+//
+// 2. The SEQUENTIAL COMBO RUNNER of SPECIFICATION §3.1 — `runCombo(plan) -> Result`, plus the
+//    state model it runs against. This is what makes the engine a simulator rather than a
+//    calculator: instances resolve in order against state the preceding ones produced.
+//
+// STILL NOT DEFINED HERE: `simulate(scenario) -> Result`, the public entry point that turns a
+// Scenario into a ComboPlan by looking up champions, items and runes. It reads data, and the
+// engine reads no data file by design — everything it needs arrives as an argument. That
+// interface is the lead's to set.
+//
+// What is NOT modelled, and why, is written up beside each item:
 //   - Percentage *bonus* armor penetration (see resistances.ts) — needs a base/bonus armor
 //     split the frozen StatBlock does not carry.
+//   - Pre-mitigation flat damage reduction (see damage-reduction.ts) — the frozen
+//     InstanceResult has no field between raw damage and resistances.
+//   - Shields, damage amplification, lifesteal / omnivamp / healing, and execute thresholds
+//     wired into the sequence — see ENGINE_EXCLUSIONS in combo.ts, which puts all of them in
+//     front of the user (SPECIFICATION §11).
 //   - A minimum damage floor (SPECIFICATION §3.7 lists one) — no game-wide rule for it
 //     could be found in the wiki's damage or mechanics articles, so nothing is implemented
 //     rather than guessing a plausible number. Raised to the lead.
@@ -65,3 +81,51 @@ export {
   resolveBaseStats,
   type ChampionBaseStats,
 } from './champion-stats';
+
+// Variable hit counts: the user's stated count becomes instances (DATA-SOURCES §38). The
+// default is the MINIMUM and is not a tuning knob.
+export { resolveVariableHits, MINIMUM_STATED_COUNT, type ResolvedHits } from './variable-hits';
+
+// ---------------------------------------------------------------------------------------
+// The sequential layer (SPECIFICATION §3.1, §3.3)
+// ---------------------------------------------------------------------------------------
+
+// The state model. Persistent accumulations and combat state are two objects with two
+// lifetimes, because §3.3 says they behave differently and collapsing them is a real
+// modelling error.
+export {
+  applyStateEffect,
+  applyStateEffects,
+  combinedPercentReduction,
+  emptyShred,
+  foldPersistentAccumulations,
+  seedCombatState,
+  seedFromConfigs,
+  snapshotCombatState,
+  totalFlatReduction,
+  type CombatState,
+  type PersistentState,
+  type ResistanceShred,
+  type SequenceState,
+  type SideState,
+  type StateEffect,
+} from './state';
+
+// Post-mitigation damage reduction on the defender, including the instance-window form that
+// SPECIFICATION §5 names (Bone Plating).
+export {
+  applyDamageReductions,
+  reductionApplies,
+  type DefenderDamageReduction,
+} from './damage-reduction';
+
+// The combo runner itself.
+export {
+  runCombo,
+  ENGINE_EXCLUSIONS,
+  type ComboPlan,
+  type PlannedDamage,
+  type PlannedDot,
+  type PlannedInstance,
+  type StaticPenetration,
+} from './combo';

@@ -13,6 +13,8 @@
 // This file is deliberately NOT named *.test.ts, so vitest does not collect it as a suite.
 
 import type { AbilityComponent, Ratio, Scaling } from '../types';
+import type { StatBlock } from '../types/result';
+import type { ChampionConfig, ComboStep, Scenario } from '../types/scenario';
 import type { CasterStats } from './component';
 
 /**
@@ -69,4 +71,69 @@ export function component(parts: Partial<AbilityComponent> & { base: Scaling }):
 /** A ratio on one of the four caster-only stats: `stat` plus a magnitude in PERCENTAGE POINTS. */
 export function ratio(stat: Ratio['stat'], magnitude: Scaling, extra: Partial<Ratio> = {}): Ratio {
   return { stat, ...magnitude, ...extra } as Ratio;
+}
+
+// ---------------------------------------------------------------------------------------
+// Fixtures for the SEQUENTIAL COMBO RUNNER (SPECIFICATION §3.1).
+//
+// The same rule applies as above and is worth restating because these look more like real
+// champions: NOTHING HERE COMES FROM A DATA FILE. `statBlock` below is not any champion's
+// stat line — it is whatever round numbers make the arithmetic in a test doable on paper.
+// ---------------------------------------------------------------------------------------
+
+/**
+ * A fully resolved stat block, built from round numbers.
+ *
+ * Every field of the frozen `StatBlock` is filled so the fixture typechecks; a test states
+ * only the handful it actually exercises. `critDamage` defaults to 2.0, the base multiplier
+ * as of patch V26.01 (see crit.ts), NOT because any test depends on the default.
+ */
+export function statBlock(opts: Partial<StatBlock> = {}): StatBlock {
+  const attackDamage = opts.attackDamage ?? { base: 0, bonus: 0, total: 0 };
+  return {
+    level: opts.level ?? 1,
+    hp: opts.hp ?? 1000,
+    maxHp: opts.maxHp ?? opts.hp ?? 1000,
+    armor: opts.armor ?? 0,
+    magicResist: opts.magicResist ?? 0,
+    attackDamage,
+    abilityPower: opts.abilityPower ?? 0,
+    critChance: opts.critChance ?? 0,
+    critDamage: opts.critDamage ?? 2,
+    attackSpeed: opts.attackSpeed ?? 0.625,
+    adaptiveType: opts.adaptiveType ?? 'physical',
+  };
+}
+
+/** A champion configuration with the two state categories of §3.3 stated separately. */
+export function championConfig(opts: Partial<ChampionConfig> = {}): ChampionConfig {
+  return {
+    apiname: opts.apiname ?? 'FixtureChampion',
+    level: opts.level ?? 1,
+    abilityRanks: opts.abilityRanks ?? { Q: 1, W: 1, E: 1, R: 1 },
+    items: opts.items ?? [],
+    runes: opts.runes ?? { keystone: null, primary: [], secondary: [], shards: [] },
+    persistent: opts.persistent ?? {},
+    entryState: opts.entryState ?? {},
+  };
+}
+
+/** A combo step. `ref` and `kind` are what the runner echoes; it resolves neither itself. */
+export function comboStep(id: string, opts: Partial<ComboStep> = {}): ComboStep {
+  return {
+    id,
+    kind: opts.kind ?? 'ability',
+    ref: opts.ref ?? 'Q',
+    ...opts,
+  };
+}
+
+/** A minimal Scenario. The runner echoes it into the Result and reads only the two configs. */
+export function scenario(opts: Partial<Scenario> = {}): Scenario {
+  return {
+    version: opts.version ?? 1,
+    attacker: opts.attacker ?? championConfig(),
+    defender: opts.defender ?? championConfig(),
+    combo: opts.combo ?? [],
+  };
 }

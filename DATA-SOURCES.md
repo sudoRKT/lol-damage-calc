@@ -2915,7 +2915,11 @@ Each was found by auditing the census's own output and became a rule over the wh
 - **Two item effects are cross-reference stubs**: Armored Advance → Plated Steelcaps, Immortal Path
   → Gluttonous Greaves. The fact is stated, on another page.
 - **Two damaging effects are out of champion-versus-champion scope**: Demolish (towers only) and
-  Umbral Glaive `pass3` (wards only).
+  Umbral Glaive `pass2` (wards only) — **corrected 2026-08-13: this said `pass3`, which is wrong.**
+  In the live module `pass2` (Blackout) is the wards-only effect and `pass3` (Nightstalker) damages
+  CHAMPIONS. Two independent sweeps over all 291 effects agree: `pass2` is the entry naming a
+  non-champion target, `pass3` is the entry mentioning lethality. A wrong key here would have
+  excluded a real champion-damaging effect and kept a wards-only one.
 
 The census is `public/data/effect-census.json`, carrying its provenance, every definition in full,
 per-effect rows, and the recorded hand audit.
@@ -3090,3 +3094,156 @@ by `variable-hit-count` and contribute no damage — the promise working rather 
 future patch pushes this past fifteen, the shape is written down here so it need not be
 rediscovered: an arm `{ kind: 'repeatsAtAmplifiedRate'; rate: number; maxAdditional: number }` with
 `rate > 1`, resolved identically to shape A.
+
+---
+
+## 39. Item and rune effect VALUES — the first extraction (2026-08-13)
+
+§37 censused 291 effects and extracted none. This is the first extraction, over the **63 effects
+that state their damage value structurally** (§37.2).
+
+**DEFINITION OF "EXTRACTED", and it is stricter than "the parser read it".** The number was
+produced **twice, independently** — once by a parser walking the wiki's wikitext, once by a person
+reading the item's own displayed sentence and recording it in `scripts/fetch/effect-values-read.ts`
+— and stored only where the two agreed on the damage type, the flat base, every ratio in order, and
+every ratio's owner. Any other outcome is a refusal. This is the detect-then-read rule (CLAUDE.md)
+applied at the level of the individual value rather than the population.
+
+| Figure | Count |
+|---|---:|
+| effects in the population | 291 |
+| stating their value structurally | 63 |
+| **extracted** | **28** (all items) |
+| — complete (`derived`) | 27 |
+| — `incomplete`, unresolved owner | 1 (Heartsteel) |
+| **refused** | **35** |
+| parser fired outside the read population | **0** |
+
+**THE REFUSALS ARE NOT READING FAILURES. In 33 of the 35 the number is plainly stated and the
+CONTRACT cannot hold it.** Only two are the source being silent (two runes state a range whose axis
+is never named). Grouped: melee/ranged split 12 · damage over time 7 · non-champion target only 6 ·
+other enemies only 5 · lethality or crit-chance scaling 4 · adaptive damage type 3 · range with no
+stated axis 3 · retaliation 2 · stack-scaled 2 · conditional extra damage 2 · ally only 1.
+
+**All five damaging runes refused**, for exactly two reasons — three deal "adaptive" damage, which
+`DamageType` has no arm for, and two state an unaxised range. That is what §6 and §9 already
+predicted: rune values must be hand-curated.
+
+**A refusal that is a finding, not a gap.** Luden's Echo states `75 (+5% AP)` per target over four
+targets. Storing that looks like the safe floor — but in a two-champion scenario there is no second
+target, the leftover stacks fall back onto the primary, and it deals `150 (+10% AP)`. **The
+"minimum" reading would have understated the common case twofold.** A conservative default is not
+automatically an honest one.
+
+### 39.1 Data Dragon corroborates only 7 of the 28, and that is reported as absence
+
+Data Dragon's item descriptions no longer carry passive numbers — Wit's End reads "Attacks deal
+bonus magic damage" with no figure anywhere. **7 effects have every number independently restated;
+21 have no second source at all.** That is recorded as absence, never as agreement. It also makes
+§5's Infinity Edge example stale: its 30% critical damage is now a structured stat rather than
+description text.
+
+### 39.2 THE OTHER SOURCE DOES ATTRIBUTE 7 OWNERS THE WIKI LEAVES SILENT — a decision, not a fix
+
+§37.3's "82 unattributed references" was measured **over the wiki module alone**. Data Dragon's own
+prose attributes **7 of the 69 unstated item references, across 5 effects** — including two §37.3
+calls permanently unresolvable: **Black Cleaver** ("the target's Armor") and **Bloodletter's
+Curse** ("their Magic Resist"), plus Heartsteel ("your max Health"), Overlord's Bloodmail and
+Riftmaker.
+
+**Nothing was acted on.** Heartsteel still ships `owner: 'unresolved'`. Whether a Data Dragon
+attribution outranks wiki silence is a SOURCE-POLICY decision (§12, §15), and it is measured and
+quoted in `public/data/effect-values.json` so it can be decided rather than assumed. **If it is
+adopted, the count of permanently unresolvable item effects falls and §37.3 must be re-measured.**
+
+---
+
+## 40. The defensive kit census (2026-08-13)
+
+The product models damage dealt and barely models damage received. SPECIFICATION §5 requires the
+defender modelled in full and splits defensive effects by activation. This measures that population
+over **all 937 ability pages**.
+
+**SCAN COMPLETENESS, stated because a previous scan in this project silently covered 759 of 937:**
+1,071 titles requested, 1,060 resolved, **0 fetch chunks failed**, 123 alias duplicates dropped,
+**11 titles do not exist on the wiki and are listed by name rather than hidden**. Coverage: 937 of
+937.
+
+| Figure | Count | Definition |
+|---|---:|---|
+| candidate pages from the detector | **289** | prose matches a defensive pattern |
+| **confirmed on reading** | **218** | a person read all 289 |
+| rejected after reading | **71** | a **25% over-fire rate**, in line with the 24→17 precedent |
+| including bonus-maximum-health grants | 226 | reported separately: they change the verdict rather than damage received |
+
+**Candidate → confirmed by kind:** heals 142→121 · shields 84→67 · resistance grants 46→30 ·
+immunity 54→**19** · damage reduction 63→**15** · execute thresholds 9→9 · type-specific reduction
+2→**4** · spell shields 2→**3**. Two kinds GAINED on reading, because a person reclassified what the
+pattern had mis-kinded — a confirmed count is not bounded by its candidate count.
+
+### 40.1 The §5 split, and it needs a third bucket
+
+**6 always-active · 210 conditional · 2 not-stated.**
+
+Always-active means the source states no cast, no duration, no trigger, no stack count and no
+precondition. The six that bake into the defender's resolved stat block: **Fizz P, Amumu E,
+Aatrox E, Gwen P, Morgana P, Nasus P.** Everything else is a toggle.
+
+**THE HEADLINE FOR THE INTERFACE: the defender panel needs on the order of 200 controls, not a
+handful.** §5's two-way split is nearly all one way.
+
+The two not-stated are not coin tosses. **Xin Zhao R** is invulnerable "against enemy champions far
+away from him" — the source states the condition and it is a **distance**, which this engine models
+nothing of. **Kayn P** is invulnerable only at his summoning platform, outside any combat sequence.
+
+### 40.2 Value readability, and a third state §26.3 did not have
+
+**103 reachable · 93 hard · 5 stated by reference · 17 with no value at all.** 53% reachable,
+against the 41% §26.3 measured for ability damage.
+
+"**Stated by reference**" is a state the ability-side split did not need: "heals for the same
+amount", "equal to the health cost". The source states the value; it does not state a figure.
+"**No value at all**" is a spell shield or an invulnerability — counting those as "hard" would have
+overstated the reading burden.
+
+**A rule corrected mid-measurement, with both readings reported:** a first rule stripped "for
+&lt;number&gt;" as a duration and deleted "Heals Gwen for **67%**", reporting 23 effects as having
+no value. Narrowed to strip only numbers carrying a time or distance unit, the figure is **17**.
+
+### 40.3 Owners no source states
+
+Two halves, never merged. **From leveling rows (exact): 10 references — 1 caster, 0 target, 9
+UNRESOLVED.** From sentences (an upper bound, since a sentence can carry a stat from another
+clause): 129 references — 64 caster, 17 target, 48 unresolved.
+
+**24 confirmed defensive effects carry at least one stat the source attributes to nobody**, 4 of
+them from a leveling row: Malphite W again, plus Rammus W, Braum W, Leona W, Sejuani P, Blitzcrank P
+(`35% of maximum mana`) and eighteen others. `unresolvable`, not a worklist.
+
+### 40.4 Five defects, each swept over all 937 pages
+
+1. **`plainText` erases the evidence — 79 pages.** `wikitext.ts`'s `plainText()` deletes `{{…}}`
+   blocks whole, and the wiki wraps almost every game term in `{{tip|…}}`. The first run found
+   immunity on **1 page of 937** while `{{tip|untargetable}}` alone appears on 41. A flattener that
+   unwraps rather than deletes took the candidate population from 162 to 289. **ANY FUTURE DETECTOR
+   BUILT ON `plainText` IS BLIND TO THESE 79 PAGES.**
+2. **"post-mitigation damage" read as a defensive effect — 15 pages.** The wiki's own tooltip for
+   which damage figure a heal scales from. The largest single over-fire.
+3. **"armor penetration" read as a resistance grant — 5 pages.** §37.4's item-side defect 4, in
+   ability form.
+4. **The dealt-side near-miss — 1 page.** Xayah Q's "Targets hit after the first take 50% reduced
+   damage" is Xayah dealing less; Jax E's "take 25% reduced damage from all area of effect
+   abilities" is Jax taking less. **The detector's dealt-side marker did not fire on Xayah** — the
+   SUBJECT carries the meaning, not the verb phrase. A person caught it. Both are now tests.
+5. **Untargetability read as damage immunity — 32 pages.** The source says untargetable and says
+   **nothing about damage**. Not counted as immunity: inferring that it stops damage is inferring
+   what the source declines to state. Counted and named in its own row instead.
+
+### 40.5 Deliberately excluded, and counted so the exclusion is visible
+
+Target resistance shred **10** (the engine's business — §3.6 fixes where reduction sits) · attacker
+damage debuff **2** · target amplification **5** (attacker-side, engine-relevant) · shield
+destruction **3** · untargetability-only **32** · health-pool properties **2** · "applies life
+steal" **19**, distinct from the **4** that GRANT life steal or omnivamp.
+
+The census is `build/proposed-curated/defensive-census.json`.

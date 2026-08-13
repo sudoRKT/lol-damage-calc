@@ -1,0 +1,2279 @@
+{
+  "provenance": {
+    "source": "Riot Data Dragon item.json + runesReforged.json (which items and runes exist); wiki Module:ItemData/data (item effect prose and values)",
+    "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+    "patch": "16.16.1",
+    "fetched": "2026-08-13T19:48:23.186Z",
+    "urls": {
+      "patch": "https://ddragon.leagueoflegends.com/api/versions.json",
+      "items": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "itemEffects": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "runes": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/runesReforged.json"
+    }
+  },
+  "whatThisIs": "A PROPOSAL. Every stored component was produced twice — once by a parser reading the wikitext and once by a person reading the item's own sentence — and is written only where the two agree. Nothing here is `verified`: no value was re-derived from a documented formula or a published worked example (CLAUDE.md). Merging it into /curated/ is a lead action; no script in scripts/fetch/ writes that directory.",
+  "definitions": {
+    "population": "The 63 effects DATA-SOURCES §37.2 measures as stating their damage value structurally — the source wraps the damage type and the number together. The other 18 damaging effects need a person to read the sentence and are NOT in this run.",
+    "stored": "The wikitext parser and the recorded hand reading produced the same damage type, the same flat base, the same ratios in the same order, and the same owner for every ratio.",
+    "refused": "Any other outcome: the reading refuses the effect, the parser refuses it, nobody has read it, or the two disagree. A refusal is a result.",
+    "unresolvedOwner": "A ratio reads a stat both champions possess and no source says whose. Permanent, not pending (DATA-SOURCES §37.3, SPECIFICATION §8). It forces verification: incomplete.",
+    "ratioUnit": "Percentage POINTS, per the `Ratio` contract: (+ 15% AP) is stored as 15, never 0.15.",
+    "constantScaling": "An item effect has no ranks, so a constant is stored as { scaling: \"explicit\", perRank: [v] } — a literal list used verbatim. NOT { linear, from: v, to: v }, which would claim a rank progression the item does not have."
+  },
+  "counts": {
+    "effectsInPopulation": 291,
+    "structurallyStatedDamaging": 63,
+    "needsAPersonToRead": 18,
+    "gated": 63,
+    "stored": 28,
+    "storedComplete": 27,
+    "storedWithUnresolvedOwner": 1,
+    "refused": 35,
+    "refusalsByReason": {
+      "melee-ranged-split": 12,
+      "damage-over-time": 7,
+      "non-champion-target-only": 6,
+      "other-enemies-only": 5,
+      "scales-on-lethality": 3,
+      "adaptive-damage-type": 3,
+      "range-with-unstated-axis": 3,
+      "retaliation": 2,
+      "scales-on-stacks": 2,
+      "conditional-additional-damage": 2,
+      "ally-only": 1,
+      "scales-on-crit-chance": 1
+    },
+    "classSweptOverWholePopulation": {
+      "states an interval at which something recurs": {
+        "count": 39,
+        "effects": [
+          "Archangel's Staff [pass2]",
+          "Bami's Cinder [pass]",
+          "Bastionbreaker [pass2]",
+          "Blackfire Torch [pass]",
+          "Bloodletter's Curse [pass]",
+          "Catalyst of Aeons [pass]",
+          "Crimson Lucidity [pass2]",
+          "Cryptbloom [pass]",
+          "Dead Man's Plate [pass]",
+          "Death's Dance [pass]",
+          "Death's Dance [pass2]",
+          "Doran's Ring [pass]",
+          "Doran's Shield [pass]",
+          "Dream Maker [pass]",
+          "Fated Ashes [pass]",
+          "Force of Nature [pass]",
+          "Health Potion [consume]",
+          "Hollow Radiance [pass]",
+          "Liandry's Torment [pass]",
+          "Locket of the Iron Solari [act]",
+          "Lost Chapter [pass]",
+          "Malignance [pass2]",
+          "Manamune [pass2]",
+          "Refillable Potion [consume]",
+          "Rod of Ages [pass2]",
+          "Solstice Sleigh [pass]",
+          "Spear of Shojin [pass2]",
+          "Sterak's Gage [pass2]",
+          "Stridebreaker [act]",
+          "Sunfire Aegis [pass]",
+          "Tear of the Goddess [pass]",
+          "Unending Despair [pass]",
+          "Warmog's Armor [pass2]",
+          "Whispering Circlet [pass2]",
+          "Winter's Approach [pass2]",
+          "World Atlas [pass2]",
+          "Zeke's Convergence [pass2]",
+          "Deathfire Touch [rune]",
+          "Manaflow Band [rune]"
+        ]
+      },
+      "mentions lethality": {
+        "count": 5,
+        "effects": [
+          "Axiom Arc [pass]",
+          "Bastionbreaker [pass]",
+          "Bastionbreaker [pass2]",
+          "Umbral Glaive [pass3]",
+          "Voltaic Cyclosword [pass3]"
+        ]
+      },
+      "mentions a melee/ranged split anywhere in its text": {
+        "count": 36,
+        "effects": [
+          "Bandlepipes [pass]",
+          "Bastionbreaker [pass]",
+          "Bastionbreaker [pass2]",
+          "Black Cleaver [pass2]",
+          "Blade of The Ruined King [pass]",
+          "Bloodsong [pass]",
+          "Celestial Opposition [pass]",
+          "Crimson Lucidity [pass2]",
+          "Death's Dance [pass]",
+          "Doran's Shield [pass]",
+          "Eclipse [pass]",
+          "Endless Hunger [pass]",
+          "Experimental Hexplate [pass2]",
+          "Hexdrinker [pass]",
+          "Hullbreaker [pass]",
+          "Hullbreaker [pass2]",
+          "Iceborn Gauntlet [pass]",
+          "Immortal Shieldbow [pass]",
+          "Kraken Slayer [pass]",
+          "Maw of Malmortius [pass]",
+          "Phage [pass]",
+          "Profane Hydra [pass]",
+          "Ravenous Hydra [pass]",
+          "Riftmaker [pass]",
+          "Serpent's Fang [pass]",
+          "Stridebreaker [pass]",
+          "Sundered Sky [pass]",
+          "Tiamat [pass]",
+          "Titanic Hydra [pass]",
+          "Titanic Hydra [act]",
+          "Umbral Glaive [pass2]",
+          "Voltaic Cyclosword [pass3]",
+          "World Atlas [pass2]",
+          "Youmuu's Ghostblade [act]",
+          "Youmuu's Ghostblade [pass]",
+          "Yun Tal Wildarrows [pass]"
+        ]
+      },
+      "names a non-champion target": {
+        "count": 8,
+        "effects": [
+          "Bastionbreaker [pass2]",
+          "Doran's Helm [pass]",
+          "Doran's Ring [pass2]",
+          "Doran's Shield [pass2]",
+          "Hullbreaker [pass]",
+          "Tear of the Goddess [pass2]",
+          "Umbral Glaive [pass2]",
+          "Fleet Footwork [rune]"
+        ]
+      },
+      "mentions critical strike chance": {
+        "count": 2,
+        "effects": [
+          "Essence Reaver [pass]",
+          "Yun Tal Wildarrows [pass]"
+        ]
+      },
+      "names enemies OTHER than the target": {
+        "count": 6,
+        "effects": [
+          "Profane Hydra [pass]",
+          "Ravenous Hydra [pass]",
+          "Runaan's Hurricane [pass]",
+          "Stridebreaker [pass]",
+          "Tiamat [pass]",
+          "Titanic Hydra [pass]"
+        ]
+      },
+      "deals damage the source calls adaptive": {
+        "count": 6,
+        "effects": [
+          "Electrocute [rune]",
+          "Dark Harvest [rune]",
+          "Press the Attack [rune]",
+          "Lethal Tempo [rune]",
+          "Shield Bash [rune]",
+          "Arcane Comet [rune]"
+        ]
+      }
+    },
+    "parserFiredOutsideReadPopulation": []
+  },
+  "findings": [],
+  "secondSourceCorroboration": {
+    "whatThisIs": "Each stored number looked for in Data Dragon's own item description, which Riot writes independently of the wiki. Where the number is present the two agree. Where Data Dragon states no number at all, NOTHING is claimed — absence is not agreement.",
+    "storedEffects": 28,
+    "everyNumberRestated": 7,
+    "dataDragonStatesNoNumbers": 21,
+    "rows": [
+      {
+        "ownerName": "Ardent Censer",
+        "key": "pass",
+        "numbers": [
+          20
+        ],
+        "restatedByDataDragon": [
+          20
+        ],
+        "absentFromDataDragon": [],
+        "dataDragonProse": "Sanctify Healing or Shielding an ally enhances you both for 6 seconds, granting 25% Attack Speed and 20 magic damage On-Hit ."
+      },
+      {
+        "ownerName": "Bloodsong",
+        "key": "pass",
+        "numbers": [
+          100
+        ],
+        "restatedByDataDragon": [],
+        "absentFromDataDragon": [
+          100
+        ],
+        "dataDragonProse": "Spellblade After using an Ability, your next Attack deals bonus physical damage On-Hit . If the target is a champion, they take increased damage for 4 seconds. Active (4 charges) Places an Invisible Stealth Ward that grants vision."
+      },
+      {
+        "ownerName": "Dusk and Dawn",
+        "key": "pass",
+        "numbers": [
+          75,
+          10
+        ],
+        "restatedByDataDragon": [],
+        "absentFromDataDragon": [
+          75,
+          10
+        ],
+        "dataDragonProse": "Spellblade (0s) After using an Ability, your next Attack deals bonus magic damage and heals you for On-Hit and then applies On-Hit effects an additional time."
+      },
+      {
+        "ownerName": "Elixir of Sorcery",
+        "key": "consume",
+        "numbers": [
+          25
+        ],
+        "restatedByDataDragon": [
+          25
+        ],
+        "absentFromDataDragon": [],
+        "dataDragonProse": "Consume Grants 50 Ability Power and 15% Mana Regen for 3 minutes. While active, damaging a champion or turret deals 25 bonus true damage (5s against champions)."
+      },
+      {
+        "ownerName": "Guinsoo's Rageblade",
+        "key": "pass",
+        "numbers": [
+          30
+        ],
+        "restatedByDataDragon": [
+          30
+        ],
+        "absentFromDataDragon": [],
+        "dataDragonProse": "Wrath Attacks deal 30 bonus magic damage On-Hit . Seething Strike Attacks grant 8% Attack Speed for 3 seconds. (stacks 4 times). While fully stacked, every third Attack applies On-Hit effects twice."
+      },
+      {
+        "ownerName": "Heartsteel",
+        "key": "pass",
+        "numbers": [
+          70,
+          6
+        ],
+        "restatedByDataDragon": [
+          70,
+          6
+        ],
+        "absentFromDataDragon": [],
+        "dataDragonProse": "Colossal Consumption (0s) per target If an enemy champion is nearby for a few seconds, your next Attack against them deals 70 plus 6% of your max Health as bonus physical damage and grants 10% of the damage as max Health. Goliath For each 1000 max Health , gain 3% increased size, up to 30%."
+      },
+      {
+        "ownerName": "Hextech Alternator",
+        "key": "pass",
+        "numbers": [
+          65
+        ],
+        "restatedByDataDragon": [],
+        "absentFromDataDragon": [
+          65
+        ],
+        "dataDragonProse": "Revved Damaging a champion deals bonus magic damage ."
+      },
+      {
+        "ownerName": "Hextech Gunblade",
+        "key": "act",
+        "numbers": [
+          175,
+          253,
+          30
+        ],
+        "restatedByDataDragon": [],
+        "absentFromDataDragon": [
+          175,
+          253,
+          30
+        ],
+        "dataDragonProse": "ACTIVE (0s) Lightning Bolt Shocks the target enemy champion, dealing magic damage and slowing them by 25% for 1.5 seconds."
+      },
+      {
+        "ownerName": "Hextech Rocketbelt",
+        "key": "act",
+        "numbers": [
+          100,
+          10
+        ],
+        "restatedByDataDragon": [],
+        "absentFromDataDragon": [
+          100,
+          10
+        ],
+        "dataDragonProse": "Supersonic Dash in target direction, unleashing missiles that deal magic damage ."
+      },
+      {
+        "ownerName": "Iceborn Gauntlet",
+        "key": "pass",
+        "numbers": [
+          150
+        ],
+        "restatedByDataDragon": [],
+        "absentFromDataDragon": [
+          150
+        ],
+        "dataDragonProse": "Spellblade After using an Ability, your next Attack deals bonus physical damage On-Hit and creates a frost field for 2s that Slows ."
+      },
+      {
+        "ownerName": "Lich Bane",
+        "key": "pass",
+        "numbers": [
+          75,
+          45
+        ],
+        "restatedByDataDragon": [],
+        "absentFromDataDragon": [
+          75,
+          45
+        ],
+        "dataDragonProse": "Spellblade After using an Ability, your next Attack deals bonus magic damage On-Hit ."
+      },
+      {
+        "ownerName": "Nashor's Tooth",
+        "key": "pass",
+        "numbers": [
+          15,
+          15
+        ],
+        "restatedByDataDragon": [],
+        "absentFromDataDragon": [
+          15,
+          15
+        ],
+        "dataDragonProse": "Icathian Bite Attacks deal bonus magic damage On-Hit ."
+      },
+      {
+        "ownerName": "Profane Hydra",
+        "key": "act",
+        "numbers": [
+          80
+        ],
+        "restatedByDataDragon": [],
+        "absentFromDataDragon": [
+          80
+        ],
+        "dataDragonProse": "Cleave Attacks deal physical damage to nearby enemies. Heretical Cleave Deal physical damage around you."
+      },
+      {
+        "ownerName": "Rapid Firecannon",
+        "key": "pass2",
+        "numbers": [
+          40
+        ],
+        "restatedByDataDragon": [
+          40
+        ],
+        "absentFromDataDragon": [],
+        "dataDragonProse": "Sharpshooter Your Energized Attack deals 40 bonus magic damage and gains 35% bonus Attack Range."
+      },
+      {
+        "ownerName": "Ravenous Hydra",
+        "key": "act",
+        "numbers": [
+          80
+        ],
+        "restatedByDataDragon": [],
+        "absentFromDataDragon": [
+          80
+        ],
+        "dataDragonProse": "Cleave Attacks deal physical damage to nearby enemies. Ravenous Crescent Deal physical damage to enemies around you. Your Life Steal applies to this damage."
+      },
+      {
+        "ownerName": "Recurve Bow",
+        "key": "pass",
+        "numbers": [
+          15
+        ],
+        "restatedByDataDragon": [
+          15
+        ],
+        "absentFromDataDragon": [],
+        "dataDragonProse": "Sting Attacks deal 15 bonus physical damage On-Hit ."
+      },
+      {
+        "ownerName": "Redemption",
+        "key": "act",
+        "numbers": [
+          10
+        ],
+        "restatedByDataDragon": [
+          10
+        ],
+        "absentFromDataDragon": [],
+        "dataDragonProse": "Intervention Restore 150 - 350 Health to allied units and deal 10% max Health true damage to enemy champions after 2.5 seconds."
+      },
+      {
+        "ownerName": "Scout's Slingshot",
+        "key": "pass",
+        "numbers": [
+          40
+        ],
+        "restatedByDataDragon": [],
+        "absentFromDataDragon": [
+          40
+        ],
+        "dataDragonProse": "Bullseye Damaging a champion deals bonus magic damage . Attacks reduce this cooldown by 1 second."
+      },
+      {
+        "ownerName": "Sheen",
+        "key": "pass",
+        "numbers": [
+          100
+        ],
+        "restatedByDataDragon": [],
+        "absentFromDataDragon": [
+          100
+        ],
+        "dataDragonProse": "Spellblade After using an Ability, your next Attack deals bonus physical damage On-Hit ."
+      },
+      {
+        "ownerName": "Statikk Shiv",
+        "key": "pass3",
+        "numbers": [
+          60
+        ],
+        "restatedByDataDragon": [],
+        "absentFromDataDragon": [
+          60
+        ],
+        "dataDragonProse": "Electrospark Your Energized Attacks fire chain lightning, applying On-Hit effects and dealing magic damage to nearby targets. Electroshock Basic Attacks grant extra Energized stacks."
+      },
+      {
+        "ownerName": "Stormrazor",
+        "key": "pass2",
+        "numbers": [
+          100
+        ],
+        "restatedByDataDragon": [],
+        "absentFromDataDragon": [
+          100
+        ],
+        "dataDragonProse": "Energized Moving and Attacking generates an Energized Attack . Bolt Your Energized Attack applies bonus magic damage and grants 45% Movement Speed for 1.5 seconds."
+      },
+      {
+        "ownerName": "Stormsurge",
+        "key": "pass2",
+        "numbers": [
+          125,
+          10
+        ],
+        "restatedByDataDragon": [],
+        "absentFromDataDragon": [
+          125,
+          10
+        ],
+        "dataDragonProse": "Stormraider Dealing 25% of a champion's maximum Health within 2.5s applies Squall to them. Squall After 2 seconds, deal magic damage . If the target dies before Squall triggers, it damages nearby enemies."
+      },
+      {
+        "ownerName": "Stridebreaker",
+        "key": "act",
+        "numbers": [
+          80
+        ],
+        "restatedByDataDragon": [],
+        "absentFromDataDragon": [
+          80
+        ],
+        "dataDragonProse": "Cleave Attacks deal physical damage to nearby enemies. Breaking Shockwave Deal physical damage and Slow nearby enemies by 35%. Gain 35% decaying Move Speed per champion hit for 3 seconds."
+      },
+      {
+        "ownerName": "Terminus",
+        "key": "pass",
+        "numbers": [
+          30,
+          10,
+          10
+        ],
+        "restatedByDataDragon": [],
+        "absentFromDataDragon": [
+          30,
+          10,
+          10
+        ],
+        "dataDragonProse": "Shadow Attacks deal bonus magic damage On-Hit . Juxtaposition Alternate between Light and Dark Attacks against champions: Light Attacks grant Armor and Magic Resist for 5s. Dark Attacks grant 10% Armor Penetration and Magic Penetration for 5s."
+      },
+      {
+        "ownerName": "Tiamat",
+        "key": "act",
+        "numbers": [
+          75
+        ],
+        "restatedByDataDragon": [],
+        "absentFromDataDragon": [
+          75
+        ],
+        "dataDragonProse": "Cleave Attacks deal physical damage to nearby enemies. Crescent Deal physical damage to enemies around you."
+      },
+      {
+        "ownerName": "Trinity Force",
+        "key": "pass",
+        "numbers": [
+          200
+        ],
+        "restatedByDataDragon": [],
+        "absentFromDataDragon": [
+          200
+        ],
+        "dataDragonProse": "Spellblade After using an Ability, your next Attack deals bonus physical damage On-Hit . Quicken Attacking grants 20 Move Speed for 2 seconds."
+      },
+      {
+        "ownerName": "Wit's End",
+        "key": "pass",
+        "numbers": [
+          45
+        ],
+        "restatedByDataDragon": [],
+        "absentFromDataDragon": [
+          45
+        ],
+        "dataDragonProse": "Fray Attacks deal bonus magic damage On-Hit ."
+      },
+      {
+        "ownerName": "Zaz'Zak's Realmspike",
+        "key": "pass",
+        "numbers": [
+          10,
+          15,
+          3
+        ],
+        "restatedByDataDragon": [],
+        "absentFromDataDragon": [
+          10,
+          15,
+          3
+        ],
+        "dataDragonProse": "Void Explosion Dealing Ability damage to a champion causes an explosion that deals magic damage . Active (4 charges) Places an Invisible Stealth Ward that grants vision."
+      }
+    ]
+  },
+  "whoseStatDoesTheOtherSourceSay": {
+    "whatThisIs": "DATA-SOURCES §37.3 measured the unattributed stat references over the wiki's item module alone, and calls the effects carrying one permanently unresolvable. This asks a DIFFERENT field's question: does Data Dragon's own item description attribute the same stat? It is a measurement handed to the lead, not a resolution. Nothing in this file acts on it, and the ratios stored above still carry owner 'unresolved'.",
+    "itemOwnerReferencesTheWikiLeavesUnstated": 69,
+    "ofThoseDataDragonAttributes": 7,
+    "distinctEffects": 5,
+    "rows": [
+      {
+        "ownerName": "Black Cleaver",
+        "key": "pass",
+        "stat": "armor",
+        "wikiSays": "unstated",
+        "ddragonSays": "other champion",
+        "quotingDataDragon": "the target's Armor",
+        "quotingTheWiki": "acking up to 5 times. Each stack inflicts 6% armor reduction , up to 30% ar"
+      },
+      {
+        "ownerName": "Black Cleaver",
+        "key": "pass",
+        "stat": "armor",
+        "wikiSays": "unstated",
+        "ddragonSays": "other champion",
+        "quotingDataDragon": "the target's Armor",
+        "quotingTheWiki": "tack inflicts 6% armor reduction , up to 30% armor at 5 stacks. Non- basic "
+      },
+      {
+        "ownerName": "Bloodletter's Curse",
+        "key": "pass",
+        "stat": "magicResist",
+        "wikiSays": "unstated",
+        "ddragonSays": "other champion",
+        "quotingDataDragon": "their Magic Resist",
+        "quotingTheWiki": "every 0.3 seconds. Each stack inflicts 7.5 % magic resistance reduction , up to 30% mr"
+      },
+      {
+        "ownerName": "Heartsteel",
+        "key": "pass",
+        "stat": "maxHP",
+        "wikiSays": "unstated",
+        "ddragonSays": "holder",
+        "quotingDataDragon": "your max Health",
+        "quotingTheWiki": "me them all to deal 70 physical damage (+ 6% maximum health) bonus physical damage o"
+      },
+      {
+        "ownerName": "Heartsteel",
+        "key": "pass",
+        "stat": "maxHP",
+        "wikiSays": "unstated",
+        "ddragonSays": "holder",
+        "quotingDataDragon": "your max Health",
+        "quotingTheWiki": "qual to 10% of that amount 70*0.1 (+ 6*0.1 % maximum health) (30 second cooldown per"
+      },
+      {
+        "ownerName": "Overlord's Bloodmail",
+        "key": "pass",
+        "stat": "bonusHP",
+        "wikiSays": "unstated",
+        "ddragonSays": "holder",
+        "quotingDataDragon": "your bonus Health",
+        "quotingTheWiki": "Gain bonus attack damage equal to 2.5 % bonus health ."
+      },
+      {
+        "ownerName": "Riftmaker",
+        "key": "pass2",
+        "stat": "bonusHP",
+        "wikiSays": "unstated",
+        "ddragonSays": "holder",
+        "quotingDataDragon": "your bonus Health",
+        "quotingTheWiki": "Gain ability power equal to 2% bonus health ."
+      }
+    ]
+  },
+  "effects": [
+    {
+      "id": 3504,
+      "key": "pass",
+      "ownerName": "Ardent Censer",
+      "source": "item",
+      "hasUnresolvedOwner": false,
+      "sentence": "Heal or shielding allied champions (excluding yourself) enhances you and them for 6 seconds, granting 25% bonus attack speed and 20 bonus magic damage on-hit on basic attacks.",
+      "appliesAs": "on-hit",
+      "note": "The attack-speed half of the same sentence is a separate {{as}} run and is not damage.",
+      "outcome": "stored",
+      "sourceRun": "{{as|20 '''bonus''' magic damage}}",
+      "refusals": [],
+      "components": [
+        {
+          "id": "ardent-censer-pass",
+          "label": "Sanctify",
+          "damageType": "magic",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              20
+            ]
+          },
+          "ratios": []
+        }
+      ]
+    },
+    {
+      "id": 6660,
+      "key": "pass",
+      "ownerName": "Bami's Cinder",
+      "source": "item",
+      "hasUnresolvedOwner": false,
+      "sentence": "Taking or dealing damage activates this passive for 3 seconds. Deal 15 magic damage every second to enemies within 325 units.",
+      "appliesAs": null,
+      "note": "The per-second value IS stated (15 magic). Only the shape to carry it is missing.",
+      "outcome": "refused",
+      "sourceRun": "",
+      "refusals": [
+        {
+          "reason": "damage-over-time",
+          "detail": "the recorded reading refuses this effect: damage-over-time"
+        }
+      ]
+    },
+    {
+      "id": 2520,
+      "key": "pass",
+      "ownerName": "Bastionbreaker",
+      "source": "item",
+      "hasUnresolvedOwner": false,
+      "sentence": "Your next instance of ability damage to a champion or epic monster with a champion ability deals 50 / 25 (+ 1.5 / 0.75 per 1 lethality) bonus true damage.",
+      "appliesAs": null,
+      "note": null,
+      "outcome": "refused",
+      "sourceRun": "",
+      "refusals": [
+        {
+          "reason": "melee-ranged-split",
+          "detail": "the recorded reading refuses this effect: melee-ranged-split"
+        },
+        {
+          "reason": "scales-on-lethality",
+          "detail": "the recorded reading refuses this effect: scales-on-lethality"
+        }
+      ]
+    },
+    {
+      "id": 2520,
+      "key": "pass2",
+      "ownerName": "Bastionbreaker",
+      "source": "item",
+      "hasUnresolvedOwner": false,
+      "sentence": "empowering your next basic attack against a turret or epic monster to consume the effect to deal 300 / 240 (+ 25 / 20 per 1 lethality) bonus true damage over 3 seconds",
+      "appliesAs": null,
+      "note": "Turrets and epic monsters only — it can never appear in a champion-versus-champion result.",
+      "outcome": "refused",
+      "sourceRun": "",
+      "refusals": [
+        {
+          "reason": "non-champion-target-only",
+          "detail": "the recorded reading refuses this effect: non-champion-target-only"
+        },
+        {
+          "reason": "melee-ranged-split",
+          "detail": "the recorded reading refuses this effect: melee-ranged-split"
+        },
+        {
+          "reason": "scales-on-lethality",
+          "detail": "the recorded reading refuses this effect: scales-on-lethality"
+        },
+        {
+          "reason": "damage-over-time",
+          "detail": "the recorded reading refuses this effect: damage-over-time"
+        }
+      ]
+    },
+    {
+      "id": 2503,
+      "key": "pass",
+      "ownerName": "Blackfire Torch",
+      "source": "item",
+      "hasUnresolvedOwner": false,
+      "sentence": "Dealing ability damage burns enemies, causing them to take 10 (+ 1% AP) magic damage every 0.5 seconds over 3 seconds, for a total of 60 (+ 6% AP).",
+      "appliesAs": null,
+      "note": "The source states the tick AND the total AND the tick count (6). Storing the tick as the whole effect is the exact defect gate 5 found on 64 ability components (DATA-SOURCES §29).",
+      "outcome": "refused",
+      "sourceRun": "",
+      "refusals": [
+        {
+          "reason": "damage-over-time",
+          "detail": "the recorded reading refuses this effect: damage-over-time"
+        }
+      ]
+    },
+    {
+      "id": 3877,
+      "key": "pass",
+      "ownerName": "Bloodsong",
+      "source": "item",
+      "hasUnresolvedOwner": false,
+      "sentence": "After using an ability, your next basic attack within 10 seconds deals 100% base AD bonus physical damage on-hit.",
+      "appliesAs": "on-hit, after an ability (Spellblade)",
+      "note": "The {{rd|8%|5%}} melee/ranged split in this effect is on Expose Weakness, a damage AMPLIFIER in a later sentence — not on this damage run. Blocking the whole effect on the presence of {{rd}} anywhere in its text would have refused a readable value.",
+      "outcome": "stored",
+      "sourceRun": "{{as|100% '''base''' AD}} {{as|'''bonus''' physical damage}}",
+      "refusals": [],
+      "components": [
+        {
+          "id": "bloodsong-pass",
+          "label": "Spellblade",
+          "damageType": "physical",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              0
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "baseAD",
+              "scaling": "explicit",
+              "perRank": [
+                100
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 3076,
+      "key": "pass",
+      "ownerName": "Bramble Vest",
+      "source": "item",
+      "hasUnresolvedOwner": false,
+      "sentence": "When struck by a basic attack on-hit, deal 10 magic damage to the attacker and, if they are a champion, inflict them with Grievous Wounds for 3 seconds.",
+      "appliesAs": null,
+      "note": "The holder does not deal this; it is dealt back at whoever struck them. Stored as an ordinary component it would be added to the holder's own combo, pointing the damage the wrong way. SPECIFICATION §5 also says the defender does not act, so where retaliation sits in the model is an open question for the lead, not a parsing problem.",
+      "outcome": "refused",
+      "sourceRun": "",
+      "refusals": [
+        {
+          "reason": "retaliation",
+          "detail": "the recorded reading refuses this effect: retaliation"
+        }
+      ]
+    },
+    {
+      "id": 3742,
+      "key": "pass",
+      "ownerName": "Dead Man's Plate",
+      "source": "item",
+      "hasUnresolvedOwner": false,
+      "sentence": "Basic attacks consume all stacks to deal 0 to 40 physical damage (+ 0 to 100% base AD) bonus physical damage on-hit",
+      "appliesAs": null,
+      "note": "Both the flat part and the ratio scale on Momentum stacks (0 to 100). `Scaling` walks ability rank or champion level; neither is a stack count, and `Ratio.stacks` cannot carry a base.",
+      "outcome": "refused",
+      "sourceRun": "",
+      "refusals": [
+        {
+          "reason": "scales-on-stacks",
+          "detail": "the recorded reading refuses this effect: scales-on-stacks"
+        }
+      ]
+    },
+    {
+      "id": 1120,
+      "key": "pass",
+      "ownerName": "Doran's Helm",
+      "source": "item",
+      "hasUnresolvedOwner": false,
+      "sentence": "Basic attacks deal 5 bonus physical damage on-hit against minions.",
+      "appliesAs": null,
+      "note": null,
+      "outcome": "refused",
+      "sourceRun": "",
+      "refusals": [
+        {
+          "reason": "non-champion-target-only",
+          "detail": "the recorded reading refuses this effect: non-champion-target-only"
+        }
+      ]
+    },
+    {
+      "id": 1056,
+      "key": "pass2",
+      "ownerName": "Doran's Ring",
+      "source": "item",
+      "hasUnresolvedOwner": false,
+      "sentence": "Basic attacks deal 5 bonus physical damage on-hit against minions.",
+      "appliesAs": null,
+      "note": null,
+      "outcome": "refused",
+      "sourceRun": "",
+      "refusals": [
+        {
+          "reason": "non-champion-target-only",
+          "detail": "the recorded reading refuses this effect: non-champion-target-only"
+        }
+      ]
+    },
+    {
+      "id": 1054,
+      "key": "pass2",
+      "ownerName": "Doran's Shield",
+      "source": "item",
+      "hasUnresolvedOwner": false,
+      "sentence": "Basic attacks deal 5 bonus physical damage on-hit against minions.",
+      "appliesAs": null,
+      "note": null,
+      "outcome": "refused",
+      "sourceRun": "",
+      "refusals": [
+        {
+          "reason": "non-champion-target-only",
+          "detail": "the recorded reading refuses this effect: non-champion-target-only"
+        }
+      ]
+    },
+    {
+      "id": 3870,
+      "key": "pass",
+      "ownerName": "Dream Maker",
+      "source": "item",
+      "hasUnresolvedOwner": false,
+      "sentence": "Granting a heal or shield to an allied champion (excluding yourself) causes you to grant both of your Dream Bubbles to them … the Purple Bubble grants them 40 to 160 bonus magic damage on their next damaging attack or ability",
+      "appliesAs": null,
+      "note": "The damage is granted to a THIRD champion and excludes the holder outright. Two champions are configured, so there is no ally to receive it.",
+      "outcome": "refused",
+      "sourceRun": "",
+      "refusals": [
+        {
+          "reason": "ally-only",
+          "detail": "the recorded reading refuses this effect: ally-only"
+        }
+      ]
+    },
+    {
+      "id": 2510,
+      "key": "pass",
+      "ownerName": "Dusk and Dawn",
+      "source": "item",
+      "hasUnresolvedOwner": false,
+      "sentence": "your next basic attack within 10 seconds deals 75% base AD (+ 10% AP) bonus magic damage and heals you for 10% AP (+ 3% bonus health) on-hit",
+      "appliesAs": "on-hit, after an ability (Spellblade)",
+      "note": "The heal in the same sentence carries its own (+ 3% bonus health); it is a separate run and must not join the damage. This is the shape that cost four damage instances in the census's own first run (DATA-SOURCES §37.4 defect 2).",
+      "outcome": "stored",
+      "sourceRun": "{{as|75% '''base''' AD}} {{as|(+ 10% AP)}} {{as|'''bonus''' magic damage}}",
+      "refusals": [],
+      "components": [
+        {
+          "id": "dusk-and-dawn-pass",
+          "label": "Spellblade",
+          "damageType": "magic",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              0
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "baseAD",
+              "scaling": "explicit",
+              "perRank": [
+                75
+              ]
+            },
+            {
+              "stat": "AP",
+              "scaling": "explicit",
+              "perRank": [
+                10
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 2139,
+      "key": "consume",
+      "ownerName": "Elixir of Sorcery",
+      "source": "item",
+      "hasUnresolvedOwner": false,
+      "sentence": "While active, dealing damage to enemy champions or turrets deals 25 bonus true damage (5 second cooldown on each champion, no cooldown against turrets).",
+      "appliesAs": "on damaging an enemy champion, 5 second cooldown per champion",
+      "note": null,
+      "outcome": "stored",
+      "sourceRun": "{{as|25 '''bonus''' true damage}}",
+      "refusals": [],
+      "components": [
+        {
+          "id": "elixir-of-sorcery-consume",
+          "damageType": "true",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              25
+            ]
+          },
+          "ratios": []
+        }
+      ]
+    },
+    {
+      "id": 3508,
+      "key": "pass",
+      "ownerName": "Essence Reaver",
+      "source": "item",
+      "hasUnresolvedOwner": false,
+      "sentence": "your next basic attack within 10 seconds deals 125% base AD (+ 0 to 50 based on critical strike chance) bonus physical damage on-hit",
+      "appliesAs": null,
+      "note": "0.5 damage for every 1% critical strike chance. `RatioStat` has no crit-chance arm.",
+      "outcome": "refused",
+      "sourceRun": "",
+      "refusals": [
+        {
+          "reason": "scales-on-crit-chance",
+          "detail": "the recorded reading refuses this effect: scales-on-crit-chance"
+        }
+      ]
+    },
+    {
+      "id": 2508,
+      "key": "pass",
+      "ownerName": "Fated Ashes",
+      "source": "item",
+      "hasUnresolvedOwner": false,
+      "sentence": "Dealing ability damage burns enemies, causing them to take 2.5 magic damage every 0.5 seconds over 3 seconds, for a total of 15.",
+      "appliesAs": null,
+      "note": null,
+      "outcome": "refused",
+      "sourceRun": "",
+      "refusals": [
+        {
+          "reason": "damage-over-time",
+          "detail": "the recorded reading refuses this effect: damage-over-time"
+        }
+      ]
+    },
+    {
+      "id": 3124,
+      "key": "pass",
+      "ownerName": "Guinsoo's Rageblade",
+      "source": "item",
+      "hasUnresolvedOwner": false,
+      "sentence": "Basic attacks deal 30 bonus magic damage on-hit.",
+      "appliesAs": "on-hit",
+      "note": null,
+      "outcome": "stored",
+      "sourceRun": "{{as|30 '''bonus''' magic damage}}",
+      "refusals": [],
+      "components": [
+        {
+          "id": "guinsoo-s-rageblade-pass",
+          "label": "Wrath",
+          "damageType": "magic",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              30
+            ]
+          },
+          "ratios": []
+        }
+      ]
+    },
+    {
+      "id": 3084,
+      "key": "pass",
+      "ownerName": "Heartsteel",
+      "source": "item",
+      "hasUnresolvedOwner": true,
+      "sentence": "Your next basic attack against a target with 3 stacks is empowered to consume them all to deal 70 (+ 6% maximum health) bonus physical damage on-hit",
+      "appliesAs": "on-hit, at 3 stacks, 30 second cooldown per target",
+      "note": "WHOSE maximum health is never stated. Heartsteel is one of DATA-SOURCES §37.3's 56 permanently unresolvable effects, so this entry can only ever be `incomplete`. It is stored with owner `unresolved` rather than withheld, because the rest of the figure is stated and the missing fact is recorded rather than guessed.",
+      "outcome": "stored",
+      "sourceRun": "{{as|70|physical damage}} {{as|(+ 6% '''maximum''' health)}} {{as|'''bonus''' physical damage}}",
+      "refusals": [],
+      "components": [
+        {
+          "id": "heartsteel-pass",
+          "label": "Colossal Consumption",
+          "damageType": "physical",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              70
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "maxHP",
+              "owner": "unresolved",
+              "scaling": "explicit",
+              "perRank": [
+                6
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 3145,
+      "key": "pass",
+      "ownerName": "Hextech Alternator",
+      "source": "item",
+      "hasUnresolvedOwner": false,
+      "sentence": "Damaging an enemy champion deals 65 bonus magic damage.",
+      "appliesAs": "on damaging an enemy champion",
+      "note": null,
+      "outcome": "stored",
+      "sourceRun": "{{as|65 '''bonus''' magic damage}}",
+      "refusals": [],
+      "components": [
+        {
+          "id": "hextech-alternator-pass",
+          "label": "Revved",
+          "damageType": "magic",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              65
+            ]
+          },
+          "ratios": []
+        }
+      ]
+    },
+    {
+      "id": 3146,
+      "key": "act",
+      "ownerName": "Hextech Gunblade",
+      "source": "item",
+      "hasUnresolvedOwner": false,
+      "sentence": "Shocks the target enemy champion with a bolt of lightning, dealing 175 to 253 (+ 30% AP) magic damage and slowing them by 25% for 1.5 seconds.",
+      "appliesAs": "item active, single target",
+      "note": "The flat part is {{pp|175 to 253|tooltipSize=20}}. Module:Ability progression was read live: pp's defaultSize is 18 and the linear fill puts 175 at level 1 and 253 at level 18. `tooltipSize=20` only appends two EXTRAPOLATED cells past level 18 (they compute to 257.6 and 262.2). Reading the last cell as the maximum is the DATA-SOURCES §13 trap and would overstate this active by 9 damage.",
+      "outcome": "stored",
+      "sourceRun": "{{as|{{pp|175 to 253|tooltipSize=20}}|magic damage}} {{as|(+ 30% AP)}} {{as|magic damage}}",
+      "refusals": [],
+      "components": [
+        {
+          "id": "hextech-gunblade-act",
+          "label": "Lightning Bolt",
+          "damageType": "magic",
+          "base": {
+            "scaling": "byLevel",
+            "from": 175,
+            "to": 253,
+            "atLevels": [
+              1,
+              18
+            ],
+            "steps": 18
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "explicit",
+              "perRank": [
+                30
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 3152,
+      "key": "act",
+      "ownerName": "Hextech Rocketbelt",
+      "source": "item",
+      "hasUnresolvedOwner": false,
+      "sentence": "Enemies within 85 units of your dash and ones hit by any rocket's explosion are dealt 100 (+ 10% AP) magic damage, once per cast.",
+      "appliesAs": "item active, once per cast",
+      "note": null,
+      "outcome": "stored",
+      "sourceRun": "{{as|100 {{as|(+ 10% AP)}} magic damage|magic damage}}",
+      "refusals": [],
+      "components": [
+        {
+          "id": "hextech-rocketbelt-act",
+          "label": "Supersonic",
+          "damageType": "magic",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              100
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "explicit",
+              "perRank": [
+                10
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 6664,
+      "key": "pass",
+      "ownerName": "Hollow Radiance",
+      "source": "item",
+      "hasUnresolvedOwner": false,
+      "sentence": "Deal 15 (+ 1% bonus health) magic damage every second to enemies within 325 units.",
+      "appliesAs": null,
+      "note": "Also an unattributed \"bonus health\" — the burn family, §37.3.",
+      "outcome": "refused",
+      "sourceRun": "",
+      "refusals": [
+        {
+          "reason": "damage-over-time",
+          "detail": "the recorded reading refuses this effect: damage-over-time"
+        }
+      ]
+    },
+    {
+      "id": 3181,
+      "key": "pass",
+      "ownerName": "Hullbreaker",
+      "source": "item",
+      "hasUnresolvedOwner": false,
+      "sentence": "your next basic attack on-hit against a champion, epic monster, or structure consumes all stacks to deal 120% / 84% base AD (+ 5% / 3.5% maximum health) bonus physical damage",
+      "appliesAs": null,
+      "note": "Also carries an unattributed \"maximum health\" — one of §37.3's 56, so even with the split resolved this could only ever be `incomplete`.",
+      "outcome": "refused",
+      "sourceRun": "",
+      "refusals": [
+        {
+          "reason": "melee-ranged-split",
+          "detail": "the recorded reading refuses this effect: melee-ranged-split"
+        }
+      ]
+    },
+    {
+      "id": 6662,
+      "key": "pass",
+      "ownerName": "Iceborn Gauntlet",
+      "source": "item",
+      "hasUnresolvedOwner": false,
+      "sentence": "After using an ability, your next basic attack within 10 seconds deals 150% base AD bonus physical damage on-hit and creates a 300 radius frost field for 2 seconds.",
+      "appliesAs": "on-hit, after an ability (Spellblade)",
+      "note": "The {{rd|25%|12.5%}} melee/ranged split here is on the SLOW, not on the damage.",
+      "outcome": "stored",
+      "sourceRun": "{{as|150% '''base''' AD}} {{as|'''bonus''' physical damage}}",
+      "refusals": [],
+      "components": [
+        {
+          "id": "iceborn-gauntlet-pass",
+          "label": "Spellblade",
+          "damageType": "physical",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              0
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "baseAD",
+              "scaling": "explicit",
+              "perRank": [
+                150
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 6672,
+      "key": "pass",
+      "ownerName": "Kraken Slayer",
+      "source": "item",
+      "hasUnresolvedOwner": false,
+      "sentence": "At 2 stacks, the next basic attack consumes all stacks to deal 150 to 200 / 120 to 160 bonus physical damage on-hit, increased by 0 to 75% by target's missing health",
+      "appliesAs": null,
+      "note": "Two separate blockers. The value is a melee/ranged pair AND it is amplified by up to 75% by the target's missing health — an amplifier on the item's own damage, which no field on AbilityComponent expresses.",
+      "outcome": "refused",
+      "sourceRun": "",
+      "refusals": [
+        {
+          "reason": "melee-ranged-split",
+          "detail": "the recorded reading refuses this effect: melee-ranged-split"
+        },
+        {
+          "reason": "conditional-additional-damage",
+          "detail": "the recorded reading refuses this effect: conditional-additional-damage"
+        }
+      ]
+    },
+    {
+      "id": 3100,
+      "key": "pass",
+      "ownerName": "Lich Bane",
+      "source": "item",
+      "hasUnresolvedOwner": false,
+      "sentence": "your next basic attack within 10 seconds gains 50% bonus attack speed and deals 75% base AD (+ 45% AP) bonus magic damage on-hit",
+      "appliesAs": "on-hit, after an ability (Spellblade)",
+      "note": null,
+      "outcome": "stored",
+      "sourceRun": "{{as|75% '''base''' AD}} {{as|(+ 45% AP)}} {{as|'''bonus''' magic damage}}",
+      "refusals": [],
+      "components": [
+        {
+          "id": "lich-bane-pass",
+          "label": "Spellblade",
+          "damageType": "magic",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              0
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "baseAD",
+              "scaling": "explicit",
+              "perRank": [
+                75
+              ]
+            },
+            {
+              "stat": "AP",
+              "scaling": "explicit",
+              "perRank": [
+                45
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 6655,
+      "key": "pass",
+      "ownerName": "Luden's Echo",
+      "source": "item",
+      "hasUnresolvedOwner": false,
+      "sentence": "Dealing ability damage to an enemy consumes all Echo stacks to deal 75 (+ 5% AP) bonus magic damage to them and, for each stack consumed beyond the first, an additional enemy within 600 units … If the number of additional targets fired at is less than the number of stacks consumed, deal an additional 20% damage to the primary target for each remaining Echo stack.",
+      "appliesAs": null,
+      "note": "THE REFUSAL THAT MATTERS MOST HERE. Storing 75 (+ 5% AP) looks safe and is wrong in exactly this product: with no other enemy nearby, all five remaining stacks fall back onto the primary target, doubling it to 150 (+ 10% AP). A two-champion scenario is the case where the fallback ALWAYS applies, so the \"minimum\" reading would understate the common case twofold rather than being the safe floor it appears to be.",
+      "outcome": "refused",
+      "sourceRun": "",
+      "refusals": [
+        {
+          "reason": "conditional-additional-damage",
+          "detail": "the recorded reading refuses this effect: conditional-additional-damage"
+        }
+      ]
+    },
+    {
+      "id": 3115,
+      "key": "pass",
+      "ownerName": "Nashor's Tooth",
+      "source": "item",
+      "hasUnresolvedOwner": false,
+      "sentence": "Basic attacks deal 15 (+ 15% AP) bonus magic damage on-hit.",
+      "appliesAs": "on-hit",
+      "note": null,
+      "outcome": "stored",
+      "sourceRun": "{{as|15 {{as|(+ 15% AP)}} '''bonus''' magic damage|magic damage}}",
+      "refusals": [],
+      "components": [
+        {
+          "id": "nashor-s-tooth-pass",
+          "label": "Icathian Bite",
+          "damageType": "magic",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              15
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "explicit",
+              "perRank": [
+                15
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 6698,
+      "key": "pass",
+      "ownerName": "Profane Hydra",
+      "source": "item",
+      "hasUnresolvedOwner": false,
+      "sentence": "Damaging basic attacks deal 40% / 20% AD physical damage to OTHER enemies in a 350 radius centered around the target.",
+      "appliesAs": null,
+      "note": "Cleave spares the champion you attacked. In a two-champion scenario (SPECIFICATION §1) there is no other enemy, so this damage can never reach the defender.",
+      "outcome": "refused",
+      "sourceRun": "",
+      "refusals": [
+        {
+          "reason": "other-enemies-only",
+          "detail": "the recorded reading refuses this effect: other-enemies-only"
+        },
+        {
+          "reason": "melee-ranged-split",
+          "detail": "the recorded reading refuses this effect: melee-ranged-split"
+        }
+      ]
+    },
+    {
+      "id": 6698,
+      "key": "act",
+      "ownerName": "Profane Hydra",
+      "source": "item",
+      "hasUnresolvedOwner": false,
+      "sentence": "Deal 80% AD physical damage to enemies in a 450 radius in front of you.",
+      "appliesAs": "item active, area in front of the holder",
+      "note": null,
+      "outcome": "stored",
+      "sourceRun": "{{as|80% AD}} {{as|physical damage}}",
+      "refusals": [],
+      "components": [
+        {
+          "id": "profane-hydra-act",
+          "label": "Heretical Cleave",
+          "damageType": "physical",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              0
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "explicit",
+              "perRank": [
+                80
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 3094,
+      "key": "pass2",
+      "ownerName": "Rapid Firecannon",
+      "source": "item",
+      "hasUnresolvedOwner": false,
+      "sentence": "When fully Energized, your next basic attack deals 40 bonus magic damage on-hit.",
+      "appliesAs": "on-hit, when fully Energized",
+      "note": null,
+      "outcome": "stored",
+      "sourceRun": "{{as|40 '''bonus''' magic damage}}",
+      "refusals": [],
+      "components": [
+        {
+          "id": "rapid-firecannon-pass2",
+          "label": "Sharpshooter",
+          "damageType": "magic",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              40
+            ]
+          },
+          "ratios": []
+        }
+      ]
+    },
+    {
+      "id": 3074,
+      "key": "act",
+      "ownerName": "Ravenous Hydra",
+      "source": "item",
+      "hasUnresolvedOwner": false,
+      "sentence": "Deal 80% AD physical damage to enemies within a 450 radius in front of you.",
+      "appliesAs": "item active, area in front of the holder",
+      "note": null,
+      "outcome": "stored",
+      "sourceRun": "{{as|80% AD}} {{as|physical damage}}",
+      "refusals": [],
+      "components": [
+        {
+          "id": "ravenous-hydra-act",
+          "label": "Ravenous Crescent",
+          "damageType": "physical",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              0
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "explicit",
+              "perRank": [
+                80
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 3074,
+      "key": "pass",
+      "ownerName": "Ravenous Hydra",
+      "source": "item",
+      "hasUnresolvedOwner": false,
+      "sentence": "Basic attacks on-hit deal 40% / 20% AD physical damage to other enemies in a 350 radius centered around the target.",
+      "appliesAs": null,
+      "note": null,
+      "outcome": "refused",
+      "sourceRun": "",
+      "refusals": [
+        {
+          "reason": "other-enemies-only",
+          "detail": "the recorded reading refuses this effect: other-enemies-only"
+        },
+        {
+          "reason": "melee-ranged-split",
+          "detail": "the recorded reading refuses this effect: melee-ranged-split"
+        }
+      ]
+    },
+    {
+      "id": 1043,
+      "key": "pass",
+      "ownerName": "Recurve Bow",
+      "source": "item",
+      "hasUnresolvedOwner": false,
+      "sentence": "Basic attacks deal 15 bonus physical damage on-hit.",
+      "appliesAs": "on-hit",
+      "note": null,
+      "outcome": "stored",
+      "sourceRun": "{{as|15 '''bonus''' physical damage}}",
+      "refusals": [],
+      "components": [
+        {
+          "id": "recurve-bow-pass",
+          "label": "Sting",
+          "damageType": "physical",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              15
+            ]
+          },
+          "ratios": []
+        }
+      ]
+    },
+    {
+      "id": 3107,
+      "key": "act",
+      "ownerName": "Redemption",
+      "source": "item",
+      "hasUnresolvedOwner": false,
+      "sentence": "enemy champions within take 10% of target's maximum health as true damage",
+      "appliesAs": "item active, delayed 2.5 seconds, area",
+      "note": "One of eleven owner-bearing references in the whole population that names the OTHER champion outright (\"target's\"). The same sentence heals allies; the heal is a separate run and is not damage.",
+      "outcome": "stored",
+      "sourceRun": "{{as|10% of target's '''maximum''' health}} as {{as|true damage}}",
+      "refusals": [],
+      "components": [
+        {
+          "id": "redemption-act",
+          "label": "Intervention",
+          "damageType": "true",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              0
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "maxHP",
+              "owner": "target",
+              "scaling": "explicit",
+              "perRank": [
+                10
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 3085,
+      "key": "pass",
+      "ownerName": "Runaan's Hurricane",
+      "source": "item",
+      "hasUnresolvedOwner": false,
+      "sentence": "Basic attacks on-attack fire additional bolts at up to 2 enemies in front of you, each dealing 65% AD physical damage. The bolts will target the closest enemies to you that are not the main target.",
+      "appliesAs": null,
+      "note": "The source states outright that the bolts avoid the main target, so the value is clean and still unreachable in a two-champion fight.",
+      "outcome": "refused",
+      "sourceRun": "",
+      "refusals": [
+        {
+          "reason": "other-enemies-only",
+          "detail": "the recorded reading refuses this effect: other-enemies-only"
+        }
+      ]
+    },
+    {
+      "id": 3144,
+      "key": "pass",
+      "ownerName": "Scout's Slingshot",
+      "source": "item",
+      "hasUnresolvedOwner": false,
+      "sentence": "Damaging an enemy champion deals 40 bonus magic damage (40 second cooldown, reduced by 1 second on-attack).",
+      "appliesAs": "on damaging an enemy champion, 40 second cooldown",
+      "note": null,
+      "outcome": "stored",
+      "sourceRun": "{{as|40 '''bonus''' magic damage}}",
+      "refusals": [],
+      "components": [
+        {
+          "id": "scout-s-slingshot-pass",
+          "label": "Bullseye",
+          "damageType": "magic",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              40
+            ]
+          },
+          "ratios": []
+        }
+      ]
+    },
+    {
+      "id": 3057,
+      "key": "pass",
+      "ownerName": "Sheen",
+      "source": "item",
+      "hasUnresolvedOwner": false,
+      "sentence": "After using an ability, your next basic attack within 10 seconds deals 100% base AD bonus physical damage on-hit",
+      "appliesAs": "on-hit, after an ability (Spellblade)",
+      "note": null,
+      "outcome": "stored",
+      "sourceRun": "{{as|100% '''base''' AD}} {{as|'''bonus''' physical damage}}",
+      "refusals": [],
+      "components": [
+        {
+          "id": "sheen-pass",
+          "label": "Spellblade",
+          "damageType": "physical",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              0
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "baseAD",
+              "scaling": "explicit",
+              "perRank": [
+                100
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 3087,
+      "key": "pass3",
+      "ownerName": "Statikk Shiv",
+      "source": "item",
+      "hasUnresolvedOwner": false,
+      "sentence": "When fully Energized, your next basic attack on-hit is empowered to form chain lightning, dealing 60 bonus magic damage, increased to 90 against non-champions.",
+      "appliesAs": "on-hit, when fully Energized",
+      "note": "The second damage run in this text (90) is the NON-CHAMPION figure. Taking the larger of two runs, or summing them, would overstate a champion result by half.",
+      "outcome": "stored",
+      "sourceRun": "{{as|60 '''bonus''' magic damage}}",
+      "refusals": [],
+      "components": [
+        {
+          "id": "statikk-shiv-pass3",
+          "label": "Electrospark",
+          "damageType": "magic",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              60
+            ]
+          },
+          "ratios": []
+        }
+      ]
+    },
+    {
+      "id": 3097,
+      "key": "pass2",
+      "ownerName": "Stormrazor",
+      "source": "item",
+      "hasUnresolvedOwner": false,
+      "sentence": "When fully Energized, your next basic attack deals 100 bonus magic damage on-hit and grants you 45% bonus movement speed for 1.5 seconds.",
+      "appliesAs": "on-hit, when fully Energized",
+      "note": null,
+      "outcome": "stored",
+      "sourceRun": "{{as|100 '''bonus''' magic damage}}",
+      "refusals": [],
+      "components": [
+        {
+          "id": "stormrazor-pass2",
+          "label": "Bolt",
+          "damageType": "magic",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              100
+            ]
+          },
+          "ratios": []
+        }
+      ]
+    },
+    {
+      "id": 4646,
+      "key": "pass2",
+      "ownerName": "Stormsurge",
+      "source": "item",
+      "hasUnresolvedOwner": false,
+      "sentence": "After 2 seconds of having applied Squall, strike the target with lightning, dealing 125 (+ 10% AP) magic damage to them.",
+      "appliesAs": "a single delayed strike, 2 seconds after Squall is applied",
+      "note": "The 2-second delay is a delay before ONE instance, not an interval at which damage recurs, so it is not damage over time.",
+      "outcome": "stored",
+      "sourceRun": "{{as|125|magic damage}} {{as|(+ 10% AP)}} {{as|magic damage}}",
+      "refusals": [],
+      "components": [
+        {
+          "id": "stormsurge-pass2",
+          "label": "Squall",
+          "damageType": "magic",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              125
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "explicit",
+              "perRank": [
+                10
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 6631,
+      "key": "act",
+      "ownerName": "Stridebreaker",
+      "source": "item",
+      "hasUnresolvedOwner": false,
+      "sentence": "Deal 80% AD physical damage to enemies within a 450 radius in front of you and slow them by 35% for 3 seconds.",
+      "appliesAs": "item active, area in front of the holder",
+      "note": null,
+      "outcome": "stored",
+      "sourceRun": "{{as|80% AD}} {{as|physical damage}}",
+      "refusals": [],
+      "components": [
+        {
+          "id": "stridebreaker-act",
+          "label": "Breaking Shockwave",
+          "damageType": "physical",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              0
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "explicit",
+              "perRank": [
+                80
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 6631,
+      "key": "pass",
+      "ownerName": "Stridebreaker",
+      "source": "item",
+      "hasUnresolvedOwner": false,
+      "sentence": "Basic attacks on-hit deal 40% / 20% AD physical damage to other enemies in a 350 radius centered around the target.",
+      "appliesAs": null,
+      "note": null,
+      "outcome": "refused",
+      "sourceRun": "",
+      "refusals": [
+        {
+          "reason": "other-enemies-only",
+          "detail": "the recorded reading refuses this effect: other-enemies-only"
+        },
+        {
+          "reason": "melee-ranged-split",
+          "detail": "the recorded reading refuses this effect: melee-ranged-split"
+        }
+      ]
+    },
+    {
+      "id": 3068,
+      "key": "pass",
+      "ownerName": "Sunfire Aegis",
+      "source": "item",
+      "hasUnresolvedOwner": false,
+      "sentence": "Deal 20 (+ 1.5% bonus health) magic damage every second to enemies within 325 units.",
+      "appliesAs": null,
+      "note": "Also an unattributed \"bonus health\" — the burn family, §37.3.",
+      "outcome": "refused",
+      "sourceRun": "",
+      "refusals": [
+        {
+          "reason": "damage-over-time",
+          "detail": "the recorded reading refuses this effect: damage-over-time"
+        }
+      ]
+    },
+    {
+      "id": 3070,
+      "key": "pass2",
+      "ownerName": "Tear of the Goddess",
+      "source": "item",
+      "hasUnresolvedOwner": false,
+      "sentence": "Basic attacks deal 5 bonus physical damage on-hit against minions.",
+      "appliesAs": null,
+      "note": null,
+      "outcome": "refused",
+      "sourceRun": "",
+      "refusals": [
+        {
+          "reason": "non-champion-target-only",
+          "detail": "the recorded reading refuses this effect: non-champion-target-only"
+        }
+      ]
+    },
+    {
+      "id": 3302,
+      "key": "pass",
+      "ownerName": "Terminus",
+      "source": "item",
+      "hasUnresolvedOwner": false,
+      "sentence": "Basic attacks deal 30 (+10% bonus AD) (+ 10% AP) bonus magic damage on-hit.",
+      "appliesAs": "on-hit",
+      "note": null,
+      "outcome": "stored",
+      "sourceRun": "{{as|30|magic damage}} {{as|(+10% '''bonus''' AD)}} {{as|(+ 10% AP)}} {{as|'''bonus''' magic damage}}",
+      "refusals": [],
+      "components": [
+        {
+          "id": "terminus-pass",
+          "label": "Shadow",
+          "damageType": "magic",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              30
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "explicit",
+              "perRank": [
+                10
+              ]
+            },
+            {
+              "stat": "AP",
+              "scaling": "explicit",
+              "perRank": [
+                10
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 3075,
+      "key": "pass",
+      "ownerName": "Thornmail",
+      "source": "item",
+      "hasUnresolvedOwner": false,
+      "sentence": "When struck by a basic attack on-hit, deal 20 (+ 10% bonus armor) magic damage to the attacker and, if they are a champion, inflict them with Grievous Wounds for 3 seconds.",
+      "appliesAs": null,
+      "note": "Also an unattributed \"bonus armor\" — the same shape Black Cleaver proves reads backwards.",
+      "outcome": "refused",
+      "sourceRun": "",
+      "refusals": [
+        {
+          "reason": "retaliation",
+          "detail": "the recorded reading refuses this effect: retaliation"
+        }
+      ]
+    },
+    {
+      "id": 3077,
+      "key": "pass",
+      "ownerName": "Tiamat",
+      "source": "item",
+      "hasUnresolvedOwner": false,
+      "sentence": "Basic attacks on-hit deal 40% / 20% AD physical damage to other enemies in a 350 radius centered around the target.",
+      "appliesAs": null,
+      "note": null,
+      "outcome": "refused",
+      "sourceRun": "",
+      "refusals": [
+        {
+          "reason": "other-enemies-only",
+          "detail": "the recorded reading refuses this effect: other-enemies-only"
+        },
+        {
+          "reason": "melee-ranged-split",
+          "detail": "the recorded reading refuses this effect: melee-ranged-split"
+        }
+      ]
+    },
+    {
+      "id": 3077,
+      "key": "act",
+      "ownerName": "Tiamat",
+      "source": "item",
+      "hasUnresolvedOwner": false,
+      "sentence": "Deal 75% AD physical damage to enemies within a 450 radius in front of you.",
+      "appliesAs": "item active, area in front of the holder",
+      "note": null,
+      "outcome": "stored",
+      "sourceRun": "{{as|75% AD}} {{as|physical damage}}",
+      "refusals": [],
+      "components": [
+        {
+          "id": "tiamat-act",
+          "label": "Crescent",
+          "damageType": "physical",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              0
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "explicit",
+              "perRank": [
+                75
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 3748,
+      "key": "pass",
+      "ownerName": "Titanic Hydra",
+      "source": "item",
+      "hasUnresolvedOwner": false,
+      "sentence": "Basic attacks on-hit deal 1% / 0.5% maximum health bonus physical damage to the target and 3% / 1.5% maximum health physical damage to other enemies in a cone",
+      "appliesAs": null,
+      "note": "Unlike the other Cleave items, Titanic Hydra DOES damage the champion you attacked, so it is not out of scope — only the melee/ranged split stops it. Its maximum health is also unattributed (§37.3).",
+      "outcome": "refused",
+      "sourceRun": "",
+      "refusals": [
+        {
+          "reason": "melee-ranged-split",
+          "detail": "the recorded reading refuses this effect: melee-ranged-split"
+        }
+      ]
+    },
+    {
+      "id": 3748,
+      "key": "act",
+      "ownerName": "Titanic Hydra",
+      "source": "item",
+      "hasUnresolvedOwner": false,
+      "sentence": "Your next basic attack on-hit within 10 seconds empowers Cleave to deal 4% / 2% maximum health bonus physical damage to the primary target",
+      "appliesAs": null,
+      "note": null,
+      "outcome": "refused",
+      "sourceRun": "",
+      "refusals": [
+        {
+          "reason": "melee-ranged-split",
+          "detail": "the recorded reading refuses this effect: melee-ranged-split"
+        }
+      ]
+    },
+    {
+      "id": 3078,
+      "key": "pass",
+      "ownerName": "Trinity Force",
+      "source": "item",
+      "hasUnresolvedOwner": false,
+      "sentence": "After using an ability, your next basic attack within 10 seconds deals 200% base AD bonus physical damage on-hit",
+      "appliesAs": "on-hit, after an ability (Spellblade)",
+      "note": null,
+      "outcome": "stored",
+      "sourceRun": "{{as|200% '''base''' AD}} {{as|'''bonus''' physical damage}}",
+      "refusals": [],
+      "components": [
+        {
+          "id": "trinity-force-pass",
+          "label": "Spellblade",
+          "damageType": "physical",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              0
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "baseAD",
+              "scaling": "explicit",
+              "perRank": [
+                200
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 3179,
+      "key": "pass2",
+      "ownerName": "Umbral Glaive",
+      "source": "item",
+      "hasUnresolvedOwner": false,
+      "sentence": "Your basic attacks deal 2 / 1 bonus true damage to wards.",
+      "appliesAs": null,
+      "note": "DATA-SOURCES §37.5 records the wards-only effect as Umbral Glaive `pass3`. In the live module it is `pass2` (Blackout); `pass3` (Nightstalker) damages CHAMPIONS. The document names the wrong key — reported, not quietly corrected.",
+      "outcome": "refused",
+      "sourceRun": "",
+      "refusals": [
+        {
+          "reason": "non-champion-target-only",
+          "detail": "the recorded reading refuses this effect: non-champion-target-only"
+        },
+        {
+          "reason": "melee-ranged-split",
+          "detail": "the recorded reading refuses this effect: melee-ranged-split"
+        }
+      ]
+    },
+    {
+      "id": 3179,
+      "key": "pass3",
+      "ownerName": "Umbral Glaive",
+      "source": "item",
+      "hasUnresolvedOwner": false,
+      "sentence": "your next basic attack against a champion is empowered to deal 50 (+ 1.5 per 1 Lethality) bonus true damage on-hit",
+      "appliesAs": null,
+      "note": "This one DOES damage champions. Only lethality stops it, and `RatioStat` has no lethality arm. Storing the flat 50 alone would understate it on exactly the builds that buy the item.",
+      "outcome": "refused",
+      "sourceRun": "",
+      "refusals": [
+        {
+          "reason": "scales-on-lethality",
+          "detail": "the recorded reading refuses this effect: scales-on-lethality"
+        }
+      ]
+    },
+    {
+      "id": 2502,
+      "key": "pass",
+      "ownerName": "Unending Despair",
+      "source": "item",
+      "hasUnresolvedOwner": false,
+      "sentence": "Every 4 seconds after entering combat with champions, sap all enemy champions around you within 650 units to deal magic damage equal to 3% of your bonus health to them",
+      "appliesAs": null,
+      "note": "The one effect in the whole 63 whose stat the source attributes to the HOLDER outright (\"your bonus health\"), and it is withheld for the interval instead. How many times it fires is a question about elapsed time, which SPECIFICATION §3.2 puts outside the engine.",
+      "outcome": "refused",
+      "sourceRun": "",
+      "refusals": [
+        {
+          "reason": "damage-over-time",
+          "detail": "the recorded reading refuses this effect: damage-over-time"
+        }
+      ]
+    },
+    {
+      "id": 6699,
+      "key": "pass3",
+      "ownerName": "Voltaic Cyclosword",
+      "source": "item",
+      "hasUnresolvedOwner": false,
+      "sentence": "your next basic attack on-hit grants you 15 / 12 lethality for 4 seconds and deals bonus physical damage equal to 9% / 7% of the target's current health, capped at 200 against non-champions",
+      "appliesAs": null,
+      "note": "The owner IS stated here (\"the target's current health\") — the only thing withholding this value is the melee/ranged pair.",
+      "outcome": "refused",
+      "sourceRun": "",
+      "refusals": [
+        {
+          "reason": "melee-ranged-split",
+          "detail": "the recorded reading refuses this effect: melee-ranged-split"
+        }
+      ]
+    },
+    {
+      "id": 3091,
+      "key": "pass",
+      "ownerName": "Wit's End",
+      "source": "item",
+      "hasUnresolvedOwner": false,
+      "sentence": "Basic attacks deal 45 bonus magic damage on-hit.",
+      "appliesAs": "on-hit",
+      "note": null,
+      "outcome": "stored",
+      "sourceRun": "{{as|45 '''bonus''' magic damage}}",
+      "refusals": [],
+      "components": [
+        {
+          "id": "wit-s-end-pass",
+          "label": "Fray",
+          "damageType": "magic",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              45
+            ]
+          },
+          "ratios": []
+        }
+      ]
+    },
+    {
+      "id": 3871,
+      "key": "pass",
+      "ownerName": "Zaz'Zak's Realmspike",
+      "source": "item",
+      "hasUnresolvedOwner": false,
+      "sentence": "Dealing ability damage to an enemy champion creates an explosion at their location after a 0.5-second delay, dealing 10 (+ 15% AP) (+ 3% of each target's maximum health) magic damage to enemies within the area, capped at 300 against monsters.",
+      "appliesAs": "on dealing ability damage to an enemy champion, delayed 0.5 seconds",
+      "note": "The health pool is attributed outright — \"each target's maximum health\".",
+      "outcome": "stored",
+      "sourceRun": "{{as|10|magic damage}} {{as|(+ 15% AP)}} {{as|(+ 3% of each target's '''maximum''' health)}} {{as|magic damage}}",
+      "refusals": [],
+      "components": [
+        {
+          "id": "zaz-zak-s-realmspike-pass",
+          "label": "Void Explosion",
+          "damageType": "magic",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              10
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "explicit",
+              "perRank": [
+                15
+              ]
+            },
+            {
+              "stat": "maxHP",
+              "owner": "target",
+              "scaling": "explicit",
+              "perRank": [
+                3
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 8112,
+      "key": "rune",
+      "ownerName": "Electrocute",
+      "source": "rune",
+      "hasUnresolvedOwner": false,
+      "sentence": "Hitting a champion with 3 separate attacks or abilities within 3s deals bonus adaptive damage. Damage: 70 - 240 (+0.1 bonus AD, +0.05 AP) damage. Cooldown: 20s",
+      "appliesAs": null,
+      "note": "Two separate blockers. \"adaptive\" is not one of `DamageType`'s three arms, and the source never says what varies across 70 - 240.",
+      "outcome": "refused",
+      "sourceRun": "",
+      "refusals": [
+        {
+          "reason": "adaptive-damage-type",
+          "detail": "the recorded reading refuses this effect: adaptive-damage-type"
+        },
+        {
+          "reason": "range-with-unstated-axis",
+          "detail": "the recorded reading refuses this effect: range-with-unstated-axis"
+        }
+      ]
+    },
+    {
+      "id": 8128,
+      "key": "rune",
+      "ownerName": "Dark Harvest",
+      "source": "rune",
+      "hasUnresolvedOwner": false,
+      "sentence": "Damaging a Champion below 50% health deals adaptive damage and harvests their soul, permanently increasing Dark Harvest's damage by 11. Dark Harvest damage: 30 (+11 damage per soul) (+0.1 bonus AD) (+0.05 AP)",
+      "appliesAs": null,
+      "note": "\"+11 damage per soul\" is a flat amount per stack. `Ratio` stores percentage POINTS of a stat; what a `stacks` ratio's magnitude means is not defined in the contract, so it is raised rather than guessed at.",
+      "outcome": "refused",
+      "sourceRun": "",
+      "refusals": [
+        {
+          "reason": "adaptive-damage-type",
+          "detail": "the recorded reading refuses this effect: adaptive-damage-type"
+        },
+        {
+          "reason": "scales-on-stacks",
+          "detail": "the recorded reading refuses this effect: scales-on-stacks"
+        }
+      ]
+    },
+    {
+      "id": 9923,
+      "key": "rune",
+      "ownerName": "Hail of Blades",
+      "source": "rune",
+      "hasUnresolvedOwner": false,
+      "sentence": "Gain 90% (60% for ranged champions) Attack Speed and bonus true damage when you attack an enemy champion for up to 3 attacks. On-Hit Damage: 2 - 20 (+0.12 bonus AD, +0.1 AP) damage.",
+      "appliesAs": null,
+      "note": "The damage type IS stated (true) and the ratios are clean. The source never says what varies across 2 - 20.",
+      "outcome": "refused",
+      "sourceRun": "",
+      "refusals": [
+        {
+          "reason": "range-with-unstated-axis",
+          "detail": "the recorded reading refuses this effect: range-with-unstated-axis"
+        }
+      ]
+    },
+    {
+      "id": 8439,
+      "key": "rune",
+      "ownerName": "Aftershock",
+      "source": "rune",
+      "hasUnresolvedOwner": false,
+      "sentence": "After immobilizing an enemy champion, increase your Armor and Magic Resist by 45 + 75% of your Bonus Resists for 2.5s. Then explode, dealing magic damage to nearby enemies. Damage: 25 - 120 (+8% of your bonus health)",
+      "appliesAs": null,
+      "note": "Magic damage, and the health pool is attributed to the holder (\"your bonus health\"). Only the axis of 25 - 120 is missing.",
+      "outcome": "refused",
+      "sourceRun": "",
+      "refusals": [
+        {
+          "reason": "range-with-unstated-axis",
+          "detail": "the recorded reading refuses this effect: range-with-unstated-axis"
+        }
+      ]
+    },
+    {
+      "id": 8229,
+      "key": "rune",
+      "ownerName": "Arcane Comet",
+      "source": "rune",
+      "hasUnresolvedOwner": false,
+      "sentence": "Damaging a champion with an ability hurls a comet at their location, dealing increased damage based on distance. Adaptive Damage: 15 - 100 based on level (+0.05 AP and +0.1 bonus AD)",
+      "appliesAs": null,
+      "note": "The only rune of the five that states its axis (\"based on level\"). It still cannot be stored, because \"adaptive\" is not a `DamageType`. Note also that the endpoints of \"15 - 100 based on level\" are not attributed to levels 1 and 18 by the source itself.",
+      "outcome": "refused",
+      "sourceRun": "",
+      "refusals": [
+        {
+          "reason": "adaptive-damage-type",
+          "detail": "the recorded reading refuses this effect: adaptive-damage-type"
+        }
+      ]
+    }
+  ],
+  "contractGapsRaised": [
+    {
+      "gap": "A melee/ranged value pair",
+      "reason": "melee-ranged-split",
+      "effectsBlocked": 12,
+      "detail": "The wiki writes {{rd|melee|ranged}} and the item genuinely has two values. AbilityComponent holds one. `ChampionBaseStats.rangetype` already exists, so this could resolve at evaluation time exactly as RatioOwner \"holder\" does."
+    },
+    {
+      "gap": "A way to say an ITEM effect is damage over time",
+      "reason": "damage-over-time",
+      "effectsBlocked": 7,
+      "detail": "CuratedAbility has instanceType \"dot-application\"; CuratedItemEffect has only kind \"passive\" | \"active\". SPECIFICATION §3.8 requires DoT on a separate line, so a burn stored as an ordinary component would be folded into the burst total."
+    },
+    {
+      "gap": "Adaptive damage",
+      "reason": "adaptive-damage-type",
+      "effectsBlocked": 3,
+      "detail": "DamageType is physical | magic | true. Three of the five structurally-stated rune effects deal what the source calls \"adaptive damage\" (and so do several of the 18 that need reading: Press the Attack, Lethal Tempo, Shield Bash)."
+    },
+    {
+      "gap": "Lethality and critical strike chance as ratio stats",
+      "reason": "scales-on-lethality",
+      "effectsBlocked": 4,
+      "detail": "RatioStat has no arm for either. Bastionbreaker, Umbral Glaive, Essence Reaver."
+    },
+    {
+      "gap": "CuratedItemEffect cannot record an `unresolvable`",
+      "reason": "none",
+      "effectsBlocked": 0,
+      "detail": "CuratedAbility carries `unresolvable: Unresolvable[]`; CuratedItemEffect does not. DATA-SOURCES §37.3 measures 56 effects carrying a stat no source attributes, and SPECIFICATION §8 requires the interface to present those as \"cannot be completed\" rather than \"not yet modelled\". Today they can only be an undifferentiated `incomplete`."
+    },
+    {
+      "gap": "CuratedItemEffect cannot say HOW an effect reaches its target",
+      "reason": "none",
+      "effectsBlocked": 0,
+      "detail": "On-hit, on-attack, after-an-ability (Spellblade), on-damaging-an-ability, item active. InstanceType exists on CuratedAbility only. 20 of the 28 stored effects are on-hit or Spellblade, and a combo builder cannot sequence them without knowing which."
+    }
+  ]
+}

@@ -230,8 +230,10 @@ export interface EffectClassification extends EffectRecord {
   barePoolMentions: number;
 }
 
-/** Group `{{as|…}}` blocks into runs, the way the ability prose path does (§26.3). */
-function asRuns(text: string): { blocks: Block[]; connective: boolean }[] {
+/** Group `{{as|…}}` blocks into runs, the way the ability prose path does (§26.3).
+ *  Exported so `effect-values.ts` reads the SAME runs the census counted — two implementations
+ *  of "what is one figure" are two chances to disagree about which effects were measured. */
+export function asRuns(text: string): { blocks: Block[]; connective: boolean }[] {
   const blocks = findBlocks(text, 'as');
   const runs: { blocks: Block[]; connective: boolean }[] = [];
   for (const block of blocks) {
