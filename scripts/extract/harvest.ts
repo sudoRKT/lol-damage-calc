@@ -10,12 +10,14 @@
 // merge may change it (SPECIFICATION §7.3, curated/README.md).
 
 import type {
+  AbilityComponent,
   AbilitySlot,
   CuratedAbility,
   CuratedFile,
   DamageType,
   InstanceType,
   Provenance,
+  Scaling,
   Unresolvable,
 } from '../../src/types/data.ts';
 import { expandByRank, isLevelScaled, levelBreakpoints } from '../../src/types/scaling.ts';
@@ -29,7 +31,7 @@ import { classifyRow, proposeRelations, type RowIssue, type ShapeId } from './cl
 import type { DamageInstance } from './damage-data.ts';
 import { scanProse, type ProseSkip } from './prose.ts';
 import { statedTypesFor } from './damage-data.ts';
-import { renderAbility, renderLevelBlocks, type RenderedRow } from './render.ts';
+import { renderAbility, renderAbilityDetail, renderLevelBlocks, type RenderedRow } from './render.ts';
 import { parseFields, parseVardefines, statRows } from './wikitext.ts';
 
 export const WIKI_API = 'https://wiki.leagueoflegends.com/en-us/api.php';
@@ -77,6 +79,8 @@ export interface DraftAbility {
   needsHandAuthoring: boolean;
   /** Components recovered from description prose rather than from a leveling row (§20a). */
   proseComponents: number;
+  /** Their ids, so gate 2 knows which components to check against the rendered description. */
+  proseComponentIds: string[];
   /** Every prose {{pp}} block that was NOT read, with the reason. Reported, never silent. */
   proseSkipped: ProseSkip[];
   /** The level-progression block behind each level-scaled component, for gate 2 to re-render. */
@@ -165,6 +169,7 @@ export function draftFromTemplate(src: TemplateSource, patch: string, fetched: s
   });
   const proseSkips = prose.skipped;
   const proseRows: Array<{ label: string; kept: boolean }> = [];
+  const proseComponentIds: string[] = [];
   for (const [index, row] of prose.rows.entries()) {
     const c = classifyRow(row.label, row.value, {
       maxRank,
@@ -191,6 +196,7 @@ export function draftFromTemplate(src: TemplateSource, patch: string, fetched: s
     if (c.extraComponent) components.push(c.extraComponent);
     if (c.shape) shapes.push(c.shape);
     if (c.levelSource) levelSources.push({ componentId: c.component.id, ...c.levelSource });
+    proseComponentIds.push(c.component.id);
     proseRows.push({ label: row.label, kept: true });
   }
   const proseComponents = components.length - levelingComponents;
@@ -304,6 +310,7 @@ export function draftFromTemplate(src: TemplateSource, patch: string, fetched: s
     needsHandAuthoring,
     droppedEveryDamageRow,
     proseComponents,
+    proseComponentIds,
     proseSkipped: proseSkips,
     levelSources,
   };
@@ -515,7 +522,7 @@ export async function fetchTemplates(
   return out;
 }
 
-export { renderAbility, renderLevelBlocks };
+export { renderAbility, renderAbilityDetail, renderLevelBlocks };
 
 // ---------------------------------------------------------------------------
 // Gate 2 for level-scaled values — the half the ability box cannot check
@@ -588,6 +595,127 @@ export function roundTripLevelScaled(
         .map((d) => `level ${d.index + 1}: wiki ${d.expected}, stored ${d.actual}`)
         .join('; '),
     });
+  }
+  return result;
+}
+
+// ---------------------------------------------------------------------------
+// Gate 2 for a value stated in prose — the third and last round-trip
+// ---------------------------------------------------------------------------
+
+export interface ProseRoundTripResult {
+  entry: string;
+  checked: number;
+  matched: number;
+  /** Components whose expected figures could not be located at all — no evidence, not a pass. */
+  notFound: number;
+  mismatches: Array<{ componentId: string; expected: number[]; detail: string }>;
+}
+
+/**
+ * Every figure a component asserts, in the order the wiki would print them.
+ *
+ * ENDPOINTS, NOT EVERY STEP, and that is a property of this rendering rather than a concession.
+ * The description prints a value that varies as a RANGE — "26 – 196 (based on level)",
+ * "70 / 85 / … / 160" — and for a long series it prints only the two ends. A flat ratio it
+ * prints once, not once per rank. Demanding all eighteen values of a level series therefore
+ * fails on every ability that has one, which is what a first cut of this check did on 34 of 56
+ * components before the expectation was corrected to what the wiki actually publishes.
+ *
+ * The consequence is stated rather than hidden: this round-trip pins the ENDS of each series.
+ * The middle steps are checked by `roundTripLevelScaled`, against the wiki's full expansion,
+ * wherever the component has a progression block to re-render.
+ */
+export function expectedFigures(c: AbilityComponent, maxRank: number): number[] {
+  const out: number[] = [];
+  // A LEVEL-SCALED SERIES CONTRIBUTES ITS FIRST VALUE ONLY, and the reason is the documented
+  // trap of DATA-SOURCES §13. The description summarises such a value as "20 – 184 (based on
+  // level)", and 184 is the LEVEL-20 figure: the module generates past eighteen and prints the
+  // generated end. We correctly store the level-18 value, 160, so demanding the printed upper
+  // end would fail on every over-generating ability — it failed on ten before this was pinned
+  // down — and "fixing" it by storing 184 would import the extrapolation the project refuses.
+  // The upper end of those series is checked properly by `roundTripLevelScaled` instead.
+  const ends = (s: Scaling): number[] => {
+    if (isLevelScaled(s)) return [levelBreakpoints(s)[0]!.value];
+    const v = expandByRank(s, maxRank);
+    const first = v[0]!;
+    const last = v[v.length - 1]!;
+    return first === last ? [first] : [first, last];
+  };
+  // A payload row stores a base of all zeros; the wiki prints no base for it, so asserting one
+  // would fail every time. Only a base that is actually a number is expected in the text.
+  const base = isLevelScaled(c.base)
+    ? levelBreakpoints(c.base).map((b) => b.value)
+    : expandByRank(c.base, maxRank);
+  if (base.some((v) => v !== 0)) out.push(...ends(c.base));
+  void base;
+  for (const r of c.ratios) {
+    out.push(...ends(r));
+    for (const m of r.multipliers ?? []) out.push(...ends(m.per100));
+  }
+  return out;
+}
+
+/**
+ * Compare a prose-derived component against the wiki's own rendering of the same sentence.
+ *
+ * The check is an ORDERED SUBSEQUENCE match: every figure the component asserts — the ends of
+ * each of its series, see `expectedFigures` — must appear in the rendered description, in the
+ * order it asserts them. Order is what makes it meaningful —
+ * a bare "does this number appear anywhere" test would pass on a coincidence, and these
+ * sentences are full of numbers (cooldowns, durations, ranges).
+ *
+ * It is deliberately weaker than the other two round-trips and must not be read as their equal.
+ * It confirms that the figures we stored are the figures the wiki prints for that ability, in
+ * that order. It does NOT confirm that we attached them to the right stat, or that we did not
+ * miss a term the wiki also printed. A pass here is evidence, not proof.
+ */
+export function roundTripProse(
+  draft: DraftAbility,
+  prose: string,
+  componentIds: string[],
+): ProseRoundTripResult {
+  const key = `${draft.entry.champion}/${draft.entry.slot}/${draft.entry.abilityName}`;
+  const result: ProseRoundTripResult = { entry: key, checked: 0, matched: 0, notFound: 0, mismatches: [] };
+  // The renderer writes "7.5" as "7. 5" in places and separates a series with "/". Reduce the
+  // text to the ordered list of numbers it contains, and match against that.
+  const printed = [...prose.replace(/(\d)\.\s+(\d)/g, '$1.$2').matchAll(/-?\d+(?:\.\d+)?/g)].map((m) =>
+    Number(m[0]),
+  );
+
+  for (const id of componentIds) {
+    const c = draft.entry.components.find((x) => x.id === id);
+    if (!c) continue;
+    let expected: number[];
+    try {
+      expected = expectedFigures(c, draft.entry.maxRank);
+    } catch {
+      result.notFound += 1;
+      continue;
+    }
+    if (expected.length === 0) {
+      result.notFound += 1;
+      continue;
+    }
+    result.checked += 1;
+    let at = 0;
+    const missing: number[] = [];
+    for (const want of expected) {
+      const found = printed.findIndex((v, i) => i >= at && agreesAtDisplayPrecision(v, want));
+      if (found < 0) missing.push(want);
+      else at = found + 1;
+    }
+    if (missing.length === 0) {
+      result.matched += 1;
+    } else {
+      result.mismatches.push({
+        componentId: id,
+        expected,
+        detail: `the rendered description does not print ${missing
+          .slice(0, 4)
+          .join(', ')} in the order this component asserts them`,
+      });
+    }
   }
   return result;
 }

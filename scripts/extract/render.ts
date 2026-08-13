@@ -129,7 +129,41 @@ export function parseRenderedRows(html: string): RenderedRow[] {
   return rows;
 }
 
+/**
+ * The rendered DESCRIPTION prose of an ability, with every value resolved.
+ *
+ * WHY THIS EXISTS. A component recovered from prose whose value is a flat ratio has nothing for
+ * the other two round-trips to compare: no leveling row in the box, and no progression block to
+ * re-render. 26 abilities were in that state — carrying damage that nothing had checked.
+ *
+ * They ARE rendered, just not where anyone was looking. The same `{{Data X/Y|Ability}}` call
+ * that produces the leveling rows also renders the description, and the wiki's own Lua resolves
+ * the values into it: Blitzcrank E prints "deal 100% AD (+ 25% AP) bonus physical damage" and
+ * Zed P prints "5% / 7.5% / 10% (based on level) of the target's maximum health".
+ *
+ * Only `div.ability-info-description`. The patch-history section is elsewhere in the document and
+ * is the documented trap of DATA-SOURCES §13.
+ */
+export function parseRenderedProse(html: string): string {
+  const divs = html.match(/<div class="ability-info-description[^"]*">[\s\S]*?<\/div>/g) ?? [];
+  return divs
+    .map((d) => stripTags(d))
+    .join(' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
 const API = 'https://wiki.leagueoflegends.com/en-us/api.php';
+
+/** Render one ability template and read BOTH its leveling rows and its resolved prose. */
+export async function renderAbilityDetail(
+  champion: string,
+  ability: string,
+  fetchImpl: typeof fetch = fetch,
+): Promise<{ rows: RenderedRow[]; prose: string }> {
+  const html = await renderAbilityHtml(champion, ability, fetchImpl);
+  return { rows: parseRenderedRows(html), prose: parseRenderedProse(html) };
+}
 
 /** Render one ability template and read its leveling rows. */
 export async function renderAbility(
@@ -137,6 +171,14 @@ export async function renderAbility(
   ability: string,
   fetchImpl: typeof fetch = fetch,
 ): Promise<RenderedRow[]> {
+  return parseRenderedRows(await renderAbilityHtml(champion, ability, fetchImpl));
+}
+
+async function renderAbilityHtml(
+  champion: string,
+  ability: string,
+  fetchImpl: typeof fetch = fetch,
+): Promise<string> {
   const body = new URLSearchParams({
     action: 'parse',
     text: `{{Data ${champion}/${ability}|Ability}}`,
@@ -158,7 +200,7 @@ export async function renderAbility(
   const json = (await res.json()) as { parse?: { text?: string } };
   const html = json.parse?.text;
   if (!html) throw new Error(`wiki render returned no text for ${champion}/${ability}`);
-  return parseRenderedRows(html);
+  return html;
 }
 
 /**
