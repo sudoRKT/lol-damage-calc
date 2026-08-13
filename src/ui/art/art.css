@@ -1,0 +1,80 @@
+/* Official game art as data-chips. DESIGN.md §9.
+   Every value is a token. The only hues here are the three damage types, on the underline and the
+   tag of a combat-relevant chip — which IS damage data, and is the reserved-hue law's one
+   permitted use (§1, §2). */
+
+.chip {
+  position: relative;
+  display: inline-block;
+  border: var(--border-steel);
+  border-radius: var(--radius-control);
+  background: var(--bg-well);
+  line-height: 0;
+}
+
+.chip--combo { width: var(--art-chip-combo); height: var(--art-chip-combo); }
+.chip--table { width: var(--art-chip-table); height: var(--art-chip-table); }
+.chip--inline { width: var(--art-chip-inline); height: var(--art-chip-inline); }
+
+.chip__img {
+  width: 100%;
+  height: 100%;
+  border-radius: var(--radius-control);
+  display: block;
+}
+
+/* The fast cue: a 2px bottom underline in the damage-type colour. Never the only cue. */
+.chip__underline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: var(--art-chip-underline);
+  border-radius: var(--radius-cell);
+}
+.chip__underline--physical { background: var(--dmg-physical); }
+.chip__underline--magic { background: var(--dmg-magic); }
+.chip__underline--true { background: var(--dmg-true); }
+/* Visibly "no damage type", not an omission — a neutral steel rule (§9). */
+.chip__underline--none { background: var(--line-steel); }
+
+/* The definitive cue: the P/M/T letter, in the numeric face, at the tag's floor size (§8). */
+.chip__tag {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-family: var(--font-mono);
+  font-weight: var(--weight-num-bold);
+  font-size: var(--type-num-s);
+  line-height: 1;
+  padding: var(--space-0);
+  background: var(--bg-base);
+  border-bottom-left-radius: var(--radius-control);
+}
+.chip__tag--physical { color: var(--dmg-physical); }
+.chip__tag--magic { color: var(--dmg-magic); }
+.chip__tag--true { color: var(--dmg-true); }
+.chip__tag--none { color: var(--text-secondary); }
+
+/* Hover brightens the chip. It never changes hue (§9). */
+.chip:hover { background: var(--bg-panel-raised); }
+
+/* ---- Portraits ---- */
+
+.portrait {
+  display: block;
+  border: var(--border-steel);
+  border-radius: var(--radius-panel);
+  background: var(--bg-well);
+  /* Desaturated and tinted toward the panel while inactive. A display filter, never an edit to
+     the asset (§9, SPECIFICATION §15). */
+  filter: grayscale(1) brightness(0.7);
+}
+
+.portrait--nameplate { width: var(--art-portrait-nameplate); height: var(--art-portrait-nameplate); }
+.portrait--row { width: var(--art-portrait-row); height: var(--art-portrait-row); }
+
+.portrait--active {
+  filter: none;
+  border: var(--border-active);
+}

@@ -51,7 +51,8 @@
         "patch": "16.16.1",
         "fetched": "2026-08-13"
       },
-      "sourceRevision": 4038408
+      "sourceRevision": 4038408,
+      "icon": "LuxIlluminatingFraulein.png"
     },
     {
       "champion": "Lux",
@@ -90,7 +91,8 @@
         "patch": "16.16.1",
         "fetched": "2026-08-13"
       },
-      "sourceRevision": 4007675
+      "sourceRevision": 4007675,
+      "icon": "LuxLightBinding.png"
     },
     {
       "champion": "Lux",
@@ -106,7 +108,8 @@
         "patch": "16.16.1",
         "fetched": "2026-08-13"
       },
-      "sourceRevision": 3992656
+      "sourceRevision": 3992656,
+      "icon": "LuxPrismaticWave.png"
     },
     {
       "champion": "Lux",
@@ -145,7 +148,8 @@
         "patch": "16.16.1",
         "fetched": "2026-08-13"
       },
-      "sourceRevision": 4007677
+      "sourceRevision": 4007677,
+      "icon": "LuxLightStrikeKugel.png"
     },
     {
       "champion": "Lux",
@@ -184,7 +188,15 @@
         "patch": "16.16.1",
         "fetched": "2026-08-13"
       },
-      "sourceRevision": 3919833
+      "sourceRevision": 3919833,
+      "icon": "LuxR.png"
     }
-  ]
+  ],
+  "art": {
+    "note": "Data Dragon icon filenames, fetched once on 2026-08-13 from the champion detail file so the page does not depend on a live data call at render time. The images themselves are loaded from the Data Dragon CDN, which SPECIFICATION 15 permits.",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Lux.json",
+    "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
+    "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
+    "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"
+  }
 }

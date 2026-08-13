@@ -70,6 +70,20 @@
   --weight-num-medium: 500;     /* JetBrains Mono Medium — num-l */
   --weight-num-bold: 700;       /* JetBrains Mono Bold — num-hero */
 
+  /* ---- Official game art sizes. See DESIGN.md §9. ----
+   * These are the sizes §9 states verbatim for Data Dragon art. They are named here for the
+   * same reason the weights were: §9 stated them in prose, so every component that rendered an
+   * icon carried a literal the token audit could only compare against a paragraph. Art is
+   * functional data-chips in this product, never ornament — an icon size is a layout decision
+   * the design file has already made. */
+  --art-chip-combo: 32px;      /* icon-chip in the combo builder */
+  --art-chip-table: 24px;      /* icon-chip in a table row */
+  --art-chip-inline: 20px;     /* icon-chip inline in running text */
+  --art-portrait-nameplate: 64px; /* the two active combatants */
+  --art-portrait-row: 40px;    /* picker / list rows */
+  /* The damage-type underline a combat-relevant chip carries (§9). */
+  --art-chip-underline: 2px;
+
   /* ---- Spacing scale (4px base) ---- */
   --space-0: 2px;
   --space-1: 4px;

@@ -95,6 +95,15 @@ const HUE_ALLOWLIST: Record<string, string> = {
   '.comp__bar--magic': 'DESIGN.md §7 — composition bar segment',
   '.comp__bar--true': 'DESIGN.md §7 — composition bar segment',
   '.verdict--lethal': 'DESIGN.md §7 — the LETHAL callout, the one permitted use of --lethal',
+  // DESIGN.md §9: a combat-relevant icon-chip carries a 2px bottom underline in its damage-type
+  // colour AND a P/M/T corner tag. The chip IS damage data — it says what type the ability deals
+  // — so this is the reserved-hue law's permitted use, not an exception to it.
+  '.chip__underline--physical': 'DESIGN.md §9 — icon-chip damage-type underline',
+  '.chip__underline--magic': 'DESIGN.md §9 — icon-chip damage-type underline',
+  '.chip__underline--true': 'DESIGN.md §9 — icon-chip damage-type underline',
+  '.chip__tag--physical': 'DESIGN.md §9 — icon-chip P/M/T corner tag',
+  '.chip__tag--magic': 'DESIGN.md §9 — icon-chip P/M/T corner tag',
+  '.chip__tag--true': 'DESIGN.md §9 — icon-chip P/M/T corner tag',
 };
 
 /**
@@ -117,6 +126,11 @@ const LENGTH_ALLOWLIST: Array<{ value: string; rule: string; reason: string }> =
     value: '100%',
     rule: '.breakdown',
     reason: 'a table filling its panel — a fraction of the parent, not a design length',
+  },
+  {
+    value: '100%',
+    rule: '.chip__img',
+    reason: 'the art fills the chip, whose size IS a token — a fraction, not a design length',
   },
 ];
 

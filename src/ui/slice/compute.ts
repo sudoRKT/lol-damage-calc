@@ -6,9 +6,9 @@
 //
 // WHAT IT DOES NOT DO, and why each is absent rather than approximated:
 //
-//   • NO ITEMS, NO RUNES, NO STAT SHARDS. Out of scope for the slice, so Lux's ability power is
-//     ZERO and every AP ratio contributes nothing. The ratio is still shown, with its coefficient
-//     and a zero contribution, because hiding it would misrepresent the ability.
+//   • NO ITEMS, NO RUNES, NO STAT SHARDS. Ability power is typed in directly instead. That is a
+//     STATED INPUT, not an assumption — the engine is told the figure rather than inventing one,
+//     and the interface says what it stands in for. Nothing here derives a build.
 //   • NO SEQUENTIAL STATE. SPECIFICATION §3.1 requires each instance to resolve against the state
 //     the previous ones left. The engine has no combo runner yet, so every instance here resolves
 //     against the SAME defender stats. No armor shred, no stacks, no Conqueror, no Bone Plating.
@@ -37,6 +37,15 @@ export interface SliceAttacker {
   level: number;
   /** Rank per slot. The passive has no rank and is always 1. */
   ranks: { Q: number; W: number; E: number; R: number };
+  /**
+   * Ability power, stated directly by the user.
+   *
+   * THIS IS NOT A MODELLED BUILD. Items, runes and stat shards are out of scope for the slice,
+   * and this figure stands in for all of them. It is an INPUT, not an assumption: the engine is
+   * told the number rather than inventing one, which is the same principle as entry state
+   * (SPECIFICATION §3.3) — the user describes the situation. The interface labels it as such.
+   */
+  abilityPower: number;
 }
 
 /** One resolved instance in the combo, or a refusal with its reason. */
@@ -71,13 +80,6 @@ export interface SliceResult {
   /** Abilities in the combo that contributed nothing, and why. Never silently dropped. */
   excluded: Array<{ label: string; why: string }>;
 }
-
-/**
- * Lux's ability power in this slice. ZERO, and stated as a named constant rather than an
- * inline 0, because it is a scope decision and not a fact about Lux: ability power comes from
- * items, runes and stat shards, none of which the slice models.
- */
-export const SLICE_ABILITY_POWER = 0;
 
 function rankFor(slot: string, ranks: SliceAttacker['ranks']): number {
   if (slot === 'P') return 1;
@@ -128,7 +130,7 @@ export function evaluateStep(
 
   const caster = {
     attackDamage: { base: 0, bonus: 0, total: 0 },
-    abilityPower: SLICE_ABILITY_POWER,
+    abilityPower: attacker.abilityPower,
   };
   const evaluated = evaluateComponent(component, {
     rank: rankFor(ability.slot, attacker.ranks),

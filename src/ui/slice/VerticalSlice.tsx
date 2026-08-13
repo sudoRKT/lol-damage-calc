@@ -13,6 +13,8 @@ import { useEffect, useMemo, useState } from 'react';
 
 import { DamageValue, VerificationStatusMark } from '../primitives';
 import { NumberInput } from '../inputs';
+import { AbilityChip } from '../art/AbilityChip';
+import { ChampionPortrait } from '../art/ChampionPortrait';
 import type { CuratedAbility } from '../../types/data';
 import { resolveBaseStats, type ChampionBaseStats } from '../../engine/champion-stats';
 import { computeSlice, type SliceAttacker } from './compute';
@@ -23,12 +25,14 @@ const DEFENDERS = ['Garen', 'Ahri', 'Malphite', 'Jinx'] as const;
 
 interface ChampionFile {
   name: string;
+  apiname: string;
   stats: ChampionBaseStats;
 }
 
 interface AbilityFile {
   provenance: { patch: string; fetched: string; warning: string };
-  abilities: CuratedAbility[];
+  art: { spellIconBase: string; passiveIconBase: string; portraitBase: string };
+  abilities: Array<CuratedAbility & { icon: string }>;
 }
 
 const SLOTS = ['P', 'Q', 'W', 'E', 'R'] as const;
@@ -42,6 +46,11 @@ export function VerticalSlice() {
   const [attackerLevel, setAttackerLevel] = useState(6);
   const [defenderLevel, setDefenderLevel] = useState(6);
   const [ranks, setRanks] = useState<SliceAttacker['ranks']>({ Q: 1, W: 1, E: 1, R: 1 });
+  // A DIRECT ability-power figure. Items and runes are not modelled, so this STATES the input
+  // rather than assuming it — Lux's damage is almost entirely her ratios, and leaving them at
+  // zero makes an honest result a useless one. It is labelled on screen as standing in for the
+  // items and runes that will replace it.
+  const [abilityPower, setAbilityPower] = useState(0);
   const [combo, setCombo] = useState<string[]>(['E', 'Q', 'R']);
 
   useEffect(() => {
@@ -63,10 +72,10 @@ export function VerticalSlice() {
     return computeSlice(
       file.abilities,
       combo,
-      { level: attackerLevel, ranks },
+      { level: attackerLevel, ranks, abilityPower },
       { name: defender.name, level: defenderLevel, stats: defender.stats },
     );
-  }, [file, defender, combo, attackerLevel, defenderLevel, ranks]);
+  }, [file, defender, combo, attackerLevel, defenderLevel, ranks, abilityPower]);
 
   const defenderStats = defender ? resolveBaseStats(defender.stats, defenderLevel) : null;
 
@@ -74,14 +83,29 @@ export function VerticalSlice() {
   if (!file || !defender || !result || !defenderStats) return <main className="slice"><p>Loading…</p></main>;
 
   const maxRankOf = (slot: string) => file.abilities.find((a) => a.slot === slot)?.maxRank ?? 1;
+  const abilityOf = (slot: string) => file.abilities.find((a) => a.slot === slot);
+  const iconOf = (slot: string) => {
+    const a = abilityOf(slot);
+    if (!a) return '';
+    return `${slot === 'P' ? file.art.passiveIconBase : file.art.spellIconBase}/${a.icon}`;
+  };
+  /** The damage type a chip shows: the ability's own stored component, or null if it deals none. */
+  const typeOf = (slot: string) => abilityOf(slot)?.components[0]?.damageType ?? null;
+  const portrait = (name: string) => `${file.art.portraitBase}/${name}.png`;
 
   return (
     <main className="slice">
       <p className="slice__eyebrow">Bench Test · vertical slice</p>
-      <h1 className="slice__title">Lux vs {defender.name}</h1>
-      <p className="slice__sub">
-        Patch {file.provenance.patch} · abilities only · one attacker, one defender, one combo
-      </p>
+      <div className="nameplate">
+        <ChampionPortrait src={portrait('Lux')} name="Lux" size="nameplate" active />
+        <div>
+          <h1 className="slice__title">Lux <span className="nameplate__vs">vs</span> {defender.name}</h1>
+          <p className="slice__sub">
+            Patch {file.provenance.patch} · abilities only · one attacker, one defender, one combo
+          </p>
+        </div>
+        <ChampionPortrait src={portrait(defender.apiname)} name={defender.name} size="nameplate" active />
+      </div>
 
       <div className="slice__grid">
         {/* ---------------- configuration ---------------- */}
@@ -100,27 +124,38 @@ export function VerticalSlice() {
             ))}
           </div>
 
-          <label className="field">
-            <span>Defender</span>
-            <select value={defenderName} onChange={(e) => setDefenderName(e.target.value)}>
-              {DEFENDERS.map((d) => <option key={d} value={d}>{d}</option>)}
-            </select>
-          </label>
+          <fieldset className="picker">
+            <legend>Defender</legend>
+            {DEFENDERS.map((d) => (
+              <button type="button" key={d} className="picker__opt" aria-label={`Defender: ${d}`}
+                aria-pressed={d === defenderName} onClick={() => setDefenderName(d)}>
+                <ChampionPortrait src={portrait(d)} name={d} size="row"
+                  active={d === defenderName} decorative />
+                <span>{d}</span>
+              </button>
+            ))}
+          </fieldset>
 
           <div className="field">
             <NumberInput label={`${defender.name} level`} value={defenderLevel} min={1} max={18}
               hint="1 to 18" onChange={setDefenderLevel} />
           </div>
 
+          <div className="field">
+            <NumberInput label="Lux ability power" value={abilityPower} min={0} max={2000}
+              hint="stands in for items and runes, which are not modelled yet"
+              onChange={setAbilityPower} />
+          </div>
+
           <dl className="stats">
             <div><dt>Health</dt><dd>{round(defenderStats.hp)}</dd></div>
             <div><dt>Armor</dt><dd>{round(defenderStats.armor)}</dd></div>
             <div><dt>Magic resist</dt><dd>{round(defenderStats.magicResist)}</dd></div>
-            <div><dt>Lux ability power</dt><dd>0</dd></div>
           </dl>
           <p className="note">
-            Ability power is 0 because this slice models no items, runes or stat shards. Every
-            ratio below therefore contributes nothing — it is shown, not hidden.
+            There are no items, runes or stat shards here. The ability-power figure above is
+            <strong> typed in, not derived from a build</strong> — the engine is told the number
+            rather than assuming one. Set it to 0 to see Lux's base damage alone.
           </p>
         </section>
 
@@ -130,16 +165,27 @@ export function VerticalSlice() {
           <ol className="combo">
             {combo.map((slot, i) => (
               <li key={`${slot}-${i}`}>
-                <span className="combo__slot">{slot}</span>
-                <button type="button" onClick={() => setCombo(combo.filter((_, j) => j !== i))}
-                  aria-label={`Remove ${slot} from position ${i + 1}`}>remove</button>
+                <span className="combo__n">{i + 1}</span>
+                <AbilityChip src={iconOf(slot)} slot={slot} damageType={typeOf(slot)}
+                  abilityName={abilityOf(slot)?.abilityName ?? slot} size="combo" />
+                <span className="combo__name">{abilityOf(slot)?.abilityName}</span>
+                <button type="button" className="combo__x"
+                  onClick={() => setCombo(combo.filter((_, j) => j !== i))}
+                  aria-label={`Remove ${slot} — ${abilityOf(slot)?.abilityName} from position ${i + 1}`}>
+                  ✕
+                </button>
               </li>
             ))}
-            {combo.length === 0 && <li className="note">No steps. Add one below.</li>}
+            {combo.length === 0 && <li className="note">No steps. Add one from the shelf below.</li>}
           </ol>
-          <div className="add">
-            {SLOTS.map((s) => (
-              <button type="button" key={s} onClick={() => setCombo([...combo, s])}>+ {s}</button>
+          <div className="shelf">
+            {SLOTS.map((sl) => (
+              <button type="button" key={sl} className="shelf__btn"
+                onClick={() => setCombo([...combo, sl])}
+                aria-label={`Add ${sl} — ${abilityOf(sl)?.abilityName} to the combo`}>
+                <AbilityChip src={iconOf(sl)} slot={sl} damageType={typeOf(sl)}
+                  abilityName={abilityOf(sl)?.abilityName ?? sl} size="combo" />
+              </button>
             ))}
           </div>
         </section>
@@ -164,7 +210,13 @@ export function VerticalSlice() {
             {result.instances.map((ins, i) => (
               <tr key={ins.index}>
                 <td>{ins.index}</td>
-                <td>{ins.label}</td>
+                <td>
+                  <span className="cellrow">
+                    <AbilityChip src={iconOf(ins.slot)} slot={ins.slot} damageType={typeOf(ins.slot)}
+                      abilityName={ins.abilityName} size="table" />
+                    <span>{ins.abilityName}</span>
+                  </span>
+                </td>
                 <td><VerificationStatusMark status={ins.verification} spokenSubject={ins.label} /></td>
                 {ins.damage ? (
                   <>

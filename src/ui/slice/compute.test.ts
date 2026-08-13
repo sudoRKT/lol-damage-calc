@@ -38,7 +38,7 @@ const garen: SliceDefender = {
   stats: { hp_base: 690, hp_lvl: 98, arm_base: 38, arm_lvl: 4.2, mr_base: 32, mr_lvl: 1.55, ad_base: 69, ad_lvl: 4.5 },
 };
 
-const attacker: SliceAttacker = { level: 1, ranks: { Q: 1, W: 1, E: 1, R: 1 } };
+const attacker: SliceAttacker = { level: 1, ranks: { Q: 1, W: 1, E: 1, R: 1 }, abilityPower: 0 };
 
 describe('one instance, worked by hand', () => {
   it('Lux Q at rank 1 into Garen at level 1 is 80 raw and 60.6 after 32 magic resistance', () => {
@@ -70,6 +70,21 @@ describe('one instance, worked by hand', () => {
     const r = evaluateStep(luxQ, attacker, { ...garen, level: 18 }, 1);
     expect(r.damage?.afterResistances).toBeCloseTo(50.5210, 3);
     expect(r.damage?.final).toBe(51);
+  });
+});
+
+describe('the stated ability power reaches the ratio', () => {
+  it('200 ability power adds 75% of it — 80 + 150 = 230 raw', () => {
+    // The ratio is stored as 75 PERCENTAGE POINTS, not 0.75. 75/100 x 200 = 150.
+    const r = evaluateStep(luxQ, { ...attacker, abilityPower: 200 }, garen, 1);
+    expect(r.damage?.base).toBe(80);
+    expect(r.damage?.ratios[0]).toMatchObject({ percent: 75, statValue: 200, contribution: 150 });
+    expect(r.damage?.raw).toBe(230);
+  });
+
+  it('it is an INPUT, not a modelled build — zero is still zero', () => {
+    // Nothing here derives ability power from items or runes; the engine is told the figure.
+    expect(evaluateStep(luxQ, { ...attacker, abilityPower: 0 }, garen, 1).damage?.raw).toBe(80);
   });
 });
 
