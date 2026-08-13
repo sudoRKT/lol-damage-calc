@@ -59,6 +59,24 @@ export const SHAPE_NAMES: Record<ShapeId, string> = {
  */
 export const ALTERNATIVE_MARKER = ALTERNATIVE_MARKERS;
 
+/**
+ * A label that says the component ADDS, overriding any variant marker in it.
+ *
+ * Camille W's row is "Outer Cone **Additional** Damage" and its prose says "an additional
+ * instance of damage… it will trigger effects twice". The variant list matched it on the word
+ * "outer" and stored it as an ALTERNATIVE to the base hit — so a target in the outer half was
+ * modelled as taking the cone damage INSTEAD of the base damage, dropping 220 physical damage at
+ * rank 5. Darius Q's handle genuinely does replace ("enemies within the inner radius take 35%
+ * damage"); the two rows look structurally identical and mean opposite things, and the only
+ * thing that separates them is this word.
+ */
+export const ADDS_MARKER = /\badditional\b/i;
+
+/** Whether a component's label marks it as a conditional variant of another. */
+export function isAlternativeLabel(label: string): boolean {
+  return ALTERNATIVE_MARKER.test(label) && !ADDS_MARKER.test(label);
+}
+
 /** Rows that apply only to non-champion targets (81 measured). Dropped: this is a
  *  champion-versus-champion tool (SPECIFICATION §5). */
 export const NON_CHAMPION_ROW =
@@ -81,6 +99,20 @@ export const RANGE_QUALIFIER = /^\s*(minimum|maximum|min|max)\s+/i;
 
 /** Reader-convenience summary rows — arithmetic on other rows, never stored (388 measured). */
 export const DERIVED_ROW = /^total\b/i;
+
+/**
+ * A leading qualifier marking a row as the EMPOWERED form of the row it otherwise names.
+ *
+ * Ambessa Q prints "Physical Damage" and "Increased Physical Damage", and its description says
+ * the damage "is doubled against the first enemy hit" — one enemy takes one or the other, never
+ * both. Stored as two adding rows, a single-target Q reported 1.5x its real damage. Riot's own
+ * data settles it the same way: the lesser row is the greater one multiplied by a `Min_Ratio` of
+ * 0.5, not an independent payload.
+ *
+ * The pairing is structural — one label is the other with this word in front — so it does not
+ * depend on reading the prose, and it cannot fire on two rows that merely both mention damage.
+ */
+export const EMPOWERED_QUALIFIER = /^\s*(increased|enhanced|empowered)\s+/i;
 
 /** Strip a leading Minimum/Maximum and say which it was. */
 export function stripRangeQualifier(label: string): {
@@ -189,7 +221,11 @@ export interface RowIssue {
     | 'coefficient-shape'
     | 'split-payload'
     | 'schema-invalid'
-    | 'round-trip-disagreement';
+    | 'round-trip-disagreement'
+    /** No source states a single damage type, so nothing may be stored for this ability. */
+    | 'unknown-damage-type'
+    /** A repeating component whose number of hits could not be derived from the source. */
+    | 'unknown-hit-count';
   detail: string;
 }
 
@@ -255,9 +291,23 @@ export function hasSplitPayload(value: string): boolean {
   return false;
 }
 
-/** True when this `{{as|…}}` body is a "per 100 X" multiplier rather than a payload ratio. */
+/**
+ * True when this `{{as|…}}` body is a "per 100 X" multiplier rather than a payload ratio.
+ *
+ * THE NESTED BLOCK MUST BE STRIPPED FIRST, and gate 5 found out why. Ambessa Q writes its health
+ * payload as `(+ 4% {{as|(+ 1.5% per 100 bonus AD)}} of target's maximum health)` — a payload
+ * that CONTAINS a multiplier. Testing the body as written finds "per 100" inside the nested
+ * block and lifts the whole payload as though it were the multiplier, so the two swap roles: the
+ * bonus-AD ratio ends up carrying a "per 100 maximum health" rider and the real scaling is lost.
+ * The stored number then errs in BOTH directions depending on the caster's bonus AD, which is
+ * worse than a constant offset because a spot check can land on the value where they coincide.
+ */
 export function isMultiplierGroup(body: string): boolean {
-  return /\(\s*\+/.test(body) && /per\s+100\b/i.test(body);
+  let outer = body;
+  for (const nested of [...findBlocks(body, 'as')].reverse()) {
+    outer = outer.slice(0, nested.start) + ' ' + outer.slice(nested.end);
+  }
+  return /\(\s*\+/.test(outer) && /per\s+100\b/i.test(outer);
 }
 
 /**
@@ -316,6 +366,30 @@ export interface ClassifiedRow {
 /** True when this label denotes a damage instance we would store. */
 export function isDamageRow(label: string): boolean {
   return /damage/i.test(label) && !NOT_A_DAMAGE_ROW.test(label);
+}
+
+/**
+ * True when a row's VALUE is a bare percentage of something rather than a quantity of damage.
+ *
+ * Aurelion Sol W is `{{ap|108 to 112}}%` — note the `%` OUTSIDE the block. It is not damage at
+ * all: it is a multiplier on a different ability's flat damage. Stored as a damage row it became
+ * "108 to 112 magic damage that adds", so casting the ability injected about 108 points of
+ * damage that does not exist. Nidalee Q carries two more of the same shape.
+ *
+ * The tell is structural, not lexical: once the progression blocks and the `{{as}}` ratio blocks
+ * are removed, what remains is a `%` sign and nothing else. A real damage row leaves nothing —
+ * `{{ap|50 to 170}} {{as|(+ 100% AD)}}` reduces to empty — and a percentage-of-a-stat row keeps
+ * its ratio, so neither is caught here. Labels are NOT used: "Increased Physical Damage" is a
+ * genuine damage row on Ambessa Q while "Damage Increase" is a modifier on Caitlyn W, and no
+ * wording rule separates them reliably.
+ */
+export function isPercentageModifier(value: string): boolean {
+  let rest = value;
+  for (const b of [...findBlocks(rest, 'as')].reverse()) rest = rest.slice(0, b.start) + ' ' + rest.slice(b.end);
+  const hadRatio = rest !== value;
+  for (const b of [...findLevelBlocks(rest)].reverse()) rest = rest.slice(0, b.start) + ' ' + rest.slice(b.end);
+  for (const b of [...findBlocks(rest, 'ap')].reverse()) rest = rest.slice(0, b.start) + ' ' + rest.slice(b.end);
+  return !hadRatio && /%/.test(plainText(rest));
 }
 
 /**
@@ -417,6 +491,21 @@ export function shapeOf(component: AbilityComponent, hasBase: boolean): ShapeId 
  * `damageType` comes from the template's own `damagetype` field, cross-checkable against
  * Module:DamageData/data.
  */
+/**
+ * The damage type a ROW's own label names, where it names exactly one.
+ *
+ * "Magic Damage", "Bonus Physical Damage", "Minimum True Damage" — the label is a statement about
+ * that row and it is more specific than the template's ability-level field, which is blank on 249
+ * pages and reads "Magic True" on abilities that deal both. Reading it is reading the source; it
+ * is what lets an ability with no `damagetype` field still store the rows that name their own.
+ */
+export function rowDamageType(label: string): DamageType | null {
+  const named = (['physical', 'magic', 'true'] as const).filter((k) =>
+    new RegExp(`\\b${k}\\s+damage\\b`, 'i').test(label),
+  );
+  return named.length === 1 ? named[0]! : null;
+}
+
 export function classifyRow(
   label: string,
   value: string,
@@ -426,6 +515,7 @@ export function classifyRow(
   // is kept as real damage while "Minimum Total Damage" is still a summary row.
   const { rest: bareLabel } = stripRangeQualifier(label);
   if (!isDamageRow(bareLabel)) return { label, issues: [], dropped: 'not-damage' };
+  if (isPercentageModifier(value)) return { label, issues: [], dropped: 'not-damage' };
   if (DERIVED_ROW.test(bareLabel)) return { label, issues: [], dropped: 'derived-row' };
   if (NON_CHAMPION_ROW.test(bareLabel)) return { label, issues: [], dropped: 'non-champion' };
 
@@ -590,14 +680,14 @@ export function classifyRow(
   const component: AbilityComponent = {
     id: slugify(label) || `component-${opts.index + 1}`,
     label,
-    damageType: opts.damageType,
+    damageType: rowDamageType(label) ?? opts.damageType,
     base,
     ratios,
     // The relation is PROPOSED here and must be confirmed by an author. Gate 3 refuses any
     // multi-component ability that leaves it unstated, so a wrong guess cannot slip through
     // silently — but a guess that looks right is still a guess, which is why the harvester
     // reports it as a proposal rather than an answer.
-    relation: ALTERNATIVE_MARKER.test(label) ? undefined : { kind: 'adds' },
+    relation: isAlternativeLabel(label) ? undefined : { kind: 'adds' },
     ...(perHit ? { hits: 1 } : {}),
   };
 
@@ -610,7 +700,7 @@ export function classifyRow(
       : {
           id: `${component.id}-rank-term`,
           label: `${label} (per-rank term)`,
-          damageType: opts.damageType,
+          damageType: rowDamageType(label) ?? opts.damageType,
           base: secondTerm,
           ratios: [],
           relation: { kind: 'adds' },
@@ -650,13 +740,25 @@ export function proposeRelations(components: AbilityComponent[]): AbilityCompone
     if (bound === 'min') minByRest.set(rest.toLowerCase().trim(), c);
   }
 
+  // "Increased X" against "X": the empowered form REPLACES the base form.
+  const byBareLabel = new Map<string, AbilityComponent>();
+  for (const c of components) {
+    const label = (c.label ?? c.id).toLowerCase().trim();
+    if (!EMPOWERED_QUALIFIER.test(label)) byBareLabel.set(label, c);
+  }
+
   const primary = components.find((c) => {
     const label = c.label ?? c.id;
-    return !ALTERNATIVE_MARKER.test(label) && stripRangeQualifier(label).bound !== 'max';
+    return !isAlternativeLabel(label) && stripRangeQualifier(label).bound !== 'max';
   });
 
   return components.map((c) => {
     const label = c.label ?? c.id;
+    const empowered = EMPOWERED_QUALIFIER.exec(label);
+    if (empowered) {
+      const base = byBareLabel.get(label.slice(empowered[0].length).toLowerCase().trim());
+      if (base && base.id !== c.id) return { ...c, relation: { kind: 'alternativeTo', componentId: base.id } };
+    }
     const { rest, bound } = stripRangeQualifier(label);
     if (bound === 'max') {
       const paired = minByRest.get(rest.toLowerCase().trim());
@@ -664,7 +766,7 @@ export function proposeRelations(components: AbilityComponent[]): AbilityCompone
         return { ...c, relation: { kind: 'alternativeTo', componentId: paired.id } };
       }
     }
-    if (!ALTERNATIVE_MARKER.test(label)) return { ...c, relation: { kind: 'adds' } };
+    if (!isAlternativeLabel(label)) return { ...c, relation: { kind: 'adds' } };
     if (!primary || primary.id === c.id) return { ...c, relation: { kind: 'adds' } };
     return { ...c, relation: { kind: 'alternativeTo', componentId: primary.id } };
   });

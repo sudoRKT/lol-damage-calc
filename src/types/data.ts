@@ -399,7 +399,16 @@ export interface CuratedAbility {
   slot: AbilitySlot;
   abilityName: string;
   instanceType: InstanceType;
-  damageType: DamageType;
+  /**
+   * The ability's damage type, where a source states one.
+   *
+   * OPTIONAL, and absent is a real state rather than a gap to fill with a default. An ability
+   * whose template leaves `damagetype` blank and which `Module:DamageData/data` does not
+   * classify has no type this project may assert, and it therefore stores no components either —
+   * a figure without a type is a figure without a resistance, which is a different number rather
+   * than an imprecise one. Gate 1 requires it whenever components are present.
+   */
+  damageType?: DamageType;
   maxRank: number;
   components: AbilityComponent[];
   modifiers?: Record<string, number>;

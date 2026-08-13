@@ -27,12 +27,20 @@ import {
   compareExpansion,
   gateSchema,
 } from '../../src/types/validate-curated.ts';
-import { classifyRow, proposeRelations, type RowIssue, type ShapeId } from './classify.ts';
+import {
+  classifyRow,
+  proposeRelations,
+  rowDamageType,
+  stripRangeQualifier,
+  type RowIssue,
+  type ShapeId,
+} from './classify.ts';
 import type { DamageInstance } from './damage-data.ts';
 import { scanProse, type ProseSkip } from './prose.ts';
 import { statedTypesFor } from './damage-data.ts';
 import { renderAbility, renderAbilityDetail, renderLevelBlocks, type RenderedRow } from './render.ts';
-import { parseFields, parseVardefines, statRows } from './wikitext.ts';
+import { findBlocks, parseFields, parseVardefines, statRows, substituteVars } from './wikitext.ts';
+import { statedStepCount } from './progression.ts';
 
 export const WIKI_API = 'https://wiki.leagueoflegends.com/en-us/api.php';
 const UA = 'lol-damage-calc (curated-file build; contact rushi.lime49@gmail.com)';
@@ -61,12 +69,21 @@ export function instanceTypeFor(slot: AbilitySlot, hasDamage: boolean): Instance
   return 'damaging-ability';
 }
 
+/**
+ * The damage type a template STATES, or null.
+ *
+ * NEVER GUESSES, AND NEVER TAKES THE FIRST OF SEVERAL. An earlier version matched on a prefix, so
+ * Ahri Q's `damagetype = Magic True` — an ability that deals magic on the way out and true on the
+ * way back — read as plain "magic", and a blank field fell through to a caller that defaulted it
+ * to magic. Caitlyn W's Headshot bonus is physical and was stored as magic, which sends it
+ * through magic resistance instead of armor: not a near miss, a different number.
+ */
 export function damageTypeOf(raw: string | undefined): DamageType | null {
   const t = (raw ?? '').trim().toLowerCase();
-  if (t.startsWith('physical')) return 'physical';
-  if (t.startsWith('magic')) return 'magic';
-  if (t.startsWith('true')) return 'true';
-  return null;
+  const named = (['physical', 'magic', 'true'] as const).filter((k) =>
+    new RegExp(`\\b${k}\\b`).test(t),
+  );
+  return named.length === 1 ? named[0]! : null;
 }
 
 export interface DraftAbility {
@@ -126,8 +143,36 @@ export interface LevelSource {
 export function draftFromTemplate(src: TemplateSource, patch: string, fetched: string): DraftAbility {
   const fields = parseFields(src.wikitext);
   const vars = parseVardefines(src.wikitext);
-  const maxRank = src.maxRank ?? maxRankFor(src.slot);
-  const damageType = damageTypeOf(fields.damagetype) ?? 'magic';
+  // A SECOND-FORM ABILITY IS RANKED BY THE ABILITY IT FOLLOWS, and the template says so.
+  //
+  // Nidalee's cougar abilities, Karma's mantra forms and Heimerdinger's upgraded turret carry a
+  // header reading "''X'' scales with ''Y'' rank", and their damage rows state a step count to
+  // match — 4, or 3 for UPGRADE!!!. Taking the rank count from the slot instead gave 5, so the
+  // stored list was rejected as "4 values but the ability has 5 ranks" and six abilities were
+  // unusable with correct numbers in them. The count is read here only when BOTH the header and
+  // an explicit step count are present, so it is corroborated by the source twice rather than
+  // inferred from the length of a list.
+  // The header sits in a leveling field on five of the six, and in a description field on Karma
+  // Soulflare — same statement, different field, so both are read.
+  const allText = Object.values(fields).join('\n');
+  const scalesWithOther = /scales\s+with\b[\s\S]{0,80}?\brank\b/i.test(allText);
+  let statedRanks: number | undefined;
+  if (scalesWithOther) {
+    for (const row of statRows(fields)) {
+      if (!/damage/i.test(row.label)) continue;
+      const block = findBlocks(row.value, 'ap')[0];
+      if (!block) continue;
+      const n = statedStepCount(substituteVars(block.inner, vars));
+      if (n !== undefined && n >= 1) { statedRanks = n; break; }
+    }
+  }
+  const maxRank = statedRanks ?? src.maxRank ?? maxRankFor(src.slot);
+  // The type comes from the template, else from Module:DamageData/data where it states exactly
+  // one, else NOWHERE — and an ability whose damage type no source states cannot have its damage
+  // stored at all, because every stored number would carry a guessed resistance.
+  const statedTypes = statedTypesFor(src.damageData ?? new Map(), src.champion, src.ability).types;
+  const damageType: DamageType | null =
+    damageTypeOf(fields.damagetype) ?? (statedTypes.size === 1 ? [...statedTypes][0]! : null);
 
   const issues: RowIssue[] = [];
   const droppedRows: Array<{ label: string; why: string }> = [];
@@ -137,8 +182,15 @@ export function draftFromTemplate(src: TemplateSource, patch: string, fetched: s
 
   const rows = statRows(fields);
   let sourceDamageRows = 0;
-  for (const [index, row] of rows.entries()) {
-    const c = classifyRow(row.label, row.value, { maxRank, damageType, vars, index });
+  // A row whose own label names a damage type may be read even when the ability-level field
+  // states none — the label is the more specific statement of the two.
+  const rowsToRead: Array<[number, (typeof rows)[number]]> = [...rows.entries()].filter(
+    ([, r]) => damageType !== null || rowDamageType(r.label) !== null,
+  );
+  for (const [index, row] of rowsToRead) {
+    const rowType = rowDamageType(row.label) ?? damageType;
+    if (rowType === null) continue;
+    const c = classifyRow(row.label, row.value, { maxRank, damageType: rowType, vars, index });
     if (c.dropped !== 'not-damage') sourceDamageRows += 1;
     if (c.dropped) {
       if (c.dropped !== 'not-damage') droppedRows.push({ label: row.label, why: c.dropped });
@@ -159,6 +211,30 @@ export function draftFromTemplate(src: TemplateSource, patch: string, fetched: s
   // THE PROSE PATH (DATA-SOURCES §20a). Only for an ability whose leveling rows produced
   // nothing: those are the prose-only worklist, and they are the only abilities where the
   // description can be read without risking a second copy of damage already stored.
+  if (damageType === null && rows.some((r) => /damage/i.test(r.label) && rowDamageType(r.label) === null)) {
+    // Two different silences, and saying which one it is matters: "no source states a type" sends
+    // someone to look for a missing field, while "the source states two and the rows do not say
+    // which is which" sends them to split the instances. Reporting the first when it is the
+    // second was itself a finding of gate 5's second round.
+    const declared = (fields.damagetype ?? '').trim();
+    const multiple = ['physical', 'magic', 'true'].filter((k) => new RegExp(`\\b${k}\\b`, 'i').test(declared));
+    issues.push({
+      kind: 'unknown-damage-type',
+      detail:
+        multiple.length > 1
+          ? `the template states ${multiple.join(' and ')} — the ability deals more than one type ` +
+            `and its rows do not say which row is which, so no row may be stored under one of them`
+          : `no source states a damage type (template ${JSON.stringify(fields.damagetype ?? null)}, ` +
+            `Module:DamageData/data ${statedTypes.size === 0 ? 'silent' : [...statedTypes].join('/')}) — ` +
+            `nothing is stored, because every figure would carry a guessed resistance`,
+    });
+  }
+
+  // NOT gated on the ability-level type. A prose instance names its own type in the wrapper it
+  // sits in — "bonus physical damage" — and that is a statement about THAT instance, which is
+  // more specific than the ability-level field. Gating it here was a real regression: Akshan P
+  // declares `damagetype = Physical Magic`, which states two types rather than none, and both of
+  // its instances were silently dropped.
   const prose = scanProse({
     champion: src.champion,
     ability: src.ability,
@@ -201,6 +277,51 @@ export function draftFromTemplate(src: TemplateSource, patch: string, fetched: s
   }
   const proseComponents = components.length - levelingComponents;
 
+  // A REPEATING COMPONENT NEEDS ITS HIT COUNT, AND THE SOURCE SUPPLIES IT INDIRECTLY.
+  //
+  // A damage-over-time ability prints two rows: a `Total` and a per-tick. The Total is dropped as
+  // a summary — it is arithmetic on other rows and storing both double-counts — and the per-tick
+  // row that survives was given `hits: 1`, so Cassiopeia Q stored a seventh of its damage while
+  // every gate passed it. The tick count is not written anywhere as a number, but it is implied
+  // exactly: Total / per-tick. That is division, not a guess.
+  //
+  // It is only taken when the answer is unambiguous: one repeating component, one dropped Total,
+  // the quotient the SAME whole number at every rank, and at least two. Anything else keeps
+  // hits: 1 and raises an issue, because a wrong multiplier is worse than a missing one.
+  const repeating = components.filter((c) => c.hits !== undefined);
+  if (repeating.length === 1 && damageType !== null) {
+    const totalRow = rows.find((r) => DERIVED_ROW_LABEL.test(stripRangeQualifier(r.label).rest) && /damage/i.test(r.label));
+    const c = repeating[0]!;
+    if (totalRow) {
+      const totalClass = classifyRow('Magic Damage', totalRow.value, { maxRank, damageType, vars, index: 0 });
+      const derived = impliedHits(totalClass.component, c, maxRank);
+      if (derived !== undefined) c.hits = derived;
+      else {
+        issues.push({
+          kind: 'unknown-hit-count',
+          detail:
+            `"${c.label}" lands more than once and the source does not state how many times; the ` +
+            `dropped total row does not divide by it evenly, so the count is not derivable`,
+        });
+      }
+    } else {
+      issues.push({
+        kind: 'unknown-hit-count',
+        detail: `"${c.label}" lands more than once and nothing in the template states how many`,
+      });
+    }
+  } else if (repeating.length > 1) {
+    issues.push({
+      kind: 'unknown-hit-count',
+      detail: `${repeating.length} repeating components; a total row cannot be attributed to one of them`,
+    });
+  }
+
+  // The entry-level type is whatever the stored components agree on; where they disagree — an
+  // ability that deals two types — it is left unstated rather than one of them being picked.
+  const componentTypes = new Set(components.map((c) => c.damageType));
+  const effectiveType = damageType ?? (componentTypes.size === 1 ? [...componentTypes][0]! : null);
+
   const withRelations = proposeRelations(components);
   const provenance: Provenance = {
     source: `Template:Data ${src.champion}/${src.ability}`,
@@ -238,7 +359,7 @@ export function draftFromTemplate(src: TemplateSource, patch: string, fetched: s
     slot: src.slot,
     abilityName: src.ability,
     instanceType: instanceTypeFor(src.slot, dealsDamage),
-    damageType,
+    ...(effectiveType === null ? {} : { damageType: effectiveType }),
     maxRank,
     components: withRelations,
     // Nothing the harvester produces is 'verified'. Verification is a gate outcome, not a
@@ -718,4 +839,37 @@ export function roundTripProse(
     }
   }
   return result;
+}
+
+/** The wiki's summary-row label, shared with the classifier's own filter. */
+const DERIVED_ROW_LABEL = /^total\b/i;
+
+/**
+ * How many times a repeating component lands, derived from the total the wiki also prints.
+ *
+ * Returns undefined unless the quotient is the same whole number at every rank and at least two —
+ * a per-tick figure is a rounded display value, so the quotient is compared at the wiki's own
+ * display precision rather than exactly. Undefined means "not derivable", never "assume one".
+ */
+export function impliedHits(
+  total: AbilityComponent | undefined,
+  perHit: AbilityComponent,
+  maxRank: number,
+): number | undefined {
+  if (!total || isLevelScaled(total.base) || isLevelScaled(perHit.base)) return undefined;
+  let totals: number[];
+  let each: number[];
+  try {
+    totals = expandByRank(total.base, maxRank);
+    each = expandByRank(perHit.base, maxRank);
+  } catch {
+    return undefined;
+  }
+  const counts = totals.map((t, i) => (each[i] === 0 ? Number.NaN : t / each[i]!));
+  const first = Math.round(counts[0]!);
+  if (!Number.isFinite(first) || first < 2) return undefined;
+  // Every rank must imply the same count, within the rounding the wiki's own per-tick display
+  // introduces. 75/10.71 is 7.003, not 7 — the tolerance is what makes that readable.
+  const ok = counts.every((n) => Number.isFinite(n) && Math.abs(n - first) < 0.02);
+  return ok ? first : undefined;
 }

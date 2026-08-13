@@ -258,7 +258,20 @@ export function gateSchema(file: CuratedFile): GateReport {
     if (!SLOTS.has(a.slot)) push(`bad slot '${a.slot}'`);
     if (!a.abilityName) push('missing abilityName');
     if (!INSTANCE_TYPES.has(a.instanceType)) push(`bad instanceType '${a.instanceType}'`);
-    if (!DAMAGE_TYPES.has(a.damageType)) push(`bad damageType '${a.damageType}'`);
+    // Required as soon as anything is stored: a figure without a type has no resistance.
+    if (a.damageType !== undefined && !DAMAGE_TYPES.has(a.damageType)) {
+      push(`bad damageType '${a.damageType}'`);
+    }
+    // Absent is allowed ONLY where the components genuinely disagree — an ability that deals two
+    // types, such as a pass that goes out as magic and returns as true. Every component states
+    // its own type and that is the one the engine reads; the ability-level field is a summary,
+    // and summarising two types as one would be the wrong-resistance defect all over again.
+    if (a.damageType === undefined && (a.components?.length ?? 0) > 0) {
+      const types = new Set((a.components ?? []).map((c) => c.damageType));
+      if (types.size < 2) {
+        push('stores damage components of a single type but states no damageType');
+      }
+    }
     if (!Number.isInteger(a.maxRank) || a.maxRank < 1) push(`bad maxRank '${a.maxRank}'`);
     if (!STATUSES.has(a.verification)) push(`bad verification '${a.verification}'`);
     if (!a.provenance?.source || !a.provenance?.patch) push('provenance needs source and patch');
@@ -334,7 +347,8 @@ export function gateSumGuard(file: CuratedFile): GateReport {
     const adds = a.components.filter((c) => c.relation?.kind === 'adds');
     for (const c of adds) {
       const label = c.label ?? c.id;
-      if (ALTERNATIVE_MARKERS.test(label) && adds.length > 1) {
+      // "Additional" overrides a variant marker: the source is saying it adds (DATA-SOURCES §30).
+      if (ALTERNATIVE_MARKERS.test(label) && !/\badditional\b/i.test(label) && adds.length > 1) {
         push(
           `component '${c.id}' is labelled "${label}", which reads as a conditional variant, ` +
             `but is marked 'adds' alongside ${adds.length - 1} other additive component(s). ` +

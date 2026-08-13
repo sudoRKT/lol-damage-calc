@@ -300,7 +300,16 @@ export function scanProse(opts: {
         for (const nested of [...findBlocks(remainder, 'as')].reverse()) {
           remainder = remainder.slice(0, nested.start) + ' ' + remainder.slice(nested.end);
         }
-        const isBase = progression !== undefined && ratioStatOf(readable(remainder)) === null;
+        // A BARE LITERAL IS A BASE, and missing that lost real damage. Aphelios Calibrum writes
+        // `{{as|15|physical damage}} {{as|(+ 15% '''bonus''' AD)}}`: the 15 is the flat term. A
+        // value block holding a plain number names no stat, so the ratio reader returns nothing
+        // for it and the number vanished, leaving the ability with its ratio and no base — half
+        // its damage at 100 bonus AD, all of it at zero. Found by gate 5, not by any round-trip:
+        // the figures we DID store all appeared in the rendered sentence, so the prose
+        // round-trip passed it. A check cannot see a term that was never stored.
+        const bareLiteral = /^\s*-?\d+(?:\.\d+)?\s*$/.test(body);
+        const isBase =
+          bareLiteral || (progression !== undefined && ratioStatOf(readable(remainder)) === null);
         if (isBase) {
           if (levelIn[0] && isPercentBlock(levelIn[0].inner)) baseFromPercent = levelIn[0].inner;
           valueParts.push(body);

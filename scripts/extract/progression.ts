@@ -242,6 +242,22 @@ function splitNamed(args: string[]): Parsed {
 }
 
 /**
+ * The rank count an `{{ap|…}}` block STATES, if it states one.
+ *
+ * `{{ap|40 to 220 4}}` and `{{ap|100 to 300 for 3}}` both say how many ranks they cover, and an
+ * explicit `v1|v2|v3` list says it by its length. Used only where the template ALSO carries a
+ * "scales with <other ability> rank" header, so the count is corroborated rather than inferred
+ * (DATA-SOURCES §22, §30).
+ */
+export function statedStepCount(inner: string): number | undefined {
+  const { args } = splitNamed(splitArgs(inner));
+  if (args.length > 1) return args.length;
+  const body = (args[0] ?? '').trim();
+  const forN = /^(.*)\s+for\s+(\d+)$/.exec(body) ?? /^(.*\ssto\s.*?)\s+(\d+)$/.exec(body) ?? /^(.*\sto\s.*?)\s+(\d+)$/.exec(body);
+  return forN ? Number(forN[2]) : undefined;
+}
+
+/**
  * Parse the inner text of an `{{ap|…}}` into a rank-scaled Scaling.
  * `maxRank` is the ability's rank count — 5 for a basic ability, 3 for an ultimate. It is
  * supplied by the caller and never inferred, because the same shorthand over 3 ranks and over
