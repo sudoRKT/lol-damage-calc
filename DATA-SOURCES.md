@@ -834,10 +834,15 @@ and W · Kassadin R · **Malphite W and E** · Ornn E · Ryze Q, W and E · Tari
 
 Malphite is the case that shows why this matters. `Thunderclap` reads `(+ 15% armor)` and the
 source never says whose. Anyone who plays the champion knows it is Malphite's own armor — and
-that is exactly the knowledge this project is not allowed to substitute for a source statement,
-because the same shape appears on abilities where the answer is the other one. Twelve abilities
-now carry an honest `incomplete` instead of a confident `derived` built on an unstated
-assumption.
+that is exactly the knowledge this project is not allowed to substitute for a source statement.
+
+**And the convention it would tempt you into is demonstrably false.** Black Cleaver's effect
+text reads "Each stack inflicts **6% armor reduction**" — bare, no possessive, exactly the same
+shape as Malphite's `(+ 15% armor)`. But it is the **target's** armor, not the holder's. A rule
+of "an unowned armor figure means the caster's own" would read Black Cleaver backwards. This is
+not a hypothetical counterexample constructed to make the point; it is the second item in the
+scan. Twelve abilities now carry an honest `incomplete` instead of a confident `derived` built
+on an assumption that a real item already contradicts.
 
 ---
 
