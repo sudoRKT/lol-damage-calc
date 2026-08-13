@@ -2685,9 +2685,10 @@ all 937 pages. Nothing below is quoted from a document.
 | verified / derived / incomplete / no-damage | **8 / 487 / 236 / 206** | before the repair in §36.2 |
 
 Gate 2 ability box: **799 of 839 rows matched, 40 failed** across 37 entries, 0 render failures.
-Gate 2 level series: **36 of 36 matched**. Gate 7 ran on 623 entries; **53 do not reconcile**, split
-**41 under / 12 over** — measured AFTER the relation fix of §36.3, which is why it is not the 51 the
-same run produced before it.
+Gate 2 level series: **36 of 36 matched**. Gate 7 ran on 623 entries; **47 do not reconcile**, split
+**35 under / 12 over**. That figure moved twice on 2026-08-13, both times because the gate got more
+precise: 51 → 53 with the relation fix (§36.3), then 53 → 47 once variable-hit abilities reconciled
+at the ceiling the source states (§38.4).
 
 **917, not 921.** The four are the summary rows §34.1's widened filter drops: Gangplank R's
 "Maximum Mixed Total Damage with and", Gwen R's second and third cast totals, Xin Zhao W's "Slash
@@ -2959,8 +2960,21 @@ applies to measurement code as much as to the product.
 | P2 by the scan | **18** |
 | **UNREAD — a `Reduced` row the scan could not classify** | **27** |
 
-**THE POPULATION IS 12 CONFIRMED, AND BETWEEN 12 AND 39 ONCE THE 27 ARE READ.** Do not quote 12 as
-a final figure; quote it as the confirmed floor with 27 unexamined.
+> **THE 27 WERE READ ON 2026-08-13. THE POPULATION IS 17, NOT A RANGE.** Five of the 27 are
+> genuine same-target repeats and join the 12: **Gnar Q** (the boomerang returns and can hit the
+> same champion at reduced damage), **Jhin E** (a target struck by another Lotus Trap within one
+> second), **Kai'Sa Q** ("Non-minions take X% damage from missiles beyond their first"), **Lulu Q**
+> ("Enemies take reduced damage from a second bolt"), and **Master Yi Q** ("can mark the same
+> enemies again").
+>
+> Of the other 22: **3 are secondary-target** (Caitlyn Q, Graves R, Qiyana Q Elemental Wrath),
+> **18 are not repeats at all** (healing reductions, blade-versus-handle alternatives, positional
+> alternatives like Ziggs R's epicentre, and rows about non-champion targets), and **1 is excluded
+> by the engine's own boundary** — Garen E spins a number of times derived from attack speed, and
+> SPECIFICATION §3.2 states there are no attack-speed-derived attack counts. That exclusion is a
+> scope decision, not a gap.
+>
+> **Kai'Sa Q therefore joins the population**, which settles the last open member of §34.2's shape.
 
 **The confirmed 12:** Aurora Q · Heimerdinger W (Micro-Rockets) · Heimerdinger W (Rocket Swarm) ·
 Kled Q · Nautilus E · Shyvana E · Smolder W · Swain Q · Taliyah Q · Yuumi R · Zac R · Ziggs E.
@@ -2986,4 +3000,35 @@ count against one champion is 0, 1 or 2 depending on positioning — with no red
 "Reduced Damage per Hit" row is about other targets (P2). Any model has to carry both shapes, or it
 will force one into the other.
 
-**Nothing is implemented. The proposal is in the session record and awaits a decision.**
+**Shape B's population is NOT measured by this scan and is at least 1.** The scan keys on a
+*reduction* being stated, and shape B states none — nothing in Xayah Q's prose distinguishes "two
+feathers, each full" from "one instance" by the patterns used here. Xayah Q was found only because
+it happens to carry a reduced row about *other* targets. **The method to measure it is written down
+so it need not be rediscovered:** find abilities with a per-instance row and a whole-ability total
+that is an exact integer multiple >1 of it, carrying NO reduced row, and read the prose of each.
+
+### 38.4 Built 2026-08-13 — the shape, the default, and gate 7
+
+**The contract.** `AbilityComponent.variableHits` carries `VariableHitCount`, in two arms:
+`repeatsAtReducedRate` (rate + `maxAdditional`) and `repeatsAtFullRate` (`maxInstances`). Both
+quote the sentence the ceiling rests on. `hits` and `variableHits` are **mutually exclusive** and
+gate 1 refuses an entry setting both — a fixed count beside a variable one is two answers to one
+question. The count itself arrives from `ComboStep.hitCounts`, keyed by component id, exactly as
+entry state does.
+
+**Neither the rate nor the ceiling is guessed.** Both are derived from three numbers the wiki
+prints. Ziggs E: full 30, `Reduced Damage per Mine` 12, `Maximum Total Magic Damage` 150 →
+rate = 12/30 = 0.4, and additional = (150/30 − 1) / 0.4 = **10**. If any of the three is missing,
+or the division does not land on a whole number, **nothing is stored** and the entry raises
+`variable-hit-count` saying why.
+
+**THE DEFAULT IS THE MINIMUM AND MAY NOT BE RAISED: one full instance, zero repeats.** It is the
+only count true whenever the ability connects at all. A default of "as many as possible" would
+inflate a Ziggs E result fivefold and look exactly like a correct answer. The cost is named rather
+than hidden: a minimum default understates "does my combo kill", which is why the interface makes
+the control prominent and prints the ceiling beside it instead of quietly assuming a larger number.
+A test asserts the default is below the maximum on every shape.
+
+**Gate 7 reconciles a variable-hit component AT ITS CEILING**, because the source's whole-ability
+total *is* its statement of the maximum. Comparing a per-instance value against a maximum total was
+the gate and the source describing different situations.

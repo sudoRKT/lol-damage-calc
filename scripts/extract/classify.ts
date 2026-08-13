@@ -244,7 +244,10 @@ export interface RowIssue {
     /** Two sources state different values for the same figure and nothing settles it (§32). */
     | 'source-conflict'
     /** Our stored components do not sum to the total the wiki itself prints (gate 7). */
-    | 'total-mismatch';
+    | 'total-mismatch'
+    // The source states repeats against the same target but the rate or the ceiling could not
+    // be derived from its own printed numbers (DATA-SOURCES §38). No count is invented.
+    | 'variable-hit-count';
   detail: string;
 }
 

@@ -1,42 +1,49 @@
 {
   "what": "Answers given by the project owner, who plays the game, about abilities no source states clearly enough to settle. Recorded 2026-08-13.",
   "whatThisIsNot": "NOT a source citation. The wiki does not state these facts, so nothing here can be re-fetched, re-derived, or checked by any gate. It is testimony: one person's account of what the game does, recorded with who said it and when, so that a future session can see exactly what a stored value rests on. An entry may never reach 'verified' on testimony alone, because 'verified' means an independent party re-derived it FROM A SOURCE.",
-  "howItRanksAgainstA SOURCE": "Where testimony and the wiki agree, the entry is settled and the testimony explains WHY the wiki's wording was ambiguous. Where they DISAGREE, nothing is adopted: DATA-SOURCES §32.2 governs, the entry stays 'incomplete', and both accounts are recorded here for the owner to arbitrate. Testimony does not silently overwrite a source that states the opposite — that is the same failure as preferring whichever source is tidier.",
+  "howItRanksAgainstA SOURCE": "Where testimony and the wiki agree, the entry is settled and the testimony explains WHY the wiki's wording was ambiguous. Where they DISAGREE, nothing is adopted: DATA-SOURCES \u00a732.2 governs, the entry stays 'incomplete', and both accounts are recorded here for the owner to arbitrate. Testimony does not silently overwrite a source that states the opposite \u2014 that is the same failure as preferring whichever source is tidier.",
   "recordedOn": "2026-08-13",
   "attribution": "project owner (plays the game); relayed in session, not fetched",
   "answers": [
     {
-      "subject": "Ziggs E — Hexplosive Minefield",
+      "subject": "Ziggs E \u2014 Hexplosive Minefield",
       "testimony": "Every instance deals the same damage. There is no reduced second hit; the reduced row is not a lesser repeat. The number of instances depends on how many mines are stepped on.",
-      "sourceSays": "description2: 'An enemy takes 40% damage from subsequent mines.' The leveling row 'Reduced Damage per Mine' is the full value x0.4, and 'Maximum Total Magic Damage' is base x (1 + 0.4 x 10) — arithmetic that only works if ten reduced instances land.",
-      "agreement": "CONTRADICTS",
-      "status": "not applied; entry stays incomplete pending the owner's arbitration",
-      "whatIsAgreed": "The hit count is variable — it depends on how many mines the champion contacts. Neither account gives a fixed number."
+      "sourceSays": "description2: 'An enemy takes 40% damage from subsequent mines.' The leveling row 'Reduced Damage per Mine' is the full value x0.4, and 'Maximum Total Magic Damage' is base x (1 + 0.4 x 10) \u2014 arithmetic that only works if ten reduced instances land.",
+      "agreement": "CONTRADICTED THE SOURCE, RESOLVED 2026-08-13 IN THE SOURCE'S FAVOUR",
+      "status": "the wiki's reduced-damage rule is applied. The testimony is retained: it correctly describes that every repeat instance is the same size as every other repeat, which the wiki's wording does not make obvious.",
+      "whatIsAgreed": "The hit count is variable \u2014 it depends on how many mines the champion contacts. Neither account gives a fixed number."
     },
     {
-      "subject": "Nautilus E — Riptide",
+      "subject": "Nautilus E \u2014 Riptide",
       "testimony": "A champion caught by the wave takes exactly one damage instance, regardless of the three waves. Every instance deals the same damage; there is no reduced second hit.",
-      "sourceSays": "description: 'Each wave deals magic damage to enemies hit, reduced to 50% against those hit by subsequent waves beyond the first.' The leveling row 'Reduced Damage' is the full value x0.5, and 'Maximum Total Damage' is base x2 — one full instance plus two halves.",
-      "agreement": "CONTRADICTS",
-      "status": "not applied; entry stays incomplete pending the owner's arbitration",
+      "sourceSays": "description: 'Each wave deals magic damage to enemies hit, reduced to 50% against those hit by subsequent waves beyond the first.' The leveling row 'Reduced Damage' is the full value x0.5, and 'Maximum Total Damage' is base x2 \u2014 one full instance plus two halves.",
+      "agreement": "CONTRADICTED THE SOURCE, RESOLVED 2026-08-13 IN THE SOURCE'S FAVOUR",
+      "status": "the wiki's reduced-damage rule is applied. The testimony is retained: it correctly describes that every repeat instance is the same size as every other repeat, which the wiki's wording does not make obvious.",
       "whatIsAgreed": "Nothing about the count. The two accounts differ on whether a champion can be hit by more than one wave at all."
     },
     {
-      "subject": "Yuumi R — Final Chapter",
+      "subject": "Yuumi R \u2014 Final Chapter",
       "testimony": "Every instance deals the same damage. There is no reduced second hit. The ability lands between 1 and 7 waves depending on whether the target stays in it.",
-      "sourceSays": "description3: 'Subsequent waves against enemies hit deal 25% damage.' The leveling row 'Reduced Damage per Hit' is the full value x0.25, and 'Total Magic Damage' is base x2 — one full instance plus four at a quarter. The description also says the channel launches 5 waves, not 7.",
-      "agreement": "CONTRADICTS, and the two accounts also differ on the maximum number of waves (5 in the source, up to 7 in testimony)",
-      "status": "not applied; entry stays incomplete pending the owner's arbitration",
-      "whatIsAgreed": "The hit count is variable — it depends on whether the target remains in the waves."
+      "sourceSays": "description3: 'Subsequent waves against enemies hit deal 25% damage.' The leveling row 'Reduced Damage per Hit' is the full value x0.25, and 'Total Magic Damage' is base x2 \u2014 one full instance plus four at a quarter. The description also says the channel launches 5 waves, not 7.",
+      "agreement": "CONTRADICTED THE SOURCE, RESOLVED 2026-08-13 IN THE SOURCE'S FAVOUR",
+      "status": "the wiki's reduced-damage rule is applied. The testimony is retained: it correctly describes that every repeat instance is the same size as every other repeat, which the wiki's wording does not make obvious.",
+      "whatIsAgreed": "The hit count is variable \u2014 it depends on whether the target remains in the waves."
     },
     {
-      "subject": "Xayah Q — Double Daggers",
+      "subject": "Xayah Q \u2014 Double Daggers",
       "testimony": "The hit count is genuinely variable and positional. Two feathers are thrown outbound and recalled by E. A champion takes damage per feather whose hitbox they occupy, independently on the way out and on the way back. There is no fixed count to store.",
-      "sourceSays": "description: 'Xayah barrages two Feathers in the target direction that each deal physical damage to enemies hit', with 'Total Physical Damage' at base x2 — two feathers at FULL damage. description2: 'Targets hit after the first take 50% reduced damage', which names a different TARGET, not a later hit on the same champion.",
+      "sourceSays": "description: 'Xayah barrages two Feathers in the target direction that each deal physical damage to enemies hit', with 'Total Physical Damage' at base x2 \u2014 two feathers at FULL damage. description2: 'Targets hit after the first take 50% reduced damage', which names a different TARGET, not a later hit on the same champion.",
       "agreement": "COMPATIBLE",
-      "status": "applied as a finding: our stored 'Reduced Damage per Hit' was paired as a lesser repeat of the full hit against the same champion. The source says it is a different target. This is the Aurelion Sol class of DATA-SOURCES §34.2, not the one-at-full-plus-N-reduced class, and Xayah Q should never have been counted in the latter.",
+      "status": "applied as a finding: our stored 'Reduced Damage per Hit' was paired as a lesser repeat of the full hit against the same champion. The source says it is a different target. This is the Aurelion Sol class of DATA-SOURCES \u00a734.2, not the one-at-full-plus-N-reduced class, and Xayah Q should never have been counted in the latter.",
       "whatIsAgreed": "Two feathers each deal full damage to a champion they hit, and the count against one champion depends on positioning."
     }
   ],
-  "consequenceForTheShapeProposal": "DATA-SOURCES §34.2 sized the 'one at full plus N reduced' shape at 4 abilities: Kai'Sa Q, Xayah Q, Yuumi R, Zac R. Xayah Q leaves it — the source says secondary target, not later hit. Yuumi R's membership is disputed between the source and the owner. Kai'Sa Q and Zac R have not been examined by either. THE SHAPE'S POPULATION IS THEREFORE NOT 4 AND IS NOT YET KNOWN; the §34.2 figure must not be quoted until it is re-measured."
+  "consequenceForTheShapeProposal": "DATA-SOURCES \u00a734.2 sized the 'one at full plus N reduced' shape at 4 abilities: Kai'Sa Q, Xayah Q, Yuumi R, Zac R. Xayah Q leaves it \u2014 the source says secondary target, not later hit. Yuumi R's membership is disputed between the source and the owner. Kai'Sa Q and Zac R have not been examined by either. THE SHAPE'S POPULATION IS THEREFORE NOT 4 AND IS NOT YET KNOWN; the \u00a734.2 figure must not be quoted until it is re-measured.",
+  "resolution": {
+    "resolvedOn": "2026-08-13",
+    "byWhom": "project owner",
+    "outcome": "THE WIKI WINS on Ziggs E, Nautilus E and Yuumi R. The reduced-damage rule is real and is now applied.",
+    "whyTheAccountsDiffered": "The testimony answered a different question. It described whether each instance is the same size AS ITS NEIGHBOURS -- and among the repeats it is, since every subsequent instance deals the same reduced amount as every other. It did not describe whether the FIRST instance differs from the rest, which is what the wiki states and what the leveling rows encode. Both accounts were true about different things.",
+    "whyBothAreKept": "The disagreement is recorded rather than erased. A future session finding testimony that contradicts a source needs to see how this one was settled -- by identifying which question each account answered, not by deciding who was more credible. Deleting the superseded account would remove exactly the evidence that makes the resolution checkable."
+  }
 }

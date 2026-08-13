@@ -223,6 +223,33 @@ function checkComponent(c: AbilityComponent, where: string, maxRank: number): st
   if (c.hits !== undefined && (!Number.isInteger(c.hits) || c.hits < 1)) {
     out.push(`${where}: hits must be an integer >= 1`);
   }
+  // A FIXED COUNT BESIDE A VARIABLE ONE IS TWO ANSWERS TO THE SAME QUESTION (DATA-SOURCES §38).
+  // `hits` states a count the ability fixes; `variableHits` states that no such count exists and
+  // the scenario supplies it. An entry carrying both would let the engine pick, which is exactly
+  // the silent guess this project refuses.
+  if (c.hits !== undefined && c.variableHits !== undefined) {
+    out.push(
+      `${where}: sets both 'hits' (${c.hits}) and 'variableHits' — a fixed count and a variable ` +
+        `one cannot both be true of the same component`,
+    );
+  }
+  if (c.variableHits !== undefined) {
+    const v = c.variableHits;
+    if (v.kind === 'repeatsAtReducedRate') {
+      if (!(v.rate > 0 && v.rate < 1)) {
+        out.push(`${where}: variableHits.rate must be a fraction between 0 and 1, got ${v.rate}`);
+      }
+      if (!Number.isInteger(v.maxAdditional) || v.maxAdditional < 1) {
+        out.push(`${where}: variableHits.maxAdditional must be an integer >= 1`);
+      }
+    } else if (!Number.isInteger(v.maxInstances) || v.maxInstances < 2) {
+      // Fewer than two instances is not a variable count; it is one hit.
+      out.push(`${where}: variableHits.maxInstances must be an integer >= 2`);
+    }
+    if (!v.sourceSays || v.sourceSays.trim().length === 0) {
+      out.push(`${where}: variableHits must quote the sentence its ceiling rests on`);
+    }
+  }
   // The scaling must actually expand. This is what catches an explicit list of the wrong
   // length, which is otherwise invisible until the engine runs.
   if (!isLevelScaled(c.base)) {

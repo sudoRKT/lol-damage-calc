@@ -41,6 +41,7 @@ import { statedTypesFor } from './damage-data.ts';
 import { renderAbility, renderAbilityDetail, renderLevelBlocks, type RenderedRow } from './render.ts';
 import { findBlocks, parseFields, parseVardefines, statRows, substituteVars } from './wikitext.ts';
 import { statedStepCount } from './progression.ts';
+import { deriveVariableHits, inReadPopulation, statesSameTargetRepeat } from './variable-hits.ts';
 
 export const WIKI_API = 'https://wiki.leagueoflegends.com/en-us/api.php';
 const UA = 'lol-damage-calc (curated-file build; contact rushi.lime49@gmail.com)';
@@ -374,6 +375,55 @@ export function draftFromTemplate(src: TemplateSource, patch: string, fetched: s
   // working", in the other direction. Compare it against this definition, never against 51.
   const withRelations = proposeRelations(components);
 
+  // VARIABLE HIT COUNTS (DATA-SOURCES §38). Where the source says one champion can be hit again
+  // by the same cast, no fixed count exists to store — it depends where they stand. The RATE and
+  // the CEILING are both printed, so both are derived from the source's own three numbers and the
+  // count itself comes from the scenario. Detection is gated on the PROSE, because "beyond the
+  // first WAVE" and "beyond the first TARGET" read alike and mean opposite things.
+  const proseText = [fields.description, fields.description2, fields.description3, fields.blurb]
+    .filter(Boolean)
+    .join(' ');
+  const repeat = statesSameTargetRepeat(proseText);
+  if (repeat.yes) {
+    const rowValue = (re: RegExp): number | undefined => {
+      const row = rows.find((r) => re.test(r.label));
+      if (!row) return undefined;
+      const rc = classifyRow('Magic Damage', row.value, { maxRank, damageType: damageType ?? 'magic', vars, index: 0 });
+      if (!rc.component || isLevelScaled(rc.component.base)) return undefined;
+      try { return expandByRank(rc.component.base, maxRank)[0]; } catch { return undefined; }
+    };
+    const primary = withRelations.find((c) => c.relation?.kind !== 'alternativeTo' && !/reduced/i.test(c.label ?? ''));
+    if (primary && !isLevelScaled(primary.base)) {
+      let full: number | undefined;
+      try { full = expandByRank(primary.base, maxRank)[0]; } catch { full = undefined; }
+      const derived = deriveVariableHits(
+        full ?? 0,
+        rowValue(/reduced/i),
+        rowValue(/^\s*(maximum\s+)?total\b/i) ?? rowValue(/\btotal\b/i),
+        repeat.sentence,
+      );
+      // DETECTION PROPOSES; ONLY A READ ENTRY STORES. Outside the read population the finding is
+      // reported for a person, never written — the prose test fires on 24 where a person found 17.
+      if (derived.shape && !inReadPopulation(src.champion, src.slot)) {
+        issues.push({
+          kind: 'variable-hit-count',
+          detail:
+            `the source appears to state repeats against the same target (${derived.shape.kind}), ` +
+            `but this ability is not in the population a person has read. NOT STORED — someone ` +
+            `must read the sentence: "${repeat.sentence.slice(0, 120)}"`,
+        });
+      } else if (derived.shape) {
+        primary.variableHits = derived.shape;
+        delete primary.hits; // a fixed count beside a variable one is two answers to one question
+      } else if (derived.refusedBecause) {
+        issues.push({
+          kind: 'variable-hit-count',
+          detail: `the source states repeats against the same target but ${derived.refusedBecause}`,
+        });
+      }
+    }
+  }
+
   if (damageType !== null) {
     // THE TOTAL MUST COVER THE WHOLE ABILITY, or the comparison is meaningless. Fizz W prints
     // "Total PASSIVE Magic Damage", which covers one of its three components; reconciling all
@@ -401,8 +451,18 @@ export function draftFromTemplate(src: TemplateSource, patch: string, fetched: s
           let terms = 0;
           const got = additive.reduce((n, x) => {
             if (isLevelScaled(x.base)) return n;
-            terms += x.hits ?? 1;
-            return n + expandByRank(x.base, maxRank)[0]! * (x.hits ?? 1);
+            // A VARIABLE-HIT COMPONENT IS RECONCILED AT ITS CEILING. The source's whole-ability
+            // total IS its statement of the maximum, so comparing our per-instance value against
+            // it only makes sense at the maximum count. Reconciling at 1 reports a defect that is
+            // really the gate and the source measuring different situations.
+            const v = x.variableHits;
+            const mult = v
+              ? v.kind === 'repeatsAtReducedRate'
+                ? 1 + v.maxAdditional * v.rate
+                : v.maxInstances
+              : (x.hits ?? 1);
+            terms += Math.max(1, Math.ceil(mult));
+            return n + expandByRank(x.base, maxRank)[0]! * mult;
           }, 0);
           const tolerance = Math.max(0.005 * Math.max(terms, 1), 1e-6);
           if (want > 0 && Math.abs(want - got) > tolerance) {

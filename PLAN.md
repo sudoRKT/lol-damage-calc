@@ -27,10 +27,12 @@ missing against 921 are the summary rows §34.1's widened filter now drops (Gang
 Mixed Total Damage with and", Gwen R's second and third cast totals, Xin Zhao W's "Slash Total
 Physical Damage"). 921 was measured before that change landed.
 
-**Gate 7 leaves 53 entries unreconciled, split 41 under / 12 over.** Measured on a full-roster run,
-2026-08-13. It read 51 (35/16) until gate 7 was made to honour component relations (§36.3): the
-gate had been summing alternatives it always claimed to exclude. **THE RISE IS THE GATE BECOMING
-MORE PRECISE — compare it against that definition, never against 51.**
+**Gate 7 leaves 47 entries unreconciled, split 35 under / 12 over.** Measured on a full-roster run,
+2026-08-13. The figure moved twice that day and both moves were the gate getting better, not worse:
+51 (35/16) → **53** when it was made to honour component relations (§36.3), because it had been
+summing alternatives it always claimed to exclude; then 53 → **47** when variable-hit abilities
+began reconciling at the ceiling the source itself states (§38.4). **Compare it against those
+definitions, never against a previous number.**
 
 **The historic defect rate is 50%, not 10%.** Gate 5's first run disagreed with 14 of 28
 abilities. After seven classes were fixed it disagreed with 5 of 28 — 18%. **Plan against 18%

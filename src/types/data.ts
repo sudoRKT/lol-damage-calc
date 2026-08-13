@@ -397,6 +397,48 @@ export type Ratio = {
  * component of any ability carrying two or more components, so the intent is always recorded
  * rather than inferred from a default.
  */
+/**
+ * HOW MANY TIMES THIS COMPONENT LANDS ON ONE CHAMPION, when the source does not fix a number.
+ * Added 2026-08-13; DATA-SOURCES §38.
+ *
+ * `hits` states a count the ABILITY fixes: Riven Q activates three times, and three is three for
+ * everyone. But for some abilities the count is a property of the SITUATION — how many of Ziggs's
+ * mines a champion contacts, how many of Yuumi's waves catch them before they walk out, how many
+ * of Zac's bounces reach them. **No number exists to store, and storing one is a guess dressed as
+ * data.** So the shape records what the source actually says — the ceiling and the rate — and the
+ * count itself arrives from the scenario, exactly as entry state does (SPECIFICATION §3.3).
+ *
+ * TWO SHAPES, because forcing one into the other invents a reduction that is not there:
+ *
+ * - **`repeatsAtReducedRate`** (17 abilities measured). The first instance deals full damage and
+ *   every later one deals `rate` of it. The user states how many ADDITIONAL instances land, 0 to
+ *   `maxAdditional`. Ziggs E: rate 0.4, maxAdditional 10.
+ * - **`repeatsAtFullRate`** (Xayah Q, and an unmeasured population — see §38.3). Every instance
+ *   deals full damage; the user states how many land, 0 to `maxInstances`. There is no reduction.
+ *
+ * THE DEFAULT IS THE MINIMUM AND MAY NOT BE RAISED: one full instance, zero repeats. It is the
+ * only count that is true whenever the ability connects at all. Any higher default asserts
+ * positioning the user never stated, and this product's promise is that a figure is absent rather
+ * than wrong. The interface shows the maximum beside the control and the result states which count
+ * produced it (SPECIFICATION §3.3, §11).
+ */
+export type VariableHitCount =
+  | {
+      kind: 'repeatsAtReducedRate';
+      /** Fraction of the full value each repeat deals, as the source states it. 0.4 = 40%. */
+      rate: number;
+      /** The most repeats the source says are possible, BEYOND the first instance. */
+      maxAdditional: number;
+      /** What the source says, quoted, so the ceiling is traceable to a sentence. */
+      sourceSays: string;
+    }
+  | {
+      kind: 'repeatsAtFullRate';
+      /** The most instances the source says can land on one champion, including the first. */
+      maxInstances: number;
+      sourceSays: string;
+    };
+
 export type ComponentRelation =
   | { kind: 'adds' }
   | { kind: 'alternativeTo'; componentId: string };
@@ -410,8 +452,16 @@ export interface AbilityComponent {
   relation?: ComponentRelation;
   /** Number of times this component lands in one cast — for the 131 measured components
    *  labelled "per tick / per spin / per bolt". One entry with a count, not N copies.
-   *  Absent means 1. */
+   *  Absent means 1.
+   *
+   *  ONLY FOR A COUNT THE ABILITY FIXES. If the count depends on where the target stands or
+   *  whether they stay there, `hits` MUST be absent and `variableHits` carries the shape
+   *  instead — see VariableHitCount and DATA-SOURCES §38. Gate 1 refuses an entry that sets
+   *  both, because a fixed count beside a variable one is two answers to the same question. */
   hits?: number;
+  /** Present when the count is a property of the SITUATION rather than the ability. Mutually
+   *  exclusive with `hits`. The count itself comes from the scenario, never from here. */
+  variableHits?: VariableHitCount;
 }
 
 /** The seven instance types the combo parser distinguishes (SPECIFICATION §3.4). */

@@ -23,8 +23,8 @@
   "componentsStored": 917,
   "verification": {
     "verified": 10,
-    "derived": 483,
-    "incomplete": 238,
+    "derived": 474,
+    "incomplete": 247,
     "noDamage": 206
   },
   "gate2": {
@@ -33,12 +33,12 @@
     "noEvidence": 2
   },
   "gate7": {
-    "failures": 53,
-    "underSum": 41,
+    "failures": 47,
+    "underSum": 35,
     "overSum": 12,
     "byClass": {
-      "U-MULT1": 26,
-      "RESIDUE": 11,
+      "U-MULT1": 23,
+      "RESIDUE": 8,
       "O-SCOPE": 5,
       "MULTIPLE-TOTALS": 9,
       "U-MULT2": 2

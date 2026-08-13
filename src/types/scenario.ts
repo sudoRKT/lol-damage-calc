@@ -40,6 +40,27 @@ export interface ComboStep {
   ref: string;
   /** Step-specific options, e.g. { sweetspot: true, forceCrit: true }. */
   options?: Record<string, unknown>;
+  /**
+   * HOW MANY TIMES A VARIABLE-COUNT COMPONENT LANDS, stated by the user. Added 2026-08-13.
+   *
+   * Keyed by component id. Only meaningful for components carrying `variableHits`
+   * (`VariableHitCount` in data.ts, DATA-SOURCES §38): abilities where the count depends on
+   * where the target stands and whether they stay there, so no number exists in any source.
+   *
+   * WHAT THE NUMBER MEANS DEPENDS ON THE SHAPE, and the two are not interchangeable:
+   *   - `repeatsAtReducedRate` — ADDITIONAL instances beyond the first, 0..maxAdditional. The
+   *     first instance is always full and is not counted here.
+   *   - `repeatsAtFullRate` — TOTAL instances that land, 0..maxInstances.
+   *
+   * ABSENT MEANS THE MINIMUM, NOT THE MAXIMUM: one full instance and no repeats. That is the
+   * only count true whenever the ability connects at all, and it may not be raised — a higher
+   * default would assert positioning the user never stated. This mirrors entry state
+   * (SPECIFICATION §3.3): the user describes the situation, the engine does not assume one.
+   *
+   * A value of 0 for `repeatsAtFullRate` means the ability missed entirely and contributes
+   * nothing, which is a legitimate scenario and must not be confused with an absent key.
+   */
+  hitCounts?: Record<string, number>;
 }
 
 export interface Scenario {
