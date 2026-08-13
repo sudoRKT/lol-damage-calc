@@ -1,0 +1,13 @@
+[
+  {
+    "entry": "Nunu & Willump/R/Absolute Zero",
+    "component": "maximum-magic-damage",
+    "field": "base at rank 2",
+    "wiki": 950,
+    "gameData": 925,
+    "foundOn": "2026-08-13",
+    "evidence": "The wiki's template writes {{ap|625 to 1275}} and the wiki's OWN renderer prints 625 / 950 / 1275, so our parse reproduces the wiki exactly. Riot's shipped array is BaseDamage [625, 625, 925, 1275, 1275, 1275, 1275], which offset past the unlearned rank and truncated at 3 ranks is 625 / 925 / 1275. The endpoints agree; only the interpolated middle rank differs. No patch page mentions Absolute Zero (searched insource:\"Absolute Zero\" incategory:Patches, 0 results), and the shipped dump is on the current patch (content-metadata 16.16.8049184). Nothing available settles it.",
+    "reading": "The wiki's `X to Y` shorthand cannot express a curve that is not linear, so a non-linear game array would be flattened by it — which is the documented trap of DATA-SOURCES §11 ('never interpolate a middle rank by assuming an even step'). That is evidence the wiki form is lossy here, NOT proof that 925 is the number. Neither value is adopted.",
+    "status": "contested"
+  }
+]

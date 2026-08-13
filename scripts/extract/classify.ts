@@ -225,7 +225,11 @@ export interface RowIssue {
     /** No source states a single damage type, so nothing may be stored for this ability. */
     | 'unknown-damage-type'
     /** A repeating component whose number of hits could not be derived from the source. */
-    | 'unknown-hit-count';
+    | 'unknown-hit-count'
+    /** Two sources state different values for the same figure and nothing settles it (§32). */
+    | 'source-conflict'
+    /** Our stored components do not sum to the total the wiki itself prints (gate 7). */
+    | 'total-mismatch';
   detail: string;
 }
 

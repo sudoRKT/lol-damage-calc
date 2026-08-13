@@ -51,6 +51,16 @@ const OUT_DIR = 'build/proposed-curated/abilities';
  */
 const GATE5_LEDGER = 'verification/gate5-passes.json';
 
+/**
+ * Abilities where two sources state different values for the same figure and nothing settles it.
+ *
+ * The tie-break policy is DATA-SOURCES §32: neither value is adopted, the entry is forced to
+ * `incomplete`, and both readings are recorded with their evidence. An entry listed here may
+ * never be `derived`, because "extracted from source, not independently confirmed" claims a
+ * settled reading of the source and there is not one.
+ */
+const CONFLICT_LEDGER = 'verification/ability-conflicts.json';
+
 interface Gate5Record {
   /** "Champion/Slot/AbilityName", matching the key the validator builds. */
   entry: string;
@@ -237,6 +247,20 @@ async function main(): Promise<void> {
   // re-deriving from scratch. An entry needs both, plus a recorded sourceRevision so staleness
   // stays traceable.
   const gate5 = await readGate5Ledger();
+  const conflicts = new Set<string>();
+  try {
+    const raw = JSON.parse(await (await import('node:fs/promises')).readFile(CONFLICT_LEDGER, 'utf8')) as Array<{ entry: string }>;
+    for (const r of raw) conflicts.add(r.entry);
+  } catch { /* no ledger: no recorded conflicts */ }
+  let contested = 0;
+  for (const d of drafts) {
+    const key = `${d.entry.champion}/${d.entry.slot}/${d.entry.abilityName}`;
+    if (!conflicts.has(key)) continue;
+    if (d.entry.verification !== 'incomplete') contested += 1;
+    d.entry.verification = 'incomplete';
+    d.issues.push({ kind: 'source-conflict', detail: `two sources disagree about a stored value; see ${CONFLICT_LEDGER}` });
+  }
+  if (contested > 0) console.log(`\n${contested} entr${contested === 1 ? 'y' : 'ies'} forced to 'incomplete' by a recorded source conflict`);
   let promoted = 0;
   for (const d of drafts) {
     const key = `${d.entry.champion}/${d.entry.slot}/${d.entry.abilityName}`;

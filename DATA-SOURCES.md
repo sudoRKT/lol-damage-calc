@@ -2326,3 +2326,111 @@ nothing. *Permanently unreachable* = the entry records an `unresolvable` — a f
 
 **Verified is 10 of 937 — 1.1%.** That is the number the plan has to move, and gate 5 is the only
 thing that moves it.
+
+---
+
+## 32. Ability values: the tie-break policy, gate 7, and what gate 5 can be (2026-08-13)
+
+### 32.1 Nunu R, investigated
+
+| Source | Rank 1 | Rank 2 | Rank 3 |
+|---|---:|---:|---:|
+| Wiki template `{{ap|625 to 1275}}`, and **the wiki's own renderer** | 625 | **950** | 1275 |
+| Riot's shipped `BaseDamage [625, 625, 925, 1275, …]`, offset and truncated | 625 | **925** | 1275 |
+
+**Our parse reproduces the wiki exactly** — gate 2 passes this ability — so the disagreement is
+between the two sources, not ours. The wiki's patch pages do not mention Absolute Zero at all
+(`insource:"Absolute Zero" incategory:Patches`, 0 results), so the tie-break that settles champion
+base statistics is unavailable here. Riot's dump is on the current patch
+(`content-metadata` `16.16.8049184`), so it is not stale.
+
+**One asymmetry is evidence, and it is worth stating precisely because it is tempting to
+over-read.** The wiki's `X to Y` shorthand **cannot express a curve that is not linear**; if the
+game's curve is 625/925/1275, any author writing it as `625 to 1275` flattens it. That is the
+documented trap of §11 — *never interpolate a middle rank by assuming an even step* — appearing
+from the other side. It is evidence that the wiki form is **lossy here**. It is **not** proof that
+925 is the number, and 925 is not adopted.
+
+### 32.2 The policy
+
+§12 sets authority per field for champion statistics. Ability values had none. This is it.
+
+1. **The wiki's per-ability template remains the default and only storage source.** It is the only
+   source carrying base damage, ratios, owners and labels together. Riot's shipped arrays carry
+   numbers without meaning.
+2. **A CommunityDragon match confers nothing.** It is corroboration of a number, never of a
+   reading, and never a route to `verified`.
+3. **Where the two disagree, neither is adopted.** The entry is recorded in
+   `verification/ability-conflicts.json` with both values and the evidence, and is forced to
+   `incomplete` — it may never be `derived`, because "extracted from source, not independently
+   confirmed" claims a settled reading of the source and there is not one.
+4. **A conflict is only resolved by a source that states the value outright** — a patch note, or a
+   future wiki edit replacing the shorthand with an explicit list. Not by preferring whichever
+   source is tidier, and not by preferring the game data because it is closer to the engine.
+5. **Endpoint agreement is recorded but does not decide.** Where only an interpolated middle rank
+   differs, that is logged as evidence the wiki's shorthand is lossy, and the entry stays contested.
+
+**Nunu R is `incomplete` as of this run**, enforced by the batch runner reading the conflict
+ledger, not by hand.
+
+### 32.3 Gate 7 — does what we store add up to what the source says the total is?
+
+Self-consistency against a figure the wiki states outright. **Offline, no sampling, and it catches
+over-counting as well as under** — which no other gate does. Gate 5 found Heimerdinger W storing a
+third of its damage and Cassiopeia Q a seventh; this is the check that finds those without an agent.
+
+Only `adds` components are summed, since an alternative replaces rather than joins. Totals naming
+minions, monsters, epics or structures are ignored: those cover targets this product never models.
+**The tolerance is the wiki's own display rounding** — each summed term is printed to two decimals,
+so N terms carry up to N/2 of the last place. Without it, Cassiopeia Q reads 74.97 against 75 and
+reports arithmetic as damage.
+
+| Figure | Count | Definition |
+|---|---:|---|
+| entries gate 7 ran on | **623** | ≥1 stored component. An entry whose source has no total row passes trivially — nothing to reconcile |
+| reconcile, or have no total row | 558 | |
+| **do not reconcile** | **65** | |
+| — **under-sum** | **39** | we sum to LESS than the stated total: a term or a multiplicity is missing. **10** carry a repeating component, so the likely cause is a hit count; **29** do not, so a whole term is absent |
+| — **over-sum** | **26** | we sum to MORE: something is counted twice. Gangplank R sums 1560 against a stated 480; Hwei R 230 against 30 |
+
+**The 65 are genuine defects, not deliberate drops.** Deliberate drops are excluded by construction
+— alternatives are not summed, and non-champion totals are skipped — which is why the count fell
+from the 69 the first rough sweep produced. **`incomplete` rises from 190 to 236** as a result: 46
+entries that read `derived` while failing to reconcile now say so.
+
+### 32.4 What gate 5 can be — recommendation
+
+**Verifying the roster is not 165 runs. It is 165 runs per patch.** A gate-5 pass is evidence about
+one revision of one page; the moment Riot changes a value it is void, and the wiki edits daily —
+one of these sceptics found a Camille buff landed the day before. Certification that decays faster
+than it can be produced is not a plan at any budget.
+
+**Recommendation: repurpose gate 5 from certifying entries to discovering defect CLASSES, and
+design the product around `derived` being the normal state.**
+
+The evidence for it is this session's own record. Gate 5 found seven classes, and **every one became
+a mechanical check that runs on all 937 pages offline** — the hit-count derivation, the modifier
+detector, the type rules, the payload/multiplier fix, the rank axis, the additional-marker, and now
+gate 7. A single 28-ability run bought roster-wide coverage of every defect it found. That is a
+250-fold return, and it is the only form of comprehension checking that scales.
+
+Concretely:
+
+- **Gate 5 runs as a stratified sample per patch cycle**, sized to discover classes rather than to
+  certify entries — weighted toward what changed and toward shapes no mechanical gate covers.
+  Its output is a class and a detector, not a verdict.
+- **`verified` stays a small, honest set** and keeps its current meaning: gate 2 agreement plus a
+  recorded independent re-derivation. It will be tens of entries, not hundreds, and the interface
+  must not imply otherwise.
+- **`derived` is the normal state and the interface says what it means** — "read from the source,
+  checked against the source's own rendering, not independently re-derived" — rather than treating
+  it as a deficiency. With gate 7 and the game-data check, a `derived` entry now carries more
+  evidence than `verified` did this morning.
+- **The game-data check runs every patch on everything**, at no marginal cost, and any new
+  disagreement is a defect surfaced without sampling.
+
+**What this costs, stated plainly:** the product will never be able to say most of its numbers were
+independently re-derived. It will be able to say every number agrees with the source's own
+rendering, reconciles with the source's own stated total, and agrees with Riot's shipped data
+wherever that exists — and to name the ones that do not. That is a weaker claim than "verified" and
+a true one, which is the trade this project has made everywhere else.

@@ -322,6 +322,51 @@ export function draftFromTemplate(src: TemplateSource, patch: string, fetched: s
   const componentTypes = new Set(components.map((c) => c.damageType));
   const effectiveType = damageType ?? (componentTypes.size === 1 ? [...componentTypes][0]! : null);
 
+  // GATE 7 — DOES WHAT WE STORE ADD UP TO THE TOTAL THE WIKI ITSELF PRINTS?
+  //
+  // Self-consistency against a figure the source states outright. It runs offline, needs no
+  // sampling, and catches BOTH directions: a missing instance or multiplicity understates the
+  // sum, and a double-counted row overstates it. Gate 5 found Heimerdinger W storing a third of
+  // its damage and Cassiopeia Q a seventh — this is the check that would have found them without
+  // an agent.
+  //
+  // Only `adds` components are summed, since an alternative replaces rather than joins. The
+  // tolerance is the rounding the wiki's own display introduces: each summed term is printed to
+  // two decimals, so N terms carry up to N/2 of the last place. Without that, Cassiopeia Q reads
+  // 74.97 against 75 and reports a defect that is arithmetic, not damage.
+  if (damageType !== null) {
+    const totalRow = rows.find(
+      (r) =>
+        /^total\b/i.test(stripRangeQualifier(r.label).rest) &&
+        /damage/i.test(r.label) &&
+        !NON_CHAMPION_TOTAL.test(r.label),
+    );
+    const additive = components.filter((x) => x.relation?.kind !== 'alternativeTo');
+    if (totalRow && additive.length > 0) {
+      const tc = classifyRow('Magic Damage', totalRow.value, { maxRank, damageType, vars, index: 0 });
+      if (tc.component && !isLevelScaled(tc.component.base)) {
+        try {
+          const want = expandByRank(tc.component.base, maxRank)[0]!;
+          let terms = 0;
+          const got = additive.reduce((n, x) => {
+            if (isLevelScaled(x.base)) return n;
+            terms += x.hits ?? 1;
+            return n + expandByRank(x.base, maxRank)[0]! * (x.hits ?? 1);
+          }, 0);
+          const tolerance = Math.max(0.005 * Math.max(terms, 1), 1e-6);
+          if (want > 0 && Math.abs(want - got) > tolerance) {
+            issues.push({
+              kind: 'total-mismatch',
+              detail:
+                `the wiki states a total of ${want} at rank 1 and our additive components sum to ` +
+                `${Math.round(got * 1000) / 1000} — ${got < want ? 'a term or a multiplicity is missing' : 'something is counted twice'}`,
+            });
+          }
+        } catch { /* a total that will not expand is reported by gate 1 instead */ }
+      }
+    }
+  }
+
   const withRelations = proposeRelations(components);
   const provenance: Provenance = {
     source: `Template:Data ${src.champion}/${src.ability}`,
@@ -843,6 +888,9 @@ export function roundTripProse(
 
 /** The wiki's summary-row label, shared with the classifier's own filter. */
 const DERIVED_ROW_LABEL = /^total\b/i;
+
+/** A total that covers non-champion targets, which we deliberately never store. */
+const NON_CHAMPION_TOTAL = /\b(minion|monster|non-champion|epic|turret|ward|structure)s?\b/i;
 
 /**
  * How many times a repeating component lands, derived from the total the wiki also prints.
