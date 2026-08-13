@@ -2918,3 +2918,72 @@ Each was found by auditing the census's own output and became a rule over the wh
 
 The census is `public/data/effect-census.json`, carrying its provenance, every definition in full,
 per-effect rows, and the recorded hand audit.
+
+---
+
+## 38. Hit count is sometimes a property of the SITUATION, not the ability (2026-08-13)
+
+### 38.1 Where this came from
+
+Gate 7 could not reconcile four abilities because two readings both fitted the arithmetic (§36.4,
+U-MULT2). The project owner, who plays the game, resolved them — recorded as testimony in
+`verification/owner-testimony.json`, **not** as a source citation. Three of the four contradict the
+wiki outright and are unresolved. But the fourth answer generalised into something larger than the
+four: **for some abilities no fixed hit count exists to store, because the count depends on where
+the target stands and whether they stay there.**
+
+Yuumi R lands between one and five waves depending on whether the target remains in them. Ziggs E
+depends on how many mines are contacted. Zac R depends on how many bounces catch the same champion.
+**Storing any single number for these is a guess dressed as data**, which is the failure this
+project exists to prevent.
+
+### 38.2 The measurement — definitions first
+
+Scanned: **937 of 937 ability pages, complete**, over the `description`/`blurb` prose fields, one
+sentence at a time. An earlier run of the same scan reported over **759** pages because its fetch
+errors were caught and skipped silently; it is recorded here because "silence is not success"
+applies to measurement code as much as to the product.
+
+| Class | Definition |
+|---|---|
+| **P1 SAME-TARGET REPEAT** | The source says ONE champion can be damaged more than once by a single cast, and states what the repeats deal ("subsequent waves against enemies hit", "against the same target", "from subsequent mines"). **The count is not fixed by the ability.** |
+| **P2 SECONDARY TARGET** | The source says targets OTHER than the first take a different amount ("targets beyond the first"). A different champion, not a later hit. **NOT a variable hit count**, and reads almost identically in wikitext — conflating the two is what put Xayah Q in the wrong class. |
+| **UNREAD** | Carries a `Reduced` leveling row whose prose this scan could not classify either way. Needs a person. |
+
+| Figure | Count |
+|---|---:|
+| mechanical P1 candidates | **21** |
+| — **confirmed same-target repeat, after reading all 21** | **12** |
+| — actually P2, secondary target | 5 |
+| — false positives | 4 |
+| P2 by the scan | **18** |
+| **UNREAD — a `Reduced` row the scan could not classify** | **27** |
+
+**THE POPULATION IS 12 CONFIRMED, AND BETWEEN 12 AND 39 ONCE THE 27 ARE READ.** Do not quote 12 as
+a final figure; quote it as the confirmed floor with 27 unexamined.
+
+**The confirmed 12:** Aurora Q · Heimerdinger W (Micro-Rockets) · Heimerdinger W (Rocket Swarm) ·
+Kled Q · Nautilus E · Shyvana E · Smolder W · Swain Q · Taliyah Q · Yuumi R · Zac R · Ziggs E.
+
+**The 5 that are really secondary-target** — Orianna Q, Pantheon Q, Qiyana Q, Zed Q, Vladimir R —
+all say "beyond the first" about *targets*, where the confirmed 12 say it about *waves, mines,
+rockets, pellets, bounces or explosions*. That one-word difference is the whole distinction.
+
+**The 4 false positives** were Aatrox Q (subsequent *casts* gaining damage — separate combo steps),
+Senna P (mark consumption), Lillia P (a damage-over-time duration) and Nami W (bounces between
+different units). The dominant false-positive source before refinement was **"refreshing on
+subsequent hits"**, which is a stack timer, not a damage instance: it accounted for 42 of the 75
+raw matches.
+
+**Kai'Sa Q is in the UNREAD 27**, so §34.2's "one at full plus N reduced" population remains
+unknown rather than 4 — see `verification/owner-testimony.json`.
+
+### 38.3 A second shape exists, and it is not the same one
+
+The confirmed 12 are all *first instance full, subsequent instances at a stated fraction*. **Xayah
+Q is a different shape**: two feathers, each dealing FULL damage to a champion they hit, and the
+count against one champion is 0, 1 or 2 depending on positioning — with no reduction at all. Its
+"Reduced Damage per Hit" row is about other targets (P2). Any model has to carry both shapes, or it
+will force one into the other.
+
+**Nothing is implemented. The proposal is in the session record and awaits a decision.**
