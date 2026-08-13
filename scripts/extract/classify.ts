@@ -97,8 +97,23 @@ export const NON_CHAMPION_ROW =
  */
 export const RANGE_QUALIFIER = /^\s*(minimum|maximum|min|max)\s+/i;
 
-/** Reader-convenience summary rows — arithmetic on other rows, never stored (388 measured). */
-export const DERIVED_ROW = /^total\b/i;
+/**
+ * Reader-convenience summary rows — arithmetic on other rows, never stored.
+ *
+ * MATCHES "Total" ANYWHERE IN THE LABEL, NOT ONLY AT THE START, and that widening was measured
+ * before it was made. Anchoring at the start missed a summary with a qualifier in front of it —
+ * "Maximum Mixed Total Damage", "Second Cast Total Damage" — which was then stored as a component
+ * and counted alongside the rows it summarises. Gangplank R summed 1560 against a stated 480 and
+ * Gwen R 300 against 270 for exactly that reason (§33).
+ *
+ * THE MEASUREMENT, taken over all 937 pages before the change: the wider match drops **4 further
+ * damage rows** and silently zeroes **0 abilities** — DEF: an ability that keeps at least one
+ * damage row under the narrow match and none under the wide one. All four are summaries by
+ * inspection. The narrow anchor was kept until this was measured because a mis-scoped summary
+ * filter once zeroed 32 abilities (§23), and `droppedEveryDamageRow` remains the backstop if a
+ * future patch introduces a label this reads wrongly.
+ */
+export const DERIVED_ROW = /\btotal\b/i;
 
 /**
  * A leading qualifier marking a row as the EMPOWERED form of the row it otherwise names.

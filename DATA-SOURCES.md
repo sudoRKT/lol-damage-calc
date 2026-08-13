@@ -2496,3 +2496,53 @@ Malzahar R additionally carries two components with the same label — the dupli
 
 **Effect on the roster: `incomplete` 190 → 225, `derived` 541 → 506.** Thirty-five entries that
 read `derived` while failing to reconcile with their own source now say so.
+
+---
+
+## 34. Two measurements before the fan-out (2026-08-13)
+
+### 34.1 The summary filter, measured then widened
+
+**DEF EXTRA ROWS:** damage rows kept under the old `^total` anchor that a match on `total`
+ANYWHERE in the label would drop. **DEF SILENTLY ZEROED:** an ability keeping ≥1 damage row under
+the narrow match and none under the wide one.
+
+| Figure | Count |
+|---|---:|
+| extra rows dropped | **4** |
+| abilities silently zeroed | **0** |
+
+The four labels, all summaries by inspection: `Maximum Mixed Total Damage with and` (Gangplank R),
+`Second Cast Total Damage` and `Third Cast Total Damage` (Gwen R), `Slash Total Physical Damage`.
+
+**Widened**, and `droppedEveryDamageRow` remains the backstop for a future patch introducing a
+label this reads wrongly. Gate 7's over-sums fell from 18 to 16.
+
+**MY MEASUREMENT DEFINITION WAS TOO NARROW, AND I FOUND OUT AFTER APPLYING IT.** "Silently zeroed"
+counts an ability losing *every* row. It does not count one losing *some*. **Gwen R lost its second
+and third casts**, because those two summary rows were the only representation of them — the
+ability went from over-summing (300 against 270) to under-summing (60 against 270). Nothing wrong
+is now shown: gate 7 flags it either way and the entry is `incomplete` either way, and a double
+count is the worse of the two failures. But the honest record is that the change was made on a
+measurement that could not see this, and **the definition a future widening should use is "an
+ability whose stored component count falls at all", not "falls to zero".**
+
+### 34.2 The one-at-full-N-reduced shape: 5, below the threshold
+
+**DEF:** an ability storing a per-hit component that ADDS alongside a per-hit component marked
+`alternativeTo` whose label reads as its reduced form. The ability lands once at full damage and
+repeatedly at a lesser rate; `alternativeTo` can only say "instead of", so no hit count reconciles it.
+
+**5 abilities:** Kai'Sa Q · Xayah Q · Yuumi R · Zac R · Aurelion Sol Q.
+
+And one of those five is not really this shape: **Aurelion Sol Q**'s reduced rows are *secondary
+target* damage, a different target rather than a later hit on the same one. **So the true
+population is 4.**
+
+**Below the threshold of fifteen that governed the multiplier decision (§17), so no contract change
+is proposed.** The four stay `incomplete`, flagged by gate 7, contributing no damage — which is the
+promise working rather than failing. If a future patch pushes this shape past fifteen the proposal
+is straightforward and is written down here so it need not be rediscovered: give `ComponentRelation`
+an arm `{ kind: 'alternativeTo'; componentId: string; alsoLands?: number }`, meaning the component
+replaces the named one on its first application and lands `alsoLands` further times at its own
+value. That is additive to the contract and absent by default, exactly as `multipliers` was.

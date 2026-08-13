@@ -114,7 +114,7 @@ const NON_CHAMPION =
  * each as zero damage. Those pairs are handled by `relation: alternativeTo` instead, so they
  * are stored but never summed.
  */
-const DERIVED_ROW = /^total\b/i;
+const DERIVED_ROW = /\btotal\b/i;
 
 function isFiniteNumber(v: unknown): v is number {
   return typeof v === 'number' && Number.isFinite(v);
