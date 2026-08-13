@@ -35,6 +35,29 @@ describe('an ability chip announces the ability and its damage type in words', (
     expect(screen.getAllByRole('img')).toHaveLength(1);
   });
 
+  it('a decorative chip is hidden, so a row that already names the source does not say it twice', () => {
+    // Added 2026-08-13 with the breakdown table. A table row whose text is "Q — The Darkin Blade
+    // (1st cast)" holding a labelled chip announced the ability twice. Same rule, and the same
+    // reason, as ChampionPortrait's `decorative` — and the VISUAL cues are unaffected: the
+    // damage-type underline and the P/M/T tag are still drawn.
+    const { container } = render(
+      <span>
+        <AbilityChip
+          src={ICON}
+          slot="Q"
+          abilityName="The Darkin Blade"
+          damageType="physical"
+          size="table"
+          decorative
+        />
+        <span>Q — The Darkin Blade (1st cast)</span>
+      </span>,
+    );
+    expect(screen.queryAllByRole('img')).toHaveLength(0);
+    expect(container.querySelector('.chip__underline--physical')).not.toBeNull();
+    expect(container.querySelector('.chip__tag--physical')).not.toBeNull();
+  });
+
   it('covers all three damage types and the absence of one', () => {
     expect(chipAccessibleName('Q', 'X', 'physical')).toContain('physical damage');
     expect(chipAccessibleName('Q', 'X', 'magic')).toContain('magic damage');

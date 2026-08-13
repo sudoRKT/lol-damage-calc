@@ -75,10 +75,53 @@ export function splitRatioGroups(text: string): { base: string; groups: string[]
 const PAYLOAD_SERIES =
   /^\s*([\d.\s/]+?)\s*%\s*(?:of\s+)?[^%]*\b(?:health|armor|magic resistance|mana)\b/i;
 
-function numbers(text: string): number[] {
+/**
+ * The same, with the stats the narrow pattern does not name — attack damage and ability power.
+ * Used ONLY under `readPercentSeries` (see `RenderReadOptions`).
+ */
+const PAYLOAD_SERIES_WIDE =
+  /^\s*([\d.\s/]+?)\s*%\s*(?:of\s+)?[^%]*\b(?:health|armor|magic resistance|mana|AD|AP|attack damage|ability power|life steal)\b/i;
+
+/**
+ * HOW TO READ A SERIES THE WIKI PRINTS AS A PERCENTAGE. Off by default, and that is deliberate.
+ *
+ * THE DEFECT. The reader splits a rendered value on "/" and keeps the tokens that are bare
+ * numbers, so the LAST value of any percentage series is silently dropped: the wiki prints
+ * Alistar R's damage reduction as "55 / 65 / 75%" and this reader returns [55, 65]. It also
+ * files a percentage-of-AD or percentage-of-AP payload as a base series rather than a ratio,
+ * because `PAYLOAD_SERIES` names only the health, resistance and mana stats — the wiki prints
+ * Sivir E's heal as "60 / 65 / 70 / 75 / 80% AD (+ 50% AP)" and this reader returns a base of
+ * [60, 65, 70, 75] with the AP ratio in slot 0.
+ *
+ * WHY IT IS NOT SIMPLY FIXED HERE. This function is gate 2's ground truth for ability DAMAGE,
+ * and turning the corrected reading on for everybody changes the gate-2 outcome of **14 stored
+ * damage rows** (DEFINITION: a stored damage component whose row states its flat term as a
+ * percentage — 3 rows — or whose payload is a percentage of a stat the narrow pattern does not
+ * name — 11 rows; measured over all 937 cached pages, 2026-08-13). Eleven of those thirteen
+ * abilities currently FAIL gate 2 for this reason alone. Most would become passes, which is the
+ * gate becoming more accurate — but Zed R would become a pass while still silently dropping its
+ * "+ 25/40/55% of damage stored" term, so the change belongs with a residue check on the damage
+ * path and with a full-roster gate 2 run to measure it. That run writes outside this area.
+ *
+ * So the corrected reading is available to callers that ask for it, the default is unchanged,
+ * and the shared change is RAISED rather than made.
+ */
+export interface RenderReadOptions {
+  readPercentSeries?: boolean;
+}
+
+function numbers(text: string, opts: RenderReadOptions = {}): number[] {
   return text
     .split('/')
     .map((s) => s.trim())
+    .map((s) => {
+      if (!opts.readPercentSeries) return s;
+      // The LAST value of a percentage series carries the '%' and whatever the row says after
+      // it — "75%", "80% AD", "60% of the original damage". Take the number in front of the
+      // per-cent sign; anything after it belongs to the row, not to a further value.
+      const m = /^(-?\d+(?:\.\d+)?)\s*%/.exec(s);
+      return m ? m[1]! : s;
+    })
     .filter((s) => /^-?\d+(\.\d+)?$/.test(s))
     .map(Number);
 }
@@ -87,7 +130,7 @@ function numbers(text: string): number[] {
  * Read the leveling rows out of a rendered ability box.
  * Confined to `ability-info-stats` so patch history can never be mistaken for live values.
  */
-export function parseRenderedRows(html: string): RenderedRow[] {
+export function parseRenderedRows(html: string, opts: RenderReadOptions = {}): RenderedRow[] {
   const rows: RenderedRow[] = [];
   const statsBlocks = html.match(/<div class="ability-info-stats">[\s\S]*?<\/div>/g) ?? [];
   for (const block of statsBlocks) {
@@ -104,7 +147,7 @@ export function parseRenderedRows(html: string): RenderedRow[] {
       const text = stripTags(m[2]!);
       const { base, groups } = splitRatioGroups(text);
       const ratios = groups
-        .map((g) => numbers(g.replace(/^\s*\(\s*\+/, '').replace(/%[\s\S]*$/, '')))
+        .map((g) => numbers(g.replace(/^\s*\(\s*\+/, '').replace(/%[\s\S]*$/, ''), opts))
         .filter((v) => v.length > 0);
 
       // A PAYLOAD ROW has no flat base at all: the whole thing is a percentage of a stat,
@@ -113,16 +156,16 @@ export function parseRenderedRows(html: string): RenderedRow[] {
       // against our stored base of 0 — so gate 2 reported a disagreement on every one of these
       // rows while telling us nothing. The series belongs at the FRONT of the ratio list,
       // matching how the classifier stores it: base 0, payload as ratio 0.
-      const payload = PAYLOAD_SERIES.exec(base);
+      const payload = (opts.readPercentSeries ? PAYLOAD_SERIES_WIDE : PAYLOAD_SERIES).exec(base);
       if (payload) {
-        const series = numbers(payload[1]!);
+        const series = numbers(payload[1]!, opts);
         if (series.length > 0) {
           if (label) rows.push({ label, values: [], ratios: [series, ...ratios] });
           continue;
         }
       }
 
-      const values = numbers(base);
+      const values = numbers(base, opts);
       if (label) rows.push({ label, values, ratios });
     }
   }
@@ -165,13 +208,16 @@ export async function renderAbilityDetail(
   return { rows: parseRenderedRows(html), prose: parseRenderedProse(html) };
 }
 
-/** Render one ability template and read its leveling rows. */
+/** Render one ability template and read its leveling rows. `opts` defaults to the reading gate 2
+ *  has always used; see `RenderReadOptions` for what the other reading changes and why it is not
+ *  the default. */
 export async function renderAbility(
   champion: string,
   ability: string,
   fetchImpl: typeof fetch = fetch,
+  opts: RenderReadOptions = {},
 ): Promise<RenderedRow[]> {
-  return parseRenderedRows(await renderAbilityHtml(champion, ability, fetchImpl));
+  return parseRenderedRows(await renderAbilityHtml(champion, ability, fetchImpl), opts);
 }
 
 async function renderAbilityHtml(

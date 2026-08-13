@@ -31,6 +31,18 @@ export interface AbilityChipProps {
   damageType: DamageType | null;
   /** 32px in the combo builder, 24px in tables, 20px inline (§9). */
   size?: ChipSize;
+  /**
+   * True when the chip sits inside something that ALREADY names the ability — a table row whose
+   * text is the source label, or a button carrying its own aria-label.
+   *
+   * Same rule, and the same reason, as `ChampionPortrait.decorative`: two labelled elements
+   * nested inside one control announce the ability twice ("Q — The Darkin Blade, physical
+   * damage. Q — The Darkin Blade (1st cast)."). A decorative chip is hidden from assistive
+   * technology entirely, so the surrounding text is the single name. The VISUAL cues — the
+   * damage-type underline and the P/M/T tag — are unaffected: they are still drawn, because
+   * they are for the eye and the surrounding text is what carries the meaning for everyone else.
+   */
+  decorative?: boolean;
 }
 
 /**
@@ -47,13 +59,21 @@ export function chipAccessibleName(
     : `${slot} — ${abilityName}, ${FULL_WORD[damageType]} damage`;
 }
 
-export function AbilityChip({ src, slot, abilityName, damageType, size = 'combo' }: AbilityChipProps) {
+export function AbilityChip({
+  src,
+  slot,
+  abilityName,
+  damageType,
+  size = 'combo',
+  decorative = false,
+}: AbilityChipProps) {
   const cls = damageType === null ? 'chip__underline--none' : `chip__underline--${damageType}`;
   return (
     <span
       className={`chip chip--${size}`}
-      role="img"
-      aria-label={chipAccessibleName(slot, abilityName, damageType)}
+      role={decorative ? undefined : 'img'}
+      aria-hidden={decorative || undefined}
+      aria-label={decorative ? undefined : chipAccessibleName(slot, abilityName, damageType)}
     >
       {/* The image itself carries no accessible name: the wrapper is the labelled thing, so the
           name is spoken once rather than twice. */}

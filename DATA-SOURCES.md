@@ -3189,8 +3189,13 @@ Always-active means the source states no cast, no duration, no trigger, no stack
 precondition. The six that bake into the defender's resolved stat block: **Fizz P, Amumu E,
 Aatrox E, Gwen P, Morgana P, Nasus P.** Everything else is a toggle.
 
-**THE HEADLINE FOR THE INTERFACE: the defender panel needs on the order of 200 controls, not a
-handful.** §5's two-way split is nearly all one way.
+~~**THE HEADLINE FOR THE INTERFACE: the defender panel needs on the order of 200 controls.**~~
+**THAT CONCLUSION DOES NOT FOLLOW FROM THIS MEASUREMENT, and was corrected 2026-08-13 (§42).** The
+210 is right and it is roster-wide. **A scenario has ONE defender.** DEFINITION: one toggle is one
+conditional defensive ability of the chosen champion, measured over all 173 champions including
+those with none. **Minimum 0 · median 1 · mean 1.23 · maximum 4** — 42 champions have none at all,
+and the worst case is seven champions with four. The panel shows at most four rows. A roster-wide
+total and a per-scenario count are different design problems, and only the second is real.
 
 The two not-stated are not coin tosses. **Xin Zhao R** is invulnerable "against enemy champions far
 away from him" — the source states the condition and it is a **distance**, which this engine models
@@ -3332,8 +3337,15 @@ assertion would have been theatre.
 
 - **The full-roster batch**, to repopulate `verification/measurements.json` — no stored figure
   changed, but the harvester can now express shapes it previously refused, so the counts may move.
-- **The item-value extraction**, which can now store the 12 range-split and 7 over-time effects it
-  refused: **19 of the 35 refusals are releasable**, taking the extracted set from 28 toward 47.
+- **The item-value extraction.** ~~19 of the 35 refusals are releasable, taking the extracted set
+  from 28 toward 47.~~ **THAT ESTIMATE WAS WRONG AND THE RUN DISPROVED IT. Only 10 were ever
+  releasable, and 10 were released: 28 → 38, not 47.** Two things the estimate missed, both
+  measured: the 12 range-split and 7 over-time refusals **overlap in one effect** (Bastionbreaker
+  `pass2`), so they are 18 distinct effects rather than 19; and **8 of those 18 carry a second
+  blocker the contract pass never touched** — five cleave items whose damage reaches only OTHER
+  enemies and so can never touch the defender in a two-champion fight, two scaling on lethality,
+  one wards-only. Adding a shape releases only the effects blocked by that shape ALONE, and
+  counting refusal reasons without checking for overlap or a second blocker overstates it.
 - **The defensive census**, which can now propose entries rather than only count them.
 - **Nothing in the engine or the interface is invalidated.** 875 tests were green before this pass
   and are green after it; the additions are additive and every existing field kept its meaning.

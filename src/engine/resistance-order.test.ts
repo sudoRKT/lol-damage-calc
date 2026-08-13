@@ -89,6 +89,23 @@ describe('effectiveResistance — the documented floors', () => {
 // deliberately WRONG order, and shows that the answer changes.
 // ---------------------------------------------------------------------------
 
+/**
+ * The four steps of §3.6, all four present.
+ *
+ * This used to be spelled `Required<ResistanceModifiers>`, which meant "every field of that
+ * interface". `ResistanceModifiers` has since gained a FIFTH field — percentage BONUS armor
+ * penetration, which is not one of the four steps but a variant of step 3 — and `Required`
+ * would have demanded it here. Naming the four explicitly says what the helper below actually
+ * needs. NOTHING ABOUT THE ASSERTIONS OR THE EXPECTED NUMBERS CHANGED: this is the type of the
+ * fixture, not the behaviour being pinned.
+ */
+type FourStepModifiers = Required<
+  Pick<
+    ResistanceModifiers,
+    'flatReduction' | 'percentReduction' | 'percentPenetration' | 'flatPenetration'
+  >
+>;
+
 /** The four steps, named. Applied one at a time so a test can choose the order. */
 type StepName =
   | 'flatReduction'
@@ -104,7 +121,7 @@ type StepName =
  */
 function applyStepsInOrder(
   resistance: number,
-  modifiers: Required<ResistanceModifiers>,
+  modifiers: FourStepModifiers,
   order: StepName[],
 ): number {
   let value = resistance;
@@ -121,7 +138,7 @@ function applyStepsInOrder(
 describe('effectiveResistance — order pinning (SPECIFICATION §3.6, fixed order)', () => {
   // One case carrying a non-zero value in all four steps.
   const START = 100;
-  const MODIFIERS: Required<ResistanceModifiers> = {
+  const MODIFIERS: FourStepModifiers = {
     flatReduction: 20,
     percentReduction: 0.25,
     percentPenetration: 0.4,

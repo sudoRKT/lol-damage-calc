@@ -29,8 +29,26 @@ import { plainText, type Block } from './effect-text.ts';
 
 export type RefusalReason =
   /** `{{rd|melee|ranged}}` sits inside the damage run: the source states TWO values, one for a
-   *  melee holder and one for a ranged holder, and `AbilityComponent` can hold one. */
+   *  melee holder and one for a ranged holder.
+   *
+   *  NO LONGER EMITTED BY THE PARSER, and kept because five recorded readings still cite it as
+   *  a co-reason. `Scaling` gained a `byRangeType` arm on 2026-08-13 (DATA-SOURCES §41 gap 1),
+   *  so the split is now expressible and the parser emits the pair instead of refusing. An
+   *  effect that still refuses does so for its OTHER blocker — Profane Hydra's Cleave never
+   *  touches the champion you attacked whether or not the two values can be held. */
   | 'melee-ranged-split'
+  /** `{{rd|…}}` carries named arguments (`levels=`, `pp=true`), so each arm is itself a level
+   *  progression written as a formula. Reading only the first two positional arguments would
+   *  silently drop the progression. Kraken Slayer. */
+  | 'range-split-has-named-arguments'
+  /** The melee arm and the ranged arm do not read to the same SHAPE — a different number of
+   *  ratios, a different stat, or a flat base present in one and absent in the other. Merging
+   *  two different shapes into one component would invent a value for the missing half. */
+  | 'range-split-arms-differ-in-shape'
+  /** The source states a per-instance figure AND a total, and multiplying the per-instance
+   *  figure by the count the source itself writes does not reproduce that total. One of the
+   *  three numbers is being misread and none of them can be trusted until someone looks. */
+  | 'dot-total-disagrees-with-tick'
   /** Scales on lethality. `RatioStat` has no lethality arm. */
   | 'scales-on-lethality'
   /** Scales on critical strike chance. `RatioStat` has no crit-chance arm. */
@@ -38,9 +56,12 @@ export type RefusalReason =
   /** Scales on a stack counter the effect itself accumulates, on the BASE rather than as a
    *  ratio. `Scaling` walks ability rank or champion level; neither is a stack count. */
   | 'scales-on-stacks'
-  /** The source states an interval at which the damage recurs. SPECIFICATION §3.8 requires
-   *  damage over time to be a separate line, and no field on `CuratedItemEffect` or
-   *  `AbilityComponent` can say that an item effect is one. */
+  /** The source states an interval at which the damage recurs.
+   *
+   *  NO LONGER EMITTED BY THE PARSER. `CuratedItemEffect.overTime` was added on 2026-08-13
+   *  (DATA-SOURCES §41 gap 2), so a recurring item effect now records what the source says
+   *  about its recurrence instead of being withheld. Kept because a recorded reading still
+   *  cites it as a co-reason (Bastionbreaker `pass2`, which is turret-only anyway). */
   | 'damage-over-time'
   /** The damage type the source names is "adaptive". `DamageType` is physical/magic/true. */
   | 'adaptive-damage-type'
@@ -74,11 +95,26 @@ export interface Refusal {
   detail: string;
 }
 
+/**
+ * TWO NUMBERS THE SOURCE STATES SIDE BY SIDE, one for a melee holder and one for a ranged one.
+ *
+ * The wiki writes `{{rd|1%|0.5%}}`. It is not a scaling axis: nothing varies with rank or level,
+ * and neither number is a default for the other. `Scaling`'s `byRangeType` arm holds it, and
+ * `valueAt` refuses to evaluate one without being told the holder's range type.
+ */
+export interface RangePair {
+  melee: number;
+  ranged: number;
+}
+
 /** A ratio as this file reads it, before it becomes a contract `Ratio`. */
 export interface ReadRatio {
   stat: RatioStat;
-  /** Percentage POINTS, per `Ratio`'s documented unit — `(+ 15% AP)` is 15, never 0.15. */
-  value: number;
+  /** Percentage POINTS, per `Ratio`'s documented unit — `(+ 15% AP)` is 15, never 0.15.
+   *  Absent when, and only when, `byRangeType` is present. */
+  value?: number;
+  /** Present instead of `value` when the source states a melee figure and a ranged figure. */
+  byRangeType?: RangePair;
   /** Required on the ten owner-required stats. `holder` is the item's wearer. */
   owner?: RatioOwner;
 }
@@ -89,7 +125,23 @@ export interface ReadComponent {
   base: number | null;
   /** Present instead of `base` when the flat part scales by champion level. */
   baseScaling?: Scaling;
+  /** Present instead of `base` when the source states a melee base and a ranged base. */
+  baseByRangeType?: RangePair;
   ratios: ReadRatio[];
+}
+
+/**
+ * What the source says about an effect whose damage RECURS.
+ *
+ * Mirrors `CuratedItemEffect.overTime` exactly. Two rules the contract fixes and this file
+ * obeys: **no interval is recorded** (the engine models sequence, not elapsed time —
+ * SPECIFICATION §3.2), and **`totalInstances` is set only where the source states the count**.
+ * Dividing a stated duration by a stated interval is arithmetic on time, not a stated count,
+ * and it is not done here.
+ */
+export interface ReadOverTime {
+  totalInstances?: number;
+  sourceSays: string;
 }
 
 export interface Extraction {
@@ -100,6 +152,8 @@ export interface Extraction {
   /** Damage runs after the first. A second run is usually a non-champion variant
    *  ("increased to 90 against non-champions") and is never merged into the first. */
   furtherDamageRuns: number;
+  /** Present when the sentence stating this damage also states that it recurs. */
+  overTime?: ReadOverTime;
 }
 
 // ---------------------------------------------------------------------------
@@ -173,8 +227,21 @@ export function evalArithmetic(expr: string): number | null {
 }
 
 const PP_MARKER = '«pp:';
-const RD_MARKER = '«rd»';
 const FT_MARKER = '«ft»';
+
+/**
+ * `{{rd|melee|ranged}}` is marked with BOTH ARMS INTACT — `«rd:120%‖84%»`.
+ *
+ * It used to be replaced with a bare `«rd»` that threw both numbers away, so the only thing
+ * downstream could do with it was refuse. Keeping the arms is what lets the run be read twice,
+ * once as a melee holder would see it and once as a ranged one would, and the two readings
+ * compared. `‖` (U+2016) is the separator because it appears nowhere in the item module.
+ */
+export const RD_OPEN = '«rd:';
+export const RD_SEP = '‖';
+export const RD_CLOSE = '»';
+/** A `{{rd}}` this parser will not read: named arguments, or not exactly two arms. */
+export const RD_REFUSE = '«rd!';
 
 /**
  * Flatten one `{{as}}` block's DISPLAY argument to plain words, resolving the templates whose
@@ -203,7 +270,15 @@ export function resolveDisplay(text: string): string {
         const extra = Object.keys(kw).filter((k) => k !== 'tooltipsize');
         return ` ${PP_MARKER}${(args[0] ?? '').trim()}|${levels.trim()}|${extra.join(',')}» `;
       }
-      if (head === 'rd' || head === 'range difference') return ` ${RD_MARKER} `;
+      if (head === 'rd' || head === 'range difference') {
+        const extra = Object.keys(kw);
+        // Kraken Slayer writes {{rd|<formula> for 13|<formula> for 13|levels=1;9 to 20|pp=true}}.
+        // Each arm is a LEVEL PROGRESSION, not a number. Taking the first two positional
+        // arguments would store a formula string as though it were a value.
+        if (extra.length > 0) return ` ${RD_REFUSE}named:${extra.join(',')}» `;
+        if (args.length !== 2) return ` ${RD_REFUSE}arity:${args.length}» `;
+        return ` ${RD_OPEN}${(args[0] ?? '').trim()}${RD_SEP}${(args[1] ?? '').trim()}${RD_CLOSE} `;
+      }
       if (head === 'ft') return ` ${FT_MARKER} `;
       if (head === 'as' || head === 'ability scaling') return ` ${args[0] ?? ''} `;
       if (head === 'tip' || head === 'sti' || head === 'stil' || head === 'ii') {
@@ -261,9 +336,10 @@ const NOISE =
 
 const DAMAGE_TYPE_RE = /\b(physical|magic|true|adaptive)\s+damage\b/gi;
 
-interface TokenResult {
+export interface TokenResult {
   base: number | null;
   baseScaling?: Scaling;
+  baseByRangeType?: RangePair;
   ratios: ReadRatio[];
   refusals: Refusal[];
 }
@@ -314,12 +390,13 @@ export function tokenizeRun(flat: string): TokenResult {
       }),
     },
     {
-      re: new RegExp(`^${RD_MARKER}`),
-      take: () => ({
-        reason: 'melee-ranged-split',
+      re: /^«rd!([^»]*)»/,
+      take: (m) => ({
+        reason: 'range-split-has-named-arguments',
         detail:
-          'the damage run contains {{rd|melee|ranged}} — the source states one value for a melee ' +
-          'holder and a different one for a ranged holder, and AbilityComponent can hold one',
+          `the damage run contains a {{rd}} this parser will not read (${m[1]}). Each arm is a ` +
+          'level progression written as a formula, and taking the first two positional ' +
+          'arguments would store a formula string as though it were a number',
       }),
     },
     {
@@ -458,6 +535,107 @@ export function tokenizeRun(flat: string): TokenResult {
 }
 
 // ---------------------------------------------------------------------------
+// Reading a run that states two values — one melee, one ranged
+// ---------------------------------------------------------------------------
+
+const RD_PAIR_RE = new RegExp(`${RD_OPEN}([^${RD_SEP}${RD_CLOSE}]*)${RD_SEP}([^${RD_CLOSE}]*)${RD_CLOSE}`, 'g');
+
+/**
+ * Rewrite a flattened run into the two sentences the source is actually stating: the one a
+ * melee holder reads and the one a ranged holder reads.
+ *
+ * Returns null when the run states no split, which is the overwhelming majority.
+ */
+export function rangeArms(flat: string): { melee: string; ranged: string } | null {
+  if (!flat.includes(RD_OPEN)) return null;
+  return {
+    melee: flat.replace(RD_PAIR_RE, (_m, a: string) => ` ${a} `),
+    ranged: flat.replace(RD_PAIR_RE, (_m, _a: string, b: string) => ` ${b} `),
+  };
+}
+
+function mergePair(melee: number, ranged: number): { value?: number; byRangeType?: RangePair } {
+  return melee === ranged ? { value: melee } : { byRangeType: { melee, ranged } };
+}
+
+/**
+ * Read one run, splitting it in two first if the source states a melee and a ranged value.
+ *
+ * THE TWO ARMS MUST READ TO THE SAME SHAPE. Hullbreaker is `120% / 84% base AD (+ 5% / 3.5%
+ * maximum health)`: two arms, each a base-AD ratio and a maximum-health ratio, differing only
+ * in magnitude. If one arm produced two ratios and the other three, the difference would be a
+ * misparse, and merging them would invent a value for whichever half came up short — so the
+ * mismatch refuses the effect and says which field disagreed.
+ */
+export function readRun(flat: string): TokenResult {
+  const arms = rangeArms(flat);
+  if (!arms) return tokenizeRun(flat);
+
+  const melee = tokenizeRun(arms.melee);
+  const ranged = tokenizeRun(arms.ranged);
+  const refusals = [...melee.refusals];
+  for (const r of ranged.refusals) {
+    if (!refusals.some((x) => x.reason === r.reason && x.detail === r.detail)) refusals.push(r);
+  }
+  const out: TokenResult = { base: null, ratios: [], refusals };
+  if (refusals.length > 0) return out;
+
+  if (melee.baseScaling || ranged.baseScaling) {
+    refusals.push({
+      reason: 'range-split-arms-differ-in-shape',
+      detail:
+        'one arm of the melee/ranged pair is itself a level progression; this parser reads a ' +
+        'range split of two plain numbers only',
+    });
+    return out;
+  }
+  if ((melee.base === null) !== (ranged.base === null)) {
+    refusals.push({
+      reason: 'range-split-arms-differ-in-shape',
+      detail: `flat base: melee reads ${melee.base}, ranged reads ${ranged.base}`,
+    });
+    return out;
+  }
+  if (melee.base !== null && ranged.base !== null) {
+    const merged = mergePair(melee.base, ranged.base);
+    if (merged.value !== undefined) out.base = merged.value;
+    else out.baseByRangeType = merged.byRangeType;
+  }
+
+  if (melee.ratios.length !== ranged.ratios.length) {
+    refusals.push({
+      reason: 'range-split-arms-differ-in-shape',
+      detail: `melee reads ${melee.ratios.length} ratios, ranged reads ${ranged.ratios.length}`,
+    });
+    return out;
+  }
+  for (let i = 0; i < melee.ratios.length; i++) {
+    const a = melee.ratios[i]!;
+    const b = ranged.ratios[i]!;
+    if (a.stat !== b.stat || (a.owner ?? null) !== (b.owner ?? null)) {
+      refusals.push({
+        reason: 'range-split-arms-differ-in-shape',
+        detail: `ratio ${i + 1}: melee reads ${a.stat}/${a.owner ?? 'no owner'}, ranged reads ${b.stat}/${b.owner ?? 'no owner'}`,
+      });
+      return out;
+    }
+    if (a.value === undefined || b.value === undefined) {
+      refusals.push({
+        reason: 'range-split-arms-differ-in-shape',
+        detail: `ratio ${i + 1} (${a.stat}): one arm produced no magnitude`,
+      });
+      return out;
+    }
+    out.ratios.push({
+      stat: a.stat,
+      ...(a.owner ? { owner: a.owner } : {}),
+      ...mergePair(a.value, b.value),
+    });
+  }
+  return out;
+}
+
+// ---------------------------------------------------------------------------
 // Whole-effect checks, each a class swept over the population
 // ---------------------------------------------------------------------------
 
@@ -484,7 +662,7 @@ export function statesARecurringInterval(text: string): string | null {
  * a gerund read as a trigger wherever it appeared, and shield wording tested flatly over a
  * sentence — and it is fixed the same way, by asking where the words are.
  */
-export function sentenceAround(text: string, index: number): string {
+export function sentenceSpanAround(text: string, index: number): { start: number; end: number } {
   let depth = 0;
   let start = 0;
   for (let i = 0; i < text.length; i++) {
@@ -499,11 +677,16 @@ export function sentenceAround(text: string, index: number): string {
       continue;
     }
     if (depth === 0 && (text[i] === '.' || text[i] === ';') && /\s/.test(text[i + 1] ?? ' ')) {
-      if (i >= index) return text.slice(start, i + 1);
+      if (i >= index) return { start, end: i + 1 };
       start = i + 1;
     }
   }
-  return text.slice(start);
+  return { start, end: text.length };
+}
+
+export function sentenceAround(text: string, index: number): string {
+  const { start, end } = sentenceSpanAround(text, index);
+  return text.slice(start, end);
 }
 
 // ---------------------------------------------------------------------------
@@ -584,20 +767,32 @@ export function extractItemEffect(record: EffectRecord): Extraction {
     });
   }
 
-  const interval = statesARecurringInterval(sentenceAround(record.text, run.blocks[0]!.start));
-  if (interval) {
-    refusals.push({
-      reason: 'damage-over-time',
-      detail:
-        `the sentence stating this damage also states that it recurs ("${interval}"). ` +
-        'SPECIFICATION §3.8 requires ' +
-        'damage over time to be a separate line, and no field on CuratedItemEffect or ' +
-        'AbilityComponent can record that an item effect is one',
-    });
-  }
-
-  const tokens = tokenizeRun(display);
+  const tokens = readRun(display);
   refusals.push(...tokens.refusals);
+
+  // DAMAGE OVER TIME. Recorded rather than refused since CuratedItemEffect.overTime arrived.
+  const span = sentenceSpanAround(record.text, run.blocks[0]!.start);
+  const sentence = record.text.slice(span.start, span.end);
+  const interval = statesARecurringInterval(sentence);
+  let overTime: ReadOverTime | undefined;
+  if (interval) {
+    overTime = { sourceSays: plainText(sentence).trim() };
+    const total = statedTotal(record, span, damageRuns, source);
+    if (total) {
+      if (total.refusal) refusals.push(total.refusal);
+      else if (total.instances !== undefined) {
+        const clash = tickTimesCountEquals(tokens, total.tokens!, total.instances);
+        if (clash) {
+          refusals.push({
+            reason: 'dot-total-disagrees-with-tick',
+            detail: clash,
+          });
+        } else {
+          overTime.totalInstances = total.instances;
+        }
+      }
+    }
+  }
 
   // A RUN THAT NAMES A DAMAGE TYPE AND CARRIES NO VALUE IS A TRIGGER, NOT AN INSTANCE.
   // "Dealing {{as|physical damage}} to an enemy champion applies a stack of Carve" (Black
@@ -605,7 +800,12 @@ export function extractItemEffect(record: EffectRecord): Extraction {
   // with a base of zero on 20 effects outside the read population — an itemised line worth
   // nothing, which is worse than no line. DATA-SOURCES §37.4 defect 1, the same defect the
   // census found in its own first run, rediscovered here because this file rebuilt the check.
-  if (tokens.base === null && !tokens.baseScaling && tokens.ratios.length === 0) {
+  if (
+    tokens.base === null &&
+    !tokens.baseScaling &&
+    !tokens.baseByRangeType &&
+    tokens.ratios.length === 0
+  ) {
     refusals.push({
       reason: 'no-structural-damage-run',
       detail:
@@ -618,8 +818,9 @@ export function extractItemEffect(record: EffectRecord): Extraction {
     refusals.length === 0 && concrete.length === 1
       ? {
           damageType: concrete[0]!,
-          base: tokens.baseScaling ? null : tokens.base,
+          base: tokens.baseScaling || tokens.baseByRangeType ? null : tokens.base,
           ...(tokens.baseScaling ? { baseScaling: tokens.baseScaling } : {}),
+          ...(tokens.baseByRangeType ? { baseByRangeType: tokens.baseByRangeType } : {}),
           ratios: tokens.ratios,
         }
       : null;
@@ -636,7 +837,110 @@ export function extractItemEffect(record: EffectRecord): Extraction {
     component,
     refusals,
     furtherDamageRuns: damageRuns.length - 1,
+    ...(overTime ? { overTime } : {}),
   };
+}
+
+// ---------------------------------------------------------------------------
+// The stated total of a recurring effect, and the count the source itself writes
+// ---------------------------------------------------------------------------
+
+/**
+ * `{{ap|60/6}}` — the wiki's own calculator dividing a TOTAL by a TICK COUNT.
+ *
+ * This is the only place in the item module where a recurrence count is written down as a
+ * number. Blackfire Torch displays its per-tick figure as `{{ap|60/6}}` and states "for a total
+ * of 60" in the same sentence; Fated Ashes writes `{{ap|15/6}}` and states a total of 15. The
+ * 6 is the source's, not ours — and it is only believed once the arithmetic is confirmed
+ * against the separately-stated total.
+ */
+const TOTAL_OVER_COUNT = /\{\{\s*ap\s*\|\s*([\d.]+)\s*\/\s*(\d+)\s*\}\}/;
+
+/**
+ * Find the total a recurring effect states for itself, in the same sentence, after the words
+ * "for a total of".
+ *
+ * POSITION, NOT THE WORD, for the third time in this file. Blackfire Torch says "for a total
+ * of" TWICE — once for champions and once, a sentence later, for monsters ("dealing a total of
+ * … per tick"). Searching the whole text would take the monster figure, which is 120 rather
+ * than 60. Only the sentence that states this damage counts.
+ */
+function statedTotal(
+  record: EffectRecord,
+  span: { start: number; end: number },
+  damageRuns: { blocks: Block[] }[],
+  tickSourceRun: string,
+): { instances?: number; tokens?: TokenResult; refusal?: Refusal } | null {
+  const sentence = record.text.slice(span.start, span.end);
+  const phrase = /for a total of/i.exec(sentence);
+  if (!phrase) return null;
+  const at = span.start + phrase.index;
+
+  const totalRun = damageRuns.find(
+    (r) => r.blocks[0]!.start > at && r.blocks[0]!.start < span.end,
+  );
+  if (!totalRun) return null;
+
+  const divisor = TOTAL_OVER_COUNT.exec(tickSourceRun);
+  if (!divisor) {
+    return {
+      refusal: {
+        reason: 'dot-total-disagrees-with-tick',
+        detail:
+          'the sentence states a total for this recurring damage but the source states no ' +
+          'count of instances anywhere. Storing the per-instance figure alone would understate ' +
+          'the effect, and dividing a duration by an interval is arithmetic on time, which the ' +
+          'engine does not model (SPECIFICATION §3.2)',
+      },
+    };
+  }
+  const instances = Number(divisor[2]);
+  const totalTokens = readRun(runDisplay(totalRun.blocks));
+  if (totalTokens.refusals.length > 0) {
+    return {
+      refusal: {
+        reason: 'dot-total-disagrees-with-tick',
+        detail: `the stated total could not be read: ${totalTokens.refusals[0]!.detail}`,
+      },
+    };
+  }
+  return { instances, tokens: totalTokens };
+}
+
+/**
+ * Confirm that the per-instance figure multiplied by the source's own count reproduces the
+ * total the source separately states. Returns the disagreement, or null.
+ *
+ * This is what makes `totalInstances` a stated fact rather than an inference: three numbers the
+ * source writes independently — tick, count and total — have to agree before any of them is
+ * believed.
+ */
+export function tickTimesCountEquals(
+  tick: TokenResult,
+  total: TokenResult,
+  instances: number,
+): string | null {
+  const near = (a: number, b: number): boolean => Math.abs(a - b) < 1e-6;
+  const tickBase = tick.base ?? 0;
+  const totalBase = total.base ?? 0;
+  if (!near(tickBase * instances, totalBase)) {
+    return `${tickBase} per instance × ${instances} is ${tickBase * instances}, but the source states a total of ${totalBase}`;
+  }
+  if (tick.ratios.length !== total.ratios.length) {
+    return `the per-instance figure carries ${tick.ratios.length} ratios and the stated total carries ${total.ratios.length}`;
+  }
+  for (let i = 0; i < tick.ratios.length; i++) {
+    const a = tick.ratios[i]!;
+    const b = total.ratios[i]!;
+    if (a.stat !== b.stat) return `ratio ${i + 1}: per instance ${a.stat}, total ${b.stat}`;
+    if (a.value === undefined || b.value === undefined) {
+      return `ratio ${i + 1} (${a.stat}): a melee/ranged split inside a recurring effect is not read here`;
+    }
+    if (!near(a.value * instances, b.value)) {
+      return `ratio ${i + 1} (${a.stat}): ${a.value} × ${instances} is ${a.value * instances}, but the source states ${b.value}`;
+    }
+  }
+  return null;
 }
 
 // ---------------------------------------------------------------------------
@@ -655,10 +959,34 @@ export function constantScaling(value: number): Scaling {
   return { scaling: 'explicit', perRank: [value] };
 }
 
+/**
+ * The contract's `byRangeType` arm, with each side a constant.
+ *
+ * Each arm is itself a `Scaling` because a range-split value may also scale; none of the four
+ * item effects that reach this today does, so both arms are one-entry `explicit` lists for the
+ * same reason a constant is.
+ */
+export function rangeScaling(pair: RangePair): Scaling {
+  return {
+    scaling: 'byRangeType',
+    melee: constantScaling(pair.melee),
+    ranged: constantScaling(pair.ranged),
+  };
+}
+
+/** The scaling one read magnitude becomes — a constant, or the melee/ranged pair. */
+export function magnitudeScaling(r: { value?: number; byRangeType?: RangePair }): Scaling {
+  if (r.byRangeType) return rangeScaling(r.byRangeType);
+  if (r.value === undefined) {
+    throw new Error('a read magnitude carries neither a value nor a melee/ranged pair');
+  }
+  return constantScaling(r.value);
+}
+
 export function toContractRatios(ratios: ReadRatio[]): Ratio[] {
   return ratios.map((r) => ({
     stat: r.stat,
     ...(r.owner ? { owner: r.owner } : {}),
-    ...constantScaling(r.value),
+    ...magnitudeScaling(r),
   }));
 }

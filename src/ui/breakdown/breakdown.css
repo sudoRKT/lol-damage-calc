@@ -1,0 +1,197 @@
+/*
+ * The per-instance breakdown table. Every value traces to DESIGN.md;
+ * `../primitives/token-audit.test.ts` re-checks that across the whole area on every run.
+ *
+ * NO HUE IN THIS FILE. Every damage figure in the table is a `DamageValue`, which carries its
+ * own damage-type colour and its own P/M/T tag from `../primitives/primitives.css`. The table
+ * itself — rules, headers, the running-total column, the crit marker — is neutral.
+ *
+ * The grid is hard-edged: `--radius-cell` is 0, which is what makes a column of numbers read as
+ * a precise readout (DESIGN.md §5). That is not the banned broadsheet look — these are steel
+ * borders on graphite, with visible weight, not hairlines on white.
+ */
+
+@import '../tokens.css';
+
+.breakdown-panel {
+  background: var(--bg-panel);
+  border: var(--border-steel);
+  border-radius: var(--radius-panel);
+  padding: var(--space-4);
+  font-family: var(--font-body);
+  color: var(--text-primary);
+}
+
+.breakdown-panel__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-block-end: var(--space-3);
+}
+
+.breakdown-panel__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: var(--weight-display);
+  font-size: var(--type-display-l);
+  line-height: var(--lh-display-l);
+}
+
+/* SPECIFICATION §8 — the patch sits adjacent to the result, never in a footer. */
+.breakdown-panel__patch {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: var(--type-num-s);
+  line-height: var(--lh-num-s);
+  font-weight: var(--weight-num);
+  color: var(--text-secondary);
+}
+
+/* --------------------------------------------------------------------------
+ * The table. Cell padding is DESIGN.md §4's stated default for tables:
+ * --space-2 vertical, --space-3 horizontal.
+ * -------------------------------------------------------------------------- */
+
+.breakdown {
+  inline-size: 100%;
+  border-collapse: collapse;
+  background: var(--bg-well); /* a table well, DESIGN.md §2 */
+}
+
+.breakdown th,
+.breakdown td {
+  text-align: left;
+  vertical-align: top;
+  padding: var(--space-2) var(--space-3);
+  border-block-end: var(--border-hair);
+  border-radius: var(--radius-cell);
+}
+
+.breakdown thead th {
+  background: var(--bg-panel); /* table headers are a panel surface, DESIGN.md §2 */
+  font-family: var(--font-display);
+  font-weight: var(--weight-display-medium);
+  font-size: var(--type-eyebrow);
+  line-height: var(--lh-eyebrow);
+  letter-spacing: var(--ls-eyebrow);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  border-block-end: var(--border-steel);
+}
+
+/* Instant, per DESIGN.md §10: "Table row highlight on hover is instant." */
+.breakdown tbody tr:hover {
+  background: var(--bg-panel-raised);
+}
+
+.breakdown__index {
+  font-family: var(--font-mono);
+  font-size: var(--type-num-m);
+  line-height: var(--lh-num-m);
+  font-weight: var(--weight-num);
+  color: var(--text-secondary);
+  text-align: right;
+}
+
+.breakdown__source {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-body);
+  font-size: var(--type-body-m);
+  line-height: var(--lh-body-m);
+  font-weight: var(--weight-body);
+  color: var(--text-primary);
+}
+
+.breakdown__source-label {
+  white-space: nowrap;
+}
+
+/* A crit is marked in words, never by a colour — hue is reserved (DESIGN.md §1). */
+.breakdown__crit {
+  font-family: var(--font-display);
+  font-weight: var(--weight-display-medium);
+  font-size: var(--type-eyebrow);
+  line-height: var(--lh-eyebrow);
+  letter-spacing: var(--ls-eyebrow);
+  color: var(--text-secondary);
+  border: var(--border-steel);
+  border-radius: var(--radius-control);
+  padding: 0 var(--space-1);
+}
+
+.breakdown__state {
+  font-family: var(--font-body);
+  font-size: var(--type-body-s);
+  line-height: var(--lh-body-s);
+  font-weight: var(--weight-body-medium);
+  color: var(--text-secondary);
+}
+
+.breakdown__damage,
+.breakdown__running {
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* The authoritative cumulative figure. Bone and untagged: it is a sum ACROSS damage types, so
+   it has no single type to tag (DESIGN.md §8). */
+.breakdown__running-value {
+  font-family: var(--font-mono);
+  font-size: var(--type-num-m);
+  line-height: var(--lh-num-m);
+  font-weight: var(--weight-num);
+  color: var(--text-primary);
+}
+
+/* --------------------------------------------------------------------------
+ * Everything under the table
+ * -------------------------------------------------------------------------- */
+
+.breakdown-panel__note {
+  margin: var(--space-3) 0 0;
+  font-family: var(--font-body);
+  font-size: var(--type-body-s);
+  line-height: var(--lh-body-s);
+  font-weight: var(--weight-body-medium);
+  color: var(--text-secondary);
+}
+
+.breakdown-panel__totals {
+  margin-block-start: var(--space-4);
+}
+
+.breakdown-panel__block {
+  margin-block-start: var(--space-5);
+}
+
+.breakdown-panel__eyebrow {
+  margin: 0 0 var(--space-2);
+  font-family: var(--font-display);
+  font-weight: var(--weight-display-medium);
+  font-size: var(--type-eyebrow);
+  line-height: var(--lh-eyebrow);
+  letter-spacing: var(--ls-eyebrow);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.breakdown-panel__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.breakdown-panel__list li {
+  margin-block-start: var(--space-1);
+}
+
+.breakdown-panel__list--plain li {
+  font-family: var(--font-body);
+  font-size: var(--type-body-m);
+  line-height: var(--lh-body-m);
+  font-weight: var(--weight-body);
+  color: var(--text-secondary);
+}

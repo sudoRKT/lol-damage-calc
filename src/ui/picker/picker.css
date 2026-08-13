@@ -1,0 +1,138 @@
+/*
+ * The champion picker. Every value traces to DESIGN.md; `../primitives/token-audit.test.ts`
+ * re-checks that mechanically across the whole area on every run.
+ *
+ * NO HUE APPEARS IN THIS FILE AT ALL. A picker is not damage data (DESIGN.md §1), so every
+ * state it has — hover, active row, selected row, focus — is carried by brightness, border
+ * and glyph. There is no blue "selected" and no green "confirmed" anywhere below.
+ *
+ * The open list is the one thing here that earns a real shadow: DESIGN.md §5 gives --elev-2
+ * to "popovers, dropdown pickers, menus" and to nothing else.
+ */
+
+@import '../tokens.css';
+
+.picker {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.picker__label {
+  font-family: var(--font-body);
+  font-size: var(--type-body-l); /* DESIGN.md §3 — "form field labels" */
+  line-height: var(--lh-body-l);
+  font-weight: var(--weight-body);
+  color: var(--text-secondary);
+}
+
+/* Inputs sit in a WELL, never on a panel (DESIGN.md §11, item 1). */
+.picker__input {
+  background: var(--bg-well);
+  color: var(--text-primary);
+  border: var(--border-steel);
+  border-radius: var(--radius-control);
+  padding: var(--space-2) var(--space-3);
+  font-family: var(--font-body);
+  font-size: var(--type-body-l);
+  line-height: var(--lh-body-l);
+  font-weight: var(--weight-body);
+}
+
+.picker__input::placeholder {
+  color: var(--text-muted); /* DESIGN.md §2 — muted is placeholder/disabled only */
+}
+
+.picker__input:hover {
+  background: var(--bg-panel-raised);
+  border: var(--border-strong);
+}
+
+.picker__input:focus-visible {
+  outline: var(--border-active);
+  outline-offset: var(--space-0);
+}
+
+/* --------------------------------------------------------------------------
+ * The open list. A popover surface (--bg-panel-raised), a steel border, and the product's
+ * only genuine shadow.
+ *
+ * `100%` below is the anchor's own height — the list hangs off the bottom edge of the field.
+ * It is a fraction of the parent, not a design length, and is allow-listed by name in
+ * token-audit.test.ts on exactly the same footing as `.chip__img`'s 100%.
+ * -------------------------------------------------------------------------- */
+
+.picker__list {
+  position: absolute;
+  z-index: 2;
+  inset-inline: 0;
+  inset-block-start: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  background: var(--bg-panel-raised);
+  border: var(--border-steel);
+  border-radius: var(--radius-panel);
+  box-shadow: var(--elev-2);
+  /* DESIGN.md fixes no popup height. Composed from the spacing scale rather than invented as
+     a new number — the same approach, and the same open point, as the burndown's plot height.
+     RAISED rather than settled quietly. */
+  max-block-size: calc(var(--space-8) * 5);
+  overflow-y: auto;
+  animation: picker-open 140ms ease-out; /* DESIGN.md §10 — picker open-close, 140ms */
+}
+
+.picker__list--closed {
+  display: none;
+}
+
+.picker__option {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  border-block-end: var(--border-hair);
+  cursor: pointer;
+}
+
+.picker__option-name {
+  font-family: var(--font-body);
+  font-size: var(--type-body-l);
+  line-height: var(--lh-body-l);
+  font-weight: var(--weight-body);
+  color: var(--text-primary);
+}
+
+/* The row the keyboard is on. Brightness and border — never a hue (DESIGN.md §1, §6). */
+.picker__option--active {
+  background: var(--bg-panel);
+  border-inline-start: var(--border-strong);
+}
+
+/* The champion already in play. A bone border, which is DESIGN.md §6's "selected / active". */
+.picker__option--selected {
+  border-inline-start: var(--border-active);
+}
+
+.picker__empty {
+  padding: var(--space-3);
+  font-family: var(--font-body);
+  font-size: var(--type-body-m);
+  line-height: var(--lh-body-m);
+  font-weight: var(--weight-body);
+  color: var(--text-secondary);
+}
+
+/* DESIGN.md §10: picker open-close is 140ms ease-out, and nothing else here animates. */
+@keyframes picker-open {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .picker__list {
+    animation: none;
+  }
+}

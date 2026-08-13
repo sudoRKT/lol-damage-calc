@@ -29,7 +29,7 @@ import {
   ddragonRestatesNumbers,
 } from './effect-owner-crosscheck.ts';
 import { extractItemEffect, type RefusalReason } from './effect-values.ts';
-import { gateEffect, type GateResult } from './effect-values-gate.ts';
+import { gateEffect, proposedItemEffect, type GateResult } from './effect-values-gate.ts';
 import { READ_POPULATION, readingFor } from './effect-values-read.ts';
 import { filterItems, type RawItemMap } from './items.ts';
 import { parseLuaModule } from './lua-table.ts';
@@ -149,6 +149,10 @@ export async function run(): Promise<void> {
   const refused = gated.filter((g) => g.outcome === 'refused');
 
   console.log('\n--- THE 63, THROUGH THE GATE ---');
+  const rangeSplit = stored.filter((s) =>
+    JSON.stringify(s.components ?? []).includes('byRangeType'),
+  );
+  const recurring = stored.filter((s) => s.overTime);
   console.log(
     table([
       ['effects put through the gate', gated.length],
@@ -159,6 +163,43 @@ export async function run(): Promise<void> {
       ['  items / runes', `${refused.filter((r) => r.source === 'item').length} / ${refused.filter((r) => r.source === 'rune').length}`],
     ]),
   );
+
+  console.log('\n--- THE SHAPES THE CONTRACT PASS RELEASED ---');
+  console.log(
+    table([
+      ['stored with a melee/ranged pair (Scaling.byRangeType)', rangeSplit.length],
+      ['  ', rangeSplit.map((s) => `${s.ownerName} [${s.key}]`).join(', ')],
+      ['stored as damage over time (CuratedItemEffect.overTime)', recurring.length],
+      ['  of those, with an instance count the SOURCE states', recurring.filter((s) => s.overTime?.totalInstances !== undefined).length],
+      ['  of those, with no count stated — one instance is all that is claimed', recurring.filter((s) => s.overTime?.totalInstances === undefined).length],
+      ['stored carrying a named `unresolvable`', stored.filter((s) => s.unresolvable).length],
+    ]),
+  );
+
+  const appliesTally = tally(stored, (s) => [s.appliesAs ?? 'NO CONTRACT ARM (reported, absent)']);
+  console.log('\n--- HOW THE STORED EFFECTS REACH THEIR TARGET (CuratedItemEffect.appliesAs) ---');
+  console.log(table(Object.entries(appliesTally) as [string, number][]));
+  const noArm = stored.filter((s) => !s.appliesAs);
+  if (noArm.length > 0) {
+    console.log(
+      '  no arm exists for: ' +
+        noArm.map((s) => `${s.ownerName} ("${s.appliesAsSays}")`).join('; '),
+    );
+  }
+
+  // §39 recorded 28 stored / 35 refused; §41.3 predicted "19 of the 35 refusals are releasable,
+  // taking the extracted set from 28 toward 47". Both are checked against what this run observed.
+  if (stored.length !== 28) {
+    findings.push(
+      `DATA-SOURCES §39 records 28 stored effects; this run observed ${stored.length}. ` +
+        `§41.3 predicted the contract pass would release 19 of the 35 refusals, taking the set ` +
+        `"toward 47". THE PREDICTION DOUBLE-COUNTS. The 12 melee/ranged and 7 damage-over-time ` +
+        `refusals overlap in one effect (Bastionbreaker pass2), so they are 18 distinct effects, ` +
+        `not 19; and 8 of those 18 carry a SECOND blocker the contract pass did not touch — ` +
+        `five cleave items that damage only OTHER enemies, two that scale on lethality, one ` +
+        `wards-only. Only 10 were ever releasable, and this run released ${stored.length - 28}.`,
+    );
+  }
 
   const reasons = tally(refused, (r) => [...new Set(r.refusals.map((f) => f.reason))]);
   console.log('\n--- WHY THE REFUSALS REFUSED (an effect can carry more than one) ---');
@@ -353,6 +394,25 @@ export async function run(): Promise<void> {
         'An item effect has no ranks, so a constant is stored as { scaling: "explicit", ' +
         'perRank: [v] } — a literal list used verbatim. NOT { linear, from: v, to: v }, which ' +
         'would claim a rank progression the item does not have.',
+      byRangeType:
+        'The source states two values, one for a melee holder and one for a ranged holder ' +
+        '({{rd|melee|ranged}}). BOTH are stored, in the two arms of Scaling.byRangeType, and ' +
+        'neither is a default for the other: the engine refuses to evaluate one without being ' +
+        'told the holder\'s range type. Storing the melee arm alone would overstate every ' +
+        'ranged champion, and the ranged arm alone would understate every melee one.',
+      overTime:
+        'The source states that this damage RECURS. What is stored in `components` is ONE ' +
+        'instance; `overTime.totalInstances` says how many land over the full duration, and it ' +
+        'is present ONLY where the source states the count. Two of the six state a total as ' +
+        'well as a per-instance figure, and the count is believed only because three ' +
+        'independently-written numbers agree: tick x count = total. The other four state a ' +
+        'per-second figure and a duration, and dividing one by the other is arithmetic on ' +
+        'elapsed time, which this engine does not model (SPECIFICATION §3.2). No interval is ' +
+        'recorded anywhere.',
+      appliesAsAbsent:
+        'A stored effect with no `appliesAs` is NOT one whose trigger the source omits. It is ' +
+        'one whose trigger the contract enum has no arm for — see contractGapsRaised. Setting ' +
+        "'unstated' there would claim the source is silent when it is not.",
     },
     counts: {
       effectsInPopulation: rows.length,
@@ -362,6 +422,14 @@ export async function run(): Promise<void> {
       stored: stored.length,
       storedComplete: stored.filter((s) => !s.hasUnresolvedOwner).length,
       storedWithUnresolvedOwner: stored.filter((s) => s.hasUnresolvedOwner).length,
+      storedWithRangeSplit: rangeSplit.map((s) => `${s.ownerName} [${s.key}]`),
+      storedAsDamageOverTime: recurring.map((s) => ({
+        effect: `${s.ownerName} [${s.key}]`,
+        totalInstances: s.overTime?.totalInstances ?? null,
+        sourceSays: s.overTime?.sourceSays ?? '',
+      })),
+      appliesAs: appliesTally,
+      appliesAsWithNoContractArm: noArm.map((s) => `${s.ownerName}: ${s.appliesAsSays}`),
       refused: refused.length,
       refusalsByReason: reasons,
       classSweptOverWholePopulation: Object.fromEntries(
@@ -396,6 +464,28 @@ export async function run(): Promise<void> {
     },
     /** One row per effect, refusals included, each carrying the sentence it was read from. */
     effects: gated,
+    /**
+     * The same stored effects in the shape `CuratedFile.itemEffects` takes, so what the lead
+     * merges is the contract's own shape rather than a translation of a report. Provenance is
+     * added here because it is a property of the RUN, not of the effect.
+     */
+    proposedItemEffects: stored
+      .map((s) => {
+        const row = structural.find((r) => r.id === s.id && r.key === s.key);
+        const proposal = proposedItemEffect(s, row?.effectName ?? s.key);
+        return proposal
+          ? {
+              ...proposal,
+              provenance: {
+                source: 'wiki Module:ItemData/data',
+                url: WIKI_ITEM_MODULE_URL,
+                patch,
+                fetched,
+              },
+            }
+          : null;
+      })
+      .filter((p) => p !== null),
     contractGapsRaised: CONTRACT_GAPS,
   };
 
@@ -416,24 +506,10 @@ export const CONTRACT_GAPS: {
   effectsBlocked: number;
   detail: string;
 }[] = [
-  {
-    gap: 'A melee/ranged value pair',
-    reason: 'melee-ranged-split',
-    effectsBlocked: 12,
-    detail:
-      'The wiki writes {{rd|melee|ranged}} and the item genuinely has two values. ' +
-      'AbilityComponent holds one. `ChampionBaseStats.rangetype` already exists, so this could ' +
-      'resolve at evaluation time exactly as RatioOwner "holder" does.',
-  },
-  {
-    gap: 'A way to say an ITEM effect is damage over time',
-    reason: 'damage-over-time',
-    effectsBlocked: 7,
-    detail:
-      'CuratedAbility has instanceType "dot-application"; CuratedItemEffect has only kind ' +
-      '"passive" | "active". SPECIFICATION §3.8 requires DoT on a separate line, so a burn ' +
-      'stored as an ordinary component would be folded into the burst total.',
-  },
+  // FOUR GAPS CLOSED on 2026-08-13 by the contract pass (DATA-SOURCES §41) and removed from this
+  // list: the melee/ranged pair (`Scaling.byRangeType`), damage over time
+  // (`CuratedItemEffect.overTime`), `CuratedItemEffect.unresolvable`, and
+  // `CuratedItemEffect.appliesAs`. What follows is what is still open, each measured.
   {
     gap: 'Adaptive damage',
     reason: 'adaptive-damage-type',
@@ -447,26 +523,52 @@ export const CONTRACT_GAPS: {
     gap: 'Lethality and critical strike chance as ratio stats',
     reason: 'scales-on-lethality',
     effectsBlocked: 4,
-    detail: 'RatioStat has no arm for either. Bastionbreaker, Umbral Glaive, Essence Reaver.',
+    detail:
+      'RatioStat has no arm for either. Bastionbreaker (both effects), Umbral Glaive pass3, ' +
+      'Essence Reaver. Umbral Glaive pass3 is the costly one: it damages CHAMPIONS, it is ' +
+      'otherwise clean, and storing its flat 50 alone would understate it on exactly the builds ' +
+      'that buy the item.',
   },
   {
-    gap: 'CuratedItemEffect cannot record an `unresolvable`',
+    gap: 'A stack counter as the axis of a BASE, not just of a ratio',
+    reason: 'scales-on-stacks',
+    effectsBlocked: 2,
+    detail:
+      "Dead Man's Plate is 0 to 40 flat AND 0 to 100% base AD, both walking Momentum stacks; " +
+      'Dark Harvest adds a flat 11 per soul. `Scaling` walks ability rank or champion level, ' +
+      "and `Ratio.stacks` stores percentage points of a stat, so \"+11 damage per soul\" has no " +
+      'home either.',
+  },
+  {
+    gap: 'An amplifier on the item effect\'s OWN damage',
+    reason: 'conditional-additional-damage',
+    effectsBlocked: 2,
+    detail:
+      "Kraken Slayer is increased by up to 75% by the target's missing health; Luden's Echo " +
+      'redirects unspent stacks onto the primary target, doubling it in a two-champion fight. ' +
+      'Neither is a ratio — each multiplies the whole component by a quantity the scenario knows.',
+  },
+  {
+    gap: '`appliesAs` has no arm for "on dealing damage to an enemy champion"',
     reason: 'none',
     effectsBlocked: 0,
     detail:
-      'CuratedAbility carries `unresolvable: Unresolvable[]`; CuratedItemEffect does not. ' +
-      "DATA-SOURCES §37.3 measures 56 effects carrying a stat no source attributes, and " +
-      'SPECIFICATION §8 requires the interface to present those as "cannot be completed" rather ' +
-      'than "not yet modelled". Today they can only be an undifferentiated `incomplete`.',
+      'MEASURED ON THE 38 STORED EFFECTS: 5 state a trigger the enum cannot name — Hextech ' +
+      'Alternator, Scout\'s Slingshot and Elixir of Sorcery fire on DEALING DAMAGE (by any ' +
+      "means, not on an attack), Zaz'Zak's Realmspike on dealing ABILITY damage, and Stormsurge " +
+      'is a delayed strike that follows a mark. `appliesAs` is left ABSENT on all five rather ' +
+      "than set to 'unstated', which would claim the source is silent when it is not. The " +
+      'combo builder cannot sequence those five without an arm for them.',
   },
   {
-    gap: 'CuratedItemEffect cannot say HOW an effect reaches its target',
-    reason: 'none',
-    effectsBlocked: 0,
+    gap: 'A range-split value whose arms are themselves level progressions',
+    reason: 'range-split-has-named-arguments',
+    effectsBlocked: 1,
     detail:
-      'On-hit, on-attack, after-an-ability (Spellblade), on-damaging-an-ability, item active. ' +
-      'InstanceType exists on CuratedAbility only. 20 of the 28 stored effects are on-hit or ' +
-      'Spellblade, and a combo builder cannot sequence them without knowing which.',
+      'THE CONTRACT ALREADY HOLDS THIS — each arm of `byRangeType` is itself a `Scaling`. The ' +
+      'blocker is this parser, which does not read the formula the wiki writes inside ' +
+      '{{rd|…|levels=1;9 to 20|pp=true}}. Kraken Slayer only, and it is refused for a second, ' +
+      'independent reason as well.',
   },
 ];
 

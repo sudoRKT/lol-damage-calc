@@ -1,18 +1,22 @@
 // The composition root.
 //
-// It mounts the VERTICAL SLICE (src/ui/slice) — the first end-to-end path in this project:
-// stored ability data, through the engine's component evaluator and resistance formula, to a
-// number on screen carrying its damage-type tag and its verification status.
+// It mounts the HP BURNDOWN (src/ui/burndown) — DESIGN.md §7's signature element and the
+// product's remembered object — against the one canonical mock Result.
 //
-// This is deliberately ONE champion, ONE defender and ONE combo. It is a proof that the pieces
-// connect, not the product's interface, and everything it cannot model is printed on screen
-// rather than approximated. The real composition root replaces it when the configuration panels,
-// the item and rune pickers and the HP burndown exist.
+// THE VERTICAL SLICE IS GONE FROM HERE, deliberately. It was a throwaway proof that the plumbing
+// connects: stored data, through the engine, to a number on screen. It did that and it is kept at
+// `src/ui/slice/` as a reference for what the plumbing does, not as a design. Nothing new is built
+// on it.
+//
+// What this page is NOT yet: the real interface. There are no champion pickers, no combo builder,
+// no stat blocks and no result table — those are being built now. Until they exist this renders
+// the burndown alone, from the mock, so the signature element can be judged on its own terms.
 
 import { createRoot } from 'react-dom/client';
 import './ui/tokens.css';
-import { VerticalSlice } from './ui/slice/VerticalSlice';
+import { HpBurndown } from './ui/burndown';
+import { MOCK_RESULT } from './types';
 
 const rootEl = document.getElementById('root');
 if (!rootEl) throw new Error('#root not found');
-createRoot(rootEl).render(<VerticalSlice />);
+createRoot(rootEl).render(<HpBurndown result={MOCK_RESULT} />);

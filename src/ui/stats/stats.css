@@ -1,0 +1,98 @@
+/*
+ * The resolved stat block and the combatant nameplate. Every value traces to DESIGN.md;
+ * `../primitives/token-audit.test.ts` re-checks that across the whole area on every run.
+ *
+ * NO HUE. A stat is not damage data, so nothing in this file is coloured (DESIGN.md §1).
+ * Numbers are JetBrains Mono and labels are IBM Plex Sans, per §3, and the table is a hard
+ * 0-radius grid because it is a readout (§5).
+ */
+
+@import '../tokens.css';
+
+.statblock {
+  background: var(--bg-panel);
+  border: var(--border-steel);
+  border-radius: var(--radius-panel);
+  padding: var(--space-4);
+  font-family: var(--font-body);
+  color: var(--text-primary);
+}
+
+/* --------------------------------------------------------------------------
+ * The nameplate — the one place a portrait is full colour (DESIGN.md §9).
+ * -------------------------------------------------------------------------- */
+
+.nameplate {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-block-end: var(--space-4);
+}
+
+.nameplate__role {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: var(--weight-display-medium);
+  font-size: var(--type-eyebrow);
+  line-height: var(--lh-eyebrow);
+  letter-spacing: var(--ls-eyebrow);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.nameplate__name {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: var(--weight-display);
+  font-size: var(--type-display-l);
+  line-height: var(--lh-display-l);
+  color: var(--text-primary);
+}
+
+.nameplate__level {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-weight: var(--weight-num);
+  font-size: var(--type-num-s);
+  line-height: var(--lh-num-s);
+  color: var(--text-secondary);
+}
+
+/* --------------------------------------------------------------------------
+ * The readout. Dense on purpose (DESIGN.md §0): table cell padding is --space-2 vertical /
+ * --space-3 horizontal, which is §4's stated default.
+ * -------------------------------------------------------------------------- */
+
+.statblock__table {
+  border-collapse: collapse;
+  inline-size: 100%;
+}
+
+.statblock__table th,
+.statblock__table td {
+  text-align: left;
+  padding: var(--space-2) var(--space-3);
+  border-block-end: var(--border-hair);
+  border-radius: var(--radius-cell);
+}
+
+.statblock__table th {
+  font-family: var(--font-body);
+  font-size: var(--type-body-m);
+  line-height: var(--lh-body-m);
+  font-weight: var(--weight-body);
+  color: var(--text-secondary);
+}
+
+.statblock__table td {
+  text-align: right;
+}
+
+.statblock__value {
+  font-family: var(--font-mono);
+  font-size: var(--type-num-m);
+  line-height: var(--lh-num-m);
+  font-weight: var(--weight-num);
+  color: var(--text-primary);
+  white-space: nowrap;
+}

@@ -1,0 +1,187 @@
+// THE RESOLVED STAT BLOCK — what a champion actually is when the combo begins.
+//
+// SPECIFICATION §2, step 9: "the simulator returns the full computed stat block for both
+// champions". Full means full: this prints every field of the frozen `StatBlock`
+// (src/types/result.ts), including the ones that are zero. A stat that is absent from the
+// screen is indistinguishable from a stat that was never modelled, and this product's whole
+// claim is that a reader can tell those apart.
+//
+// TWO SPLITS ARE SHOWN, NOT COLLAPSED, because the engine needs both halves and so does the
+// reader:
+//   • armor and magic resistance are printed as total AND base + bonus, because percentage
+//     BONUS penetration applies to the bonus portion alone (src/types/result.ts) — a single
+//     total makes that effect unmodellable, and hiding the split hides why.
+//   • attack damage is printed as base + bonus + total for the same reason.
+//
+// NOTHING HERE IS A DAMAGE FIGURE. Armor is not damage, attack damage is not damage dealt, and
+// none of these carries a P/M/T tag — the tag says what RESISTANCE a figure was measured
+// against, and a stat has not been measured against anything. `DamageValue` is deliberately
+// not used in this file; the one place a tag belongs in a stat block is nowhere.
+
+import type { StatBlock } from '../../types';
+import { formatDamage } from '../primitives';
+import { ChampionPortrait } from '../art/ChampionPortrait';
+import './stats.css';
+
+/**
+ * Group thousands the way every other number in the product does.
+ *
+ * This delegates to the primitive rather than reimplementing the rule — two implementations of
+ * thousands grouping are two chances for the same number to be printed two ways. It never
+ * rounds, for the same reason the primitive never rounds: rounding happens once, in the engine.
+ */
+function formatStat(value: number): string {
+  return formatDamage(value);
+}
+
+/** A 0..1 fraction as a percentage, e.g. 0.5 → "50%", 0.125 → "12.5%". */
+export function formatPercent(fraction: number): string {
+  return `${Math.round(fraction * 1000) / 10}%`;
+}
+
+export interface CombatantNameplateProps {
+  /** "Attacker" or "Defender" — the role, spoken before the name. */
+  role: string;
+  championName: string;
+  /** Full Data Dragon portrait URL, or null when no champion is chosen yet. */
+  portraitSrc: string | null;
+  level: number;
+}
+
+/**
+ * The 64px nameplate for one of the two combatants (DESIGN.md §9).
+ *
+ * This is the ONE place a portrait is shown in full colour: §9 resolves portraits to full
+ * colour "only for the two active combatants", and gives the active one a 2px bone border.
+ * Everywhere else — picker rows, lists — stays desaturated.
+ */
+export function CombatantNameplate({
+  role,
+  championName,
+  portraitSrc,
+  level,
+}: CombatantNameplateProps) {
+  return (
+    <div className="nameplate">
+      {portraitSrc ? (
+        <ChampionPortrait
+          src={portraitSrc}
+          name={championName}
+          size="nameplate"
+          active
+          decorative
+        />
+      ) : null}
+      <div>
+        <p className="nameplate__role" aria-hidden="true">
+          {role}
+        </p>
+        <p className="nameplate__name" aria-hidden="true">
+          {championName}
+        </p>
+        <p className="nameplate__level" aria-hidden="true">
+          Level {level}
+        </p>
+        {/* One text node, so nothing is announced run together. */}
+        <span className="u-visually-hidden">{`${role}: ${championName}, level ${level}`}</span>
+      </div>
+    </div>
+  );
+}
+
+export interface StatBlockPanelProps {
+  role: string;
+  championName: string;
+  portraitSrc: string | null;
+  stats: StatBlock;
+}
+
+interface Row {
+  label: string;
+  value: string;
+  /** Spoken instead of `value` where the printed form would be read badly. */
+  spoken?: string;
+}
+
+/** Every row of the block, in one place, so the table and its tests read the same list. */
+export function statRows(stats: StatBlock): Row[] {
+  const p = stats.penetration;
+  return [
+    {
+      label: 'Health',
+      value: `${formatStat(stats.hp)} / ${formatStat(stats.maxHp)}`,
+      spoken: `${stats.hp} of ${stats.maxHp} maximum`,
+    },
+    {
+      label: 'Armor',
+      value: `${formatStat(stats.armor)} (${formatStat(stats.armorBase)} + ${formatStat(stats.armorBonus)})`,
+      spoken: `${stats.armor}, ${stats.armorBase} base plus ${stats.armorBonus} bonus`,
+    },
+    {
+      label: 'Magic resist',
+      value: `${formatStat(stats.magicResist)} (${formatStat(stats.magicResistBase)} + ${formatStat(stats.magicResistBonus)})`,
+      spoken: `${stats.magicResist}, ${stats.magicResistBase} base plus ${stats.magicResistBonus} bonus`,
+    },
+    {
+      label: 'Attack damage',
+      value: `${formatStat(stats.attackDamage.total)} (${formatStat(stats.attackDamage.base)} + ${formatStat(stats.attackDamage.bonus)})`,
+      spoken: `${stats.attackDamage.total}, ${stats.attackDamage.base} base plus ${stats.attackDamage.bonus} bonus`,
+    },
+    { label: 'Ability power', value: formatStat(stats.abilityPower) },
+    { label: 'Critical strike chance', value: formatPercent(stats.critChance) },
+    {
+      label: 'Critical strike damage',
+      value: `×${stats.critDamage}`,
+      spoken: `${stats.critDamage} times normal damage`,
+    },
+    { label: 'Attack speed', value: formatStat(stats.attackSpeed) },
+    {
+      label: 'Adaptive force',
+      value: stats.adaptiveType === 'physical' ? 'Physical' : 'Magic',
+    },
+    { label: 'Armor penetration, flat', value: formatStat(p.flatArmor) },
+    { label: 'Armor penetration, percent', value: formatPercent(p.percentArmor) },
+    { label: 'Bonus armor penetration, percent', value: formatPercent(p.percentBonusArmor) },
+    { label: 'Magic penetration, flat', value: formatStat(p.flatMagic) },
+    { label: 'Magic penetration, percent', value: formatPercent(p.percentMagic) },
+  ];
+}
+
+export function StatBlockPanel({
+  role,
+  championName,
+  portraitSrc,
+  stats,
+}: StatBlockPanelProps) {
+  const rows = statRows(stats);
+
+  return (
+    <section className="statblock" aria-label={`${role} stat block — ${championName}`}>
+      <CombatantNameplate
+        role={role}
+        championName={championName}
+        portraitSrc={portraitSrc}
+        level={stats.level}
+      />
+
+      <table className="statblock__table">
+        <caption className="u-visually-hidden">
+          {`${championName}'s resolved statistics at level ${stats.level}, as the combo begins`}
+        </caption>
+        <tbody>
+          {rows.map((row) => (
+            <tr key={row.label}>
+              <th scope="row">{row.label}</th>
+              <td>
+                <span className="statblock__value" aria-hidden="true">
+                  {row.value}
+                </span>
+                <span className="u-visually-hidden">{row.spoken ?? row.value}</span>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </section>
+  );
+}

@@ -1,0 +1,46 @@
+/*
+ * One combatant's configuration panel. Every value traces to DESIGN.md;
+ * `../primitives/token-audit.test.ts` re-checks that across the area on every run.
+ *
+ * NO HUE — a configuration control is not damage data (DESIGN.md §1).
+ */
+
+@import '../tokens.css';
+
+.config {
+  background: var(--bg-panel);
+  border: var(--border-steel);
+  border-radius: var(--radius-panel);
+  padding: var(--space-4); /* DESIGN.md §4 — panel inner padding */
+  font-family: var(--font-body);
+  color: var(--text-primary);
+}
+
+/* DESIGN.md §4 — "default gap between fields" is --space-4. */
+.config__fields {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  margin-block-start: var(--space-4);
+}
+
+.config__eyebrow {
+  margin: var(--space-5) 0 var(--space-2);
+  font-family: var(--font-display);
+  font-weight: var(--weight-display-medium);
+  font-size: var(--type-eyebrow);
+  line-height: var(--lh-eyebrow);
+  letter-spacing: var(--ls-eyebrow);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.config__missing {
+  margin: 0;
+  padding-inline-start: var(--space-4);
+  font-family: var(--font-body);
+  font-size: var(--type-body-m);
+  line-height: var(--lh-body-m);
+  font-weight: var(--weight-body);
+  color: var(--text-secondary);
+}

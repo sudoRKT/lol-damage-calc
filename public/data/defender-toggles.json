@@ -1,0 +1,2013 @@
+{
+  "provenance": {
+    "source": "build/proposed-curated/defensive-census.json (DATA-SOURCES §40) joined to public/data/champions.json. No network fetch: both inputs are already-recorded measurements, and this file re-counts them per champion.",
+    "patch": "16.16.1",
+    "fetched": "2026-08-13T20:49:35.928Z",
+    "inputs": {
+      "defensiveCensusGeneratedOn": "2026-08-13",
+      "abilityWikitextFetchedOn": "2026-08-13",
+      "rosterPatch": "16.16.1"
+    }
+  },
+  "whatThisIs": "A MEASUREMENT AND A PROPOSAL, not an interface. src/ui/ belongs to another area and nothing here draws anything. The measurement answers one question: with one champion chosen as the defender, how many controls does the panel have to show?",
+  "definitions": {
+    "toggle": "ONE TOGGLE IS ONE CONDITIONAL DEFENSIVE ABILITY OF THE CHOSEN DEFENDER. The unit is the ability rather than the kind, because Garen W states ONE condition and grants damage reduction, resistances and a shield together — a user answers one question. Always-active effects are not toggles (they resolve into the stat block). `not-stated` effects are not toggles either (they are refused, and a refusal is not a control). Entries whose only kind is a bonus-maximum-health grant are excluded, as §40 excludes them, because they change the survival verdict rather than damage received.",
+    "populationMeasuredOver": "ALL 173 champions in the roster, including the ones with no defensive effect at all. Measuring only champions that appear in the census would describe the champions who have toggles, not the champions a user can pick, and would move the median.",
+    "upperBound": "The figures are a CEILING: a defender at level 18 with every ability ranked. An unranked ability is not a control, so a level-6 defender shows fewer. A panel has to be designed for the ceiling.",
+    "notMeasuredHere": "Item and rune defensive effects. DATA-SOURCES §37.2 counts 60 conditional damage-relevant item and rune effects, and none of them is in this figure. They are bounded by the six items a defender actually carries rather than by the 209-item pool, but NOBODY HAS MEASURED THAT and it is not measured here."
+  },
+  "measurement": {
+    "acrossTheWholeRoster": {
+      "abilityPages": 937,
+      "confirmedDefensiveEffects": 226,
+      "conditional": 217,
+      "alwaysActive": 7,
+      "notStated": 2,
+      "togglesUnderThisDefinition": 212
+    },
+    "perChampionByAbility": {
+      "champions": 173,
+      "min": 0,
+      "median": 1,
+      "mean": 1.225,
+      "max": 4,
+      "histogram": {
+        "0": 42,
+        "1": 76,
+        "2": 36,
+        "3": 12,
+        "4": 7
+      },
+      "worstCase": [
+        "Briar",
+        "Dr. Mundo",
+        "Nilah",
+        "Olaf",
+        "Trundle",
+        "Warwick",
+        "Yuumi"
+      ],
+      "withNone": 42
+    },
+    "perChampionByKind": {
+      "champions": 173,
+      "min": 0,
+      "median": 1,
+      "mean": 1.509,
+      "max": 6,
+      "histogram": {
+        "0": 42,
+        "1": 60,
+        "2": 36,
+        "3": 20,
+        "4": 9,
+        "5": 3,
+        "6": 3
+      },
+      "worstCase": [
+        "Briar",
+        "Nilah",
+        "Yuumi"
+      ],
+      "withNone": 42
+    },
+    "notInRoster": []
+  },
+  "allyCandidates": {
+    "whatThisIs": "REPORTED, NEVER APPLIED. A two-champion scenario has no ally, so an ability that only ever protects somebody else cannot change the defender's own survival. The census DOES NOT RECORD self-versus-ally, which is the finding. This counts the toggles whose page mentions an ally anywhere — a candidate list for someone to read, with a known over-fire: Braum E shields Braum and the allies behind him, and Nilah's ultimate heals her with it. No figure above is reduced by this number.",
+    "count": 62,
+    "ofToggles": 212,
+    "byChampion": {
+      "Braum": 2,
+      "Nilah": 3,
+      "Hecarim": 1,
+      "Orianna": 1,
+      "Ornn": 1,
+      "Taric": 3,
+      "Thresh": 2,
+      "Annie": 1,
+      "Galio": 1,
+      "Hwei": 1,
+      "Ivern": 1,
+      "Janna": 2,
+      "K'Sante": 1,
+      "Karma": 2,
+      "Kled": 1,
+      "Lulu": 1,
+      "Lux": 1,
+      "Mel": 1,
+      "Milio": 3,
+      "Morgana": 1,
+      "Rakan": 2,
+      "Renata Glasc": 2,
+      "Senna": 3,
+      "Seraphine": 1,
+      "Shen": 2,
+      "Sona": 1,
+      "Tahm Kench": 1,
+      "Yuumi": 4,
+      "Bard": 2,
+      "Kayle": 2,
+      "Kindred": 1,
+      "Sion": 1,
+      "Zilean": 1,
+      "Alistar": 1,
+      "Fiora": 1,
+      "Kayn": 1,
+      "Mordekaiser": 1,
+      "Nami": 1,
+      "Nidalee": 1,
+      "Soraka": 3
+    },
+    "entries": [
+      "Braum/E/Unbreakable",
+      "Nilah/W/Jubilant Veil",
+      "Braum/W/Stand Behind Me",
+      "Hecarim/W/Spirit of Dread",
+      "Orianna/E/Command: Protect",
+      "Ornn/P/Living Forge",
+      "Taric/W/Bastion",
+      "Thresh/P/Damnation",
+      "Annie/E/Molten Shield",
+      "Galio/R/Hero's Entrance",
+      "Hwei/W/Pool of Reflection",
+      "Ivern/E/Triggerseed",
+      "Janna/E/Eye of the Storm",
+      "K'Sante/E/Footwork",
+      "Karma/E/Inspire",
+      "Karma/E/Defiance",
+      "Kled/R/Chaaaaaaaarge!!!",
+      "Lulu/E/Help, Pix!",
+      "Lux/W/Prismatic Barrier",
+      "Mel/W/Rebuttal",
+      "Milio/E/Warm Hugs",
+      "Morgana/E/Black Shield",
+      "Rakan/E/Battle Dance",
+      "Renata Glasc/E/Loyalty Program",
+      "Senna/R/Dawning Shadow",
+      "Seraphine/W/Surround Sound",
+      "Shen/P/Ki Barrier",
+      "Shen/R/Stand United",
+      "Sona/W/Aria of Perseverance",
+      "Tahm Kench/R/Devour",
+      "Thresh/W/Dark Passage",
+      "Yuumi/E/Zoomies",
+      "Yuumi/R/Final Chapter",
+      "Bard/R/Tempered Fate",
+      "Kayle/R/Divine Judgment",
+      "Kindred/R/Lamb's Respite",
+      "Sion/P/Glory in Death",
+      "Taric/R/Cosmic Radiance",
+      "Zilean/R/Chronoshift",
+      "Renata Glasc/W/Bailout",
+      "Alistar/P/Triumphant Roar",
+      "Bard/W/Caretaker's Shrine",
+      "Fiora/R/Grand Challenge",
+      "Janna/R/Monsoon",
+      "Kayle/W/Celestial Blessing",
+      "Kayn/E/Shadow Step",
+      "Milio/W/Cozy Campfire",
+      "Milio/R/Breath of Life",
+      "Mordekaiser/R/Realm of Death",
+      "Nami/W/Ebb and Flow",
+      "Nidalee/E/Primal Surge",
+      "Nilah/P/Joy Unending",
+      "Nilah/R/Apotheosis",
+      "Rakan/Q/Gleaming Quill",
+      "Senna/P/Absolution",
+      "Senna/Q/Piercing Darkness",
+      "Soraka/Q/Starcall",
+      "Soraka/W/Astral Infusion",
+      "Soraka/R/Wish",
+      "Taric/Q/Starlight's Touch",
+      "Yuumi/P/Feline Friendship",
+      "Yuumi/W/You and Me!"
+    ]
+  },
+  "findings": [
+    "DATA-SOURCES §40.1 concludes \"the defender panel needs on the order of 200 controls, not a handful\". THE ROSTER-WIDE FIGURE IS RIGHT AND THE CONCLUSION DOES NOT FOLLOW: a scenario has one defender, and the maximum any single champion reaches is 4, the median is 1, and 42 of 173 champions have none."
+  ],
+  "proposal": {
+    "theProblemIsNotWhatItLookedLike": "A control count of 210 across the roster and a control count of at most 4 for the champion actually selected are different design problems, and only the second one exists. 42 of 173 champions have no conditional defensive effect at all; the median champion has one; the worst case is four. Nothing here needs search, grouping, an accordion, a second screen or an \"advanced\" section — every one of those is machinery for a list that never gets long.",
+    "theControl": [
+      "ONE ROW PER CONDITIONAL DEFENSIVE ABILITY, in the ability-slot order the user already knows from the game (P, Q, W, E, R) rather than grouped by kind. A row carries the ability icon (Data Dragon, per CLAUDE.md), the ability name, the condition IN THE SOURCE'S OWN WORDS, and one on/off control.",
+      "THE CONDITION IS THE LABEL. \"Is Unbreakable Will active?\" is a question a player can answer. \"Damage reduction\" is a category, and asking a user to classify their own champion's ability is asking them to do the census's job.",
+      "NO NUMBER IS ENTERED BY HAND where the source states one. A shield that scales with rank and ability power is computed from the defender's already-configured level, ability ranks and items, so the control stays a checkbox and the value is shown beside it rather than typed."
+    ],
+    "theDefaultIsOff": "Every toggle starts off, and the reason is the same one that fixes the default hit count to the minimum (DATA-SOURCES §38): any other default asserts a defensive action the user never stated. A toggle silently on understates the damage the attacker deals, which is the exact failure mode this product exists to prevent — a plausible wrong number nobody can see is wrong. The result already reports the verdict twice for damage over time; it should say which toggles were on when it computed the one it shows.",
+    "theThreeStatesAreShownDIFFERENTLY": [
+      "CONDITIONAL (up to 4 rows) — a real control the user answers.",
+      "ALWAYS-ACTIVE (6 abilities across the whole roster: Fizz P, Amumu E, Aatrox E, Gwen P, Morgana P, Nasus P) — NOT a control. It resolves into the defender's stat block, and it belongs in the stat readout as a read-only line saying why the number differs from the champion's base figures. A user who cannot see it will think the engine is wrong.",
+      "NOT-STATED (2 abilities: Xin Zhao R, Kayn P) — a DISABLED row that says the effect cannot be modelled and why, in the source's terms (\"the condition is a distance\"; \"a location outside combat\"). Never an unchecked box: an unchecked box says \"you could turn this on\", and this one can never be turned on. SPECIFICATION §8 requires the same distinction for abilities, between \"not yet modelled\" and \"cannot be completed\"."
+    ],
+    "theEmptyStateIsExplicit": "42 of 173 champions have no conditional defensive effect. Those defenders show a single line saying so — \"this champion's kit states no conditional defensive effect\" — not a blank area. A blank area is indistinguishable from a panel that failed to load.",
+    "whatIsStillOpenAndBlocksThis": [
+      "SELF VERSUS ALLY IS NOT RECORDED ANYWHERE. 62 of the 212 toggles sit on a page that mentions an ally. A two-champion scenario has no ally, so some of those cannot change the defender's own survival at all — and as things stand a Milio defender would be shown three controls that may do nothing. This has to be read before the panel ships, and it is a reading of sentences rather than a pattern, because Braum E protects Braum AND his allies while Milio E protects only the ally.",
+      "ITEM AND RUNE DEFENSIVE EFFECTS ARE NOT IN THIS MEASUREMENT. §37.2 counts 60 conditional damage-relevant item and rune effects. A defender carries six items, so the per-scenario count is again small — but that is an expectation, not a measurement, and nobody has taken it.",
+      "THE VALUES BEHIND THE TOGGLES ARE NOT EXTRACTED. §40.2 measures 103 of 218 as readable, 93 hard, 5 stated only by reference and 17 with no value at all. A toggle that turns on an effect whose size nothing knows is a control with no consequence."
+    ]
+  },
+  "togglesByChampion": {
+    "Aatrox": [
+      {
+        "ability": "Aatrox/P/Deathbringer Stance",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "prose"
+      },
+      {
+        "ability": "Aatrox/R/World Ender",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "row"
+      }
+    ],
+    "Ahri": [
+      {
+        "ability": "Ahri/P/Essence Theft",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "prose"
+      }
+    ],
+    "Akshan": [
+      {
+        "ability": "Akshan/P/Dirty Fighting",
+        "kinds": [
+          "shield"
+        ],
+        "statesAValue": "prose"
+      }
+    ],
+    "Alistar": [
+      {
+        "ability": "Alistar/R/Unbreakable Will",
+        "kinds": [
+          "damage-reduction"
+        ],
+        "statesAValue": "row"
+      },
+      {
+        "ability": "Alistar/P/Triumphant Roar",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "prose"
+      }
+    ],
+    "Ambessa": [
+      {
+        "ability": "Ambessa/W/Repudiation",
+        "kinds": [
+          "shield"
+        ],
+        "statesAValue": "prose"
+      },
+      {
+        "ability": "Ambessa/R/Public Execution",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "row"
+      }
+    ],
+    "Anivia": [
+      {
+        "ability": "Anivia/P/Rebirth",
+        "kinds": [
+          "resistance-grant",
+          "execute-threshold",
+          "immunity",
+          "heal"
+        ],
+        "statesAValue": "prose"
+      }
+    ],
+    "Annie": [
+      {
+        "ability": "Annie/E/Molten Shield",
+        "kinds": [
+          "shield"
+        ],
+        "statesAValue": "row"
+      }
+    ],
+    "Aphelios": [
+      {
+        "ability": "Aphelios/P/Severum",
+        "kinds": [
+          "shield",
+          "heal"
+        ],
+        "statesAValue": "prose"
+      },
+      {
+        "ability": "Aphelios/R/Moonlight Vigil",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "prose"
+      }
+    ],
+    "Aurora": [
+      {
+        "ability": "Aurora/P/Spirit Abjuration",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "prose"
+      }
+    ],
+    "Azir": [
+      {
+        "ability": "Azir/E/Shifting Sands",
+        "kinds": [
+          "shield"
+        ],
+        "statesAValue": "row"
+      }
+    ],
+    "Bard": [
+      {
+        "ability": "Bard/R/Tempered Fate",
+        "kinds": [
+          "immunity"
+        ],
+        "statesAValue": "by-reference"
+      },
+      {
+        "ability": "Bard/W/Caretaker's Shrine",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "row"
+      }
+    ],
+    "Bel'Veth": [
+      {
+        "ability": "Bel'Veth/E/Royal Maelstrom",
+        "kinds": [
+          "damage-reduction",
+          "heal"
+        ],
+        "statesAValue": "row"
+      },
+      {
+        "ability": "Bel'Veth/R/Endless Banquet",
+        "kinds": [
+          "health-grant",
+          "heal"
+        ],
+        "statesAValue": "row"
+      }
+    ],
+    "Blitzcrank": [
+      {
+        "ability": "Blitzcrank/P/Mana Barrier",
+        "kinds": [
+          "shield"
+        ],
+        "statesAValue": "prose"
+      }
+    ],
+    "Braum": [
+      {
+        "ability": "Braum/E/Unbreakable",
+        "kinds": [
+          "damage-reduction"
+        ],
+        "statesAValue": "row"
+      },
+      {
+        "ability": "Braum/W/Stand Behind Me",
+        "kinds": [
+          "resistance-grant"
+        ],
+        "statesAValue": "row"
+      }
+    ],
+    "Briar": [
+      {
+        "ability": "Briar/E/Chilling Scream",
+        "kinds": [
+          "damage-reduction",
+          "heal"
+        ],
+        "statesAValue": "row"
+      },
+      {
+        "ability": "Briar/R/Certain Death",
+        "kinds": [
+          "resistance-grant",
+          "heal"
+        ],
+        "statesAValue": "row"
+      },
+      {
+        "ability": "Briar/P/Crimson Curse",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "prose"
+      },
+      {
+        "ability": "Briar/W/Snack Attack",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "row"
+      }
+    ],
+    "Camille": [
+      {
+        "ability": "Camille/P/Adaptive Defenses",
+        "kinds": [
+          "shield",
+          "type-specific-reduction"
+        ],
+        "statesAValue": "prose"
+      },
+      {
+        "ability": "Camille/W/Tactical Sweep",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "prose"
+      }
+    ],
+    "Cassiopeia": [
+      {
+        "ability": "Cassiopeia/E/Twin Fang",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "row"
+      }
+    ],
+    "Cho'Gath": [
+      {
+        "ability": "Cho'Gath/P/Carnivore",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "prose"
+      }
+    ],
+    "Darius": [
+      {
+        "ability": "Darius/Q/Decimate",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "prose"
+      }
+    ],
+    "Diana": [
+      {
+        "ability": "Diana/W/Pale Cascade",
+        "kinds": [
+          "shield"
+        ],
+        "statesAValue": "row"
+      }
+    ],
+    "Dr. Mundo": [
+      {
+        "ability": "Dr. Mundo/R/Maximum Dosage",
+        "kinds": [
+          "health-grant",
+          "heal"
+        ],
+        "statesAValue": "prose"
+      },
+      {
+        "ability": "Dr. Mundo/P/Goes Where He Pleases",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "prose"
+      },
+      {
+        "ability": "Dr. Mundo/Q/Infected Bonesaw",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "prose"
+      },
+      {
+        "ability": "Dr. Mundo/W/Heart Zapper",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "prose"
+      }
+    ],
+    "Ekko": [
+      {
+        "ability": "Ekko/W/Parallel Convergence",
+        "kinds": [
+          "shield"
+        ],
+        "statesAValue": "row"
+      },
+      {
+        "ability": "Ekko/R/Chronobreak",
+        "kinds": [
+          "immunity",
+          "heal"
+        ],
+        "statesAValue": "row"
+      }
+    ],
+    "Elise": [
+      {
+        "ability": "Elise/P/Spider Queen",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "prose"
+      }
+    ],
+    "Evelynn": [
+      {
+        "ability": "Evelynn/P/Demon Shade",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "prose"
+      }
+    ],
+    "Fiddlesticks": [
+      {
+        "ability": "Fiddlesticks/W/Bountiful Harvest",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "prose"
+      }
+    ],
+    "Fiora": [
+      {
+        "ability": "Fiora/P/Duelist's Dance",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "prose"
+      },
+      {
+        "ability": "Fiora/R/Grand Challenge",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "row"
+      }
+    ],
+    "Galio": [
+      {
+        "ability": "Galio/W/Shield of Durand",
+        "kinds": [
+          "type-specific-reduction",
+          "shield"
+        ],
+        "statesAValue": "row"
+      },
+      {
+        "ability": "Galio/R/Hero's Entrance",
+        "kinds": [
+          "shield"
+        ],
+        "statesAValue": "prose"
+      }
+    ],
+    "Gangplank": [
+      {
+        "ability": "Gangplank/W/Remove Scurvy",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "row"
+      }
+    ],
+    "Garen": [
+      {
+        "ability": "Garen/W/Courage",
+        "kinds": [
+          "damage-reduction",
+          "resistance-grant",
+          "shield"
+        ],
+        "statesAValue": "row"
+      },
+      {
+        "ability": "Garen/P/Perseverance",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "prose"
+      }
+    ],
+    "Gragas": [
+      {
+        "ability": "Gragas/W/Drunken Rage",
+        "kinds": [
+          "damage-reduction"
+        ],
+        "statesAValue": "row"
+      },
+      {
+        "ability": "Gragas/P/Happy Hour",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "prose"
+      }
+    ],
+    "Graves": [
+      {
+        "ability": "Graves/E/Quickdraw",
+        "kinds": [
+          "resistance-grant"
+        ],
+        "statesAValue": "row"
+      }
+    ],
+    "Gwen": [
+      {
+        "ability": "Gwen/W/Hallowed Mist",
+        "kinds": [
+          "resistance-grant"
+        ],
+        "statesAValue": "row"
+      }
+    ],
+    "Hecarim": [
+      {
+        "ability": "Hecarim/W/Spirit of Dread",
+        "kinds": [
+          "resistance-grant",
+          "heal"
+        ],
+        "statesAValue": "row"
+      }
+    ],
+    "Hwei": [
+      {
+        "ability": "Hwei/W/Pool of Reflection",
+        "kinds": [
+          "shield"
+        ],
+        "statesAValue": "row"
+      }
+    ],
+    "Illaoi": [
+      {
+        "ability": "Illaoi/P/Prophet of an Elder God",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "prose"
+      }
+    ],
+    "Irelia": [
+      {
+        "ability": "Irelia/W/Defiant Dance",
+        "kinds": [
+          "damage-reduction"
+        ],
+        "statesAValue": "none"
+      },
+      {
+        "ability": "Irelia/Q/Bladesurge",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "row"
+      }
+    ],
+    "Ivern": [
+      {
+        "ability": "Ivern/E/Triggerseed",
+        "kinds": [
+          "shield"
+        ],
+        "statesAValue": "row"
+      }
+    ],
+    "Janna": [
+      {
+        "ability": "Janna/E/Eye of the Storm",
+        "kinds": [
+          "shield"
+        ],
+        "statesAValue": "row"
+      },
+      {
+        "ability": "Janna/R/Monsoon",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "row"
+      }
+    ],
+    "Jarvan IV": [
+      {
+        "ability": "Jarvan IV/W/Golden Aegis",
+        "kinds": [
+          "shield"
+        ],
+        "statesAValue": "row"
+      }
+    ],
+    "Jax": [
+      {
+        "ability": "Jax/E/Counter Strike",
+        "kinds": [
+          "damage-reduction",
+          "immunity"
+        ],
+        "statesAValue": "prose"
+      },
+      {
+        "ability": "Jax/R/Grandmaster-at-Arms",
+        "kinds": [
+          "resistance-grant"
+        ],
+        "statesAValue": "row"
+      }
+    ],
+    "Jayce": [
+      {
+        "ability": "Jayce/R/Transform Mercury Hammer",
+        "kinds": [
+          "resistance-grant"
+        ],
+        "statesAValue": "prose"
+      }
+    ],
+    "K'Sante": [
+      {
+        "ability": "K'Sante/W/Path Maker",
+        "kinds": [
+          "damage-reduction"
+        ],
+        "statesAValue": "prose"
+      },
+      {
+        "ability": "K'Sante/R/All Out",
+        "kinds": [
+          "resistance-grant",
+          "execute-threshold",
+          "heal"
+        ],
+        "statesAValue": "prose"
+      },
+      {
+        "ability": "K'Sante/E/Footwork",
+        "kinds": [
+          "shield"
+        ],
+        "statesAValue": "row"
+      }
+    ],
+    "Kai'Sa": [
+      {
+        "ability": "Kai'Sa/R/Killer Instinct",
+        "kinds": [
+          "shield"
+        ],
+        "statesAValue": "row"
+      }
+    ],
+    "Kalista": [
+      {
+        "ability": "Kalista/R/Fate's Call",
+        "kinds": [
+          "immunity"
+        ],
+        "statesAValue": "none"
+      }
+    ],
+    "Karma": [
+      {
+        "ability": "Karma/E/Inspire",
+        "kinds": [
+          "shield"
+        ],
+        "statesAValue": "row"
+      },
+      {
+        "ability": "Karma/E/Defiance",
+        "kinds": [
+          "shield"
+        ],
+        "statesAValue": "none"
+      },
+      {
+        "ability": "Karma/W/Renewal",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "prose"
+      }
+    ],
+    "Karthus": [
+      {
+        "ability": "Karthus/P/Death Defied",
+        "kinds": [
+          "immunity"
+        ],
+        "statesAValue": "none"
+      }
+    ],
+    "Kassadin": [
+      {
+        "ability": "Kassadin/Q/Null Sphere",
+        "kinds": [
+          "shield"
+        ],
+        "statesAValue": "row"
+      }
+    ],
+    "Kayle": [
+      {
+        "ability": "Kayle/R/Divine Judgment",
+        "kinds": [
+          "immunity"
+        ],
+        "statesAValue": "none"
+      },
+      {
+        "ability": "Kayle/W/Celestial Blessing",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "row"
+      }
+    ],
+    "Kayn": [
+      {
+        "ability": "Kayn/E/Shadow Step",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "row"
+      },
+      {
+        "ability": "Kayn/R/Umbral Trespass",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "prose"
+      }
+    ],
+    "Kennen": [
+      {
+        "ability": "Kennen/R/Slicing Maelstrom",
+        "kinds": [
+          "resistance-grant"
+        ],
+        "statesAValue": "row"
+      }
+    ],
+    "Kha'Zix": [
+      {
+        "ability": "Kha'Zix/W/Void Spike",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "row"
+      }
+    ],
+    "Kindred": [
+      {
+        "ability": "Kindred/R/Lamb's Respite",
+        "kinds": [
+          "immunity",
+          "execute-threshold",
+          "heal"
+        ],
+        "statesAValue": "row"
+      },
+      {
+        "ability": "Kindred/W/Wolf's Frenzy",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "prose"
+      }
+    ],
+    "Kled": [
+      {
+        "ability": "Kled/P/Dismounted Skaarl the Cowardly Lizard",
+        "kinds": [
+          "resistance-grant"
+        ],
+        "statesAValue": "prose"
+      },
+      {
+        "ability": "Kled/R/Chaaaaaaaarge!!!",
+        "kinds": [
+          "shield"
+        ],
+        "statesAValue": "row"
+      }
+    ],
+    "Kog'Maw": [
+      {
+        "ability": "Kog'Maw/P/Icathian Surprise",
+        "kinds": [
+          "immunity"
+        ],
+        "statesAValue": "none"
+      }
+    ],
+    "Lee Sin": [
+      {
+        "ability": "Lee Sin/W/Safeguard",
+        "kinds": [
+          "shield"
+        ],
+        "statesAValue": "row"
+      },
+      {
+        "ability": "Lee Sin/W/Iron Will",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "none"
+      }
+    ],
+    "Leona": [
+      {
+        "ability": "Leona/W/Eclipse",
+        "kinds": [
+          "damage-reduction",
+          "resistance-grant"
+        ],
+        "statesAValue": "row"
+      }
+    ],
+    "Lillia": [
+      {
+        "ability": "Lillia/P/Dream-Laden Bough",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "prose"
+      }
+    ],
+    "Lissandra": [
+      {
+        "ability": "Lissandra/R/Frozen Tomb",
+        "kinds": [
+          "immunity",
+          "heal"
+        ],
+        "statesAValue": "row"
+      }
+    ],
+    "Locke": [
+      {
+        "ability": "Locke/W/Soul Ignition",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "by-reference"
+      }
+    ],
+    "Lulu": [
+      {
+        "ability": "Lulu/E/Help, Pix!",
+        "kinds": [
+          "shield"
+        ],
+        "statesAValue": "row"
+      }
+    ],
+    "Lux": [
+      {
+        "ability": "Lux/W/Prismatic Barrier",
+        "kinds": [
+          "shield"
+        ],
+        "statesAValue": "row"
+      }
+    ],
+    "Malphite": [
+      {
+        "ability": "Malphite/W/Thunderclap",
+        "kinds": [
+          "resistance-grant"
+        ],
+        "statesAValue": "row"
+      },
+      {
+        "ability": "Malphite/P/Granite Shield",
+        "kinds": [
+          "shield"
+        ],
+        "statesAValue": "prose"
+      }
+    ],
+    "Malzahar": [
+      {
+        "ability": "Malzahar/P/Void Shift",
+        "kinds": [
+          "damage-reduction"
+        ],
+        "statesAValue": "prose"
+      }
+    ],
+    "Maokai": [
+      {
+        "ability": "Maokai/P/Sap Magic",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "prose"
+      }
+    ],
+    "Master Yi": [
+      {
+        "ability": "Master Yi/W/Meditate",
+        "kinds": [
+          "damage-reduction",
+          "heal"
+        ],
+        "statesAValue": "row"
+      }
+    ],
+    "Mel": [
+      {
+        "ability": "Mel/W/Rebuttal",
+        "kinds": [
+          "shield",
+          "spell-shield"
+        ],
+        "statesAValue": "row"
+      }
+    ],
+    "Milio": [
+      {
+        "ability": "Milio/E/Warm Hugs",
+        "kinds": [
+          "shield"
+        ],
+        "statesAValue": "row"
+      },
+      {
+        "ability": "Milio/W/Cozy Campfire",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "row"
+      },
+      {
+        "ability": "Milio/R/Breath of Life",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "row"
+      }
+    ],
+    "Mordekaiser": [
+      {
+        "ability": "Mordekaiser/W/Indestructible",
+        "kinds": [
+          "shield",
+          "heal"
+        ],
+        "statesAValue": "prose"
+      },
+      {
+        "ability": "Mordekaiser/R/Realm of Death",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "prose"
+      }
+    ],
+    "Morgana": [
+      {
+        "ability": "Morgana/E/Black Shield",
+        "kinds": [
+          "shield"
+        ],
+        "statesAValue": "row"
+      }
+    ],
+    "Naafiri": [
+      {
+        "ability": "Naafiri/R/Hounds' Pursuit",
+        "kinds": [
+          "shield"
+        ],
+        "statesAValue": "row"
+      },
+      {
+        "ability": "Naafiri/Q/Darkin Daggers",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "row"
+      }
+    ],
+    "Nami": [
+      {
+        "ability": "Nami/W/Ebb and Flow",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "row"
+      }
+    ],
+    "Nasus": [
+      {
+        "ability": "Nasus/R/Fury of the Sands",
+        "kinds": [
+          "resistance-grant",
+          "health-grant"
+        ],
+        "statesAValue": "row"
+      }
+    ],
+    "Nautilus": [
+      {
+        "ability": "Nautilus/W/Titan's Wrath",
+        "kinds": [
+          "shield"
+        ],
+        "statesAValue": "row"
+      }
+    ],
+    "Nidalee": [
+      {
+        "ability": "Nidalee/E/Primal Surge",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "row"
+      }
+    ],
+    "Nilah": [
+      {
+        "ability": "Nilah/W/Jubilant Veil",
+        "kinds": [
+          "type-specific-reduction",
+          "immunity"
+        ],
+        "statesAValue": "prose"
+      },
+      {
+        "ability": "Nilah/P/Joy Unending",
+        "kinds": [
+          "heal",
+          "shield"
+        ],
+        "statesAValue": "prose"
+      },
+      {
+        "ability": "Nilah/Q/Formless Blade",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "prose"
+      },
+      {
+        "ability": "Nilah/R/Apotheosis",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "prose"
+      }
+    ],
+    "Nocturne": [
+      {
+        "ability": "Nocturne/W/Shroud of Darkness",
+        "kinds": [
+          "spell-shield"
+        ],
+        "statesAValue": "none"
+      },
+      {
+        "ability": "Nocturne/P/Umbra Blades",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "prose"
+      }
+    ],
+    "Nunu & Willump": [
+      {
+        "ability": "Nunu & Willump/R/Absolute Zero",
+        "kinds": [
+          "shield"
+        ],
+        "statesAValue": "row"
+      },
+      {
+        "ability": "Nunu & Willump/Q/Consume",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "prose"
+      }
+    ],
+    "Olaf": [
+      {
+        "ability": "Olaf/R/Ragnarok",
+        "kinds": [
+          "resistance-grant"
+        ],
+        "statesAValue": "row"
+      },
+      {
+        "ability": "Olaf/W/Tough It Out",
+        "kinds": [
+          "shield"
+        ],
+        "statesAValue": "row"
+      },
+      {
+        "ability": "Olaf/P/Berserker Rage",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "prose"
+      },
+      {
+        "ability": "Olaf/E/Reckless Swing",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "by-reference"
+      }
+    ],
+    "Orianna": [
+      {
+        "ability": "Orianna/E/Command: Protect",
+        "kinds": [
+          "resistance-grant",
+          "shield"
+        ],
+        "statesAValue": "row"
+      }
+    ],
+    "Ornn": [
+      {
+        "ability": "Ornn/P/Living Forge",
+        "kinds": [
+          "resistance-grant",
+          "health-grant"
+        ],
+        "statesAValue": "prose"
+      }
+    ],
+    "Pantheon": [
+      {
+        "ability": "Pantheon/E/Aegis Assault",
+        "kinds": [
+          "resistance-grant",
+          "immunity"
+        ],
+        "statesAValue": "prose"
+      }
+    ],
+    "Poppy": [
+      {
+        "ability": "Poppy/P/Iron Ambassador",
+        "kinds": [
+          "shield"
+        ],
+        "statesAValue": "prose"
+      }
+    ],
+    "Pyke": [
+      {
+        "ability": "Pyke/P/Gift of the Drowned Ones",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "by-reference"
+      }
+    ],
+    "Rakan": [
+      {
+        "ability": "Rakan/P/Fey Feathers",
+        "kinds": [
+          "shield"
+        ],
+        "statesAValue": "prose"
+      },
+      {
+        "ability": "Rakan/E/Battle Dance",
+        "kinds": [
+          "shield"
+        ],
+        "statesAValue": "row"
+      },
+      {
+        "ability": "Rakan/Q/Gleaming Quill",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "prose"
+      }
+    ],
+    "Rammus": [
+      {
+        "ability": "Rammus/W/Defensive Ball Curl",
+        "kinds": [
+          "resistance-grant"
+        ],
+        "statesAValue": "row"
+      }
+    ],
+    "Rek'Sai": [
+      {
+        "ability": "Rek'Sai/P/Fury of the Xer'Sai",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "prose"
+      }
+    ],
+    "Rell": [
+      {
+        "ability": "Rell/P/Break the Mold",
+        "kinds": [
+          "resistance-grant"
+        ],
+        "statesAValue": "none"
+      },
+      {
+        "ability": "Rell/W/Ferromancy: Mount Up",
+        "kinds": [
+          "resistance-grant"
+        ],
+        "statesAValue": "prose"
+      },
+      {
+        "ability": "Rell/W/Ferromancy: Crash Down",
+        "kinds": [
+          "shield"
+        ],
+        "statesAValue": "row"
+      }
+    ],
+    "Renata Glasc": [
+      {
+        "ability": "Renata Glasc/E/Loyalty Program",
+        "kinds": [
+          "shield"
+        ],
+        "statesAValue": "row"
+      },
+      {
+        "ability": "Renata Glasc/W/Bailout",
+        "kinds": [
+          "execute-threshold",
+          "heal"
+        ],
+        "statesAValue": "prose"
+      }
+    ],
+    "Renekton": [
+      {
+        "ability": "Renekton/Q/Cull the Meek",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "row"
+      }
+    ],
+    "Rengar": [
+      {
+        "ability": "Rengar/W/Battle Roar",
+        "kinds": [
+          "heal",
+          "resistance-grant"
+        ],
+        "statesAValue": "prose"
+      }
+    ],
+    "Riven": [
+      {
+        "ability": "Riven/E/Valor",
+        "kinds": [
+          "shield"
+        ],
+        "statesAValue": "row"
+      }
+    ],
+    "Rumble": [
+      {
+        "ability": "Rumble/W/Scrap Shield",
+        "kinds": [
+          "shield"
+        ],
+        "statesAValue": "row"
+      }
+    ],
+    "Sejuani": [
+      {
+        "ability": "Sejuani/P/Fury of the North",
+        "kinds": [
+          "resistance-grant"
+        ],
+        "statesAValue": "prose"
+      }
+    ],
+    "Senna": [
+      {
+        "ability": "Senna/R/Dawning Shadow",
+        "kinds": [
+          "shield"
+        ],
+        "statesAValue": "row"
+      },
+      {
+        "ability": "Senna/P/Absolution",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "prose"
+      },
+      {
+        "ability": "Senna/Q/Piercing Darkness",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "row"
+      }
+    ],
+    "Seraphine": [
+      {
+        "ability": "Seraphine/W/Surround Sound",
+        "kinds": [
+          "shield",
+          "heal"
+        ],
+        "statesAValue": "row"
+      }
+    ],
+    "Sett": [
+      {
+        "ability": "Sett/W/Haymaker",
+        "kinds": [
+          "shield",
+          "heal"
+        ],
+        "statesAValue": "none"
+      },
+      {
+        "ability": "Sett/P/Pit Grit",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "prose"
+      }
+    ],
+    "Shen": [
+      {
+        "ability": "Shen/P/Ki Barrier",
+        "kinds": [
+          "shield"
+        ],
+        "statesAValue": "prose"
+      },
+      {
+        "ability": "Shen/R/Stand United",
+        "kinds": [
+          "shield"
+        ],
+        "statesAValue": "row"
+      }
+    ],
+    "Shyvana": [
+      {
+        "ability": "Shyvana/P/Scalemail",
+        "kinds": [
+          "resistance-grant"
+        ],
+        "statesAValue": "none"
+      },
+      {
+        "ability": "Shyvana/W/Inferno Aegis",
+        "kinds": [
+          "shield",
+          "heal"
+        ],
+        "statesAValue": "row"
+      }
+    ],
+    "Singed": [
+      {
+        "ability": "Singed/R/Insanity Potion",
+        "kinds": [
+          "resistance-grant"
+        ],
+        "statesAValue": "none"
+      }
+    ],
+    "Sion": [
+      {
+        "ability": "Sion/W/Soul Furnace",
+        "kinds": [
+          "shield",
+          "health-grant"
+        ],
+        "statesAValue": "row"
+      },
+      {
+        "ability": "Sion/P/Glory in Death",
+        "kinds": [
+          "immunity",
+          "execute-threshold",
+          "heal"
+        ],
+        "statesAValue": "prose"
+      }
+    ],
+    "Sivir": [
+      {
+        "ability": "Sivir/E/Spell Shield",
+        "kinds": [
+          "spell-shield",
+          "heal"
+        ],
+        "statesAValue": "row"
+      }
+    ],
+    "Skarner": [
+      {
+        "ability": "Skarner/W/Seismic Bastion",
+        "kinds": [
+          "shield"
+        ],
+        "statesAValue": "prose"
+      }
+    ],
+    "Smolder": [
+      {
+        "ability": "Smolder/R/MMOOOMMMM!",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "prose"
+      }
+    ],
+    "Sona": [
+      {
+        "ability": "Sona/W/Aria of Perseverance",
+        "kinds": [
+          "shield",
+          "heal"
+        ],
+        "statesAValue": "row"
+      }
+    ],
+    "Soraka": [
+      {
+        "ability": "Soraka/Q/Starcall",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "row"
+      },
+      {
+        "ability": "Soraka/W/Astral Infusion",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "row"
+      },
+      {
+        "ability": "Soraka/R/Wish",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "row"
+      }
+    ],
+    "Swain": [
+      {
+        "ability": "Swain/P/Ravenous Flock",
+        "kinds": [
+          "health-grant",
+          "heal"
+        ],
+        "statesAValue": "prose"
+      },
+      {
+        "ability": "Swain/R/Demonic Ascension",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "row"
+      }
+    ],
+    "Sylas": [
+      {
+        "ability": "Sylas/W/Kingslayer",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "row"
+      }
+    ],
+    "Tahm Kench": [
+      {
+        "ability": "Tahm Kench/E/Thick Skin",
+        "kinds": [
+          "shield",
+          "heal"
+        ],
+        "statesAValue": "prose"
+      },
+      {
+        "ability": "Tahm Kench/R/Devour",
+        "kinds": [
+          "shield"
+        ],
+        "statesAValue": "row"
+      },
+      {
+        "ability": "Tahm Kench/Q/Tongue Lash",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "row"
+      }
+    ],
+    "Talon": [
+      {
+        "ability": "Talon/Q/Noxian Diplomacy",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "prose"
+      }
+    ],
+    "Taric": [
+      {
+        "ability": "Taric/W/Bastion",
+        "kinds": [
+          "resistance-grant",
+          "shield"
+        ],
+        "statesAValue": "row"
+      },
+      {
+        "ability": "Taric/R/Cosmic Radiance",
+        "kinds": [
+          "immunity"
+        ],
+        "statesAValue": "none"
+      },
+      {
+        "ability": "Taric/Q/Starlight's Touch",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "prose"
+      }
+    ],
+    "Thresh": [
+      {
+        "ability": "Thresh/P/Damnation",
+        "kinds": [
+          "resistance-grant"
+        ],
+        "statesAValue": "prose"
+      },
+      {
+        "ability": "Thresh/W/Dark Passage",
+        "kinds": [
+          "shield"
+        ],
+        "statesAValue": "row"
+      }
+    ],
+    "Trundle": [
+      {
+        "ability": "Trundle/R/Subjugate",
+        "kinds": [
+          "resistance-grant",
+          "heal"
+        ],
+        "statesAValue": "row"
+      },
+      {
+        "ability": "Trundle/P/King's Tribute",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "prose"
+      },
+      {
+        "ability": "Trundle/W/Frozen Domain",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "prose"
+      },
+      {
+        "ability": "Trundle/Q/Chomp",
+        "kinds": [
+          "attacker-debuff"
+        ],
+        "statesAValue": "row"
+      }
+    ],
+    "Tryndamere": [
+      {
+        "ability": "Tryndamere/R/Undying Rage",
+        "kinds": [
+          "execute-threshold"
+        ],
+        "statesAValue": "none"
+      },
+      {
+        "ability": "Tryndamere/Q/Bloodlust",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "row"
+      },
+      {
+        "ability": "Tryndamere/W/Mocking Shout",
+        "kinds": [
+          "attacker-debuff"
+        ],
+        "statesAValue": "row"
+      }
+    ],
+    "Udyr": [
+      {
+        "ability": "Udyr/W/Iron Mantle",
+        "kinds": [
+          "shield",
+          "heal"
+        ],
+        "statesAValue": "row"
+      }
+    ],
+    "Urgot": [
+      {
+        "ability": "Urgot/E/Disdain",
+        "kinds": [
+          "shield"
+        ],
+        "statesAValue": "row"
+      }
+    ],
+    "Vex": [
+      {
+        "ability": "Vex/W/Personal Space",
+        "kinds": [
+          "shield"
+        ],
+        "statesAValue": "row"
+      }
+    ],
+    "Vi": [
+      {
+        "ability": "Vi/P/Blast Shield",
+        "kinds": [
+          "shield"
+        ],
+        "statesAValue": "prose"
+      }
+    ],
+    "Viego": [
+      {
+        "ability": "Viego/P/Sovereign's Domination",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "prose"
+      },
+      {
+        "ability": "Viego/Q/Blade of the Ruined King",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "by-reference"
+      }
+    ],
+    "Viktor": [
+      {
+        "ability": "Viktor/Q/Siphon Power",
+        "kinds": [
+          "shield"
+        ],
+        "statesAValue": "prose"
+      }
+    ],
+    "Vladimir": [
+      {
+        "ability": "Vladimir/Q/Transfusion",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "row"
+      },
+      {
+        "ability": "Vladimir/W/Sanguine Pool",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "prose"
+      },
+      {
+        "ability": "Vladimir/R/Hemoplague",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "row"
+      }
+    ],
+    "Volibear": [
+      {
+        "ability": "Volibear/E/Sky Splitter",
+        "kinds": [
+          "shield"
+        ],
+        "statesAValue": "prose"
+      },
+      {
+        "ability": "Volibear/W/Frenzied Maul",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "row"
+      }
+    ],
+    "Warwick": [
+      {
+        "ability": "Warwick/E/Primal Howl",
+        "kinds": [
+          "damage-reduction"
+        ],
+        "statesAValue": "row"
+      },
+      {
+        "ability": "Warwick/P/Eternal Hunger",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "prose"
+      },
+      {
+        "ability": "Warwick/Q/Jaws of the Beast",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "row"
+      },
+      {
+        "ability": "Warwick/R/Infinite Duress",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "prose"
+      }
+    ],
+    "Wukong": [
+      {
+        "ability": "Wukong/P/Stone Skin",
+        "kinds": [
+          "resistance-grant",
+          "heal"
+        ],
+        "statesAValue": "prose"
+      }
+    ],
+    "Xin Zhao": [
+      {
+        "ability": "Xin Zhao/P/Determination",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "prose"
+      },
+      {
+        "ability": "Xin Zhao/W/Wind Becomes Lightning",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "prose"
+      }
+    ],
+    "Yasuo": [
+      {
+        "ability": "Yasuo/P/Way of the Wanderer",
+        "kinds": [
+          "shield"
+        ],
+        "statesAValue": "prose"
+      }
+    ],
+    "Yone": [
+      {
+        "ability": "Yone/W/Spirit Cleave",
+        "kinds": [
+          "shield"
+        ],
+        "statesAValue": "prose"
+      }
+    ],
+    "Yorick": [
+      {
+        "ability": "Yorick/Q/Last Rites",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "row"
+      }
+    ],
+    "Yuumi": [
+      {
+        "ability": "Yuumi/E/Zoomies",
+        "kinds": [
+          "shield"
+        ],
+        "statesAValue": "row"
+      },
+      {
+        "ability": "Yuumi/R/Final Chapter",
+        "kinds": [
+          "shield",
+          "heal"
+        ],
+        "statesAValue": "row"
+      },
+      {
+        "ability": "Yuumi/P/Feline Friendship",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "prose"
+      },
+      {
+        "ability": "Yuumi/W/You and Me!",
+        "kinds": [
+          "heal",
+          "shield"
+        ],
+        "statesAValue": "none"
+      }
+    ],
+    "Zaahen": [
+      {
+        "ability": "Zaahen/R/Grim Deliverance",
+        "kinds": [
+          "damage-reduction",
+          "heal"
+        ],
+        "statesAValue": "prose"
+      },
+      {
+        "ability": "Zaahen/P/Cultivation of War",
+        "kinds": [
+          "immunity",
+          "execute-threshold"
+        ],
+        "statesAValue": "none"
+      },
+      {
+        "ability": "Zaahen/Q/The Darkin Glaive",
+        "kinds": [
+          "heal"
+        ],
+        "statesAValue": "row"
+      }
+    ],
+    "Zac": [
+      {
+        "ability": "Zac/P/Cell Division",
+        "kinds": [
+          "immunity",
+          "execute-threshold",
+          "heal"
+        ],
+        "statesAValue": "prose"
+      }
+    ],
+    "Zilean": [
+      {
+        "ability": "Zilean/R/Chronoshift",
+        "kinds": [
+          "immunity",
+          "execute-threshold",
+          "heal"
+        ],
+        "statesAValue": "row"
+      }
+    ]
+  }
+}

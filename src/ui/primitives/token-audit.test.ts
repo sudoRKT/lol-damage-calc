@@ -146,6 +146,18 @@ const LENGTH_ALLOWLIST: Array<{ value: string; rule: string; reason: string }> =
     rule: '.chip__img',
     reason: 'the art fills the chip, whose size IS a token — a fraction, not a design length',
   },
+  {
+    value: '100%',
+    rule: '.statblock__table',
+    reason: 'a table filling its panel — a fraction of the parent, not a design length',
+  },
+  {
+    value: '100%',
+    rule: '.picker__list',
+    reason:
+      'the open picker list hangs off the bottom edge of its field: 100% is the ANCHOR’S OWN ' +
+      'height, a fraction of the parent, not a design length. Same standing as .chip__img.',
+  },
   // DESIGN.md §7 states four stroke widths verbatim for the burndown. They are quoted, not
   // chosen: "a 2px line in --hp-trace", "a 3px line dropping from Rᵢ", "a 2px solid --lethal
   // vertical rule", and a callout chip "with a 2px --lethal border". Same standing as the

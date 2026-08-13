@@ -1,0 +1,180 @@
+/*
+ * The combo builder. Every value traces to DESIGN.md; `../primitives/token-audit.test.ts`
+ * re-checks that across the whole area on every run.
+ *
+ * NO HUE IN THIS FILE. The only colour on a combo chip is its damage-type underline and tag,
+ * and both of those live in `../art/art.css` where the chip itself is defined. A shelf button,
+ * a position number, a move control and a remove control are all neutral: brightness, border
+ * and glyph (DESIGN.md §1, §6).
+ */
+
+@import '../tokens.css';
+
+.combo {
+  font-family: var(--font-body);
+  color: var(--text-primary);
+  background: var(--bg-panel);
+  border: var(--border-steel);
+  border-radius: var(--radius-panel);
+  padding: var(--space-4); /* DESIGN.md §4 — panel inner padding */
+}
+
+.combo__title {
+  font-family: var(--font-display);
+  font-weight: var(--weight-display);
+  font-size: var(--type-display-l);
+  line-height: var(--lh-display-l);
+  margin: 0 0 var(--space-3);
+}
+
+.combo__eyebrow {
+  font-family: var(--font-display);
+  font-weight: var(--weight-display-medium);
+  font-size: var(--type-eyebrow);
+  line-height: var(--lh-eyebrow);
+  letter-spacing: var(--ls-eyebrow);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin: var(--space-4) 0 var(--space-2);
+}
+
+/* --------------------------------------------------------------------------
+ * The shelf — icon-chips, never lettered buttons (SPECIFICATION §10.1).
+ * -------------------------------------------------------------------------- */
+
+.combo__shelf {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* The button is a bare frame around the chip: the chip carries the border, the radius and the
+   art, and the button adds only the interaction. */
+.combo__shelf-button {
+  display: block;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  line-height: 0;
+}
+
+.combo__shelf-button:focus-visible {
+  outline: var(--border-active);
+  outline-offset: var(--space-0);
+}
+
+/* The basic attack, which has no icon. Deliberately a different shape from a chip. */
+.combo__shelf-button--text {
+  line-height: var(--lh-body-m);
+  padding: var(--space-2) var(--space-3);
+  background: var(--bg-well);
+  border: var(--border-steel);
+  border-radius: var(--radius-control);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: var(--type-body-m);
+  font-weight: var(--weight-body);
+}
+
+.combo__shelf-button--text:hover {
+  background: var(--bg-panel-raised);
+  border: var(--border-strong);
+}
+
+/* --------------------------------------------------------------------------
+ * The sequence
+ * -------------------------------------------------------------------------- */
+
+.combo__sequence {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.combo__step {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: var(--bg-well);
+  border: var(--border-steel);
+  border-radius: var(--radius-control);
+  padding: var(--space-2);
+}
+
+.combo__position {
+  font-family: var(--font-mono);
+  font-size: var(--type-num-s);
+  line-height: var(--lh-num-s);
+  font-weight: var(--weight-num);
+  color: var(--text-secondary);
+}
+
+/* What is drawn where there is no Data Dragon art — a basic attack's AA, or an em dash for a
+   reference this area has no icon for. Chip-sized, so the sequence keeps one rhythm. */
+.combo__marker {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: var(--art-chip-combo);
+  block-size: var(--art-chip-combo);
+  background: var(--bg-base);
+  border: var(--border-steel);
+  border-radius: var(--radius-control);
+  font-family: var(--font-display);
+  font-weight: var(--weight-display-medium);
+  font-size: var(--type-eyebrow);
+  line-height: var(--lh-eyebrow);
+  letter-spacing: var(--ls-eyebrow);
+  color: var(--text-secondary);
+}
+
+.combo__controls {
+  display: inline-flex;
+  gap: var(--space-1);
+}
+
+.combo__control {
+  background: var(--bg-panel);
+  color: var(--text-primary);
+  border: var(--border-steel);
+  border-radius: var(--radius-control);
+  padding: var(--space-0) var(--space-1);
+  font-family: var(--font-body);
+  font-size: var(--type-body-s);
+  line-height: var(--lh-body-s);
+  font-weight: var(--weight-body-medium);
+  cursor: pointer;
+}
+
+.combo__control:hover:not(:disabled) {
+  background: var(--bg-panel-raised);
+  border: var(--border-strong);
+}
+
+.combo__control:focus-visible {
+  outline: var(--border-active);
+  outline-offset: var(--space-0);
+}
+
+/* DESIGN.md §6 — disabled is muted text at 50%, with no border emphasis. */
+.combo__control:disabled {
+  color: var(--text-muted);
+  opacity: 0.5;
+  cursor: default;
+}
+
+.combo__empty {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--type-body-m);
+  line-height: var(--lh-body-m);
+  font-weight: var(--weight-body);
+  color: var(--text-secondary);
+}

@@ -42,6 +42,7 @@
 //      ABOVE zero, and none is applied.
 
 import type { DamageType } from '../types';
+import { receivedModifierMultiplier, type DamageReceivedModifier } from './amplification';
 
 /**
  * One post-mitigation damage-reduction rule on the defender.
@@ -98,20 +99,26 @@ export function reductionApplies(
  *
  * Order, per the header: percentage reductions (combined multiplicatively) first, then flat
  * reductions (summed) subtracted, then a floor at zero.
+ *
+ * `received` carries the defender's DAMAGE-RECEIVED MODIFIERS (amplification.ts), which the
+ * wiki puts in exactly this family: "Damage reduction from armor and magic resistance and from
+ * any other sources stack multiplicatively." They therefore join the same multiplicative step
+ * rather than being applied before or after it, and an amplifier of +50% and a reduction of 25%
+ * combine as 1.5 x 0.75.
  */
 export function applyDamageReductions(
   afterResistances: number,
   rules: DefenderDamageReduction[],
   instanceNumber: number | null,
   damageType: DamageType,
+  received: DamageReceivedModifier[] = [],
 ): number {
   const applicable = rules.filter((rule) => reductionApplies(rule, instanceNumber, damageType));
 
   // Percentage: multiplicative across sources. 30% and 25% leave 0.70 x 0.75 = 0.525.
-  const remainingFraction = applicable.reduce(
-    (product, rule) => product * (1 - (rule.percent ?? 0)),
-    1,
-  );
+  const remainingFraction =
+    applicable.reduce((product, rule) => product * (1 - (rule.percent ?? 0)), 1) *
+    receivedModifierMultiplier(received, damageType);
 
   // Flat: additive across sources, and never against true damage.
   const flatTotal =

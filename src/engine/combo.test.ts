@@ -344,15 +344,23 @@ describe('runCombo — an incomplete ability contributes nothing and is named', 
 
 describe('runCombo — a component the evaluator cannot resolve is refused, not estimated', () => {
   it('zeroes an instance whose ratio reads a stat the evaluator is not given', () => {
-    // A ratio on the target's maximum health. component.ts refuses it: it reads only the
-    // caster's base/bonus/total attack damage and ability power.
+    // A ratio on the caster's MAXIMUM MANA. The frozen `StatBlock` carries no mana at all, so
+    // there is no honest figure to read and the instance is refused by name.
+    //
+    // THIS CASE USED TO BE A RATIO ON THE TARGET'S MAXIMUM HEALTH, and it was changed when the
+    // engine learned to resolve one — NOT to make a failing engine pass. The guarantee this
+    // test exists for is unchanged and is still asserted below: a component the evaluator
+    // cannot resolve contributes NOTHING and is named, rather than being estimated. What moved
+    // is which components are in that set, and the new members of the resolvable set are pinned
+    // by their own known-answer tests in component-owned-stats.test.ts and
+    // combo-modifiers.test.ts.
     const result = runCombo(
       plan({
         defender: statBlock({ magicResist: 0, hp: 5000, maxHp: 5000 }),
         instances: [
           {
             stepId: 'r',
-            sourceLabel: 'R — percentage of target health',
+            sourceLabel: 'R — percentage of the caster’s mana',
             instanceType: 'damaging-ability',
             verification: 'derived',
             damage: {
@@ -361,7 +369,7 @@ describe('runCombo — a component the evaluator cannot resolve is refused, not 
                   id: 'r-c',
                   damageType: 'magic',
                   base: flat(100),
-                  ratios: [{ stat: 'maxHP', owner: 'target', scaling: 'linear', from: 20, to: 20 }],
+                  ratios: [{ stat: 'maxMana', owner: 'caster', scaling: 'linear', from: 20, to: 20 }],
                 }),
               ],
               rank: 1,
@@ -428,13 +436,20 @@ describe('runCombo — alternative components', () => {
 });
 
 describe('runCombo — an instance whose components disagree about damage type', () => {
-  it('is refused, because one InstanceResult carries exactly one damage type', () => {
-    // The frozen `InstanceResult` has a single `damageType`. An ability dealing physical AND
-    // magic in one instance cannot be represented, and picking one would put the damage
-    // against the wrong resistance. RAISED TO THE LEAD; refused here.
+  it('is REPORTED AS MIXED, each type meeting its own resistance', () => {
+    // THIS TEST USED TO ASSERT THE OPPOSITE, and the change is a contract change rather than an
+    // engine failing a test. `InstanceResult.damageType` carried three values and now carries
+    // five: 'mixed' and 'none' were added on 2026-08-13 (DATA-SOURCES §41, gap 3) precisely so
+    // the 13 abilities that deal two types in one cast could stop being refused. The old
+    // comment here said "RAISED TO THE LEAD"; this is the lead's answer.
+    //
+    // Defender: 100 armor, 50 magic resistance.
+    //   physical 100 x 100/200 = 50
+    //   magic    100 x 100/150 = 66.666...
+    //   applied                = 116.666... -> 117
     const result = runCombo(
       plan({
-        defender: statBlock({ armor: 0, magicResist: 0, hp: 5000, maxHp: 5000 }),
+        defender: statBlock({ armor: 100, magicResist: 50, hp: 5000, maxHp: 5000 }),
         instances: [
           {
             stepId: 'q',
@@ -453,9 +468,11 @@ describe('runCombo — an instance whose components disagree about damage type',
         ],
       }),
     );
-    expect(result.perInstance[0].final).toBe(0);
-    expect(result.perInstance[0].verification).toBe('incomplete');
-    expect(result.incompleteContributors[0].reason.note).toMatch(/damage type/i);
+    expect(result.perInstance[0].damageType).toBe('mixed');
+    expect(result.perInstance[0].final).toBe(117);
+    expect(result.perInstance[0].byType).toEqual({ physical: 50, magic: 67, true: 0 });
+    expect(result.perInstance[0].verification).toBe('derived');
+    expect(result.incompleteContributors).toEqual([]);
   });
 });
 
@@ -754,9 +771,16 @@ describe('runCombo — excluded mechanics', () => {
     expect(result.excludedMechanics).toContain('Zhonyas stasis');
   });
 
-  it('names pre-mitigation flat damage reduction, which it cannot represent', () => {
+  it('names sustain, which the Result has no field to report', () => {
+    // THIS ASSERTION USED TO NAME PRE-MITIGATION FLAT DAMAGE REDUCTION. That is now modelled
+    // (combo-modifiers.test.ts derives its numbers from the wiki's own pre/post-mitigation
+    // split), so the exclusion was removed — and an exclusion is only ever removed when the
+    // mechanic behind it is actually modelled and tested.
+    //
+    // Lifesteal, omnivamp, spell vamp and healing replace it, and are a different KIND of
+    // exclusion: not "not built yet" but "there is nowhere in the Result to put the answer".
     const result = runCombo(plan({ instances: [hit('q', 100, 'magic')] }));
-    expect(result.excludedMechanics.join(' | ')).toMatch(/pre-mitigation/i);
+    expect(result.excludedMechanics.join(' | ')).toMatch(/lifesteal/i);
   });
 });
 

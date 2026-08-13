@@ -1,0 +1,42 @@
+/* DEV-ONLY preview harness. Not shipped: `vite build` builds index.html only.
+   Values are tokens all the same — the token audit reads every stylesheet in this area, and a
+   preview page that drifted off the palette would be a preview of the wrong product. */
+
+@import '../tokens.css';
+
+body {
+  margin: 0;
+  background: var(--bg-base);
+}
+
+.preview {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5); /* DESIGN.md §4 — gap between panels */
+  padding: var(--space-6);
+  background: var(--bg-base);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+}
+
+/* DESIGN.md §7a: attacker and defender configuration panels across the top row. */
+.preview__row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-5);
+  align-items: flex-start;
+}
+
+.preview__row > * {
+  flex: 1 1 0;
+  min-inline-size: 0;
+}
+
+.preview__note {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--type-body-m);
+  line-height: var(--lh-body-m);
+  font-weight: var(--weight-body);
+  color: var(--text-secondary);
+}

@@ -19,6 +19,9 @@ import {
   constantScaling,
   evalArithmetic,
   extractItemEffect,
+  rangeArms,
+  rangeScaling,
+  readRun,
   resolveDisplay,
   splitTopLevel,
   sentenceAround,
@@ -57,10 +60,18 @@ describe('template resolution: the arithmetic the wiki writes inside {{ap}}', ()
     expect(evalArithmetic('60 to 100')).toBeNull();
   });
 
-  it('marks {{rd}} rather than silently taking the melee half', () => {
+  it('keeps BOTH arms of {{rd}} rather than silently taking the melee half', () => {
     // Titanic Hydra, verbatim. Taking 1% here and dropping 0.5% would halve every ranged
-    // holder's damage while looking exactly like a correct answer.
-    expect(resolveDisplay("{{rd|1%|{{fd|0.5}}%}} '''maximum''' health")).toContain('«rd»');
+    // holder's damage while looking exactly like a correct answer. The marker used to throw
+    // both arms away, which was safe only because the effect was then refused outright; now
+    // that both numbers can be stored, both have to survive the flattening.
+    const flat = resolveDisplay("{{rd|1%|{{fd|0.5}}%}} '''maximum''' health");
+    expect(flat).toContain('«rd:');
+    expect(flat).toContain('1%');
+    expect(flat).toContain('0.5');
+    expect(rangeArms(flat)!.melee).toContain('1%');
+    expect(rangeArms(flat)!.ranged).toContain('0.5');
+    expect(rangeArms(flat)!.melee).not.toContain('0.5');
   });
 
   it('refuses a template it does not know rather than dropping it', () => {
@@ -213,7 +224,14 @@ describe('extracting a whole item effect — values a reader can check on the it
     ]);
   });
 
-  it('refuses the melee/ranged split rather than storing the melee half (Titanic Hydra)', () => {
+  // -------------------------------------------------------------------------
+  // The melee/ranged pair. Until 2026-08-13 these effects were REFUSED and the two tests below
+  // pinned that refusal. `Scaling` gained a `byRangeType` arm (DATA-SOURCES §41), so the tests
+  // now pin something STRICTER than "it refuses": both numbers, in the right arms. The failure
+  // they exist to catch is storing one arm and calling it the value.
+  // -------------------------------------------------------------------------
+
+  it('reads BOTH arms of a melee/ranged split, and puts each in its own arm (Titanic Hydra)', () => {
     const out = extractItemEffect(
       item(
         'Titanic Hydra',
@@ -223,11 +241,49 @@ describe('extracting a whole item effect — values a reader can check on the it
           "{{as|'''bonus''' physical damage}} to the target",
       ),
     );
-    expect(out.component).toBeNull();
-    expect(out.refusals.map((r) => r.reason)).toContain('melee-ranged-split');
+    expect(out.refusals).toEqual([]);
+    expect(out.component?.ratios).toEqual([
+      { stat: 'maxHP', owner: 'unresolved', byRangeType: { melee: 1, ranged: 0.5 } },
+    ]);
   });
 
-  it('refuses a burn because the source states an interval (Sunfire Aegis)', () => {
+  it('resolves the wiki module\'s own arithmetic inside a ranged arm (Hullbreaker 120*0.7 = 84)', () => {
+    const out = extractItemEffect(
+      item(
+        'Hullbreaker',
+        3181,
+        'pass',
+        "deal {{as|{{rd|120%|{{ap|120*0.7}}%}} '''base''' AD|ad}} " +
+          "{{as|(+ {{rd|5%|{{ap|5*0.7}}%}} '''maximum''' health)}} " +
+          "{{as|'''bonus''' physical damage}}",
+      ),
+    );
+    expect(out.refusals).toEqual([]);
+    expect(out.component?.ratios).toEqual([
+      { stat: 'baseAD', byRangeType: { melee: 120, ranged: 84 } },
+      { stat: 'maxHP', owner: 'unresolved', byRangeType: { melee: 5, ranged: 3.5 } },
+    ]);
+  });
+
+  it('refuses a {{rd}} whose arms are level formulas rather than reading the first number (Kraken Slayer)', () => {
+    const out = extractItemEffect(
+      item(
+        'Kraken Slayer',
+        6672,
+        'pass',
+        '{{as|{{rd|150 + (200-150)/10*(x-1) for 13|150*0.8 + (200*0.8-150*0.8)/10*(x-1) for 13' +
+          "|levels=1;9 to 20|pp=true}} '''bonus''' physical damage|physical damage}}",
+      ),
+    );
+    expect(out.component).toBeNull();
+    expect(out.refusals.map((r) => r.reason)).toContain('range-split-has-named-arguments');
+  });
+
+  // -------------------------------------------------------------------------
+  // Damage over time. Also previously a refusal; `CuratedItemEffect.overTime` now holds it.
+  // -------------------------------------------------------------------------
+
+  it('records a burn as recurring and stores ONE instance (Sunfire Aegis)', () => {
     const out = extractItemEffect(
       item(
         'Sunfire Aegis',
@@ -237,7 +293,77 @@ describe('extracting a whole item effect — values a reader can check on the it
           'every second to enemies within 325 units',
       ),
     );
-    expect(out.refusals.map((r) => r.reason)).toContain('damage-over-time');
+    expect(out.refusals).toEqual([]);
+    expect(out.component?.base).toBe(20);
+    expect(out.overTime?.sourceSays).toContain('every second');
+    // THE COUNT IS NOT STATED, so it is not recorded. "every second" and a duration elsewhere in
+    // the item are two time values; dividing them is arithmetic on elapsed time.
+    expect(out.overTime?.totalInstances).toBeUndefined();
+  });
+
+  it("takes the instance count from the source's own divisor and checks it against the stated total (Blackfire Torch)", () => {
+    const out = extractItemEffect(
+      item(
+        'Blackfire Torch',
+        2503,
+        'pass',
+        'Dealing [[ability damage]] burns enemies, causing them to take ' +
+          '{{as|{{ap|60/6}} {{as|(+ {{ap|6/6}}% AP)}} magic damage|magic damage}} every ' +
+          '{{fd|0.5}} seconds over 3 seconds, for a total of {{as|60|magic damage}} ' +
+          '{{as|(+ 6% AP)}}.',
+      ),
+    );
+    expect(out.refusals).toEqual([]);
+    expect(out.component?.base).toBe(10);
+    expect(out.component?.ratios).toEqual([{ stat: 'AP', value: 1 }]);
+    expect(out.overTime?.totalInstances).toBe(6);
+  });
+
+  it('refuses when the per-instance figure times the stated count does NOT reach the stated total', () => {
+    // Same shape as Blackfire Torch with the total changed to 50. 10 x 6 is 60, not 50, so one
+    // of the three numbers is being misread and none of them may be stored.
+    const out = extractItemEffect(
+      item(
+        'Blackfire Torch',
+        2503,
+        'pass',
+        'burns enemies, causing them to take {{as|{{ap|60/6}} magic damage|magic damage}} every ' +
+          '{{fd|0.5}} seconds over 3 seconds, for a total of {{as|50|magic damage}}.',
+      ),
+    );
+    expect(out.component).toBeNull();
+    expect(out.refusals.map((r) => r.reason)).toContain('dot-total-disagrees-with-tick');
+  });
+
+  it('refuses when a total is stated but the source states no count anywhere', () => {
+    const out = extractItemEffect(
+      item(
+        'Blackfire Torch',
+        2503,
+        'pass',
+        'burns enemies, causing them to take {{as|10 magic damage|magic damage}} every ' +
+          '{{fd|0.5}} seconds over 3 seconds, for a total of {{as|60|magic damage}}.',
+      ),
+    );
+    expect(out.component).toBeNull();
+    expect(out.refusals.map((r) => r.reason)).toContain('dot-total-disagrees-with-tick');
+  });
+
+  it('takes the total from the SENTENCE that states this damage, not the monster sentence after it', () => {
+    // Blackfire Torch says "for a total of" twice. The second is the monster figure (120).
+    // Searching the whole text would double the champion value.
+    const out = extractItemEffect(
+      item(
+        'Blackfire Torch',
+        2503,
+        'pass',
+        'causing them to take {{as|{{ap|60/6}} magic damage|magic damage}} every {{fd|0.5}} ' +
+          'seconds over 3 seconds, for a total of {{as|60|magic damage}}. Against monsters, ' +
+          'dealing a total of {{as|120|magic damage}} for a total of {{as|120|magic damage}}.',
+      ),
+    );
+    expect(out.refusals).toEqual([]);
+    expect(out.overTime?.totalInstances).toBe(6);
   });
 
   it('detects a recurring interval in each of the four wordings the sources use', () => {
@@ -308,6 +434,83 @@ describe('the gate: a value is stored only where parser and reading agree', () =
     );
     expect(out.outcome).toBe('stored');
     expect(out.hasUnresolvedOwner).toBe(true);
+    expect(out.verification).toBe('incomplete');
+    // The missing fact is NAMED, so the interface can say "cannot be completed" rather than
+    // "not yet modelled" (SPECIFICATION §8).
+    expect(out.unresolvable?.[0]!.field).toContain('maxHP');
+    expect(out.unresolvable?.[0]!.why).toContain('never says whose');
+  });
+
+  it('emits the melee/ranged pair as the contract byRangeType arm (Titanic Hydra)', () => {
+    const out = gateEffect(
+      item(
+        'Titanic Hydra',
+        3748,
+        'pass',
+        "Basic attacks [[on-hit]] deal {{as|{{rd|1%|{{fd|0.5}}%}} '''maximum''' health|hp}} " +
+          "{{as|'''bonus''' physical damage}} to the target and " +
+          "{{as|{{rd|3%|{{fd|1.5}}%}} '''maximum''' health|hp}} {{as|physical damage}} to other " +
+          'enemies in a cone in the direction of the primary target.',
+      ),
+    );
+    expect(out.outcome).toBe('stored');
+    expect(out.components?.[0]!.ratios[0]).toEqual({
+      stat: 'maxHP',
+      owner: 'unresolved',
+      scaling: 'byRangeType',
+      melee: { scaling: 'explicit', perRank: [1] },
+      ranged: { scaling: 'explicit', perRank: [0.5] },
+    });
+    expect(out.appliesAs).toBe('on-hit');
+  });
+
+  it('emits overTime and marks the effect periodic (Sunfire Aegis)', () => {
+    const out = gateEffect(
+      item(
+        'Sunfire Aegis',
+        3068,
+        'pass',
+        "Taking or dealing damage activates this passive for 3 seconds. Deal {{as|20 " +
+          "{{as|(+ {{fd|1.5}}% '''bonus''' health)}} magic damage|magic damage}} every second to " +
+          'enemies within 325 units.',
+      ),
+    );
+    expect(out.outcome).toBe('stored');
+    expect(out.appliesAs).toBe('periodic');
+    expect(out.overTime?.sourceSays).toContain('every second');
+    expect(out.overTime?.totalInstances).toBeUndefined();
+    expect(out.verification).toBe('incomplete');
+  });
+
+  it('REFUSES when the parser finds a recurrence the reading does not record', () => {
+    // Wit's End's reading records no recurrence. Wikitext altered to say the damage recurs.
+    const out = gateEffect(
+      item(
+        "Wit's End",
+        3091,
+        'pass',
+        "Basic attacks deal {{as|45 '''bonus''' magic damage}} every second.",
+      ),
+    );
+    expect(out.outcome).toBe('refused');
+    expect(out.refusals[0]!.reason).toBe('parser-disagrees-with-reading');
+    expect(out.refusals[0]!.detail).toContain('recurrence');
+  });
+
+  it('REFUSES when the parser reads one value and the reading records a melee/ranged pair', () => {
+    // Titanic Hydra's reading records 1% / 0.5%. Wikitext altered to a single 1%.
+    const out = gateEffect(
+      item(
+        'Titanic Hydra',
+        3748,
+        'pass',
+        "Basic attacks [[on-hit]] deal {{as|1% '''maximum''' health|hp}} " +
+          "{{as|'''bonus''' physical damage}} to the target.",
+      ),
+    );
+    expect(out.outcome).toBe('refused');
+    expect(out.refusals[0]!.reason).toBe('parser-disagrees-with-reading');
+    expect(out.refusals[0]!.detail).toContain('1 / 0.5');
   });
 });
 
@@ -332,14 +535,78 @@ describe('the read population itself', () => {
     }
   });
 
-  it('splits 28 store / 35 refuse — the numbers this run reports', () => {
-    expect(READ_POPULATION.filter((r) => r.verdict === 'store')).toHaveLength(28);
-    expect(READ_POPULATION.filter((r) => r.verdict === 'refuse')).toHaveLength(35);
+  // The split was 28 / 35 until the contract pass of 2026-08-13 (DATA-SOURCES §41) gave the
+  // melee/ranged pair and the recurring-damage flag somewhere to live. TEN readings were re-read
+  // and moved from refuse to store: four range splits and six recurring effects.
+  it('splits 38 store / 25 refuse — the numbers this run reports', () => {
+    expect(READ_POPULATION.filter((r) => r.verdict === 'store')).toHaveLength(38);
+    expect(READ_POPULATION.filter((r) => r.verdict === 'refuse')).toHaveLength(25);
   });
 
   it('records the two documented owner cases: Redemption target, Unending Despair holder', () => {
     expect(readingFor(3107, 'act')!.expect!.ratios[0]!.owner).toBe('target');
-    expect(readingFor(2502, 'pass')!.reasons).toContain('damage-over-time');
+    expect(readingFor(2502, 'pass')!.expect!.ratios[0]!.owner).toBe('holder');
+  });
+
+  it('no reading still cites a reason the contract can now express', () => {
+    // `melee-ranged-split` and `damage-over-time` stopped being blockers. A reading that still
+    // named one would be withholding a value for a reason that no longer exists — except
+    // Bastionbreaker pass2, which is turret-only and refuses on reach.
+    const stale = READ_POPULATION.filter(
+      (r) => r.verdict === 'refuse' && (r.reasons ?? []).includes('melee-ranged-split'),
+    );
+    expect(stale.map((r) => `${r.ownerName} [${r.key}]`)).toEqual([]);
+  });
+
+  it('every stored recurring effect records what the source says, and invents no count', () => {
+    const recurring = READ_POPULATION.filter((r) => r.verdict === 'store' && r.expect?.overTime);
+    expect(recurring.map((r) => r.ownerName).sort()).toEqual([
+      "Bami's Cinder",
+      'Blackfire Torch',
+      'Fated Ashes',
+      'Hollow Radiance',
+      'Sunfire Aegis',
+      'Unending Despair',
+    ]);
+    // Only the two that state a total carry a count.
+    const withCount = recurring.filter((r) => r.expect!.overTime!.totalInstances !== undefined);
+    expect(withCount.map((r) => r.ownerName).sort()).toEqual(['Blackfire Torch', 'Fated Ashes']);
+  });
+
+  it('every stored range split records BOTH arms, never one', () => {
+    const split = READ_POPULATION.filter(
+      (r) =>
+        r.verdict === 'store' &&
+        (r.expect!.baseByRangeType || r.expect!.ratios.some((x) => x.byRangeType)),
+    );
+    expect(split.map((r) => `${r.ownerName} [${r.key}]`).sort()).toEqual([
+      'Hullbreaker [pass]',
+      'Titanic Hydra [act]',
+      'Titanic Hydra [pass]',
+      'Voltaic Cyclosword [pass3]',
+    ]);
+    for (const r of split) {
+      for (const ratio of r.expect!.ratios) {
+        if (ratio.byRangeType) {
+          expect(ratio.value).toBeUndefined();
+          expect(ratio.byRangeType.melee).not.toBe(ratio.byRangeType.ranged);
+        }
+      }
+    }
+  });
+
+  it('every stored effect either names a contract activation or says why it cannot', () => {
+    const stored = READ_POPULATION.filter((r) => r.verdict === 'store');
+    const withoutCode = stored.filter((r) => !r.appliesAsCode);
+    // FIVE, and each states a trigger `appliesAs` has no arm for. Reported, not forced.
+    expect(withoutCode.map((r) => r.ownerName).sort()).toEqual([
+      'Elixir of Sorcery',
+      'Hextech Alternator',
+      "Scout's Slingshot",
+      'Stormsurge',
+      "Zaz'Zak's Realmspike",
+    ]);
+    for (const r of withoutCode) expect(r.appliesAs).toBeTruthy();
   });
 });
 
@@ -437,5 +704,26 @@ describe('the contract shapes the output claims to match', () => {
     expect(toContractRatios([{ stat: 'maxHP', value: 10, owner: 'target' }])).toEqual([
       { stat: 'maxHP', owner: 'target', scaling: 'explicit', perRank: [10] },
     ]);
+  });
+
+  it('stores a melee/ranged pair as two arms, each itself a Scaling', () => {
+    expect(rangeScaling({ melee: 120, ranged: 84 })).toEqual({
+      scaling: 'byRangeType',
+      melee: { scaling: 'explicit', perRank: [120] },
+      ranged: { scaling: 'explicit', perRank: [84] },
+    });
+  });
+
+  it('collapses a "split" whose two arms are the same number, rather than claiming a split', () => {
+    // If the source ever writes {{rd|10|10}} there is nothing to choose between, and storing a
+    // byRangeType would make the engine demand a range type it does not need.
+    const out = readRun(resolveDisplay('{{rd|10|10}} magic damage'));
+    expect(out.base).toBe(10);
+    expect(out.baseByRangeType).toBeUndefined();
+  });
+
+  it('refuses two arms that read to different shapes instead of merging them', () => {
+    const out = readRun(resolveDisplay('{{rd|10% AP|20}} magic damage'));
+    expect(out.refusals.map((r) => r.reason)).toContain('range-split-arms-differ-in-shape');
   });
 });

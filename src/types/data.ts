@@ -640,7 +640,9 @@ export interface CuratedItemEffect {
    *
    * An item effect is not a cast — it fires on a basic attack, on the next ability after one,
    * on an active, or continuously. **20 of the 28 extracted effects are on-hit or Spellblade**
-   * (DATA-SOURCES §39), and a combo builder cannot sequence them without knowing which: an
+   * (DATA-SOURCES §39 — **observed at 16 on-hit-or-spellblade, or 23 counting item actives, once the
+   * field was actually populated; the earlier figure of 20 was an estimate**), and a combo builder
+   * cannot sequence them without knowing which: an
    * on-hit rider belongs to the basic attack that carried it, not to a step of its own.
    *
    * `'unstated'` is a real value, not a placeholder. Where the source does not say, it says so.
