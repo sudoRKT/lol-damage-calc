@@ -55,6 +55,21 @@
   --type-num-m: 0.8125rem; /* 13px */ --lh-num-m: 1.2;
   --type-num-s: 0.6875rem; /* 11px */ --lh-num-s: 1.2;
 
+  /* ---- Type weights. See DESIGN.md §3, "Weight tokens". ----
+   * These name the seven weights the three faces are loaded at. They existed only as prose in
+   * DESIGN.md until 2026-08-13, so every component carried a numeric literal and the token
+   * audit could compare those literals against nothing but a table. Use the token, never the
+   * number. A weight outside this set means loading another font file, which is a change to
+   * DESIGN.md and not a local decision. */
+  --weight-display: 600;        /* Saira SemiBold — display-xl, display-l */
+  --weight-display-medium: 500; /* Saira Medium — display-m, eyebrow */
+  --weight-body: 400;           /* IBM Plex Sans Regular — body-l, body-m */
+  --weight-body-medium: 500;    /* IBM Plex Sans Medium — body-s */
+  --weight-body-strong: 600;    /* IBM Plex Sans SemiBold — emphasis in body copy */
+  --weight-num: 400;            /* JetBrains Mono Regular — num-m, num-s */
+  --weight-num-medium: 500;     /* JetBrains Mono Medium — num-l */
+  --weight-num-bold: 700;       /* JetBrains Mono Bold — num-hero */
+
   /* ---- Spacing scale (4px base) ---- */
   --space-0: 2px;
   --space-1: 4px;

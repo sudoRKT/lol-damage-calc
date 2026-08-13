@@ -136,6 +136,27 @@ yourself.
 - IBM Plex Sans: **400** (Regular), **500** (Medium), **600** (SemiBold)
 - JetBrains Mono: **400** (Regular), **500** (Medium), **700** (Bold)
 
+### Weight tokens (added 2026-08-13)
+
+The table below stated a weight per type role in prose while the token file exposed none, so
+every component carried a numeric literal and the token audit could only compare those literals
+against a table — the one part of this file that agents had to retype by hand. These are the
+same seven weights already listed above, named. **Use the token, never the number.**
+
+| Token | Value | Face | Used by |
+|---|---:|---|---|
+| `--weight-display` | 600 | Saira SemiBold | `--type-display-xl`, `--type-display-l` |
+| `--weight-display-medium` | 500 | Saira Medium | `--type-display-m`, `--type-eyebrow` |
+| `--weight-body` | 400 | IBM Plex Sans Regular | `--type-body-l`, `--type-body-m` |
+| `--weight-body-medium` | 500 | IBM Plex Sans Medium | `--type-body-s` |
+| `--weight-body-strong` | 600 | IBM Plex Sans SemiBold | Emphasis inside body copy |
+| `--weight-num` | 400 | JetBrains Mono Regular | `--type-num-m`, `--type-num-s` |
+| `--weight-num-medium` | 500 | JetBrains Mono Medium | `--type-num-l` |
+| `--weight-num-bold` | 700 | JetBrains Mono Bold | `--type-num-hero` |
+
+No weight outside this set exists in the product. Adding one means loading another font file,
+so it is a change to the section above and not a local decision.
+
 ### Type scale (rem with px at a 16px root; line-heights are unitless)
 
 | Token | Face / weight | Size | Line-height | Use |
@@ -169,7 +190,7 @@ panels and reserve the larger steps for separating major regions.
 
 | Token | Value | Typical use |
 |---|---|---|
-| `--space-0` | 2px | Hairline insets, tag offset from its number |
+| `--space-0` | 2px | Hairline insets. **NOT the damage-type tag** — see the note below |
 | `--space-1` | 4px | Tightest gap; icon-to-label inside a chip |
 | `--space-2` | 8px | Table cell vertical padding; gaps between related controls |
 | `--space-3` | 12px | Control inner padding; row rhythm |
@@ -181,6 +202,20 @@ panels and reserve the larger steps for separating major regions.
 
 Defaults an agent can rely on: panel padding `--space-4`; table cell padding
 `--space-2` vertical / `--space-3` horizontal; grid and rail gutters `--space-5`.
+
+**The gap between a damage number and its tag is NOT a spacing token.** This table used to list
+"tag offset from its number" against `--space-0`, while §8 specified a thin space — two
+instructions for one gap, and a component could satisfy either. **§8 governs, and this is the
+resolution (2026-08-13): the separator is a real U+2009 THIN SPACE character inside the text, not
+CSS margin or padding.**
+
+The reason is that the tag is not adjacent decoration, it is **part of the value**. A user who
+selects `214 P` and copies it must get `214 P`, because the report-a-wrong-number control
+(SPECIFICATION §8) and every screenshot a coach pastes depend on the number carrying its type.
+CSS spacing produces `214P` on the clipboard; a real character survives copy, paste, plain-text
+mail and a screen reader's own spacing. Margin also collapses differently across the contexts a
+damage figure appears in — table cell, riser label, tooltip, composition-bar segment — so the same
+value would space differently in each, which is exactly what a fixed instrument must not do.
 
 ---
 
@@ -413,6 +448,9 @@ is the definitive channel; colour is the fast, redundant one.
   **with a hard floor of 10px that it never goes below** — immediately after the number,
   separated by a thin space, in the **same colour as the number** (the letter, not its colour,
   is the cue). Example forms: `214 P`, `180 M`, `240 T`.
+
+  **The separator is a real U+2009 THIN SPACE character**, not CSS margin — so the value copies
+  as `214 P`. §4 records why, and `--space-0` is explicitly not used for this gap.
 
   **Why the floor exists (decided 2026-08-13, and not to be relitigated).** This section argues
   for letters over glyphs on the grounds that *"three distinct letterforms stay unambiguous at

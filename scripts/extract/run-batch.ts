@@ -336,6 +336,146 @@ async function main(): Promise<void> {
   );
 
   report(file, drafts, roundTrips, levelRoundTrips, proseRoundTrips, [...gate5.keys()]);
+  await writeMeasurements(file, drafts, roundTrips, levelRoundTrips, proseRoundTrips, roster, names, manifest.patch, gate7Classes(drafts));
+}
+
+function gate7Classes(drafts: DraftAbility[]) {
+  return drafts
+    .filter((d) => d.totalMismatch !== undefined)
+    .map((d) => classifyGate7(d.totalMismatch!));
+}
+
+/**
+ * THE ROSTER-WIDE FIGURES, WRITTEN WHERE A CHECK CAN READ THEM.
+ *
+ * Every count in CLAUDE.md, PLAN.md and DATA-SOURCES about the ability roster used to be
+ * unverifiable by anything: reproducing one meant harvesting 937 pages over the network, which
+ * no test can do, so `tests/document-claims.test.ts` had to declare the whole group uncovered.
+ * Six document statements were found wrong in a single session for exactly that reason.
+ *
+ * This closes it. A full-roster run records what it measured, and the checker compares the
+ * documents against this file instead of against nothing.
+ *
+ * TWO GUARDS, BOTH LEARNED THE HARD WAY ON THIS PROJECT:
+ *
+ * 1. IT IS ONLY WRITTEN BY A FULL-ROSTER RUN. A five-champion batch that overwrote this file
+ *    would hand the checker a set of tiny numbers, and the natural next move — "the documents
+ *    disagree, correct the documents" — would destroy the real measurement. A partial run says
+ *    so and writes nothing.
+ * 2. IT RECORDS ITS PATCH. A measurement is evidence about one revision of one wiki, and the
+ *    wiki edits daily. The checker refuses a file whose patch is not the current one rather
+ *    than comparing today's documents against last patch's numbers.
+ */
+async function writeMeasurements(
+  file: CuratedFile,
+  drafts: DraftAbility[],
+  roundTrips: ReturnType<typeof roundTrip>[],
+  levelRoundTrips: LevelRoundTripResult[],
+  proseRoundTrips: ProseRoundTripResult[],
+  roster: Champion[],
+  requested: string[],
+  patch: string,
+  classes: ReturnType<typeof classifyGate7>[],
+): Promise<void> {
+  const inRoster = new Set(roster.map((c) => c.name));
+  const covered = new Set(requested.filter((n) => inRoster.has(n)));
+  const fullRoster = covered.size === inRoster.size;
+
+  if (!fullRoster) {
+    console.log(
+      `\nverification/measurements.json NOT written: this run covered ${covered.size} of ` +
+        `${inRoster.size} champions. Only a full-roster run may record roster-wide figures — a ` +
+        `partial one would overwrite them with numbers that look like a regression.`,
+    );
+    return;
+  }
+
+  const storable = file.abilities.filter((a) => a.components.length > 0);
+  const box = new Map(roundTrips.map((r) => [r.entry, r]));
+  const lvl = new Map(levelRoundTrips.map((r) => [r.entry, r]));
+  const pro = new Map(proseRoundTrips.map((r) => [r.entry, r]));
+
+  let confirmed = 0;
+  let disagreed = 0;
+  let noEvidence = 0;
+  for (const a of storable) {
+    const key = `${a.champion}/${a.slot}/${a.abilityName}`;
+    const b = box.get(key);
+    const l = lvl.get(key);
+    const p = pro.get(key);
+    const bad =
+      (b?.mismatches.length ?? 0) > 0 ||
+      (l?.mismatches.length ?? 0) > 0 ||
+      (p?.mismatches.length ?? 0) > 0;
+    if (bad) {
+      disagreed += 1;
+      continue;
+    }
+    const evidence = (b?.checkedRows ?? 0) + (l?.matched ?? 0) + (p?.matched ?? 0);
+    if (evidence > 0) confirmed += 1;
+    else noEvidence += 1;
+  }
+
+  const status = (s: string) => file.abilities.filter((a) => a.verification === s).length;
+  const under = drafts.filter(
+    (d) => d.totalMismatch && d.totalMismatch.stated[0]! > 0 && d.issues.some((i) => i.kind === 'total-mismatch' && /missing/.test(i.detail)),
+  ).length;
+
+  const measurements = {
+    // WHAT THIS IS, for whoever opens it next.
+    what:
+      'Roster-wide measurements from a full-roster harvest. Written ONLY by a full-roster run. ' +
+      'tests/document-claims.test.ts compares the project documents against these figures; a ' +
+      'document that disagrees fails the suite. Every figure states what it counts.',
+    patch,
+    generatedOn: new Date().toISOString().slice(0, 10),
+    coverage: {
+      championsRequested: requested.length,
+      championsMeasured: covered.size,
+      championsInRoster: inRoster.size,
+      fullRoster,
+    },
+    definitions: {
+      abilityPages: 'distinct wiki ability pages after alias dedupe by revision id',
+      storable: 'entries with at least one stored damage component',
+      worklist: 'entries that stored nothing and that at least one source says deal damage',
+      noDamage: 'entries that stored nothing and about which every source is silent',
+      componentsStored:
+        'damage components surviving the summary, non-champion and unreadable-row filters',
+      confirmedByGate2:
+        'storable entries where at least one of the three round-trips compared something and ' +
+        'none disagreed. NOT verified, which additionally requires an independent re-derivation',
+      gate7Failures:
+        'storable entries whose additive components do not sum to the whole-ability total the ' +
+        'source itself states, at rank 1',
+    },
+    abilityPages: file.abilities.length,
+    storable: storable.length,
+    worklist: drafts.filter((d) => d.needsHandAuthoring).length,
+    componentsStored: file.abilities.reduce((n, a) => n + a.components.length, 0),
+    verification: {
+      verified: status('verified'),
+      derived: status('derived'),
+      incomplete: status('incomplete'),
+      noDamage: status('no-damage'),
+    },
+    gate2: { confirmed, disagreed, noEvidence },
+    gate7: {
+      failures: classes.length,
+      underSum: under,
+      overSum: classes.length - under,
+      byClass: Object.fromEntries(
+        [...new Set(classes.map((c) => c.class))].map((k) => [k, classes.filter((c) => c.class === k).length]),
+      ),
+      ambiguous: classes.filter((c) => c.ambiguous).length,
+    },
+  };
+
+  await mkdir('verification', { recursive: true });
+  await writeFile('verification/measurements.json', `${JSON.stringify(measurements, null, 2)}\n`);
+  console.log(
+    `\nwrote verification/measurements.json (full roster: ${covered.size} of ${inRoster.size} champions, patch ${patch})`,
+  );
 }
 
 function summarise(d: DraftAbility) {

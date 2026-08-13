@@ -22,6 +22,18 @@ import type { Scenario } from './scenario';
  * `missingFacts` carries the SPECIFIC facts, not a generic warning, so the interface can say
  * "cannot be completed — the source does not record whose armor this reads" and name the field.
  * DESIGN.md §6 requires the accessible name to carry the fact rather than a vague caution.
+ *
+ * TWO RULES SETTLED 2026-08-13 (SPECIFICATION §8). Neither is to be narrowed later:
+ *
+ * 1. **BOTH kinds name what is missing.** `note` on a pending entry is not decoration — a user
+ *    told only "not yet modelled" cannot tell whether the total in front of them is missing a
+ *    rounding error or half the combo. The two kinds differ in what they say about the FUTURE,
+ *    never in whether they say anything at all.
+ * 2. **An incomplete entry with no reason falls back to `'pending'`, NEVER `'permanent'`.**
+ *    Permanent asserts that no source anywhere records the fact and no work will ever supply it.
+ *    Inferring that from an unpopulated field would tell a user to stop waiting for something
+ *    that might be a day's work away. Pending claims only "not here yet", which is true either
+ *    way, so it is the safe direction to fail in.
  */
 export interface IncompleteReason {
   kind: 'pending' | 'permanent';

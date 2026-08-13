@@ -374,6 +374,22 @@ An entry that is permanently incomplete records **which** fact is missing and **
 settles it**, so the note is specific rather than generic. A permanently incomplete ability is
 never silently dropped from a result.
 
+**BOTH kinds name what is missing, not only the permanent one. Settled 2026-08-13; do not narrow
+this later.** "This ability's damage is not shown because …" is a requirement on *incomplete*, and
+both pending and permanent are incomplete. A user told only *"not yet modelled"* learns nothing
+about whether their combo is missing a rounding error or half its damage, and cannot judge how far
+to trust the total they are looking at — which is the entire purpose of showing the status at all.
+So a pending ability announces its reason too: *"Not yet modelled — the damage is stated in
+description prose that has not been read yet."* The difference between the two states is what the
+note says about the FUTURE — pending will improve, permanent will not — never whether a note exists.
+
+**An incomplete entry that arrives with no reason at all falls back to PENDING, never permanent.**
+Also settled 2026-08-13. Permanent is the stronger claim: it asserts that *no source anywhere states
+this fact and no amount of work will ever supply it*. Inferring that from a field somebody forgot to
+populate would be exactly the confident wrong answer this product exists to prevent, and it would
+tell a user to stop waiting for something that may be a day's work away. Pending is the safe
+direction: it claims only that the value is not here yet, which is true whichever the reality is.
+
 Both distinctions are shown the way every other status is (§10.1) — by a glyph and a label, never
 by hue, since colour is reserved for damage type. The design token file records glyphs for
 *verified*, *derived* and *incomplete*. **It carries none for *no damage*, and none for the
