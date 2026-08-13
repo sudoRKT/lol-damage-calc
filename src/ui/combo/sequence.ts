@@ -92,7 +92,7 @@ export function removeStep(steps: readonly ComboStep[], index: number): ComboSte
  *
  * `ability` is the shelf entry a step points at, when there is one. `marker` is what is drawn
  * in place of art when there is no icon to draw — a basic attack has no Data Dragon asset at
- * all, and an on-hit or item reference has none here either.
+ * all, and an on-hit or item reference has none here either. See `BASIC_ATTACK_MARKER`.
  */
 export interface StepView {
   step: ComboStep;
@@ -107,11 +107,42 @@ export interface StepView {
 /**
  * The mark drawn for a basic attack, which has NO Data Dragon icon of any kind.
  *
- * RAISED, NOT INVENTED: DESIGN.md §9 covers ability, item and rune icons and champion
- * portraits. It says nothing about a basic attack, and SPECIFICATION §10.1's "abilities as
- * their in-game icons rather than as lettered buttons" is about abilities — a basic attack is
- * not one. Until DESIGN.md says otherwise this is drawn as a chip-sized well carrying the
- * eyebrow micro-label below, which uses an existing type role and introduces no new value.
+ * ═══ DECIDED 2026-08-13. THE BASIC ATTACK IS NAMED IN WORDS AND MARKED `AA`; NO ART IS
+ * BORROWED FOR IT. ═══  (DATA-SOURCES §42.6 records the reasoning in full.)
+ *
+ * THE QUESTION. SPECIFICATION §10.1 says "the combo builder presents abilities as their in-game
+ * icons rather than as lettered buttons", and Data Dragon ships nothing for an auto-attack —
+ * champion portraits, ability icons, item icons and rune icons, and no fifth category. So the
+ * one control the builder cannot obey the rule for is the one the rule does not cover.
+ *
+ * WHY THE BAN DOES NOT REACH IT. §10.1 forbids substituting a letter for art THAT EXISTS. Its
+ * purpose is that a player recognises Q by its icon rather than by reading a letter, and that
+ * purpose has no application where there is no icon to recognise. **A basic attack is not an
+ * ability** — SPECIFICATION §3.4 lists it as its own instance type, distinct from "damaging
+ * ability" and from "empowered basic attack" — so this is not the banned case narrowly
+ * construed, and it is not the banned case on the argument behind the ban either.
+ *
+ * WHAT WAS REJECTED, AND WHY IT IS THE WORSE OPTION. The alternative is to borrow an existing
+ * Data Dragon asset — an item icon, a summoner-spell icon, the attack-move cursor — and let it
+ * stand for "basic attack". That is presenting official art as denoting something it does not
+ * denote, in a product whose §15 asset terms are built on using Riot's art as Riot ships it, and
+ * in an interface where every other icon means exactly the thing it depicts. A user who learned
+ * that one chip means something other than what it shows can no longer trust that any of them
+ * does. Drawing a bespoke icon is the same objection plus a new asset class DESIGN.md does not
+ * define.
+ *
+ * WHAT IS DRAWN INSTEAD, and it introduces no new design value. In the shelf, a plainly labelled
+ * control reading "Basic attack" — deliberately a different SHAPE from an icon-chip, so the two
+ * never read as the same class of thing (`.combo__shelf-button--text`). In the sequence, where
+ * every step must keep one rhythm, a chip-sized well carrying this `AA` mark in the display face
+ * at the eyebrow size. Both use tokens DESIGN.md already defines. It is the same construction
+ * DESIGN.md §9 already specifies for a non-damaging chip — a visible marker that says "no art
+ * here", never an omission.
+ *
+ * ONE THING THIS DECISION DOES NOT DO. DESIGN.md §9 still says nothing about a basic attack, and
+ * that file is write-denied to every session by `permissions.deny` (CLAUDE.md, the guards). The
+ * tidy end state is a one-row addition to §9 recording this; it needs the owner to unlock the
+ * file, and it is named in DATA-SOURCES §42.6 rather than routed around.
  */
 export const BASIC_ATTACK_MARKER = 'AA';
 

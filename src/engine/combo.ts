@@ -56,6 +56,7 @@
 import type { AbilityComponent, DamageType, InstanceType, VerificationStatus } from '../types';
 import type {
   DamageByType,
+  DamageTotals,
   IncompleteReason,
   InstanceResult,
   ResistanceSteps,
@@ -76,7 +77,7 @@ import { applyDamageReductions, type DefenderDamageReduction } from './damage-re
 import { isExecuted } from './execute';
 import { resistanceMultiplier, resolveResistanceSteps } from './resistances';
 import { applyShields, totalShieldRemaining, type ShieldPool } from './shields';
-import { roundDamage } from './rounding';
+import { roundDamage, roundSplit } from './rounding';
 import { resolveVariableHits } from './variable-hits';
 import {
   applyStateEffects,
@@ -279,13 +280,21 @@ export const ENGINE_EXCLUSIONS: readonly string[] = [
     'expires soonest, and this engine models sequence rather than elapsed time (§3.2), so it ' +
     'spends them in the order the scenario lists them',
 
-  'Lifesteal, omnivamp and spell vamp on the attacker, and healing on the defender — the ' +
-    'Result has no field to report sustain in, so a figure for it would be one the user never ' +
-    'sees. Raised to the lead rather than computed and discarded',
+  // THE REASON CHANGED ON 2026-08-13 AND SO DID THE WORDING. `Result.sustain` exists now, so
+  // this is no longer "nowhere to put it" — it is "nothing to put there". The distinction
+  // matters to a reader deciding whether to wait for it.
+  'Lifesteal, omnivamp, spell vamp and healing — the Result reports these on a sustain line, ' +
+    'and no curated item effect, rune or defensive entry states a sustain value yet, so every ' +
+    'figure on that line is zero from zero sources rather than a computed nil',
 
-  'Ability ratios that read MANA or BONUS HEALTH — the frozen StatBlock carries neither, so an ' +
-    'instance carrying one contributes no damage and is listed as incomplete. Ratios on the ' +
-    'health pools, armor, magic resistance and stack counters ARE modelled',
+  // SAME KIND OF CHANGE. `StatBlock` now carries `maxHpBase`/`maxHpBonus` and optional mana, so
+  // a bonus-health ratio resolves. Mana waits on ONE fetched field, named here rather than
+  // described vaguely, because a reader can act on a named field.
+  'Ability ratios that read MANA — the stat block carries mana only for a champion whose ' +
+    'resource IS mana, and the champion fetch does not yet carry the wiki module\'s `resource` ' +
+    'field. 19 of its 175 entries state a non-mana resource with a non-zero `mp_base` (Shen 400 ' +
+    'energy, Yone 500 flow), so the pool alone cannot be read as mana. Ratios on the health ' +
+    'pools including BONUS health, armor, magic resistance and stack counters ARE modelled',
 
   'The four-step resistance breakdown for an instance that deals BOTH physical and magic ' +
     'damage — it meets two, and the result carries one, so it is given none rather than one ' +
@@ -330,7 +339,7 @@ export function runCombo(plan: ComboPlan): Result {
   const reductions = plan.defenderReductions ?? [];
   const received = plan.defenderReceivedModifiers ?? [];
   const perInstance: InstanceResult[] = [];
-  const runningTotal: number[] = [];
+  const runningTotal: DamageTotals[] = [];
   const incompleteContributors: Result['incompleteContributors'] = [];
   const burstByType: DamageByType = { physical: 0, magic: 0, true: 0 };
   const dotByType: DamageByType = { physical: 0, magic: 0, true: 0 };
@@ -425,7 +434,10 @@ export function runCombo(plan: ComboPlan): Result {
       icon: instance.icon ?? null,
       instanceType: instance.instanceType,
       damageType: reported,
-      ...(reported === 'mixed' ? { byType: roundByType(appliedByType) } : {}),
+      // A MIXED INSTANCE'S SPLIT SUMS TO ITS OWN `final` (roundSplit, 2026-08-13). DESIGN.md §8
+      // renders it bone and untagged with a tagged composition bar, so the bar's segments and
+      // the number above them have to be the same quantity.
+      ...(reported === 'mixed' ? { byType: roundSplit(appliedByType).byType } : {}),
       raw,
       afterPreMitigationReduction: total(preByType),
       afterResistances: total(resByType),
@@ -433,6 +445,8 @@ export function runCombo(plan: ComboPlan): Result {
       afterReductions: total(redByType),
       // THE ONE ROUNDING CALL for an instance. Never fed back into the arithmetic below.
       // It is the damage that reached HEALTH: what a shield absorbed did not.
+      // `applied` IS the sum of `appliedByType` (line above), so this and the split's own total
+      // are the same figure by construction — the two can never drift apart.
       final: roundDamage(applied),
       crit: instance.damage?.crit === true,
       stateSnapshot: snapshot,
@@ -460,7 +474,13 @@ export function runCombo(plan: ComboPlan): Result {
         ? damagingInstanceNumber
         : combat.damagingInstancesResolved,
     };
-    runningTotal.push(roundDamage(combat.cumulativeBurst));
+    // THE POINT CARRIES ITS SPLIT (added 2026-08-13). `burstByType` has just been advanced by
+    // this instance, so it is the cumulative split at exactly this point in the sequence.
+    // Rounding follows the §41.1 rule everywhere: each figure is rounded ONCE from the running
+    // unrounded quantity, never summed from figures already rounded. So the three rounded types
+    // may differ from the rounded total by a point — the same deliberate consequence the
+    // per-instance column has, and the reason the audit compares them at the unrounded source.
+    runningTotal.push(roundSplit(burstByType));
 
     // Step 7: this instance's effects, for the instances that follow it.
     if (instance.effects && instance.effects.length > 0) {
@@ -536,19 +556,26 @@ export function runCombo(plan: ComboPlan): Result {
     defenderStats: plan.defender,
     perInstance,
     runningTotal,
-    burst: { total: roundDamage(burstTotalUnrounded), byType: roundByType(burstByType) },
+    burst: roundSplit(burstByType),
     dot: {
-      total: roundDamage(dotTotalUnrounded),
-      byType: roundByType(dotByType),
+      ...roundSplit(dotByType),
       sources: dotSources,
     },
+    // SUSTAIN (SPECIFICATION §3.7). The Result now HAS a place to report lifesteal, omnivamp,
+    // spell vamp and healing — that was the blocker, and it is gone. What is still absent is the
+    // DATA: no curated item effect, rune or defensive entry states a sustain value yet, so the
+    // engine reports zero from ZERO SOURCES. An empty `sources` list is what distinguishes "we
+    // computed nothing" from "we computed nothing was restored", and `ENGINE_EXCLUSIONS` says so
+    // in words on every result besides.
+    sustain: { attackerHealing: 0, defenderHealing: 0, sources: [] },
     // The verdict, twice (§3.8): burst alone, and burst plus full DoT resolution.
     verdict: {
-      burstOnly: verdict(plan.defender.hp, burstTotalUnrounded, appliedPerInstance),
+      burstOnly: verdict(plan.defender.hp, burstTotalUnrounded, appliedPerInstance, 0),
       burstPlusDot: verdict(
         plan.defender.hp,
         burstTotalUnrounded + dotTotalUnrounded,
         appliedPerInstance,
+        0,
       ),
     },
     excludedMechanics: [...ENGINE_EXCLUSIONS, ...(plan.excludedMechanics ?? [])],
@@ -714,9 +741,12 @@ function distinctTypes(components: AbilityComponent[]): DamageType[] {
 /**
  * One champion's stats as a ratio may read them (component.ts, `OwnedStats`).
  *
- * WHAT IS DELIBERATELY LEFT OUT: bonus health, maximum mana and current mana. The frozen
- * `StatBlock` carries none of the three, and bonus health cannot be derived from maximum
- * health without the champion's base at that level. A ratio needing one is refused by name.
+ * ALL TEN OWNER-BEARING STATS ARE NOW PASSED THROUGH, where the stat block has them (changed
+ * 2026-08-13). Bonus health arrives on `maxHpBonus`, because it is maximum health minus the
+ * champion's own base at that level and CANNOT be derived from a total; mana arrives only when
+ * the champion's resource is mana, which is why both mana fields are optional here and absent
+ * rather than zero. A ratio reading a stat the block does not carry is still refused BY NAME,
+ * which is the behaviour that must survive: an absent figure produces a named refusal, never a 0.
  */
 function statsView(block: StatBlock, currentHp: number): OwnedStats {
   return {
@@ -724,10 +754,13 @@ function statsView(block: StatBlock, currentHp: number): OwnedStats {
     abilityPower: block.abilityPower,
     maxHP: block.maxHp,
     currentHP: currentHp,
+    bonusHP: block.maxHpBonus,
     armor: block.armor,
     bonusArmor: block.armorBonus,
     magicResist: block.magicResist,
     bonusMagicResist: block.magicResistBonus,
+    ...(block.maxMana !== undefined ? { maxMana: block.maxMana } : {}),
+    ...(block.mana !== undefined ? { currentMana: block.mana } : {}),
   };
 }
 
@@ -977,14 +1010,6 @@ function applyExecute(
 // Reporting
 // ---------------------------------------------------------------------------------------
 
-function roundByType(byType: DamageByType): DamageByType {
-  return {
-    physical: roundDamage(byType.physical),
-    magic: roundDamage(byType.magic),
-    true: roundDamage(byType.true),
-  };
-}
-
 /**
  * The survival verdict against one damage figure.
  *
@@ -1003,12 +1028,22 @@ function verdict(
   /** What each instance ACTUALLY applied to health, in order, unrounded. A shield stands
    *  between the damage and the health, so this is not the same as `afterReductions`. */
   appliedPerInstance: number[],
+  /** Health the DEFENDER regained over the sequence, unrounded. 0 in every result this engine
+   *  produces today — nothing in the curated data heals the defender yet, which
+   *  `ENGINE_EXCLUSIONS` states rather than leaving the zero to read as a computed figure. */
+  healingUnrounded: number,
 ): SurvivalVerdict {
+  // HEALTH THE DEFENDER ACTUALLY HAS TO LOSE. A defender who healed 400 and whose verdict was
+  // computed as though they had not is a WRONG number, not an incomplete one, so healing is a
+  // term inside both verdicts rather than a third verdict beside them — §3.8 fixes the count at
+  // two. With no healing this is `defenderHp` and every figure below is unchanged.
+  const survivable = defenderHp + healingUnrounded;
+
   let lethalAtInstance: number | null = null;
   let cumulative = 0;
   for (let index = 0; index < appliedPerInstance.length; index += 1) {
     cumulative += appliedPerInstance[index];
-    if (cumulative >= defenderHp) {
+    if (cumulative >= survivable) {
       lethalAtInstance = index + 1;
       break;
     }
@@ -1016,9 +1051,10 @@ function verdict(
   return {
     defenderHp,
     damageApplied: roundDamage(damageUnrounded),
-    lethal: damageUnrounded >= defenderHp,
+    healingApplied: roundDamage(healingUnrounded),
+    lethal: damageUnrounded >= survivable,
     lethalAtInstance,
-    remainingHp: roundDamage(Math.max(0, defenderHp - damageUnrounded)),
+    remainingHp: roundDamage(Math.max(0, survivable - damageUnrounded)),
   };
 }
 

@@ -275,8 +275,13 @@ export type RatioStat =
   | 'bonusMagicResist'
   | 'maxMana'
   | 'currentMana'
-  /** A persistent accumulation the user enters up front (SPECIFICATION §3.3) — Nasus Q
-   *  stacks, Veigar stacks, Cho'Gath Feast stacks. Requires `Ratio.counter`. */
+  /**
+   * A persistent accumulation the user enters up front (SPECIFICATION §3.3) — Nasus Q
+   * stacks, Veigar stacks, Cho'Gath Feast stacks. Requires `Ratio.counter`.
+   *
+   * **THE UNIT IS PERCENTAGE POINTS OF THE STACK COUNT, EXACTLY AS EVERY OTHER RATIO.
+   * "+1 damage per stack" is stored as `100`, NOT as `1`. Decided 2026-08-13; see `Ratio`.**
+   */
   | 'stacks';
 
 /**
@@ -399,6 +404,41 @@ export interface RatioMultiplier {
  * stated here because the type is the only place a reader of the contract will look.
  *
  * `RatioMultiplier.per100` uses the same unit, on the same quantity.
+ *
+ * ---
+ *
+ * **`stacks` USES THE SAME UNIT, WITH NO EXCEPTION. DECIDED 2026-08-13, BEFORE ANY DATA EXISTS.**
+ *
+ * A stack counter is the one `RatioStat` whose stat has no unit of its own — 200 ability power is
+ * a quantity of ability power, but 25 Nasus stacks is a count. So "75% of it" is a strange
+ * sentence, and the temptation is to give `stacks` its own unit of damage-per-stack, where
+ * "+1 damage per stack" would store as `1`.
+ *
+ * **It does not. "+1 damage per stack" is stored as `100`.** The magnitude is percentage points
+ * of the counter, and the engine's single division by 100 applies to it unchanged:
+ * `(100 / 100) x 25 stacks = 25 damage`. A half-point-per-stack ability stores `50`.
+ *
+ * WHY THE UNIFORM RULE WON, stated so it is not relitigated from scratch:
+ *   1. **One rule, no per-stat exception.** The alternative is a rule a reader must remember an
+ *      exception to, and the exception is invisible at the call site — a `Ratio` on `stacks`
+ *      looks exactly like a `Ratio` on `AP`.
+ *   2. **`RatioMultiplier.per100` would otherwise split.** A multiplier on a `stacks` ratio adds
+ *      percentage points to its parent. If the parent were damage-per-stack, one field would
+ *      carry two units depending on what it was attached to.
+ *   3. **Nothing has been harvested yet**, so there is no migration cost either way and the
+ *      decision is purely about which rule is easier to state, check and remember.
+ *
+ * THE COST IS REAL AND IS NAMED: a curated entry reading `from: 100, to: 100` for "1 damage per
+ * stack" is not self-evident to someone reading the file. That is why it is written here, why the
+ * validator refuses the other unit rather than accepting it, and why the refusal message names
+ * both readings.
+ *
+ * **THE GUARD.** Gate 1 refuses a `stacks` ratio whose magnitude is below
+ * `MIN_STACKS_RATIO_POINTS` at every rank or level, because such a value means less than
+ * 0.1 damage per stack — a quantity no ability in the game states, and the exact signature of a
+ * harvester writing damage-per-stack. It is a REFUSAL, never a silent conversion: converting
+ * would guess which unit the author meant, and the entry becoming `incomplete` is this project's
+ * promise working (SPECIFICATION §8).
  */
 export type Ratio = {
   stat: RatioStat;
@@ -574,13 +614,66 @@ export interface CuratedAbility {
  *    as "the same amount" or "equal to the health cost". The source states the value; it does not
  *    state a figure. Forcing a number here would mean inventing one.
  *
- * The headline for the interface: **210 of 218 are toggles**, so the defender panel needs on the
- * order of two hundred controls rather than a handful.
+ * THE HEADLINE FOR THE INTERFACE, corrected 2026-08-13. **210 of 218 are toggles roster-wide,
+ * and a scenario has ONE defender.** DEFINITION: one toggle is one conditional defensive ability
+ * of the chosen champion, measured over all 173 champions including those with none — minimum 0,
+ * median 1, mean 1.23, maximum 4. **The panel shows at most four rows.** This comment previously
+ * concluded "the defender panel needs on the order of two hundred controls"; that does not follow
+ * from the measurement, and DATA-SOURCES §40.1 struck it through in place.
+ *
+ * ---
+ *
+ * **THE SIX SHAPE FIELDS, ADDED 2026-08-13.** `defensive-propose.ts` reads the defender's kit off
+ * the wiki and REFUSES any row stating a fact the entry could not carry, with a named class. Six
+ * of those classes are one missing field each, and the proposer measured what they cost together:
+ *
+ * > **44 pairs.** DEFINITION: a refused (page, kind) pair is released by a set of classes when
+ * > EVERY class blocking it is in that set — measured over 226 confirmed pages / 282 pairs, of
+ * > which 88 were proposed and 194 refused. A released pair still has to parse, still obeys the
+ * > owner rule, and is `derived` at best.
+ *
+ * The six are `label`, `id` + `relation`, `grantedStat`, `appliesToDamageType`, `overTime` and
+ * `unit`. Each below names the row it was refusing and what storing it wrong would have claimed.
  */
 export interface CuratedDefensiveEffect {
   champion: string;
   slot: AbilitySlot;
   abilityName: string;
+  /**
+   * Stable identity within one ability, so `relation` has something to point at.
+   *
+   * Optional because the overwhelming majority of abilities carry one effect per kind and need
+   * no discriminator. Gate 1 requires it — and requires it unique within
+   * (champion, slot, abilityName) — as soon as any entry on that ability carries a `relation`,
+   * for the same reason `AbilityComponent.relation` is required once there are two components:
+   * the intent is recorded rather than inferred.
+   */
+  id?: string;
+  /**
+   * The source's OWN label for the row this came from — "Armor", "Magic Resistance",
+   * "Minimum Damage Reduction".
+   *
+   * REFUSAL CLASS `multiple-values-one-field`, 27 pairs blocked. **Leona W grants 20–50 armor
+   * AND 20–50 magic resistance from two separate rows on one page.** With one unlabelled value
+   * per entry the two are indistinguishable, so the proposer stored neither — picking one row
+   * silently drops the other, and which one it drops decides whether the defender mitigates
+   * physical or magic damage.
+   */
+  label?: string;
+  /**
+   * Whether this entry ADDS to its siblings on the same ability or REPLACES one of them.
+   *
+   * REFUSAL CLASS `needs-relation`, 14 pairs blocked. The refused rows are Minimum/Maximum pairs
+   * and base/empowered variants — two numbers for one effect, of which only one applies at a
+   * time. Ability components have carried `relation` since the contract was frozen, for exactly
+   * this reason and with exactly this failure mode: summing two alternatives hands the defender
+   * both, and a defender who mitigated twice as much as they should is a plausible wrong number.
+   *
+   * Same type, same default, same rule as `AbilityComponent.relation`: absent means `adds`, and
+   * gate 1 requires it to be stated explicitly once an ability carries two entries of one kind.
+   * `componentId` names the sibling's `id`.
+   */
+  relation?: ComponentRelation;
   /** The nine kinds the census measured. Each is a different thing to do to incoming damage. */
   kind:
     | 'damage-reduction'
@@ -604,8 +697,76 @@ export interface CuratedDefensiveEffect {
    *  source's own terms, so the interface can label the toggle with the real condition. */
   condition?: string;
   /**
+   * WHICH RESISTANCE a `resistance-grant` grants.
+   *
+   * REFUSAL CLASS `needs-granted-stat`, 13 pairs blocked, 8 of them blocked by this alone — the
+   * single largest release of the six. `kind: 'resistance-grant'` plus the number 7 cannot
+   * distinguish 7 armor from 7 magic resistance, **and that is the difference between mitigating
+   * physical damage and mitigating magic damage.** The source's row label says which; the entry
+   * could not.
+   *
+   * `'both'` is a real answer and not a shorthand for "we did not look": some rows grant one
+   * figure to both resistances in one statement. It is NOT how Leona W is stored — Leona W is two
+   * separately-valued rows and belongs in two entries distinguished by `label`.
+   *
+   * Gate 1 requires it when `kind` is `'resistance-grant'`, and refuses it on every other kind.
+   */
+  grantedStat?: 'armor' | 'magicResist' | 'both';
+  /**
+   * THE ONE DAMAGE TYPE this effect applies to, when it applies to one.
+   *
+   * REFUSAL CLASS `needs-damage-type`, 3 pairs blocked. A magic-only shield and a
+   * physical-damage-only reduction were unstorable: with no type on the entry, **a magic shield
+   * absorbs physical damage too**, which silently mitigates damage the game does not mitigate.
+   *
+   * ABSENT MEANS "ALL TYPES", which is the ordinary case — a general shield, a flat reduction.
+   * It does not mean "unknown"; a row whose type could not be read is refused, not stored blank.
+   * Gate 1 requires it when `kind` is `'type-specific-reduction'`, whose whole meaning is the
+   * type.
+   */
+  appliesToDamageType?: DamageType;
+  /**
+   * THIS EFFECT RECURS. Same shape and same meaning as `CuratedItemEffect.overTime`.
+   *
+   * REFUSAL CLASS `needs-over-time`, 14 pairs blocked. The refused rows state a per-tick or
+   * whole-channel figure — a heal spread over a channel rather than delivered at once.
+   * SPECIFICATION §3.8 keeps damage over time out of the burst total precisely because a figure
+   * delivered over a duration and a figure delivered now are different facts, and that is as
+   * true of a heal as of a burn. Stored without this, a channelled heal restores its whole
+   * duration's health at one point in the sequence.
+   *
+   * `totalInstances` is how many times it lands over the full duration, WHERE THE SOURCE STATES
+   * IT; absent means the source does not, and no count may be invented (§38). No interval is
+   * recorded, because the engine models sequence and not time (§3.2).
+   */
+  overTime?: { totalInstances?: number; sourceSays: string };
+  /**
+   * WHAT THE NUMBER IN `value` MEANS. Required by gate 1 whenever `value` is present.
+   *
+   * REFUSAL CLASSES `unit-not-expressible` and `not-an-amount`, 7 pairs blocked by the second.
+   * Two distinct failures, one field, because both are the same question — "a number, of what?":
+   *
+   * - `'flat'` — points. Health restored, health of a shield, points of armor, points off each
+   *   instance.
+   * - `'percent'` — a percentage of whatever the kind is about: damage received for a
+   *   `damage-reduction`, maximum health for a `max-health-grant`. **Damage reduction is written
+   *   both ways in the source and nothing on the entry said which — 25 could mean 25% of every
+   *   instance or 25 points off it**, and those are not close.
+   * - `'percent-of-damage-dealt'` — a RATE, not an amount: life steal, omnivamp, the wiki's
+   *   "healing percentage" rows. Put in a field an engine reads as health restored, a rate
+   *   restores its own number as health — 12 becomes 12 health rather than 12% of what landed.
+   * - `'healing-multiplier'` — an AMPLIFIER on other healing ("increased healing"). It restores
+   *   no health at all by itself, and an engine that added it would invent health from nothing.
+   *
+   * The last two are why this is one field rather than a plain flat/percent pair: `not-an-amount`
+   * is a unit question, and giving it a separate field would have made two fields that must agree.
+   */
+  unit?: 'flat' | 'percent' | 'percent-of-damage-dealt' | 'healing-multiplier';
+  /**
    * The value, when the source states a figure. Absent for the 17 with none.
    * A `byRangeType` scaling is permitted here for the same reason it is on ability damage.
+   *
+   * REQUIRES `unit` — see above. A number with no unit is not a value.
    */
   value?: Scaling;
   /** What the value is a share OF, when it is a share. Requires an owner on the same ten stats

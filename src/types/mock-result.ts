@@ -60,6 +60,16 @@ export const MOCK_RESULT: Result = {
     level: 11,
     hp: 2010,
     maxHp: 2010,
+    // 1210 base at level 11 + 800 from the build. The split is NOT derivable from maxHp — it is
+    // the champion's own base health at this level, which a total does not carry — and a bonusHP
+    // ratio is unresolvable without it.
+    maxHpBase: 1210,
+    maxHpBonus: 800,
+    // MANA ABSENT, AND THAT IS A STATEMENT. Aatrox's resource is a Blood Well, not mana. The
+    // wiki module states `mp_base: 0` for him, but `mp_base` holds whatever the resource is —
+    // measured 2026-08-13 over all 175 module entries, 19 state a NON-MANA resource with a
+    // NON-ZERO mp_base (Shen 400 energy, Yone 500 flow, Rengar 4 ferocity). Writing any of those
+    // into a mana field would label another resource as mana. Absent is the honest state.
     // 38 base + 54 from the build; the split is what percentage BONUS armor penetration needs.
     armor: 92,
     armorBase: 38,
@@ -81,6 +91,11 @@ export const MOCK_RESULT: Result = {
     level: 11,
     hp: 800, // entered already damaged — a "moment in time" (§3.3)
     maxHp: 1850,
+    // 1470 base at level 11 + 380 from the build. The split is of MAXIMUM health only: this
+    // defender has lost 1050 health, and which pool it came from is not a fact the game states.
+    maxHpBase: 1470,
+    maxHpBonus: 380,
+    // Garen's resource is "None". Mana absent, for the reason given on the attacker above.
     armor: 100,
     armorBase: 60,
     armorBonus: 40,
@@ -201,7 +216,19 @@ export const MOCK_RESULT: Result = {
     },
   ],
   // Instance 4 contributes 0, so the total does not move across it (620 -> 620).
-  runningTotal: [240, 420, 620, 620, 770],
+  //
+  // EACH POINT CARRIES ITS OWN SPLIT (changed 2026-08-13). `runningTotal` sits on every row of
+  // the per-instance table, and DESIGN.md §8 allows an untagged damage figure only when a tagged
+  // composition bar accompanies it. The split is what makes that bar renderable per row — and
+  // renderable from the engine's arithmetic rather than by re-summing the rounded column, which
+  // §41.1 forbids. The final point equals `burst` exactly, which is a test.
+  runningTotal: [
+    { total: 240, byType: { physical: 240, magic: 0, true: 0 } },
+    { total: 420, byType: { physical: 420, magic: 0, true: 0 } },
+    { total: 620, byType: { physical: 420, magic: 200, true: 0 } },
+    { total: 620, byType: { physical: 420, magic: 200, true: 0 } },
+    { total: 770, byType: { physical: 570, magic: 200, true: 0 } },
+  ],
   burst: {
     total: 770,
     byType: { physical: 570, magic: 200, true: 0 },
@@ -219,14 +246,60 @@ export const MOCK_RESULT: Result = {
       },
     ],
   },
+  /**
+   * SUSTAIN — health restored during the sequence (SPECIFICATION §3.7).
+   *
+   * ATTACKER-SIDE ONLY, AND THAT IS DELIBERATE. The attacker's lifesteal and omnivamp can never
+   * move the survival verdict, which is about the defender, so putting them here exercises the
+   * line without changing a single figure elsewhere in this object.
+   *
+   * A DEFENDER HEAL IS NOT IN THE CANONICAL MOCK, because the burndown does not yet draw one.
+   * DESIGN.md §7 specifies the trace as remaining HP falling and says nothing about a plateau
+   * that rises; a defender healing 90 would make the chart's last tread end at 30 while the
+   * verdict beside it read 120, which is the §41.2 defect — two parts of one picture stating
+   * different numbers. `DEFENDER_HEALS` in `src/ui/burndown/mock-variants.ts` carries that state
+   * so it is covered and NAMED rather than smuggled into every component's baseline.
+   *
+   * ILLUSTRATIVE, like every other figure here. No lifesteal, omnivamp or defensive heal is in
+   * the curated data yet, and the real engine reports zero from zero sources until it is — which
+   * `ENGINE_EXCLUSIONS` states rather than leaving a 0 to read as a computed figure.
+   */
+  sustain: {
+    attackerHealing: 63,
+    defenderHealing: 0,
+    sources: [
+      {
+        label: 'Lifesteal — basic attack (critical)',
+        icon: null,
+        kind: 'lifesteal',
+        restoresTo: 'attacker',
+        amount: 36,
+        fromInstance: 2,
+        verification: 'derived',
+      },
+      {
+        label: 'Omnivamp — W, Infernal Chains',
+        icon: null,
+        kind: 'omnivamp',
+        restoresTo: 'attacker',
+        amount: 27,
+        fromInstance: 3,
+        verification: 'derived',
+      },
+    ],
+  },
   verdict: {
     // BURST SURVIVES, BURST PLUS DAMAGE-OVER-TIME KILLS. That is deliberate and is now the
     // canonical case: it is the only combination that exercises the second, dashed lethal rule
     // DESIGN.md §7 specifies, and it makes the two-verdict requirement of §3.8 visibly do
     // something rather than print the same word twice.
+    // `remainingHp === max(0, defenderHp - damageApplied + healingApplied)` in both, which is
+    // the invariant the audit checks. The defender heals nothing here, so it reduces to the
+    // arithmetic this mock has always stated: 800 - 770 = 30, and 800 - 930 floored to 0.
     burstOnly: {
       defenderHp: 800,
       damageApplied: 770,
+      healingApplied: 0,
       lethal: false,
       lethalAtInstance: null,
       remainingHp: 30,
@@ -234,6 +307,7 @@ export const MOCK_RESULT: Result = {
     burstPlusDot: {
       defenderHp: 800,
       damageApplied: 930,
+      healingApplied: 0,
       lethal: true,
       lethalAtInstance: null,
       remainingHp: 0,

@@ -160,15 +160,24 @@ export const READ_POPULATION: Reading[] = [
     expect: {
       damageType: 'physical',
       base: 70,
-      ratios: [{ stat: 'maxHP', value: 6, owner: 'unresolved' }],
+      // `holder`, NOT `unresolved` — CHANGED 2026-08-13, and it is the adopted §41.1 policy
+      // being applied rather than a re-reading. The WIKI never says whose maximum health this
+      // is; Data Dragon's own description of the same effect says "your max Health", and §41.1
+      // settled that an attribution by the other source is a source STATING a fact rather than
+      // an inference from convention. `holder` and not `caster`: the same item on the defender
+      // reads off the defender (data.ts, RatioOwner).
+      ratios: [{ stat: 'maxHP', value: 6, owner: 'holder' }],
     },
     appliesAs: 'on-hit, at 3 stacks, 30 second cooldown per target',
     appliesAsCode: 'on-hit',
     note:
-      'WHOSE maximum health is never stated. Heartsteel is one of DATA-SOURCES §37.3\'s 56 ' +
-      'permanently unresolvable effects, so this entry can only ever be `incomplete`. It is ' +
-      'stored with owner `unresolved` rather than withheld, because the rest of the figure is ' +
-      'stated and the missing fact is recorded rather than guessed.',
+      'The wiki states a share of maximum health and never says whose; Data Dragon states ' +
+      '"your max Health" for the same effect, so the STORED damage ratio is attributed and the ' +
+      'component is complete. Heartsteel nonetheless remains in DATA-SOURCES §37.3\'s ' +
+      'permanently-unresolvable population under that section\'s own definition, because a ' +
+      'THIRD reference in the same prose — the permanent BONUS health this effect grants — is ' +
+      'attributed by neither source. That clause is not stored here, so it does not make the ' +
+      'damage figure incomplete: those are two different questions, and §41.1 ran them together.',
   },
   {
     id: 3145,

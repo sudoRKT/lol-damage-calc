@@ -20,6 +20,8 @@ import type {
   AbilityComponent,
   CuratedItemEffect,
   Ratio,
+  RatioOwner,
+  RatioStat,
   Unresolvable,
   VerificationStatus,
 } from '../../src/types/data.ts';
@@ -36,6 +38,54 @@ import {
   type Refusal,
 } from './effect-values.ts';
 import { readingFor, type AppliesAs, type Reading } from './effect-values-read.ts';
+
+/**
+ * Owner attributions Data Dragon states and the wiki does not, hand-read and quoted.
+ *
+ * MEASURED, NOT PATTERN-MATCHED. `effect-owner-crosscheck.ts` compared both sources over all 209
+ * items and found **7 unattributed item references that Data Dragon attributes, across 5
+ * effects** (DATA-SOURCES §39.2). This table is that measurement, filtered to the references
+ * that reach a STORED damage ratio — which is one effect, Heartsteel. The other four
+ * (Black Cleaver and Bloodletter's Curse shred, Overlord's Bloodmail and Riftmaker's stat
+ * grants) attribute stats this extraction does not store as damage ratios, so adopting them
+ * changes no stored number; they are recorded in DATA-SOURCES §42.7 rather than applied here.
+ *
+ * IT IS A TABLE AND NOT A RULE, deliberately — CLAUDE.md's "a detector proposes, a person
+ * confirms, and storage is gated on the confirmed population". A regex over Data Dragon's prose
+ * would decide references nobody has read; every row here quotes the words it rests on.
+ */
+export const DATA_DRAGON_ATTRIBUTIONS: ReadonlyArray<{
+  itemId: number;
+  key: string;
+  stat: RatioStat;
+  owner: RatioOwner;
+  quotingDataDragon: string;
+}> = [
+  {
+    itemId: 3084,
+    key: 'pass',
+    stat: 'maxHP',
+    // "your max Health" — the wearer, which is `holder` and NOT `caster`: the same item on the
+    // defender reads off the defender (data.ts, RatioOwner).
+    owner: 'holder',
+    quotingDataDragon: 'your max Health',
+  },
+];
+
+/** Upgrade an `unresolved` owner to the one Data Dragon states, where a row above says so. */
+export function applyDataDragonAttributions(
+  record: { id: number; key: string },
+  extraction: { component: { ratios: Array<{ stat: RatioStat; owner?: RatioOwner }> } | null },
+): void {
+  if (!extraction.component) return;
+  for (const ratio of extraction.component.ratios) {
+    if (ratio.owner !== 'unresolved') continue;
+    const row = DATA_DRAGON_ATTRIBUTIONS.find(
+      (a) => a.itemId === record.id && a.key === record.key && a.stat === ratio.stat,
+    );
+    if (row) ratio.owner = row.owner;
+  }
+}
 
 export interface GateResult {
   id: number;
@@ -229,6 +279,19 @@ export function gateEffect(
           : [{ reason: 'no-structural-damage-run', detail: 'the parser produced no component' }],
     };
   }
+
+  // ═══ THE DATA DRAGON ATTRIBUTION, APPLIED (2026-08-13) ═══
+  //
+  // DATA-SOURCES §41.1 ADOPTED the rule — where Data Dragon's prose attributes a stat the wiki
+  // leaves silent, that is a SOURCE STATING A FACT, not an inference from convention — and then
+  // nothing acted on it, so Heartsteel kept shipping `owner: 'unresolved'` against a source that
+  // says "your max Health". Applied here, before the reading is compared, so the parser and the
+  // hand reading are working from the same adopted source policy rather than from the wiki alone.
+  //
+  // It does NOT weaken §16. An owner is still never inferred from a verb or a convention: the
+  // 22 references whose only evidence is a holder-implying verb stay `unresolved`, and this table
+  // carries only references where the OTHER SOURCE'S OWN WORDS name the champion, quoted.
+  applyDataDragonAttributions(record, extraction);
 
   const clash = disagreement(extraction, reading);
   if (clash) {

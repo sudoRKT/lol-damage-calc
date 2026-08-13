@@ -108,10 +108,33 @@ export function statRows(stats: StatBlock): Row[] {
   const p = stats.penetration;
   return [
     {
+      // MAXIMUM HEALTH IS SPLIT LIKE THE RESISTANCES ARE (2026-08-13). Bonus health is not
+      // derivable from a total — it is maximum minus the champion's own base at this level —
+      // and an ability scaling on it is unmodellable without the figure. The split shown is of
+      // MAXIMUM health: a damaged champion has lost health, and which pool it came from is not
+      // a fact the game states, so `hp` is printed against `maxHp` and not against either part.
       label: 'Health',
-      value: `${formatStat(stats.hp)} / ${formatStat(stats.maxHp)}`,
-      spoken: `${stats.hp} of ${stats.maxHp} maximum`,
+      value:
+        `${formatStat(stats.hp)} / ${formatStat(stats.maxHp)} ` +
+        `(${formatStat(stats.maxHpBase)} + ${formatStat(stats.maxHpBonus)})`,
+      spoken:
+        `${stats.hp} of ${stats.maxHp} maximum, ` +
+        `${stats.maxHpBase} base plus ${stats.maxHpBonus} bonus`,
     },
+    // MANA IS PRINTED ONLY FOR A CHAMPION WHOSE RESOURCE IS MANA. Absent is not zero: 11 of the
+    // roster have no resource pool and 19 module entries state a NON-MANA one with a non-zero
+    // value (Shen 400 energy, Yone 500 flow). A row reading "Mana 0" would claim an empty mana
+    // pool, and a row reading "Mana 400" for Shen would label energy as mana. So the row is
+    // omitted entirely, which is the same thing the stat block itself says.
+    ...(stats.maxMana !== undefined
+      ? [
+          {
+            label: 'Mana',
+            value: `${formatStat(stats.mana ?? 0)} / ${formatStat(stats.maxMana)}`,
+            spoken: `${stats.mana ?? 0} of ${stats.maxMana} maximum`,
+          },
+        ]
+      : []),
     {
       label: 'Armor',
       value: `${formatStat(stats.armor)} (${formatStat(stats.armorBase)} + ${formatStat(stats.armorBonus)})`,

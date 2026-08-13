@@ -105,8 +105,8 @@ export function ComboBuilder({
             A BASIC ATTACK IS NOT AN ABILITY and has no Data Dragon icon of any kind, so it
             cannot be an icon-chip. §10.1's ban on lettered buttons is about abilities; this is
             a plainly labelled control instead, and it is deliberately shaped differently from
-            the chips so the two never read as the same class of thing. DESIGN.md defines no
-            art for it — that is RAISED, not filled in here.
+            the chips so the two never read as the same class of thing. SETTLED 2026-08-13 —
+            the reasoning, and what was rejected, is on BASIC_ATTACK_MARKER in ./sequence.ts.
           */}
           <button
             type="button"

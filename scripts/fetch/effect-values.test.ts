@@ -422,6 +422,35 @@ describe('the gate: a value is stored only where parser and reading agree', () =
   });
 
   it('marks an unresolved owner so the entry can never claim better than incomplete', () => {
+    // Titanic Hydra: "1% maximum health" and NEITHER source says whose. This test used
+    // Heartsteel until 2026-08-13; Heartsteel stopped being an example of the rule when the
+    // adopted Data Dragon attribution was applied to it (see the two tests below), so the rule
+    // is now demonstrated on an effect that is still genuinely unattributed. The RULE is
+    // unchanged — only the exemplar moved.
+    const out = gateEffect(
+      item(
+        'Titanic Hydra',
+        3748,
+        'pass',
+        "{{as|{{rd|1%|{{fd|0.5}}%}} '''maximum''' health|hp}} {{as|'''bonus''' physical damage}}",
+      ),
+    );
+    expect(out.outcome).toBe('stored');
+    expect(out.hasUnresolvedOwner).toBe(true);
+    expect(out.verification).toBe('incomplete');
+    // The missing fact is NAMED, so the interface can say "cannot be completed" rather than
+    // "not yet modelled" (SPECIFICATION §8).
+    expect(out.unresolvable?.[0]!.field).toContain('maxHP');
+    expect(out.unresolvable?.[0]!.why).toContain('never says whose');
+  });
+
+  it('applies the adopted Data Dragon attribution to Heartsteel', () => {
+    // DATA-SOURCES §41.1 ADOPTED the rule — an attribution by the other source is a source
+    // STATING a fact, not an inference from convention — and nothing acted on it, so this effect
+    // kept shipping `owner: 'unresolved'` against a source reading "your max Health". The wiki
+    // text below is unchanged; what changed is that both sources are now consulted.
+    //
+    // `holder`, not `caster`: the same item on the defender reads off the defender.
     const out = gateEffect(
       item(
         'Heartsteel',
@@ -433,12 +462,34 @@ describe('the gate: a value is stored only where parser and reading agree', () =
       ),
     );
     expect(out.outcome).toBe('stored');
-    expect(out.hasUnresolvedOwner).toBe(true);
-    expect(out.verification).toBe('incomplete');
-    // The missing fact is NAMED, so the interface can say "cannot be completed" rather than
-    // "not yet modelled" (SPECIFICATION §8).
-    expect(out.unresolvable?.[0]!.field).toContain('maxHP');
-    expect(out.unresolvable?.[0]!.why).toContain('never says whose');
+    expect(out.components?.[0]!.ratios[0]!.owner).toBe('holder');
+    // Every fact the STORED component needs is now attributed, so it is no longer incomplete.
+    // Heartsteel still belongs to §37.3's permanently-unresolvable population under that
+    // section's own effect-level definition — a third reference in the same prose, the permanent
+    // BONUS health it grants, is attributed by neither source — but that clause is not stored
+    // here and does not make this damage figure incomplete. Two different questions.
+    expect(out.hasUnresolvedOwner).toBe(false);
+    expect(out.verification).toBe('derived');
+    expect(out.unresolvable).toBeUndefined();
+  });
+
+  it('does NOT attribute the SAME wording on an effect the table does not name', () => {
+    // The paired test, and it is the important one. Without it the Heartsteel case above would
+    // pass for an implementation that resolved every unattributed maxHP reference to the holder
+    // — which is exactly the convention argument DATA-SOURCES §16 rejects. Identical wikitext,
+    // a different item id, and the owner stays unresolved: the table is a confirmed population,
+    // not a rule.
+    const out = gateEffect(
+      item(
+        'Heartsteel',
+        3084,
+        'pass2',
+        'Your next basic attack against a target with 3 stacks is empowered to consume them all ' +
+          "to deal {{as|70|physical damage}} {{as|(+ 6% '''maximum''' health)}} " +
+          "{{as|'''bonus''' physical damage}} [[on-hit]]",
+      ),
+    );
+    expect(out.components?.[0]!.ratios[0]!.owner ?? 'unresolved').toBe('unresolved');
   });
 
   it('emits the melee/ranged pair as the contract byRangeType arm (Titanic Hydra)', () => {

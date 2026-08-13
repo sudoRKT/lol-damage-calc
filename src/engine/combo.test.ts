@@ -109,9 +109,24 @@ describe('runCombo — armor shred accumulates, so a later instance meets less a
     ]);
   });
 
-  it('reports a running total of 150, 317, 504', () => {
+  it('reports a running total of 150, 317, 504, each carrying its own per-type split', () => {
     // 150 -> 316.666... -> 504.166..., each rounded for display from the unrounded total.
-    expect(result.runningTotal).toEqual([150, 317, 504]);
+    expect(result.runningTotal.map((p) => p.total)).toEqual([150, 317, 504]);
+    // Every point states the split behind it, so the interface can draw the composition bar
+    // DESIGN.md §8 requires beside an untagged aggregate — from the engine's own arithmetic,
+    // never by re-summing the rounded per-instance column. This combo is physical throughout.
+    expect(result.runningTotal.map((p) => p.byType)).toEqual([
+      { physical: 150, magic: 0, true: 0 },
+      { physical: 317, magic: 0, true: 0 },
+      { physical: 504, magic: 0, true: 0 },
+    ]);
+  });
+
+  it('makes every running-total point sum to its own total', () => {
+    for (const point of result.runningTotal) {
+      const sum = point.byType.physical + point.byType.magic + point.byType.true;
+      expect(sum).toBe(point.total);
+    }
   });
 
   it('totals 504 of physical burst and nothing of the other two types', () => {
@@ -240,7 +255,7 @@ describe('runCombo — a reduction window over the first three instances', () =>
       }),
     );
     expect(result.perInstance.map((i) => i.final)).toEqual([170, 170, 170, 200]);
-    expect(result.runningTotal).toEqual([170, 340, 510, 710]);
+    expect(result.runningTotal.map((p) => p.total)).toEqual([170, 340, 510, 710]);
     expect(result.burst.total).toBe(710);
   });
 
@@ -813,5 +828,138 @@ describe('runCombo — the echoed contract fields', () => {
     expect(result.burst.total).toBe(0);
     expect(result.dot.total).toBe(0);
     expect(result.verificationSummary).toBe('no-damage');
+  });
+});
+
+// =========================================================================================
+// WHAT THE CONTRACT PASS OF 2026-08-13 RELEASED (DATA-SOURCES §42)
+//
+// Three fields the engine had raised and worked around. Each test below is the behaviour that
+// was IMPOSSIBLE before the field existed, run through the whole runner rather than through the
+// component evaluator alone — because the gap was never in the arithmetic, it was in what the
+// stat block and the Result could carry.
+// =========================================================================================
+
+describe('runCombo — a bonus-health ratio resolves, because the stat block now splits maxHp', () => {
+  it('reads 10% of the CASTER’s 800 bonus health', () => {
+    // 100 flat + (10 / 100) x 800 bonus health = 180 raw, against 0 armor.
+    // Before `maxHpBase`/`maxHpBonus` this instance contributed NOTHING and was listed as
+    // incomplete: bonus health is maximum minus the champion's own base at that level, and a
+    // total carries neither term.
+    const result = runCombo(
+      plan({
+        attacker: statBlock({ maxHp: 2010, maxHpBonus: 800, hp: 2010 }),
+        defender: statBlock({ armor: 0, hp: 5000, maxHp: 5000 }),
+        instances: [
+          {
+            stepId: 'q',
+            sourceLabel: 'Q — scales on bonus health',
+            instanceType: 'damaging-ability',
+            verification: 'derived',
+            damage: {
+              components: [
+                component({
+                  id: 'c',
+                  damageType: 'physical',
+                  base: flat(100),
+                  ratios: [{ stat: 'bonusHP', owner: 'caster', scaling: 'linear', from: 10, to: 10 }],
+                }),
+              ],
+              rank: 1,
+              maxRank: 5,
+            },
+          },
+        ],
+      }),
+    );
+    expect(result.perInstance[0]!.final).toBe(180);
+    expect(result.incompleteContributors).toEqual([]);
+  });
+
+  it('still REFUSES a mana ratio, because the stat block carries mana only where it is mana', () => {
+    // Not a regression — the honest state. `mp_base` in the wiki module holds whatever the
+    // champion's resource is, and 19 of its 175 entries state a NON-MANA resource with a
+    // non-zero value, so a pool alone cannot be read as mana. Absent produces a NAMED refusal.
+    const result = runCombo(
+      plan({
+        attacker: statBlock({ maxHp: 2010 }),
+        defender: statBlock({ armor: 0, hp: 5000, maxHp: 5000 }),
+        instances: [
+          {
+            stepId: 'q',
+            sourceLabel: 'Q — scales on maximum mana',
+            instanceType: 'damaging-ability',
+            verification: 'derived',
+            damage: {
+              components: [
+                component({
+                  id: 'c',
+                  damageType: 'magic',
+                  base: flat(100),
+                  ratios: [{ stat: 'maxMana', owner: 'caster', scaling: 'linear', from: 4, to: 4 }],
+                }),
+              ],
+              rank: 1,
+              maxRank: 5,
+            },
+          },
+        ],
+      }),
+    );
+    expect(result.perInstance[0]!.final).toBe(0);
+    expect(result.incompleteContributors).toHaveLength(1);
+  });
+
+  it('resolves a mana ratio once the stat block carries mana — the Ryze Q shape', () => {
+    // 4% of 1000 maximum mana = 40, plus 100 flat. The paired test: without it the refusal above
+    // would pass for an engine that refused every mana ratio unconditionally.
+    const result = runCombo(
+      plan({
+        attacker: statBlock({ maxHp: 2010, mana: 640, maxMana: 1000 }),
+        defender: statBlock({ magicResist: 0, hp: 5000, maxHp: 5000 }),
+        instances: [
+          {
+            stepId: 'q',
+            sourceLabel: 'Q — scales on maximum mana',
+            instanceType: 'damaging-ability',
+            verification: 'derived',
+            damage: {
+              components: [
+                component({
+                  id: 'c',
+                  damageType: 'magic',
+                  base: flat(100),
+                  ratios: [{ stat: 'maxMana', owner: 'caster', scaling: 'linear', from: 4, to: 4 }],
+                }),
+              ],
+              rank: 1,
+              maxRank: 5,
+            },
+          },
+        ],
+      }),
+    );
+    expect(result.perInstance[0]!.final).toBe(140);
+    expect(result.incompleteContributors).toEqual([]);
+  });
+});
+
+describe('runCombo — the Result has a sustain line, and reports zero from ZERO sources', () => {
+  it('reports no sustain rather than omitting the line', () => {
+    // The blocker was the missing field, and it is gone. What is still absent is the DATA: no
+    // curated item effect, rune or defensive entry states a sustain value. An empty `sources`
+    // list is what distinguishes "nothing was computed" from "nothing was restored".
+    const result = runCombo(plan({ instances: [hit('q', 300, 'physical')] }));
+    expect(result.sustain).toEqual({ attackerHealing: 0, defenderHealing: 0, sources: [] });
+    expect(result.excludedMechanics.join(' ')).toMatch(/zero from zero sources/);
+  });
+
+  it('nets defender healing into BOTH verdicts rather than adding a third', () => {
+    // §3.8 fixes the verdict count at two, so healing is a TERM inside each. With none, every
+    // figure reduces to the arithmetic the engine has always produced.
+    const result = runCombo(plan({ instances: [hit('q', 300, 'physical')] }));
+    expect(result.verdict.burstOnly.healingApplied).toBe(0);
+    expect(result.verdict.burstPlusDot.healingApplied).toBe(0);
+    expect(Object.keys(result.verdict)).toEqual(['burstOnly', 'burstPlusDot']);
   });
 });

@@ -64,7 +64,7 @@ describe('breakdown/the running total is on every row', () => {
     for (const [i, running] of MOCK_RESULT.runningTotal.entries()) {
       expect(
         screen.getByRole('row', {
-          name: new RegExp(`Running total after instance ${i + 1}: ${running} damage`),
+          name: new RegExp(`Running total after instance ${i + 1}: ${running.total} damage`),
         }),
       ).toBeTruthy();
     }

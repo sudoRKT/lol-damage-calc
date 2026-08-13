@@ -298,6 +298,36 @@ is blocks the source does not label at all. Everything the path produces is
 stated in the source is left unread rather than judged from the surrounding sentence, and a row
 that cannot be read in full is not stored in part.
 
+**Six outstanding decisions were taken on 2026-08-13, in one lead-only pass with no agent running
+(DATA-SOURCES §42).** Each had been raised by an area and deliberately left. In one line each:
+
+1. **The stacks unit is PERCENTAGE POINTS, with no exception** — "+1 damage per stack" is `100`,
+   never `1`, and gate 1 REFUSES the other unit rather than converting it. Taken before any data
+   exists, which is why it was cheap.
+2. **`Result.sustain`** carries lifesteal, omnivamp, spell vamp and healing, split by which champion
+   regains the health; defender healing is a term inside BOTH verdicts (§3.8 fixes the count at two),
+   never a third. Zero from ZERO sources until data lands.
+3. **`StatBlock` gains `maxHpBase`/`maxHpBonus` and OPTIONAL `mana`/`maxMana`.** Bonus-health ratios
+   resolve now. Mana resolves the moment a stat block carries mana — the last step is one fetched
+   field, because `mp_base` holds whatever the resource is and **19 of the module's 175 entries state
+   a non-mana resource with a non-zero `mp_base`**.
+4. **`runningTotal` is `DamageTotals[]`**, so the figure §41.1 put on every row can carry the
+   composition bar DESIGN.md §8 requires beside an untagged aggregate.
+5. **Six defensive shape fields** — label, id + relation, grantedStat, appliesToDamageType, overTime,
+   unit. **44 refused pairs become writable**, chiefly Leona W, which grants both resistances.
+6. **The basic attack is named in words and marked `AA`.** No Data Dragon art is borrowed for it;
+   borrowing would make one chip mean something other than what it depicts.
+
+**A SEVENTH, forced by the fourth and worth knowing about: a per-type split now ALWAYS sums to its
+own total.** The engine and the interface had encoded opposite rules for one figure and both suites
+passed, because neither check had run over the other's output. §42.4a records which argument lost
+and why. `burst` carried the same latent inconsistency and nobody had noticed.
+
+**The Data Dragon attribution decision was applied to Heartsteel** (§42.7): one stored ratio moved
+from `unresolved` to `holder`, one entry from `incomplete` to `derived`, and nothing else in
+`effect-values.json` changed. §41.1's stated reason for keeping Heartsteel permanently unresolvable
+was wrong in its arithmetic while right in its conclusion; the correction is in place.
+
 **The coefficient shape is IN the contract and live — corrected 2026-08-13.** This paragraph used
 to say `Ratio` "cannot express it" and that the change was "waiting on a decision. Do not add the
 shape without one." That was true when written and stopped being true two commits later, in

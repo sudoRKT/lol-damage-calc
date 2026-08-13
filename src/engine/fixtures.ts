@@ -94,6 +94,16 @@ export function statBlock(opts: Partial<StatBlock> = {}): StatBlock {
     level: opts.level ?? 1,
     hp: opts.hp ?? 1000,
     maxHp: opts.maxHp ?? opts.hp ?? 1000,
+    // Same rule as the resistance split below: a fixture's maximum health is all "base" unless
+    // a test states a bonus portion, so a `bonusHP` ratio in a test that never asked for bonus
+    // health reads 0 rather than a silently invented figure.
+    maxHpBase: opts.maxHpBase ?? (opts.maxHp ?? opts.hp ?? 1000) - (opts.maxHpBonus ?? 0),
+    maxHpBonus: opts.maxHpBonus ?? 0,
+    // MANA IS ABSENT UNLESS A TEST ASKS. Absent means "this champion's resource is not mana",
+    // which is what the component evaluator refuses on; a default of 0 would let a mana ratio
+    // resolve to 0 damage instead of being named as unmodellable.
+    ...(opts.mana !== undefined ? { mana: opts.mana } : {}),
+    ...(opts.maxMana !== undefined ? { maxMana: opts.maxMana } : {}),
     armor: opts.armor ?? 0,
     // A fixture's resistances are all "base" unless a test says otherwise: the split exists for
     // percentage BONUS penetration, and a fixture that silently invented a bonus portion would

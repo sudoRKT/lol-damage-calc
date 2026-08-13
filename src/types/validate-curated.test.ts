@@ -9,8 +9,10 @@ import { describe, expect, it } from 'vitest';
 import type {
   AbilityComponent,
   CuratedAbility,
+  CuratedDefensiveEffect,
   CuratedFile,
   Provenance,
+  Ratio,
   RatioOwner,
 } from './data.ts';
 import {
@@ -644,5 +646,262 @@ describe("the 'no-damage' status", () => {
       itemEffects: [], runes: [], shards: [], exclusions: [],
     };
     expect(gateSchema(f).failed).toBe(1);
+  });
+});
+
+// =========================================================================================
+// THE STACKS UNIT (decided 2026-08-13, before any data exists)
+// =========================================================================================
+
+describe('gate 1 — a stacks ratio is refused when it is written in the other unit', () => {
+  const withStacksRatio = (scaling: Ratio) =>
+    file([
+      ability({
+        components: [
+          {
+            id: 'q',
+            damageType: 'physical',
+            base: { scaling: 'linear', from: 30, to: 30 },
+            ratios: [scaling],
+          },
+        ],
+      }),
+    ]);
+
+  const stacks = (over: Partial<Ratio>): Ratio =>
+    ({ stat: 'stacks', counter: 'nasusQ', scaling: 'linear', from: 100, to: 100, ...over }) as Ratio;
+
+  it('accepts "+1 damage per stack" written as 100 percentage points', () => {
+    // THE DECIDED UNIT. `Ratio` fixes every magnitude as percentage points of the stat it reads,
+    // with no exception for `stacks`: (100 / 100) x 25 stacks = 25 damage.
+    const r = gateSchema(withStacksRatio(stacks({})));
+    expect(r.failed).toBe(0);
+  });
+
+  it('REFUSES the same ability written as 1 damage per stack', () => {
+    // The whole point of the guard. Reading this as percentage points gives 0.01 damage per
+    // stack, so a 300-stack Nasus would contribute 3 damage instead of 300 — a hundredfold
+    // error that no other check in this project would notice.
+    const r = gateSchema(withStacksRatio(stacks({ from: 1, to: 1 })));
+    expect(r.failed).toBe(1);
+    expect(r.findings[0]!.message).toMatch(/percentage points/i);
+    // The message must name BOTH readings and the exact value to store instead, because the
+    // author is the only person who knows which was meant.
+    expect(r.findings[0]!.message).toMatch(/\+1 damage per stack" is 100, not 1/);
+    expect(r.findings[0]!.message).toMatch(/store 100\/100/);
+  });
+
+  it('refuses "5 damage per soul" written as 5, the Dark Harvest shape', () => {
+    const r = gateSchema(withStacksRatio(stacks({ counter: 'darkHarvest', from: 5, to: 5 })));
+    expect(r.failed).toBe(1);
+  });
+
+  it('accepts a half-point-per-stack ratio, which is 50 points and clears the floor', () => {
+    const r = gateSchema(withStacksRatio(stacks({ from: 50, to: 50 })));
+    expect(r.failed).toBe(0);
+  });
+
+  it('judges a rank-scaled ratio across EVERY rank, not just rank 1', () => {
+    // Below the floor at rank 1 and far above it by rank 5. Refusing on the rank-1 value alone
+    // would reject real data, so the rule is "below the floor at every rank".
+    const r = gateSchema(withStacksRatio(stacks({ from: 5, to: 400 })));
+    expect(r.failed).toBe(0);
+  });
+
+  it('leaves a ratio on any other stat alone', () => {
+    // A 1% AP ratio is a legitimate, ordinary thing. The floor applies to `stacks` only, because
+    // it rests on an argument about per-stack damage that says nothing about ability power.
+    const r = gateSchema(
+      withStacksRatio({ stat: 'AP', scaling: 'linear', from: 1, to: 1 } as Ratio),
+    );
+    expect(r.failed).toBe(0);
+  });
+
+  it('never converts — the entry is refused, so it can only ever be incomplete', () => {
+    // SPECIFICATION §8: a figure absent rather than wrong. Multiplying by 100 would be guessing
+    // which unit the author meant, on a number that reaches a user as damage.
+    const bad = withStacksRatio(stacks({ from: 1, to: 1 }));
+    gateSchema(bad);
+    const ratio = bad.abilities[0]!.components[0]!.ratios[0] as { from: number };
+    expect(ratio.from).toBe(1);
+  });
+});
+
+// =========================================================================================
+// THE SIX DEFENSIVE SHAPE FIELDS (added 2026-08-13; DATA-SOURCES §40, §42)
+// =========================================================================================
+
+describe('gate 1 — the defensive kit entry', () => {
+  const defensive = (over: Partial<CuratedDefensiveEffect> = {}): CuratedDefensiveEffect => ({
+    champion: 'Leona',
+    slot: 'W',
+    abilityName: 'Eclipse',
+    kind: 'shield',
+    activation: 'conditional',
+    condition: 'while Eclipse is active',
+    verification: 'derived',
+    provenance: PROV,
+    ...over,
+  });
+
+  const defFile = (effects: CuratedDefensiveEffect[]): CuratedFile => ({
+    ...file([]),
+    defensiveEffects: effects,
+  });
+
+  it('passes a well-formed entry with no value at all', () => {
+    // 17 confirmed effects state no figure — a spell shield blocks one ability, an
+    // invulnerability blocks everything (DATA-SOURCES §40.2). Absent is legitimate.
+    const r = gateSchema(defFile([defensive({ kind: 'spell-shield' })]));
+    expect(r.failed).toBe(0);
+    expect(r.checked).toBe(1);
+  });
+
+  it('refuses a value with no unit — 25 could be 25 points or 25%', () => {
+    const r = gateSchema(
+      defFile([
+        defensive({ kind: 'damage-reduction', value: { scaling: 'linear', from: 25, to: 25 } }),
+      ]),
+    );
+    expect(r.failed).toBe(1);
+    expect(r.findings.map((f) => f.message).join(' ')).toMatch(/requires a 'unit'/);
+  });
+
+  it('refuses a resistance grant that does not say WHICH resistance', () => {
+    // The single largest release of the six: 8 pairs blocked by this alone. 7 armor and 7 magic
+    // resistance are the difference between mitigating physical and magic damage.
+    const r = gateSchema(
+      defFile([
+        defensive({
+          kind: 'resistance-grant',
+          unit: 'flat',
+          value: { scaling: 'linear', from: 20, to: 50 },
+        }),
+      ]),
+    );
+    expect(r.findings.map((f) => f.message).join(' ')).toMatch(/requires 'grantedStat'/);
+  });
+
+  it('accepts Leona W as TWO labelled, related entries — the case that motivated the fields', () => {
+    // "Leona W grants 20-50 armor AND 20-50 magic resistance" from two rows on one page. With
+    // one unlabelled value per entry the pair was indistinguishable and the proposer stored
+    // neither. Two entries, each with an id, a label and its own granted stat, express it.
+    const armor = defensive({
+      id: 'armor',
+      label: 'Armor',
+      kind: 'resistance-grant',
+      grantedStat: 'armor',
+      unit: 'flat',
+      value: { scaling: 'linear', from: 20, to: 50 },
+      relation: { kind: 'adds' },
+    });
+    const mr = defensive({
+      id: 'mr',
+      label: 'Magic Resistance',
+      kind: 'resistance-grant',
+      grantedStat: 'magicResist',
+      unit: 'flat',
+      value: { scaling: 'linear', from: 20, to: 50 },
+      relation: { kind: 'adds' },
+    });
+    const r = gateSchema(defFile([armor, mr]));
+    expect(r.failed).toBe(0);
+    expect(r.checked).toBe(2);
+  });
+
+  it('refuses that same pair when it is unlabelled and unrelated', () => {
+    const bare = (id: string) =>
+      defensive({ id, kind: 'resistance-grant', grantedStat: 'armor', unit: 'flat' });
+    const messages = gateSchema(defFile([bare('a'), bare('b')]))
+      .findings.map((f) => f.message)
+      .join(' ');
+    expect(messages).toMatch(/'relation' must be stated explicitly/);
+    expect(messages).toMatch(/requires the source's own 'label'/);
+  });
+
+  it('refuses a type-specific reduction that does not name its type', () => {
+    // Stored without it the entry reduces every type, which is a different effect.
+    const r = gateSchema(
+      defFile([
+        defensive({
+          kind: 'type-specific-reduction',
+          unit: 'percent',
+          value: { scaling: 'linear', from: 25, to: 25 },
+        }),
+      ]),
+    );
+    expect(r.findings.map((f) => f.message).join(' ')).toMatch(/requires 'appliesToDamageType'/);
+  });
+
+  it('refuses a rate on anything but a heal — life steal is not shield health', () => {
+    const r = gateSchema(
+      defFile([
+        defensive({
+          kind: 'shield',
+          unit: 'percent-of-damage-dealt',
+          value: { scaling: 'linear', from: 12, to: 12 },
+        }),
+      ]),
+    );
+    expect(r.findings.map((f) => f.message).join(' ')).toMatch(/not an amount/);
+  });
+
+  it('accepts a healing rate and a healing amplifier on a heal', () => {
+    const rate = gateSchema(
+      defFile([
+        defensive({
+          kind: 'heal',
+          unit: 'percent-of-damage-dealt',
+          value: { scaling: 'linear', from: 12, to: 12 },
+        }),
+      ]),
+    );
+    expect(rate.failed).toBe(0);
+  });
+
+  it('refuses an over-time block that does not quote its sentence', () => {
+    // Same rule as VariableHitCount: a recurrence claim is traceable to a sentence, never to a
+    // parser's judgement.
+    const r = gateSchema(
+      defFile([defensive({ kind: 'heal', overTime: { sourceSays: '' } })]),
+    );
+    expect(r.findings.map((f) => f.message).join(' ')).toMatch(/must quote the sentence/);
+  });
+
+  it('refuses a relation pointing at an entry that does not exist', () => {
+    const r = gateSchema(
+      defFile([
+        defensive({ id: 'min', label: 'Minimum', relation: { kind: 'alternativeTo', componentId: 'max' } }),
+        defensive({ id: 'other', label: 'Other', kind: 'heal', relation: { kind: 'adds' } }),
+      ]),
+    );
+    expect(r.findings.map((f) => f.message).join(' ')).toMatch(/names no entry on this ability/);
+  });
+
+  it('refuses an unresolvable fact beside anything but incomplete', () => {
+    const r = gateSchema(
+      defFile([
+        defensive({
+          verification: 'derived',
+          unresolvable: [{ field: 'ratios[0].owner (armor)', why: 'the source never says whose' }],
+        }),
+      ]),
+    );
+    expect(r.findings.map((f) => f.message).join(' ')).toMatch(/forces 'incomplete'/);
+  });
+
+  it('refuses a ratio on a stat that belongs to a champion and says nothing about whose', () => {
+    // Malphite W again, on the defensive side: a "15% armor" grant is meaningless until
+    // someone says whose armor.
+    const r = gateSchema(
+      defFile([
+        defensive({
+          kind: 'resistance-grant',
+          grantedStat: 'armor',
+          ratios: [{ stat: 'armor', scaling: 'linear', from: 15, to: 15 }],
+        }),
+      ]),
+    );
+    expect(r.findings.map((f) => f.message).join(' ')).toMatch(/requires an 'owner'/);
   });
 });

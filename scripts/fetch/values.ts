@@ -331,7 +331,7 @@ export async function run(): Promise<void> {
     }
   }
   const crossCheckedEffects = new Set(ownerCrossChecks.map((c) => `${c.ownerName}|${c.key}`));
-  console.log('\n--- WHOSE STAT: DOES THE OTHER SOURCE SAY? (reported, NOT applied) ---');
+  console.log('\n--- WHOSE STAT: DOES THE OTHER SOURCE SAY? (measured here; APPLIED where a row of DATA_DRAGON_ATTRIBUTIONS names it) ---');
   console.log(
     table([
       ['item owner references the WIKI leaves unstated', unstatedItemRefs],
@@ -449,14 +449,21 @@ export async function run(): Promise<void> {
       dataDragonStatesNoNumbers: noNumbersAtAll.length,
       rows: corroboration,
     },
-    /** §12's per-field question, asked of the OTHER source. Reported, never applied. */
+    /** §12's per-field question, asked of the OTHER source. Measured over every effect; APPLIED
+     *  only to the references a hand-read row of `DATA_DRAGON_ATTRIBUTIONS` names. */
     whoseStatDoesTheOtherSourceSay: {
       whatThisIs:
         "DATA-SOURCES §37.3 measured the unattributed stat references over the wiki's item " +
         'module alone, and calls the effects carrying one permanently unresolvable. This asks a ' +
         "DIFFERENT field's question: does Data Dragon's own item description attribute the same " +
-        'stat? It is a measurement handed to the lead, not a resolution. Nothing in this file ' +
-        "acts on it, and the ratios stored above still carry owner 'unresolved'.",
+        'stat? DATA-SOURCES §41.1 ADOPTED the answer as a source stating a fact rather than an ' +
+        'inference from convention, and §42.7 applied it: the rows below are the whole ' +
+        'measurement, and the ones that reach a STORED damage ratio are applied through the ' +
+        'hand-read table `DATA_DRAGON_ATTRIBUTIONS` in effect-values-gate.ts. That is one row ' +
+        'today — Heartsteel maxHP, now owner `holder`. The other four attribute stats this ' +
+        'extraction does not store as damage ratios, so adopting them changes no stored number. ' +
+        'A measurement is never applied wholesale: every applied row quotes the words it rests ' +
+        'on, because a pattern that finds candidates is not a pattern that can decide them.',
       itemOwnerReferencesTheWikiLeavesUnstated: unstatedItemRefs,
       ofThoseDataDragonAttributes: ownerCrossChecks.length,
       distinctEffects: crossCheckedEffects.size,

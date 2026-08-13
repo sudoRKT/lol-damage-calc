@@ -67,6 +67,43 @@ export interface StatBlock {
   hp: number; // current hp at entry (may be below maxHp — a "moment in time", §3.3)
   maxHp: number;
   /**
+   * The base/bonus split of MAXIMUM health. Added 2026-08-13.
+   *
+   * **BONUS HEALTH IS NOT DERIVABLE FROM `maxHp`.** It is maximum health minus the champion's
+   * own base health at this level, and the base figure is a per-champion, per-level fact that a
+   * total does not carry. The engine refused every `bonusHP` ratio for exactly this reason, and
+   * the refusal was correct: subtracting a guessed base would have produced a plausible wrong
+   * number on a ratio that is often the whole payload.
+   *
+   * This is the same split, for the same reason, as `armorBase`/`armorBonus` and
+   * `magicResistBase`/`magicResistBonus`. `maxHpBase + maxHpBonus === maxHp` is a validator rule.
+   *
+   * NOTE THE ASYMMETRY WITH `hp`: the split is of MAXIMUM health, never of current health. A
+   * champion at 800 of 1850 has not lost "bonus" health or "base" health — they have lost
+   * health, and which pool it came from is not a fact the game states.
+   */
+  maxHpBase: number;
+  maxHpBonus: number;
+  /**
+   * MANA. Added 2026-08-13. Both fields are OPTIONAL, and absent is a real state.
+   *
+   * `RatioStat` has carried `maxMana` and `currentMana` since the contract was frozen — Ryze Q
+   * reads the caster's maximum mana — while `StatBlock` carried no mana at all, so the component
+   * evaluator refused every mana ratio by name. That refusal was honest and it was also a hole:
+   * the ability is unmodellable rather than unmodelled.
+   *
+   * **ABSENT IS NOT ZERO, AND THIS IS WHY THE FIELDS ARE OPTIONAL.** `ChampionBaseStats.mp_base`
+   * is itself optional, because a manaless champion has no mana pool — they have energy, fury,
+   * rage, heat, or nothing. Writing 0 would claim they have a mana pool that is empty, which is
+   * a different fact and one that would let a mana ratio resolve to 0 damage instead of being
+   * refused. Energy, fury and the rest are NOT mana and must never be stored here.
+   *
+   * There is no base/bonus split, because `RatioStat` has no `bonusMana` and no source read so
+   * far states one. Adding a split nothing reads would be inventing a field.
+   */
+  mana?: number;
+  maxMana?: number;
+  /**
    * Total armor. `armorBase` and `armorBonus` split it, and the split is NOT cosmetic:
    * **percentage BONUS armor penetration cannot be resolved without it** — it applies to the
    * bonus portion alone, so a single total makes the effect unmodellable. Raised twice by the
@@ -206,9 +243,75 @@ export interface DotResult {
 export interface SurvivalVerdict {
   defenderHp: number; // hp the damage was measured against
   damageApplied: number;
+  /**
+   * Health the DEFENDER regained over the sequence, already netted into `remainingHp`.
+   * Added 2026-08-13 alongside `Result.sustain`.
+   *
+   * SPECIFICATION §5 requires the defender's own kit modelled, and 121 confirmed defensive heals
+   * were measured across the roster (DATA-SOURCES §40). A verdict computed against a defender who
+   * healed 400 and printed as though they had not is a wrong number, not an incomplete one — so
+   * the healing is netted rather than dropped, and it is named here rather than folded silently
+   * into a total.
+   *
+   * `remainingHp === max(0, defenderHp - damageApplied + healingApplied)` is a test.
+   *
+   * The verdict is still given exactly TWICE (§3.8, burst and burst + DoT). Healing is not a
+   * third verdict: it is a term inside both.
+   *
+   * 0 today. Nothing in the curated data grants the defender healing yet, and the engine states
+   * that in `ENGINE_EXCLUSIONS` rather than letting a zero read as a computed figure.
+   */
+  healingApplied: number;
   lethal: boolean;
   lethalAtInstance: number | null; // 1-based instance where cumulative >= hp, else null
   remainingHp: number; // >= 0
+}
+
+/**
+ * SUSTAIN — health restored during the sequence. ADDED 2026-08-13.
+ *
+ * SPECIFICATION §3.7 requires four things this Result previously had nowhere to put: lifesteal,
+ * omnivamp and spell vamp on the attacker, and healing effects on the defender. The engine
+ * therefore modelled none of them and said so — "a figure with nowhere to go is a figure the
+ * user never sees" — which was the right refusal and is now unnecessary.
+ *
+ * TWO SIDES, NEVER ONE NUMBER, because they answer different questions. The attacker's sustain
+ * changes whether the ATTACKER lives; it can never change the survival verdict, which is about
+ * the defender. The defender's healing changes the verdict directly, and is netted into it
+ * through `SurvivalVerdict.healingApplied`.
+ *
+ * THE SEQUENCE RULE APPLIES HERE TOO (§3.2). A source is placed at the instance it arose from,
+ * and nothing decays, ticks or expires between instances. A heal with a duration is a
+ * damage-over-time problem in the other direction, and it is reported the way DoT is: as a whole
+ * figure over the effect's full duration, attached to no instance (`fromInstance: null`).
+ */
+export interface SustainSource {
+  label: string;
+  icon: string | null;
+  /**
+   * Which of the four §3.7 mechanics this is. They are kept apart rather than summed because
+   * they are governed by different stats and different sources: lifesteal applies to basic-attack
+   * damage, spell vamp to ability damage, omnivamp to both, and a heal to neither.
+   */
+  kind: 'lifesteal' | 'omnivamp' | 'spell-vamp' | 'heal';
+  /** Whose health this restored. Decides which side's total it lands in. */
+  restoresTo: 'attacker' | 'defender';
+  /** Health restored, unrounded — rounded once at the totals, exactly as damage is (§41.1). */
+  amount: number;
+  /** 1-based combo instance this arose from, or null when it is not tied to one. */
+  fromInstance: number | null;
+  verification: VerificationStatus;
+  /** As InstanceResult.incompleteReason. A sustain source we cannot stand behind restores 0
+   *  and says why, exactly as an incomplete damage instance deals 0 and says why. */
+  incompleteReason?: IncompleteReason;
+}
+
+export interface SustainResult {
+  /** Health the ATTACKER regained. Never affects the survival verdict. */
+  attackerHealing: number;
+  /** Health the DEFENDER regained. Netted into both verdicts via `healingApplied`. */
+  defenderHealing: number;
+  sources: SustainSource[];
 }
 
 export interface Result {
@@ -217,9 +320,30 @@ export interface Result {
   attackerStats: StatBlock;
   defenderStats: StatBlock;
   perInstance: InstanceResult[];
-  runningTotal: number[]; // cumulative damage after each instance
+  /**
+   * Cumulative damage after each instance — **with its per-type split**, one entry per instance.
+   *
+   * WHY IT IS NOT `number[]`. Changed 2026-08-13. `runningTotal` is the authoritative figure and
+   * §41.1 puts it on every row of the per-instance table, because the rounded per-instance column
+   * must never be presented as something to add up. But it is a SUM ACROSS DAMAGE TYPES, and
+   * DESIGN.md §8 permits exactly one untagged damage figure: "a multi-type aggregate total, which
+   * is bone with no tag and is instead broken down by the tagged composition bar." A bare number
+   * on every row is an untagged damage figure with no bar beside it — the one form the hard rule
+   * does not allow, on the very figure the rounding decision made most prominent.
+   *
+   * Carrying the split makes the bar renderable per row, and makes it renderable from the
+   * engine's own arithmetic rather than from the interface re-summing the rounded column, which
+   * is the thing §41.1 forbids.
+   *
+   * `DamageTotals` is reused rather than a new pair invented: it already means "a total and the
+   * three types it is made of", and one shape means one invariant to test.
+   */
+  runningTotal: DamageTotals[];
   burst: DamageTotals;
   dot: DotResult;
+  /** Health restored during the sequence (SPECIFICATION §3.7). Attacker-side vamp never moves
+   *  the verdict; defender-side healing is netted into both verdicts. */
+  sustain: SustainResult;
   /** The survival verdict, given twice (SPECIFICATION §3.8): burst alone, and burst + DoT. */
   verdict: { burstOnly: SurvivalVerdict; burstPlusDot: SurvivalVerdict };
   excludedMechanics: string[]; // stated visibly, never silently omitted (§11, §15)

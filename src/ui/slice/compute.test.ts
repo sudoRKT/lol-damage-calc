@@ -114,7 +114,7 @@ describe('the combo and the verdict', () => {
   it('runs in order, accumulates, and reports what it excluded', () => {
     const r = computeSlice([luxQ, luxW], ['Q', 'W', 'Q'], attacker, garen);
     // 61 + 0 + 61 = 122, and W is excluded with its reason rather than dropped.
-    expect(r.runningTotal).toEqual([61, 61, 122]);
+    expect(r.runningTotal.map((p) => p.total)).toEqual([61, 61, 122]);
     expect(r.burstTotal).toBe(122);
     expect(r.excluded).toHaveLength(1);
     expect(r.excluded[0]!.label).toBe('W — Prismatic Barrier');

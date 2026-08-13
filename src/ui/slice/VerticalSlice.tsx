@@ -11,7 +11,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 
-import { DamageValue, VerificationStatusMark } from '../primitives';
+import { AggregateTotal, DamageValue, VerificationStatusMark } from '../primitives';
 import { NumberInput } from '../inputs';
 import { AbilityChip } from '../art/AbilityChip';
 import { ChampionPortrait } from '../art/ChampionPortrait';
@@ -227,7 +227,19 @@ export function VerticalSlice() {
                     <td><DamageValue value={ins.damage.raw} damageType={ins.damage.type} size="m" /></td>
                     <td><DamageValue value={ins.damage.final} damageType={ins.damage.type} size="l"
                       spokenContext="after resistances" /></td>
-                    <td className="num">{result.runningTotal[i]}</td>
+                    {/* The running total is a sum ACROSS damage types, so DESIGN.md §8 allows
+                        it untagged only beside a tagged composition bar. `AggregateTotal`
+                        refuses to draw one without the other, and falls back to a tagged value
+                        while the combo has touched only one type. */}
+                    <td className="num">
+                      {result.runningTotal[i] ? (
+                        <AggregateTotal
+                          total={result.runningTotal[i]!.total}
+                          byType={result.runningTotal[i]!.byType}
+                          size="l"
+                        />
+                      ) : null}
+                    </td>
                   </>
                 ) : (
                   <td colSpan={5} className="refused">

@@ -46,3 +46,59 @@ export function roundDamage(value: number): number {
   // this engine, but the sign is handled explicitly so the rule holds whatever is passed.
   return value < 0 ? -Math.round(-value) : Math.round(value);
 }
+
+/** The one order the three damage types are walked in here, so apportionment is deterministic. */
+const SPLIT_ORDER = ['physical', 'magic', 'true'] as const;
+type SplitKey = (typeof SPLIT_ORDER)[number];
+export type DamageSplit = Record<SplitKey, number>;
+
+/**
+ * Round a per-type split AND its total so that **the three parts always sum to the whole**.
+ *
+ * ADDED 2026-08-13, AND IT FIXES A REAL INCONSISTENCY RATHER THAN ADDING A FEATURE. Rounding the
+ * total and each type independently does not commute: a split of 166.5 / 166.5 / 167 rounds to
+ * 167 / 167 / 167 = 501 under a total of 500. DESIGN.md §8 has the composition bar break the
+ * total DOWN, so a bar whose segments sum to more than the number printed above it is the defect
+ * §41.2 records — "the values and the tags were right and the bar said something else, which is
+ * worse than no bar." The engine reported `burst.total` and `burst.byType` this way, and nothing
+ * had run the audit over engine output to notice.
+ *
+ * THIS IS NOT A SECOND ROUNDING RULE AND IT DOES NOT WEAKEN §41.1. The total is still
+ * `roundDamage` of the UNROUNDED sum — never a sum of rounded parts, so rounding still cannot
+ * accumulate across a combo. What changes is only how the whole is divided for display: by the
+ * largest-remainder method, which gives every type either the floor or the ceiling of its own
+ * unrounded value and hands the leftover points to the types that came closest to earning one.
+ * No type moves by as much as a full point from what it actually dealt.
+ *
+ * Ties go to the fixed type order above, so the same input always produces the same output.
+ */
+export function roundSplit(split: DamageSplit): { total: number; byType: DamageSplit } {
+  const exact = split.physical + split.magic + split.true;
+  const total = roundDamage(exact);
+
+  const floors = SPLIT_ORDER.map((k) => Math.floor(split[k]));
+  let leftover = total - (floors[0]! + floors[1]! + floors[2]!);
+
+  // Hand out the leftover points to the largest fractional remainders first. `leftover` is 0..3
+  // for any well-formed split; a negative one can only arise from a negative component, which
+  // this engine does not produce, and is handled by taking points back the same way.
+  const order = SPLIT_ORDER.map((k, i) => ({ i, remainder: split[k] - floors[i]! }))
+    .sort((a, b) => b.remainder - a.remainder || a.i - b.i);
+
+  const out = [...floors];
+  for (const { i } of order) {
+    if (leftover <= 0) break;
+    out[i] = out[i]! + 1;
+    leftover -= 1;
+  }
+  for (const { i } of [...order].reverse()) {
+    if (leftover >= 0) break;
+    out[i] = out[i]! - 1;
+    leftover += 1;
+  }
+
+  return {
+    total,
+    byType: { physical: out[0]!, magic: out[1]!, true: out[2]! },
+  };
+}

@@ -84,7 +84,15 @@ not "write the curated file"; it is **triage against the checks that now exist**
 **Estimate: 25–35 agent-hours**, and it is the area where a defect costs the most.
 
 ### Area D — the engine (`src/engine/`)
-**The formula layer exists and is tested; the component model does not.** The engine must now
+**Largely built as of 2026-08-13: 1,234 tests across 66 files pass, covering the sequential runner,
+the four-step resistance order, shields, execute thresholds, amplification, multi-type instances and
+per-instance resistance steps.** Three exclusions it had raised are gone (DATA-SOURCES §42): the
+Result reports sustain, bonus-health ratios resolve, and mana ratios resolve as soon as a stat block
+carries mana. **Still outstanding:** `simulate(scenario) -> Result`, the public entry point that
+turns a Scenario into a ComboPlan by looking up champions, items and runes.
+
+*(The paragraph this replaces is kept below, because the sizing behind it is still the basis for
+Areas B, C and F.)* **The formula layer exists and is tested; the component model does not.** The engine must now
 consume what the harvester actually produces: `hits`, `relation` (adds vs alternativeTo),
 `multipliers` (a ratio scaling another ratio), `owner` (whose stat), and four `Scaling` arms
 including two level-scaled. The old plan assumed a flat base-plus-ratio model, which is 96% of
@@ -92,9 +100,15 @@ components and 0% of the hard ones.
 **Estimate: 18–24 agent-hours.**
 
 ### Area E — the interface (`src/ui/`)
-**Unbuilt, and now blocked on a design decision.** SPECIFICATION §8 requires four statuses and a
-permanent-versus-pending distinction; `DESIGN.md` carries glyphs for three statuses and none for
-the rest, and it is write-denied to every session. **That decision gates the whole area.**
+**Partly built. The design decision that gated it is DONE** — `DESIGN.md` §6 now carries glyphs for
+all five states, and the searchable picker over all 173 champions, the combo shelf, the stat blocks,
+the result table and the HP burndown are built and wired into the app.
+**Three contract gaps this area raised are now closed** (DATA-SOURCES §42): `runningTotal` carries a
+per-type split, so the running-total cell has the composition bar §8 requires; the stat block shows
+mana and the bonus-health split; and the basic attack's art question is settled. **One gap it did
+NOT close and which is now named work: the burndown does not draw a defender who HEALS** (§42.2) —
+DESIGN.md §7 specifies a trace that only falls, and `DEFENDER_HEALS` in
+`src/ui/burndown/mock-variants.ts` makes the gap reproducible.
 The interface must also present `derived` as the normal well-evidenced state rather than a
 warning, which is a copy and hierarchy problem as much as a component one.
 **Estimate: 30–40 agent-hours**, plus the design decision.
@@ -106,8 +120,11 @@ Untouched and unchanged by any of this. **Estimate: 5–7 agent-hours.**
 
 ## 4. Sequence, and why
 
-1. **Unblock Area E's design decision** (glyphs for `no-damage` and permanent/pending). Cheap,
-   and everything visual waits on it.
+1. ~~**Unblock Area E's design decision** (glyphs for `no-damage` and permanent/pending).~~
+   **DONE** — DESIGN.md §6 carries all five. The six decisions of DATA-SOURCES §42 are also done,
+   and each names the area task it released. The next contract-shaped item is the ONE fetched field
+   Ryze Q waits on: `resource` on `Champion` (§42.3), which is Area B and needs a champion re-fetch
+   plus a diff restricted to that field.
 2. **Area C triage** — the 51 gate-7 failures first, because they are defects in numbers already
    being shown, then the 47 mechanically reachable worklist abilities.
 3. **Area D** against the real component model, using the curated file as it now stands.

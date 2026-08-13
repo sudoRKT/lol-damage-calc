@@ -69,7 +69,13 @@ const ROUNDING_CASE: Result = {
     instance(2, 'r2', 167, 166.67),
     instance(3, 'r3', 188, 187.5),
   ],
-  runningTotal: [150, 317, 504],
+  // One damage type throughout, so each running-total point is a single-type total and
+  // `AggregateTotal` renders it TAGGED rather than as a bare untagged aggregate (DESIGN.md §8).
+  runningTotal: [
+    { total: 150, byType: { physical: 150, magic: 0, true: 0 } },
+    { total: 317, byType: { physical: 317, magic: 0, true: 0 } },
+    { total: 504, byType: { physical: 504, magic: 0, true: 0 } },
+  ],
   burst: { total: 504, byType: { physical: 504, magic: 0, true: 0 } },
   dot: { total: 0, byType: { physical: 0, magic: 0, true: 0 }, sources: [] },
   incompleteContributors: [],
@@ -93,7 +99,7 @@ describe('rounding/behaviour — the column does not add up, and nothing pretend
     for (const [i, running] of ROUNDING_CASE.runningTotal.entries()) {
       expect(
         screen.getByRole('row', {
-          name: new RegExp(`Running total after instance ${i + 1}: ${running} damage`),
+          name: new RegExp(`Running total after instance ${i + 1}: ${running.total} damage`),
         }),
       ).toBeTruthy();
     }

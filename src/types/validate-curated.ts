@@ -21,8 +21,10 @@ import type {
   AbilityComponent,
   CuratedAbility,
   CuratedFile,
+  CuratedDefensiveEffect,
   CuratedItemEffect,
   CuratedRune,
+  Ratio,
   Scaling,
 } from './data.ts';
 import { requiresOwner } from './data.ts';
@@ -62,6 +64,25 @@ const INSTANCE_TYPES = new Set([
 // the effect was found on — see RatioOwner in data.ts. It is a COMPLETE answer, unlike
 // 'unresolved', and does not force an entry to 'incomplete'.
 const RATIO_OWNERS = new Set(['caster', 'target', 'holder', 'unresolved']);
+/** The four things a number on a defensive entry can be (data.ts, `CuratedDefensiveEffect.unit`). */
+const DEFENSIVE_KINDS = new Set([
+  'damage-reduction',
+  'type-specific-reduction',
+  'resistance-grant',
+  'shield',
+  'spell-shield',
+  'immunity',
+  'execute-threshold',
+  'heal',
+  'max-health-grant',
+]);
+const DEFENSIVE_ACTIVATIONS = new Set(['always-active', 'conditional', 'not-stated']);
+const DEFENSIVE_UNITS = new Set([
+  'flat',
+  'percent',
+  'percent-of-damage-dealt',
+  'healing-multiplier',
+]);
 const RATIO_STATS = new Set([
   'baseAD',
   'bonusAD',
@@ -173,6 +194,61 @@ export function checkScalingShape(s: Scaling | undefined, where: string): string
   return out;
 }
 
+/**
+ * THE FLOOR BELOW WHICH A `stacks` RATIO IS BEING WRITTEN IN THE WRONG UNIT.
+ *
+ * `Ratio` fixes the unit as percentage points of the counter, with no exception for `stacks`, so
+ * "+1 damage per stack" is **100**. A harvester that wrote damage-per-stack would write **1** —
+ * and the two readings differ by a hundredfold on every stacking ability, which is not a near
+ * miss but a different product.
+ *
+ * 10 points is 0.1 damage per stack. Nothing in the game states a per-stack contribution that
+ * small: the smallest real ones are around half a point (Conqueror's per-stack adaptive force at
+ * level 1), which is 50 under this unit and clears the floor five times over. So a value below
+ * this cannot be a legitimate percentage-points figure, and IS the signature of the other unit.
+ */
+export const MIN_STACKS_RATIO_POINTS = 10;
+
+/**
+ * Refuse a `stacks` ratio whose magnitude is below the floor at EVERY rank or level.
+ *
+ * "At every rank" and not "at any rank" on purpose: a linear ratio may legitimately start small
+ * and grow, and refusing on its rank-1 value alone would reject real data. A ratio that is below
+ * the floor across its whole range is the one that cannot be a percentage-points figure.
+ *
+ * IT REFUSES; IT NEVER CONVERTS. Multiplying by 100 would be guessing which unit the author
+ * meant, and a guess that lands on a damage number is exactly what this project exists to
+ * prevent. The entry fails gate 1, which forces it no better than `incomplete` (DATA-SOURCES
+ * §23) — a figure absent rather than wrong (SPECIFICATION §8).
+ */
+function checkStacksUnit(r: Ratio, where: string, maxRank: number): string[] {
+  let values: number[];
+  try {
+    values = isLevelScaled(r)
+      ? levelBreakpoints(r).map((b) => b.value)
+      : expandByRank(r, maxRank);
+  } catch (error) {
+    // A malformed scaling is already reported by checkScalingShape; not reported twice.
+    if (error instanceof ScalingError) return [];
+    throw error;
+  }
+
+  const magnitudes = values.filter((v) => v !== 0).map(Math.abs);
+  if (magnitudes.length === 0) return [];
+  if (magnitudes.some((v) => v >= MIN_STACKS_RATIO_POINTS)) return [];
+
+  const shown = values.join('/');
+  return [
+    `${where}: a 'stacks' ratio of ${shown} is below ${MIN_STACKS_RATIO_POINTS} percentage ` +
+      `points at every rank, which would be less than ` +
+      `${MIN_STACKS_RATIO_POINTS / 100} damage per stack. The unit of EVERY ratio magnitude is ` +
+      `percentage points of the stat it reads, with no exception for 'stacks' — ` +
+      `"+1 damage per stack" is 100, not 1. If ${shown} was meant as damage per stack, store ` +
+      `${values.map((v) => v * 100).join('/')}. Refused rather than converted: which unit was ` +
+      `meant is a fact only the author has.`,
+  ];
+}
+
 function checkComponent(c: AbilityComponent, where: string, maxRank: number): string[] {
   const out: string[] = [];
   if (!c.id) out.push(`${where}: component is missing an id`);
@@ -186,6 +262,7 @@ function checkComponent(c: AbilityComponent, where: string, maxRank: number): st
       if (r.stat === 'stacks' && !r.counter) {
         out.push(`${where}.ratios[${i}]: stat 'stacks' requires a 'counter' key`);
       }
+      if (r.stat === 'stacks') out.push(...checkStacksUnit(r, `${where}.ratios[${i}]`, maxRank));
       // A pool both champions possess names a quantity but not a champion. Reading the wrong
       // one is not a near miss -- Bel'Veth R's "20% of target's missing health" against the
       // CASTER's missing health is a different number entirely, and nothing downstream could
@@ -268,6 +345,141 @@ function checkComponent(c: AbilityComponent, where: string, maxRank: number): st
   return out;
 }
 
+/**
+ * Gate 1 for a DEFENSIVE KIT ENTRY, and specifically for the six shape fields added 2026-08-13.
+ *
+ * Each rule below closes the hole the corresponding refusal class was protecting against. They
+ * are checks and not defaults: a field the source states and the entry omits is refused, never
+ * filled in, because filling it in is where a plausible wrong number in the defender's stat
+ * block would come from.
+ *
+ * `siblings` is every entry on the SAME ability, so a relation can be resolved and a duplicate
+ * id caught.
+ */
+export function checkDefensiveEffect(
+  e: CuratedDefensiveEffect,
+  siblings: readonly CuratedDefensiveEffect[],
+  where: string,
+): string[] {
+  const out: string[] = [];
+
+  // UNIT — refusal classes `unit-not-expressible` and `not-an-amount`. A number with no unit is
+  // not a value: 25 could be 25% of every instance or 25 points off it, and those are not close.
+  if (e.value !== undefined && e.unit === undefined) {
+    out.push(
+      `${where}: a 'value' requires a 'unit' ('flat' | 'percent' | 'percent-of-damage-dealt' | ` +
+        `'healing-multiplier'). A bare number cannot say whether 25 means 25 points or 25%.`,
+    );
+  }
+  if (e.unit !== undefined && !DEFENSIVE_UNITS.has(e.unit)) {
+    out.push(`${where}: bad unit '${e.unit}'`);
+  }
+  // A rate or an amplifier is not health restored. Attaching one to a shield or a resistance
+  // grant would have an engine add a percentage as though it were points.
+  if (
+    (e.unit === 'percent-of-damage-dealt' || e.unit === 'healing-multiplier') &&
+    e.kind !== 'heal'
+  ) {
+    out.push(
+      `${where}: unit '${e.unit}' states a rate or an amplifier, not an amount, and only ` +
+        `kind 'heal' can carry one. Kind '${e.kind}' would read it as ${e.kind === 'shield' ? 'shield health' : 'an amount'}.`,
+    );
+  }
+
+  // GRANTED STAT — refusal class `needs-granted-stat`. 7 armor and 7 magic resistance are the
+  // difference between mitigating physical and mitigating magic damage.
+  if (e.kind === 'resistance-grant' && e.grantedStat === undefined) {
+    out.push(
+      `${where}: kind 'resistance-grant' requires 'grantedStat' ('armor' | 'magicResist' | ` +
+        `'both'). A number alone cannot say which resistance it grants.`,
+    );
+  }
+  if (e.grantedStat !== undefined && e.kind !== 'resistance-grant') {
+    out.push(`${where}: 'grantedStat' is only meaningful on kind 'resistance-grant'`);
+  }
+
+  // DAMAGE TYPE — refusal class `needs-damage-type`. Absent means all types, which is why it is
+  // required on the one kind whose entire meaning is the type.
+  if (e.kind === 'type-specific-reduction' && e.appliesToDamageType === undefined) {
+    out.push(
+      `${where}: kind 'type-specific-reduction' requires 'appliesToDamageType'. Without it the ` +
+        `entry reduces every type, which is a different effect.`,
+    );
+  }
+  if (e.appliesToDamageType !== undefined && !DAMAGE_TYPES.has(e.appliesToDamageType)) {
+    out.push(`${where}: bad appliesToDamageType '${e.appliesToDamageType}'`);
+  }
+
+  // OVER TIME — refusal class `needs-over-time`. The source's own sentence is required, for the
+  // same reason `VariableHitCount` quotes one: a recurrence claim must be traceable to a
+  // sentence rather than to a parser's judgement.
+  if (e.overTime !== undefined) {
+    if (!e.overTime.sourceSays) {
+      out.push(`${where}: 'overTime' must quote the sentence its recurrence rests on`);
+    }
+    if (
+      e.overTime.totalInstances !== undefined &&
+      (!Number.isInteger(e.overTime.totalInstances) || e.overTime.totalInstances < 1)
+    ) {
+      out.push(
+        `${where}: overTime.totalInstances is ${e.overTime.totalInstances}; it must be a whole ` +
+          `number of at least 1, or absent where the source states no count`,
+      );
+    }
+  }
+
+  // ID AND RELATION — refusal classes `multiple-values-one-field` and `needs-relation`. Summing
+  // two alternatives hands the defender both.
+  const sameAbility = siblings.filter(
+    (s) => s.champion === e.champion && s.slot === e.slot && s.abilityName === e.abilityName,
+  );
+  if (sameAbility.length > 1) {
+    if (e.id === undefined) {
+      out.push(
+        `${where}: ${sameAbility.length} entries share this ability, so each requires an 'id'. ` +
+          `Without one they cannot be told apart and a relation has nothing to point at.`,
+      );
+    } else if (sameAbility.filter((s) => s.id === e.id).length > 1) {
+      out.push(`${where}: duplicate id '${e.id}' on this ability`);
+    }
+    // Two entries of ONE KIND on one ability are the Leona W case: they must say whether they
+    // add or replace, and they must be distinguishable to a reader.
+    const sameKind = sameAbility.filter((s) => s.kind === e.kind);
+    if (sameKind.length > 1) {
+      if (e.relation === undefined) {
+        out.push(
+          `${where}: this ability carries ${sameKind.length} entries of kind '${e.kind}', so ` +
+            `'relation' must be stated explicitly ('adds' or 'alternativeTo') rather than ` +
+            `left to a default`,
+        );
+      }
+      if (e.label === undefined) {
+        out.push(
+          `${where}: this ability carries ${sameKind.length} entries of kind '${e.kind}', so ` +
+            `each requires the source's own 'label' — Leona W grants armor AND magic ` +
+            `resistance, and an unlabelled pair is indistinguishable`,
+        );
+      }
+    }
+  }
+  if (e.relation !== undefined) {
+    if (e.relation.kind === 'alternativeTo') {
+      const target = e.relation.componentId;
+      if (target === e.id) {
+        out.push(`${where}: relation alternativeTo points at itself ('${target}')`);
+      } else if (!sameAbility.some((s) => s.id === target)) {
+        out.push(
+          `${where}: relation alternativeTo '${target}' names no entry on this ability`,
+        );
+      }
+    } else if (e.relation.kind !== 'adds') {
+      out.push(`${where}: bad relation kind '${(e.relation as { kind: string }).kind}'`);
+    }
+  }
+
+  return out;
+}
+
 function abilityKey(a: CuratedAbility): string {
   return `${a.champion}${a.form ? ` (${a.form})` : ''}/${a.slot}/${a.abilityName}`;
 }
@@ -337,6 +549,46 @@ export function gateSchema(file: CuratedFile): GateReport {
         push(`component '${c.id}' is marked alternativeTo itself`);
       }
     }
+  }
+
+  // DEFENSIVE KIT ENTRIES (SPECIFICATION §5). Optional on the file so an existing curated file
+  // stays valid, and checked in full as soon as any are present.
+  for (const e of file.defensiveEffects ?? []) {
+    checked += 1;
+    const key = `${e.champion}/${e.slot}/${e.abilityName}/${e.kind}${e.id ? `#${e.id}` : ''}`;
+    const push = (message: string) => findings.push({ gate: 'schema', entry: key, message });
+
+    if (!e.champion) push('missing champion');
+    if (!SLOTS.has(e.slot)) push(`bad slot '${e.slot}'`);
+    if (!e.abilityName) push('missing abilityName');
+    if (!DEFENSIVE_KINDS.has(e.kind)) push(`bad kind '${e.kind}'`);
+    if (!DEFENSIVE_ACTIVATIONS.has(e.activation)) push(`bad activation '${e.activation}'`);
+    if (!STATUSES.has(e.verification)) push(`bad verification '${e.verification}'`);
+    // The same rule the ability side carries: a fact no source states forces `incomplete`, so an
+    // entry cannot record one and still claim to be settled (gate 6's rule, applied here).
+    if ((e.unresolvable?.length ?? 0) > 0 && e.verification !== 'incomplete') {
+      push(
+        `records an unresolvable fact but claims '${e.verification}'; a fact no source states ` +
+          `forces 'incomplete'`,
+      );
+    }
+    if (e.value !== undefined) checkScalingShape(e.value, 'value').forEach(push);
+    (e.ratios ?? []).forEach((r, i) => {
+      if (!RATIO_STATS.has(r.stat)) push(`ratios[${i}]: bad stat '${r.stat}'`);
+      if (requiresOwner(r.stat) && r.owner === undefined) {
+        push(
+          `ratios[${i}]: stat '${r.stat}' belongs to a champion and requires an 'owner'. ` +
+            `A "15% armor" reduction is meaningless until someone says whose.`,
+        );
+      }
+      if (r.owner !== undefined && !RATIO_OWNERS.has(r.owner)) {
+        push(`ratios[${i}]: bad owner '${r.owner}'`);
+      }
+      if (r.stat === 'stacks' && !r.counter) push(`ratios[${i}]: stat 'stacks' requires a counter`);
+      if (r.stat === 'stacks') checkStacksUnit(r, `ratios[${i}]`, 5).forEach(push);
+    });
+    // The six shape fields.
+    checkDefensiveEffect(e, file.defensiveEffects ?? [], 'entry').forEach(push);
   }
 
   const failedEntries = new Set(findings.map((f) => f.entry));

@@ -77,9 +77,16 @@ describe('result-audit/detects', () => {
     auditResult(patch(structuredClone(MOCK_RESULT) as Result)).map((f) => f.kind);
 
   it('catches a running total that disagrees with an instance’s final', () => {
-    expect(broken((r) => ({ ...r, runningTotal: [241, 420, 620, 740, 890] }))).toContain(
-      'delta-disagrees-with-final',
-    );
+    expect(
+      broken((r) => ({
+        ...r,
+        runningTotal: r.runningTotal.map((p, i) => ({
+          ...p,
+          total: [241, 420, 620, 740, 890][i]!,
+          byType: { ...p.byType, physical: [241, 420, 620, 740, 890][i]! - p.byType.magic },
+        })),
+      })),
+    ).toContain('delta-disagrees-with-final');
   });
 
   it('catches a composition that does not sum to its total', () => {

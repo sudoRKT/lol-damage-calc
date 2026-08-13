@@ -38,6 +38,7 @@ export const BURST_KILLS: Result = {
     burstOnly: {
       defenderHp: 700,
       damageApplied: 770,
+      healingApplied: 0,
       lethal: true,
       lethalAtInstance: 5,
       remainingHp: 0,
@@ -45,8 +46,68 @@ export const BURST_KILLS: Result = {
     burstPlusDot: {
       defenderHp: 700,
       damageApplied: 930,
+      healingApplied: 0,
       lethal: true,
       lethalAtInstance: 5,
+      remainingHp: 0,
+    },
+  },
+};
+
+/**
+ * A DEFENDER WHO HEALS. The same 770 burst against the same 800 health, with 90 restored.
+ *
+ * SPECIFICATION §5 requires the defender's own kit modelled, and DATA-SOURCES §40 confirmed 121
+ * defensive heals across the roster, so this state is real and will arrive. It is kept OUT of
+ * the canonical mock and given its own fixture on purpose, because of what it exposes:
+ *
+ * **THE BURNDOWN DOES NOT DRAW HEALING, AND THIS FIXTURE IS WHERE THAT IS VISIBLE.** DESIGN.md
+ * §7 specifies the trace as remaining HP falling — grey plateaus, coloured risers dropping — and
+ * says nothing about a plateau that RISES. So `buildBurndownModel` walks the running total down
+ * from entry health and ends this fixture's last tread at 30, while the verdict printed beside
+ * the plot reads 120. Those are the same quantity said two ways, which §41.2 records as worse
+ * than not drawing it at all.
+ *
+ * It is NOT fixed here. Where a heal sits between two instances is a design decision DESIGN.md
+ * has not taken, and inventing one in the geometry would be this area deciding it. Raised, with
+ * a fixture that makes the gap reproducible rather than theoretical.
+ */
+export const DEFENDER_HEALS: Result = {
+  ...MOCK_RESULT,
+  sustain: {
+    ...MOCK_RESULT.sustain,
+    defenderHealing: 90,
+    sources: [
+      ...MOCK_RESULT.sustain.sources,
+      {
+        // ATTACHED TO NO INSTANCE. It is the defender's own kit, not a response to a hit, and
+        // §3.2 gives the engine no axis on which to place it between instances.
+        label: 'Grasp of the Undying (defender)',
+        icon: null,
+        kind: 'heal',
+        restoresTo: 'defender',
+        amount: 90,
+        fromInstance: null,
+        verification: 'derived',
+      },
+    ],
+  },
+  verdict: {
+    // 800 - 770 + 90 = 120 survives; 800 - 930 + 90 = -40, floored to 0 and lethal.
+    burstOnly: {
+      defenderHp: 800,
+      damageApplied: 770,
+      healingApplied: 90,
+      lethal: false,
+      lethalAtInstance: null,
+      remainingHp: 120,
+    },
+    burstPlusDot: {
+      defenderHp: 800,
+      damageApplied: 930,
+      healingApplied: 90,
+      lethal: true,
+      lethalAtInstance: null,
       remainingHp: 0,
     },
   },

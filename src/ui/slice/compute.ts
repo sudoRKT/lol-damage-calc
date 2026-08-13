@@ -22,6 +22,7 @@
 // Every one of these is stated on screen. An honest "not yet modelled" is the point.
 
 import type { AbilityComponent, CuratedAbility, DamageType } from '../../types/data';
+import type { DamageByType, DamageTotals } from '../../types/result';
 import { evaluateComponent, unsupportedReasons } from '../../engine/component';
 import { applyResistance } from '../../engine/resistances';
 import { roundDamage } from '../../engine/rounding';
@@ -71,7 +72,11 @@ export interface SliceInstance {
 
 export interface SliceResult {
   instances: SliceInstance[];
-  runningTotal: number[];
+  /** Cumulative damage after each step, WITH its per-type split — the same shape and the same
+   *  reason as `Result.runningTotal` (src/types/result.ts, changed 2026-08-13). A bare number
+   *  on every row is an untagged damage figure with no composition bar, which DESIGN.md §8 does
+   *  not allow; the split is what makes the bar renderable. */
+  runningTotal: DamageTotals[];
   burstTotal: number;
   defenderHp: number;
   lethal: boolean;
@@ -173,20 +178,25 @@ export function computeSlice(
   const instances: SliceInstance[] = [];
   const excluded: SliceResult['excluded'] = [];
   let running = 0;
-  const runningTotal: number[] = [];
+  const byType: DamageByType = { physical: 0, magic: 0, true: 0 };
+  const runningTotal: DamageTotals[] = [];
 
   combo.forEach((slot, i) => {
     const ability = abilities.find((a) => a.slot === slot);
     if (!ability) return;
     const instance = evaluateStep(ability, attacker, defender, i + 1);
     instances.push(instance);
-    if (instance.damage) running += instance.damage.final;
-    else excluded.push({ label: instance.label, why: instance.refusal?.why.join('; ') ?? 'unknown' });
-    runningTotal.push(running);
+    if (instance.damage) {
+      running += instance.damage.final;
+      byType[instance.damage.type] += instance.damage.final;
+    } else {
+      excluded.push({ label: instance.label, why: instance.refusal?.why.join('; ') ?? 'unknown' });
+    }
+    runningTotal.push({ total: running, byType: { ...byType } });
   });
 
   const defenderHp = roundDamage(resolveBaseStats(defender.stats, defender.level).hp);
-  const lethalIndex = runningTotal.findIndex((t) => t >= defenderHp);
+  const lethalIndex = runningTotal.findIndex((t) => t.total >= defenderHp);
 
   return {
     instances,

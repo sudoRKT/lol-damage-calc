@@ -143,29 +143,22 @@ export function buildBurndownModel(result: Result): BurndownModel {
   const frac = (hp: number) => hp / scale;
 
   const columns: BurndownColumn[] = [];
-  const cumulativeByType: DamageByType[] = [];
-  const running = zeroByType();
+  // THE SPLIT IS READ, NOT RE-DERIVED (changed 2026-08-13). This used to re-accumulate the
+  // per-type running split from each instance's `final` and `byType`, which made the chart a
+  // SECOND source of truth for a figure the engine already states. §41.1 fixes `runningTotal` as
+  // the authoritative one precisely because the rounded per-instance column does not sum to it;
+  // re-deriving the split from that column reintroduced the arithmetic the rule forbids.
+  // `auditResult` still checks the two against each other, so a disagreement is reported rather
+  // than reconciled by whichever code path ran last.
+  const cumulativeByType: DamageByType[] = result.runningTotal.map((p) => ({ ...p.byType }));
 
   result.perInstance.forEach((instance, i) => {
-    const cumBefore = i === 0 ? 0 : (result.runningTotal[i - 1] ?? 0);
-    const cumAfter = result.runningTotal[i] ?? cumBefore;
+    const cumBefore = i === 0 ? 0 : (result.runningTotal[i - 1]?.total ?? 0);
+    const cumAfter = result.runningTotal[i]?.total ?? cumBefore;
     const damage = cumAfter - cumBefore;
 
     const hpBefore = Math.max(0, startHp - cumBefore);
     const hpAfter = Math.max(0, startHp - cumAfter);
-
-    // A mixed instance spreads across types and a no-damage one adds to none. Neither can index
-    // a three-key split, so the union is narrowed rather than cast — a new arm must fail the
-    // typecheck, not land silently in `physical`.
-    if (instance.damageType === 'mixed') {
-      const split = instance.byType ?? { physical: 0, magic: 0, true: 0 };
-      running.physical += split.physical;
-      running.magic += split.magic;
-      running.true += split.true;
-    } else if (instance.damageType !== 'none') {
-      running[instance.damageType] += damage;
-    }
-    cumulativeByType.push({ ...running });
 
     columns.push({
       kind: 'burst',
@@ -395,9 +388,24 @@ export function auditResult(result: Result): ResultFinding[] {
     });
   }
 
+  // EVERY RUNNING-TOTAL POINT CARRIES ITS OWN SPLIT, and the split has to hold on its own terms
+  // (added 2026-08-13 with the shape change). A point whose three types do not sum to its total
+  // would render a composition bar that disagrees with the number printed beside it — DESIGN.md
+  // §7's tags say one thing and the bar another, which §41.2 records as worse than no bar.
+  result.runningTotal.forEach((point, i) => {
+    const sum = point.byType.physical + point.byType.magic + point.byType.true;
+    if (!near(sum, point.total)) {
+      f.push({
+        kind: 'running-total-split-sum',
+        detail: `runningTotal[${i}] byType sums to ${sum} but its total is ${point.total}`,
+      });
+    }
+  });
+
   const byType = zeroByType();
   result.perInstance.forEach((inst, i) => {
-    const delta = (result.runningTotal[i] ?? 0) - (i === 0 ? 0 : (result.runningTotal[i - 1] ?? 0));
+    const delta =
+      (result.runningTotal[i]?.total ?? 0) - (i === 0 ? 0 : (result.runningTotal[i - 1]?.total ?? 0));
     if (!near(delta, inst.final)) {
       f.push({
         kind: 'delta-disagrees-with-final',
@@ -429,7 +437,7 @@ export function auditResult(result: Result): ResultFinding[] {
     }
   });
 
-  const last = result.runningTotal[result.runningTotal.length - 1] ?? 0;
+  const last = result.runningTotal[result.runningTotal.length - 1]?.total ?? 0;
   if (!near(last, result.burst.total)) {
     f.push({
       kind: 'running-total-tail',
@@ -488,17 +496,32 @@ export function auditResult(result: Result): ResultFinding[] {
         detail: `${scope} verdict applies ${v.damageApplied} but the totals give ${applied}`,
       });
     }
-    if (v.lethal !== applied >= v.defenderHp) {
+    // HEALING IS PART OF THE VERDICT, NOT A NOTE BESIDE IT (added 2026-08-13). A defender who
+    // healed 90 and is reported as though they had not is a wrong number, so `healingApplied`
+    // enters both the lethality test and the remaining figure. It is 0 in every result the
+    // engine produces today, so this reduces to the previous arithmetic until sustain data lands.
+    const survivable = v.defenderHp + v.healingApplied;
+    if (v.lethal !== applied >= survivable) {
       f.push({
         kind: 'verdict-lethal',
-        detail: `${scope} verdict says lethal=${v.lethal} for ${applied} against ${v.defenderHp} HP`,
+        detail:
+          `${scope} verdict says lethal=${v.lethal} for ${applied} against ${v.defenderHp} HP ` +
+          `plus ${v.healingApplied} healed`,
       });
     }
-    const remaining = Math.max(0, v.defenderHp - applied);
+    const remaining = Math.max(0, survivable - applied);
     if (!near(v.remainingHp, remaining)) {
       f.push({
         kind: 'verdict-remaining',
         detail: `${scope} verdict says ${v.remainingHp} HP remains; ${remaining} does`,
+      });
+    }
+    if (!near(v.healingApplied, result.sustain.defenderHealing)) {
+      f.push({
+        kind: 'verdict-healing',
+        detail:
+          `${scope} verdict nets ${v.healingApplied} healing but sustain.defenderHealing is ` +
+          `${result.sustain.defenderHealing}`,
       });
     }
   };
@@ -506,17 +529,36 @@ export function auditResult(result: Result): ResultFinding[] {
   checkVerdict('burst', result.verdict.burstOnly, result.burst.total);
   checkVerdict('burst+dot', result.verdict.burstPlusDot, result.burst.total + result.dot.total);
 
-  const firstCrossing =
-    result.runningTotal.findIndex((c) => c >= hp) === -1
-      ? null
-      : result.runningTotal.findIndex((c) => c >= hp) + 1;
+  // The kill lands where cumulative damage first reaches the health the defender actually has to
+  // lose — their entry health plus anything they healed back.
+  const survivableHp = hp + result.verdict.burstOnly.healingApplied;
+  const crossingIndex = result.runningTotal.findIndex((c) => c.total >= survivableHp);
+  const firstCrossing = crossingIndex === -1 ? null : crossingIndex + 1;
   if (result.verdict.burstOnly.lethalAtInstance !== firstCrossing) {
     f.push({
       kind: 'lethal-instance',
       detail:
         `verdict says the burst kills at instance ${String(result.verdict.burstOnly.lethalAtInstance)} ` +
-        `but runningTotal first reaches ${hp} HP at ${String(firstCrossing)}`,
+        `but runningTotal first reaches ${survivableHp} HP at ${String(firstCrossing)}`,
     });
+  }
+
+  // SUSTAIN'S TOTALS ARE THE SUM OF ITS SOURCES, PER SIDE. Two figures that can disagree will,
+  // and a healing total that does not match the lines under it is the sustain-side version of
+  // the mock defect §41.2 and the incomplete-contributor defect both came from.
+  for (const side of ['attacker', 'defender'] as const) {
+    const summed = result.sustain.sources
+      .filter((s) => s.restoresTo === side)
+      .reduce((n, s) => n + s.amount, 0);
+    const stated = side === 'attacker'
+      ? result.sustain.attackerHealing
+      : result.sustain.defenderHealing;
+    if (!near(summed, stated)) {
+      f.push({
+        kind: 'sustain-side-sum',
+        detail: `sustain sources restore ${summed} to the ${side} but the total states ${stated}`,
+      });
+    }
   }
 
   return f;

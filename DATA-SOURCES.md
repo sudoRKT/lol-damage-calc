@@ -3151,10 +3151,15 @@ calls permanently unresolvable: **Black Cleaver** ("the target's Armor") and **B
 Curse** ("their Magic Resist"), plus Heartsteel ("your max Health"), Overlord's Bloodmail and
 Riftmaker.
 
-**Nothing was acted on.** Heartsteel still ships `owner: 'unresolved'`. Whether a Data Dragon
-attribution outranks wiki silence is a SOURCE-POLICY decision (§12, §15), and it is measured and
-quoted in `public/data/effect-values.json` so it can be decided rather than assumed. **If it is
-adopted, the count of permanently unresolvable item effects falls and §37.3 must be re-measured.**
+~~**Nothing was acted on.** Heartsteel still ships `owner: 'unresolved'`.~~ **ADOPTED in §41.1 and
+APPLIED on 2026-08-13 — see §42.7.** Heartsteel's stored ratio now carries `owner: 'holder'` and the
+entry reads `derived`. Whether a Data Dragon attribution outranks wiki silence was a SOURCE-POLICY
+decision (§12, §15); it is measured and quoted in `public/data/effect-values.json`, and the rows
+that reach a stored damage ratio are applied through a hand-read table rather than a rule.
+~~**If it is adopted, the count of permanently unresolvable item effects falls and §37.3 must be
+re-measured.**~~ **It did fall, and §41.1 re-measured it: 82 → 75 references, 56 → 52 effects.
+Heartsteel is NOT among the four that left**, for the reason §42.7 sets out — a third reference in
+its prose, the permanent bonus health it grants, is attributed by neither source.
 
 ---
 
@@ -3317,9 +3322,15 @@ owner-required stat reference in its prose is attributed by NEITHER source.**
 | effects carrying ≥1 | **56** | **52** |
 
 **Four effects leave the permanently-unresolvable set** — Black Cleaver ("the target's Armor"),
-Bloodletter's Curse ("their Magic Resist"), Overlord's Bloodmail and Riftmaker. **Heartsteel stays:**
-Data Dragon attributes one of its stats and not the other, and an effect is permanently incomplete
-if ANY of its owners is.
+Bloodletter's Curse ("their Magic Resist"), Overlord's Bloodmail and Riftmaker. **Heartsteel stays**
+— but ~~Data Dragon attributes one of its stats and not the other, and an effect is permanently
+incomplete if ANY of its owners is.~~ **the reason given here is wrong, corrected 2026-08-13 in
+§42.7.** Data Dragon attributes BOTH of Heartsteel's `maxHP` references; the one it leaves silent is
+a THIRD reference, `bonusHP`, in the clause granting permanent bonus health. So the conclusion holds
+and the arithmetic behind it did not. **The consequence §41.1 missed: the effect-level question and
+the entry-level question have different answers.** Heartsteel stays in the 52 by the definition
+above, AND its stored damage entry is now `derived`, because the unattributed reference is in a
+clause that entry does not model. The 75 / 52 figures are unchanged.
 
 ### 41.2 The composition bar was wrong for a reason worth recording
 
@@ -3349,3 +3360,432 @@ assertion would have been theatre.
 - **The defensive census**, which can now propose entries rather than only count them.
 - **Nothing in the engine or the interface is invalidated.** 875 tests were green before this pass
   and are green after it; the additions are additive and every existing field kept its meaning.
+
+---
+
+## 42. Six outstanding decisions, taken (2026-08-13)
+
+Each of these was raised by an area that hit it, deliberately NOT decided at the time, and left
+for the lead. They are taken here in one pass, with no agent running — the interface contract is
+changed only by the lead session (CLAUDE.md), and changing it while an area is live would move the
+ground under that area mid-task.
+
+Every decision below states what it RELEASES and what needs RE-RUNNING. Where a decision reverses
+something this file already recorded, the old reading is kept and struck through rather than
+deleted, because the reasoning that lost is the reason the decision is not relitigated.
+
+**Measured after the pass: `npm run typecheck` clean; `npm test` 1,234 tests across 66 files, all
+passing, against 1,204 across 66 before it.** The 30 new tests are named per decision below.
+
+---
+
+### 42.1 THE STACKS UNIT — percentage points, with no exception
+
+**DECIDED: a `stacks` ratio's magnitude is PERCENTAGE POINTS OF THE STACK COUNT, exactly as every
+other ratio. "+1 damage per stack" is stored as `100`, never as `1`.**
+
+Taken now, before any data exists, which is the whole reason it was worth taking: nothing has been
+harvested onto `stacks` yet, so there is no migration cost either way and the decision is purely
+about which rule is easier to state, check and remember. Left undecided, the first harvester to
+write one would have picked a unit by accident, and a hundredfold error on every stacking ability
+is not a near miss — a 300-stack Nasus would contribute 3 damage instead of 300.
+
+**Why the uniform rule won.** A stack counter is the one `RatioStat` whose stat has no unit of its
+own — 200 ability power is a quantity of ability power, but 25 stacks is a count — so "75% of it"
+is a strange sentence, and the alternative (a `stacks`-only unit of damage-per-stack) reads more
+naturally at the call site. It lost on three grounds:
+
+1. **One rule with no per-stat exception.** A `Ratio` on `stacks` looks exactly like a `Ratio` on
+   `AP`; an exception invisible at the call site is one a reader must already know about.
+2. **`RatioMultiplier.per100` would otherwise split.** A multiplier adds percentage points to its
+   parent ratio. With a damage-per-stack parent, one field would carry two units depending on what
+   it was attached to.
+3. **The guard is cleaner in this direction.** Every legitimate percentage-points figure is well
+   above 10 (half a point per stack is 50); a value below 10 cannot be legitimate and IS the
+   signature of the other unit.
+
+**THE COST IS NAMED RATHER THAN HIDDEN:** a curated entry reading `from: 100, to: 100` for "1 damage
+per stack" is not self-evident to someone reading the file. That is why it is written on the
+`Ratio` type, why the validator refuses the other unit, and why the refusal message names both
+readings and prints the exact value to store instead.
+
+**The guard.** `MIN_STACKS_RATIO_POINTS = 10` in `src/types/validate-curated.ts`. Gate 1 refuses a
+`stacks` ratio whose magnitude is below it **at every rank or level** — "at every rank" and not "at
+any rank", because a linear ratio may legitimately start small and grow, and refusing on the rank-1
+value alone would reject real data.
+
+**IT REFUSES; IT NEVER CONVERTS.** Multiplying by 100 would guess which unit the author meant, on a
+number that reaches a user as damage. The entry fails gate 1, which forces it no better than
+`incomplete` (§23) — a figure absent rather than wrong (SPECIFICATION §8).
+
+- **Releases:** nothing today, and that is the point — it makes the first stacking ability
+  harvested safe rather than a coin toss. `stacks` was measured at 1 row in the roster scan
+  (`classify.ts`, shape S9).
+- **Re-run:** nothing. No stored entry carries a `stacks` ratio.
+- **Tests:** 7, in `validate-curated.test.ts` — the accepted 100, the refused 1, the Dark Harvest
+  "5 per soul" shape, a legitimate 50, a rank-scaled ratio judged across every rank, a 1% AP ratio
+  left alone, and one asserting the refused value is not silently converted in place.
+
+---
+
+### 42.2 A SUSTAIN FIELD ON RESULT
+
+**DECIDED: `Result.sustain` carries all four §3.7 mechanics, split by which champion regains the
+health; and `SurvivalVerdict.healingApplied` nets defender healing into BOTH verdicts.**
+
+SPECIFICATION §3.7 requires lifesteal, omnivamp and spell vamp on the attacker and healing on the
+defender. The engine modelled none of them and said so — *"a figure with nowhere to go is a figure
+the user never sees"* — which was the right refusal and is now unnecessary.
+
+**Two sides, never one number**, because they answer different questions. The attacker's sustain
+changes whether the ATTACKER lives and can never change the survival verdict, which is about the
+defender. The defender's healing changes the verdict directly.
+
+**Healing is a TERM INSIDE both verdicts, not a third verdict.** §3.8 fixes the count at two —
+burst alone, and burst plus DoT — so adding a third would contradict the spec. A defender who
+healed 400 and whose verdict printed as though they had not is a **wrong** number, not an
+incomplete one, so it is netted rather than dropped, and named on the verdict rather than folded
+silently into a total. `remainingHp === max(0, defenderHp − damageApplied + healingApplied)` is a
+test, and the burndown's `auditResult` checks it on every Result.
+
+**A source is placed at the instance it arose from, and `fromInstance: null` is legitimate** — a
+defensive heal is the defender's own kit rather than a response to a hit, and §3.2 gives the engine
+no axis on which to place it between instances.
+
+- **Releases:** the four mechanics stop being unmodellable. What is still absent is DATA: no
+  curated item effect, rune or defensive entry states a sustain value, so the engine reports **zero
+  from ZERO SOURCES** — an empty `sources` list is what distinguishes "nothing was computed" from
+  "nothing was restored", and `ENGINE_EXCLUSIONS` says so in words on every result besides. §40.5
+  counted **4 defensive effects that GRANT life steal or omnivamp**, distinct from the 19 that
+  merely apply it, and §40 confirmed **121 heals**; those are the population that will fill it.
+- **Re-run:** nothing yet. When sustain data lands, the engine's exclusion string for it must be
+  removed in the same change, or the result will disclaim a mechanic it models.
+- **Tests:** 2 in `combo.test.ts`, plus 2 new `auditResult` checks (`sustain-side-sum`,
+  `verdict-healing`) that fire on any Result whose sustain totals disagree with the lines under
+  them.
+
+> **A GAP THIS DECISION EXPOSED, NAMED RATHER THAN PAPERED OVER. THE BURNDOWN DOES NOT DRAW
+> HEALING.** DESIGN.md §7 specifies the trace as remaining HP *falling* — grey plateaus, coloured
+> risers dropping — and says nothing about a plateau that RISES. So a defender healing 90 makes the
+> chart's last tread end at 30 while the verdict printed beside it reads 120: the same quantity said
+> two ways, which §41.2 records as worse than not drawing it at all.
+>
+> It is NOT fixed here, and the canonical mock therefore carries **attacker-side sustain only**.
+> Where a heal sits between two instances is a design decision DESIGN.md has not taken, and
+> inventing one in the geometry would be the interface area deciding it. `DEFENDER_HEALS` in
+> `src/ui/burndown/mock-variants.ts` carries the state so the gap is reproducible rather than
+> theoretical, and so it is covered rather than smuggled into every component's baseline.
+
+---
+
+### 42.3 MANA ON THE STAT BLOCK, AND A BONUS-HEALTH FIGURE
+
+**DECIDED: `StatBlock` gains `maxHpBase` / `maxHpBonus` (required, summing to `maxHp`) and
+`mana` / `maxMana` (OPTIONAL, absent where the champion's resource is not mana).**
+
+`RatioStat` has carried `bonusHP`, `maxMana` and `currentMana` since the contract was frozen, while
+`StatBlock` carried no mana at all and no bonus-health figure, so the component evaluator refused
+every such ratio by name. The refusal was honest and it was also a hole: the ability was
+unmodellable rather than unmodelled.
+
+**Bonus health is not derivable from `maxHp`.** It is maximum health minus the champion's own base
+at that level, and the base figure is a per-champion, per-level fact a total does not carry. So the
+split is exactly the one `armorBase`/`armorBonus` and `magicResistBase`/`magicResistBonus` already
+have, for exactly the same reason. **It is a split of MAXIMUM health only:** a champion at 800 of
+1850 has lost health, and which pool it came from is not a fact the game states.
+
+**MANA IS OPTIONAL, AND THIS IS THE MEASUREMENT THAT SETTLED IT.** Read from
+`Module:ChampionData/data` on 2026-08-13, over **all 175 champion entries** (175, not 173 — the
+module carries `GnarBig` and a second Kled form as their own entries):
+
+| Figure | Count |
+|---|---:|
+| entries carrying a `resource` field | **175 of 175** — none absent |
+| distinct resource values | **15** — Mana, Energy, None, Fury, Health, Rage, Courage, Flow, Blood Well, Frenzy, Shield, Ferocity, Heat, Grit, Crimson Rush |
+| `resource: "Mana"` | **145** |
+| **entries stating a NON-MANA resource with a NON-ZERO `mp_base`** | **19** |
+| entries stating `resource: "Mana"` with `mp_base` 0 | **0** |
+
+**`mp_base` holds whatever the champion's resource is, not mana.** Shen's 400 is energy, Yone's 500
+is flow, Rengar's 4 is ferocity, Rumble's 150 is heat. Reading the pool as mana would label 19
+champions' resources as something they are not — and, worse, would let a `maxMana` ratio resolve
+against energy. In the fetched roster of 173, **11 champions state `mp_base: 0`** (Aatrox, Bel'Veth,
+Briar, Dr. Mundo, Garen, Katarina, Mordekaiser, Riven, Sett, Viego, Zac); a 0 there means "no pool",
+and writing 0 into a mana field would claim an empty mana pool, which is a different fact and one
+that resolves a mana ratio to 0 damage instead of refusing it.
+
+So absent is a real state, the engine's named refusal survives for it, and the stat block panel
+omits the mana row entirely rather than printing "Mana 0".
+
+- **Releases:** **bonus-health ratios resolve now, end to end** — tested through the whole runner,
+  not just the component evaluator. **Mana ratios resolve the moment a stat block carries mana**,
+  also tested end to end.
+- **What Ryze Q still waits on, named precisely:** ONE fetched field. `Champion` does not carry
+  `resource`, so nothing can currently tell a mana pool from an energy pool. That is a data-pipeline
+  change (`scripts/fetch/champions.ts` + a re-fetch of `public/data/champions.json`), deliberately
+  NOT run inside a contract commit — re-fetching 173 champions against the live wiki could move base
+  statistics, and a silent stat movement buried in a decisions commit is exactly the kind of change
+  nobody would find later. **Ryze's own row is already confirmed: `resource: "Mana"`,
+  `mp_base: 300`, `mp_lvl: 70`.**
+- **Re-run:** the champion fetch, once `resource` is added, followed by a diff of
+  `public/data/champions.json` restricted to that field.
+- **Tests:** 3 in `combo.test.ts` (bonus health resolves; mana still refused when absent; mana
+  resolves when present — the last two paired, because without the third the second would pass for
+  an engine that refused every mana ratio unconditionally) and 3 in `StatBlockPanel.test.tsx` (the
+  health split reaches the screen; no mana row for a champion with no pool; the row appears for one
+  with a pool).
+
+---
+
+### 42.4 RUNNINGTOTAL CARRIES A PER-TYPE SPLIT
+
+**DECIDED: `Result.runningTotal` is `DamageTotals[]`, not `number[]`.**
+
+§41.1 made `runningTotal` the authoritative figure and put it on **every row** of the per-instance
+table, because the rounded per-instance column must never be presented as something to add up. But
+it is a SUM ACROSS DAMAGE TYPES, and DESIGN.md §8 permits exactly one untagged damage figure: *"a
+multi-type aggregate total, which is bone with no tag and is instead broken down by the tagged
+composition bar."* A bare number on every row is an untagged damage figure with **no bar beside
+it** — the one form the hard rule does not allow, on the very figure the rounding decision had just
+made most prominent. The interface area raised this and refused to invent the split, correctly: it
+cannot be reconstructed from the rounded column without contradicting the authoritative number.
+
+`DamageTotals` is reused rather than a new pair invented — it already means "a total and the three
+types it is made of", so there is one shape and one invariant to test.
+
+- **Releases:** the running-total cell now renders `AggregateTotal`, which **refuses to draw the
+  untagged figure without the tagged bar** and throws if the two disagree. A row whose combo has so
+  far touched one type falls back to an ordinary tagged value, because §8's exception is for a total
+  that SPANS types. The same change was applied to the vertical slice's own running total, which had
+  the identical bare-number cell.
+- **Re-run:** nothing data-side. The burndown's `buildBurndownModel` now **reads** the split instead
+  of re-deriving it — it used to re-accumulate from each instance's rounded `final`, making the
+  chart a second source of truth for a figure the engine states, and re-summing the rounded column
+  is precisely what §41.1 forbids. `auditResult` still compares the two, so a disagreement is
+  reported rather than reconciled by whichever code path ran last.
+- **Tests:** 2 in `combo.test.ts` (the split per point; every point sums to its own total) and 1 new
+  `auditResult` check (`running-total-split-sum`).
+
+> #### 42.4a A SEVENTH DECISION THIS ONE FORCED: a split now always sums to its own total
+>
+> **THE ENGINE AND THE INTERFACE HAD ENCODED OPPOSITE RULES FOR ONE FIGURE, and neither check had
+> ever run over the other's output, so both suites passed.**
+>
+> - `combo-mixed.test.ts` asserted, deliberately and with reasoning, that a mixed instance reports
+>   **1 / 67 / 1 against a total of 68** — three displayed figures adding to 69 — on the reading
+>   that §41.1's "rounded output is never fed back into arithmetic" makes a split behave like the
+>   per-instance column.
+> - `AggregateTotal` in `src/ui/primitives` **throws** when a split disagrees with its total, with
+>   the comment *"Fix the caller — do not relax this check."*
+>
+> Decision 42.4 forced the collision: the moment `runningTotal` carries a split rendered by
+> `AggregateTotal`, a non-summing split crashes the page.
+>
+> **THE DISTINCTION THAT SETTLES IT: is the discrepancy FORCED by the rounding rule, or merely
+> PERMITTED by it?** For the per-instance column it is forced — those are N+1 independently
+> meaningful figures, and reconciling them would mean feeding rounded values back, which is the
+> thing the rule exists to prevent. For a split it is not forced: largest-remainder apportionment
+> (`roundSplit` in `rounding.ts`, the single rounding point) keeps the total as `roundDamage` of the
+> UNROUNDED sum, so rounding still cannot accumulate across a combo, and every type still lands
+> within one point of what it actually dealt.
+>
+> **THE COST IS NAMED:** in the worked case the 0.5 true damage now displays as 0 rather than 1, so
+> a reader sees no true segment. That is the same loss every figure in this product takes at whole
+> points, and it is smaller than a bar whose segments contradict the number above them — which §41.2
+> records as *worse than no bar*.
+>
+> ~~"BINDING ON THE INTERFACE, exactly as for the instance column: the composition bar's three
+> figures must never be presented as something to add up."~~ **That was the previous reading, and it
+> is withdrawn.** It is kept here because it is a good argument that lost to a better one, and a
+> future session finding a split that sums should not conclude the rounding rule has been forgotten.
+>
+> Applied at all four sites that report a split: a mixed instance's `byType`, each `runningTotal`
+> point, `burst`, and `dot`. **`burst` had the same latent inconsistency and nobody had noticed**,
+> because `auditResult` lives in the interface and had only ever been run over the mock, whose
+> figures are whole numbers.
+
+---
+
+### 42.5 THE SIX DEFENSIVE SHAPE FIELDS
+
+**DECIDED: `CuratedDefensiveEffect` gains `label`, `id` + `relation`, `grantedStat`,
+`appliesToDamageType`, `overTime` and `unit`.**
+
+`defensive-propose.ts` reads the defender's kit off the wiki and REFUSES any row stating a fact the
+entry could not carry, with a named class. Six of those classes are one missing field each, and the
+proposer measured what they cost together rather than guessing:
+
+> **44 pairs. DEFINITION: a refused (page, kind) pair is released by a set of classes when EVERY
+> class blocking it is in that set** — measured over 226 confirmed pages / 282 (page, kind) pairs, of
+> which 88 were proposed and 194 refused. A released pair still has to parse, still obeys the owner
+> rule, and is `derived` at best. Counted this way and not by "how often did class X fire first",
+> because that figure depends on the order the checks run in.
+
+| Field | Refusal class it closes | Pairs blocked | What storing it wrong would have claimed |
+|---|---|---:|---|
+| `label` | `multiple-values-one-field` | 27 | **Leona W grants 20–50 armor AND 20–50 magic resistance** from two rows on one page. Picking one silently drops the other, and which one decides whether the defender mitigates physical or magic damage |
+| `id` + `relation` | `needs-relation` | 14 | Minimum/Maximum and base/empowered pairs summed instead of alternated — the defender mitigating twice what they should |
+| `grantedStat` | `needs-granted-stat` | 13 (**8 by this alone — the largest single release**) | 7 armor is not 7 magic resistance |
+| `appliesToDamageType` | `needs-damage-type` | 3 | A magic-only shield absorbing physical damage too |
+| `overTime` | `needs-over-time` | 14 | A channelled heal restoring its whole duration's health at one point in the sequence |
+| `unit` | `unit-not-expressible` + `not-an-amount` | 7 by the second | 25 read as 25 points when the source meant 25%; life steal read as health restored |
+
+Three design points, each learned from the class it closes:
+
+- **`unit` is ONE field with four arms, not two fields that must agree.** `'flat'` and `'percent'`
+  answer "a number, of what?"; `'percent-of-damage-dealt'` (life steal, omnivamp, the wiki's
+  "healing percentage" rows) and `'healing-multiplier'` ("increased healing") answer the same
+  question about a quantity that is a RATE or an AMPLIFIER rather than an amount. Gate 1 requires
+  `unit` whenever `value` is present — a number with no unit is not a value — and refuses the last
+  two arms on any kind but `heal`, because an engine reading either as shield health would invent
+  health from nothing.
+- **`grantedStat: 'both'` is a real answer, not a shorthand for "we did not look."** Some rows grant
+  one figure to both resistances in one statement. It is NOT how Leona W is stored: hers is two
+  separately-valued rows and belongs in two entries distinguished by `label`.
+- **`appliesToDamageType` ABSENT means all types**, which is the ordinary case, and never "unknown"
+  — a row whose type could not be read is refused, not stored blank.
+
+- **Releases:** 44 refused pairs become writable. **They are not written here.** The proposals are
+  drafts in `build/proposed-curated/` and the population that may be stored is
+  `defensive-confirmed.ts` — the pages a person read (CLAUDE.md: a detector proposes, a person
+  confirms, storage is gated on the confirmed population).
+- **Re-run:** `defensive-propose.ts`, which must now populate the six fields; its refusal counts
+  will fall and `whatOneFieldWouldRelease.shapeFieldsTogether.pairs` should approach 0. That is a
+  harvest-area task and is deliberately not started in this commit.
+- **Tests:** 12 in `validate-curated.test.ts`, including Leona W stored correctly as two labelled,
+  related entries **and** the same pair refused when it is unlabelled and unrelated.
+
+**One stale claim corrected in passing.** `CuratedDefensiveEffect`'s own doc comment read *"the
+defender panel needs on the order of two hundred controls rather than a handful"* — the conclusion
+§40.1 struck through on the same day. It now carries the corrected measurement: minimum 0, median 1,
+mean 1.23, maximum 4, **at most four rows**. The contract file was the last place the withdrawn
+figure still lived, and it is the place an agent would have read it.
+
+---
+
+### 42.6 THE BASIC ATTACK HAS NO ART
+
+**DECIDED: the basic attack is named in words and marked `AA`. No Data Dragon art is borrowed for
+it, and none is drawn for it.**
+
+Data Dragon ships four asset categories — champion portraits, ability icons, item icons, rune icons
+— and nothing for an auto-attack. SPECIFICATION §10.1 says *"the combo builder presents abilities as
+their in-game icons rather than as lettered buttons"*, so the one control the builder cannot obey
+the rule for is the one the rule does not cover.
+
+**Why the ban does not reach it.** §10.1 forbids substituting a letter for art THAT EXISTS. Its
+purpose is that a player recognises Q by its icon rather than by reading a letter, and that purpose
+has no application where there is no icon to recognise. **A basic attack is not an ability** —
+SPECIFICATION §3.4 lists it as its own instance type, distinct from "damaging ability" and from
+"empowered basic attack" — so this is not the banned case narrowly construed, and it is not the
+banned case on the argument behind the ban either.
+
+**What was rejected, and why it is the worse option.** The alternative is to borrow an existing Data
+Dragon asset — an item icon, a summoner-spell icon, the attack-move cursor — and let it stand for
+"basic attack". That is presenting official art as denoting something it does not denote, in a
+product whose §15 asset terms rest on using Riot's art as Riot ships it, and in an interface where
+every other icon means exactly the thing it depicts. **A user who learns that one chip means
+something other than what it shows can no longer trust that any of them does.** Drawing a bespoke
+icon is the same objection plus a new asset class DESIGN.md does not define.
+
+**What is drawn instead**, introducing no new design value: in the shelf, a plainly labelled control
+reading "Basic attack", deliberately a different SHAPE from an icon-chip so the two never read as
+the same class of thing; in the sequence, where every step must keep one rhythm, a chip-sized well
+carrying the `AA` mark in the display face at the eyebrow size. Both use tokens DESIGN.md already
+defines. It is the same construction §9 already specifies for a non-damaging chip — a visible marker
+that says "no art here", never an omission.
+
+- **Releases:** the combo builder's last provisional decision. The code already behaved this way;
+  what it lacked was a decision, so it read "RAISED, not filled in here" and an agent could have
+  changed it in either direction.
+- **Re-run:** nothing.
+- **BLOCKED, AND STATED RATHER THAN ROUTED AROUND:** DESIGN.md §9 still says nothing about a basic
+  attack, and that file is write-denied to every session by `permissions.deny` (CLAUDE.md, the
+  guards). The tidy end state is a one-row addition to §9 recording this decision; it needs the
+  owner to unlock the file. The guard was not weakened to get it in — the reasoning lives on
+  `BASIC_ATTACK_MARKER` in `src/ui/combo/sequence.ts` and here.
+
+---
+
+### 42.7 THE DATA DRAGON ATTRIBUTION, APPLIED TO HEARTSTEEL
+
+§41.1 **ADOPTED** the rule — where Data Dragon's prose attributes a stat the wiki leaves silent,
+that is a source STATING a fact, not an inference from convention — and then nothing acted on it.
+Heartsteel kept shipping `owner: 'unresolved'` against a source that says **"your max Health"**.
+
+**APPLIED. `public/data/effect-values.json` was regenerated and exactly ONE effect changed:**
+
+| | Before | After |
+|---|---|---|
+| Heartsteel `pass` ratio owner | `unresolved` | **`holder`** |
+| Heartsteel `pass` verification | `incomplete` | **`derived`** |
+| Heartsteel `pass` `unresolvable` | one entry naming `maxHP` | **absent** |
+| stored effects | 38 | 38 |
+| — complete (`derived`) | 32 | **33** |
+| — carrying an unattributed owner | 6 | **5** |
+
+`holder` and **not** `caster`: the same item on the defender reads off the defender (`RatioOwner` in
+`data.ts`). Every other figure in the file is byte-identical, so nothing else moved with it.
+
+**IT IS A HAND-READ TABLE, NOT A RULE.** `DATA_DRAGON_ATTRIBUTIONS` in `effect-values-gate.ts`
+carries one row, quoting the words it rests on. A regex over Data Dragon's prose would decide
+references nobody has read — the exact move CLAUDE.md forbids ("a detector proposes, a person
+confirms, and storage is gated on the confirmed population"). A paired test uses **identical
+wikitext under a key the table does not name** and asserts the owner stays `unresolved`; without it
+the change would pass for an implementation that resolved every unattributed `maxHP` reference to
+the holder, which is precisely the convention argument §16 rejects.
+
+**WHY ONLY ONE ROW IS APPLIED WHEN 7 REFERENCES ACROSS 5 EFFECTS ARE ELIGIBLE.** The other four —
+Black Cleaver and Bloodletter's Curse shred, Overlord's Bloodmail and Riftmaker's stat grants —
+attribute stats this extraction does not store as damage ratios, so adopting them changes no stored
+number. They are recorded, not applied. Measured: of the 6 stored ratios carrying an unattributed
+owner (Heartsteel, Hollow Radiance, Hullbreaker, Sunfire Aegis, Titanic Hydra ×2), **Data Dragon
+attributes only Heartsteel's**.
+
+> **§41.1 IS IMPRECISE ABOUT HEARTSTEEL AND THE CORRECTION IS WORTH KEEPING.** It reads:
+> ~~"**Heartsteel stays:** Data Dragon attributes one of its stats and not the other, and an effect
+> is permanently incomplete if ANY of its owners is."~~
+>
+> The conclusion is right and the reason given is wrong. Heartsteel `pass` carries **three**
+> owner-bearing references, not two, and Data Dragon attributes **both** `maxHP` references —
+> the damage ratio and the `10% of that amount` clause. The one it leaves silent is a **`bonusHP`**
+> reference in a different clause: *"grant you permanent bonus health"*. That clause has a
+> holder-implying verb and §37.3 deliberately declines to resolve those, so it stays unattributed.
+>
+> **The consequence matters, because §41.1 ran two questions together.** Heartsteel remains in
+> §37.3's permanently-unresolvable population under that section's own effect-level definition (at
+> least one owner-required reference attributed by neither source), so **the 75 / 52 figures do NOT
+> move**. But the STORED entry is a damage component, and every fact IT needs is now attributed —
+> the unmodelled bonus-health clause is not one of them. Marking the damage `incomplete` because an
+> unmodelled sibling clause has an unattributed owner would refuse a number we can stand behind,
+> which is the mirror of the defect §27 fixed when 239 no-damage entries were reading `derived`.
+>
+> **The effect-level question and the entry-level question have different answers, and both are
+> correct.**
+
+- **Releases:** one item effect's damage, from `incomplete` (contributing nothing) to `derived`.
+- **Re-run:** `node scripts/fetch/values.ts` — done, diffed against the previous file, one effect
+  changed. §39's table (28 extracted / 1 incomplete) is superseded twice over: by §41.3's 38, and
+  now by 33 complete / 5 unattributed.
+- **Tests:** 3 in `effect-values.test.ts`. The rule "an unresolved owner forces incomplete" is
+  unchanged and still tested — **its exemplar moved from Heartsteel to Titanic Hydra**, because
+  Heartsteel stopped being an example of it. Moving an exemplar is not weakening a test; the
+  assertion is identical.
+
+---
+
+### 42.8 What this pass did NOT do
+
+Stated so the next session does not have to infer it:
+
+- **No area was launched.** Every change here is the lead's, in lead-owned files plus the direct
+  consequences in `src/engine/`, `src/ui/` and `scripts/fetch/` that a contract change forces. The
+  work each decision RELEASES is an area task and is listed under it.
+- **No owner was inferred from convention.** The one owner that changed did so because a source
+  states it in its own words, quoted.
+- **`/curated/` was not touched.** Nothing in this pass writes it, and the write-guard was not
+  altered.
+- **DESIGN.md was not edited**, because the guard denies it. The one row it needs is named in §42.6.
+- **The full-roster batch was not re-run.** No stored ability figure changed, so
+  `verification/measurements.json` is unaffected; the §41.3 note that it should be re-run to pick up
+  shapes the harvester can now express still stands, and now includes the six defensive fields.

@@ -48,8 +48,12 @@ describe('stat block/completeness', () => {
       DEFENDER.attackDamage.base,
       DEFENDER.attackDamage.bonus,
       DEFENDER.attackSpeed,
+      DEFENDER.maxHpBase,
+      DEFENDER.maxHpBonus,
     ].filter((value) => !printed.includes(String(value)));
     expect(missing).toEqual([]);
+    // Still 14 rows: the health split shares the Health row, and Garen has no mana pool so no
+    // mana row exists for him at all.
     expect(statRows(DEFENDER)).toHaveLength(14);
   });
 
@@ -139,5 +143,35 @@ describe('stat block/the nameplate (DESIGN.md §9)', () => {
     );
     expect(container.querySelector('.portrait')).toBeNull();
     expect(screen.getByRole('table')).toBeTruthy();
+  });
+});
+
+describe('stat block/mana and the bonus-health split (added 2026-08-13)', () => {
+  it('prints the base + bonus split of MAXIMUM health beside the current figure', () => {
+    // Bonus health is not derivable from a total, and an ability scaling on it is unmodellable
+    // without the figure. 1850 maximum = 1470 base at level 11 + 380 from the build.
+    mount();
+    const row = screen.getByRole('row', { name: /^Health/ });
+    expect(row.textContent).toContain('1470');
+    expect(row.textContent).toContain('380');
+  });
+
+  it('shows NO mana row for a champion who has no mana pool', () => {
+    // Garen's resource is "None"; Aatrox's is a Blood Well. Neither has mana, and the stat block
+    // says so by carrying no figure. A row reading "Mana 0" would claim an empty mana pool.
+    mount();
+    expect(screen.queryByRole('row', { name: /^Mana/ })).toBeNull();
+    expect(statRows(MOCK_RESULT.attackerStats).some((r) => r.label === 'Mana')).toBe(false);
+  });
+
+  it('shows the mana row for a champion whose resource IS mana', () => {
+    // Ryze: 300 base + 70 per level. The point of decision 3 — Ryze Q reads the caster's
+    // maximum mana and was unmodellable while the stat block carried none.
+    const ryze = { ...DEFENDER, mana: 640, maxMana: 1000 };
+    mount('Defender', ryze);
+    const row = screen.getByRole('row', { name: /^Mana/ });
+    expect(row.textContent).toContain('640');
+    expect(row.textContent).toContain('1000');
+    expect(statRows(ryze)).toHaveLength(15);
   });
 });

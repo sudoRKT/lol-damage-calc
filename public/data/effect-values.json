@@ -3,7 +3,7 @@
     "source": "Riot Data Dragon item.json + runesReforged.json (which items and runes exist); wiki Module:ItemData/data (item effect prose and values)",
     "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
     "patch": "16.16.1",
-    "fetched": "2026-08-13T20:44:45.422Z",
+    "fetched": "2026-08-13T22:50:55.892Z",
     "urls": {
       "patch": "https://ddragon.leagueoflegends.com/api/versions.json",
       "items": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
@@ -29,8 +29,8 @@
     "needsAPersonToRead": 18,
     "gated": 63,
     "stored": 38,
-    "storedComplete": 32,
-    "storedWithUnresolvedOwner": 6,
+    "storedComplete": 33,
+    "storedWithUnresolvedOwner": 5,
     "storedWithRangeSplit": [
       "Hullbreaker [pass]",
       "Titanic Hydra [pass]",
@@ -720,7 +720,7 @@
     ]
   },
   "whoseStatDoesTheOtherSourceSay": {
-    "whatThisIs": "DATA-SOURCES §37.3 measured the unattributed stat references over the wiki's item module alone, and calls the effects carrying one permanently unresolvable. This asks a DIFFERENT field's question: does Data Dragon's own item description attribute the same stat? It is a measurement handed to the lead, not a resolution. Nothing in this file acts on it, and the ratios stored above still carry owner 'unresolved'.",
+    "whatThisIs": "DATA-SOURCES §37.3 measured the unattributed stat references over the wiki's item module alone, and calls the effects carrying one permanently unresolvable. This asks a DIFFERENT field's question: does Data Dragon's own item description attribute the same stat? DATA-SOURCES §41.1 ADOPTED the answer as a source stating a fact rather than an inference from convention, and §42.7 applied it: the rows below are the whole measurement, and the ones that reach a STORED damage ratio are applied through the hand-read table `DATA_DRAGON_ATTRIBUTIONS` in effect-values-gate.ts. That is one row today — Heartsteel maxHP, now owner `holder`. The other four attribute stats this extraction does not store as damage ratios, so adopting them changes no stored number. A measurement is never applied wholesale: every applied row quotes the words it rests on, because a pattern that finds candidates is not a pattern that can decide them.",
     "itemOwnerReferencesTheWikiLeavesUnstated": 69,
     "ofThoseDataDragonAttributes": 7,
     "distinctEffects": 5,
@@ -1234,20 +1234,14 @@
       "key": "pass",
       "ownerName": "Heartsteel",
       "source": "item",
-      "hasUnresolvedOwner": true,
+      "hasUnresolvedOwner": false,
       "sentence": "Your next basic attack against a target with 3 stacks is empowered to consume them all to deal 70 (+ 6% maximum health) bonus physical damage on-hit",
       "appliesAsSays": "on-hit, at 3 stacks, 30 second cooldown per target",
-      "note": "WHOSE maximum health is never stated. Heartsteel is one of DATA-SOURCES §37.3's 56 permanently unresolvable effects, so this entry can only ever be `incomplete`. It is stored with owner `unresolved` rather than withheld, because the rest of the figure is stated and the missing fact is recorded rather than guessed.",
+      "note": "The wiki states a share of maximum health and never says whose; Data Dragon states \"your max Health\" for the same effect, so the STORED damage ratio is attributed and the component is complete. Heartsteel nonetheless remains in DATA-SOURCES §37.3's permanently-unresolvable population under that section's own definition, because a THIRD reference in the same prose — the permanent BONUS health this effect grants — is attributed by neither source. That clause is not stored here, so it does not make the damage figure incomplete: those are two different questions, and §41.1 ran them together.",
       "outcome": "stored",
       "sourceRun": "{{as|70|physical damage}} {{as|(+ 6% '''maximum''' health)}} {{as|'''bonus''' physical damage}}",
       "refusals": [],
-      "verification": "incomplete",
-      "unresolvable": [
-        {
-          "field": "components[0].ratios[0].owner (maxHP)",
-          "why": "The source states a share of maxHP and never says whose. Both champions have that stat, so reading it either way is a guess, and no amount of work will supply the fact until the source changes (DATA-SOURCES §37.3)."
-        }
-      ],
+      "verification": "derived",
       "appliesAs": "on-hit",
       "components": [
         {
@@ -1263,7 +1257,7 @@
           "ratios": [
             {
               "stat": "maxHP",
-              "owner": "unresolved",
+              "owner": "holder",
               "scaling": "explicit",
               "perRank": [
                 6
@@ -2740,7 +2734,7 @@
         "source": "wiki Module:ItemData/data",
         "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
         "patch": "16.16.1",
-        "fetched": "2026-08-13T20:44:45.422Z"
+        "fetched": "2026-08-13T22:50:55.892Z"
       }
     },
     {
@@ -2773,7 +2767,7 @@
         "source": "wiki Module:ItemData/data",
         "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
         "patch": "16.16.1",
-        "fetched": "2026-08-13T20:44:45.422Z"
+        "fetched": "2026-08-13T22:50:55.892Z"
       }
     },
     {
@@ -2815,7 +2809,7 @@
         "source": "wiki Module:ItemData/data",
         "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
         "patch": "16.16.1",
-        "fetched": "2026-08-13T20:44:45.422Z"
+        "fetched": "2026-08-13T22:50:55.892Z"
       }
     },
     {
@@ -2853,7 +2847,7 @@
         "source": "wiki Module:ItemData/data",
         "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
         "patch": "16.16.1",
-        "fetched": "2026-08-13T20:44:45.422Z"
+        "fetched": "2026-08-13T22:50:55.892Z"
       }
     },
     {
@@ -2898,7 +2892,7 @@
         "source": "wiki Module:ItemData/data",
         "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
         "patch": "16.16.1",
-        "fetched": "2026-08-13T20:44:45.422Z"
+        "fetched": "2026-08-13T22:50:55.892Z"
       }
     },
     {
@@ -2925,7 +2919,7 @@
         "source": "wiki Module:ItemData/data",
         "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
         "patch": "16.16.1",
-        "fetched": "2026-08-13T20:44:45.422Z"
+        "fetched": "2026-08-13T22:50:55.892Z"
       }
     },
     {
@@ -2959,7 +2953,7 @@
         "source": "wiki Module:ItemData/data",
         "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
         "patch": "16.16.1",
-        "fetched": "2026-08-13T20:44:45.422Z"
+        "fetched": "2026-08-13T22:50:55.892Z"
       }
     },
     {
@@ -2988,7 +2982,7 @@
         "source": "wiki Module:ItemData/data",
         "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
         "patch": "16.16.1",
-        "fetched": "2026-08-13T20:44:45.422Z"
+        "fetched": "2026-08-13T22:50:55.892Z"
       }
     },
     {
@@ -3011,7 +3005,7 @@
           "ratios": [
             {
               "stat": "maxHP",
-              "owner": "unresolved",
+              "owner": "holder",
               "scaling": "explicit",
               "perRank": [
                 6
@@ -3021,19 +3015,13 @@
         }
       ],
       "appliesAs": "on-hit",
-      "unresolvable": [
-        {
-          "field": "components[0].ratios[0].owner (maxHP)",
-          "why": "The source states a share of maxHP and never says whose. Both champions have that stat, so reading it either way is a guess, and no amount of work will supply the fact until the source changes (DATA-SOURCES §37.3)."
-        }
-      ],
-      "verification": "incomplete",
-      "notes": "WHOSE maximum health is never stated. Heartsteel is one of DATA-SOURCES §37.3's 56 permanently unresolvable effects, so this entry can only ever be `incomplete`. It is stored with owner `unresolved` rather than withheld, because the rest of the figure is stated and the missing fact is recorded rather than guessed.",
+      "verification": "derived",
+      "notes": "The wiki states a share of maximum health and never says whose; Data Dragon states \"your max Health\" for the same effect, so the STORED damage ratio is attributed and the component is complete. Heartsteel nonetheless remains in DATA-SOURCES §37.3's permanently-unresolvable population under that section's own definition, because a THIRD reference in the same prose — the permanent BONUS health this effect grants — is attributed by neither source. That clause is not stored here, so it does not make the damage figure incomplete: those are two different questions, and §41.1 ran them together.",
       "provenance": {
         "source": "wiki Module:ItemData/data",
         "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
         "patch": "16.16.1",
-        "fetched": "2026-08-13T20:44:45.422Z"
+        "fetched": "2026-08-13T22:50:55.892Z"
       }
     },
     {
@@ -3061,7 +3049,7 @@
         "source": "wiki Module:ItemData/data",
         "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
         "patch": "16.16.1",
-        "fetched": "2026-08-13T20:44:45.422Z"
+        "fetched": "2026-08-13T22:50:55.892Z"
       }
     },
     {
@@ -3103,7 +3091,7 @@
         "source": "wiki Module:ItemData/data",
         "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
         "patch": "16.16.1",
-        "fetched": "2026-08-13T20:44:45.422Z"
+        "fetched": "2026-08-13T22:50:55.892Z"
       }
     },
     {
@@ -3140,7 +3128,7 @@
         "source": "wiki Module:ItemData/data",
         "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
         "patch": "16.16.1",
-        "fetched": "2026-08-13T20:44:45.422Z"
+        "fetched": "2026-08-13T22:50:55.892Z"
       }
     },
     {
@@ -3188,7 +3176,7 @@
         "source": "wiki Module:ItemData/data",
         "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
         "patch": "16.16.1",
-        "fetched": "2026-08-13T20:44:45.422Z"
+        "fetched": "2026-08-13T22:50:55.892Z"
       }
     },
     {
@@ -3258,7 +3246,7 @@
         "source": "wiki Module:ItemData/data",
         "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
         "patch": "16.16.1",
-        "fetched": "2026-08-13T20:44:45.422Z"
+        "fetched": "2026-08-13T22:50:55.892Z"
       }
     },
     {
@@ -3296,7 +3284,7 @@
         "source": "wiki Module:ItemData/data",
         "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
         "patch": "16.16.1",
-        "fetched": "2026-08-13T20:44:45.422Z"
+        "fetched": "2026-08-13T22:50:55.892Z"
       }
     },
     {
@@ -3340,7 +3328,7 @@
         "source": "wiki Module:ItemData/data",
         "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
         "patch": "16.16.1",
-        "fetched": "2026-08-13T20:44:45.422Z"
+        "fetched": "2026-08-13T22:50:55.892Z"
       }
     },
     {
@@ -3377,7 +3365,7 @@
         "source": "wiki Module:ItemData/data",
         "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
         "patch": "16.16.1",
-        "fetched": "2026-08-13T20:44:45.422Z"
+        "fetched": "2026-08-13T22:50:55.892Z"
       }
     },
     {
@@ -3414,7 +3402,7 @@
         "source": "wiki Module:ItemData/data",
         "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
         "patch": "16.16.1",
-        "fetched": "2026-08-13T20:44:45.422Z"
+        "fetched": "2026-08-13T22:50:55.892Z"
       }
     },
     {
@@ -3443,7 +3431,7 @@
         "source": "wiki Module:ItemData/data",
         "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
         "patch": "16.16.1",
-        "fetched": "2026-08-13T20:44:45.422Z"
+        "fetched": "2026-08-13T22:50:55.892Z"
       }
     },
     {
@@ -3480,7 +3468,7 @@
         "source": "wiki Module:ItemData/data",
         "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
         "patch": "16.16.1",
-        "fetched": "2026-08-13T20:44:45.422Z"
+        "fetched": "2026-08-13T22:50:55.892Z"
       }
     },
     {
@@ -3509,7 +3497,7 @@
         "source": "wiki Module:ItemData/data",
         "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
         "patch": "16.16.1",
-        "fetched": "2026-08-13T20:44:45.422Z"
+        "fetched": "2026-08-13T22:50:55.892Z"
       }
     },
     {
@@ -3548,7 +3536,7 @@
         "source": "wiki Module:ItemData/data",
         "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
         "patch": "16.16.1",
-        "fetched": "2026-08-13T20:44:45.422Z"
+        "fetched": "2026-08-13T22:50:55.892Z"
       }
     },
     {
@@ -3576,7 +3564,7 @@
         "source": "wiki Module:ItemData/data",
         "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
         "patch": "16.16.1",
-        "fetched": "2026-08-13T20:44:45.422Z"
+        "fetched": "2026-08-13T22:50:55.892Z"
       }
     },
     {
@@ -3613,7 +3601,7 @@
         "source": "wiki Module:ItemData/data",
         "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
         "patch": "16.16.1",
-        "fetched": "2026-08-13T20:44:45.422Z"
+        "fetched": "2026-08-13T22:50:55.892Z"
       }
     },
     {
@@ -3643,7 +3631,7 @@
         "source": "wiki Module:ItemData/data",
         "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
         "patch": "16.16.1",
-        "fetched": "2026-08-13T20:44:45.422Z"
+        "fetched": "2026-08-13T22:50:55.892Z"
       }
     },
     {
@@ -3672,7 +3660,7 @@
         "source": "wiki Module:ItemData/data",
         "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
         "patch": "16.16.1",
-        "fetched": "2026-08-13T20:44:45.422Z"
+        "fetched": "2026-08-13T22:50:55.892Z"
       }
     },
     {
@@ -3709,7 +3697,7 @@
         "source": "wiki Module:ItemData/data",
         "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
         "patch": "16.16.1",
-        "fetched": "2026-08-13T20:44:45.422Z"
+        "fetched": "2026-08-13T22:50:55.892Z"
       }
     },
     {
@@ -3746,7 +3734,7 @@
         "source": "wiki Module:ItemData/data",
         "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
         "patch": "16.16.1",
-        "fetched": "2026-08-13T20:44:45.422Z"
+        "fetched": "2026-08-13T22:50:55.892Z"
       }
     },
     {
@@ -3794,7 +3782,7 @@
         "source": "wiki Module:ItemData/data",
         "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
         "patch": "16.16.1",
-        "fetched": "2026-08-13T20:44:45.422Z"
+        "fetched": "2026-08-13T22:50:55.892Z"
       }
     },
     {
@@ -3838,7 +3826,7 @@
         "source": "wiki Module:ItemData/data",
         "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
         "patch": "16.16.1",
-        "fetched": "2026-08-13T20:44:45.422Z"
+        "fetched": "2026-08-13T22:50:55.892Z"
       }
     },
     {
@@ -3875,7 +3863,7 @@
         "source": "wiki Module:ItemData/data",
         "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
         "patch": "16.16.1",
-        "fetched": "2026-08-13T20:44:45.422Z"
+        "fetched": "2026-08-13T22:50:55.892Z"
       }
     },
     {
@@ -3929,7 +3917,7 @@
         "source": "wiki Module:ItemData/data",
         "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
         "patch": "16.16.1",
-        "fetched": "2026-08-13T20:44:45.422Z"
+        "fetched": "2026-08-13T22:50:55.892Z"
       }
     },
     {
@@ -3983,7 +3971,7 @@
         "source": "wiki Module:ItemData/data",
         "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
         "patch": "16.16.1",
-        "fetched": "2026-08-13T20:44:45.422Z"
+        "fetched": "2026-08-13T22:50:55.892Z"
       }
     },
     {
@@ -4020,7 +4008,7 @@
         "source": "wiki Module:ItemData/data",
         "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
         "patch": "16.16.1",
-        "fetched": "2026-08-13T20:44:45.422Z"
+        "fetched": "2026-08-13T22:50:55.892Z"
       }
     },
     {
@@ -4062,7 +4050,7 @@
         "source": "wiki Module:ItemData/data",
         "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
         "patch": "16.16.1",
-        "fetched": "2026-08-13T20:44:45.422Z"
+        "fetched": "2026-08-13T22:50:55.892Z"
       }
     },
     {
@@ -4110,7 +4098,7 @@
         "source": "wiki Module:ItemData/data",
         "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
         "patch": "16.16.1",
-        "fetched": "2026-08-13T20:44:45.422Z"
+        "fetched": "2026-08-13T22:50:55.892Z"
       }
     },
     {
@@ -4139,7 +4127,7 @@
         "source": "wiki Module:ItemData/data",
         "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
         "patch": "16.16.1",
-        "fetched": "2026-08-13T20:44:45.422Z"
+        "fetched": "2026-08-13T22:50:55.892Z"
       }
     },
     {
@@ -4184,7 +4172,7 @@
         "source": "wiki Module:ItemData/data",
         "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
         "patch": "16.16.1",
-        "fetched": "2026-08-13T20:44:45.422Z"
+        "fetched": "2026-08-13T22:50:55.892Z"
       }
     }
   ],

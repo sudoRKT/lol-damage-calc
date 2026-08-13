@@ -303,22 +303,34 @@ describe('runCombo — an instance that dealt nothing reports \'none\'', () => {
   });
 });
 
-describe('runCombo — the mixed split obeys the ONE rounding rule, and so may not add up', () => {
-  it('reports a split of 1 / 67 / 1 against a total of 68', () => {
-    // src/types/result.ts, on `final`: "Rounded output is never fed back into arithmetic."
-    // The same rule that makes the per-instance column differ from the burst total by a point
-    // makes a mixed instance's own three segments differ from its own total. It is stated here
-    // as a recorded, deliberate behaviour rather than a surprise.
+describe('runCombo — a mixed instance\'s split ALWAYS sums to its own total', () => {
+  it('reports a split of 1 / 67 / 0 against a total of 68', () => {
+    // DECIDED 2026-08-13, AND IT REVERSES WHAT THIS TEST ASSERTED. It used to expect
+    // 1 / 67 / 1 against a total of 68 — three displayed figures adding to 69 — on the reading
+    // that §41.1's "rounded output is never fed back into arithmetic" makes a split behave like
+    // the per-instance column. **Two areas had encoded opposite rules for one figure**, and the
+    // contradiction was invisible because neither check had ever run over the other's output:
+    // `AggregateTotal` (src/ui/primitives) THROWS when a split disagrees with its total, and
+    // DESIGN.md §8 says the untagged aggregate "is instead broken down by the tagged
+    // composition bar" — a breakdown that does not sum is not a breakdown of that number.
+    //
+    // THE DISTINCTION THAT SETTLES IT: is the discrepancy FORCED by the rounding rule, or merely
+    // permitted by it? For the per-instance column it is forced — those are N+1 independently
+    // meaningful figures, and reconciling them would mean feeding rounded values back. For a
+    // split it is NOT forced: largest-remainder apportionment (`roundSplit` in rounding.ts)
+    // keeps the total as `roundDamage` of the UNROUNDED sum, so rounding still cannot
+    // accumulate, and every type still lands within a point of what it actually dealt.
     //
     // Defender: 0 armor, 50 magic resistance.
-    //   physical  1    x 1        = 1        -> displays 1
-    //   magic     100  x 100/150  = 66.666.. -> displays 67
-    //   true      0.5  (bypasses) = 0.5      -> displays 1   (half away from zero, rounding.ts)
-    //   the three displayed figures add to                      69
-    //   the instance total is rounded ONCE from 68.1666...      68
+    //   physical  1    x 1        = 1        -> 1
+    //   magic     100  x 100/150  = 66.666.. -> 67  (the largest remainder takes the spare point)
+    //   true      0.5  (bypasses) = 0.5      -> 0
+    //   the three figures add to exactly the total rounded once from 68.1666...   68
     //
-    // BINDING ON THE INTERFACE, exactly as for the instance column: the composition bar's three
-    // figures must never be presented as something to add up.
+    // THE COST IS NAMED: the 0.5 true damage displays as 0 rather than 1, so a reader sees no
+    // true segment at all. That is the same loss every figure in this product takes at whole
+    // points, and it is smaller than a bar whose segments contradict the number above them —
+    // which §41.2 records as worse than no bar.
     const result = runCombo(
       plan({
         defender: statBlock({ armor: 0, magicResist: 50, hp: 5000, maxHp: 5000 }),
@@ -341,10 +353,10 @@ describe('runCombo — the mixed split obeys the ONE rounding rule, and so may n
         ],
       }),
     );
-    expect(result.perInstance[0].byType).toEqual({ physical: 1, magic: 67, true: 1 });
+    expect(result.perInstance[0].byType).toEqual({ physical: 1, magic: 67, true: 0 });
     expect(result.perInstance[0].final).toBe(68);
     const segments = result.perInstance[0].byType!;
-    expect(segments.physical + segments.magic + segments.true).toBe(69);
+    expect(segments.physical + segments.magic + segments.true).toBe(68);
   });
 });
 

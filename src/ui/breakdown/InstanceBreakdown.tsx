@@ -23,24 +23,29 @@
 //   • the difference is stated in plain English under the table, where a reader who notices the
 //     column not adding up will look, rather than in a comment only a developer sees.
 //
-// ═══ ONE THING THE CONTRACT CANNOT YET EXPRESS, RAISED RATHER THAN INVENTED ═══
+// ═══ THE CONTRACT GAP THIS AREA RAISED IS CLOSED (2026-08-13) ═══
 //
 // DESIGN.md §8 permits exactly one untagged figure: a multi-type aggregate, which must be
-// broken down by a tagged composition bar. The per-row running total IS such an aggregate, but
-// `Result.runningTotal` is `number[]` with no per-type split, and the split cannot be
-// reconstructed from the rounded per-instance figures without contradicting the authoritative
-// number (that is the rounding rule again). So the running-total cell is bone and untagged with
-// NO composition bar, and its accessible name says it is a cumulative figure across damage
-// types. Fixing it properly needs `runningTotal` to carry a `DamageByType` per step — a change
-// to the frozen contract, which is the lead's to make and is raised, not made here.
+// broken down by a tagged composition bar. The per-row running total IS such an aggregate, and
+// `Result.runningTotal` used to be `number[]` with no per-type split — so the cell was untagged
+// with NO bar, the one form the hard rule does not allow. The split could not be reconstructed
+// here either, because re-summing the rounded per-instance column contradicts the authoritative
+// figure (the rounding rule again).
+//
+// `runningTotal` now carries a `DamageTotals` per step, computed unrounded by the engine and
+// apportioned so the three types sum exactly to the total (`roundSplit`). The cell therefore
+// renders `AggregateTotal`, which REFUSES to draw the untagged figure without the tagged bar and
+// throws if the two disagree. Single-type rows fall back to an ordinary tagged value, because
+// §8's exception is for a total that spans types and a one-type total is not one.
 
 import type {
+  DamageTotals,
   DamageType,
   InstanceResult,
   ReportedDamageType,
   Result,
 } from '../../types';
-import { AggregateTotal, DamageValue, VerificationStatusMark, formatDamage } from '../primitives';
+import { AggregateTotal, DamageValue, VerificationStatusMark } from '../primitives';
 import { AbilityChip } from '../art/AbilityChip';
 import { iconUrl } from '../data/roster';
 import './breakdown.css';
@@ -194,7 +199,7 @@ function InstanceRow({
   patch,
 }: {
   instance: InstanceResult;
-  running: number | undefined;
+  running: DamageTotals | undefined;
   patch: string;
 }) {
   const type = singleDamageType(instance.damageType);
@@ -246,10 +251,16 @@ function InstanceRow({
           <span className="u-visually-hidden">running total not recorded</span>
         ) : (
           <>
-            <span className="breakdown__running-value" aria-hidden="true">
-              {formatDamage(running)}
+            {/* `AggregateTotal` renders the untagged figure ONLY alongside its tagged
+                composition bar, and throws if the split disagrees with the total. A running
+                total that has so far touched one damage type is not a multi-type aggregate, so
+                it comes back tagged — which is what §8 requires. */}
+            <span aria-hidden="true">
+              <AggregateTotal total={running.total} byType={running.byType} size="l" />
             </span>
-            <span className="u-visually-hidden">{runningTotalName(instance.index, running)}</span>
+            <span className="u-visually-hidden">
+              {runningTotalName(instance.index, running.total)}
+            </span>
           </>
         )}
       </td>
