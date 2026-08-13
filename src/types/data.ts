@@ -258,7 +258,34 @@ export type RatioStat =
  * entry carrying one is forced to `verification: 'incomplete'` by gate 6, so it can never be
  * presented to a user as though it were settled.
  */
-export type RatioOwner = 'caster' | 'target' | 'unresolved';
+/**
+ * `'holder'` — ADDED 2026-08-13, and it is not a synonym for `'caster'`.
+ *
+ * Ability text names a champion. Item and rune text does not: it is written from the point of
+ * view of whoever is wearing the item. "Gain 8 armor", "deals damage equal to 3% of your
+ * maximum health" — the subject is the holder, and the holder is the ATTACKER only when the
+ * item sits on the attacker. SPECIFICATION §5 requires the defender modelled in full, with
+ * their own complete item build, so a defensive item's effect reads off the DEFENDER while an
+ * identical expression on the attacker's item reads off the attacker.
+ *
+ * Mapping holder→caster at harvest time would therefore invert every defender-side item.
+ * Measured 2026-08-13 (DATA-SOURCES §37.3): 27 of the 120 owner-bearing item and rune
+ * references resolve to the holder, against 11 that name the other champion.
+ *
+ * HOW THE ENGINE RESOLVES IT. `'holder'` is resolved at EVALUATION time, not at harvest time,
+ * from which champion's build the effect was found on — the one fact the data cannot carry
+ * because it is a property of the scenario rather than of the item. The engine already walks
+ * each champion's items and runes to build their stat block; an effect reached through the
+ * attacker's build resolves `'holder'` to the attacker, and one reached through the defender's
+ * build resolves it to the defender. There is no default and no fallback: an effect that is
+ * not reached through some champion's build is not in the scenario at all.
+ *
+ * This is deliberately NOT the same as leaving it `'unresolved'`. `'unresolved'` means the
+ * SOURCE does not state whose stat it is, and no work will ever supply the fact. `'holder'`
+ * means the source states it precisely — it is whoever holds this — and the scenario supplies
+ * the rest. The first is permanently incomplete; the second is fully modelled.
+ */
+export type RatioOwner = 'caster' | 'target' | 'holder' | 'unresolved';
 
 /** The health pools. */
 export const HEALTH_POOL_STATS = ['maxHP', 'bonusHP', 'currentHP', 'missingHP'] as const;
@@ -323,6 +350,19 @@ export interface RatioMultiplier {
   per100: Scaling;
 }
 
+/**
+ * A ratio: a share of one stat, added to a component's base.
+ *
+ * THE UNIT OF THE MAGNITUDE IS PERCENTAGE POINTS, NOT A FRACTION. `(+ 75% AP)` is stored as
+ * **75**, never 0.75. The engine divides by 100 at exactly one place when it applies the ratio.
+ *
+ * This was written down nowhere until 2026-08-13, and an engine session had to establish it by
+ * inference from a neighbouring field. Reading it the other way is a hundred-fold error on the
+ * 634 components that carry a single core ratio — not a near miss, a different product. It is
+ * stated here because the type is the only place a reader of the contract will look.
+ *
+ * `RatioMultiplier.per100` uses the same unit, on the same quantity.
+ */
 export type Ratio = {
   stat: RatioStat;
   /**

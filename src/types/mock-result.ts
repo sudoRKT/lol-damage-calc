@@ -142,6 +142,12 @@ export const MOCK_RESULT: Result = {
       crit: false,
       stateSnapshot: { conquerorStacks: 10, blackCleaverStacks: 1 },
       verification: 'incomplete',
+      // PENDING: a value that exists in a source and has not been read yet. Renders as the
+      // open dot with "Not yet modelled" (DESIGN.md §6).
+      incompleteReason: {
+        kind: 'pending',
+        note: 'the damage is stated in description prose that has not been read yet',
+      },
     },
     {
       index: 5,
@@ -200,4 +206,32 @@ export const MOCK_RESULT: Result = {
     'Defender counterplay — the target does not act',
   ],
   verificationSummary: 'incomplete',
+  /**
+   * Both kinds are present ON PURPOSE. The mock is the one canonical Result every interface
+   * component is built and tested against, so it has to exercise the distinction DESIGN.md §6
+   * draws — otherwise the struck-through `⊘` would have no data behind it and would ship
+   * untested. The permanent entry is the real shape of the 23 unreachable ones: a ratio whose
+   * owner the source never states.
+   */
+  incompleteContributors: [
+    {
+      sourceLabel: 'On-hit — true damage (mock)',
+      reason: {
+        kind: 'pending',
+        note: 'the damage is stated in description prose that has not been read yet',
+      },
+    },
+    {
+      sourceLabel: 'W — Seismic Shard (mock)',
+      reason: {
+        kind: 'permanent',
+        missingFacts: [
+          {
+            field: 'components[0].ratios[0].owner (armor)',
+            why: 'the source states the ability scales with armor and never says whose; a person reading the page is guessing exactly as a parser would',
+          },
+        ],
+      },
+    },
+  ],
 };

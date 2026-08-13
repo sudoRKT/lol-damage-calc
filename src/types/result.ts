@@ -1,8 +1,36 @@
 // The Result — the full output of the engine. Every field maps to a SPECIFICATION §11
 // output. LEAD-owned; frozen part of the engine contract.
 
-import type { DamageType, InstanceType, VerificationStatus } from './data';
+import type { DamageType, InstanceType, Unresolvable, VerificationStatus } from './data';
 import type { Scenario } from './scenario';
+
+/**
+ * WHY AN ENTRY IS INCOMPLETE — permanent, or merely not yet done. ADDED 2026-08-13.
+ *
+ * SPECIFICATION §8 requires the interface to distinguish these, and DESIGN.md §6 gives them
+ * different glyphs: `○` "Not yet modelled" against `⊘` "Cannot be completed". Until this field
+ * existed there was no route for the distinction to reach a Result at all — `Unresolvable`
+ * lived on the curated data and stopped there — so all 23 permanently-unreachable entries would
+ * have rendered as "not yet modelled", promising work that no amount of effort can deliver.
+ *
+ * - `'pending'` — the value exists in a source and has not been extracted yet. It will improve.
+ * - `'permanent'` — a fact the ability needs is stated by NO source, so nobody can ever supply
+ *   it. The clearest case is a ratio whose owner is unstated: the source says an ability scales
+ *   with armor and never says whose, so a person reading the page is guessing exactly as a
+ *   parser would.
+ *
+ * `missingFacts` carries the SPECIFIC facts, not a generic warning, so the interface can say
+ * "cannot be completed — the source does not record whose armor this reads" and name the field.
+ * DESIGN.md §6 requires the accessible name to carry the fact rather than a vague caution.
+ */
+export interface IncompleteReason {
+  kind: 'pending' | 'permanent';
+  /** Present when kind is 'permanent'. Each names the missing field and why nothing settles it. */
+  missingFacts?: Unresolvable[];
+  /** Present when kind is 'pending'. Plain English, e.g. "the damage is stated in prose that
+   *  has not been read yet". */
+  note?: string;
+}
 
 export interface DamageByType {
   physical: number;
@@ -48,6 +76,9 @@ export interface InstanceResult {
   crit: boolean;
   stateSnapshot: Record<string, number | boolean>; // shred / stacks that applied here
   verification: VerificationStatus;
+  /** Present ONLY when `verification` is 'incomplete'. Says whether the gap will ever close.
+   *  An incomplete instance contributes no damage and states why (SPECIFICATION §8). */
+  incompleteReason?: IncompleteReason;
 }
 
 export interface DotSource {
@@ -56,6 +87,8 @@ export interface DotSource {
   damageType: DamageType;
   total: number; // full-duration total (SPECIFICATION §3.8)
   verification: VerificationStatus;
+  /** As InstanceResult.incompleteReason. */
+  incompleteReason?: IncompleteReason;
 }
 
 /** Damage over time — reported separately, never folded into burst (SPECIFICATION §3.8). */
@@ -86,4 +119,13 @@ export interface Result {
   verdict: { burstOnly: SurvivalVerdict; burstPlusDot: SurvivalVerdict };
   excludedMechanics: string[]; // stated visibly, never silently omitted (§11, §15)
   verificationSummary: VerificationStatus; // worst status among contributing abilities
+  /**
+   * Every ability excluded from the totals above, with the reason. A permanently incomplete
+   * ability is NEVER silently dropped from a result (SPECIFICATION §8) — it is named, and the
+   * interface says whether it is waiting on work or on a fact no source records.
+   */
+  incompleteContributors: Array<{
+    sourceLabel: string;
+    reason: IncompleteReason;
+  }>;
 }

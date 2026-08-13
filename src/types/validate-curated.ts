@@ -57,7 +57,11 @@ const INSTANCE_TYPES = new Set([
   'on-hit',
   'dot-application',
 ]);
-const RATIO_OWNERS = new Set(['caster', 'target', 'unresolved']);
+// 'holder' added 2026-08-13 for item and rune effects, whose text names no champion because it
+// is written from the wearer's point of view. It is resolved at evaluation time from whose build
+// the effect was found on — see RatioOwner in data.ts. It is a COMPLETE answer, unlike
+// 'unresolved', and does not force an entry to 'incomplete'.
+const RATIO_OWNERS = new Set(['caster', 'target', 'holder', 'unresolved']);
 const RATIO_STATS = new Set([
   'baseAD',
   'bonusAD',
@@ -190,7 +194,7 @@ function checkComponent(c: AbilityComponent, where: string, maxRank: number): st
       if (requiresOwner(r.stat) && r.owner === undefined) {
         out.push(
           `${where}.ratios[${i}]: stat '${r.stat}' belongs to a champion and requires an ` +
-            `'owner' ('caster' | 'target' | 'unresolved'). It is never defaulted.`,
+            `'owner' ('caster' | 'target' | 'holder' | 'unresolved'). It is never defaulted.`,
         );
       }
       if (r.owner !== undefined && !RATIO_OWNERS.has(r.owner)) {
@@ -206,7 +210,7 @@ function checkComponent(c: AbilityComponent, where: string, maxRank: number): st
         if (requiresOwner(m.per) && m.owner === undefined) {
           out.push(
             `${at}: stat '${m.per}' belongs to a champion and requires an 'owner' ` +
-              `('caster' | 'target' | 'unresolved'). It is never defaulted.`,
+              `('caster' | 'target' | 'holder' | 'unresolved'). It is never defaulted.`,
           );
         }
         if (m.owner !== undefined && !RATIO_OWNERS.has(m.owner)) {
