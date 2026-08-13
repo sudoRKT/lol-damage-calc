@@ -3032,3 +3032,61 @@ A test asserts the default is below the maximum on every shape.
 **Gate 7 reconciles a variable-hit component AT ITS CEILING**, because the source's whole-ability
 total *is* its statement of the maximum. Comparing a per-instance value against a maximum total was
 the gate and the source describing different situations.
+
+### 38.5 Shape B measured, and the third shape sized (2026-08-13)
+
+**SHAPE B — DEFINITION.** The source prints a per-instance damage row AND a whole-ability total
+that is an exact integer multiple N ≥ 2 of it, AND its prose does not state that a repeat against
+the same champion is reduced. Scanned over 937 of 937 pages, complete.
+
+| Figure | Count | |
+|---|---:|---|
+| mechanical candidates | **71** | |
+| — labelled "per tick" / "per second" | 21 | damage over time. A separate line by SPECIFICATION §3.8 and outside the engine's no-elapsed-time boundary (§3.2) — a different question, not this one |
+| — remaining candidates | **50** | all 50 sentences read |
+| — **confirmed shape B** | **13** | |
+| — not shape B | 37 | |
+
+**The confirmed 13:** Ahri Q · Akshan Q · Diana W · Draven R · Gangplank R · Kayn Q · Nunu &
+Willump E · Poppy E · Samira W · Sejuani W · Talon R · Xayah Q · Zoe W.
+
+They share one structure: **one cast produces several instances that travel or land separately**,
+so whether a given champion takes one, some or all of them is a matter of where they stand. An orb
+that goes out and comes back (Ahri Q, Akshan Q, Draven R, Talon R); several projectiles or orbiting
+spheres (Xayah Q, Nunu E ×3, Zoe W ×3, Diana W ×3); a bombardment over an area (Gangplank R); a
+second instance conditional on the world (Poppy E deals its damage again only if the target hits
+terrain).
+
+**The 37 that are not** fall into three groups, none of them a variable count: the N instances are
+**separate combo steps** the builder already models (Cho'Gath E, Nami E, Riven Q, Xin Zhao Q,
+Sett Q, Skarner Q, Gwen R's recasts); the N instances **always apply together** within one cast
+(Renekton W striking twice, Karma W's tether, Morgana R); or N is **derived from elapsed time**
+(Miss Fortune R's channel, Samira R, Smolder E), which §3.2 puts outside the engine entirely.
+
+**NONE OF THE 13 IS STORED YET.** They were triaged from prose read in stripped form, and the
+detect-then-read rule (CLAUDE.md) requires the full sentence before a shape may be written. Adding
+them means reading each at full text and entering it in `READ_POPULATION` — not widening a pattern.
+
+### 38.6 The third shape — repeats that deal MORE. Population 2, below the threshold
+
+**DEFINITION.** The prose states a repeat against the same champion AND says the repeat deals
+bonus, increased or amplified damage. Neither modelled shape can express it: shape A cannot hold a
+rate above 1 by construction, and shape B would store the repeats as equal and understate them.
+
+**7 mechanical candidates, all read. 2 confirmed:**
+
+- **Swain Q** — *"Subsequent bolts against an enemy deal 25% bonus damage."*
+- **Kennen R** — *"gains 10% additional damage for each subsequent strike a target has received."*
+
+The other five are the opposite or unrelated: **Azir Q** (*"Enemies hit by subsequent soldiers take
+no additional damage"*) and **Kha'Zix W** (*"Multiple explosions do not deal additional damage
+against the same target"*) both state there is NO repeat at all, which is useful and is the reverse
+of what the detector was looking for; **Aatrox Q** is about subsequent *casts*, which are separate
+combo steps; **Bel'Veth R** and **Senna P** are unrelated wordings.
+
+**2 is far below the threshold of fifteen that governed the multiplier decision (§17) and the
+one-at-full-N-reduced decision (§34.2), so NO third shape is proposed.** Both entries stay flagged
+by `variable-hit-count` and contribute no damage — the promise working rather than failing. If a
+future patch pushes this past fifteen, the shape is written down here so it need not be
+rediscovered: an arm `{ kind: 'repeatsAtAmplifiedRate'; rate: number; maxAdditional: number }` with
+`rate > 1`, resolved identically to shape A.

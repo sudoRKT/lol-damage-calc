@@ -225,6 +225,30 @@ not to fix that entry — it is to write the check that finds every other instan
 `derived` is the documented normal state (SPECIFICATION §8); `verified` is a small honest set and
 is never a target to maximise.
 
+**A DETECTOR PROPOSES, A PERSON CONFIRMS, AND STORAGE IS GATED ON THE CONFIRMED POPULATION.**
+Decided 2026-08-13 and binding. **This is the default for anything that multiplies a damage
+number.**
+
+A pattern that finds candidates is not a pattern that can decide them. Two cases proved it and
+both are now built this way:
+
+- **Gate 5** finds defect classes; it never certifies an entry. Its output is a class and a
+  mechanical check (DATA-SOURCES §32.4).
+- **Variable hit counts** (§38). The prose test fires on **24** entries across the roster where a
+  person reading the sentences found **17**, and it mis-shaped one of those. So the shape is
+  STORED only on the population a person has read, recorded in `READ_POPULATION` in
+  `scripts/extract/variable-hits.ts`. An entry outside it that trips the test is **reported for
+  someone to read, never written**.
+
+The failure it prevents is specific: two wordings that read almost identically mean opposite
+things. *"reduced to 50% against those hit by subsequent WAVES"* is a later hit on the same
+champion; *"reduced to 50% against TARGETS beyond the first"* is a different champion. A regular
+expression cannot tell them apart reliably, and getting it wrong hands one champion damage that
+belongs to another — a plausible wrong number, which is the failure this project exists to prevent.
+
+**Adding a member means reading its sentence, not widening the pattern.** Widening a detector so it
+stores more is the exact move this rule forbids.
+
 **A falling count is usually the system working.** Making a gate more precise, or adding one,
 moves entries from `derived` to `incomplete` — that is evidence arriving, not regression. Compare
 counts only against a stated definition, never against yesterday's number alone.
