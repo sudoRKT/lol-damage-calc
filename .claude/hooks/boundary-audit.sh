@@ -13,6 +13,9 @@
 #   1. BY NAME, when agent_type is a known role:
 #        engine        -> may write src/engine/ only
 #        data-pipeline -> may write scripts/fetch/ and public/data/ only
+#      A role with no case below is not refused for lacking one; it falls through to the
+#      ledger rule, which is what holds the partition for the areas that have no role file
+#      yet (extract, ui, url).
 #
 #   2. BY LEDGER, otherwise: each area is claimed by the first agent_id that writes into
 #      it (recorded in .claude/boundary-owners.tsv). After that, no other agent may write
@@ -88,7 +91,10 @@ refuse() { # refuse <reason>
     echo "This project partitions write access by directory (CLAUDE.md, 'Parallel execution')."
     echo "  the engine area        -> src/engine/"
     echo "  the data-pipeline area -> scripts/fetch/ and public/data/"
-    echo "Everything else, including src/types/, is the lead session's to write."
+    echo "  the extract area       -> scripts/extract/ and build/proposed-curated/"
+    echo "  the ui area            -> src/ui/"
+    echo "  the url area           -> src/url/"
+    echo "Everything else, including src/types/ and /curated/, is the lead session's to write."
     echo
     echo "Do NOT work around this, and do NOT write the file by another route. 'Blocked' is"
     echo "a valid state. Stop, and report to the lead what you need and why, so the lead can"
@@ -112,9 +118,17 @@ case "$fp" in
 esac
 
 # Which partitioned area does this path belong to?
+#
+# An area is a SET of directories one agent needs together. scripts/fetch/ and public/data/
+# are one area because the fetcher writes the data it fetches; scripts/extract/ and
+# build/proposed-curated/ are one area for the same reason -- the harvester writes the drafts
+# it harvests. Splitting either pair would refuse an agent doing one coherent job.
 case "$rel" in
   src/engine/*) area=engine ;;
   scripts/fetch/* | public/data/*) area=data ;;
+  scripts/extract/* | build/proposed-curated/*) area=extract ;;
+  src/ui/*) area=ui ;;
+  src/url/*) area=url ;;
   *) refuse "an agent may only write inside a partitioned area; that path is in none" ;;
 esac
 
