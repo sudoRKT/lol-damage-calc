@@ -1295,3 +1295,24 @@ as anything better.
 
 **Effect on the roster: `derived` 788 → 767, `incomplete` 149 → 170.** Twenty-one entries traded
 a confident wrong number for an honest admission.
+
+### The same hole remains one gate along: gate 2 does not demote
+
+Gate 1 now demotes. **Gate 2 does not.** An entry whose stored values *disagree with the wiki's
+own rendering* still comes out `derived`, because gate 6 only requires round-trip evidence for
+`verified`. That was survivable while gate 2 compared base values only; now that it compares
+ratios (§21) it finds disagreements it previously could not, and each one is a known-wrong
+number sitting in a `derived` entry — the same failure §23 just closed on the gate-1 side.
+
+Live examples from a three-champion run on 2026-08-13, all currently `derived` except where the
+gate-1 rule caught them for another reason:
+
+- **Malzahar W (Void Swarm)** — bonus-AD ratio: wiki 12/14/16/18, stored 40. AP ratio: wiki 40,
+  stored 20. Newly visible, not yet diagnosed.
+- **K'Sante W** — the three rows in §23 (already `incomplete` via the split-payload guard).
+
+**Proposed, not implemented:** an entry with a recorded gate-2 disagreement is forced to
+`incomplete`, on the same reasoning as §23. It is not implemented because gate 2 runs in the
+batch runner rather than in `draftFromTemplate` — it needs the network — so the demotion has to
+happen where the round-trip result is known, and that is a change to how the batch assembles
+its file rather than a one-line rule.
