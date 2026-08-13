@@ -616,8 +616,24 @@ export interface CensusTotals {
   modifiesDamageRelevantStat: number;
   conditional: number;
   alwaysActive: number;
+  /**
+   * IN SCOPE AS THE MACHINE CLASSIFIES IT, which counts every `candidate` as damaging. The
+   * candidate bucket is a deliberate superset (see effect-census-audit.ts), so this figure is an
+   * UPPER BOUND, not the population. Use `inScopeAfterAudit` for the real one.
+   *
+   * These two disagreed silently until 2026-08-13: the shipped census reported inScope 183 while
+   * its own hand audit had already ruled 22 of the candidates non-damaging, and the true figure
+   * was 168. The audit was attached to the output and never applied to it. Both numbers are now
+   * carried explicitly so neither can be mistaken for the other.
+   */
   inScope: number;
   outOfScope: number;
+  /** Post-audit figures. Present only when `summarise` is given the audit. */
+  damagingAfterAudit?: number;
+  inScopeAfterAudit?: number;
+  outOfScopeAfterAudit?: number;
+  statOnlyInScopeAfterAudit?: number;
+  conditionalDamagingAfterAudit?: number;
   reach: Record<Reach, number>;
   reachableInScope: number;
   hardInScope: number;
@@ -635,7 +651,16 @@ export interface CensusTotals {
   barePoolMentions: number;
 }
 
-export function summarise(rows: EffectClassification[]): CensusTotals {
+/**
+ * @param audit  The hand audit of the `candidate` bucket. When supplied, the post-audit figures
+ *               are computed as well. Optional so the machine classification can still be
+ *               summarised on its own — but the census output must always pass it, or it ships
+ *               an upper bound labelled as a population.
+ */
+export function summarise(
+  rows: EffectClassification[],
+  audit?: ReadonlyArray<{ ownerName: string; key: string; dealsDamage: boolean }>,
+): CensusTotals {
   const totals: CensusTotals = {
     effects: rows.length,
     crossReferences: 0,
@@ -691,5 +716,25 @@ export function summarise(rows: EffectClassification[]): CensusTotals {
       else totals.resistanceAndManaRefs++;
     }
   }
+
+  // POST-AUDIT. A `candidate` deals damage only if the hand audit says the sentence does. An
+  // `instance` always does. Anything the audit does not cover stays a candidate and is NOT
+  // counted as damaging — an unread sentence is not evidence of damage.
+  if (audit) {
+    const saysDamage = new Set(
+      audit.filter((v) => v.dealsDamage).map((v) => `${v.ownerName}|${v.key}`),
+    );
+    const damaging = (row: EffectClassification): boolean =>
+      row.damage === 'instance' ||
+      (row.damage === 'candidate' && saysDamage.has(`${row.ownerName}|${row.key}`));
+
+    const inScopeRows = rows.filter((r) => damaging(r) || r.modifiesDamageRelevantStat);
+    totals.damagingAfterAudit = rows.filter(damaging).length;
+    totals.inScopeAfterAudit = inScopeRows.length;
+    totals.outOfScopeAfterAudit = rows.length - inScopeRows.length;
+    totals.statOnlyInScopeAfterAudit = inScopeRows.filter((r) => !damaging(r)).length;
+    totals.conditionalDamagingAfterAudit = rows.filter((r) => damaging(r) && r.conditional).length;
+  }
+
   return totals;
 }

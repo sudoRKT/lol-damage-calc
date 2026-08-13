@@ -2,7 +2,7 @@
   "provenance": {
     "source": "Data Dragon item.json + runesReforged.json (pool, rune prose); wiki Module:ItemData/data (item effect prose)",
     "patch": "16.16.1",
-    "fetched": "2026-08-13T17:31:34.078Z",
+    "fetched": "2026-08-13T17:44:28.541Z",
     "urls": {
       "patch": "https://ddragon.leagueoflegends.com/api/versions.json",
       "items": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
@@ -131,7 +131,12 @@
       },
       "healthPoolRefs": 55,
       "resistanceAndManaRefs": 37,
-      "barePoolMentions": 29
+      "barePoolMentions": 29,
+      "damagingAfterAudit": 66,
+      "inScopeAfterAudit": 131,
+      "outOfScopeAfterAudit": 98,
+      "statOnlyInScopeAfterAudit": 65,
+      "conditionalDamagingAfterAudit": 62
     },
     "runes": {
       "effects": 62,
@@ -168,7 +173,12 @@
       },
       "healthPoolRefs": 17,
       "resistanceAndManaRefs": 11,
-      "barePoolMentions": 17
+      "barePoolMentions": 17,
+      "damagingAfterAudit": 15,
+      "inScopeAfterAudit": 37,
+      "outOfScopeAfterAudit": 25,
+      "statOnlyInScopeAfterAudit": 22,
+      "conditionalDamagingAfterAudit": 14
     },
     "all": {
       "effects": 291,
@@ -208,7 +218,12 @@
       },
       "healthPoolRefs": 72,
       "resistanceAndManaRefs": 48,
-      "barePoolMentions": 46
+      "barePoolMentions": 46,
+      "damagingAfterAudit": 81,
+      "inScopeAfterAudit": 168,
+      "outOfScopeAfterAudit": 123,
+      "statOnlyInScopeAfterAudit": 87,
+      "conditionalDamagingAfterAudit": 76
     }
   },
   "handAudit": {

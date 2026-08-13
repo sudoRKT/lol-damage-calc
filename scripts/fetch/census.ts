@@ -85,9 +85,11 @@ export async function run(): Promise<void> {
   const runeRows = runeRecords.map(classifyEffect);
   const all: EffectClassification[] = [...itemRows, ...runeRows];
 
-  const itemTotals = summarise(itemRows);
-  const runeTotals = summarise(runeRows);
-  const allTotals = summarise(all);
+  // The audit is passed so the totals carry the post-audit population as well as the machine's
+  // pre-audit upper bound. Omitting it ships 183 where the truth is 168 — see CensusTotals.inScope.
+  const itemTotals = summarise(itemRows, CANDIDATE_AUDIT);
+  const runeTotals = summarise(runeRows, CANDIDATE_AUDIT);
+  const allTotals = summarise(all, CANDIDATE_AUDIT);
 
   for (const [label, totals] of [
     ['ITEMS', itemTotals],
