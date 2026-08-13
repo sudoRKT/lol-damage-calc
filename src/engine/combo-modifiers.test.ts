@@ -479,19 +479,36 @@ describe('runCombo — an execute threshold resolves against the health the sequ
     expect(overkill.perInstance[0].final).toBe(400);
   });
 
-  it('destroys shields rather than being absorbed by them', () => {
+  it('DESTROYS shields, so the next instance meets none', () => {
     // https://wiki.leagueoflegends.com/en-us/Shield (read 2026-08-13): "Some effects fully
     // destroy any shields before applying their damage: ... Executes".
-    // A 500-point shield in front of a target on 100 health: the execute goes through it.
+    //
+    // THIS TEST WAS STRENGTHENED AFTER A DELIBERATE-BREAK RUN FOUND IT COULD NOT FAIL. It used
+    // to assert only that the execute delivered 100 through a 500-point shield — but the
+    // execute path never offers its damage to the shields at all, so "destroyed" and merely
+    // "bypassed" gave the same number and an engine that did neither passed. Destruction is
+    // only visible to a LATER instance, so the sequence now has one.
+    //
+    // Defender: 1000 maximum health, on 100, behind a 500-point shield.
+    //   instance 1  executes below 150: delivers the 100 they had, and destroys the shield
+    //   instance 2  200 magic, meeting no shield at all -> 200
+    // Had the shield merely been bypassed it would still hold 500, and instance 2 would apply 0.
     const shielded = runCombo(
       plan({
         defender: statBlock({ magicResist: 0, hp: 100, maxHp: 1000 }),
         defenderShields: [{ label: 'Barrier', kind: 'general', remaining: 500 }],
-        instances: [hit('1', 50, 'magic', { execute: { label: 'R', thresholdHealth: 150 } })],
+        instances: [
+          hit('1', 50, 'magic', { execute: { label: 'R', thresholdHealth: 150 } }),
+          hit('2', 200, 'magic'),
+        ],
       }),
     );
-    expect(shielded.perInstance[0].final).toBe(100);
+    expect(shielded.perInstance.map((i) => i.final)).toEqual([100, 200]);
+    expect(shielded.perInstance.map((i) => i.stateSnapshot.defenderShieldRemaining)).toEqual([
+      500, 0,
+    ]);
     expect(shielded.verdict.burstOnly.lethal).toBe(true);
+    expect(shielded.verdict.burstOnly.lethalAtInstance).toBe(1);
   });
 
   it('is REFUSED on a mixed instance rather than being attributed to a guessed type', () => {
