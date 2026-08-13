@@ -13,6 +13,8 @@
 #   1. BY NAME, when agent_type is a known role:
 #        engine        -> may write src/engine/ only
 #        data-pipeline -> may write scripts/fetch/ and public/data/ only
+#        interface     -> may write src/ui/ only
+#        harvest       -> may write scripts/extract/ and build/proposed-curated/ only
 #      A role with no case below is not refused for lacking one; it falls through to the
 #      ledger rule, which is what holds the partition for the areas that have no role file
 #      yet (extract, ui, url).
@@ -141,6 +143,21 @@ case "$agent" in
     ;;
   data-pipeline)
     [ "$area" = data ] || refuse "role 'data-pipeline' owns scripts/fetch/ and public/data/ only"
+    record ALLOW "by-name:$area"
+    exit 0
+    ;;
+  # Added 2026-08-13. Enforcement BY NAME is tighter than the ledger rule below, not looser: a
+  # named role is pinned to its area from its first write and can never claim a different one,
+  # whereas the ledger only locks an area once someone has written to it. Named roles are also
+  # what lets an area be re-deployed in a later fan-out — the ledger locks an area to its first
+  # claimant for good, which is correct for concurrency and wrong across sessions.
+  interface)
+    [ "$area" = ui ] || refuse "role 'interface' owns src/ui/ only"
+    record ALLOW "by-name:$area"
+    exit 0
+    ;;
+  harvest)
+    [ "$area" = extract ] || refuse "role 'harvest' owns scripts/extract/ and build/proposed-curated/ only"
     record ALLOW "by-name:$area"
     exit 0
     ;;
