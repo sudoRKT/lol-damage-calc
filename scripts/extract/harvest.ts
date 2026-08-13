@@ -334,6 +334,21 @@ export function draftFromTemplate(src: TemplateSource, patch: string, fetched: s
   // tolerance is the rounding the wiki's own display introduces: each summed term is printed to
   // two decimals, so N terms carry up to N/2 of the last place. Without that, Cassiopeia Q reads
   // 74.97 against 75 and reports a defect that is arithmetic, not damage.
+  //
+  // THE RELATIONS ARE PROPOSED BEFORE THE SUM, and were not until 2026-08-13. The comment above
+  // claimed alternatives were excluded; the code ran the ability-wide pairing step AFTER this
+  // block, so a row the pairing would mark `alternativeTo` still had no relation set here and
+  // was summed as though it added. Roster-wide that is 88 entries carrying 112 alternatives, 14
+  // of which also have a whole-ability total, and it put the WRONG DIRECTION on four reports —
+  // Briar E, Renekton E, Rumble E and Taliyah Q were called over-sums when they under-sum.
+  //
+  // Measured before the change and recorded so nobody misreads it later: gate 7's failures go
+  // from 51 (35 under / 16 over) to 53 (41 under / 12 over). It reconciles NOTHING and surfaces
+  // two entries it had been silently mis-summing. THE RISE IS THE GATE BECOMING MORE PRECISE,
+  // NOT A REGRESSION — the same rule as CLAUDE.md's "a falling count is usually the system
+  // working", in the other direction. Compare it against this definition, never against 51.
+  const withRelations = proposeRelations(components);
+
   if (damageType !== null) {
     // THE TOTAL MUST COVER THE WHOLE ABILITY, or the comparison is meaningless. Fizz W prints
     // "Total PASSIVE Magic Damage", which covers one of its three components; reconciling all
@@ -352,7 +367,7 @@ export function draftFromTemplate(src: TemplateSource, patch: string, fetched: s
       );
     };
     const totalRow = rows.find((r) => wholeAbilityTotal(r.label));
-    const additive = components.filter((x) => x.relation?.kind !== 'alternativeTo');
+    const additive = withRelations.filter((x) => x.relation?.kind !== 'alternativeTo');
     if (totalRow && additive.length > 0) {
       const tc = classifyRow('Magic Damage', totalRow.value, { maxRank, damageType, vars, index: 0 });
       if (tc.component && !isLevelScaled(tc.component.base)) {
@@ -378,7 +393,6 @@ export function draftFromTemplate(src: TemplateSource, patch: string, fetched: s
     }
   }
 
-  const withRelations = proposeRelations(components);
   const provenance: Provenance = {
     source: `Template:Data ${src.champion}/${src.ability}`,
     url: `https://wiki.leagueoflegends.com/en-us/Template:Data_${encodeURIComponent(

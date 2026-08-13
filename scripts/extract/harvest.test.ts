@@ -83,6 +83,54 @@ describe('reading the wiki-rendered box', () => {
   });
 });
 
+describe('gate 7 sums only what actually adds', () => {
+  // REGRESSION, 2026-08-13 (DATA-SOURCES §36.3). Gate 7's own comment said "only `adds`
+  // components are summed, since an alternative replaces rather than joins". It did not: the
+  // ability-wide pairing step ran AFTER the sum, so a row destined to become `alternativeTo`
+  // still had no relation set when gate 7 looked at it, and was added.
+  //
+  // Roster-wide that affected 12 of 51 failures and put the WRONG DIRECTION on four of them.
+  // These two tests pin both halves: the alternative is excluded, and a genuine addition is
+  // still included — because a fix that simply stopped summing things would also "pass" the
+  // first test while destroying the gate.
+
+  // Blade OR handle — one cast deals one of them, never both. 50 + 100 = 150 is the wrong
+  // reading; the total the source states is the blade alone.
+  const alternatives = `|champion = Darius
+|skill = Q
+|damagetype = Physical
+|leveling = {{st|Physical Damage|{{ap|100 to 200}}}}
+{{st|Reduced Damage|{{ap|50 to 100}}}}
+{{st|Total Physical Damage|{{ap|100 to 200}}}}`;
+
+  it('does not add an alternative to the component it replaces', () => {
+    const draft = draftFromTemplate(
+      { champion: 'Darius', slot: 'Q', ability: 'Decimate', wikitext: alternatives },
+      '16.16.1',
+      '2026-08-13',
+    );
+    // 100 (blade) reconciles against a stated total of 100. Summing the reduced arm as well
+    // gives 150 and reports an over-sum that is not there.
+    expect(draft.issues.filter((i) => i.kind === 'total-mismatch')).toEqual([]);
+  });
+
+  it('still reports a genuine under-sum, so the fix did not just stop summing', () => {
+    const missingTerm = `|champion = Lux
+|skill = Q
+|damagetype = Magic
+|leveling = {{st|Magic Damage|{{ap|80 to 240}}}}
+{{st|Total Magic Damage|{{ap|160 to 480}}}}`;
+    const draft = draftFromTemplate(
+      { champion: 'Lux', slot: 'Q', ability: 'Light Binding', wikitext: missingTerm },
+      '16.16.1',
+      '2026-08-13',
+    );
+    const mismatch = draft.issues.filter((i) => i.kind === 'total-mismatch');
+    expect(mismatch).toHaveLength(1);
+    expect(mismatch[0]!.detail).toContain('missing');
+  });
+});
+
 describe('the round-trip (gate 2)', () => {
   const template = `|champion = Lux
 |skill = Q
