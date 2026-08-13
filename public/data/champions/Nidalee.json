@@ -21,17 +21,31 @@
     "adaptivetype": "Magic"
   },
   "abilityNames": {
-    "P": "Prowl",
-    "Q": "Javelin Toss",
-    "W": "Bushwhack",
-    "E": "Primal Surge",
-    "R": "Aspect of the Cougar"
+    "P": [
+      "Prowl"
+    ],
+    "Q": [
+      "Javelin Toss",
+      "Takedown"
+    ],
+    "W": [
+      "Bushwhack",
+      "Pounce"
+    ],
+    "E": [
+      "Primal Surge",
+      "Swipe"
+    ],
+    "R": [
+      "Aspect of the Cougar",
+      "Aspect of the Cougar 2"
+    ]
   },
   "icon": "Nidalee.png",
   "provenance": {
     "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
     "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
     "patch": "16.16.1",
-    "fetched": "2026-08-12T22:15:21.439Z"
+    "fetched": "2026-08-13T08:37:19.186Z"
   }
 }

@@ -35,7 +35,7 @@ export interface WikiChampion {
   /** Patch this champion last changed in, e.g. "V26.12". Used by the Fandom guard. */
   changes: string | null;
   stats: ChampionBaseStats;
-  abilityNames: Partial<Record<AbilitySlot, string>>;
+  abilityNames: Partial<Record<AbilitySlot, string[]>>;
 }
 
 export interface WithheldChampion {
@@ -56,18 +56,36 @@ const SLOT_KEYS: { slot: AbilitySlot; key: string }[] = [
   { slot: 'R', key: 'skill_r' },
 ];
 
-function readAbilityNames(entry: LuaTable, wikiName: string): Partial<Record<AbilitySlot, string>> {
-  const names: Partial<Record<AbilitySlot, string>> = {};
+/**
+ * Read EVERY ability name in each slot list, in module order.
+ *
+ * This used to take entry [1] only, on the reading that the rest were "alternate cast names".
+ * That is true of 128 of the 208 extra names — "The Darkin Blade 2" is a second cast row of
+ * one template — but false of 69, which are whole separate abilities with their own template
+ * page and their own numbers: Jayce's entire hammer form, Hwei's ten subjects, Aphelios's
+ * five weapons, Elise's spider form, Riven's Wind Slash, Lee Sin's second casts.
+ *
+ * Both kinds are returned. Telling them apart needs the page each name resolves to, which is
+ * a fetch, not something this parser can know — so the harvester deduplicates by revision id
+ * (DATA-SOURCES §18). Dropping the extras here to avoid the alias problem would keep losing
+ * the 69, which is the worse failure: a missing ability contributes zero damage silently.
+ */
+function readAbilityNames(entry: LuaTable, wikiName: string): Partial<Record<AbilitySlot, string[]>> {
+  const names: Partial<Record<AbilitySlot, string[]>> = {};
   for (const { slot, key } of SLOT_KEYS) {
     const value = entry[key];
     if (typeof value !== 'object' || value === null) continue;
-    // The module stores each slot as a list; entry [1] is the ability's real name. Extra
-    // entries are alternate cast names (Aatrox Q has "The Darkin Blade 2"/"3").
-    const first = (value as LuaTable)['1'];
-    if (typeof first === 'string' && first.length > 0) names[slot] = first;
-    else if (first !== undefined) {
-      throw new Error(`${wikiName}: ${key}[1] was not a string`);
+    const list = value as LuaTable;
+    const found: string[] = [];
+    // Numeric keys in module order: '1', '2', '3', …
+    for (const index of Object.keys(list).sort((a, b) => Number(a) - Number(b))) {
+      const name = list[index];
+      if (typeof name === 'string' && name.length > 0) found.push(name);
+      else if (index === '1' && name !== undefined) {
+        throw new Error(`${wikiName}: ${key}[1] was not a string`);
+      }
     }
+    if (found.length > 0) names[slot] = found;
   }
   return names;
 }

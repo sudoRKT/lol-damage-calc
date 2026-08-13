@@ -45,7 +45,24 @@ export interface Champion {
   name: string;
   id: number;
   stats: ChampionBaseStats;
-  abilityNames: Partial<Record<AbilitySlot, string>>;
+  /**
+   * Every ability name the wiki module lists for each slot, in module order — NOT just the
+   * first.
+   *
+   * A slot really can hold more than one ability, and taking only `[0]` lost 69 abilities:
+   * all five of Aphelios's weapons, all ten of Hwei's subjects, the whole of Jayce's second
+   * form, Elise's spider form, Nidalee's cougar form, Kha'Zix's four evolutions, Lee Sin's
+   * second casts, Riven's Wind Slash (which is her ultimate's damage), Swain's Demonflare,
+   * Quinn's Skystrike.
+   *
+   * CAUTION, and the reason this is a list rather than a set of separate entries: 128 of the
+   * 208 non-first names are ALIASES. "The Darkin Blade 2" and "The Darkin Blade 3" resolve to
+   * the same wiki page as "The Darkin Blade" — they name extra cast rows inside one template,
+   * not extra abilities. Harvesting every name blindly stores Aatrox Q three times and triples
+   * its damage. The harvester must deduplicate by the page's revision id, which is what
+   * `sourceRevision` on CuratedAbility records. See DATA-SOURCES §18.
+   */
+  abilityNames: Partial<Record<AbilitySlot, string[]>>;
   /** Data Dragon portrait filename, e.g. "Aatrox.png" — matches Item.icon and Rune.icon.
    *  A champion is only in the roster once this asset exists (DATA-SOURCES §1). */
   icon: string;
@@ -226,8 +243,39 @@ export function requiresOwner(stat: RatioStat): stat is OwnerRequiredStat {
   return (OWNER_REQUIRED_STATS as readonly string[]).includes(stat);
 }
 
+/**
+ * A MULTIPLIER on a ratio's magnitude: "add `per100` percentage points to this ratio for every
+ * 100 of `per`".
+ *
+ * Malzahar R is `10–20% (+ 2.5% per 100 AP) of target's maximum health`. The 2.5 is not a 2.5%
+ * AP ratio — it raises the percentage-of-health the ability deals. Stored as an ordinary ratio
+ * it is simply wrong, and the shapes it corrupts are not marginal: Kled W came out as a
+ * percentage of the target's BONUS health when the source says MAXIMUM, and Pantheon W lost its
+ * entire payload and dealt nothing.
+ *
+ * `owner` follows the same rule as the payload ratio: required when `per` is a stat both
+ * champions possess, never defaulted. This is what lets the two-owner cases be expressed at
+ * last — Kled W is a payload on the target's maximum health with a multiplier on the caster's
+ * bonus health, and each says whose it is.
+ *
+ * Measured 2026-08-13: 34 abilities, 53 damage rows. See DATA-SOURCES §17.
+ */
+export interface RatioMultiplier {
+  /** The stat that drives the increase, e.g. 'AP' for "per 100 AP". */
+  per: RatioStat;
+  /** Whose `per` stat. Required when `per` is in OWNER_REQUIRED_STATS. */
+  owner?: RatioOwner;
+  /** Percentage points added to the parent ratio per 100 of `per`. */
+  per100: Scaling;
+}
+
 export type Ratio = {
   stat: RatioStat;
+  /**
+   * Multipliers on this ratio's magnitude. Absent on the overwhelming majority of ratios —
+   * the field is additive, and a ratio without it behaves exactly as before.
+   */
+  multipliers?: RatioMultiplier[];
   /** Required when `stat` is 'stacks'. Names the counter, and must match a key the scenario
    *  supplies in ChampionConfig.persistent (e.g. 'nasusQ'). */
   counter?: string;

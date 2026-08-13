@@ -21,17 +21,29 @@
     "adaptivetype": "Physical"
   },
   "abilityNames": {
-    "P": "Crimson Curse",
-    "Q": "Head Rush",
-    "W": "Blood Frenzy",
-    "E": "Chilling Scream",
-    "R": "Certain Death"
+    "P": [
+      "Crimson Curse"
+    ],
+    "Q": [
+      "Head Rush"
+    ],
+    "W": [
+      "Blood Frenzy",
+      "Snack Attack"
+    ],
+    "E": [
+      "Chilling Scream"
+    ],
+    "R": [
+      "Certain Death",
+      "Certain Death 2"
+    ]
   },
   "icon": "Briar.png",
   "provenance": {
     "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
     "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
     "patch": "16.16.1",
-    "fetched": "2026-08-12T22:15:21.439Z"
+    "fetched": "2026-08-13T08:37:19.186Z"
   }
 }

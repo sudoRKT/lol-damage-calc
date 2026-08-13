@@ -21,17 +21,28 @@
     "adaptivetype": "Physical"
   },
   "abilityNames": {
-    "P": "Runic Blade",
-    "Q": "Broken Wings",
-    "W": "Ki Burst",
-    "E": "Valor",
-    "R": "Blade of the Exile"
+    "P": [
+      "Runic Blade"
+    ],
+    "Q": [
+      "Broken Wings"
+    ],
+    "W": [
+      "Ki Burst"
+    ],
+    "E": [
+      "Valor"
+    ],
+    "R": [
+      "Blade of the Exile",
+      "Wind Slash"
+    ]
   },
   "icon": "Riven.png",
   "provenance": {
     "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
     "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
     "patch": "16.16.1",
-    "fetched": "2026-08-12T22:15:21.439Z"
+    "fetched": "2026-08-13T08:37:19.186Z"
   }
 }

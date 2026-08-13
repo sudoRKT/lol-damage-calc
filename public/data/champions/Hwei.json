@@ -21,17 +21,37 @@
     "adaptivetype": "Magic"
   },
   "abilityNames": {
-    "P": "Signature of the Visionary",
-    "Q": "Subject: Disaster",
-    "W": "Subject: Serenity",
-    "E": "Subject: Torment",
-    "R": "Spiraling Despair"
+    "P": [
+      "Signature of the Visionary"
+    ],
+    "Q": [
+      "Subject: Disaster",
+      "Devastating Fire",
+      "Severing Bolt",
+      "Molten Fissure"
+    ],
+    "W": [
+      "Subject: Serenity",
+      "Fleeting Current",
+      "Pool of Reflection",
+      "Stirring Lights"
+    ],
+    "E": [
+      "Subject: Torment",
+      "Grim Visage",
+      "Gaze of the Abyss",
+      "Crushing Maw"
+    ],
+    "R": [
+      "Spiraling Despair",
+      "Wash Brush"
+    ]
   },
   "icon": "Hwei.png",
   "provenance": {
     "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
     "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
     "patch": "16.16.1",
-    "fetched": "2026-08-12T22:15:21.439Z"
+    "fetched": "2026-08-13T08:37:19.186Z"
   }
 }

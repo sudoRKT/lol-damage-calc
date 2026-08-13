@@ -23,8 +23,10 @@ import type {
   AbilityComponent,
   DamageType,
   Ratio,
+  RatioMultiplier,
   RatioOwner,
   RatioStat,
+  Scaling,
 } from '../../src/types/data.ts';
 import { requiresOwner } from '../../src/types/data.ts';
 import { ALTERNATIVE_MARKERS } from '../../src/types/validate-curated.ts';
@@ -217,6 +219,48 @@ export function hasCoefficientShape(value: string): boolean {
   return COEFFICIENT_GROUP.test(raw);
 }
 
+/** True when this `{{as|…}}` body is a "per 100 X" multiplier rather than a payload ratio. */
+export function isMultiplierGroup(body: string): boolean {
+  return /\(\s*\+/.test(body) && /per\s+100\b/i.test(body);
+}
+
+/**
+ * Read one `(+ N% per 100 X)` group into a multiplier. Returns null when the stat is not one
+ * this project models, so the caller can raise an issue rather than store a silent guess.
+ */
+export function parseMultiplier(
+  body: string,
+  maxRank: number,
+  vars: Record<string, string>,
+): RatioMultiplier | null {
+  const text = body.replace(/^\s*\(\s*\+\s*/, '').replace(/\)\s*$/, '');
+  const after = /per\s+100\s+(.*)$/i.exec(plainText(text) || text);
+  const per = ratioStatOf(after?.[1] ?? text);
+  if (!per) return null;
+
+  // The magnitude is whatever percentage sits BEFORE "per 100".
+  const beforeRaw = substituteVars(text, vars).split(/per\s+100/i)[0] ?? '';
+  const nested = findBlocks(beforeRaw, 'ap');
+  let per100: Scaling;
+  try {
+    if (nested.length > 0) {
+      per100 = parseRankProgression(substituteVars(nested[0]!.inner, vars), maxRank);
+    } else {
+      const num = /(-?\d+(?:\.\d+)?)\s*%/.exec(plainText(beforeRaw) || beforeRaw);
+      if (!num) return null;
+      const v = Number(num[1]);
+      per100 = { scaling: 'linear', from: v, to: v };
+    }
+  } catch {
+    return null;
+  }
+  return {
+    per,
+    ...(requiresOwner(per) ? { owner: ratioOwnerOf(plainText(text) || text) } : {}),
+    per100,
+  };
+}
+
 export interface ClassifiedRow {
   label: string;
   component?: AbilityComponent;
@@ -244,8 +288,31 @@ export function parseRatio(
   // splitArgs, not String.split('|') — a naive split cuts `{{ap|100 to 140}}` and
   // `{{fd|2.5}}` in half and the ratio vanishes. Same class of bug as the two in wikitext.ts.
   const body = splitArgs(inner)[0] ?? '';
-  if (!/\(\s*\+/.test(body)) return {}; // an {{as|…}} that is prose, not a ratio
-  const text = body.replace(/^\s*\(\s*\+\s*/, '').replace(/\)\s*$/, '');
+  // A PAYLOAD block need not open with "(+". Malzahar R and Pantheon W write the payload as
+  // `{{as|{{ap|10 to 20}}% of target's maximum health}}` — no leading plus — and requiring one
+  // dropped the payload entirely, which is why Pantheon W was stored dealing nothing.
+  const payloadWithoutPlus =
+    !/\(\s*\+/.test(body) && /%/.test(body) && ratioStatOf(plainText(body) || body) !== null;
+  if (!/\(\s*\+/.test(body) && !payloadWithoutPlus) return {}; // prose, not a ratio
+
+  // Multiplier groups nested inside the payload are pulled out first, so the payload's own
+  // magnitude is read from what remains rather than from the multiplier's number.
+  const multipliers: RatioMultiplier[] = [];
+  const unreadable: string[] = [];
+  let outer = body;
+  for (const nestedAs of [...findBlocks(body, 'as')].reverse()) {
+    const nestedBody = splitArgs(nestedAs.inner)[0] ?? '';
+    if (!isMultiplierGroup(nestedBody)) continue;
+    const m = parseMultiplier(nestedBody, maxRank, vars);
+    if (m) multipliers.unshift(m);
+    else unreadable.push(nestedBody.slice(0, 60));
+    outer = outer.slice(0, nestedAs.start) + ' ' + outer.slice(nestedAs.end);
+  }
+  if (unreadable.length > 0) {
+    return { issue: { kind: 'unparsed-ratio', detail: `per-100 group: ${unreadable[0]}` } };
+  }
+
+  const text = outer.replace(/^\s*\(\s*\+\s*/, '').replace(/\)\s*$/, '');
   const flat = plainText(text) || text;
   const stat = ratioStatOf(flat);
   if (!stat) return { issue: { kind: 'unknown-stat', detail: text.slice(0, 80) } };
@@ -257,18 +324,20 @@ export function parseRatio(
     ? { owner: ratioOwnerOf(flat) }
     : {};
 
+  const mult = multipliers.length > 0 ? { multipliers } : {};
+
   // The magnitude is either a nested {{ap|…}} (a ratio that itself scales per rank — 244
   // measured) or a literal number before the '%'.
   const nested = findBlocks(text, 'ap');
   try {
     if (nested.length > 0) {
       const scaling = parseRankProgression(substituteVars(nested[0]!.inner, vars), maxRank);
-      return { ratio: { stat, ...owner, ...scaling } };
+      return { ratio: { stat, ...owner, ...mult, ...scaling } };
     }
     const num = /(-?\d+(?:\.\d+)?)\s*%/.exec(substituteVars(text, vars));
     if (!num) return { issue: { kind: 'unparsed-ratio', detail: text.slice(0, 80) } };
     const v = Number(num[1]);
-    return { ratio: { stat, ...owner, scaling: 'linear', from: v, to: v } };
+    return { ratio: { stat, ...owner, ...mult, scaling: 'linear', from: v, to: v } };
   } catch (e) {
     return {
       issue: {
@@ -314,23 +383,32 @@ export function classifyRow(
   const issues: RowIssue[] = [];
   const { maxRank, vars } = opts;
 
-  if (hasCoefficientShape(value)) {
-    issues.push({
-      kind: 'coefficient-shape',
-      detail:
-        'a health payload whose percentage is itself scaled ("per 100 …") — the library has ' +
-        `no shape for this, so what is stored below is not the whole ability: ${value
-          .replace(/\s+/g, ' ')
-          .trim()
-          .slice(0, 110)}`,
-    });
-  }
 
   // Ratios first, so what remains is the base.
   const ratioBlocks = findBlocks(value, 'as');
   const ratios: Ratio[] = [];
-  for (const b of ratioBlocks) {
+  // SIBLING MULTIPLIERS. Pantheon W writes the payload and its multipliers as separate
+  // top-level blocks: `{{as|6 to 8% of target's maximum health}} {{as|(+ 1.5% per 100 AP)}}
+  // {{as|(+ 0.4% per 100 Pantheon's bonus health)}}`. Read independently, each multiplier
+  // became its own bogus ratio (a "1.5% AP ratio") and the payload was dropped. They belong
+  // to the payload, so lift them out here and attach them after it is parsed.
+  const siblingMultipliers: RatioMultiplier[] = [];
+  const payloadBlocks = ratioBlocks.filter((b) => {
+    const body = splitArgs(b.inner)[0] ?? '';
+    if (!isMultiplierGroup(body)) return true;
+    const m = parseMultiplier(body, maxRank, vars);
+    if (m) siblingMultipliers.push(m);
+    else issues.push({ kind: 'unparsed-ratio', detail: `per-100 group: ${body.slice(0, 60)}` });
+    return false;
+  });
+  // Only lift them when there is exactly one payload to attach them to; anything else is
+  // ambiguous and must not be guessed at.
+  const liftSiblings = siblingMultipliers.length > 0 && payloadBlocks.length === 1;
+  for (const b of liftSiblings ? payloadBlocks : ratioBlocks) {
     const { ratio, issue } = parseRatio(b.inner, maxRank, vars);
+    if (ratio && liftSiblings) {
+      ratio.multipliers = [...(ratio.multipliers ?? []), ...siblingMultipliers];
+    }
     if (ratio) {
       ratios.push(ratio);
       // Surface it as an issue, not just as a stored field: this both puts the row on the
@@ -346,6 +424,21 @@ export function classifyRow(
         });
       }
     } else if (issue) issues.push(issue);
+  }
+
+  // The coefficient shape is now expressible via Ratio.multipliers, so it is only a defect
+  // when the multipliers were NOT captured — then the stored row understates the ability and
+  // must not pass as understood. When they were captured, there is nothing left to flag.
+  if (hasCoefficientShape(value) && !ratios.some((r) => (r.multipliers?.length ?? 0) > 0)) {
+    issues.push({
+      kind: 'coefficient-shape',
+      detail:
+        'a health payload whose percentage is itself scaled ("per 100 …"), and the ' +
+        `multiplier could not be read, so what is stored is not the whole ability: ${value
+          .replace(/\s+/g, ' ')
+          .trim()
+          .slice(0, 110)}`,
+    });
   }
 
   let rest = value;

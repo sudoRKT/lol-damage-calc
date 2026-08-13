@@ -195,6 +195,23 @@ function checkComponent(c: AbilityComponent, where: string, maxRank: number): st
         out.push(`${where}.ratios[${i}]: bad owner '${r.owner}'`);
       }
       out.push(...checkScalingShape(r, `${where}.ratios[${i}]`));
+
+      // A multiplier is a ratio on a ratio, and is held to the same standard: a real stat, a
+      // well-formed scaling, and an owner whenever the stat belongs to a champion.
+      (r.multipliers ?? []).forEach((m, j) => {
+        const at = `${where}.ratios[${i}].multipliers[${j}]`;
+        if (!RATIO_STATS.has(m.per)) out.push(`${at}: bad stat '${m.per}'`);
+        if (requiresOwner(m.per) && m.owner === undefined) {
+          out.push(
+            `${at}: stat '${m.per}' belongs to a champion and requires an 'owner' ` +
+              `('caster' | 'target' | 'unresolved'). It is never defaulted.`,
+          );
+        }
+        if (m.owner !== undefined && !RATIO_OWNERS.has(m.owner)) {
+          out.push(`${at}: bad owner '${m.owner}'`);
+        }
+        out.push(...checkScalingShape(m.per100, `${at}.per100`));
+      });
     });
   }
   if (c.hits !== undefined && (!Number.isInteger(c.hits) || c.hits < 1)) {
@@ -374,7 +391,12 @@ export function gateStatusHonesty(
     // anything better is the dishonesty this gate exists to catch. Checked BEFORE the
     // 'verified'-only skip below, because 'derived' is just as wrong a claim here.
     const unresolved = a.components.flatMap((c) =>
-      c.ratios.filter((r) => r.owner === 'unresolved').map((r) => `${c.id}/${r.stat}`),
+      c.ratios.flatMap((r) => [
+        ...(r.owner === 'unresolved' ? [`${c.id}/${r.stat}`] : []),
+        ...(r.multipliers ?? [])
+          .filter((m) => m.owner === 'unresolved')
+          .map((m) => `${c.id}/${r.stat} per 100 ${m.per}`),
+      ]),
     );
     if (unresolved.length > 0 && a.verification !== 'incomplete') {
       findings.push({

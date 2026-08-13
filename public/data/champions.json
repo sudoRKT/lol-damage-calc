@@ -22,18 +22,30 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Deathbringer Stance",
-      "Q": "The Darkin Blade",
-      "W": "Infernal Chains",
-      "E": "Umbral Dash",
-      "R": "World Ender"
+      "P": [
+        "Deathbringer Stance"
+      ],
+      "Q": [
+        "The Darkin Blade",
+        "The Darkin Blade 2",
+        "The Darkin Blade 3"
+      ],
+      "W": [
+        "Infernal Chains"
+      ],
+      "E": [
+        "Umbral Dash"
+      ],
+      "R": [
+        "World Ender"
+      ]
     },
     "icon": "Aatrox.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -59,18 +71,28 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "Essence Theft",
-      "Q": "Orb of Deception",
-      "W": "Fox-Fire",
-      "E": "Charm",
-      "R": "Spirit Rush"
+      "P": [
+        "Essence Theft"
+      ],
+      "Q": [
+        "Orb of Deception"
+      ],
+      "W": [
+        "Fox-Fire"
+      ],
+      "E": [
+        "Charm"
+      ],
+      "R": [
+        "Spirit Rush"
+      ]
     },
     "icon": "Ahri.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -96,18 +118,31 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Assassin's Mark",
-      "Q": "Five Point Strike",
-      "W": "Twilight Shroud",
-      "E": "Shuriken Flip",
-      "R": "Perfect Execution"
+      "P": [
+        "Assassin's Mark"
+      ],
+      "Q": [
+        "Five Point Strike",
+        "Five Point Strike 2"
+      ],
+      "W": [
+        "Twilight Shroud"
+      ],
+      "E": [
+        "Shuriken Flip",
+        "Shuriken Flip 2"
+      ],
+      "R": [
+        "Perfect Execution",
+        "Perfect Execution 2"
+      ]
     },
     "icon": "Akali.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -133,18 +168,29 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Dirty Fighting",
-      "Q": "Avengerang",
-      "W": "Going Rogue",
-      "E": "Heroic Swing",
-      "R": "Comeuppance"
+      "P": [
+        "Dirty Fighting"
+      ],
+      "Q": [
+        "Avengerang"
+      ],
+      "W": [
+        "Going Rogue"
+      ],
+      "E": [
+        "Heroic Swing",
+        "Heroic Swing 2"
+      ],
+      "R": [
+        "Comeuppance"
+      ]
     },
     "icon": "Akshan.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -170,18 +216,28 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "Triumphant Roar",
-      "Q": "Pulverize",
-      "W": "Headbutt",
-      "E": "Trample",
-      "R": "Unbreakable Will"
+      "P": [
+        "Triumphant Roar"
+      ],
+      "Q": [
+        "Pulverize"
+      ],
+      "W": [
+        "Headbutt"
+      ],
+      "E": [
+        "Trample"
+      ],
+      "R": [
+        "Unbreakable Will"
+      ]
     },
     "icon": "Alistar.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -207,18 +263,29 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Drakehound's Step",
-      "Q": "Cunning Sweep",
-      "W": "Repudiation",
-      "E": "Lacerate",
-      "R": "Public Execution"
+      "P": [
+        "Drakehound's Step"
+      ],
+      "Q": [
+        "Cunning Sweep",
+        "Sundering Slam"
+      ],
+      "W": [
+        "Repudiation"
+      ],
+      "E": [
+        "Lacerate"
+      ],
+      "R": [
+        "Public Execution"
+      ]
     },
     "icon": "Ambessa.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -244,18 +311,28 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "Cursed Touch",
-      "Q": "Bandage Toss",
-      "W": "Despair",
-      "E": "Tantrum",
-      "R": "Curse of the Sad Mummy"
+      "P": [
+        "Cursed Touch"
+      ],
+      "Q": [
+        "Bandage Toss"
+      ],
+      "W": [
+        "Despair"
+      ],
+      "E": [
+        "Tantrum"
+      ],
+      "R": [
+        "Curse of the Sad Mummy"
+      ]
     },
     "icon": "Amumu.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -281,18 +358,28 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "Rebirth",
-      "Q": "Flash Frost",
-      "W": "Crystallize",
-      "E": "Frostbite",
-      "R": "Glacial Storm"
+      "P": [
+        "Rebirth"
+      ],
+      "Q": [
+        "Flash Frost"
+      ],
+      "W": [
+        "Crystallize"
+      ],
+      "E": [
+        "Frostbite"
+      ],
+      "R": [
+        "Glacial Storm"
+      ]
     },
     "icon": "Anivia.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -318,18 +405,29 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "Pyromania",
-      "Q": "Disintegrate",
-      "W": "Incinerate",
-      "E": "Molten Shield",
-      "R": "Summon: Tibbers"
+      "P": [
+        "Pyromania"
+      ],
+      "Q": [
+        "Disintegrate"
+      ],
+      "W": [
+        "Incinerate"
+      ],
+      "E": [
+        "Molten Shield"
+      ],
+      "R": [
+        "Summon: Tibbers",
+        "Summon: Tibbers 2"
+      ]
     },
     "icon": "Annie.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -355,18 +453,38 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "The Hitman and the Seer",
-      "Q": "Weapons of the Faithful",
-      "W": "Phase",
-      "E": "Weapon Queue System",
-      "R": "Moonlight Vigil"
+      "P": [
+        "The Hitman and the Seer",
+        "Calibrum",
+        "Severum",
+        "Gravitum",
+        "Infernum",
+        "Crescendum"
+      ],
+      "Q": [
+        "Weapons of the Faithful",
+        "Moonshot",
+        "Onslaught",
+        "Binding Eclipse",
+        "Duskwave",
+        "Sentry"
+      ],
+      "W": [
+        "Phase"
+      ],
+      "E": [
+        "Weapon Queue System"
+      ],
+      "R": [
+        "Moonlight Vigil"
+      ]
     },
     "icon": "Aphelios.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -392,18 +510,30 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Frost Shot",
-      "Q": "Ranger's Focus",
-      "W": "Volley",
-      "E": "Hawkshot",
-      "R": "Enchanted Crystal Arrow"
+      "P": [
+        "Frost Shot",
+        "Frost Shot 2"
+      ],
+      "Q": [
+        "Ranger's Focus",
+        "Ranger's Focus 2"
+      ],
+      "W": [
+        "Volley"
+      ],
+      "E": [
+        "Hawkshot"
+      ],
+      "R": [
+        "Enchanted Crystal Arrow"
+      ]
     },
     "icon": "Ashe.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -429,18 +559,29 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "Cosmic Creator",
-      "Q": "Breath of Light",
-      "W": "Astral Flight",
-      "E": "Singularity",
-      "R": "Falling Star"
+      "P": [
+        "Cosmic Creator"
+      ],
+      "Q": [
+        "Breath of Light"
+      ],
+      "W": [
+        "Astral Flight"
+      ],
+      "E": [
+        "Singularity"
+      ],
+      "R": [
+        "Falling Star",
+        "The Skies Descend"
+      ]
     },
     "icon": "AurelionSol.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -466,18 +607,29 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "Spirit Abjuration",
-      "Q": "Twofold Hex",
-      "W": "Across the Veil",
-      "E": "The Weirding",
-      "R": "Between Worlds"
+      "P": [
+        "Spirit Abjuration"
+      ],
+      "Q": [
+        "Twofold Hex",
+        "Twofold Hex 2"
+      ],
+      "W": [
+        "Across the Veil"
+      ],
+      "E": [
+        "The Weirding"
+      ],
+      "R": [
+        "Between Worlds"
+      ]
     },
     "icon": "Aurora.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -503,18 +655,28 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "Shurima's Legacy",
-      "Q": "Conquering Sands",
-      "W": "Arise!",
-      "E": "Shifting Sands",
-      "R": "Emperor's Divide"
+      "P": [
+        "Shurima's Legacy"
+      ],
+      "Q": [
+        "Conquering Sands"
+      ],
+      "W": [
+        "Arise!"
+      ],
+      "E": [
+        "Shifting Sands"
+      ],
+      "R": [
+        "Emperor's Divide"
+      ]
     },
     "icon": "Azir.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -540,18 +702,29 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "Traveler's Call",
-      "Q": "Cosmic Binding",
-      "W": "Caretaker's Shrine",
-      "E": "Magical Journey",
-      "R": "Tempered Fate"
+      "P": [
+        "Traveler's Call",
+        "Traveler's Call 2"
+      ],
+      "Q": [
+        "Cosmic Binding"
+      ],
+      "W": [
+        "Caretaker's Shrine"
+      ],
+      "E": [
+        "Magical Journey"
+      ],
+      "R": [
+        "Tempered Fate"
+      ]
     },
     "icon": "Bard.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -577,18 +750,28 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Death in Lavender",
-      "Q": "Void Surge",
-      "W": "Above and Below",
-      "E": "Royal Maelstrom",
-      "R": "Endless Banquet"
+      "P": [
+        "Death in Lavender"
+      ],
+      "Q": [
+        "Void Surge"
+      ],
+      "W": [
+        "Above and Below"
+      ],
+      "E": [
+        "Royal Maelstrom"
+      ],
+      "R": [
+        "Endless Banquet"
+      ]
     },
     "icon": "Belveth.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -614,18 +797,29 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Mana Barrier",
-      "Q": "Rocket Grab",
-      "W": "Overdrive",
-      "E": "Power Fist",
-      "R": "Static Field"
+      "P": [
+        "Mana Barrier",
+        "Mana Barrier 2"
+      ],
+      "Q": [
+        "Rocket Grab"
+      ],
+      "W": [
+        "Overdrive"
+      ],
+      "E": [
+        "Power Fist"
+      ],
+      "R": [
+        "Static Field"
+      ]
     },
     "icon": "Blitzcrank.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -651,18 +845,29 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "Blaze",
-      "Q": "Sear",
-      "W": "Pillar of Flame",
-      "E": "Conflagration",
-      "R": "Pyroclasm"
+      "P": [
+        "Blaze",
+        "Blaze 2"
+      ],
+      "Q": [
+        "Sear"
+      ],
+      "W": [
+        "Pillar of Flame"
+      ],
+      "E": [
+        "Conflagration"
+      ],
+      "R": [
+        "Pyroclasm"
+      ]
     },
     "icon": "Brand.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -688,18 +893,28 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "Concussive Blows",
-      "Q": "Winter's Bite",
-      "W": "Stand Behind Me",
-      "E": "Unbreakable",
-      "R": "Glacial Fissure"
+      "P": [
+        "Concussive Blows"
+      ],
+      "Q": [
+        "Winter's Bite"
+      ],
+      "W": [
+        "Stand Behind Me"
+      ],
+      "E": [
+        "Unbreakable"
+      ],
+      "R": [
+        "Glacial Fissure"
+      ]
     },
     "icon": "Braum.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -725,18 +940,30 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Crimson Curse",
-      "Q": "Head Rush",
-      "W": "Blood Frenzy",
-      "E": "Chilling Scream",
-      "R": "Certain Death"
+      "P": [
+        "Crimson Curse"
+      ],
+      "Q": [
+        "Head Rush"
+      ],
+      "W": [
+        "Blood Frenzy",
+        "Snack Attack"
+      ],
+      "E": [
+        "Chilling Scream"
+      ],
+      "R": [
+        "Certain Death",
+        "Certain Death 2"
+      ]
     },
     "icon": "Briar.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -762,18 +989,28 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Headshot",
-      "Q": "Piltover Peacemaker",
-      "W": "Yordle Snap Trap",
-      "E": "90 Caliber Net",
-      "R": "Ace in the Hole"
+      "P": [
+        "Headshot"
+      ],
+      "Q": [
+        "Piltover Peacemaker"
+      ],
+      "W": [
+        "Yordle Snap Trap"
+      ],
+      "E": [
+        "90 Caliber Net"
+      ],
+      "R": [
+        "Ace in the Hole"
+      ]
     },
     "icon": "Caitlyn.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -799,18 +1036,31 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Adaptive Defenses",
-      "Q": "Precision Protocol",
-      "W": "Tactical Sweep",
-      "E": "Hookshot",
-      "R": "The Hextech Ultimatum"
+      "P": [
+        "Adaptive Defenses"
+      ],
+      "Q": [
+        "Precision Protocol",
+        "Precision Protocol 2",
+        "Precision Protocol 3"
+      ],
+      "W": [
+        "Tactical Sweep"
+      ],
+      "E": [
+        "Hookshot",
+        "Wall Dive"
+      ],
+      "R": [
+        "The Hextech Ultimatum"
+      ]
     },
     "icon": "Camille.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -836,18 +1086,29 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "Serpentine Grace",
-      "Q": "Noxious Blast",
-      "W": "Miasma",
-      "E": "Twin Fang",
-      "R": "Petrifying Gaze"
+      "P": [
+        "Serpentine Grace",
+        "Serpentine Grace 2"
+      ],
+      "Q": [
+        "Noxious Blast"
+      ],
+      "W": [
+        "Miasma"
+      ],
+      "E": [
+        "Twin Fang"
+      ],
+      "R": [
+        "Petrifying Gaze"
+      ]
     },
     "icon": "Cassiopeia.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -873,18 +1134,28 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "Carnivore",
-      "Q": "Rupture",
-      "W": "Feral Scream",
-      "E": "Vorpal Spikes",
-      "R": "Feast"
+      "P": [
+        "Carnivore"
+      ],
+      "Q": [
+        "Rupture"
+      ],
+      "W": [
+        "Feral Scream"
+      ],
+      "E": [
+        "Vorpal Spikes"
+      ],
+      "R": [
+        "Feast"
+      ]
     },
     "icon": "Chogath.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -910,18 +1181,29 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Hextech Munitions",
-      "Q": "Phosphorus Bomb",
-      "W": "Valkyrie",
-      "E": "Gatling Gun",
-      "R": "Missile Barrage"
+      "P": [
+        "Hextech Munitions"
+      ],
+      "Q": [
+        "Phosphorus Bomb"
+      ],
+      "W": [
+        "Valkyrie"
+      ],
+      "E": [
+        "Gatling Gun"
+      ],
+      "R": [
+        "Missile Barrage",
+        "Big One"
+      ]
     },
     "icon": "Corki.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -947,18 +1229,28 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Hemorrhage",
-      "Q": "Decimate",
-      "W": "Crippling Strike",
-      "E": "Apprehend",
-      "R": "Noxian Guillotine"
+      "P": [
+        "Hemorrhage"
+      ],
+      "Q": [
+        "Decimate"
+      ],
+      "W": [
+        "Crippling Strike"
+      ],
+      "E": [
+        "Apprehend"
+      ],
+      "R": [
+        "Noxian Guillotine"
+      ]
     },
     "icon": "Darius.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -984,18 +1276,28 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "Moonsilver Blade",
-      "Q": "Crescent Strike",
-      "W": "Pale Cascade",
-      "E": "Lunar Rush",
-      "R": "Moonfall"
+      "P": [
+        "Moonsilver Blade"
+      ],
+      "Q": [
+        "Crescent Strike"
+      ],
+      "W": [
+        "Pale Cascade"
+      ],
+      "E": [
+        "Lunar Rush"
+      ],
+      "R": [
+        "Moonfall"
+      ]
     },
     "icon": "Diana.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -1021,18 +1323,28 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Goes Where He Pleases",
-      "Q": "Infected Bonesaw",
-      "W": "Heart Zapper",
-      "E": "Blunt Force Trauma",
-      "R": "Maximum Dosage"
+      "P": [
+        "Goes Where He Pleases"
+      ],
+      "Q": [
+        "Infected Bonesaw"
+      ],
+      "W": [
+        "Heart Zapper"
+      ],
+      "E": [
+        "Blunt Force Trauma"
+      ],
+      "R": [
+        "Maximum Dosage"
+      ]
     },
     "icon": "DrMundo.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -1058,18 +1370,29 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "League of Draven",
-      "Q": "Spinning Axe",
-      "W": "Blood Rush",
-      "E": "Stand Aside",
-      "R": "Whirling Death"
+      "P": [
+        "League of Draven"
+      ],
+      "Q": [
+        "Spinning Axe"
+      ],
+      "W": [
+        "Blood Rush"
+      ],
+      "E": [
+        "Stand Aside"
+      ],
+      "R": [
+        "Whirling Death",
+        "Whirling Death 2"
+      ]
     },
     "icon": "Draven.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -1095,18 +1418,28 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "Z-Drive Resonance",
-      "Q": "Timewinder",
-      "W": "Parallel Convergence",
-      "E": "Phase Dive",
-      "R": "Chronobreak"
+      "P": [
+        "Z-Drive Resonance"
+      ],
+      "Q": [
+        "Timewinder"
+      ],
+      "W": [
+        "Parallel Convergence"
+      ],
+      "E": [
+        "Phase Dive"
+      ],
+      "R": [
+        "Chronobreak"
+      ]
     },
     "icon": "Ekko.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -1132,18 +1465,32 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "Spider Queen",
-      "Q": "Neurotoxin",
-      "W": "Volatile Spiderling",
-      "E": "Cocoon",
-      "R": "Spider Form"
+      "P": [
+        "Spider Queen"
+      ],
+      "Q": [
+        "Neurotoxin",
+        "Venomous Bite"
+      ],
+      "W": [
+        "Volatile Spiderling",
+        "Skittering Frenzy"
+      ],
+      "E": [
+        "Cocoon",
+        "Rappel"
+      ],
+      "R": [
+        "Spider Form",
+        "Human Form"
+      ]
     },
     "icon": "Elise.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -1169,18 +1516,29 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "Demon Shade",
-      "Q": "Hate Spike",
-      "W": "Allure",
-      "E": "Whiplash",
-      "R": "Last Caress"
+      "P": [
+        "Demon Shade"
+      ],
+      "Q": [
+        "Hate Spike"
+      ],
+      "W": [
+        "Allure"
+      ],
+      "E": [
+        "Whiplash",
+        "Empowered Whiplash"
+      ],
+      "R": [
+        "Last Caress"
+      ]
     },
     "icon": "Evelynn.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -1206,18 +1564,28 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Rising Spell Force",
-      "Q": "Mystic Shot",
-      "W": "Essence Flux",
-      "E": "Arcane Shift",
-      "R": "Trueshot Barrage"
+      "P": [
+        "Rising Spell Force"
+      ],
+      "Q": [
+        "Mystic Shot"
+      ],
+      "W": [
+        "Essence Flux"
+      ],
+      "E": [
+        "Arcane Shift"
+      ],
+      "R": [
+        "Trueshot Barrage"
+      ]
     },
     "icon": "Ezreal.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -1243,18 +1611,28 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "A Harmless Scarecrow",
-      "Q": "Terrify",
-      "W": "Bountiful Harvest",
-      "E": "Reap",
-      "R": "Crowstorm"
+      "P": [
+        "A Harmless Scarecrow"
+      ],
+      "Q": [
+        "Terrify"
+      ],
+      "W": [
+        "Bountiful Harvest"
+      ],
+      "E": [
+        "Reap"
+      ],
+      "R": [
+        "Crowstorm"
+      ]
     },
     "icon": "Fiddlesticks.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -1280,18 +1658,30 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Duelist's Dance",
-      "Q": "Lunge",
-      "W": "Riposte",
-      "E": "Bladework",
-      "R": "Grand Challenge"
+      "P": [
+        "Duelist's Dance",
+        "Duelist's Dance 2"
+      ],
+      "Q": [
+        "Lunge"
+      ],
+      "W": [
+        "Riposte"
+      ],
+      "E": [
+        "Bladework"
+      ],
+      "R": [
+        "Grand Challenge",
+        "Grand Challenge 2"
+      ]
     },
     "icon": "Fiora.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -1317,18 +1707,29 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "Nimble Fighter",
-      "Q": "Urchin Strike",
-      "W": "Seastone Trident",
-      "E": "Playful",
-      "R": "Chum the Waters"
+      "P": [
+        "Nimble Fighter"
+      ],
+      "Q": [
+        "Urchin Strike"
+      ],
+      "W": [
+        "Seastone Trident"
+      ],
+      "E": [
+        "Playful",
+        "Trickster"
+      ],
+      "R": [
+        "Chum the Waters"
+      ]
     },
     "icon": "Fizz.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -1354,18 +1755,29 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "Colossal Smash",
-      "Q": "Winds of War",
-      "W": "Shield of Durand",
-      "E": "Justice Punch",
-      "R": "Hero's Entrance"
+      "P": [
+        "Colossal Smash"
+      ],
+      "Q": [
+        "Winds of War"
+      ],
+      "W": [
+        "Shield of Durand",
+        "Shield of Durand 2"
+      ],
+      "E": [
+        "Justice Punch"
+      ],
+      "R": [
+        "Hero's Entrance"
+      ]
     },
     "icon": "Galio.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -1391,18 +1803,30 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Trial by Fire",
-      "Q": "Parrrley",
-      "W": "Remove Scurvy",
-      "E": "Powder Keg",
-      "R": "Cannon Barrage"
+      "P": [
+        "Trial by Fire",
+        "Trial by Fire 2"
+      ],
+      "Q": [
+        "Parrrley",
+        "Silver Serpents"
+      ],
+      "W": [
+        "Remove Scurvy"
+      ],
+      "E": [
+        "Powder Keg"
+      ],
+      "R": [
+        "Cannon Barrage"
+      ]
     },
     "icon": "Gangplank.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -1428,18 +1852,29 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Perseverance",
-      "Q": "Decisive Strike",
-      "W": "Courage",
-      "E": "Judgment",
-      "R": "Demacian Justice"
+      "P": [
+        "Perseverance"
+      ],
+      "Q": [
+        "Decisive Strike"
+      ],
+      "W": [
+        "Courage"
+      ],
+      "E": [
+        "Judgment",
+        "Judgment 2"
+      ],
+      "R": [
+        "Demacian Justice"
+      ]
     },
     "icon": "Garen.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -1465,18 +1900,32 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Rage Gene",
-      "Q": "Boomerang Throw",
-      "W": "Hyper",
-      "E": "Hop",
-      "R": "GNAR!"
+      "P": [
+        "Rage Gene"
+      ],
+      "Q": [
+        "Boomerang Throw",
+        "Boulder Toss"
+      ],
+      "W": [
+        "Hyper",
+        "Wallop"
+      ],
+      "E": [
+        "Hop",
+        "Crunch",
+        "Hop and Crunch"
+      ],
+      "R": [
+        "GNAR!"
+      ]
     },
     "icon": "Gnar.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -1502,18 +1951,30 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "Happy Hour",
-      "Q": "Barrel Roll",
-      "W": "Drunken Rage",
-      "E": "Body Slam",
-      "R": "Explosive Cask"
+      "P": [
+        "Happy Hour"
+      ],
+      "Q": [
+        "Barrel Roll",
+        "Barrel Roll 2"
+      ],
+      "W": [
+        "Drunken Rage",
+        "Drunken Rage 2"
+      ],
+      "E": [
+        "Body Slam"
+      ],
+      "R": [
+        "Explosive Cask"
+      ]
     },
     "icon": "Gragas.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -1539,18 +2000,28 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "New Destiny",
-      "Q": "End of the Line",
-      "W": "Smoke Screen",
-      "E": "Quickdraw",
-      "R": "Collateral Damage"
+      "P": [
+        "New Destiny"
+      ],
+      "Q": [
+        "End of the Line"
+      ],
+      "W": [
+        "Smoke Screen"
+      ],
+      "E": [
+        "Quickdraw"
+      ],
+      "R": [
+        "Collateral Damage"
+      ]
     },
     "icon": "Graves.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -1576,18 +2047,28 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "A Thousand Cuts",
-      "Q": "Snip Snip!",
-      "W": "Hallowed Mist",
-      "E": "Skip 'n Slash",
-      "R": "Needlework"
+      "P": [
+        "A Thousand Cuts"
+      ],
+      "Q": [
+        "Snip Snip!"
+      ],
+      "W": [
+        "Hallowed Mist"
+      ],
+      "E": [
+        "Skip 'n Slash"
+      ],
+      "R": [
+        "Needlework"
+      ]
     },
     "icon": "Gwen.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -1613,18 +2094,28 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Warpath",
-      "Q": "Rampage",
-      "W": "Spirit of Dread",
-      "E": "Devastating Charge",
-      "R": "Onslaught of Shadows"
+      "P": [
+        "Warpath"
+      ],
+      "Q": [
+        "Rampage"
+      ],
+      "W": [
+        "Spirit of Dread"
+      ],
+      "E": [
+        "Devastating Charge"
+      ],
+      "R": [
+        "Onslaught of Shadows"
+      ]
     },
     "icon": "Hecarim.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -1650,18 +2141,31 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "Hextech Affinity",
-      "Q": "H-28G Evolution Turret",
-      "W": "Hextech Micro-Rockets",
-      "E": "CH-2 Electron Storm Grenade",
-      "R": "UPGRADE!!!"
+      "P": [
+        "Hextech Affinity"
+      ],
+      "Q": [
+        "H-28G Evolution Turret",
+        "H-28Q Apex Turret"
+      ],
+      "W": [
+        "Hextech Micro-Rockets",
+        "Hextech Rocket Swarm"
+      ],
+      "E": [
+        "CH-2 Electron Storm Grenade",
+        "CH-3X Lightning Grenade"
+      ],
+      "R": [
+        "UPGRADE!!!"
+      ]
     },
     "icon": "Heimerdinger.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -1687,18 +2191,38 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "Signature of the Visionary",
-      "Q": "Subject: Disaster",
-      "W": "Subject: Serenity",
-      "E": "Subject: Torment",
-      "R": "Spiraling Despair"
+      "P": [
+        "Signature of the Visionary"
+      ],
+      "Q": [
+        "Subject: Disaster",
+        "Devastating Fire",
+        "Severing Bolt",
+        "Molten Fissure"
+      ],
+      "W": [
+        "Subject: Serenity",
+        "Fleeting Current",
+        "Pool of Reflection",
+        "Stirring Lights"
+      ],
+      "E": [
+        "Subject: Torment",
+        "Grim Visage",
+        "Gaze of the Abyss",
+        "Crushing Maw"
+      ],
+      "R": [
+        "Spiraling Despair",
+        "Wash Brush"
+      ]
     },
     "icon": "Hwei.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -1724,18 +2248,29 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Prophet of an Elder God",
-      "Q": "Tentacle Smash",
-      "W": "Harsh Lesson",
-      "E": "Test of Spirit",
-      "R": "Leap of Faith"
+      "P": [
+        "Prophet of an Elder God"
+      ],
+      "Q": [
+        "Tentacle Smash"
+      ],
+      "W": [
+        "Harsh Lesson"
+      ],
+      "E": [
+        "Test of Spirit",
+        "Vessel"
+      ],
+      "R": [
+        "Leap of Faith"
+      ]
     },
     "icon": "Illaoi.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -1761,18 +2296,28 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Ionian Fervor",
-      "Q": "Bladesurge",
-      "W": "Defiant Dance",
-      "E": "Flawless Duet",
-      "R": "Vanguard's Edge"
+      "P": [
+        "Ionian Fervor"
+      ],
+      "Q": [
+        "Bladesurge"
+      ],
+      "W": [
+        "Defiant Dance"
+      ],
+      "E": [
+        "Flawless Duet"
+      ],
+      "R": [
+        "Vanguard's Edge"
+      ]
     },
     "icon": "Irelia.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -1798,18 +2343,29 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "Friend of the Forest",
-      "Q": "Rootcaller",
-      "W": "Brushmaker",
-      "E": "Triggerseed",
-      "R": "Daisy!"
+      "P": [
+        "Friend of the Forest"
+      ],
+      "Q": [
+        "Rootcaller"
+      ],
+      "W": [
+        "Brushmaker"
+      ],
+      "E": [
+        "Triggerseed"
+      ],
+      "R": [
+        "Daisy!",
+        "Daisy, wait!"
+      ]
     },
     "icon": "Ivern.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -1835,18 +2391,28 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "Tailwind",
-      "Q": "Howling Gale",
-      "W": "Zephyr",
-      "E": "Eye of the Storm",
-      "R": "Monsoon"
+      "P": [
+        "Tailwind"
+      ],
+      "Q": [
+        "Howling Gale"
+      ],
+      "W": [
+        "Zephyr"
+      ],
+      "E": [
+        "Eye of the Storm"
+      ],
+      "R": [
+        "Monsoon"
+      ]
     },
     "icon": "Janna.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -1872,18 +2438,28 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Martial Cadence",
-      "Q": "Dragon Strike",
-      "W": "Golden Aegis",
-      "E": "Demacian Standard",
-      "R": "Cataclysm"
+      "P": [
+        "Martial Cadence"
+      ],
+      "Q": [
+        "Dragon Strike"
+      ],
+      "W": [
+        "Golden Aegis"
+      ],
+      "E": [
+        "Demacian Standard"
+      ],
+      "R": [
+        "Cataclysm"
+      ]
     },
     "icon": "JarvanIV.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -1909,18 +2485,28 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Relentless Assault",
-      "Q": "Leap Strike",
-      "W": "Empower",
-      "E": "Counter Strike",
-      "R": "Grandmaster-at-Arms"
+      "P": [
+        "Relentless Assault"
+      ],
+      "Q": [
+        "Leap Strike"
+      ],
+      "W": [
+        "Empower"
+      ],
+      "E": [
+        "Counter Strike"
+      ],
+      "R": [
+        "Grandmaster-at-Arms"
+      ]
     },
     "icon": "Jax.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -1946,18 +2532,33 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Hextech Capacitor",
-      "Q": "To the Skies!",
-      "W": "Lightning Field",
-      "E": "Thundering Blow",
-      "R": "Transform Mercury Cannon"
+      "P": [
+        "Hextech Capacitor",
+        "Hextech Capacitor 2"
+      ],
+      "Q": [
+        "To the Skies!",
+        "Shock Blast"
+      ],
+      "W": [
+        "Lightning Field",
+        "Hyper Charge"
+      ],
+      "E": [
+        "Thundering Blow",
+        "Acceleration Gate"
+      ],
+      "R": [
+        "Transform Mercury Cannon",
+        "Transform Mercury Hammer"
+      ]
     },
     "icon": "Jayce.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -1983,18 +2584,31 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Whisper",
-      "Q": "Dancing Grenade",
-      "W": "Deadly Flourish",
-      "E": "Captive Audience",
-      "R": "Curtain Call"
+      "P": [
+        "Whisper"
+      ],
+      "Q": [
+        "Dancing Grenade"
+      ],
+      "W": [
+        "Deadly Flourish",
+        "Caught Out"
+      ],
+      "E": [
+        "Captive Audience"
+      ],
+      "R": [
+        "Curtain Call",
+        "Curtain Call 2",
+        "Curtain Call 3"
+      ]
     },
     "icon": "Jhin.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -2020,18 +2634,32 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Get Excited!",
-      "Q": "Switcheroo!",
-      "W": "Zap!",
-      "E": "Flame Chompers!",
-      "R": "Super Mega Death Rocket!"
+      "P": [
+        "Get Excited!"
+      ],
+      "Q": [
+        "Switcheroo!",
+        "Pow-Pow",
+        "Rev'd up",
+        "Fishbones"
+      ],
+      "W": [
+        "Zap!"
+      ],
+      "E": [
+        "Flame Chompers!",
+        "Flame Chompers! 2"
+      ],
+      "R": [
+        "Super Mega Death Rocket!"
+      ]
     },
     "icon": "Jinx.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -2057,18 +2685,28 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Dauntless Instinct",
-      "Q": "Ntofo Strikes",
-      "W": "Path Maker",
-      "E": "Footwork",
-      "R": "All Out"
+      "P": [
+        "Dauntless Instinct"
+      ],
+      "Q": [
+        "Ntofo Strikes"
+      ],
+      "W": [
+        "Path Maker"
+      ],
+      "E": [
+        "Footwork"
+      ],
+      "R": [
+        "All Out"
+      ]
     },
     "icon": "KSante.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -2094,18 +2732,31 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "Second Skin",
-      "Q": "Icathian Rain",
-      "W": "Void Seeker",
-      "E": "Supercharge",
-      "R": "Killer Instinct"
+      "P": [
+        "Second Skin"
+      ],
+      "Q": [
+        "Icathian Rain",
+        "Icathian Rain 2"
+      ],
+      "W": [
+        "Void Seeker",
+        "Void Seeker 2"
+      ],
+      "E": [
+        "Supercharge",
+        "Supercharge 2"
+      ],
+      "R": [
+        "Killer Instinct"
+      ]
     },
     "icon": "Kaisa.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -2131,18 +2782,28 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Martial Poise",
-      "Q": "Pierce",
-      "W": "Sentinel",
-      "E": "Rend",
-      "R": "Fate's Call"
+      "P": [
+        "Martial Poise"
+      ],
+      "Q": [
+        "Pierce"
+      ],
+      "W": [
+        "Sentinel"
+      ],
+      "E": [
+        "Rend"
+      ],
+      "R": [
+        "Fate's Call"
+      ]
     },
     "icon": "Kalista.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -2168,18 +2829,31 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "Gathering Fire",
-      "Q": "Inner Flame",
-      "W": "Focused Resolve",
-      "E": "Inspire",
-      "R": "Mantra"
+      "P": [
+        "Gathering Fire"
+      ],
+      "Q": [
+        "Inner Flame",
+        "Soulflare"
+      ],
+      "W": [
+        "Focused Resolve",
+        "Renewal"
+      ],
+      "E": [
+        "Inspire",
+        "Defiance"
+      ],
+      "R": [
+        "Mantra"
+      ]
     },
     "icon": "Karma.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -2205,18 +2879,28 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "Death Defied",
-      "Q": "Lay Waste",
-      "W": "Wall of Pain",
-      "E": "Defile",
-      "R": "Requiem"
+      "P": [
+        "Death Defied"
+      ],
+      "Q": [
+        "Lay Waste"
+      ],
+      "W": [
+        "Wall of Pain"
+      ],
+      "E": [
+        "Defile"
+      ],
+      "R": [
+        "Requiem"
+      ]
     },
     "icon": "Karthus.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -2242,18 +2926,28 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "Void Stone",
-      "Q": "Null Sphere",
-      "W": "Nether Blade",
-      "E": "Force Pulse",
-      "R": "Riftwalk"
+      "P": [
+        "Void Stone"
+      ],
+      "Q": [
+        "Null Sphere"
+      ],
+      "W": [
+        "Nether Blade"
+      ],
+      "E": [
+        "Force Pulse"
+      ],
+      "R": [
+        "Riftwalk"
+      ]
     },
     "icon": "Kassadin.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -2279,18 +2973,29 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "Voracity",
-      "Q": "Bouncing Blade",
-      "W": "Preparation",
-      "E": "Shunpo",
-      "R": "Death Lotus"
+      "P": [
+        "Voracity",
+        "Sinister Steel"
+      ],
+      "Q": [
+        "Bouncing Blade"
+      ],
+      "W": [
+        "Preparation"
+      ],
+      "E": [
+        "Shunpo"
+      ],
+      "R": [
+        "Death Lotus"
+      ]
     },
     "icon": "Katarina.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -2316,18 +3021,29 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Divine Ascent",
-      "Q": "Radiant Blast",
-      "W": "Celestial Blessing",
-      "E": "Starfire Spellblade",
-      "R": "Divine Judgment"
+      "P": [
+        "Divine Ascent",
+        "Divine Ascent 2"
+      ],
+      "Q": [
+        "Radiant Blast"
+      ],
+      "W": [
+        "Celestial Blessing"
+      ],
+      "E": [
+        "Starfire Spellblade"
+      ],
+      "R": [
+        "Divine Judgment"
+      ]
     },
     "icon": "Kayle.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -2353,18 +3069,39 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "The Darkin Scythe",
-      "Q": "Reaping Slash",
-      "W": "Blade's Reach",
-      "E": "Shadow Step",
-      "R": "Umbral Trespass"
+      "P": [
+        "The Darkin Scythe",
+        "The Darkin Scythe A",
+        "The Darkin Scythe R"
+      ],
+      "Q": [
+        "Reaping Slash",
+        "Reaping Slash A",
+        "Reaping Slash R"
+      ],
+      "W": [
+        "Blade's Reach",
+        "Blade's Reach A",
+        "Blade's Reach R"
+      ],
+      "E": [
+        "Shadow Step",
+        "Shadow Step A",
+        "Shadow Step R"
+      ],
+      "R": [
+        "Umbral Trespass",
+        "Umbral Trespass R",
+        "Umbral Trespass 2",
+        "Umbral Trespass 2 R"
+      ]
     },
     "icon": "Kayn.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -2390,18 +3127,28 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "Mark of the Storm",
-      "Q": "Thundering Shuriken",
-      "W": "Electrical Surge",
-      "E": "Lightning Rush",
-      "R": "Slicing Maelstrom"
+      "P": [
+        "Mark of the Storm"
+      ],
+      "Q": [
+        "Thundering Shuriken"
+      ],
+      "W": [
+        "Electrical Surge"
+      ],
+      "E": [
+        "Lightning Rush"
+      ],
+      "R": [
+        "Slicing Maelstrom"
+      ]
     },
     "icon": "Kennen.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -2427,18 +3174,32 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Unseen Threat",
-      "Q": "Taste Their Fear",
-      "W": "Void Spike",
-      "E": "Leap",
-      "R": "Void Assault"
+      "P": [
+        "Unseen Threat"
+      ],
+      "Q": [
+        "Taste Their Fear",
+        "Evolved Reaper Claws"
+      ],
+      "W": [
+        "Void Spike",
+        "Evolved Spike Racks"
+      ],
+      "E": [
+        "Leap",
+        "Evolved Wings"
+      ],
+      "R": [
+        "Void Assault",
+        "Evolved Adaptive Cloaking"
+      ]
     },
     "icon": "Khazix.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -2464,18 +3225,28 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Mark of the Kindred",
-      "Q": "Dance of Arrows",
-      "W": "Wolf's Frenzy",
-      "E": "Mounting Dread",
-      "R": "Lamb's Respite"
+      "P": [
+        "Mark of the Kindred"
+      ],
+      "Q": [
+        "Dance of Arrows"
+      ],
+      "W": [
+        "Wolf's Frenzy"
+      ],
+      "E": [
+        "Mounting Dread"
+      ],
+      "R": [
+        "Lamb's Respite"
+      ]
     },
     "icon": "Kindred.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -2501,18 +3272,32 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Skaarl the Cowardly Lizard",
-      "Q": "Bear Trap on a Rope",
-      "W": "Violent Tendencies",
-      "E": "Jousting",
-      "R": "Chaaaaaaaarge!!!"
+      "P": [
+        "Skaarl the Cowardly Lizard",
+        "Dismounted Skaarl the Cowardly Lizard"
+      ],
+      "Q": [
+        "Bear Trap on a Rope",
+        "Pocket Pistol"
+      ],
+      "W": [
+        "Violent Tendencies"
+      ],
+      "E": [
+        "Jousting",
+        "Dismounted Jousting"
+      ],
+      "R": [
+        "Chaaaaaaaarge!!!",
+        "Dismounted Chaaaaaaaarge!!!"
+      ]
     },
     "icon": "Kled.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -2538,18 +3323,28 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Icathian Surprise",
-      "Q": "Caustic Spittle",
-      "W": "Bio-Arcane Barrage",
-      "E": "Void Ooze",
-      "R": "Living Artillery"
+      "P": [
+        "Icathian Surprise"
+      ],
+      "Q": [
+        "Caustic Spittle"
+      ],
+      "W": [
+        "Bio-Arcane Barrage"
+      ],
+      "E": [
+        "Void Ooze"
+      ],
+      "R": [
+        "Living Artillery"
+      ]
     },
     "icon": "KogMaw.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -2575,18 +3370,32 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "Mirror Image 2",
-      "Q": "Sigil of Malice",
-      "W": "Distortion",
-      "E": "Ethereal Chains",
-      "R": "Mimic"
+      "P": [
+        "Mirror Image 2"
+      ],
+      "Q": [
+        "Sigil of Malice"
+      ],
+      "W": [
+        "Distortion",
+        "Distortion 2"
+      ],
+      "E": [
+        "Ethereal Chains"
+      ],
+      "R": [
+        "Mimic",
+        "Mimic: Sigil of Malice",
+        "Mimic: Distortion",
+        "Mimic: Ethereal Chains"
+      ]
     },
     "icon": "Leblanc.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -2612,18 +3421,31 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Flurry",
-      "Q": "Sonic Wave",
-      "W": "Safeguard",
-      "E": "Tempest",
-      "R": "Dragon's Rage"
+      "P": [
+        "Flurry"
+      ],
+      "Q": [
+        "Sonic Wave",
+        "Resonating Strike"
+      ],
+      "W": [
+        "Safeguard",
+        "Iron Will"
+      ],
+      "E": [
+        "Tempest",
+        "Cripple"
+      ],
+      "R": [
+        "Dragon's Rage"
+      ]
     },
     "icon": "LeeSin.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -2649,18 +3471,28 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Sunlight",
-      "Q": "Shield of Daybreak",
-      "W": "Eclipse",
-      "E": "Zenith Blade",
-      "R": "Solar Flare"
+      "P": [
+        "Sunlight"
+      ],
+      "Q": [
+        "Shield of Daybreak"
+      ],
+      "W": [
+        "Eclipse"
+      ],
+      "E": [
+        "Zenith Blade"
+      ],
+      "R": [
+        "Solar Flare"
+      ]
     },
     "icon": "Leona.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -2686,18 +3518,29 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "Dream-Laden Bough",
-      "Q": "Blooming Blows",
-      "W": "Watch Out! Eep!",
-      "E": "Swirlseed",
-      "R": "Lilting Lullaby"
+      "P": [
+        "Dream-Laden Bough"
+      ],
+      "Q": [
+        "Blooming Blows",
+        "Prance"
+      ],
+      "W": [
+        "Watch Out! Eep!"
+      ],
+      "E": [
+        "Swirlseed"
+      ],
+      "R": [
+        "Lilting Lullaby"
+      ]
     },
     "icon": "Lillia.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -2723,18 +3566,28 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "Iceborn Subjugation",
-      "Q": "Ice Shard",
-      "W": "Ring of Frost",
-      "E": "Glacial Path",
-      "R": "Frozen Tomb"
+      "P": [
+        "Iceborn Subjugation"
+      ],
+      "Q": [
+        "Ice Shard"
+      ],
+      "W": [
+        "Ring of Frost"
+      ],
+      "E": [
+        "Glacial Path"
+      ],
+      "R": [
+        "Frozen Tomb"
+      ]
     },
     "icon": "Lissandra.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -2760,18 +3613,28 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "Silver Stake",
-      "Q": "Ritual Nails",
-      "W": "Soul Ignition",
-      "E": "Ashen Pursuit",
-      "R": "Purgatory"
+      "P": [
+        "Silver Stake"
+      ],
+      "Q": [
+        "Ritual Nails"
+      ],
+      "W": [
+        "Soul Ignition"
+      ],
+      "E": [
+        "Ashen Pursuit"
+      ],
+      "R": [
+        "Purgatory"
+      ]
     },
     "icon": "Locke.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -2797,18 +3660,30 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Lightslinger",
-      "Q": "Piercing Light",
-      "W": "Ardent Blaze",
-      "E": "Relentless Pursuit",
-      "R": "The Culling"
+      "P": [
+        "Lightslinger"
+      ],
+      "Q": [
+        "Piercing Light"
+      ],
+      "W": [
+        "Ardent Blaze",
+        "Ardent Blaze 2",
+        "Ardent Blaze 3"
+      ],
+      "E": [
+        "Relentless Pursuit"
+      ],
+      "R": [
+        "The Culling"
+      ]
     },
     "icon": "Lucian.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -2834,18 +3709,28 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "Pix, Faerie Companion",
-      "Q": "Glitterlance",
-      "W": "Whimsy",
-      "E": "Help, Pix!",
-      "R": "Wild Growth"
+      "P": [
+        "Pix, Faerie Companion"
+      ],
+      "Q": [
+        "Glitterlance"
+      ],
+      "W": [
+        "Whimsy"
+      ],
+      "E": [
+        "Help, Pix!"
+      ],
+      "R": [
+        "Wild Growth"
+      ]
     },
     "icon": "Lulu.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -2871,18 +3756,28 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "Illumination",
-      "Q": "Light Binding",
-      "W": "Prismatic Barrier",
-      "E": "Lucent Singularity",
-      "R": "Final Spark"
+      "P": [
+        "Illumination"
+      ],
+      "Q": [
+        "Light Binding"
+      ],
+      "W": [
+        "Prismatic Barrier"
+      ],
+      "E": [
+        "Lucent Singularity"
+      ],
+      "R": [
+        "Final Spark"
+      ]
     },
     "icon": "Lux.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -2908,18 +3803,28 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "Granite Shield",
-      "Q": "Seismic Shard",
-      "W": "Thunderclap",
-      "E": "Ground Slam",
-      "R": "Unstoppable Force"
+      "P": [
+        "Granite Shield"
+      ],
+      "Q": [
+        "Seismic Shard"
+      ],
+      "W": [
+        "Thunderclap"
+      ],
+      "E": [
+        "Ground Slam"
+      ],
+      "R": [
+        "Unstoppable Force"
+      ]
     },
     "icon": "Malphite.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -2945,18 +3850,28 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "Void Shift",
-      "Q": "Call of the Void",
-      "W": "Void Swarm",
-      "E": "Malefic Visions",
-      "R": "Nether Grasp"
+      "P": [
+        "Void Shift"
+      ],
+      "Q": [
+        "Call of the Void"
+      ],
+      "W": [
+        "Void Swarm"
+      ],
+      "E": [
+        "Malefic Visions"
+      ],
+      "R": [
+        "Nether Grasp"
+      ]
     },
     "icon": "Malzahar.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -2982,18 +3897,29 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "Sap Magic",
-      "Q": "Bramble Smash",
-      "W": "Twisted Advance",
-      "E": "Sapling Toss",
-      "R": "Nature's Grasp"
+      "P": [
+        "Sap Magic",
+        "Sap Magic 2"
+      ],
+      "Q": [
+        "Bramble Smash"
+      ],
+      "W": [
+        "Twisted Advance"
+      ],
+      "E": [
+        "Sapling Toss"
+      ],
+      "R": [
+        "Nature's Grasp"
+      ]
     },
     "icon": "Maokai.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -3019,18 +3945,28 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Double Strike",
-      "Q": "Alpha Strike",
-      "W": "Meditate",
-      "E": "Wuju Style",
-      "R": "Highlander"
+      "P": [
+        "Double Strike"
+      ],
+      "Q": [
+        "Alpha Strike"
+      ],
+      "W": [
+        "Meditate"
+      ],
+      "E": [
+        "Wuju Style"
+      ],
+      "R": [
+        "Highlander"
+      ]
     },
     "icon": "MasterYi.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -3056,18 +3992,28 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "Searing Brilliance",
-      "Q": "Radiant Volley",
-      "W": "Rebuttal",
-      "E": "Solar Snare",
-      "R": "Golden Eclipse"
+      "P": [
+        "Searing Brilliance"
+      ],
+      "Q": [
+        "Radiant Volley"
+      ],
+      "W": [
+        "Rebuttal"
+      ],
+      "E": [
+        "Solar Snare"
+      ],
+      "R": [
+        "Golden Eclipse"
+      ]
     },
     "icon": "Mel.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -3093,18 +4039,29 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "Fired Up!",
-      "Q": "Ultra Mega Fire Kick",
-      "W": "Cozy Campfire",
-      "E": "Warm Hugs",
-      "R": "Breath of Life"
+      "P": [
+        "Fired Up!"
+      ],
+      "Q": [
+        "Ultra Mega Fire Kick"
+      ],
+      "W": [
+        "Cozy Campfire",
+        "Cozy Campfire 2"
+      ],
+      "E": [
+        "Warm Hugs"
+      ],
+      "R": [
+        "Breath of Life"
+      ]
     },
     "icon": "Milio.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -3130,18 +4087,30 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Love Tap",
-      "Q": "Double Up",
-      "W": "Strut",
-      "E": "Make It Rain",
-      "R": "Bullet Time"
+      "P": [
+        "Love Tap"
+      ],
+      "Q": [
+        "Double Up"
+      ],
+      "W": [
+        "Strut",
+        "Guns Blazing",
+        "Impure Shots"
+      ],
+      "E": [
+        "Make It Rain"
+      ],
+      "R": [
+        "Bullet Time"
+      ]
     },
     "icon": "MissFortune.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -3167,18 +4136,29 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "Darkness Rise",
-      "Q": "Obliterate",
-      "W": "Indestructible",
-      "E": "Death's Grasp",
-      "R": "Realm of Death"
+      "P": [
+        "Darkness Rise"
+      ],
+      "Q": [
+        "Obliterate"
+      ],
+      "W": [
+        "Indestructible",
+        "Indestructible 2"
+      ],
+      "E": [
+        "Death's Grasp"
+      ],
+      "R": [
+        "Realm of Death"
+      ]
     },
     "icon": "Mordekaiser.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -3204,18 +4184,28 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "Soul Siphon",
-      "Q": "Dark Binding",
-      "W": "Tormented Shadow",
-      "E": "Black Shield",
-      "R": "Soul Shackles"
+      "P": [
+        "Soul Siphon"
+      ],
+      "Q": [
+        "Dark Binding"
+      ],
+      "W": [
+        "Tormented Shadow"
+      ],
+      "E": [
+        "Black Shield"
+      ],
+      "R": [
+        "Soul Shackles"
+      ]
     },
     "icon": "Morgana.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -3241,18 +4231,28 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "We Are More",
-      "Q": "Darkin Daggers",
-      "W": "The Call of the Pack",
-      "E": "Eviscerate",
-      "R": "Hounds' Pursuit"
+      "P": [
+        "We Are More"
+      ],
+      "Q": [
+        "Darkin Daggers"
+      ],
+      "W": [
+        "The Call of the Pack"
+      ],
+      "E": [
+        "Eviscerate"
+      ],
+      "R": [
+        "Hounds' Pursuit"
+      ]
     },
     "icon": "Naafiri.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -3278,18 +4278,28 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "Surging Tides",
-      "Q": "Aqua Prison",
-      "W": "Ebb and Flow",
-      "E": "Tidecaller's Blessing",
-      "R": "Tidal Wave"
+      "P": [
+        "Surging Tides"
+      ],
+      "Q": [
+        "Aqua Prison"
+      ],
+      "W": [
+        "Ebb and Flow"
+      ],
+      "E": [
+        "Tidecaller's Blessing"
+      ],
+      "R": [
+        "Tidal Wave"
+      ]
     },
     "icon": "Nami.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -3315,18 +4325,28 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Soul Eater",
-      "Q": "Siphoning Strike",
-      "W": "Wither",
-      "E": "Spirit Fire",
-      "R": "Fury of the Sands"
+      "P": [
+        "Soul Eater"
+      ],
+      "Q": [
+        "Siphoning Strike"
+      ],
+      "W": [
+        "Wither"
+      ],
+      "E": [
+        "Spirit Fire"
+      ],
+      "R": [
+        "Fury of the Sands"
+      ]
     },
     "icon": "Nasus.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -3352,18 +4372,29 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "Staggering Blow",
-      "Q": "Dredge Line",
-      "W": "Titan's Wrath",
-      "E": "Riptide",
-      "R": "Depth Charge"
+      "P": [
+        "Staggering Blow"
+      ],
+      "Q": [
+        "Dredge Line"
+      ],
+      "W": [
+        "Titan's Wrath"
+      ],
+      "E": [
+        "Riptide"
+      ],
+      "R": [
+        "Depth Charge",
+        "Depth Charge 2"
+      ]
     },
     "icon": "Nautilus.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -3389,18 +4420,28 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "Inherent Glamour",
-      "Q": "Blooming Burst",
-      "W": "Shapesplitter",
-      "E": "Tangle-Barbs",
-      "R": "Pop Blossom"
+      "P": [
+        "Inherent Glamour"
+      ],
+      "Q": [
+        "Blooming Burst"
+      ],
+      "W": [
+        "Shapesplitter"
+      ],
+      "E": [
+        "Tangle-Barbs"
+      ],
+      "R": [
+        "Pop Blossom"
+      ]
     },
     "icon": "Neeko.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -3426,18 +4467,32 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "Prowl",
-      "Q": "Javelin Toss",
-      "W": "Bushwhack",
-      "E": "Primal Surge",
-      "R": "Aspect of the Cougar"
+      "P": [
+        "Prowl"
+      ],
+      "Q": [
+        "Javelin Toss",
+        "Takedown"
+      ],
+      "W": [
+        "Bushwhack",
+        "Pounce"
+      ],
+      "E": [
+        "Primal Surge",
+        "Swipe"
+      ],
+      "R": [
+        "Aspect of the Cougar",
+        "Aspect of the Cougar 2"
+      ]
     },
     "icon": "Nidalee.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -3463,18 +4518,28 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Joy Unending",
-      "Q": "Formless Blade",
-      "W": "Jubilant Veil",
-      "E": "Slipstream",
-      "R": "Apotheosis"
+      "P": [
+        "Joy Unending"
+      ],
+      "Q": [
+        "Formless Blade"
+      ],
+      "W": [
+        "Jubilant Veil"
+      ],
+      "E": [
+        "Slipstream"
+      ],
+      "R": [
+        "Apotheosis"
+      ]
     },
     "icon": "Nilah.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -3500,18 +4565,28 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Umbra Blades",
-      "Q": "Duskbringer",
-      "W": "Shroud of Darkness",
-      "E": "Unspeakable Horror",
-      "R": "Paranoia"
+      "P": [
+        "Umbra Blades"
+      ],
+      "Q": [
+        "Duskbringer"
+      ],
+      "W": [
+        "Shroud of Darkness"
+      ],
+      "E": [
+        "Unspeakable Horror"
+      ],
+      "R": [
+        "Paranoia"
+      ]
     },
     "icon": "Nocturne.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -3537,18 +4612,28 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "Call of the Freljord",
-      "Q": "Consume",
-      "W": "Biggest Snowball Ever!",
-      "E": "Snowball Barrage",
-      "R": "Absolute Zero"
+      "P": [
+        "Call of the Freljord"
+      ],
+      "Q": [
+        "Consume"
+      ],
+      "W": [
+        "Biggest Snowball Ever!"
+      ],
+      "E": [
+        "Snowball Barrage"
+      ],
+      "R": [
+        "Absolute Zero"
+      ]
     },
     "icon": "Nunu.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -3574,18 +4659,28 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Berserker Rage",
-      "Q": "Undertow",
-      "W": "Tough It Out",
-      "E": "Reckless Swing",
-      "R": "Ragnarok"
+      "P": [
+        "Berserker Rage"
+      ],
+      "Q": [
+        "Undertow"
+      ],
+      "W": [
+        "Tough It Out"
+      ],
+      "E": [
+        "Reckless Swing"
+      ],
+      "R": [
+        "Ragnarok"
+      ]
     },
     "icon": "Olaf.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -3611,18 +4706,29 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "Clockwork Windup",
-      "Q": "Command: Attack",
-      "W": "Command: Dissonance",
-      "E": "Command: Protect",
-      "R": "Command: Shockwave"
+      "P": [
+        "Clockwork Windup",
+        "Clockwork Winding"
+      ],
+      "Q": [
+        "Command: Attack"
+      ],
+      "W": [
+        "Command: Dissonance"
+      ],
+      "E": [
+        "Command: Protect"
+      ],
+      "R": [
+        "Command: Shockwave"
+      ]
     },
     "icon": "Orianna.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -3648,18 +4754,29 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Living Forge",
-      "Q": "Volcanic Rupture",
-      "W": "Bellows Breath",
-      "E": "Searing Charge",
-      "R": "Call of the Forge God"
+      "P": [
+        "Living Forge",
+        "Master Craftsman"
+      ],
+      "Q": [
+        "Volcanic Rupture"
+      ],
+      "W": [
+        "Bellows Breath"
+      ],
+      "E": [
+        "Searing Charge"
+      ],
+      "R": [
+        "Call of the Forge God"
+      ]
     },
     "icon": "Ornn.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -3685,18 +4802,28 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Mortal Will",
-      "Q": "Comet Spear",
-      "W": "Shield Vault",
-      "E": "Aegis Assault",
-      "R": "Grand Starfall"
+      "P": [
+        "Mortal Will"
+      ],
+      "Q": [
+        "Comet Spear"
+      ],
+      "W": [
+        "Shield Vault"
+      ],
+      "E": [
+        "Aegis Assault"
+      ],
+      "R": [
+        "Grand Starfall"
+      ]
     },
     "icon": "Pantheon.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -3722,18 +4849,30 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Iron Ambassador",
-      "Q": "Hammer Shock",
-      "W": "Steadfast Presence",
-      "E": "Heroic Charge",
-      "R": "Keeper's Verdict"
+      "P": [
+        "Iron Ambassador",
+        "Iron Ambassador 2"
+      ],
+      "Q": [
+        "Hammer Shock"
+      ],
+      "W": [
+        "Steadfast Presence",
+        "Steadfast Presence 2"
+      ],
+      "E": [
+        "Heroic Charge"
+      ],
+      "R": [
+        "Keeper's Verdict"
+      ]
     },
     "icon": "Poppy.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -3759,18 +4898,29 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Gift of the Drowned Ones",
-      "Q": "Bone Skewer",
-      "W": "Ghostwater Dive",
-      "E": "Phantom Undertow",
-      "R": "Death from Below"
+      "P": [
+        "Gift of the Drowned Ones"
+      ],
+      "Q": [
+        "Bone Skewer"
+      ],
+      "W": [
+        "Ghostwater Dive"
+      ],
+      "E": [
+        "Phantom Undertow"
+      ],
+      "R": [
+        "Death from Below",
+        "Death from Below 2"
+      ]
     },
     "icon": "Pyke.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -3796,18 +4946,29 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Royal Privilege",
-      "Q": "Edge of Ixtal",
-      "W": "Terrashape",
-      "E": "Audacity",
-      "R": "Supreme Display of Talent"
+      "P": [
+        "Royal Privilege"
+      ],
+      "Q": [
+        "Edge of Ixtal",
+        "Elemental Wrath"
+      ],
+      "W": [
+        "Terrashape"
+      ],
+      "E": [
+        "Audacity"
+      ],
+      "R": [
+        "Supreme Display of Talent"
+      ]
     },
     "icon": "Qiyana.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -3833,18 +4994,29 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Harrier",
-      "Q": "Blinding Assault",
-      "W": "Heightened Senses",
-      "E": "Vault",
-      "R": "Behind Enemy Lines"
+      "P": [
+        "Harrier"
+      ],
+      "Q": [
+        "Blinding Assault"
+      ],
+      "W": [
+        "Heightened Senses"
+      ],
+      "E": [
+        "Vault"
+      ],
+      "R": [
+        "Behind Enemy Lines",
+        "Skystrike"
+      ]
     },
     "icon": "Quinn.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -3870,18 +5042,30 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "Fey Feathers",
-      "Q": "Gleaming Quill",
-      "W": "Grand Entrance",
-      "E": "Battle Dance",
-      "R": "The Quickness"
+      "P": [
+        "Fey Feathers",
+        "Lover's Leap"
+      ],
+      "Q": [
+        "Gleaming Quill"
+      ],
+      "W": [
+        "Grand Entrance"
+      ],
+      "E": [
+        "Battle Dance",
+        "Battle Dance 2"
+      ],
+      "R": [
+        "The Quickness"
+      ]
     },
     "icon": "Rakan.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -3907,18 +5091,28 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Spiked Shell",
-      "Q": "Powerball",
-      "W": "Defensive Ball Curl",
-      "E": "Frenzying Taunt",
-      "R": "Soaring Slam"
+      "P": [
+        "Spiked Shell"
+      ],
+      "Q": [
+        "Powerball"
+      ],
+      "W": [
+        "Defensive Ball Curl"
+      ],
+      "E": [
+        "Frenzying Taunt"
+      ],
+      "R": [
+        "Soaring Slam"
+      ]
     },
     "icon": "Rammus.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -3944,18 +5138,31 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Fury of the Xer'Sai",
-      "Q": "Queen's Wrath",
-      "W": "Burrow",
-      "E": "Furious Bite",
-      "R": "Void Rush"
+      "P": [
+        "Fury of the Xer'Sai"
+      ],
+      "Q": [
+        "Queen's Wrath",
+        "Prey Seeker"
+      ],
+      "W": [
+        "Burrow",
+        "Unburrow"
+      ],
+      "E": [
+        "Furious Bite",
+        "Tunnel"
+      ],
+      "R": [
+        "Void Rush"
+      ]
     },
     "icon": "RekSai.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -3981,18 +5188,29 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "Break the Mold",
-      "Q": "Shattering Strike",
-      "W": "Ferromancy: Crash Down",
-      "E": "Full Tilt",
-      "R": "Magnet Storm"
+      "P": [
+        "Break the Mold"
+      ],
+      "Q": [
+        "Shattering Strike"
+      ],
+      "W": [
+        "Ferromancy: Crash Down",
+        "Ferromancy: Mount Up"
+      ],
+      "E": [
+        "Full Tilt"
+      ],
+      "R": [
+        "Magnet Storm"
+      ]
     },
     "icon": "Rell.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -4018,18 +5236,28 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "Leverage",
-      "Q": "Handshake",
-      "W": "Bailout",
-      "E": "Loyalty Program",
-      "R": "Hostile Takeover"
+      "P": [
+        "Leverage"
+      ],
+      "Q": [
+        "Handshake"
+      ],
+      "W": [
+        "Bailout"
+      ],
+      "E": [
+        "Loyalty Program"
+      ],
+      "R": [
+        "Hostile Takeover"
+      ]
     },
     "icon": "Renata.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -4055,18 +5283,28 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Reign of Anger",
-      "Q": "Cull the Meek",
-      "W": "Ruthless Predator",
-      "E": "Slice and Dice",
-      "R": "Dominus"
+      "P": [
+        "Reign of Anger"
+      ],
+      "Q": [
+        "Cull the Meek"
+      ],
+      "W": [
+        "Ruthless Predator"
+      ],
+      "E": [
+        "Slice and Dice"
+      ],
+      "R": [
+        "Dominus"
+      ]
     },
     "icon": "Renekton.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -4092,18 +5330,30 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Unseen Predator",
-      "Q": "Savagery",
-      "W": "Battle Roar",
-      "E": "Bola Strike",
-      "R": "Thrill of the Hunt"
+      "P": [
+        "Unseen Predator",
+        "Bonetooth Necklace",
+        "Head of Kha'Zix"
+      ],
+      "Q": [
+        "Savagery"
+      ],
+      "W": [
+        "Battle Roar"
+      ],
+      "E": [
+        "Bola Strike"
+      ],
+      "R": [
+        "Thrill of the Hunt"
+      ]
     },
     "icon": "Rengar.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -4129,18 +5379,29 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Runic Blade",
-      "Q": "Broken Wings",
-      "W": "Ki Burst",
-      "E": "Valor",
-      "R": "Blade of the Exile"
+      "P": [
+        "Runic Blade"
+      ],
+      "Q": [
+        "Broken Wings"
+      ],
+      "W": [
+        "Ki Burst"
+      ],
+      "E": [
+        "Valor"
+      ],
+      "R": [
+        "Blade of the Exile",
+        "Wind Slash"
+      ]
     },
     "icon": "Riven.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -4166,18 +5427,32 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "Junkyard Titan",
-      "Q": "Flamespitter",
-      "W": "Scrap Shield",
-      "E": "Electro Harpoon",
-      "R": "The Equalizer"
+      "P": [
+        "Junkyard Titan",
+        "Junkyard Titan 2",
+        "Junkyard Titan 3"
+      ],
+      "Q": [
+        "Flamespitter"
+      ],
+      "W": [
+        "Scrap Shield",
+        "Scrap Shield 2"
+      ],
+      "E": [
+        "Electro Harpoon",
+        "Electro Harpoon 2"
+      ],
+      "R": [
+        "The Equalizer"
+      ]
     },
     "icon": "Rumble.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -4203,18 +5478,31 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "Arcane Mastery",
-      "Q": "Overload",
-      "W": "Rune Prison",
-      "E": "Spell Flux",
-      "R": "Realm Warp"
+      "P": [
+        "Arcane Mastery"
+      ],
+      "Q": [
+        "Overload",
+        "Overload 2",
+        "Overload 3",
+        "Overload 4"
+      ],
+      "W": [
+        "Rune Prison"
+      ],
+      "E": [
+        "Spell Flux"
+      ],
+      "R": [
+        "Realm Warp"
+      ]
     },
     "icon": "Ryze.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -4240,18 +5528,29 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Daredevil Impulse",
-      "Q": "Flair",
-      "W": "Blade Whirl",
-      "E": "Wild Rush",
-      "R": "Inferno Trigger"
+      "P": [
+        "Daredevil Impulse",
+        "splash coin"
+      ],
+      "Q": [
+        "Flair"
+      ],
+      "W": [
+        "Blade Whirl"
+      ],
+      "E": [
+        "Wild Rush"
+      ],
+      "R": [
+        "Inferno Trigger"
+      ]
     },
     "icon": "Samira.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -4277,18 +5576,28 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "Fury of the North",
-      "Q": "Arctic Assault",
-      "W": "Winter's Wrath",
-      "E": "Permafrost",
-      "R": "Glacial Prison"
+      "P": [
+        "Fury of the North"
+      ],
+      "Q": [
+        "Arctic Assault"
+      ],
+      "W": [
+        "Winter's Wrath"
+      ],
+      "E": [
+        "Permafrost"
+      ],
+      "R": [
+        "Glacial Prison"
+      ]
     },
     "icon": "Sejuani.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -4314,18 +5623,28 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Absolution",
-      "Q": "Piercing Darkness",
-      "W": "Last Embrace",
-      "E": "Curse of the Black Mist",
-      "R": "Dawning Shadow"
+      "P": [
+        "Absolution"
+      ],
+      "Q": [
+        "Piercing Darkness"
+      ],
+      "W": [
+        "Last Embrace"
+      ],
+      "E": [
+        "Curse of the Black Mist"
+      ],
+      "R": [
+        "Dawning Shadow"
+      ]
     },
     "icon": "Senna.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -4351,18 +5670,28 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "Stage Presence",
-      "Q": "High Note",
-      "W": "Surround Sound",
-      "E": "Beat Drop",
-      "R": "Encore"
+      "P": [
+        "Stage Presence"
+      ],
+      "Q": [
+        "High Note"
+      ],
+      "W": [
+        "Surround Sound"
+      ],
+      "E": [
+        "Beat Drop"
+      ],
+      "R": [
+        "Encore"
+      ]
     },
     "icon": "Seraphine.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -4388,18 +5717,29 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Pit Grit",
-      "Q": "Knuckle Down",
-      "W": "Haymaker",
-      "E": "Facebreaker",
-      "R": "The Show Stopper"
+      "P": [
+        "Pit Grit"
+      ],
+      "Q": [
+        "Knuckle Down",
+        "Looking for a Fight"
+      ],
+      "W": [
+        "Haymaker"
+      ],
+      "E": [
+        "Facebreaker"
+      ],
+      "R": [
+        "The Show Stopper"
+      ]
     },
     "icon": "Sett.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -4425,18 +5765,29 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Backstab",
-      "Q": "Deceive",
-      "W": "Jack in the Box",
-      "E": "Two-Shiv Poison",
-      "R": "Hallucinate"
+      "P": [
+        "Backstab"
+      ],
+      "Q": [
+        "Deceive"
+      ],
+      "W": [
+        "Jack in the Box"
+      ],
+      "E": [
+        "Two-Shiv Poison"
+      ],
+      "R": [
+        "Hallucinate",
+        "Hallucinate 2"
+      ]
     },
     "icon": "Shaco.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -4462,18 +5813,31 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Ki Barrier",
-      "Q": "Twilight Assault",
-      "W": "Spirit's Refuge",
-      "E": "Shadow Dash",
-      "R": "Stand United"
+      "P": [
+        "Ki Barrier"
+      ],
+      "Q": [
+        "Twilight Assault",
+        "Twilight Assault 2",
+        "Twilight Assault 3"
+      ],
+      "W": [
+        "Spirit's Refuge"
+      ],
+      "E": [
+        "Shadow Dash"
+      ],
+      "R": [
+        "Stand United",
+        "Stand United 2"
+      ]
     },
     "icon": "Shen.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -4499,18 +5863,31 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Scalemail",
-      "Q": "Emberstrike",
-      "W": "Inferno Aegis",
-      "E": "Molten Burst",
-      "R": "Dragon's Descent"
+      "P": [
+        "Scalemail"
+      ],
+      "Q": [
+        "Emberstrike",
+        "Emberstrike 2",
+        "Emberstrike 3"
+      ],
+      "W": [
+        "Inferno Aegis",
+        "Inferno Aegis 2"
+      ],
+      "E": [
+        "Molten Burst"
+      ],
+      "R": [
+        "Dragon's Descent"
+      ]
     },
     "icon": "Shyvana.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -4536,18 +5913,28 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "Noxious Slipstream",
-      "Q": "Poison Trail",
-      "W": "Mega Adhesive",
-      "E": "Fling",
-      "R": "Insanity Potion"
+      "P": [
+        "Noxious Slipstream"
+      ],
+      "Q": [
+        "Poison Trail"
+      ],
+      "W": [
+        "Mega Adhesive"
+      ],
+      "E": [
+        "Fling"
+      ],
+      "R": [
+        "Insanity Potion"
+      ]
     },
     "icon": "Singed.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -4573,18 +5960,31 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Glory in Death",
-      "Q": "Decimating Smash",
-      "W": "Soul Furnace",
-      "E": "Roar of the Slayer",
-      "R": "Unstoppable Onslaught"
+      "P": [
+        "Glory in Death",
+        "Death Surge"
+      ],
+      "Q": [
+        "Decimating Smash"
+      ],
+      "W": [
+        "Soul Furnace",
+        "Soul Furnace 2"
+      ],
+      "E": [
+        "Roar of the Slayer"
+      ],
+      "R": [
+        "Unstoppable Onslaught",
+        "Unstoppable Onslaught 2"
+      ]
     },
     "icon": "Sion.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -4610,18 +6010,28 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Fleet of Foot",
-      "Q": "Boomerang Blade",
-      "W": "Ricochet",
-      "E": "Spell Shield",
-      "R": "On the Hunt"
+      "P": [
+        "Fleet of Foot"
+      ],
+      "Q": [
+        "Boomerang Blade"
+      ],
+      "W": [
+        "Ricochet"
+      ],
+      "E": [
+        "Spell Shield"
+      ],
+      "R": [
+        "On the Hunt"
+      ]
     },
     "icon": "Sivir.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -4647,18 +6057,29 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Threads of Vibration",
-      "Q": "Shattered Earth",
-      "W": "Seismic Bastion",
-      "E": "Ixtal's Impact",
-      "R": "Impale"
+      "P": [
+        "Threads of Vibration"
+      ],
+      "Q": [
+        "Shattered Earth",
+        "Upheaval"
+      ],
+      "W": [
+        "Seismic Bastion"
+      ],
+      "E": [
+        "Ixtal's Impact"
+      ],
+      "R": [
+        "Impale"
+      ]
     },
     "icon": "Skarner.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -4684,18 +6105,28 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Dragon Practice",
-      "Q": "Super Scorcher Breath",
-      "W": "Achooo!",
-      "E": "Flap, Flap, Flap",
-      "R": "MMOOOMMMM!"
+      "P": [
+        "Dragon Practice"
+      ],
+      "Q": [
+        "Super Scorcher Breath"
+      ],
+      "W": [
+        "Achooo!"
+      ],
+      "E": [
+        "Flap, Flap, Flap"
+      ],
+      "R": [
+        "MMOOOMMMM!"
+      ]
     },
     "icon": "Smolder.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -4721,18 +6152,28 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "Power Chord",
-      "Q": "Hymn of Valor",
-      "W": "Aria of Perseverance",
-      "E": "Song of Celerity",
-      "R": "Crescendo"
+      "P": [
+        "Power Chord"
+      ],
+      "Q": [
+        "Hymn of Valor"
+      ],
+      "W": [
+        "Aria of Perseverance"
+      ],
+      "E": [
+        "Song of Celerity"
+      ],
+      "R": [
+        "Crescendo"
+      ]
     },
     "icon": "Sona.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -4758,18 +6199,28 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "Salvation",
-      "Q": "Starcall",
-      "W": "Astral Infusion",
-      "E": "Equinox",
-      "R": "Wish"
+      "P": [
+        "Salvation"
+      ],
+      "Q": [
+        "Starcall"
+      ],
+      "W": [
+        "Astral Infusion"
+      ],
+      "E": [
+        "Equinox"
+      ],
+      "R": [
+        "Wish"
+      ]
     },
     "icon": "Soraka.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -4795,18 +6246,29 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "Ravenous Flock",
-      "Q": "Death's Hand",
-      "W": "Vision of Empire",
-      "E": "Nevermove",
-      "R": "Demonic Ascension"
+      "P": [
+        "Ravenous Flock"
+      ],
+      "Q": [
+        "Death's Hand"
+      ],
+      "W": [
+        "Vision of Empire"
+      ],
+      "E": [
+        "Nevermove"
+      ],
+      "R": [
+        "Demonic Ascension",
+        "Demonflare"
+      ]
     },
     "icon": "Swain.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -4832,18 +6294,29 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "Petricite Burst",
-      "Q": "Chain Lash",
-      "W": "Kingslayer",
-      "E": "Abscond",
-      "R": "Hijack"
+      "P": [
+        "Petricite Burst"
+      ],
+      "Q": [
+        "Chain Lash"
+      ],
+      "W": [
+        "Kingslayer"
+      ],
+      "E": [
+        "Abscond",
+        "Abduct"
+      ],
+      "R": [
+        "Hijack"
+      ]
     },
     "icon": "Sylas.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -4869,18 +6342,29 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "Transcendent",
-      "Q": "Dark Sphere",
-      "W": "Force of Will",
-      "E": "Scatter the Weak",
-      "R": "Unleashed Power"
+      "P": [
+        "Transcendent"
+      ],
+      "Q": [
+        "Dark Sphere"
+      ],
+      "W": [
+        "Force of Will",
+        "Force of Will 2"
+      ],
+      "E": [
+        "Scatter the Weak"
+      ],
+      "R": [
+        "Unleashed Power"
+      ]
     },
     "icon": "Syndra.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -4906,18 +6390,29 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "An Acquired Taste",
-      "Q": "Tongue Lash",
-      "W": "Abyssal Dive",
-      "E": "Thick Skin",
-      "R": "Devour"
+      "P": [
+        "An Acquired Taste"
+      ],
+      "Q": [
+        "Tongue Lash"
+      ],
+      "W": [
+        "Abyssal Dive"
+      ],
+      "E": [
+        "Thick Skin"
+      ],
+      "R": [
+        "Devour",
+        "Regurgitate"
+      ]
     },
     "icon": "TahmKench.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -4943,18 +6438,30 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "Rock Surfing",
-      "Q": "Threaded Volley",
-      "W": "Seismic Shove",
-      "E": "Unraveled Earth",
-      "R": "Weaver's Wall"
+      "P": [
+        "Rock Surfing"
+      ],
+      "Q": [
+        "Threaded Volley",
+        "Threaded Volley 2"
+      ],
+      "W": [
+        "Seismic Shove"
+      ],
+      "E": [
+        "Unraveled Earth"
+      ],
+      "R": [
+        "Weaver's Wall",
+        "Weaver's Wall 2"
+      ]
     },
     "icon": "Taliyah.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -4980,18 +6487,28 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Blade's End",
-      "Q": "Noxian Diplomacy",
-      "W": "Rake",
-      "E": "Assassin's Path",
-      "R": "Shadow Assault"
+      "P": [
+        "Blade's End"
+      ],
+      "Q": [
+        "Noxian Diplomacy"
+      ],
+      "W": [
+        "Rake"
+      ],
+      "E": [
+        "Assassin's Path"
+      ],
+      "R": [
+        "Shadow Assault"
+      ]
     },
     "icon": "Talon.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -5017,18 +6534,29 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Bravado",
-      "Q": "Starlight's Touch",
-      "W": "Bastion",
-      "E": "Dazzle",
-      "R": "Cosmic Radiance"
+      "P": [
+        "Bravado"
+      ],
+      "Q": [
+        "Starlight's Touch"
+      ],
+      "W": [
+        "Bastion",
+        "Bastion 2"
+      ],
+      "E": [
+        "Dazzle"
+      ],
+      "R": [
+        "Cosmic Radiance"
+      ]
     },
     "icon": "Taric.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -5054,18 +6582,28 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "Guerrilla Warfare",
-      "Q": "Blinding Dart",
-      "W": "Move Quick",
-      "E": "Toxic Shot",
-      "R": "Noxious Trap"
+      "P": [
+        "Guerrilla Warfare"
+      ],
+      "Q": [
+        "Blinding Dart"
+      ],
+      "W": [
+        "Move Quick"
+      ],
+      "E": [
+        "Toxic Shot"
+      ],
+      "R": [
+        "Noxious Trap"
+      ]
     },
     "icon": "Teemo.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -5091,18 +6629,33 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Damnation",
-      "Q": "Death Sentence",
-      "W": "Dark Passage",
-      "E": "Flay",
-      "R": "The Box"
+      "P": [
+        "Damnation"
+      ],
+      "Q": [
+        "Death Sentence",
+        "Deathly Leap"
+      ],
+      "W": [
+        "Dark Passage"
+      ],
+      "E": [
+        "Flay",
+        "Flay 2",
+        "Flay 3",
+        "Flay 4",
+        "Flay 5"
+      ],
+      "R": [
+        "The Box"
+      ]
     },
     "icon": "Thresh.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -5128,18 +6681,28 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Draw a Bead",
-      "Q": "Rapid Fire",
-      "W": "Rocket Jump",
-      "E": "Explosive Charge",
-      "R": "Buster Shot"
+      "P": [
+        "Draw a Bead"
+      ],
+      "Q": [
+        "Rapid Fire"
+      ],
+      "W": [
+        "Rocket Jump"
+      ],
+      "E": [
+        "Explosive Charge"
+      ],
+      "R": [
+        "Buster Shot"
+      ]
     },
     "icon": "Tristana.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -5165,18 +6728,28 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "King's Tribute",
-      "Q": "Chomp",
-      "W": "Frozen Domain",
-      "E": "Pillar of Ice",
-      "R": "Subjugate"
+      "P": [
+        "King's Tribute"
+      ],
+      "Q": [
+        "Chomp"
+      ],
+      "W": [
+        "Frozen Domain"
+      ],
+      "E": [
+        "Pillar of Ice"
+      ],
+      "R": [
+        "Subjugate"
+      ]
     },
     "icon": "Trundle.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -5202,18 +6775,28 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Battle Fury",
-      "Q": "Bloodlust",
-      "W": "Mocking Shout",
-      "E": "Spinning Slash",
-      "R": "Undying Rage"
+      "P": [
+        "Battle Fury"
+      ],
+      "Q": [
+        "Bloodlust"
+      ],
+      "W": [
+        "Mocking Shout"
+      ],
+      "E": [
+        "Spinning Slash"
+      ],
+      "R": [
+        "Undying Rage"
+      ]
     },
     "icon": "Tryndamere.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -5239,18 +6822,32 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "Loaded Dice",
-      "Q": "Wild Cards",
-      "W": "Pick a Card",
-      "E": "Stacked Deck",
-      "R": "Destiny"
+      "P": [
+        "Loaded Dice"
+      ],
+      "Q": [
+        "Wild Cards"
+      ],
+      "W": [
+        "Pick a Card",
+        "Blue Card",
+        "Red Card",
+        "Gold Card"
+      ],
+      "E": [
+        "Stacked Deck"
+      ],
+      "R": [
+        "Destiny",
+        "Gate"
+      ]
     },
     "icon": "TwistedFate.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -5276,18 +6873,30 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Deadly Venom",
-      "Q": "Ambush",
-      "W": "Venom Cask",
-      "E": "Contaminate",
-      "R": "Spray and Pray"
+      "P": [
+        "Deadly Venom"
+      ],
+      "Q": [
+        "Ambush",
+        "Ambush 2",
+        "Ambush 3"
+      ],
+      "W": [
+        "Venom Cask"
+      ],
+      "E": [
+        "Contaminate"
+      ],
+      "R": [
+        "Spray and Pray"
+      ]
     },
     "icon": "Twitch.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -5313,18 +6922,28 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Bridge Between",
-      "Q": "Wilding Claw",
-      "W": "Iron Mantle",
-      "E": "Blazing Stampede",
-      "R": "Wingborne Storm"
+      "P": [
+        "Bridge Between"
+      ],
+      "Q": [
+        "Wilding Claw"
+      ],
+      "W": [
+        "Iron Mantle"
+      ],
+      "E": [
+        "Blazing Stampede"
+      ],
+      "R": [
+        "Wingborne Storm"
+      ]
     },
     "icon": "Udyr.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -5350,18 +6969,28 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Echoing Flames",
-      "Q": "Corrosive Charge",
-      "W": "Purge",
-      "E": "Disdain",
-      "R": "Fear Beyond Death"
+      "P": [
+        "Echoing Flames"
+      ],
+      "Q": [
+        "Corrosive Charge"
+      ],
+      "W": [
+        "Purge"
+      ],
+      "E": [
+        "Disdain"
+      ],
+      "R": [
+        "Fear Beyond Death"
+      ]
     },
     "icon": "Urgot.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -5387,18 +7016,28 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Living Vengeance",
-      "Q": "Piercing Arrow",
-      "W": "Blighted Quiver",
-      "E": "Hail of Arrows",
-      "R": "Chain of Corruption"
+      "P": [
+        "Living Vengeance"
+      ],
+      "Q": [
+        "Piercing Arrow"
+      ],
+      "W": [
+        "Blighted Quiver"
+      ],
+      "E": [
+        "Hail of Arrows"
+      ],
+      "R": [
+        "Chain of Corruption"
+      ]
     },
     "icon": "Varus.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -5424,18 +7063,28 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Night Hunter",
-      "Q": "Tumble",
-      "W": "Silver Bolts",
-      "E": "Condemn",
-      "R": "Final Hour"
+      "P": [
+        "Night Hunter"
+      ],
+      "Q": [
+        "Tumble"
+      ],
+      "W": [
+        "Silver Bolts"
+      ],
+      "E": [
+        "Condemn"
+      ],
+      "R": [
+        "Final Hour"
+      ]
     },
     "icon": "Vayne.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -5461,18 +7110,28 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "Phenomenal Evil Power",
-      "Q": "Baleful Strike",
-      "W": "Dark Matter",
-      "E": "Event Horizon",
-      "R": "Primordial Burst"
+      "P": [
+        "Phenomenal Evil Power"
+      ],
+      "Q": [
+        "Baleful Strike"
+      ],
+      "W": [
+        "Dark Matter"
+      ],
+      "E": [
+        "Event Horizon"
+      ],
+      "R": [
+        "Primordial Burst"
+      ]
     },
     "icon": "Veigar.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -5498,18 +7157,30 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "Organic Deconstruction",
-      "Q": "Plasma Fission",
-      "W": "Void Rift",
-      "E": "Tectonic Disruption",
-      "R": "Life Form Disintegration Ray"
+      "P": [
+        "Organic Deconstruction"
+      ],
+      "Q": [
+        "Plasma Fission",
+        "Plasma Fission 2"
+      ],
+      "W": [
+        "Void Rift"
+      ],
+      "E": [
+        "Tectonic Disruption"
+      ],
+      "R": [
+        "Life Form Disintegration Ray",
+        "Researched"
+      ]
     },
     "icon": "Velkoz.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -5535,18 +7206,28 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "Doom 'n Gloom",
-      "Q": "Mistral Bolt",
-      "W": "Personal Space",
-      "E": "Looming Darkness",
-      "R": "Shadow Surge"
+      "P": [
+        "Doom 'n Gloom"
+      ],
+      "Q": [
+        "Mistral Bolt"
+      ],
+      "W": [
+        "Personal Space"
+      ],
+      "E": [
+        "Looming Darkness"
+      ],
+      "R": [
+        "Shadow Surge"
+      ]
     },
     "icon": "Vex.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -5572,18 +7253,30 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Blast Shield",
-      "Q": "Vault Breaker",
-      "W": "Denting Blows",
-      "E": "Relentless Force",
-      "R": "Cease and Desist"
+      "P": [
+        "Blast Shield"
+      ],
+      "Q": [
+        "Vault Breaker"
+      ],
+      "W": [
+        "Denting Blows",
+        "Denting Blows 2"
+      ],
+      "E": [
+        "Relentless Force",
+        "Relentless Force 2"
+      ],
+      "R": [
+        "Cease and Desist"
+      ]
     },
     "icon": "Vi.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -5609,18 +7302,28 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Sovereign's Domination",
-      "Q": "Blade of the Ruined King",
-      "W": "Spectral Maw",
-      "E": "Harrowed Path",
-      "R": "Heartbreaker"
+      "P": [
+        "Sovereign's Domination"
+      ],
+      "Q": [
+        "Blade of the Ruined King"
+      ],
+      "W": [
+        "Spectral Maw"
+      ],
+      "E": [
+        "Harrowed Path"
+      ],
+      "R": [
+        "Heartbreaker"
+      ]
     },
     "icon": "Viego.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -5646,18 +7349,34 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "Glorious Evolution",
-      "Q": "Siphon Power",
-      "W": "Gravity Field",
-      "E": "Hextech Ray",
-      "R": "Arcane Storm"
+      "P": [
+        "Glorious Evolution",
+        "Glorious Evolution 2",
+        "Glorious Evolution 3",
+        "Glorious Evolution 4",
+        "Glorious Evolution 5"
+      ],
+      "Q": [
+        "Siphon Power",
+        "Discharge"
+      ],
+      "W": [
+        "Gravity Field"
+      ],
+      "E": [
+        "Hextech Ray"
+      ],
+      "R": [
+        "Arcane Storm",
+        "Arcane Storm 3"
+      ]
     },
     "icon": "Viktor.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -5683,18 +7402,29 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "Crimson Pact",
-      "Q": "Transfusion",
-      "W": "Sanguine Pool",
-      "E": "Tides of Blood",
-      "R": "Hemoplague"
+      "P": [
+        "Crimson Pact"
+      ],
+      "Q": [
+        "Transfusion",
+        "Crimson Rush"
+      ],
+      "W": [
+        "Sanguine Pool"
+      ],
+      "E": [
+        "Tides of Blood"
+      ],
+      "R": [
+        "Hemoplague"
+      ]
     },
     "icon": "Vladimir.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -5720,18 +7450,28 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "The Relentless Storm",
-      "Q": "Thundering Smash",
-      "W": "Frenzied Maul",
-      "E": "Sky Splitter",
-      "R": "Stormbringer"
+      "P": [
+        "The Relentless Storm"
+      ],
+      "Q": [
+        "Thundering Smash"
+      ],
+      "W": [
+        "Frenzied Maul"
+      ],
+      "E": [
+        "Sky Splitter"
+      ],
+      "R": [
+        "Stormbringer"
+      ]
     },
     "icon": "Volibear.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -5757,18 +7497,28 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Eternal Hunger",
-      "Q": "Jaws of the Beast",
-      "W": "Blood Hunt",
-      "E": "Primal Howl",
-      "R": "Infinite Duress"
+      "P": [
+        "Eternal Hunger"
+      ],
+      "Q": [
+        "Jaws of the Beast"
+      ],
+      "W": [
+        "Blood Hunt"
+      ],
+      "E": [
+        "Primal Howl"
+      ],
+      "R": [
+        "Infinite Duress"
+      ]
     },
     "icon": "Warwick.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -5794,18 +7544,28 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Stone Skin",
-      "Q": "Crushing Blow",
-      "W": "Warrior Trickster",
-      "E": "Nimbus Strike",
-      "R": "Cyclone"
+      "P": [
+        "Stone Skin"
+      ],
+      "Q": [
+        "Crushing Blow"
+      ],
+      "W": [
+        "Warrior Trickster"
+      ],
+      "E": [
+        "Nimbus Strike"
+      ],
+      "R": [
+        "Cyclone"
+      ]
     },
     "icon": "MonkeyKing.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -5831,18 +7591,29 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Clean Cuts",
-      "Q": "Double Daggers",
-      "W": "Deadly Plumage",
-      "E": "Bladecaller",
-      "R": "Featherstorm"
+      "P": [
+        "Clean Cuts",
+        "Lover's Leap"
+      ],
+      "Q": [
+        "Double Daggers"
+      ],
+      "W": [
+        "Deadly Plumage"
+      ],
+      "E": [
+        "Bladecaller"
+      ],
+      "R": [
+        "Featherstorm"
+      ]
     },
     "icon": "Xayah.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -5868,18 +7639,28 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "Mana Surge",
-      "Q": "Arcanopulse",
-      "W": "Eye of Destruction",
-      "E": "Shocking Orb",
-      "R": "Rite of the Arcane"
+      "P": [
+        "Mana Surge"
+      ],
+      "Q": [
+        "Arcanopulse"
+      ],
+      "W": [
+        "Eye of Destruction"
+      ],
+      "E": [
+        "Shocking Orb"
+      ],
+      "R": [
+        "Rite of the Arcane"
+      ]
     },
     "icon": "Xerath.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -5905,18 +7686,29 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Determination",
-      "Q": "Three Talon Strike",
-      "W": "Wind Becomes Lightning",
-      "E": "Audacious Charge",
-      "R": "Crescent Guard"
+      "P": [
+        "Determination",
+        "Challenged"
+      ],
+      "Q": [
+        "Three Talon Strike"
+      ],
+      "W": [
+        "Wind Becomes Lightning"
+      ],
+      "E": [
+        "Audacious Charge"
+      ],
+      "R": [
+        "Crescent Guard"
+      ]
     },
     "icon": "XinZhao.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -5942,18 +7734,30 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Way of the Wanderer",
-      "Q": "Steel Tempest",
-      "W": "Wind Wall",
-      "E": "Sweeping Blade",
-      "R": "Last Breath"
+      "P": [
+        "Way of the Wanderer"
+      ],
+      "Q": [
+        "Steel Tempest",
+        "Steel Tempest 2",
+        "Steel Tempest 3"
+      ],
+      "W": [
+        "Wind Wall"
+      ],
+      "E": [
+        "Sweeping Blade"
+      ],
+      "R": [
+        "Last Breath"
+      ]
     },
     "icon": "Yasuo.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -5979,18 +7783,28 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Way of the Hunter",
-      "Q": "Mortal Steel",
-      "W": "Spirit Cleave",
-      "E": "Soul Unbound",
-      "R": "Fate Sealed"
+      "P": [
+        "Way of the Hunter"
+      ],
+      "Q": [
+        "Mortal Steel"
+      ],
+      "W": [
+        "Spirit Cleave"
+      ],
+      "E": [
+        "Soul Unbound"
+      ],
+      "R": [
+        "Fate Sealed"
+      ]
     },
     "icon": "Yone.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -6016,18 +7830,30 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Shepherd of Souls",
-      "Q": "Last Rites",
-      "W": "Dark Procession",
-      "E": "Mourning Mist",
-      "R": "Eulogy of the Isles"
+      "P": [
+        "Shepherd of Souls"
+      ],
+      "Q": [
+        "Last Rites",
+        "Awakening"
+      ],
+      "W": [
+        "Dark Procession"
+      ],
+      "E": [
+        "Mourning Mist",
+        "Mourning Mist 2"
+      ],
+      "R": [
+        "Eulogy of the Isles"
+      ]
     },
     "icon": "Yorick.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -6053,18 +7879,30 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Vow of the First Lands",
-      "Q": "Cultivation of Spirit",
-      "W": "Arc of Judgment",
-      "E": "Kanmei's Steps",
-      "R": "Transcend One's Self"
+      "P": [
+        "Vow of the First Lands"
+      ],
+      "Q": [
+        "Cultivation of Spirit"
+      ],
+      "W": [
+        "Arc of Judgment",
+        "Arc of Ruin"
+      ],
+      "E": [
+        "Kanmei's Steps",
+        "Untouchable Shadow"
+      ],
+      "R": [
+        "Transcend One's Self"
+      ]
     },
     "icon": "Yunara.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -6090,18 +7928,30 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "Feline Friendship",
-      "Q": "Prowling Projectile",
-      "W": "You and Me!",
-      "E": "Zoomies",
-      "R": "Final Chapter"
+      "P": [
+        "Feline Friendship"
+      ],
+      "Q": [
+        "Prowling Projectile",
+        "Prowling Projectile 2"
+      ],
+      "W": [
+        "You and Me!",
+        "Change of Plan"
+      ],
+      "E": [
+        "Zoomies"
+      ],
+      "R": [
+        "Final Chapter"
+      ]
     },
     "icon": "Yuumi.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -6127,18 +7977,30 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Cultivation of War",
-      "Q": "The Darkin Glaive",
-      "W": "Dreaded Return",
-      "E": "Aureate Rush",
-      "R": "Grim Deliverance"
+      "P": [
+        "Cultivation of War",
+        "Determination"
+      ],
+      "Q": [
+        "The Darkin Glaive",
+        "The Darkin Glaive 2"
+      ],
+      "W": [
+        "Dreaded Return"
+      ],
+      "E": [
+        "Aureate Rush"
+      ],
+      "R": [
+        "Grim Deliverance"
+      ]
     },
     "icon": "Zaahen.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -6164,18 +8026,29 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "Cell Division",
-      "Q": "Stretching Strikes",
-      "W": "Unstable Matter",
-      "E": "Elastic Slingshot",
-      "R": "Let's Bounce!"
+      "P": [
+        "Cell Division",
+        "Cell Division 2"
+      ],
+      "Q": [
+        "Stretching Strikes"
+      ],
+      "W": [
+        "Unstable Matter"
+      ],
+      "E": [
+        "Elastic Slingshot"
+      ],
+      "R": [
+        "Let's Bounce!"
+      ]
     },
     "icon": "Zac.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -6201,18 +8074,30 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Contempt for the Weak",
-      "Q": "Razor Shuriken",
-      "W": "Living Shadow",
-      "E": "Shadow Slash",
-      "R": "Death Mark"
+      "P": [
+        "Contempt for the Weak"
+      ],
+      "Q": [
+        "Razor Shuriken"
+      ],
+      "W": [
+        "Living Shadow",
+        "Living Shadow 2"
+      ],
+      "E": [
+        "Shadow Slash"
+      ],
+      "R": [
+        "Death Mark",
+        "Death Mark 2"
+      ]
     },
     "icon": "Zed.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -6238,18 +8123,28 @@
       "adaptivetype": "Physical"
     },
     "abilityNames": {
-      "P": "Living Battery",
-      "Q": "Burst Fire",
-      "W": "Ultrashock Laser",
-      "E": "Spark Surge",
-      "R": "Lightning Crash"
+      "P": [
+        "Living Battery"
+      ],
+      "Q": [
+        "Burst Fire"
+      ],
+      "W": [
+        "Ultrashock Laser"
+      ],
+      "E": [
+        "Spark Surge"
+      ],
+      "R": [
+        "Lightning Crash"
+      ]
     },
     "icon": "Zeri.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -6275,18 +8170,28 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "Short Fuse",
-      "Q": "Bouncing Bomb",
-      "W": "Satchel Charge",
-      "E": "Hexplosive Minefield",
-      "R": "Mega Inferno Bomb"
+      "P": [
+        "Short Fuse"
+      ],
+      "Q": [
+        "Bouncing Bomb"
+      ],
+      "W": [
+        "Satchel Charge"
+      ],
+      "E": [
+        "Hexplosive Minefield"
+      ],
+      "R": [
+        "Mega Inferno Bomb"
+      ]
     },
     "icon": "Ziggs.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -6312,18 +8217,28 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "Time in a Bottle",
-      "Q": "Time Bomb",
-      "W": "Rewind",
-      "E": "Time Warp",
-      "R": "Chronoshift"
+      "P": [
+        "Time in a Bottle"
+      ],
+      "Q": [
+        "Time Bomb"
+      ],
+      "W": [
+        "Rewind"
+      ],
+      "E": [
+        "Time Warp"
+      ],
+      "R": [
+        "Chronoshift"
+      ]
     },
     "icon": "Zilean.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -6349,18 +8264,29 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "More Sparkles!",
-      "Q": "Paddle Star!",
-      "W": "Spell Thief",
-      "E": "Sleepy Trouble Bubble",
-      "R": "Portal Jump"
+      "P": [
+        "More Sparkles!"
+      ],
+      "Q": [
+        "Paddle Star!",
+        "Paddle Star! 2"
+      ],
+      "W": [
+        "Spell Thief"
+      ],
+      "E": [
+        "Sleepy Trouble Bubble"
+      ],
+      "R": [
+        "Portal Jump"
+      ]
     },
     "icon": "Zoe.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   },
   {
@@ -6386,18 +8312,28 @@
       "adaptivetype": "Magic"
     },
     "abilityNames": {
-      "P": "Garden of Thorns",
-      "Q": "Deadly Spines",
-      "W": "Rampant Growth",
-      "E": "Grasping Roots",
-      "R": "Stranglethorns"
+      "P": [
+        "Garden of Thorns"
+      ],
+      "Q": [
+        "Deadly Spines"
+      ],
+      "W": [
+        "Rampant Growth"
+      ],
+      "E": [
+        "Grasping Roots"
+      ],
+      "R": [
+        "Stranglethorns"
+      ]
     },
     "icon": "Zyra.png",
     "provenance": {
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-12T22:15:21.439Z"
+      "fetched": "2026-08-13T08:37:19.186Z"
     }
   }
 ]

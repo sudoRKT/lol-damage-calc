@@ -54,18 +54,43 @@ async function main(): Promise<void> {
       console.error(`! ${name} is not in public/data/champions.json — skipped`);
       continue;
     }
-    const wanted = SLOTS.filter((s) => champ.abilityNames[s]);
-    const titles = wanted.map((s) => `Template:Data ${name}/${wikiSlotAlias(s)}`);
-    const pages = await fetchTemplates(titles);
+    // Every ability name in every slot, not just the first — a slot can hold more than one
+    // real ability (Jayce's hammer form, Hwei's subjects, Riven's Wind Slash).
+    const wanted: Array<{ slot: AbilitySlot; abilityName: string; title: string; first: boolean }> = [];
+    for (const slot of SLOTS) {
+      const list = champ.abilityNames[slot] ?? [];
+      list.forEach((abilityName, i) => {
+        // The slot alias (Template:Data X/Q) is the reliable route to the FIRST name; the
+        // extras have to be addressed by their own name.
+        const title = i === 0
+          ? `Template:Data ${name}/${wikiSlotAlias(slot)}`
+          : `Template:Data ${name}/${abilityName}`;
+        wanted.push({ slot, abilityName, title, first: i === 0 });
+      });
+    }
+    const pages = await fetchTemplates(wanted.map((w) => w.title));
 
-    for (const slot of wanted) {
-      const title = `Template:Data ${name}/${wikiSlotAlias(slot)}`;
+    // ALIAS GUARD. 128 of the 208 non-first names redirect to a page a first name already
+    // reaches — "The Darkin Blade 2" is a second cast row inside Aatrox Q's own template, not
+    // a second ability. Harvesting by name alone would store Aatrox Q three times and triple
+    // its damage. Revision id identifies the page, so one entry per page is the rule.
+    const seenRevision = new Map<number, string>();
+
+    for (const { slot, abilityName, title, first } of wanted) {
       const page = pages.get(title);
       if (!page) {
-        console.error(`! ${name} ${slot}: template not found`);
+        if (first) console.error(`! ${name} ${slot}: template not found`);
+        else console.error(`! ${name} ${slot} "${abilityName}": no template of that name — skipped`);
         continue;
       }
-      const abilityName = champ.abilityNames[slot]!;
+      const already = seenRevision.get(page.revid);
+      if (already !== undefined) {
+        console.error(
+          `  ${name} ${slot} "${abilityName}": alias of "${already}" (same page) — not stored twice`,
+        );
+        continue;
+      }
+      seenRevision.set(page.revid, abilityName);
       const draft = draftFromTemplate(
         { champion: name, slot, ability: abilityName, wikitext: page.content, revisionId: page.revid },
         manifest.patch,

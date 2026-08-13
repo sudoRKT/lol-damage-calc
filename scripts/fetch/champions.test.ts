@@ -66,14 +66,19 @@ describe('champion-stats-from-wiki', () => {
     });
   });
 
-  it('reads ability names from the first entry of each skill list', () => {
+  it('reads EVERY ability name in each skill list, not just the first', () => {
+    // Taking only [1] lost 69 whole abilities across the roster (DATA-SOURCES §18).
     expect(find('Aatrox')?.abilityNames).toEqual({
-      P: 'Deathbringer Stance',
-      Q: 'The Darkin Blade',
-      W: 'Infernal Chains',
-      E: 'Umbral Dash',
-      R: 'World Ender',
+      P: ['Deathbringer Stance'],
+      Q: ['The Darkin Blade', 'The Darkin Blade 2'],
+      W: ['Infernal Chains'],
+      E: ['Umbral Dash'],
+      R: ['World Ender'],
     });
+  });
+
+  it('keeps a second name that is a different ability, not a cast alias', () => {
+    expect(find('Kled')?.abilityNames.Q).toEqual(['Bear Trap on a Rope', 'Pocket Pistol']);
   });
 
   it('evaluates a stat written as arithmetic (Kled & Skaarl hp_lvl = 84+1000/17)', () => {
@@ -88,7 +93,7 @@ describe('champion-stats-from-wiki', () => {
     expect(aatrox?.stats.arm_base).toBe(38);
     expect(aatrox?.stats.ad_base).toBe(60);
     expect(aatrox?.stats.ad_lvl).toBe(5);
-    expect(aatrox?.abilityNames.Q).toBe('The Darkin Blade');
+    expect(aatrox?.abilityNames.Q?.[0]).toBe('The Darkin Blade');
   });
 });
 

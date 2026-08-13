@@ -21,17 +21,33 @@
     "adaptivetype": "Magic"
   },
   "abilityNames": {
-    "P": "Glorious Evolution",
-    "Q": "Siphon Power",
-    "W": "Gravity Field",
-    "E": "Hextech Ray",
-    "R": "Arcane Storm"
+    "P": [
+      "Glorious Evolution",
+      "Glorious Evolution 2",
+      "Glorious Evolution 3",
+      "Glorious Evolution 4",
+      "Glorious Evolution 5"
+    ],
+    "Q": [
+      "Siphon Power",
+      "Discharge"
+    ],
+    "W": [
+      "Gravity Field"
+    ],
+    "E": [
+      "Hextech Ray"
+    ],
+    "R": [
+      "Arcane Storm",
+      "Arcane Storm 3"
+    ]
   },
   "icon": "Viktor.png",
   "provenance": {
     "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
     "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
     "patch": "16.16.1",
-    "fetched": "2026-08-12T22:15:21.439Z"
+    "fetched": "2026-08-13T08:37:19.186Z"
   }
 }

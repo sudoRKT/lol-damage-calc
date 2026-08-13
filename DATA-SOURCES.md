@@ -917,3 +917,84 @@ is a contract change and a lead decision, not something to slip in behind a regu
 Cost if it is declined: 32 abilities stay `incomplete` indefinitely and are excluded from any
 result that claims to be complete, which for champions like Malzahar, Zac and Vi means their
 primary damage source is unusable.
+
+---
+
+## 18. The roster is 937 ability pages, not 865 (2026-08-13)
+
+### The bug
+
+`Module:ChampionData/data` stores each slot as a numbered **list** of ability names. The
+pipeline read `[1]` only, on the recorded reasoning that the rest were "alternate cast names".
+
+That is true of most of them and false of enough to matter. Across the roster there are
+**1083 ability names in 875 slots**. Of the 208 names beyond the first:
+
+| | Count | What they are |
+|---|---:|---|
+| **Aliases** | **128** | `Template:Data Aatrox/The Darkin Blade 2` resolves to the *same page* as `.../The Darkin Blade`. They name extra cast rows inside one template. |
+| **No template** | **11** | Listed in the module, no page exists (Viktor's evolutions, Samira's splash coin, Milio, Yuumi). |
+| **Real abilities** | **69** | Their own page, their own numbers, previously invisible. |
+
+**69 abilities were missing entirely**, and they are not obscure: every Aphelios weapon, all
+ten Hwei subjects, the whole of Jayce's second form, Elise's spider form, Nidalee's cougar
+form, Kha'Zix's four evolutions, Lee Sin's second casts, Rek'Sai's burrowed kit, Kled
+dismounted, Karma's mantra forms, **Riven's Wind Slash — which is her ultimate's damage** —
+Swain's Demonflare, Quinn's Skystrike, Sion's Death Surge, Tahm Kench's Regurgitate.
+
+Total distinct pages: 868 (reachable by first names) + 69 = **937**.
+
+### The trap in fixing it
+
+Carrying every name through naively is worse than the bug. Harvesting `The Darkin Blade`,
+`The Darkin Blade 2` and `The Darkin Blade 3` stores Aatrox Q **three times** and triples its
+damage. The alias and the real ability are indistinguishable by name — `Shock Blast` and
+`The Darkin Blade 2` look equally like second entries.
+
+**The fix is to deduplicate by the wiki page's revision id**, which the harvester already
+records as `sourceRevision`. `readAbilityNames` returns every name; `run-batch` fetches them
+all and stores one entry per distinct page, logging each alias it skips.
+
+### Re-measuring what the plan was built on
+
+Every roster-wide figure recorded in this codebase was re-measured over the corrected 937
+pages. **Almost none of them reproduce**, and the differences do not all point the same way,
+so they cannot be explained by the 69 missing abilities alone — the original counts must also
+have used different definitions (rows before filtering, or the 1085-name set including
+aliases). They are recorded here as *not reproducible*, which is the honest state:
+
+| Figure | Recorded | Re-measured |
+|---|---:|---:|
+| damage components | 999 | **893** |
+| S2 base + one ratio | 666 | 618 |
+| S6 health pool | 123 | 106 |
+| S3 base + two ratios | 111 | 97 |
+| S1 flat | 43 | 39 |
+| S5 ratio-only | 19 | 14 |
+| S8 resistances | 7 | **10** |
+| S7 mana | 9 | 8 |
+| S9 stacks | 1 | 1 |
+| alternative-marked components | 94 | 71 |
+| non-champion rows dropped | 81 | **97** |
+| Total/summary rows dropped | 388 | 168 |
+| per-hit components | 131 | 110 |
+| ratios that scale per rank | 244 | 183 |
+| prose-only worklist | 136 | 108 |
+| **level-scaled damage sources** | **95** | **0** |
+
+The shape *library* survives — the ordering is unchanged, S2/S6/S3/S1 still cover 96% of
+components, and no new shape appeared. What does not survive is any figure quoted as an
+absolute count.
+
+### The zero is a real defect, not a measurement artifact
+
+**`byLevel` and `byLevelExplicit` are in the contract and nothing produces them.** The 95
+level-scaled damage sources — Caitlyn Headshot, Darius Hemorrhage, Ziggs Short Fuse and the
+other innate passives — are stored with **zero components**. Verified directly: all three
+templates harvest to 0 components and land in the prose-only worklist, and Ziggs Short Fuse
+carries three `{{pp|…}}` blocks the classifier never looks at (it reads `{{ap}}` only).
+
+This predates today's work. It means 107 of the 149 `incomplete` entries are prose-only, and a
+large share of those are level-scaled passives that *are* machine-readable — the parser simply
+does not read that shorthand yet. This is the single largest remaining source of missing
+damage in the curated file.

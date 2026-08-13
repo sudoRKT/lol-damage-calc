@@ -144,8 +144,42 @@ describe('the coefficient shape the library does not have', () => {
     expect(hasCoefficientShape('{{ap|30 to 130}} {{as|(+ 2% per 100 AP)}}')).toBe(false);
   });
 
-  it('raises an issue, which is what drives the ability to incomplete', () => {
+  it('captures the multiplier onto the payload ratio, and raises no issue', () => {
+    // Was: this raised 'coefficient-shape' and forced the ability to incomplete, because the
+    // shape could not be stored. Ratio.multipliers can now hold it, so the correct behaviour
+    // changed — the payload keeps its own magnitude and carries the multiplier beside it.
     const r = row('Magic Damage', MALZAHAR_R, 3);
+    const ratio = r.component!.ratios[0]!;
+    expect(ratio).toMatchObject({ stat: 'maxHP', owner: 'target' });
+    expect(expandByRank(ratio, 3)).toEqual([10, 15, 20]);
+    expect(ratio.multipliers).toEqual([
+      { per: 'AP', per100: { scaling: 'linear', from: 2.5, to: 2.5 } },
+    ]);
+    expect(r.issues).toEqual([]);
+  });
+
+  it('reads the two-owner case with an owner on each side (Kled W)', () => {
+    const r = row('Additional Physical Damage', KLED_W, 5, 'physical');
+    const ratio = r.component!.ratios[0]!;
+    // The payload is the TARGET's MAXIMUM health — it used to be stored as bonus health.
+    expect(ratio).toMatchObject({ stat: 'maxHP', owner: 'target' });
+    expect(ratio.multipliers).toEqual([
+      {
+        per: 'bonusHP',
+        owner: 'unresolved',
+        per100: { scaling: 'linear', from: 0.4, to: 0.4 },
+      },
+    ]);
+  });
+
+  it('still raises the issue when the multiplier cannot be read', () => {
+    // A per-100 group naming a stat this project does not model. Nothing may be stored as
+    // though it were understood.
+    const r = row(
+      'Magic Damage',
+      "{{as|{{ap|10 to 20}}% {{as|(+ 2% per 100 bonus movement speed)}} of target's '''maximum''' health}}",
+      3,
+    );
     expect(r.issues.map((i) => i.kind)).toContain('coefficient-shape');
   });
 });

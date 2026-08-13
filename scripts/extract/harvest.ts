@@ -196,8 +196,45 @@ export function roundTrip(draft: DraftAbility, rendered: RenderedRow[]): RoundTr
     const actual = expandByRank(c.base, draft.entry.maxRank);
     const expected = source.values;
     const diff = compareExpansion(expected, actual, 1e-6);
-    if (diff.length === 0) {
+
+    // RATIOS, not just the base. This check did not exist until 2026-08-13: gate 2 compared
+    // base values only, so a ratio could be stored with the wrong magnitude — or a multiplier
+    // stored as though it were a ratio — and every gate still passed. The rendered box already
+    // prints each ratio's expansion; nothing was reading it.
+    const ratioDiffs: string[] = [];
+    for (const [i, r] of c.ratios.entries()) {
+      const sourceRatio = source.ratios[i];
+      if (!sourceRatio || sourceRatio.length === 0) continue;
+      if (isLevelScaled(r)) continue;
+      const mine = expandByRank(r, draft.entry.maxRank);
+      // A ratio that does not scale per rank is rendered as ONE number, not a series of five
+      // identical ones. Compare like with like, or every flat ratio in the game reports four
+      // phantom disagreements.
+      const d =
+        sourceRatio.length === 1
+          ? compareExpansion(
+              mine.map(() => sourceRatio[0]!),
+              mine,
+              1e-6,
+            )
+          : compareExpansion(sourceRatio, mine, 1e-6);
+      if (d.length > 0) {
+        ratioDiffs.push(
+          `ratio ${i} (${r.stat}): ` +
+            d.map((x) => `rank ${x.index + 1}: wiki ${x.expected}, stored ${x.actual}`).join('; '),
+        );
+      }
+    }
+
+    if (diff.length === 0 && ratioDiffs.length === 0) {
       matched += 1;
+    } else if (diff.length === 0) {
+      mismatches.push({
+        label: c.label ?? c.id,
+        expected: source.values,
+        actual,
+        detail: ratioDiffs.join(' | '),
+      });
     } else {
       mismatches.push({
         label: c.label ?? c.id,
