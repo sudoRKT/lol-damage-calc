@@ -78,8 +78,10 @@ const RATIO_STATS = new Set([
 
 /**
  * Label fragments that mark a component as a CONDITIONAL VARIANT of another rather than an
- * addition to it. Derived by scanning all 1085 ability templates on 2026-08-12: 94 components
- * carry one of these. Aatrox Q is the worst case — three casts x (normal, sweetspot).
+ * addition to it. Derived by scanning ability templates on 2026-08-12: 94 components carried
+ * one of these. That count is SUPERSEDED — 71 over the corrected 937-page set (DATA-SOURCES
+ * §19). The list itself is unchanged; only the count moved.
+ * Aatrox Q is the worst case — three casts x (normal, sweetspot).
  *
  * "first cast" / "second cast" / "third cast" are deliberately NOT here. They mark a position
  * in a sequence, not a variant: Aatrox really can cast Q three times in one combo, so those
@@ -95,8 +97,8 @@ export const ALTERNATIVE_MARKERS =
 
 /**
  * Damage rows that apply only to minions, monsters or other non-champion targets. This is a
- * champion-versus-champion tool (SPECIFICATION §5), so these are dropped at harvest — 81 of
- * the 999 measured components. Their presence in the file means the harvester leaked.
+ * champion-versus-champion tool (SPECIFICATION §5), so these are dropped at harvest — 97
+ * measured over the corrected 937-page set (DATA-SOURCES §19; the old figure was 81 of 999). Their presence in the file means the harvester leaked.
  */
 const NON_CHAMPION =
   /\b(minion|monster|non-champion|non champion|nonchampion|non-epic|epic|turret|ward)s?\b/i;

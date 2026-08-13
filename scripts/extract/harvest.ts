@@ -195,7 +195,9 @@ export function roundTrip(draft: DraftAbility, rendered: RenderedRow[]): RoundTr
     }
     const actual = expandByRank(c.base, draft.entry.maxRank);
     const expected = source.values;
-    const diff = compareExpansion(expected, actual, 1e-6);
+    // A payload row has no base on either side: the wiki reports an empty base series and we
+    // store zeros. Comparing them is meaningless, so compare only the ratios below.
+    const diff = expected.length === 0 ? [] : compareExpansion(expected, actual, 1e-6);
 
     // RATIOS, not just the base. This check did not exist until 2026-08-13: gate 2 compared
     // base values only, so a ratio could be stored with the wrong magnitude — or a multiplier

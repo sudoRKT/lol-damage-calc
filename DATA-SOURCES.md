@@ -998,3 +998,187 @@ This predates today's work. It means 107 of the 149 `incomplete` entries are pro
 large share of those are level-scaled passives that *are* machine-readable — the parser simply
 does not read that shorthand yet. This is the single largest remaining source of missing
 damage in the curated file.
+
+---
+
+## 19. The authoritative roster measurement (2026-08-13) — every figure defined
+
+**This section supersedes every roster-wide count recorded anywhere else in this project,
+including the technical-foundation plan and the header comments in `scripts/extract/classify.ts`
+and `src/types/validate-curated.ts`. Those figures are SUPERSEDED — do not cite them.**
+
+A number without a definition is what caused the confusion this section exists to end. Every
+figure below states what is counted and what is filtered.
+
+### The page set every figure is measured over
+
+- **Source:** `Module:ChampionData/data`, every champion row with an integer or fractional id.
+- **Names:** every ability name in every slot list, in module order — **1083 names**.
+- **Fetched:** `Template:Data <Champion>/<Name>`; **11 names have no template** and are dropped.
+- **Alias dedupe:** entries are deduplicated by the wiki **revision id**, so a name that
+  redirects to a page another name already reached is counted once. **123 names are aliases.**
+- **The measured set is therefore 937 distinct ability pages.** Every figure below is
+  *after* alias dedupe and *after* the level-scaling fix of 2026-08-13.
+- Champions withheld from the product roster (Mega Gnar, Kled & Skaarl — §15) are excluded,
+  which is why 1083 names yield 1071 through `champions.json`.
+
+### Row-level definitions
+
+A **damage row** is a `{{st|…}}` leveling row whose label matches `/damage/i` and does not
+match `/damage reduction|damage amp|damage taken|damage cap/i`, judged after stripping a
+leading `Minimum`/`Maximum`. Three classes of damage row are counted and then **dropped**:
+
+- **summary rows** — label begins `Total`. Arithmetic on other rows; storing them double-counts.
+- **non-champion rows** — label names minion/monster/turret/ward/epic. This is a
+  champion-versus-champion tool.
+- a row the classifier cannot read at all, which becomes an **issue**, not a component.
+
+A **component** is a damage row that survived all three filters and produced a stored
+`AbilityComponent`. Components are counted **after** dropping, so the component count is
+strictly smaller than the damage-row count.
+
+### The figures
+
+| Figure | Count | Definition |
+|---|---:|---|
+| ability pages measured | **937** | distinct wiki pages, after alias dedupe |
+| ability names on the roster | 1083 | before dedupe; 123 aliases, 11 with no template |
+| **damage components stored** | **893** | rows surviving all filters, summed over 937 pages |
+| S2 base + one core ratio | 618 | component with a flat base and exactly one AD/AP ratio |
+| S6 scales off a health pool | 106 | any ratio on maxHP/bonusHP/currentHP/missingHP |
+| S3 base + two core ratios | 97 | two AD/AP ratios |
+| S1 flat, no ratio | 39 | base only |
+| S5 ratio-only | 14 | a ratio and no flat base |
+| S8 resistances | 10 | any ratio on armor/MR |
+| S7 mana | 8 | any ratio on mana |
+| S9 stacks | 1 | a ratio on a stack counter |
+| S4 three or more core ratios | 0 | measured, genuinely zero |
+| alternative-marked components | 71 | stored component whose label matches the variant list |
+| non-champion rows dropped | 97 | damage rows dropped for naming a non-champion target |
+| summary rows dropped | 168 | damage rows dropped for beginning `Total` |
+| per-hit components | 110 | stored component whose label matches the per-tick/per-hit list |
+| ratios that scale per rank | 183 | stored ratio whose scaling is not `linear` flat |
+| ratios carrying a multiplier | 45 | stored ratio with a `per 100 X` multiplier (§17) |
+| level-scaled damage sources | **2** | stored component whose base is `byLevel`/`byLevelExplicit` |
+| prose-only worklist | 108 | ability with a declared damage type and no readable row |
+| abilities that dropped every damage row | 3 | had damage rows in source, stored none |
+| entries `derived` | 788 | |
+| entries `incomplete` | 149 | |
+
+Four shapes (S2, S6, S3, S1) cover **860 of 893 components, 96.3%** — the library's shape and
+ordering are unchanged from the original measurement even though every absolute count moved.
+
+### Why entries are incomplete — definitions
+
+| Reason | Entries | Meaning |
+|---|---:|---|
+| prose-only | 107 | declares a damage type, no machine-readable leveling row |
+| unresolved-owner | 21 | a health/armor/MR/mana ratio the source does not attribute (§16) |
+| unparsed base and/or ratio | 14 | a progression shorthand the parser cannot expand |
+| unknown stat | 2 | a ratio naming a stat this project does not model |
+| no value | 3 | a damage row with no readable number |
+| coefficient-shape | 2 | a `per 100` multiplier that could not be read (§17) |
+
+### The level-scaling figure, and why it is 2 and not 95
+
+The recorded figure was **95 level-scaled damage sources**. It now measures **2**, and that is
+not a regression — it is the true count *of what the harvester can currently reach*, which is
+the point. See §20.
+
+---
+
+## 20. Level-scaled damage — the gap is real, and mostly still open (2026-08-13)
+
+### What was fixed
+
+`{{pp|…}}` is the wiki's champion-level progression shorthand. `parseLevelProgression` has
+existed since the parser was written and **was never called from the classifier**, which looked
+for `{{ap}}` only. A leveling row expressed on the level axis therefore stored no base at all.
+
+Three changes:
+
+1. The classifier now reads a `{{pp}}` base when a leveling row has one.
+2. `{{pp}}` named arguments may carry a digit (`key1=`, `label1=`). The parser matched
+   letters-only names and treated those as positional values, breaking 22 blocks.
+3. When the value side has no explicit step count and the level side is an explicit list, the
+   level list now states the count: `40 to 70` against levels `1;7;13` is three values, not
+   eighteen.
+
+Parse coverage over the game's damage-context `{{pp}}` blocks went from **74 to 81 of 224**.
+
+### What that actually moved: 2 components on 1 ability
+
+**Only 8 abilities in the game put `{{pp}}` in a leveling row**, and 7 of them already had a
+readable `{{ap}}` base. The fix produces level-scaled components for exactly one — **Shen Q
+(Twilight Assault)**, two components, `byLevel 10→40 across levels 1–16 in 6 steps` — and gate 2
+matches both rows, 2 of 2.
+
+So the honest figure is **2**, not 95. Reporting the level-scaling gap as closed would be false.
+
+### Why it is still open: the numbers are in the prose, not the rows
+
+**215 abilities carry `{{pp}}` in a `description` field rather than a leveling row.** Across
+937 pages there are **224 damage-context `{{pp}}` blocks on 155 abilities** — Caitlyn Headshot,
+Ziggs Short Fuse, Nasus Soul Eater and the rest of the innate passives. `statRows` reads
+leveling fields only, so none of them are seen.
+
+Reaching them needs a **new extraction path**, not a parser tweak: description prose must be
+scanned, each `{{pp}}` judged for whether it is damage at all (many are cooldowns, life steal or
+durations), and its damage type recovered from the surrounding `{{as|…|ad}}` wrapper. That is a
+piece of work in its own right and has not been started.
+
+Of the 143 blocks the parser still cannot expand, three groups are distinct and only the first
+is a defect:
+
+- **piecewise progressions** — `16+4*x for 6; then +8*x for 6; then +12*x for 8` (Ziggs).
+  Real, unhandled, and common enough to matter.
+- **per-level formulas in `x`** — `35 + (180-35)/17*(x-1)`. Needs an evaluator over levels 1–18.
+- **non-level axes, correctly refused** — a `{{pp}}` indexed by ability power or a percentage.
+  `parseLevelProgression` already rejects these by design (§11); they are not level scaling and
+  must never be stored as such.
+
+**This is the largest remaining source of missing damage in the curated file**: 107 of the 149
+`incomplete` entries are prose-only, and a large share of those are level-scaled passives whose
+numbers are machine-readable and simply unread.
+
+---
+
+## 21. Gate 2 defects confirmed on 2026-08-13
+
+Teaching gate 2's rendered-row reader to recognise a payload row (§17) cut its disagreements on
+the coefficient-shape abilities from **20 entries to 5**, and rows from 31 to 6 — 26 of 31
+entries now match on every row. The 20 were mostly the reader comparing our base against the
+wiki's payload. Of the 5 that survived, **two are genuine defects**, both confirmed against the
+source:
+
+### K'Sante W (Path Maker) — CONFIRMED WRONG
+
+The source splits one expression across four `{{as}}` blocks:
+
+```
+{{ap|45 to 165}} {{as|(+ 8%|hp}} {{as|(+ 2% per 100 bonus armor)}}
+                 {{as|(+ 2% per 100 bonus magic resistance)}} {{as|of target's maximum health)}}
+```
+
+It reads: **8% (+2% per 100 bonus armor) (+2% per 100 bonus MR) of the target's maximum health.**
+We store a `bonusArmor` ratio of **2** — the multiplier mistaken for the payload — and lose the
+8% entirely. The wiki renders 8; we store 2. The same error repeats on all three of its damage
+rows. **Not fixed:** the multiplier-lifting added in §17 handles a payload and its multipliers as
+sibling blocks, but not a payload split *across* blocks with the stat name in a fourth.
+
+### Udyr Q (Wilding Claw) — CONFIRMED WRONG, and the cause is not this ability
+
+`{{ap|3 to 8 6}}` expands to **six** values, and the harvester rejects it because
+`maxRankFor('Q')` returns 5. The source is right and we are wrong: **Udyr has no ultimate, and
+all four of his stances rank up to 6.** `maxRankFor` assumes 5 for Q/W/E and 3 for R for every
+champion in the game. It is wrong for all four Udyr abilities, and the rank count is exactly the
+thing DATA-SOURCES §11 warns must never be inferred, because the same shorthand over 5 and over
+6 ranks produces different middle values. **Not fixed:** it needs a per-champion rank count.
+
+### The other three are comparison artifacts, not storage errors
+
+- **Amumu W** — the wiki prints a non-rank-scaling base as one number; we expand to five. Same
+  class as the flat-ratio case already handled for ratios, not yet for bases.
+- **Malzahar R** — two stored components share the label "Magic Damage Per Tick", so both map to
+  one rendered row and the wrong one is compared. A duplicate-label defect, not a value defect.
+- **Yorick E** — our ratio order and the wiki's differ, so a positional comparison misaligns.

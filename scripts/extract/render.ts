@@ -67,6 +67,14 @@ export function splitRatioGroups(text: string): { base: string; groups: string[]
   return { base, groups };
 }
 
+/**
+ * A row whose entire value is a percentage of a champion stat — no flat base.
+ * "6 / 6.5 / 7 / 7.5 / 8% of target's maximum health", "1 / 1.5 / 2% of target's maximum
+ * health". The series is the PAYLOAD, not a base.
+ */
+const PAYLOAD_SERIES =
+  /^\s*([\d.\s/]+?)\s*%\s*(?:of\s+)?[^%]*\b(?:health|armor|magic resistance|mana)\b/i;
+
 function numbers(text: string): number[] {
   return text
     .split('/')
@@ -98,6 +106,22 @@ export function parseRenderedRows(html: string): RenderedRow[] {
       const ratios = groups
         .map((g) => numbers(g.replace(/^\s*\(\s*\+/, '').replace(/%[\s\S]*$/, '')))
         .filter((v) => v.length > 0);
+
+      // A PAYLOAD ROW has no flat base at all: the whole thing is a percentage of a stat,
+      // e.g. "6 / 6.5 / 7 / 7.5 / 8% of target's maximum health". Read as a base series it
+      // loses its last rank (the "8%" fails the numeric test, giving NaN) and is then compared
+      // against our stored base of 0 — so gate 2 reported a disagreement on every one of these
+      // rows while telling us nothing. The series belongs at the FRONT of the ratio list,
+      // matching how the classifier stores it: base 0, payload as ratio 0.
+      const payload = PAYLOAD_SERIES.exec(base);
+      if (payload) {
+        const series = numbers(payload[1]!);
+        if (series.length > 0) {
+          if (label) rows.push({ label, values: [], ratios: [series, ...ratios] });
+          continue;
+        }
+      }
+
       const values = numbers(base);
       if (label) rows.push({ label, values, ratios });
     }

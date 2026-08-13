@@ -4,7 +4,10 @@
 // out what it does; they confirm a shape and a handful of numbers that were extracted
 // mechanically. Classification is checkable by a second party — comprehension is not.
 //
-// THE LIBRARY. Measured over all 999 damage components in the game on 2026-08-12:
+// THE LIBRARY. The counts below are SUPERSEDED — see DATA-SOURCES §19 for the authoritative
+// measurement with a stated definition for every figure. They are kept only to show the
+// shape ORDERING, which the re-measurement did not change.
+// Measured over 999 damage components on 2026-08-12 (superseded; now 893 over 937 pages):
 //   S2 base + one ratio        666  66.7%
 //   S6 scales off a health pool 123  12.3%
 //   S3 base + two ratios       111  11.1%
@@ -30,7 +33,7 @@ import type {
 } from '../../src/types/data.ts';
 import { requiresOwner } from '../../src/types/data.ts';
 import { ALTERNATIVE_MARKERS } from '../../src/types/validate-curated.ts';
-import { ProgressionError, parseRankProgression } from './progression.ts';
+import { ProgressionError, parseLevelProgression, parseRankProgression } from './progression.ts';
 import { findBlocks, plainText, splitArgs, substituteVars } from './wikitext.ts';
 
 export type ShapeId = 'S1' | 'S2' | 'S3' | 'S4' | 'S5' | 'S6' | 'S7' | 'S8' | 'S9';
@@ -444,10 +447,28 @@ export function classifyRow(
   let rest = value;
   for (const b of [...ratioBlocks].reverse()) rest = rest.slice(0, b.start) + ' ' + rest.slice(b.end);
 
+  // LEVEL-SCALED BASE. A leveling row can state its damage on the champion-level axis with
+  // {{pp|…}} instead of the rank axis with {{ap|…}}. Nothing read {{pp}} until 2026-08-13, so
+  // any row using it stored no base at all and the ability harvested to zero components.
+  // `parseLevelProgression` already existed and was simply never called from here; it applies
+  // the same documented linear rule on the level axis (DATA-SOURCES §11).
+  const levelBlocks = findBlocks(rest, 'pp');
   const baseBlocks = findBlocks(rest, 'ap');
   let base: AbilityComponent['base'] | undefined;
   let hasBase = false;
-  if (baseBlocks.length > 0) {
+  if (levelBlocks.length > 0 && baseBlocks.length === 0) {
+    try {
+      base = parseLevelProgression(substituteVars(levelBlocks[0]!.inner, vars));
+      hasBase = true;
+    } catch (e) {
+      issues.push({
+        kind: 'unparsed-base',
+        detail: `{{pp}} ${levelBlocks[0]!.inner.slice(0, 60)} — ${
+          e instanceof ProgressionError ? e.message : String(e)
+        }`,
+      });
+    }
+  } else if (baseBlocks.length > 0) {
     try {
       base = parseRankProgression(substituteVars(baseBlocks[0]!.inner, vars), maxRank);
       hasBase = true;

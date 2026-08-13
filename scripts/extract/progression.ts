@@ -204,7 +204,9 @@ function splitNamed(args: string[]): Parsed {
   const positional: string[] = [];
   let round: number | undefined;
   for (const a of args) {
-    const m = /^\s*([a-z]+)\s*=\s*(.*)$/i.exec(a);
+    // Named args may carry a digit — `key1=`, `label1=`, `type2=`. A letters-only pattern
+    // treated those as positional and broke 22 {{pp}} blocks.
+    const m = /^\s*([a-z][a-z0-9_]*)\s*=\s*(.*)$/i.exec(a);
     if (m) {
       if (m[1]!.toLowerCase() === 'round') round = Number(m[2]);
       continue; // key=, color=, buzzword etc. are display-only
@@ -305,7 +307,14 @@ export function parseLevelProgression(inner: string): Scaling {
   const valueArg = args[0]!.trim();
   const levelArg = args[1]?.trim();
 
-  const values = readSeries(valueArg, round);
+  let values = readSeries(valueArg, round);
+  // When the value side carries no explicit step count it defaults to one value per champion
+  // level (18). If the level side is an explicit list, IT states the step count — "40 to 70"
+  // against levels "1;7;13" is three values, not eighteen. Re-read with that length.
+  if (values.length === 18 && levelArg && /;/.test(levelArg)) {
+    const levelCount = levelArg.split(';').length;
+    if (levelCount !== 18) values = readSeries(valueArg, round, levelCount);
+  }
   const levels = levelArg ? readSeries(levelArg, undefined, values.length) : undefined;
 
   if (!levels) {
