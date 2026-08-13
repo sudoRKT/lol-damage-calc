@@ -239,13 +239,17 @@ literal (29 suspect), and "additional" damage stored as a replacement (1). **Non
 visible to gate 2**, because every one of them round-trips correctly — they are errors of meaning,
 not of transcription. Fix them before trusting any roster-wide figure.
 
-**8 entries are `verified` as the pipeline actually runs — corrected 2026-08-13.** This said 11;
-PLAN.md and DATA-SOURCES §31.4 said 10; the measured figure was 8. **DEFINITION: an entry is
-`verified` when the gate-5 ledger records an independent re-derivation AND the batch runner's own
-promotion rule fires, which requires gate-2 evidence (`checkedRows + levelScaledNotCompared > 0`).**
-The ledger holds 10. Two — Aphelios Q Moonshot and Ambessa P — were refused promotion because their
-only gate-2 evidence came from the prose round-trip the runner never invoked (§28, §36).
-`verification/gate5-passes.json` is still the only route in.
+**10 entries are `verified`, measured over a full 937-page run on 2026-08-13.** **DEFINITION: an
+entry is `verified` when the gate-5 ledger records an independent re-derivation AND the batch
+runner's promotion rule fires, which requires agreement from at least one of the three gate-2
+round-trips.** `verification/gate5-passes.json` is the only route in.
+
+This figure moved twice in one day and the path is worth keeping. CLAUDE.md said 11 and PLAN.md
+said 10, while the pipeline actually produced **8** — Aphelios Q Moonshot and Ambessa P were
+refused promotion because their only evidence came from the prose round-trip the runner never
+invoked. Wiring that round-trip in (§36.2) restored them, and the full run confirms **10**. So the
+documents were right about the number and wrong about how it was reached, which is the harder kind
+of wrong to notice.
 
 Abilities carry FOUR verification statuses, not three: `verified`, `derived`, `incomplete` and
 `no-damage` (DATA-SOURCES §27). The fourth exists because 239 entries that deal no damage at all

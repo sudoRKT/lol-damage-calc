@@ -2717,8 +2717,18 @@ confirmed on a check the shipped runner did not perform.
 | `verified` | 8 | **10** |
 
 The two entries that could not reach `verified` were **Aphelios Q Moonshot** and **Ambessa P**: the
-promotion rule requires `checkedRows + levelScaledNotCompared > 0`, and their only evidence was the
-round-trip that never ran. **Wired in on 2026-08-13.**
+promotion rule requires gate-2 agreement, and their only evidence was the round-trip that never ran.
+
+**WIRED IN AND CONFIRMED BY A FULL 937-PAGE RUN, 2026-08-13.** Measured, not predicted: 173
+champions, 937 ability entries, 917 components. Of 623 storable entries, **584 confirmed by gate 2**
+against 558 without the prose round-trip — **26 entries newly confirmed**, the prose round-trip
+running on 52 abilities. **No gate-2 evidence either way: 2**, down from 28. **`verified`: 10**, the
+runner reporting "10 promoted". Verification across all 937: **10 verified / 485 derived / 236
+incomplete / 206 no-damage**. Gate 1: 919 pass, 18 fail. Gate 2 ability box: 839 rows checked, 799
+matched, 40 failed. Gate 2 level series: 36 of 36. Gate 6 status-honesty: 937 of 937.
+
+It costs no extra network traffic — `renderAbilityDetail` returns the leveling rows and the
+rendered description from the same fetch gate 2 already made.
 
 Why it was never wired in could not be established. The code and its tests are complete and
 passing, so it reads as an omission rather than a decision, and no document says either way.

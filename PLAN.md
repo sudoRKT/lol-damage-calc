@@ -16,7 +16,7 @@ input it was sized against has moved.** This one is built on the measurements in
 | — `no-damage` | **206** | stored nothing, and every source is silent about damage |
 | — no component, incomplete for another reason | 39 | |
 | **Of the 623 storable:** confirmed by gate 2 | **584** | gate 2 compared ≥1 row against the wiki's own rendering and found no disagreement |
-| — **verified** | **8** | ledger holds 10; the runner promotes 8. Two lack gate-2 evidence because the prose round-trip was never wired in (§36). Corrected 2026-08-13 |
+| — **verified** | **10** | confirmed by a full 937-page run, 2026-08-13. Was 8 until the third round-trip was wired into the runner (§36.2); the two it restored are Aphelios Q Moonshot and Ambessa P |
 | — gate 2 disagreed | 37 | forced `incomplete` |
 | — no gate-2 evidence either way | 2 | was 35 before the third round-trip (§28) |
 | **Permanently unreachable** | **23** | records an `unresolvable`: a fact no source states. Not work |
