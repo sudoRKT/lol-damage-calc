@@ -1448,3 +1448,49 @@ before the round-trip and is `incomplete` after. Disagreeing **rows** are groupe
 - **value-differs** — same shape on both sides, different numbers. A **storage defect**.
 
 Measured over the 937-page set of §19, after alias dedupe. Results below.
+
+| Figure | Count |
+|---|---:|
+| ability pages measured | 937 |
+| entries gate 2 can run on (≥1 stored component) | **589** |
+| entries with no components (nothing to compare; skipped, not passed) | 348 |
+| of the 589: `derived` beforehand | 527 |
+| of the 589: already `incomplete` | 62 |
+| entries matching on every row | **530** |
+| entries with ≥1 disagreement | **59** |
+| **entries gate 2 demotes from `derived` to `incomplete`** | **28** |
+| rows checked / matched / disagreeing | 872 / 810 / **62** |
+
+Disagreeing **rows** by cause:
+
+| Cause | Rows | Storage defect? |
+|---|---:|---|
+| wiki-series-short | 34 | no — comparison artifact |
+| **value-differs** | **18** | **yes, on 17 abilities** |
+| ratio-count | 10 | artifact, but may hide a real error |
+| render-failed | 6 | no — all six are the §22 rank-count failures |
+
+**The 6 render-failures are not the wiki's fault:** Heimerdinger W and E, Karma Q Soulflare and
+Nidalee Q/W/E — the same second-form rank counts §22 left open. They fail before rendering.
+
+**Of the 18 value-differing rows, 3 are display rounding, not defects.** The wiki prints a
+rounded figure where we store the exact one: Rumble Q (wiki 140.63, stored 140.625), Varus Q
+(wiki 100, stored 99.9975), Zeri Q (wiki 3.71, stored 3.7125). A fourth cause worth naming, and
+an argument for comparing at display precision rather than 1e-6.
+
+**The remaining 15 are real, and most share one root cause.** Twelve sit on abilities that also
+carry two components with the same id (§23) — Akali E, Anivia Q, Graves Q, Mel E, Sejuani W,
+Smolder Q, Sylas Q, Talon W, Twisted Fate W, Vel'Koz W, Vex R, Viktor E. One component shadows
+the other and the comparison lands on the wrong one. They were already `incomplete` via gate 1,
+so gate 2 confirms the diagnosis rather than finding them anew.
+
+**Three were newly caught by gate 2 alone**, and the gaps are large:
+
+| Ability | Wiki renders | We stored |
+|---|---|---|
+| **Blitzcrank R** (Static Field) | 275 / 400 / 525 | 50 / 100 / 150 |
+| **Vex R** (Shadow Surge) | 150 / 250 / 350 | 75 / 125 / 175 |
+| **Kled Q** (Bear Trap on a Rope) | 60 / 110 / 160 / … | 30 / 55 / 80 / … |
+
+None is diagnosed yet. All three are now `incomplete` rather than `derived`, which is the point:
+the numbers are no longer presented as understood.
