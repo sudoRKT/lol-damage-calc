@@ -113,6 +113,29 @@ export interface DraftAbility {
    * it loud.
    */
   droppedEveryDamageRow: boolean;
+  /**
+   * Present ONLY when gate 7 found a mismatch. Carries the stated total and every component's
+   * series at every rank, which is what `gate7-classes.ts` needs to say WHY an entry does not
+   * reconcile. Gate 7 itself only ever says THAT it does not.
+   */
+  totalMismatch?: TotalMismatchEvidence;
+}
+
+/** What gate 7 saw when an entry failed to reconcile. Input to the class detectors. */
+export interface TotalMismatchEvidence {
+  /** The whole-ability total the source states, expanded at every rank. */
+  stated: number[];
+  /** How many qualifying whole-ability totals the source printed. >1 means gate 7 picked one
+   *  arbitrarily — 16 pages roster-wide, and on three of them it picks the narrow one. */
+  howManyWholeAbilityTotals: number;
+  components: Array<{
+    id: string;
+    label: string;
+    hits: number;
+    alternative: boolean;
+    /** null when the base scales by champion level, which cannot be compared rank by rank. */
+    series: number[] | null;
+  }>;
 }
 
 export interface TemplateSource {
@@ -175,6 +198,8 @@ export function draftFromTemplate(src: TemplateSource, patch: string, fetched: s
     damageTypeOf(fields.damagetype) ?? (statedTypes.size === 1 ? [...statedTypes][0]! : null);
 
   const issues: RowIssue[] = [];
+  // Set only when gate 7 finds a mismatch; `gate7-classes.ts` classifies it. See below.
+  let totalMismatch: TotalMismatchEvidence | undefined;
   const droppedRows: Array<{ label: string; why: string }> = [];
   const shapes: ShapeId[] = [];
   const components = [];
@@ -387,6 +412,23 @@ export function draftFromTemplate(src: TemplateSource, patch: string, fetched: s
                 `the wiki states a total of ${want} at rank 1 and our additive components sum to ` +
                 `${Math.round(got * 1000) / 1000} — ${got < want ? 'a term or a multiplicity is missing' : 'something is counted twice'}`,
             });
+            // THE EVIDENCE A CLASSIFIER NEEDS, recorded at every rank rather than just rank 1.
+            // Gate 7 says an entry does not reconcile; it deliberately does not say why. Naming
+            // the cause needs the whole series — "the total is exactly 3× this component at
+            // EVERY rank" is a missing hit count, while agreement at one rank is a coincidence.
+            // `gate7-classes.ts` reads this. Recorded only on a mismatch, so it costs nothing on
+            // the 572 entries that reconcile.
+            totalMismatch = {
+              stated: expandByRank(tc.component.base, maxRank),
+              howManyWholeAbilityTotals: rows.filter((r) => wholeAbilityTotal(r.label)).length,
+              components: withRelations.map((x) => ({
+                id: x.id,
+                label: x.label ?? x.id,
+                hits: x.hits ?? 1,
+                alternative: x.relation?.kind === 'alternativeTo',
+                series: isLevelScaled(x.base) ? null : expandByRank(x.base, maxRank),
+              })),
+            };
           }
         } catch { /* a total that will not expand is reported by gate 1 instead */ }
       }
@@ -500,6 +542,7 @@ export function draftFromTemplate(src: TemplateSource, patch: string, fetched: s
     droppedRows,
     needsHandAuthoring,
     droppedEveryDamageRow,
+    totalMismatch,
     proseComponents,
     proseComponentIds,
     proseSkipped: proseSkips,

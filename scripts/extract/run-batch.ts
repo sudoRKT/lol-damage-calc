@@ -27,6 +27,7 @@ import {
   type ProseRoundTripResult,
 } from './harvest.ts';
 import { fetchDamageData } from './damage-data.ts';
+import { classifyGate7, summariseGate7Classes } from './gate7-classes.ts';
 import { renderAbilityDetail, renderLevelBlocks } from './render.ts';
 
 const SLOTS: AbilitySlot[] = ['P', 'Q', 'W', 'E', 'R'];
@@ -475,6 +476,32 @@ function report(
   // Gate 5 sample at the tiered rate. This batch is all T1, so 10%.
   const eligible = drafts.filter((d) => d.entry.components.length > 0);
   const sampleSize = Math.max(1, Math.ceil(eligible.length * 0.1));
+  // WHY THE GATE-7 FAILURES FAIL, not just how many. Each class carries its definition in
+  // gate7-classes.ts and its population here. A class is a hypothesis about a cause backed by
+  // arithmetic — never permission to change a stored number.
+  const gate7Findings = drafts
+    .filter((d) => d.totalMismatch !== undefined)
+    .map((d) => ({
+      entry: `${d.entry.champion}/${d.entry.slot}/${d.entry.abilityName}`,
+      finding: classifyGate7(d.totalMismatch!),
+    }));
+  if (gate7Findings.length > 0) {
+    const rolled = summariseGate7Classes(gate7Findings);
+    const ambiguous = gate7Findings.filter((f) => f.finding.ambiguous).length;
+    console.log(`\n--- gate 7: WHY the ${gate7Findings.length} failures fail ---`);
+    for (const r of rolled) {
+      console.log(
+        `  ${r.class.padEnd(16)} ${String(r.entries).padStart(3)} entr${r.entries === 1 ? 'y' : 'ies'}` +
+          `${r.ambiguous > 0 ? `  (${r.ambiguous} that no rule may settle)` : ''}`,
+      );
+      for (const e of r.examples) console.log(`      ${e}`);
+    }
+    console.log(
+      `  ${ambiguous} of ${gate7Findings.length} are AMBIGUOUS: the arithmetic admits more than ` +
+        `one reading, so a person must read the ability. They stay 'incomplete'.`,
+    );
+  }
+
   console.log(`\n--- gate 5 sample for the sceptic agent (T1 rate 10% => ${sampleSize} of ${eligible.length}) ---`);
   for (let i = 0; i < sampleSize; i += 1) {
     const d = eligible[Math.floor((i * eligible.length) / sampleSize)]!;
