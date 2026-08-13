@@ -1,0 +1,57 @@
+[
+  {
+    "entry": "Lux/Q/Light Binding",
+    "checkedOn": "2026-08-13",
+    "note": "Re-derived from raw wikitext and refereed against Riot's shipped game data (LuxLightBinding BaseDamage array, APRatio 0.75). 80/120/160/200/240 + 75% AP confirmed by both."
+  },
+  {
+    "entry": "Brand/Q/Sear",
+    "checkedOn": "2026-08-13",
+    "note": "Three independent sources agreed: wikitext, Data Dragon effectBurn 70/100/130/160/190, and game data BrandQ SpellBaseDamage with 0.65 coefficient."
+  },
+  {
+    "entry": "Ezreal/Q/Mystic Shot",
+    "checkedOn": "2026-08-13",
+    "note": "Game data EzrealQ BaseDamage array and BaseDamageADRatio 1.3 / APRatio 0.4 confirm 20/45/70/95/120. The AD ratio is total AD (no bonus-AD stat formula), as stored."
+  },
+  {
+    "entry": "Caitlyn/Q/Piltover Peacemaker",
+    "checkedOn": "2026-08-13",
+    "note": "Both rows re-derived: full hit 50/90/130/170/210 with 125-205% total AD, reduced hit those times 0.6. Confirmed by game data CaitlynQ (BaseDamage, tADRatio, SecondaryMult 0.6). NOTE: Data Dragon's legacy effectBurn field disagrees and is stale — it was not used."
+  },
+  {
+    "entry": "Darius/Q/Decimate",
+    "checkedOn": "2026-08-13",
+    "note": "Blade 50/80/110/140/170 with 100-140% total AD; handle is those times 0.35. The alternativeTo relation was checked against the prose ('enemies within the inner radius take 35% damage') and is a genuine replacement, not an addition."
+  },
+  {
+    "entry": "Annie/Q/Disintegrate",
+    "checkedOn": "2026-08-13",
+    "note": "80/125/170/215/260 + 80% AP, confirmed by Riot's own coefficient1 0.8. The Arena override was identified and correctly excluded."
+  },
+  {
+    "entry": "Ashe/W/Volley",
+    "checkedOn": "2026-08-13",
+    "note": "60/95/130/165/200 + 100% BONUS AD confirmed by game data Volley BaseDamage and the bonus-AD stat formula. Data Dragon's effectBurn for this spell is vestigial and disagrees; it was not used."
+  },
+  {
+    "entry": "Amumu/Q/Bandage Toss",
+    "checkedOn": "2026-08-13",
+    "note": "70/95/120/145/170 + 85% AP confirmed by game data BandageToss BaseDamage and a 0.85 AP coefficient."
+  },
+  {
+    "entry": "Aphelios/Q/Moonshot",
+    "checkedOn": "2026-08-13",
+    "note": "Damage is in description prose, not a leveling row. Level-stepped base 70->160 over 7 steps at levels 1-13, bonus-AD ratio 42->60% over the same steps, flat 100% AP. All three terms present; the template states exactly three and no term was dropped."
+  },
+  {
+    "entry": "Akshan/P/Dirty Fighting",
+    "checkedOn": "2026-08-13",
+    "note": "Physical 50% total AD (unqualified AD, and the same template marks bonus AD explicitly elsewhere), plus magic 15/40/80/150 at levels 1/6/11/16 with 60% AP. The shield and the movement burst were checked and correctly excluded as non-damage."
+  },
+  {
+    "entry": "Ambessa/P/Drakehound's Step",
+    "checkedOn": "2026-08-13",
+    "note": "Level-interpolated 5 at level 1 to 30 at level 18 plus 25% bonus AD, confirmed against Riot's ByCharLevelInterpolationCalculationPart (start 5, end 30) and a 0.25 bonus-AD coefficient. All 18 stored levels match to three decimals."
+  }
+]

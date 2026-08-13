@@ -30,6 +30,45 @@ import { renderAbility, renderLevelBlocks } from './render.ts';
 const SLOTS: AbilitySlot[] = ['P', 'Q', 'W', 'E', 'R'];
 const OUT_DIR = 'build/proposed-curated/abilities';
 
+/**
+ * The gate-5 ledger: entries an INDEPENDENT re-derivation has confirmed.
+ *
+ * Gate 5 is a separate agent that re-fetches the sources and works the numbers out for itself,
+ * without this code or its assumptions. It cannot run inside this process — sharing the process
+ * would defeat the point — so its result arrives as a file, and this is the only way an entry can
+ * ever reach `verified`.
+ *
+ * Each record names the entry, the date, and what was checked. An entry absent from this file is
+ * not verified, and no amount of gate-2 agreement changes that.
+ */
+/**
+ * WHERE THIS LIVES, AND WHY NOT IN `/curated/`. The ledger is evidence, and evidence must be
+ * version-controlled and durable, so it cannot live in `build/` (git-ignored, a run artefact).
+ * `/curated/` is the natural home in spirit — it is the project's irreplaceable asset — but it is
+ * read-only on disk and guarded, and moving the ledger there is a deliberate decision for the
+ * project owner to make with the unlock, not something to slip in. Top-level and lead-owned
+ * until then.
+ */
+const GATE5_LEDGER = 'verification/gate5-passes.json';
+
+interface Gate5Record {
+  /** "Champion/Slot/AbilityName", matching the key the validator builds. */
+  entry: string;
+  checkedOn: string;
+  /** What the re-derivation covered, in plain English, for the audit trail. */
+  note: string;
+}
+
+async function readGate5Ledger(): Promise<Map<string, Gate5Record>> {
+  try {
+    const raw = await (await import('node:fs/promises')).readFile(GATE5_LEDGER, 'utf8');
+    const records = JSON.parse(raw) as Gate5Record[];
+    return new Map(records.map((r) => [r.entry, r]));
+  } catch {
+    return new Map(); // no ledger yet: nothing is independently checked, which is the truth
+  }
+}
+
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 async function main(): Promise<void> {
@@ -190,6 +229,29 @@ async function main(): Promise<void> {
     console.log(`\ngate 2 demoted ${demoted} entr${demoted === 1 ? 'y' : 'ies'} from 'derived' to 'incomplete'`);
   }
 
+  // GATE 5, AND THE ONLY PROMOTION TO 'verified' IN THE PROJECT.
+  //
+  // Both conditions are required and neither is sufficient. Gate 2 shows our numbers agree with
+  // the wiki's own rendering of the same template — but that shares a source with us, so it
+  // cannot catch a source we read wrongly in the same way twice. Gate 5 is a second party
+  // re-deriving from scratch. An entry needs both, plus a recorded sourceRevision so staleness
+  // stays traceable.
+  const gate5 = await readGate5Ledger();
+  let promoted = 0;
+  for (const d of drafts) {
+    const key = `${d.entry.champion}/${d.entry.slot}/${d.entry.abilityName}`;
+    if (d.entry.verification !== 'derived') continue;
+    if (!gate5.has(key)) continue;
+    const rt = roundTrips.find((r) => r.entry === key);
+    if (!rt || rt.mismatches.length > 0 || rt.checkedRows + rt.levelScaledNotCompared === 0) continue;
+    d.entry.verification = 'verified';
+    promoted += 1;
+  }
+  console.log(
+    `\ngate 5 ledger: ${gate5.size} entr${gate5.size === 1 ? 'y' : 'ies'} recorded; ` +
+      `${promoted} promoted to 'verified' (gate 2 agreement AND an independent re-derivation)`,
+  );
+
   const file: CuratedFile = {
     version: 1,
     patch: manifest.patch,
@@ -216,7 +278,7 @@ async function main(): Promise<void> {
     `${JSON.stringify({ roundTrips, levelRoundTrips, drafts: drafts.map(summarise) }, null, 2)}\n`,
   );
 
-  report(file, drafts, roundTrips, levelRoundTrips);
+  report(file, drafts, roundTrips, levelRoundTrips, [...gate5.keys()]);
 }
 
 function summarise(d: DraftAbility) {
@@ -237,6 +299,7 @@ function report(
   drafts: DraftAbility[],
   roundTrips: ReturnType<typeof roundTrip>[],
   levelRoundTrips: LevelRoundTripResult[],
+  gate5Keys: string[],
 ): void {
   const rtChecked = roundTrips.reduce((n, r) => n + r.checkedRows, 0);
   const rtMatched = roundTrips.reduce((n, r) => n + r.matchedRows, 0);
@@ -248,7 +311,7 @@ function report(
   );
   const reports = validateCuratedFile(file, {
     roundTripPassed,
-    independentlyChecked: new Set(), // gate 5 runs as a separate agent
+    independentlyChecked: new Set(gate5Keys),
   });
 
   const line = (g: string, checked: number, passed: number, failed: number) =>
@@ -273,7 +336,9 @@ function report(
   line('3 sum-guard', sum.checked, sum.passed, sum.failed);
   const nc = reports.find((r) => r.gate === 'non-champion')!;
   line('4 non-champion', nc.checked, nc.passed, nc.failed);
-  console.log(`  5 independent    not run here — separate agent, sample list below`);
+  console.log(
+    `  5 independent    ${gate5Keys.length} recorded in ${GATE5_LEDGER} — re-derived by a separate agent`,
+  );
   const sh = reports.find((r) => r.gate === 'status-honesty')!;
   line('6 status-honesty', sh.checked, sh.passed, sh.failed);
 

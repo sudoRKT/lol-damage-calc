@@ -215,6 +215,20 @@ because the source never says whose armor, magic resistance or mana they read (M
 among them), and item and rune effects have not been harvested at all, so their 85 owner-
 bearing references are counted but unwritten.
 
+**Gate 5 ran at scale for the first time on 2026-08-13 and disagreed with half the sample — 14 of
+28 abilities (DATA-SOURCES §29).** Seven defect classes came out of it, each measured across the
+roster: a damage-over-time ability storing one tick as the whole ability (64 components at risk),
+the coefficient shape stored inside out (12 ratios), second-form abilities on the wrong rank axis
+(6), a blank damage type silently defaulted to magic (14 entries, 2 contradicted by the source),
+percentage modifiers stored as flat damage (44 components), the prose path dropping a bare
+literal (29 suspect), and "additional" damage stored as a replacement (1). **None of these is
+visible to gate 2**, because every one of them round-trips correctly — they are errors of meaning,
+not of transcription. Fix them before trusting any roster-wide figure.
+
+**11 entries are `verified`**, the first in the project, recorded in `verification/gate5-passes.json`.
+An entry reaches that status only when gate 5 passed it AND gate 2 agreed; the ledger is the only
+route and the batch runner enforces both.
+
 Abilities carry FOUR verification statuses, not three: `verified`, `derived`, `incomplete` and
 `no-damage` (DATA-SOURCES §27). The fourth exists because 239 entries that deal no damage at all
 were reading `derived` — "extracted from source, not independently confirmed" — which is a claim

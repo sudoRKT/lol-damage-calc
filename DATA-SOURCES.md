@@ -2046,3 +2046,96 @@ Caitlyn W, and the Heimerdinger and Nidalee abilities whose rank counts the wiki
 (§22). For those, **gate 2 can never confirm them, and their only route to `verified` is gate 5**:
 an independent re-derivation by an agent that does not share this pipeline's code. That is not a
 gap to be closed by more parsing; it is the reason the project has a fifth gate.
+
+---
+
+## 29. Gate 5, run at scale for the first time (2026-08-13)
+
+**Fourteen of twenty-eight abilities disagreed with what we stored. Half.**
+
+That is the headline and it should not be softened. Five sceptic agents re-fetched the sources
+and re-derived every value independently, without this pipeline's code. Several also refereed
+against Riot's own shipped game data — `raw.communitydragon.org/latest/game/data/characters/…`,
+which carries the live coefficient arrays — a second source this project had not previously used
+and which settled several cases outright.
+
+**DEFINITIONS.** *Sample* = 28 abilities drawn deliberately, not randomly, in four groups: 10 that
+gate 2 confirmed on every row, 8 holding components gate 2 could not compare (that group had 8
+members, not 10, after §28 moved 26 of the 35 out of it — it was not padded), 5 from the prose
+path, 5 carrying the coefficient shape. *DISAGREE* = the sceptic derived a different value or a
+different meaning from the source. *AGREE* = every stored figure reproduced.
+
+| Group | Abilities | AGREE | DISAGREE |
+|---|---:|---:|---:|
+| A gate-2 confirmed | 10 | 8 | 2 |
+| B no gate-2 evidence | 8 | 0 | 8 |
+| C prose path | 5 | 3 | 2 |
+| D coefficient shape | 5 | 3 | 2 |
+| **Total** | **28** | **14** | **14** |
+
+**Group B failed completely — 8 of 8.** The abilities gate 2 could not check are exactly the ones
+that are wrong. That is the strongest possible evidence that "no gate-2 evidence" must never be
+treated as neutral.
+
+### Seven defect classes, each measured across the roster
+
+| # | Defect | Found on | Roster population | Definition of the population |
+|---|---|---|---:|---|
+| 1 | **A damage-over-time ability stores one tick and calls it the ability.** The `Total` row is dropped as a summary and the per-tick row that remains keeps `hits: 1`, because nothing reads the real tick count. Cassiopeia Q stores 10.71 where the ability deals 75 — one seventh. | Cassiopeia Q | **64** | stored per-hit components on an ability that also had a `Total` row dropped |
+| 2 | **The coefficient shape is stored inside out.** `isMultiplierGroup` matches any block containing "per 100", including a health payload that merely *contains* a nested multiplier — so the payload is lifted as a multiplier onto the wrong ratio, and the real scaling is lost. Ambessa Q rank 5 with 100 bonus AD into a 3000 HP target: real 225, stored 180 — and at other inputs it errs the other way, so a spot check can look right. | Ambessa Q ×2, Briar W | **12** | stored ratios on an AD/AP stat carrying a multiplier whose per-stat is a health pool — in the source that shape is always the reverse |
+| 3 | **Second-form abilities are indexed by the wrong rank axis.** They scale with the ultimate's rank (4, or 3 for UPGRADE!!!), not the slot's 5. The source states it in plain text on the leveling line and Data Dragon's `maxrank` on the ultimate confirms it. Our values are correct and unreachable. | Heimerdinger W and E, Nidalee Q/W/E, Karma Q | **6** | the §22 render-failures, now diagnosed rather than open |
+| 4 | **A blank `damagetype` is silently defaulted to magic.** Caitlyn W's Headshot bonus is *physical*; stored magic, so it resolves against the wrong resistance entirely. | Caitlyn W | **14**, of which **2** are contradicted by `Module:DamageData/data` (Caitlyn W, Illaoi E) | entries storing damage whose template states no usable damage type |
+| 5 | **A percentage modifier is stored as flat damage that adds.** Aurelion Sol W is a 108–112% multiplier on *another ability's* damage; stored as 108–112 flat magic damage. Casting it injects ~108 phantom damage. | Aurelion Sol W, Nidalee Q ×2 | **44** | stored components whose label says modifier / effectiveness / increase / amplif |
+| 6 | **The prose path drops a bare literal.** `{{as|15|physical damage}}` — the classifier returns nothing for a value block holding a plain number with no `%`, so Aphelios Calibrum kept its 15% bonus-AD ratio and lost the flat 15 beside it. | Aphelios P Calibrum | **29** suspect | prose components whose base is zero at every rank. Not all are wrong — many are genuinely ratio-only — but the reader provably cannot see a bare literal, so every one needs checking |
+| 7 | **"Additional" damage stored as a replacement.** The variant-marker list matches on *outer* and never checks *additional*, which means the opposite. Camille W models the outer cone instead of the base hit rather than as well as it — 220 damage missing at rank 5. | Camille W | **1** | components labelled "additional" yet stored as `alternativeTo` |
+
+Two further abilities agreed on every figure while being **materially incomplete**, which is its
+own finding: **Ahri Q** stores the outbound magic pass and not the return pass, which deals the
+same again as **true** damage — half the ability, and the half it keeps is mis-typed for a
+combo. **Aphelios Infernum** stores the primary-target 110% AD and not the secondary-target
+step function. Neither is eligible for `verified`.
+
+### What this says about gate 2
+
+**Gate 2 passed Cassiopeia Q and Camille W and was right to.** The numbers it compared are the
+wiki's numbers. Both faults are in what the numbers *mean* — how many times a component lands,
+and whether it adds or replaces — and no round-trip against the same source can see that. The
+same is true of the silent magic default: the value round-trips perfectly under the wrong type.
+
+Gate 2 is a check on transcription. Gate 5 is the only check on comprehension, and the first time
+it ran at scale it found a defect in half the sample.
+
+### What can legitimately be marked verified: 11
+
+**DEFINITION.** An entry may be `verified` only when ALL of: gate 5 passed it with no material
+gap; gate 2 compared at least one row and found no disagreement; the source states a damage type
+rather than it being defaulted; the entry carries no per-hit component on an ability with a
+dropped `Total` row; and a `sourceRevision` is recorded. Every criterion is checked mechanically.
+
+12 abilities passed gate 5 cleanly; **11 are eligible**. Amumu W is blocked by a gate-2
+disagreement of its own.
+
+**Lux Q · Brand Q · Ezreal Q · Caitlyn Q · Darius Q · Annie Q · Ashe W · Amumu Q ·
+Aphelios Q Moonshot · Akshan P · Ambessa P**
+
+They are recorded in `verification/gate5-passes.json`, one entry each with the evidence in plain
+English. The batch runner promotes an entry to `verified` only when the ledger has it **and**
+gate 2 agreed — both required, neither sufficient. That mechanism did not exist before today,
+which is a large part of why nothing had ever been verified.
+
+**11 of 937 is 1.2% of the roster.** At the tiered sampling rate the plan assumed (10% for tier
+1), gate 5 would have run on roughly 60 abilities and, at the rate observed here, left about 30
+defects in place. The rate this run measured — 50% — is the number to plan against, and it argues
+for gate 5 at a far higher rate than 10%, or for fixing the seven classes above first so that the
+rate falls before sampling resumes.
+
+### One more source, now proven useful
+
+Riot's shipped game data at `raw.communitydragon.org/latest/game/data/characters/<champ>/<champ>.bin.json`
+carries live per-rank coefficient arrays (`BaseDamage`, `ADRatio`, and calculation parts naming
+the stat and whether it is bonus or total). Two traps recorded by the sceptics: **index 0 is the
+unlearned rank**, so ranks 1..N are indices 1..N; and **Data Dragon's legacy `effectBurn` field
+is vestigial and wrong** for at least Caitlyn Q and Ashe W, disagreeing with both the wiki and
+Riot's own live data. This is a genuine third referee for ability damage — the first this project
+has found — and §4's conclusion that Riot exposes no usable ability numbers is true of Data
+Dragon only, not of the game data.
