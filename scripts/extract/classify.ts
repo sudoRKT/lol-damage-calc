@@ -26,7 +26,7 @@ import type {
   RatioOwner,
   RatioStat,
 } from '../../src/types/data.ts';
-import { isHealthPoolStat } from '../../src/types/data.ts';
+import { requiresOwner } from '../../src/types/data.ts';
 import { ALTERNATIVE_MARKERS } from '../../src/types/validate-curated.ts';
 import { ProgressionError, parseRankProgression } from './progression.ts';
 import { findBlocks, plainText, splitArgs, substituteVars } from './wikitext.ts';
@@ -135,16 +135,25 @@ const RATIO_STATS: Array<[RegExp, RatioStat]> = [
  * ships a wrong number nobody can see. They are recorded as 'unresolved', which forces the
  * entry to 'incomplete' at gate 6 and puts it on the hand-authoring worklist.
  *
- * Order matters: target is tested first, so a phrase naming both loses to the target reading
- * only if the target marker is inside this block -- and a compound expression that puts the
- * owner OUTSIDE the block (Udyr Q's "(+ 1% per 100 bonus health) of the target's maximum
- * health") correctly falls through to 'unresolved' rather than being half-read.
+ * Order matters: target is tested first. A compound expression that puts the owner OUTSIDE
+ * this block -- Kled W's "(+ 0.4% per 100 bonus health) of target's maximum health", where
+ * the caster's bonus health is a COEFFICIENT on a payload owned by the target -- is not
+ * something a per-ratio owner can express at all. Those are counted and reported separately
+ * (DATA-SOURCES §16); this function only ever describes the block it is given.
  */
 const OWNER_TARGET = /\b(?:primary\s+|the\s+)?(?:target|enemy|enemies|victim)(?:'s|s'|’s)/i;
 const OWNER_CASTER =
   /\b(?:his|her|hers|its|your|their\s+own|its\s+own|own)\b|\b[A-Z][A-Za-z'’.]*(?:'s|’s)/;
 
-/** Decide a health ratio's owner from its own text. Never guesses; returns 'unresolved'. */
+/**
+ * Decide a ratio's owner from its own text. Never guesses; returns 'unresolved'.
+ *
+ * Applied to every stat both champions possess: the four health pools, armor and bonus armor,
+ * magic resistance and bonus magic resistance, maximum and current mana. The resistance and
+ * mana ratios were surveyed the same way on 2026-08-13 and the source is even quieter about
+ * them than about health -- "(+ 30% armor)", "(+ 3% maximum mana)" -- so most land on
+ * 'unresolved'. That is what the source says, and it is not this function's job to improve on it.
+ */
 export function ratioOwnerOf(text: string): RatioOwner {
   const t = text.replace(/'''|''/g, '');
   if (OWNER_TARGET.test(t)) return 'target';
@@ -165,8 +174,47 @@ export function ratioStatOf(text: string): RatioStat | null {
 }
 
 export interface RowIssue {
-  kind: 'unparsed-base' | 'unparsed-ratio' | 'unknown-stat' | 'no-value' | 'unresolved-owner';
+  kind:
+    | 'unparsed-base'
+    | 'unparsed-ratio'
+    | 'unknown-stat'
+    | 'no-value'
+    | 'unresolved-owner'
+    | 'coefficient-shape';
   detail: string;
+}
+
+/**
+ * A COEFFICIENT on a health payload — a shape the library does not have.
+ *
+ * Malzahar R is `{{ap|10 to 20}}% {{as|(+ 2.5% per 100 AP)}} of target's maximum health`.
+ * That reads: deal 10–20% of the target's maximum health, and add 2.5 percentage points to
+ * that percentage for every 100 ability power. The "2.5% per 100 AP" is NOT a 2.5% AP ratio
+ * — it modifies the health percentage. `Ratio` has one stat and one magnitude and cannot say
+ * this, so the classifier currently stores the coefficient as though it were an ordinary
+ * ratio, or loses the payload entirely. Kled W comes out as "4.5–6.5% of the target's BONUS
+ * health" when the source says MAXIMUM health, which is a plausible wrong number of exactly
+ * the kind this project exists to prevent.
+ *
+ * Measured across 937 distinct ability pages on 2026-08-13: 34 abilities, 53 damage rows.
+ * Two of them (Kled W, Pantheon W) use a health pool as the coefficient — the caster's bonus
+ * health scaling a payload on the target's maximum health — and 32 use AP or AD.
+ *
+ * This detector does NOT fix the shape. It refuses to let one pass as understood: the row is
+ * still stored, an issue is raised, and the ability drops to 'incomplete' so nothing
+ * downstream can present it as settled. Adding a real shape is a contract change and a
+ * decision for the lead, not something to slip in behind a regular expression.
+ */
+export const COEFFICIENT_GROUP = /\(\s*\+[^)]*?per\s+100\s+([^)]*?)\)/gi;
+export const OWNED_HEALTH_PAYLOAD =
+  /(?:target|enemy|victim)(?:'s|’s)\s+(?:[a-z']+\s+){0,3}health|\b(?:his|her|its|their|[A-Z][A-Za-z']*(?:'s|’s))\s+(?:[a-z']+\s+){0,3}health/i;
+
+/** True when a row expresses a health payload whose percentage is itself scaled. */
+export function hasCoefficientShape(value: string): boolean {
+  const raw = value.replace(/\s+/g, ' ');
+  if (!OWNED_HEALTH_PAYLOAD.test(raw) && !OWNED_HEALTH_PAYLOAD.test(plainText(raw))) return false;
+  COEFFICIENT_GROUP.lastIndex = 0;
+  return COEFFICIENT_GROUP.test(raw);
 }
 
 export interface ClassifiedRow {
@@ -202,10 +250,10 @@ export function parseRatio(
   const stat = ratioStatOf(flat);
   if (!stat) return { issue: { kind: 'unknown-stat', detail: text.slice(0, 80) } };
 
-  // A health pool names a quantity but not a champion. Decide the owner from the same prose
-  // the stat came from, and record 'unresolved' where that prose does not say. Gate 1 rejects
-  // a health ratio with no owner, so this can never be silently skipped.
-  const owner: { owner?: RatioOwner } = isHealthPoolStat(stat)
+  // A stat both champions possess names a quantity but not a champion. Decide the owner from
+  // the same prose the stat came from, and record 'unresolved' where that prose does not say.
+  // Gate 1 rejects such a ratio with no owner, so this can never be silently skipped.
+  const owner: { owner?: RatioOwner } = requiresOwner(stat)
     ? { owner: ratioOwnerOf(flat) }
     : {};
 
@@ -266,6 +314,18 @@ export function classifyRow(
   const issues: RowIssue[] = [];
   const { maxRank, vars } = opts;
 
+  if (hasCoefficientShape(value)) {
+    issues.push({
+      kind: 'coefficient-shape',
+      detail:
+        'a health payload whose percentage is itself scaled ("per 100 …") — the library has ' +
+        `no shape for this, so what is stored below is not the whole ability: ${value
+          .replace(/\s+/g, ' ')
+          .trim()
+          .slice(0, 110)}`,
+    });
+  }
+
   // Ratios first, so what remains is the base.
   const ratioBlocks = findBlocks(value, 'as');
   const ratios: Ratio[] = [];
@@ -279,7 +339,7 @@ export function classifyRow(
       if (ratio.owner === 'unresolved') {
         issues.push({
           kind: 'unresolved-owner',
-          detail: `${ratio.stat}: source does not say whose health — "${b.inner
+          detail: `${ratio.stat}: source does not say whose — "${b.inner
             .replace(/\s+/g, ' ')
             .trim()
             .slice(0, 70)}"`,

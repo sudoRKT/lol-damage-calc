@@ -9,6 +9,7 @@ import {
   isDamageRow,
   parseRatio,
   proposeRelations,
+  hasCoefficientShape,
   ratioOwnerOf,
   ratioStatOf,
   shapeOf,
@@ -63,10 +64,10 @@ describe('health-pool ownership', () => {
   });
 
   it('leaves a compound expression unresolved rather than half-reading it', () => {
-    // Udyr Q is "(+ 1% per 100 bonus health) of the target's maximum health": the caster's
+    // Kled W is "(+ 0.4% per 100 bonus health) of target's maximum health": the caster's
     // bonus health is a COEFFICIENT and the target's maximum health is the PAYLOAD. The
     // owner marker sits outside the ratio block, so the block alone must not claim either.
-    expect(ratioOwnerOf('(+ 1% per 100 bonus health)')).toBe('unresolved');
+    expect(ratioOwnerOf('(+ 0.4% per 100 bonus health)')).toBe('unresolved');
   });
 
   it('stamps the owner onto a parsed health ratio, and only onto health ratios', () => {
@@ -91,10 +92,61 @@ describe('health-pool ownership', () => {
     expect(r.issues.map((i) => i.kind)).toContain('unresolved-owner');
   });
 
+  it('requires an owner on armor, magic resistance and mana too', () => {
+    // The same two-champion ambiguity, and the source is quieter about these than about
+    // health. Malphite W reads "(+ 30% armor)" and never says whose.
+    const armor = parseRatio('(+ 30% armor)', 5, NO_VARS);
+    expect(armor.ratio).toMatchObject({ stat: 'armor', owner: 'unresolved' });
+
+    const mana = parseRatio('(+ 3% maximum mana)', 5, NO_VARS);
+    expect(mana.ratio).toMatchObject({ stat: 'maxMana', owner: 'unresolved' });
+
+    const mr = parseRatio("(+ 30% of target's bonus magic resistance)", 5, NO_VARS);
+    expect(mr.ratio).toMatchObject({ stat: 'bonusMagicResist', owner: 'target' });
+
+    const own = parseRatio('(+ 15% of his bonus armor)', 5, NO_VARS);
+    expect(own.ratio).toMatchObject({ stat: 'bonusArmor', owner: 'caster' });
+  });
+
   it('raises no issue when the source did say whose health', () => {
     const r = row('Magic Damage', "{{ap|55 to 215}} {{as|(+ 4% of target's maximum health)}}");
     expect(r.component!.ratios[0]!.owner).toBe('target');
     expect(r.issues).toEqual([]);
+  });
+});
+
+describe('the coefficient shape the library does not have', () => {
+  // Literal rows fetched 2026-08-13. "N% per 100 X" adds N percentage points to the HEALTH
+  // percentage per 100 X — it is not an X ratio, and Ratio cannot express it.
+  const MALZAHAR_R =
+    "{{as|{{ap|10 to 20}}% {{as|(+ {{fd|2.5}}% per 100 AP)}} of target's '''maximum''' health}}";
+  const KLED_W =
+    "{{ap|20 to 60}} {{as|(+ {{ap|4.5 to 6.5}}% {{as|(+ {{fd|0.4}}% per 100 '''bonus''' health)}} of target's '''maximum''' health)}}";
+
+  it('spots a coefficient on a target-health payload (Malzahar R)', () => {
+    expect(hasCoefficientShape(MALZAHAR_R)).toBe(true);
+  });
+
+  it('spots the health-coefficient variant (Kled W)', () => {
+    expect(hasCoefficientShape(KLED_W)).toBe(true);
+  });
+
+  it('does not fire on an ordinary health ratio (Zac Q, Jax E)', () => {
+    expect(hasCoefficientShape("{{ap|75 to 255}} {{as|(+ 3% of Zac's '''bonus''' health)}}")).toBe(
+      false,
+    );
+    expect(
+      hasCoefficientShape("{{ap|40 to 160}} {{as|(+ 4% of target's '''maximum''' health)}}"),
+    ).toBe(false);
+  });
+
+  it('does not fire on a per-100 coefficient with no health payload', () => {
+    expect(hasCoefficientShape('{{ap|30 to 130}} {{as|(+ 2% per 100 AP)}}')).toBe(false);
+  });
+
+  it('raises an issue, which is what drives the ability to incomplete', () => {
+    const r = row('Magic Damage', MALZAHAR_R, 3);
+    expect(r.issues.map((i) => i.kind)).toContain('coefficient-shape');
   });
 });
 

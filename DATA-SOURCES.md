@@ -755,34 +755,160 @@ source statement, not a guess:
 | Vladimir E — Minimum Magic Damage | "deal magic damage … based on **his maximum health**" |
 | Vladimir E — Maximum Magic Damage | as above |
 
-**(b) Three that are compound and cannot be expressed by a single owner at all.** The health
-term is a *coefficient* on the caster, applied to a *payload* on the target:
+**(b) CORRECTION (2026-08-13).** An earlier version of this section listed Udyr Q and Maokai E
+here as compound two-owner expressions. **That was wrong, and it was wrong in the direction
+that matters — it named the defect on the wrong abilities.** Their actual rows are ordinary:
 
-| Entry | The source |
-|---|---|
-| Udyr Q — Bonus Physical Damage On-Hit | "(+ 1% per **100 bonus health**) **of the target's maximum health**" |
-| Maokai E — Magic Damage | "deals magic damage … based on **their maximum health**", scaled "(+ 1% per 100 bonus health)" |
-| Maokai E — Magic Damage per Instance | as above |
+- Udyr Q's stored row is `Bonus Physical Damage On-Hit` = `{{ap|6 to 36 6}} {{as|(+ 20% bonus
+  AD)}} {{as|(+ {{ap|1 to 2 6}}% bonus health)}}` — a plain base plus two ratios, with a bare
+  "bonus health" whose owner is simply unstated. Udyr Q *does* have compound rows, but their
+  coefficient is **bonus AD**, not health.
+- Maokai E is `{{ap|50 to 150}} {{as|(+ 5% bonus health)}} {{as|(+ 25% AP)}}` — also plain. The
+  "based on their maximum health" sentence read from the rendered page belongs to the sapling's
+  expiry explosion, not to this row, and was mis-attached.
 
-These are stored today as a single `bonusHP` ratio, which is **wrong independently of the owner
-field** — the magnitude is a per-100 coefficient, not a percentage of a pool. Flagged here as a
-finding; it needs a modelling decision, not a value correction.
+Both belong in group (c) below. The real compound cases, and the much larger shape problem
+behind them, are in §17.
 
-**(c) Five the source genuinely does not say.** Nothing in the leveling row or the prose names
+**(c) Seven the source genuinely does not say.** Nothing in the leveling row or the prose names
 an owner for that pool. These stay `unresolved` and `incomplete`:
 
 Dr. Mundo W (Heart Zapper) · Dr. Mundo E (Blunt Force Trauma, ×2) · Gnar E (Hop) ·
-Nunu & Willump Q (Consume)
+Nunu & Willump Q (Consume) · Udyr Q (Wilding Claw) · Maokai E (Sapling Toss, ×2)
 
 Dr. Mundo E is the closest call: the prose attributes **his maximum health** and **his missing
 health** to Mundo, but the damage rows scale off **bonus health**, which no sentence attributes.
 Matching on the champion rather than on the pool would have resolved it — and would have been
 the same class of reasoning as the convention argument rejected above.
 
-### Open gap, stated rather than papered over
+### The widened scan (2026-08-13) — the first one was too narrow
 
-**Armor, magic resistance and mana carry the identical ambiguity and are NOT yet enforced.**
-`armor`, `bonusArmor`, `magicResist`, `bonusMagicResist`, `maxMana` and `currentMana` may still
-be stored with no owner. The `owner` field accepts them, but gate 1 does not require it. Do not
-read the absence of an owner on an armor ratio as "it must be the target" — read it as
-"nobody has done this work yet."
+The measurement above covered **865** ability templates: five slots per champion, one ability
+name per slot. **That is not the roster.** A slot can carry more than one ability name, and the
+wiki module stores them as a numbered list — which is where every second form lives: Jayce's
+cannon (`skill_q` = "To the Skies!", "Shock Blast"), Elise's spider form, Gnar's mega form,
+Hwei's twelve subjects, Aatrox's three Q casts. There are also two alternate-form champion rows
+with fractional ids (Mega Gnar 150.2, Kled & Skaarl 240.1).
+
+**1083 ability names exist; 208 of them are secondary names a one-per-slot scan never sees.**
+They resolve to **937 distinct pages** (many names redirect to a shared page). This is a gap in
+the whole curation pipeline, not only in the health question — anything measured "across the
+roster" before this date was measured across 865 of 937 pages.
+
+Re-measured across all 937, through the shipped harvester:
+
+| Scope | Health ratios | caster | target | unresolved |
+|---|---:|---:|---:|---:|
+| **Abilities** (stored) | **106** | 11 | 82 | 13 |
+| **Items** — classic SR, effect prose (source refs, not yet harvested) | **59** | 19 | 11 | 29 |
+| **Runes** — `runesReforged.json` prose (source refs, not yet harvested) | **26** | 12 | 0 | 14 |
+| **Total** | **191** | 42 | 93 | 56 |
+
+Item and rune effects are counted as **source references**, because no code turns them into
+components yet — `itemEffects` and `runes` are empty in every batch produced so far. They are
+what will need an owner when those areas are built, and **48 of the 85 of them say nothing at
+all about whose stat they read** — a worse ratio than abilities, because item prose is written
+from the holder's point of view and rarely names anyone. Both readings genuinely occur in items,
+so this is not theoretical: Sunfire Aegis and Heartsteel scale off the holder, Liandry's and
+Demonic Embrace off the target.
+
+### Armor, magic resistance and mana — gap closed 2026-08-13
+
+The open gap recorded here has been closed. `owner` is now **required on ten stats**, not four:
+the four health pools plus `armor`, `bonusArmor`, `magicResist`, `bonusMagicResist`, `maxMana`
+and `currentMana`. Gate 1 refuses any of them without one; gate 6 forces `incomplete` on an
+unresolved owner exactly as it does for health.
+
+The result is stark and worth stating plainly:
+
+| Scope | Armor / MR / mana ratios | caster | target | unresolved |
+|---|---:|---:|---:|---:|
+| **Abilities** (stored) | **23** | 0 | 0 | **23** |
+| Items (source refs) | 22 | 3 | 0 | 19 |
+| Runes (source refs) | 4 | 3 | 0 | 1 |
+
+**Every single one of the 23 ability ratios is unresolved.** The source writes them as
+`(+ 30% armor)`, `(+ 3% maximum mana)`, `(+ 30% bonus armor)` — a bare stat, never a possessive.
+The 23 sit on 12 abilities, which are now all `incomplete`: Blitzcrank R · Galio R · K'Sante Q
+and W · Kassadin R · **Malphite W and E** · Ornn E · Ryze Q, W and E · Taric E.
+
+Malphite is the case that shows why this matters. `Thunderclap` reads `(+ 15% armor)` and the
+source never says whose. Anyone who plays the champion knows it is Malphite's own armor — and
+that is exactly the knowledge this project is not allowed to substitute for a source statement,
+because the same shape appears on abilities where the answer is the other one. Twelve abilities
+now carry an honest `incomplete` instead of a confident `derived` built on an unstated
+assumption.
+
+---
+
+## 17. The coefficient shape — a real gap in the shape library (2026-08-13)
+
+### What it is
+
+Some abilities deal **a percentage of a health pool, where the percentage is itself scaled**:
+
+```
+Malzahar R:  {{ap|10 to 20}}% {{as|(+ 2.5% per 100 AP)}} of target's maximum health
+```
+
+That reads: deal 10–20% of the target's maximum health, **and add 2.5 percentage points to that
+percentage for every 100 ability power.** The `2.5% per 100 AP` is not a 2.5% AP ratio. It
+modifies the health percentage.
+
+`Ratio` carries one stat and one magnitude. It cannot say this. So the harvester does one of
+two wrong things, silently, and marks the result `derived`:
+
+| Ability | Source | What was stored | What is wrong |
+|---|---|---|---|
+| Kled W | `4.5–6.5% (+0.4% per 100 bonus health) of target's **maximum** health` | `bonusHP`, owner `target`, 4.5→6.5 | wrong pool (**bonus**, not maximum), and the coefficient is gone |
+| Pantheon W | `6–8% of target's maximum health (+1.5% per 100 AP) (+0.4% per 100 Pantheon's bonus health)` | `AP` 1.5 and `bonusHP` caster 0.4, **base 0** | the entire 6–8% payload is missing; the ability deals ~nothing |
+| Malzahar R | `10–20% (+2.5% per 100 AP) of target's maximum health` | `maxHP` target 1→2 | the AP coefficient is gone |
+| Zac W, Amumu W, Vi W, … | as above | payload kept, coefficient dropped | understates every build with AP or AD |
+
+This is the failure mode the project exists to prevent: a plausible number, itemised, with a
+verification status that says it was read from source.
+
+### How many
+
+Measured over all 937 distinct ability pages, damage rows only (summary, minion and monster
+rows excluded), 2026-08-13:
+
+| Family | Coefficient is | Abilities | Rows |
+|---|---|---:|---:|
+| **A** | a **health pool** — two champions' health in one expression | **2** | 2 |
+| **B** | **AP or AD** scaling a health payload | **32** | 51 |
+| | **union** | **32** | 53 |
+
+Family A is only **Kled W** (`+0.4% per 100 bonus health`) and **Pantheon W** (`+0.4% per 100
+Pantheon's bonus health`). The two-owner problem by itself is a handful and does not justify a
+new shape.
+
+**Family B is 32 abilities and does.** Ambessa Q ×2 · Amumu W · Briar W · Camille W · Elise Q ×2
+· Evelynn E ×2 · Fiddlesticks Q · Gwen Q and R · Illaoi W · K'Sante W · Kayle E · Kled W and R ·
+Kog'Maw W · Malzahar R · Nasus R · Pantheon W · Rell E · Sett Q · Shen Q · Tahm Kench R ·
+Trundle R · Udyr Q · Varus W · Vi W · Viego R · Yorick E · Zac W.
+
+### What was done now, and what was not
+
+**Done:** a detector, `hasCoefficientShape`, raises a `coefficient-shape` issue on any such row.
+The row is still stored, but the ability drops to `incomplete`, so nothing downstream can
+present it as settled. The defect is now loud instead of silent. **No shape was added** — that
+is a contract change and a lead decision, not something to slip in behind a regular expression.
+
+**Proposed, pending a decision.** Give a ratio an optional coefficient list:
+
+- `Ratio` gains `coefficients?: Array<{ per: RatioStat; owner?: RatioOwner; per100: Scaling }>`,
+  meaning "add `per100` percentage points to this ratio's magnitude for every 100 of `per`".
+- The magnitude of the ratio stays what it is today, so all 106 existing health ratios and all
+  23 resistance/mana ratios are unaffected — the field is additive and absent by default.
+- Gate 1 requires an `owner` on a coefficient whose `per` is an owner-required stat, by the same
+  rule as the ratio itself. Family A then expresses cleanly: payload `maxHP` owner `target`,
+  coefficient `per: bonusHP, owner: caster`.
+- The engine resolves `magnitude + Σ(per100 × stat/100)` before applying the ratio. One
+  multiplication, at one place.
+- Gate 2 (round-trip) already renders the wiki's own expansion, so it verifies the change for
+  free: today those 53 rows either mismatch or are not compared at all.
+
+Cost if it is declined: 32 abilities stay `incomplete` indefinitely and are excluded from any
+result that claims to be complete, which for champions like Malzahar, Zac and Vi means their
+primary damage source is unusable.

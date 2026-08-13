@@ -25,7 +25,7 @@ import type {
   CuratedRune,
   Scaling,
 } from './data.ts';
-import { isHealthPoolStat } from './data.ts';
+import { requiresOwner } from './data.ts';
 import { ScalingError, expandByRank, isLevelScaled, levelBreakpoints } from './scaling.ts';
 
 export type Gate = 'schema' | 'round-trip' | 'sum-guard' | 'non-champion' | 'status-honesty';
@@ -180,14 +180,15 @@ function checkComponent(c: AbilityComponent, where: string, maxRank: number): st
       if (r.stat === 'stacks' && !r.counter) {
         out.push(`${where}.ratios[${i}]: stat 'stacks' requires a 'counter' key`);
       }
-      // A health pool names a quantity but not a champion. Reading the wrong one is not a
-      // near miss -- Bel'Veth R's "20% of target's missing health" against the CASTER's
-      // missing health is a different number entirely, and nothing downstream could tell.
-      // So the owner is required, and 'unresolved' must be written down rather than left out.
-      if (isHealthPoolStat(r.stat) && r.owner === undefined) {
+      // A pool both champions possess names a quantity but not a champion. Reading the wrong
+      // one is not a near miss -- Bel'Veth R's "20% of target's missing health" against the
+      // CASTER's missing health is a different number entirely, and nothing downstream could
+      // tell. So the owner is required on every such stat -- the health pools, armor, magic
+      // resistance and mana alike -- and 'unresolved' must be written down, never left out.
+      if (requiresOwner(r.stat) && r.owner === undefined) {
         out.push(
-          `${where}.ratios[${i}]: stat '${r.stat}' is a health pool and requires an 'owner' ` +
-            `('caster' | 'target' | 'unresolved'). It is never defaulted.`,
+          `${where}.ratios[${i}]: stat '${r.stat}' belongs to a champion and requires an ` +
+            `'owner' ('caster' | 'target' | 'unresolved'). It is never defaulted.`,
         );
       }
       if (r.owner !== undefined && !RATIO_OWNERS.has(r.owner)) {

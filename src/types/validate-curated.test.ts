@@ -281,7 +281,7 @@ describe('gate 1 — health-pool ownership', () => {
   it('rejects a health ratio that does not say whose health it reads', () => {
     const r = gateSchema(file([health()]));
     expect(r.failed).toBe(1);
-    expect(r.findings[0]!.message).toMatch(/requires an 'owner'/);
+    expect(r.findings[0]!.message).toMatch(/requires an[\s\S]*'owner'/);
   });
 
   it("accepts 'caster', 'target' and 'unresolved'", () => {
@@ -308,6 +308,27 @@ describe('gate 1 — health-pool ownership', () => {
         ]),
       );
       expect(r.failed, `${stat} should require an owner`).toBe(1);
+    }
+  });
+
+  it('requires the owner on armor, magic resistance and mana as well', () => {
+    for (const stat of [
+      'armor',
+      'bonusArmor',
+      'magicResist',
+      'bonusMagicResist',
+      'maxMana',
+      'currentMana',
+    ] as const) {
+      const r = gateSchema(
+        file([
+          ability({
+            components: [comp({ id: 'd', ratios: [{ stat, scaling: 'linear', from: 30, to: 30 }] })],
+          }),
+        ]),
+      );
+      expect(r.failed, `${stat} should require an owner`).toBe(1);
+      expect(r.findings[0]!.message).toMatch(/requires an[\s\S]*'owner'/);
     }
   });
 

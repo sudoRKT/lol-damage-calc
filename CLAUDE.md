@@ -207,7 +207,16 @@ Not yet built (each is its own partitioned area, per the technical-foundation pl
 engine, the data pipeline, the curated override file, the scenario↔URL encoder, and the UI.
 Nothing has been verified against the practice tool yet.
 
-Health-pool ratios carry an owner (`caster` / `target` / `unresolved`) as of 2026-08-13; the
-rule, the full-roster measurement behind it, and the 13-entry unresolved worklist are in
-DATA-SOURCES.md §16. Armor, magic resistance and mana have the same gap and are not yet
-enforced — that is recorded there too, not fixed.
+Ten stats now carry an owner (`caster` / `target` / `unresolved`) and are refused without
+one: the four health pools, armor and bonus armor, magic resistance and bonus magic
+resistance, maximum and current mana. The rule and the measurement behind it are in
+DATA-SOURCES.md §16. Two things it records that are NOT fixed: 12 abilities are `incomplete`
+because the source never says whose armor, magic resistance or mana they read (Malphite W
+among them), and item and rune effects have not been harvested at all, so their 85 owner-
+bearing references are counted but unwritten.
+
+The shape library has a real gap: 32 abilities deal a percentage of a health pool whose
+percentage is itself scaled (`10–20% (+2.5% per 100 AP) of target's maximum health`). `Ratio`
+cannot express it, so those abilities are currently stored wrong. They are detected and forced
+to `incomplete`; the proposed contract change is written up in DATA-SOURCES.md §17 and is
+waiting on a decision. Do not add the shape without one.

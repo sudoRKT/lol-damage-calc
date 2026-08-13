@@ -189,12 +189,41 @@ export type RatioStat =
  */
 export type RatioOwner = 'caster' | 'target' | 'unresolved';
 
-/** The health pools. A ratio on one of these MUST carry an `owner` (gate 1). */
+/** The health pools. */
 export const HEALTH_POOL_STATS = ['maxHP', 'bonusHP', 'currentHP', 'missingHP'] as const;
 export type HealthPoolStat = (typeof HEALTH_POOL_STATS)[number];
 
 export function isHealthPoolStat(stat: RatioStat): stat is HealthPoolStat {
   return (HEALTH_POOL_STATS as readonly string[]).includes(stat);
+}
+
+/**
+ * Every stat both champions in a fight possess, and which therefore MUST say whose it is.
+ * A ratio on one of these without an `owner` is rejected by gate 1.
+ *
+ * Health was enforced first because it is where the damage is. Armor, magic resistance and
+ * mana carry the identical ambiguity and are enforced from 2026-08-13: Malphite W reads the
+ * CASTER's armor, Taric E the caster's bonus armor, Ryze Q the caster's maximum mana — while
+ * a shred or a resistance-scaling nuke could as easily read the target's. The source says
+ * neither for most of them, which is why nearly all of them land on 'unresolved'. That is
+ * the finding, not a failure of the rule.
+ *
+ * NOT here: baseAD / bonusAD / totalAD / AP, which belong to whoever cast the ability and
+ * have no second reading; and 'stacks', which is named by its `counter` key instead.
+ */
+export const OWNER_REQUIRED_STATS = [
+  ...HEALTH_POOL_STATS,
+  'armor',
+  'bonusArmor',
+  'magicResist',
+  'bonusMagicResist',
+  'maxMana',
+  'currentMana',
+] as const;
+export type OwnerRequiredStat = (typeof OWNER_REQUIRED_STATS)[number];
+
+export function requiresOwner(stat: RatioStat): stat is OwnerRequiredStat {
+  return (OWNER_REQUIRED_STATS as readonly string[]).includes(stat);
 }
 
 export type Ratio = {
@@ -203,12 +232,12 @@ export type Ratio = {
    *  supplies in ChampionConfig.persistent (e.g. 'nasusQ'). */
   counter?: string;
   /**
-   * Whose stat this reads. REQUIRED on every health-pool stat (maxHP / bonusHP / currentHP /
-   * missingHP) and rejected by gate 1 if absent.
+   * Whose stat this reads. REQUIRED on every stat in `OWNER_REQUIRED_STATS` — the four health
+   * pools, armor and bonus armor, magic resistance and bonus magic resistance, maximum and
+   * current mana — and rejected by gate 1 if absent.
    *
-   * Optional elsewhere for now. Armor, magic resistance and mana carry the same ambiguity and
-   * are NOT yet enforced — that is a known, recorded gap rather than a claim that they are
-   * safe. Do not read the absence of an owner on an armor ratio as "it must be the target".
+   * Meaningless, and therefore left off, on attack damage and ability power: those are the
+   * caster's by definition, and inventing an owner for them would suggest a choice exists.
    */
   owner?: RatioOwner;
 } & Scaling;
