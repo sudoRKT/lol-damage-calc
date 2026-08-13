@@ -303,6 +303,51 @@ describe('runCombo — an instance that dealt nothing reports \'none\'', () => {
   });
 });
 
+describe('runCombo — the mixed split obeys the ONE rounding rule, and so may not add up', () => {
+  it('reports a split of 1 / 67 / 1 against a total of 68', () => {
+    // src/types/result.ts, on `final`: "Rounded output is never fed back into arithmetic."
+    // The same rule that makes the per-instance column differ from the burst total by a point
+    // makes a mixed instance's own three segments differ from its own total. It is stated here
+    // as a recorded, deliberate behaviour rather than a surprise.
+    //
+    // Defender: 0 armor, 50 magic resistance.
+    //   physical  1    x 1        = 1        -> displays 1
+    //   magic     100  x 100/150  = 66.666.. -> displays 67
+    //   true      0.5  (bypasses) = 0.5      -> displays 1   (half away from zero, rounding.ts)
+    //   the three displayed figures add to                      69
+    //   the instance total is rounded ONCE from 68.1666...      68
+    //
+    // BINDING ON THE INTERFACE, exactly as for the instance column: the composition bar's three
+    // figures must never be presented as something to add up.
+    const result = runCombo(
+      plan({
+        defender: statBlock({ armor: 0, magicResist: 50, hp: 5000, maxHp: 5000 }),
+        instances: [
+          {
+            stepId: 'q',
+            sourceLabel: 'Q — three types at once',
+            instanceType: 'damaging-ability',
+            verification: 'derived',
+            damage: {
+              components: [
+                component({ id: 'p', damageType: 'physical', base: flat(1) }),
+                component({ id: 'm', damageType: 'magic', base: flat(100) }),
+                component({ id: 't', damageType: 'true', base: flat(0.5) }),
+              ],
+              rank: 1,
+              maxRank: 5,
+            },
+          },
+        ],
+      }),
+    );
+    expect(result.perInstance[0].byType).toEqual({ physical: 1, magic: 67, true: 1 });
+    expect(result.perInstance[0].final).toBe(68);
+    const segments = result.perInstance[0].byType!;
+    expect(segments.physical + segments.magic + segments.true).toBe(69);
+  });
+});
+
 describe('runCombo — byType is present ONLY on a mixed instance', () => {
   it('leaves byType off a single-type instance', () => {
     // src/types/result.ts: "REQUIRED when `damageType` is 'mixed'. Absent otherwise — a

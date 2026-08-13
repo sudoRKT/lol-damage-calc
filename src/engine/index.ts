@@ -15,14 +15,15 @@
 // engine reads no data file by design — everything it needs arrives as an argument. That
 // interface is the lead's to set.
 //
-// What is NOT modelled, and why, is written up beside each item:
-//   - Percentage *bonus* armor penetration (see resistances.ts) — needs a base/bonus armor
-//     split the frozen StatBlock does not carry.
-//   - Pre-mitigation flat damage reduction (see damage-reduction.ts) — the frozen
-//     InstanceResult has no field between raw damage and resistances.
-//   - Shields, damage amplification, lifesteal / omnivamp / healing, and execute thresholds
-//     wired into the sequence — see ENGINE_EXCLUSIONS in combo.ts, which puts all of them in
-//     front of the user (SPECIFICATION §11).
+// What is NOT modelled, and why, is written up beside each item. The authoritative list is
+// ENGINE_EXCLUSIONS in combo.ts, which is attached to every Result (SPECIFICATION §11):
+//   - Lifesteal, omnivamp, spell vamp and healing — the frozen `Result` has no field to report
+//     sustain in, so a figure for it would be one no user ever sees. RAISED TO THE LEAD.
+//   - Ability ratios reading MANA or BONUS HEALTH — the frozen `StatBlock` carries neither.
+//     RAISED TO THE LEAD. Ratios on the health pools, armor, magic resistance and stack
+//     counters ARE modelled.
+//   - The four-step breakdown for an instance dealing both physical and magic — two chains,
+//     one `resistanceSteps` field. The damage itself is fully modelled.
 //   - A minimum damage floor (SPECIFICATION §3.7 lists one) — no game-wide rule for it
 //     could be found in the wiki's damage or mechanics articles, so nothing is implemented
 //     rather than guessing a plausible number. Raised to the lead.
@@ -33,8 +34,31 @@ export {
   resistanceMultiplier,
   applyResistance,
   effectiveResistance,
+  resolveResistanceSteps,
   type ResistanceModifiers,
+  type SplitResistance,
 } from './resistances';
+
+// Damage amplification, in the two forms SPECIFICATION §3.7 asks to be kept distinct: the
+// attacker's modifiers stack ADDITIVELY on the raw figure, the defender's MULTIPLICATIVELY on
+// the mitigated one. Two mechanics, not two settings.
+export {
+  dealtModifierMultiplier,
+  receivedModifierMultiplier,
+  type DamageDealtModifier,
+  type DamageReceivedModifier,
+} from './amplification';
+
+// Shields — general, physical and magic. A shield is not a damage reduction: it absorbs true
+// damage, which no flat reduction touches.
+export {
+  absorbsDamageType,
+  applyShields,
+  totalShieldRemaining,
+  type ShieldKind,
+  type ShieldOutcome,
+  type ShieldPool,
+} from './shields';
 
 export {
   resolveAdaptiveForce,
@@ -70,6 +94,7 @@ export {
   type ComponentDamage,
   type CoreRatio,
   type CoreRatioStat,
+  type OwnedStats,
   type RatioContribution,
 } from './component';
 
@@ -126,6 +151,8 @@ export {
   type ComboPlan,
   type PlannedDamage,
   type PlannedDot,
+  type PlannedExecute,
   type PlannedInstance,
+  type PreMitigationReduction,
   type StaticPenetration,
 } from './combo';
