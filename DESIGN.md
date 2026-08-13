@@ -237,13 +237,37 @@ Because hue is reserved for damage data, both of these are shown without colour.
 **Verification status** (SPECIFICATION §8, shown on every ability that contributes to a
 result) — a neutral glyph plus a text label, in `--text-secondary`:
 
-- **Verified** — `●` filled dot + label "Verified"
-- **Derived** — `◐` half dot + label "Derived"
-- **Incomplete** — `○` open dot + label "Incomplete" (may pair with `⚠` at the same
-  neutral colour)
+| State | Glyph | Label |
+|---|---|---|
+| Verified | `●` filled dot | "Verified" |
+| Derived | `◐` half dot | "Derived" |
+| Incomplete — pending | `○` open dot | "Not yet modelled" |
+| Incomplete — permanent | `⊘` open dot, struck through | "Cannot be completed" |
+| No damage | `–` en dash, **no dot** | "No damage" |
 
-Never colour these. A verified figure and a derived figure differ by glyph and label,
-never by turning something green or amber.
+**The dot encodes how much evidence sits behind a number, and its fill is the whole scale.**
+Filled is independently re-derived; half is checked against the source three ways; open is
+a number we will not show. Nothing else may be added to that axis.
+
+**`⊘` — permanent versus pending.** The circle is still open and a line says it will not
+close. That is the only difference between the two incomplete states, and it is enough: the
+strike reads distinctly at 11px, survives greyscale, and depends on neither colour nor
+weight. Its accessible name carries the missing fact, not a generic warning — "cannot be
+completed — the source does not record whose armor this reads."
+
+**`–` — no damage is not a point on the scale.** It takes no dot at all, because there is
+nothing to have evidence about. The absence of the dot is the signal. This matches §9, where
+a non-damaging icon-chip already takes an em-dash marker in place of a damage-type underline.
+
+**Derived is the normal state and is styled as such.** Same size, weight and colour as
+Verified — no italic, no parenthesis, no caution mark, nothing that reads as a shortfall.
+Verified is an additional assurance where it exists, never the bar the rest fell short of.
+The `⚠` mark once suggested here for Incomplete is **withdrawn**: it read as a defect warning
+about the product rather than a deliberate refusal by it.
+
+Never colour any of these. Every distinction above is glyph, weight and label only — the
+reserved-hue law of §1 admits no exception for status, and a verified figure and a derived
+figure must never differ by turning something green or amber.
 
 **Interaction states** — brightness and weight, never hue:
 
