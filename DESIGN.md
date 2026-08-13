@@ -409,9 +409,22 @@ is the definitive channel; colour is the fast, redundant one.
 ### The cue: a `P` / `M` / `T` letter tag
 
 - **`P`** = Physical, **`M`** = Magic, **`T`** = True.
-- Rendered in **JetBrains Mono**, at **0.7em**, immediately after the number, separated by
-  a thin space, in the **same colour as the number** (the letter, not its colour, is the
-  cue). Example forms: `214 P`, `180 M`, `240 T`.
+- Rendered in **JetBrains Mono**, at **`max(10px, 0.7em)`** — 0.7em of the number it follows,
+  **with a hard floor of 10px that it never goes below** — immediately after the number,
+  separated by a thin space, in the **same colour as the number** (the letter, not its colour,
+  is the cue). Example forms: `214 P`, `180 M`, `240 T`.
+
+  **Why the floor exists (decided 2026-08-13, and not to be relitigated).** This section argues
+  for letters over glyphs on the grounds that *"three distinct letterforms stay unambiguous at
+  11px, where three small geometric glyphs (▲/◆/●) blur together."* But 0.7em applied to
+  `--type-num-s`, the 11px numeric role, renders the tag at **7.7px** — below the size the
+  argument itself rests on. The cue that carries the product's hard rule was, at its smallest,
+  smaller than the premise that justified choosing it.
+  A floor is the right fix rather than raising 0.7em, because at the hero and large numeric
+  sizes 0.7em is correct and looks right; only the small end was broken. At
+  `--type-num-m` (13px) 0.7em gives 9.1px and the floor also applies; at `--type-num-l` (16px)
+  it gives 11.2px and the floor does not bind. So the floor changes exactly the two smallest
+  roles, which are the two the original argument was about.
 - It is **mandatory and never suppressed** — in the per-instance table, the burndown riser
   labels, the composition bar segments, tooltips, and the damage-versus-armor and
   damage-versus-level curves. The only figure without a tag is a **multi-type aggregate
