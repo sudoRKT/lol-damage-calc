@@ -84,6 +84,69 @@ interface CensusFile {
 
 const census = (): CensusFile => json<CensusFile>('public/data/effect-census.json');
 
+/**
+ * ROSTER-WIDE ABILITY MEASUREMENTS, written by a full-roster batch run.
+ *
+ * This was the largest thing the checker could not cover: reproducing any of these figures means
+ * harvesting 937 wiki pages over the network, which no test may do. The batch runner now records
+ * what it measured (`writeMeasurements` in run-batch.ts) and these claims compare the documents
+ * against that record.
+ *
+ * TWO GUARDS, because a measurement file is only as good as its provenance:
+ *
+ * - It is written ONLY by a full-roster run, and carries its own coverage. A five-champion batch
+ *   writes nothing rather than overwriting the roster figures with numbers that would look like a
+ *   catastrophic regression and invite someone to "correct" the documents to match.
+ * - It carries its patch. A measurement is evidence about one revision of a wiki that edits
+ *   daily. `measurementsAreCurrent` fails when the file's patch is not the manifest's, so the
+ *   documents are never silently checked against last patch's roster.
+ */
+interface Measurements {
+  patch: string;
+  generatedOn: string;
+  coverage: { championsMeasured: number; championsInRoster: number; fullRoster: boolean };
+  abilityPages: number;
+  storable: number;
+  worklist: number;
+  componentsStored: number;
+  verification: { verified: number; derived: number; incomplete: number; noDamage: number };
+  gate2: { confirmed: number; disagreed: number; noEvidence: number };
+  gate7: { failures: number; underSum: number; overSum: number; ambiguous: number };
+}
+
+export function measurements(): Measurements {
+  return json<Measurements>('verification/measurements.json');
+}
+
+/** True when a full-roster measurement exists AND was taken on the patch now shipping. */
+export function measurementsAreCurrent(): { ok: boolean; why: string } {
+  let m: Measurements;
+  try {
+    m = measurements();
+  } catch {
+    return {
+      ok: false,
+      why: 'verification/measurements.json does not exist. Run a full-roster batch to create it.',
+    };
+  }
+  if (!m.coverage.fullRoster) {
+    return {
+      ok: false,
+      why: `the measurement file covers ${m.coverage.championsMeasured} of ${m.coverage.championsInRoster} champions`,
+    };
+  }
+  const patch = json<{ patch: string }>('public/data/manifest.json').patch;
+  if (m.patch !== patch) {
+    return {
+      ok: false,
+      why:
+        `the measurement file was taken on patch ${m.patch} and the data now shipping is ` +
+        `${patch}. Re-run the full-roster batch; do NOT compare the documents against it.`,
+    };
+  }
+  return { ok: true, why: `full roster, patch ${m.patch}, measured ${m.generatedOn}` };
+}
+
 export const CLAIMS: Claim[] = [
   {
     id: 'item-pool-size',
@@ -164,6 +227,86 @@ export const CLAIMS: Claim[] = [
       'cutoff. This number is real and is not the item pool; conflating the two is the error ' +
       'that put 222 into the specification.',
   },
+  // ---- Roster-wide ability figures, from verification/measurements.json ----
+  {
+    id: 'ability-pages-plan',
+    doc: 'PLAN.md',
+    anchor: /\| \*\*Total ability pages\*\* \| \*\*(\d+)\*\* \|/,
+    derive: () => measurements().abilityPages,
+    definition:
+      'Distinct wiki ability pages after alias dedupe by revision id. A name redirecting to a ' +
+      'page another name already reached is counted once — without that, second-cast rows are ' +
+      'stored as separate abilities and their damage is counted twice.',
+  },
+  {
+    id: 'storable-plan',
+    doc: 'PLAN.md',
+    anchor: /\| — storable \| \*\*(\d+)\*\* \|/,
+    derive: () => measurements().storable,
+    definition: 'Ability pages carrying at least one stored damage component.',
+  },
+  {
+    id: 'worklist-plan',
+    doc: 'PLAN.md',
+    anchor: /\| — worklist \| \*\*(\d+)\*\* \|/,
+    derive: () => measurements().worklist,
+    definition:
+      'Entries that stored nothing and that at least one source says deal damage. NOT the same ' +
+      'as no-damage, which is silence from every source.',
+  },
+  {
+    id: 'no-damage-plan',
+    doc: 'PLAN.md',
+    anchor: /\| — `no-damage` \| \*\*(\d+)\*\* \|/,
+    derive: () => measurements().verification.noDamage,
+    definition:
+      'Entries whose own template declares no damage type AND about which the wiki damage module ' +
+      'is also silent. Claimed only when two independent sources are silent together.',
+  },
+  {
+    id: 'components-stored-plan',
+    doc: 'PLAN.md',
+    anchor: /\*\*Damage components stored: (\d+)\*\*/,
+    derive: () => measurements().componentsStored,
+    definition:
+      'Damage components surviving the summary-row, non-champion and unreadable-row filters, ' +
+      'over all distinct ability pages. Counted AFTER dropping, so it is strictly smaller than ' +
+      'the damage-row count.',
+  },
+  {
+    id: 'confirmed-by-gate2-plan',
+    doc: 'PLAN.md',
+    anchor: /\| \*\*Of the \d+ storable:\*\* confirmed by gate 2 \| \*\*(\d+)\*\* \|/,
+    derive: () => measurements().gate2.confirmed,
+    definition:
+      'Storable entries where at least one of the THREE round-trips compared something against ' +
+      "the wiki's own rendering and none disagreed. NOT `verified`, which additionally requires " +
+      'an independent re-derivation recorded in the gate-5 ledger.',
+  },
+  {
+    id: 'verified-plan',
+    doc: 'PLAN.md',
+    anchor: /\| — \*\*verified\*\* \| \*\*(\d+)\*\* \|/,
+    derive: () => measurements().verification.verified,
+    definition:
+      'Entries the gate-5 ledger records an independent re-derivation for AND whose gate-2 ' +
+      'agreement the batch runner confirmed. The ledger is the only route in. This is a small ' +
+      'honest set and is never a target to maximise.',
+  },
+  {
+    id: 'verified-claude-md',
+    doc: 'CLAUDE.md',
+    anchor: /\*\*(\d+) entries are `verified`, measured over a full/,
+    derive: () => measurements().verification.verified,
+    definition: 'Same population as verified-plan. The two documents must not drift apart.',
+  },
+  {
+    id: 'components-stored-data-sources',
+    doc: 'DATA-SOURCES.md',
+    anchor: /\| \*\*damage components stored\*\* \| \*\*(\d+)\*\* \|/,
+    derive: () => measurements().componentsStored,
+    definition: 'Same population as components-stored-plan.',
+  },
   {
     id: 'champion-roster-size',
     doc: 'DATA-SOURCES.md',
@@ -181,24 +324,24 @@ export const CLAIMS: Claim[] = [
 
 export const UNCOVERED: Uncovered[] = [
   {
-    id: 'ability-roster-figures',
-    doc: 'CLAUDE.md, PLAN.md',
-    reason:
-      'Every roster-wide ability figure — 937 pages, 917 components, 623 storable, 69 ' +
-      'worklist, 206 no-damage, the verified/derived/incomplete split, gate 2\'s row counts ' +
-      'and gate 7\'s 51 failures — requires harvesting 937 wiki pages over the network. The ' +
-      'committed batch file holds a 5-ability sample, not the roster, so nothing offline can ' +
-      'reproduce them. THE FIX IS KNOWN: have the batch runner write its measurements to ' +
-      'verification/measurements.json, and this check compares the documents against that ' +
-      'file plus its timestamp. Until then these numbers are trusted, not checked.',
-  },
-  {
     id: 'gate7-class-populations',
     doc: 'DATA-SOURCES.md §36.4',
     reason:
-      'U-MULT1 20, U-MULT2 11, O-SCOPE 8, O-PAIR 7, residue 11. The detectors are offline and ' +
-      'roster-wide, but they run over harvested drafts, which the same network harvest above ' +
-      'produces. Same fix, same file.',
+      'The per-class populations — U-MULT1, U-MULT2, O-SCOPE, O-PAIR and the residue — are ' +
+      'recorded in verification/measurements.json under gate7.byClass, but the prose in §36.4 ' +
+      'states them inside a table whose rows are described rather than named, so no stable ' +
+      'anchor exists to read them back. COVERING THEM MEANS giving that table machine-readable ' +
+      'row labels, which is a documentation change and not a checker change. The aggregate ' +
+      'gate-7 failure count IS covered.',
+  },
+  {
+    id: 'historical-figures-in-data-sources',
+    doc: 'DATA-SOURCES.md §19-§35',
+    reason:
+      'DELIBERATE, AND NOT A GAP TO CLOSE. Those sections are a dated record of what was ' +
+      'measured when, and a superseded number inside a dated finding is SUPPOSED to stay where ' +
+      'it is — overwriting history loses the reason a number moved, which is usually the most ' +
+      'useful thing about it. Only current-state claims are checked.',
   },
   {
     id: 'design-token-values',

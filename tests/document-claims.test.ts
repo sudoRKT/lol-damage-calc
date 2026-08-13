@@ -5,7 +5,14 @@
 // the number. This is the check for that class.
 
 import { describe, expect, it } from 'vitest';
-import { CLAIMS, UNCOVERED, readDoc, type Claim } from './document-claims.ts';
+import {
+  CLAIMS,
+  UNCOVERED,
+  measurements,
+  measurementsAreCurrent,
+  readDoc,
+  type Claim,
+} from './document-claims.ts';
 
 /** Pulls the claimed number out of its document. Throws if the anchor no longer matches. */
 function claimed(claim: Claim): number {
@@ -39,6 +46,31 @@ describe('document claims agree with the code', () => {
       ).toBe(derived);
     },
   );
+});
+
+describe('the roster measurements are fit to check against', () => {
+  // The roster claims are only as trustworthy as the file they re-derive from. These fail
+  // rather than skip, because a missing or stale measurement file silently turns nine of the
+  // checks above into no-ops — which is precisely the failure mode this suite exists to close.
+  it('a full-roster measurement exists and was taken on the patch now shipping', () => {
+    const { ok, why } = measurementsAreCurrent();
+    expect(
+      ok,
+      `verification/measurements.json cannot be checked against: ${why}\n` +
+        `Re-run a full-roster batch: xargs -0 node scripts/extract/run-batch.ts < <every champion>`,
+    ).toBe(true);
+  });
+
+  it('the parts sum the way the definitions say they do', () => {
+    // Internal consistency of the file itself. Every ability page carries exactly one
+    // verification status, and every storable entry is confirmed, disagreed, or has no
+    // evidence — no fourth bucket, no double counting.
+    const m = measurements();
+    const v = m.verification;
+    expect(v.verified + v.derived + v.incomplete + v.noDamage).toBe(m.abilityPages);
+    expect(m.gate2.confirmed + m.gate2.disagreed + m.gate2.noEvidence).toBe(m.storable);
+    expect(m.gate7.underSum + m.gate7.overSum).toBe(m.gate7.failures);
+  });
 });
 
 describe('the check cannot quietly stop checking', () => {
