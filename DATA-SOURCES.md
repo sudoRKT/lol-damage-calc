@@ -1316,3 +1316,135 @@ gate-1 rule caught them for another reason:
 batch runner rather than in `draftFromTemplate` — it needs the network — so the demotion has to
 happen where the round-trip result is known, and that is a change to how the batch assembles
 its file rather than a one-line rule.
+
+---
+
+## 20a. BRIEF — the description-prose extraction path (written 2026-08-13, unstarted)
+
+**This is a brief for a dedicated session. Everything needed to start is here; do not re-derive
+the sizing.** Nothing in it has been built.
+
+### Why it exists
+
+`statRows` reads `leveling` fields only. **215 abilities state their damage in `description`
+prose instead**, via `{{pp|…}}`. That is **107 of the 170 `incomplete` entries** and the largest
+remaining source of missing damage in the curated file — Caitlyn Headshot, Darius Hemorrhage,
+Ziggs Short Fuse, Nasus Soul Eater and most other innate passives contribute **zero damage**
+today.
+
+### The sizing, already measured (2026-08-13, over the 937-page set of §19)
+
+| Figure | Count | Definition |
+|---|---:|---|
+| abilities with `{{pp}}` in a description field | 215 | any `{{pp}}` in any `description*` field |
+| abilities with `{{pp}}` in a leveling field | 8 | already handled (§20); 7 had an `{{ap}}` base anyway |
+| damage-context `{{pp}}` blocks | 224 | across 155 abilities; "damage-context" = the 120 chars before or 60 after contain damage/dealing/deals |
+| blocks the current parser expands | 81 | `parseLevelProgression` succeeds |
+| blocks it cannot | 143 | grouped below |
+
+### The five components to build
+
+1. **Prose scanner.** Walk `description*` fields, find `{{pp}}` blocks with positions, and keep
+   the surrounding text — the judgement and the damage type both depend on context, so a bare
+   list of blocks is not enough.
+2. **The damage judgement.** Decide per block whether it is damage at all. Many `{{pp}}` blocks
+   are cooldowns (Ziggs `description2` reduces a cooldown), durations, life steal (Nasus Soul
+   Eater), heals or shields. **See the failure mode below — this is the risky component.**
+3. **Damage type from `Module:DamageData/data`.** That module is keyed champion → ability →
+   instance and **states** `damageType` per instance (§11). Read it; do not infer a type it
+   states. Infer only where it is silent, and mark such entries accordingly.
+4. **Piecewise progressions.** `16+4*x for 6; then +8*x for 6; then +12*x for 8` (Ziggs Short
+   Fuse). Segments joined by `; then`, each with its own slope and span.
+5. **Per-level `x` formulas.** `35 + (180-35)/17*(x-1)`, `5+3.5*(x-1)*(0.7025+0.0175*(x-1))`
+   (Malzahar W). Needs an evaluator over levels 1–18 producing `byLevelExplicit`.
+
+**Keep refusing non-level axes.** `parseLevelProgression` already rejects a `{{pp}}` whose second
+axis leaves 1..18 — Hwei's Grim Visage indexes ability power, Kai'Sa's Supercharge a percentage.
+That refusal is correct and must survive.
+
+### The failure mode of the damage judgement, stated plainly
+
+The judgement is **contextual, not declared**: nothing in the source marks a `{{pp}}` block as
+damage. Any rule will be a keyword-proximity heuristic over surrounding prose, and it fails two
+ways, asymmetrically:
+
+- **False positive** — a cooldown or heal read as damage. This invents damage that does not
+  exist. **This is the dangerous direction** and the reason nothing here may be stored above
+  `derived`.
+- **False negative** — real damage skipped. This leaves the ability where it already is, on the
+  prose-only worklist. Recoverable and visible.
+
+**Bias the rule toward false negatives.** A block whose classification is not clear from the
+surrounding sentence must be left unread and reported, not guessed. `Module:DamageData/data` is
+the partial cross-check: an instance it lists is damage, and a block on an ability it does not
+list at all deserves more suspicion.
+
+### What "done" looks like
+
+- Every ability that moves off the prose-only worklist has **gate 2 run on it**, with pass and
+  fail counts reported per entry.
+- Everything produced is `derived` at most — **never `verified`**, and never `derived` if gate 1
+  or gate 2 disagrees (§23, §24).
+- The remaining unreadable blocks are reported **grouped by cause**, with a definition for each
+  group, in the style of §19.
+- The three counts to report: how many abilities move, how many gate 2 confirms, how many remain
+  unreadable and why.
+- No count without its definition.
+
+---
+
+## 24. Gate 2 demotes (2026-08-13)
+
+§23 closed the hole on the gate-1 side and named the one still open: **an entry whose stored
+values disagree with the wiki's own rendering still came out `derived`.** Gate 6 only ever
+required round-trip evidence for `verified`, so a disagreeing entry sat at `derived`
+indefinitely. That was survivable while gate 2 compared base values only. It stopped being
+survivable when gate 2 started comparing ratios (§21) and began finding disagreements it
+previously could not see.
+
+**The rule, now enforced:** an entry with a recorded gate-2 disagreement is forced to
+`incomplete`, and the disagreement is recorded on it as a `round-trip-disagreement` issue. A
+value the source contradicts is wrong, not "extracted but unconfirmed".
+
+It lives in the batch runner rather than in `draftFromTemplate` because the round-trip needs the
+network: the harvester cannot know the result, and the batch runner can.
+
+### Malzahar W (Void Swarm) — diagnosed
+
+The source row:
+
+```
+{{pp|5+3.5*(x-1)*(0.7025+0.0175*(x-1))|formula=5 + 10.5 growth}} (+ {{ap|12 to 20}})
+{{as|(+ 40% '''bonus''' AD)}} {{as|(+ 20% AP)}}
+```
+
+The ability's damage is **a level-scaled base** (the `{{pp}}` formula, "5 + 10.5 growth")
+**plus** a per-rank `12 to 20` **plus** 40% bonus AD **plus** 20% AP.
+
+What was stored: base `12 to 20`, ratios bonus-AD 40 and AP 20. **The level-scaled term is
+dropped entirely** — the `{{pp}}` path added in §20 only fires when a row has no `{{ap}}` block,
+and this row has one, so the rank term won and the level term vanished. Malzahar W therefore
+under-reports its damage by its whole level-scaled component at every champion level.
+
+That is a **storage defect**, and it is the same root cause as the prose path (§20a): a `{{pp}}`
+the extractor does not read. It is also why the row's ratios appear misaligned — the wiki treats
+the parenthesised `(+ 12 to 20)` as a ratio group while we call it the base, so a positional
+comparison comes out shifted. Two separate faults in one row, and only the first is a wrong
+number.
+
+### Full-roster result
+
+**DEFINITIONS.** *Entries gate 2 can run on* = entries with at least one stored component;
+an entry with none has nothing to compare and is skipped, not passed. *Demoted* = was `derived`
+before the round-trip and is `incomplete` after. Disagreeing **rows** are grouped by cause:
+
+- **render-failed** — the wiki would not render the ability at all.
+- **wiki-series-short** — the wiki's own rendered series carries fewer values than the ability
+  has ranks, its renderer having absorbed one into a trailing fragment. A **comparison
+  artifact**: our value is not shown to be wrong.
+- **ratio-count** — we and the wiki disagree on how many ratio groups the row has, so the
+  positional comparison comes out shifted. **Artifact, but it can hide a real error underneath**,
+  so it is counted separately rather than cleared.
+- **value-differs** — same shape on both sides, different numbers. A **storage defect**.
+
+Measured over the 937-page set of §19, after alias dedupe. Results below.

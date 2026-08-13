@@ -187,7 +187,8 @@ export interface RowIssue {
     | 'unresolved-owner'
     | 'coefficient-shape'
     | 'split-payload'
-    | 'schema-invalid';
+    | 'schema-invalid'
+    | 'round-trip-disagreement';
   detail: string;
 }
 

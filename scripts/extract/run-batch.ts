@@ -129,6 +129,34 @@ async function main(): Promise<void> {
     }
   }
 
+  // GATE 2 DEMOTES, the same way gate 1 does (DATA-SOURCES §23, §24).
+  //
+  // An entry whose stored values disagree with the wiki's own rendering is WRONG, not
+  // "extracted from source but unconfirmed". It must not come out `derived`. Gate 6 only ever
+  // required round-trip evidence for `verified`, so a disagreeing entry sat at `derived`
+  // indefinitely — survivable while gate 2 compared base values only, and not survivable now
+  // that it compares ratios and finds disagreements it previously could not.
+  //
+  // This lives here rather than in `draftFromTemplate` because the round-trip needs the
+  // network: the harvester cannot know the result, and the batch runner can.
+  const disagreed = new Map<string, string>();
+  for (const rt of roundTrips) {
+    if (rt.mismatches.length === 0) continue;
+    disagreed.set(rt.entry, rt.mismatches.map((m) => `[${m.label}] ${m.detail}`).join(' ;; '));
+  }
+  let demoted = 0;
+  for (const d of drafts) {
+    const key = `${d.entry.champion}/${d.entry.slot}/${d.entry.abilityName}`;
+    const why = disagreed.get(key);
+    if (why === undefined || d.entry.verification === 'incomplete') continue;
+    d.entry.verification = 'incomplete';
+    d.issues.push({ kind: 'round-trip-disagreement', detail: why.slice(0, 200) });
+    demoted += 1;
+  }
+  if (demoted > 0) {
+    console.log(`\ngate 2 demoted ${demoted} entr${demoted === 1 ? 'y' : 'ies'} from 'derived' to 'incomplete'`);
+  }
+
   const file: CuratedFile = {
     version: 1,
     patch: manifest.patch,
