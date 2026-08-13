@@ -32,6 +32,7 @@ import type {
   Scaling,
 } from '../../src/types/data.ts';
 import { requiresOwner } from '../../src/types/data.ts';
+import { isLevelScaled } from '../../src/types/scaling.ts';
 import { ALTERNATIVE_MARKERS } from '../../src/types/validate-curated.ts';
 import { ProgressionError, parseLevelProgression, parseRankProgression } from './progression.ts';
 import { findBlocks, findLevelBlocks, plainText, splitArgs, substituteVars } from './wikitext.ts';
@@ -302,6 +303,10 @@ export interface ClassifiedRow {
   /** The second additive term of a row that states both a level-scaled and a per-rank base.
    *  `base` holds one Scaling, so the two are stored as two components that add. */
   extraComponent?: AbilityComponent;
+  /** The level-progression block the component's base was read from, with variables already
+   *  substituted. Gate 2 re-renders it: the ability box prints a level-scaled value as one
+   *  "(based on level)" figure, so this block is the only thing that can check those values. */
+  levelSource?: { name: string; inner: string };
   shape?: ShapeId;
   issues: RowIssue[];
   /** True when the row is deliberately not stored (summary row, non-champion row). */
@@ -525,10 +530,13 @@ export function classifyRow(
   //
   // If either term is present and unreadable, NEITHER is stored. Storing one of two additive
   // terms is not a partial answer, it is a wrong number that looks like a whole one.
+  let levelSource: { name: string; inner: string } | undefined;
   if (levelBlocks.length > 0) {
     try {
-      base = parseLevelProgression(substituteVars(levelBlocks[0]!.inner, vars));
+      const inner = substituteVars(levelBlocks[0]!.inner, vars);
+      base = parseLevelProgression(inner);
       hasBase = true;
+      levelSource = { name: levelBlocks[0]!.name, inner };
     } catch (e) {
       issues.push({
         kind: 'unparsed-base',
@@ -613,6 +621,7 @@ export function classifyRow(
     label,
     component,
     ...(extraComponent ? { extraComponent } : {}),
+    ...(levelSource && isLevelScaled(component.base) ? { levelSource } : {}),
     shape: shapeOf(component, hasBase),
     issues,
   };

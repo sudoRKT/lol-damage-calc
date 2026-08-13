@@ -1007,6 +1007,12 @@ damage in the curated file.
 including the technical-foundation plan and the header comments in `scripts/extract/classify.ts`
 and `src/types/validate-curated.ts`. Those figures are SUPERSEDED — do not cite them.**
 
+> **RE-MEASURED 2026-08-13, after the prose path (§25), the rank-count fix (§22), the gate-1 and
+> gate-2 demotions (§23, §24), alias dedupe (§18) and `{{pplevel}}`.** The figures below are the
+> current ones. Where a figure moved, the earlier value is shown beside it so the movement is
+> visible rather than quietly replaced. The page set is unchanged: 937 distinct ability pages.
+> The single honest-state table the execution plan is rebuilt against is at the end of §26.
+
 A number without a definition is what caused the confusion this section exists to end. Every
 figure below states what is counted and what is filtered.
 
@@ -1039,51 +1045,58 @@ strictly smaller than the damage-row count.
 
 ### The figures
 
-| Figure | Count | Definition |
-|---|---:|---|
-| ability pages measured | **937** | distinct wiki pages, after alias dedupe |
-| ability names on the roster | 1083 | before dedupe; 123 aliases, 11 with no template |
-| **damage components stored** | **893** | rows surviving all filters, summed over 937 pages |
-| S2 base + one core ratio | 618 | component with a flat base and exactly one AD/AP ratio |
-| S6 scales off a health pool | 106 | any ratio on maxHP/bonusHP/currentHP/missingHP |
-| S3 base + two core ratios | 97 | two AD/AP ratios |
-| S1 flat, no ratio | 39 | base only |
-| S5 ratio-only | 14 | a ratio and no flat base |
-| S8 resistances | 10 | any ratio on armor/MR |
-| S7 mana | 8 | any ratio on mana |
-| S9 stacks | 1 | a ratio on a stack counter |
-| S4 three or more core ratios | 0 | measured, genuinely zero |
-| alternative-marked components | 71 | stored component whose label matches the variant list |
-| non-champion rows dropped | 97 | damage rows dropped for naming a non-champion target |
-| summary rows dropped | 168 | damage rows dropped for beginning `Total` |
-| per-hit components | 110 | stored component whose label matches the per-tick/per-hit list |
-| ratios that scale per rank | 183 | stored ratio whose scaling is not `linear` flat |
-| ratios carrying a multiplier | 45 | stored ratio with a `per 100 X` multiplier (§17) |
-| level-scaled damage sources | **2** | stored component whose base is `byLevel`/`byLevelExplicit` |
-| prose-only worklist | 108 | ability with a declared damage type and no readable row |
-| abilities that dropped every damage row | 3 | had damage rows in source, stored none |
-| entries `derived` | 788 | |
-| entries `incomplete` | 149 | |
+| Figure | Count | Was | Definition |
+|---|---:|---:|---|
+| ability pages measured | **937** | 937 | distinct wiki pages, after alias dedupe |
+| ability names on the roster | 1083 | 1083 | before dedupe; 123 aliases, 11 with no template |
+| **damage components stored** | **930** | 893 | components surviving all filters, over 937 pages |
+| of those, recovered from description prose | **30** | 0 | §25; on 29 abilities that stored nothing before |
+| S2 base + one core ratio | 634 | 618 | a flat base and exactly one AD/AP ratio |
+| S6 scales off a health pool | 106 | 106 | any ratio on maxHP/bonusHP/currentHP/missingHP |
+| S3 base + two core ratios | 103 | 97 | two AD/AP ratios |
+| S1 flat, no ratio | 46 | 39 | base only |
+| S5 ratio-only | 15 | 14 | a ratio and no flat base |
+| S8 resistances | 10 | 10 | any ratio on armor/MR |
+| S7 mana | 8 | 8 | any ratio on mana |
+| S9 stacks | 1 | 1 | a ratio on a stack counter |
+| S4 three or more core ratios | 0 | 0 | measured, genuinely zero |
+| **level-scaled damage sources** | **38** | 2 | stored component whose base is `byLevel`/`byLevelExplicit` |
+| **prose-only worklist** | **80** | 108 | declares a damage type, stored no component |
+| entries with no component and no declared damage | 239 | — | genuinely non-damaging; not a gap |
+| entries `derived` | **771** | 788 | after both demotions |
+| entries `incomplete` | **166** | 149 | after both demotions |
+| entries `verified` | **0** | 0 | gate 5 has not been run by any session |
+
+The prose-only figure was **108** when measured with today's code and the description path disabled,
+not the 107 recorded earlier; the small drift is the rank-count fix of §22. 28 of those 108 moved.
 
 Four shapes (S2, S6, S3, S1) cover **860 of 893 components, 96.3%** — the library's shape and
 ordering are unchanged from the original measurement even though every absolute count moved.
 
 ### Why entries are incomplete — definitions
 
+An entry can carry more than one reason, so the column sums past 166.
+
 | Reason | Entries | Meaning |
 |---|---:|---|
-| prose-only | 107 | declares a damage type, no machine-readable leveling row |
-| unresolved-owner | 21 | a health/armor/MR/mana ratio the source does not attribute (§16) |
-| unparsed base and/or ratio | 14 | a progression shorthand the parser cannot expand |
-| unknown stat | 2 | a ratio naming a stat this project does not model |
+| prose-only | **80** | declares a damage type, stored no component at all |
+| round-trip-disagreement | **24** | gate 2 found a stored value the wiki's own rendering contradicts (§24) |
+| schema-invalid | 23 | fails gate 1, so it may not claim better than incomplete (§23) |
+| unresolved-owner | 22 | a health/armor/MR/mana ratio the source does not attribute (§16) |
+| unparsed-ratio | 13 | a ratio shorthand the parser cannot expand |
+| unparsed-base | 9 | a base shorthand the parser cannot expand |
 | no value | 3 | a damage row with no readable number |
+| unknown stat | 3 | a ratio naming a stat this project does not model |
+| split-payload | 2 | one expression split across several blocks (§23) |
 | coefficient-shape | 2 | a `per 100` multiplier that could not be read (§17) |
 
-### The level-scaling figure, and why it is 2 and not 95
+### The level-scaling figure: 95, then 2, now 38
 
-The recorded figure was **95 level-scaled damage sources**. It now measures **2**, and that is
-not a regression — it is the true count *of what the harvester can currently reach*, which is
-the point. See §20.
+The originally recorded figure was **95**. It measured **2** once the definition was pinned to
+what the harvester could actually reach, and it is now **38** — the two `{{pp}}` leveling rows of
+§20, six rows that state a level term alongside a rank term (§25), and thirty recovered from
+description prose. All 38 are checked against the wiki's own per-level expansion and all 38
+agree; see §26.
 
 ---
 
@@ -1687,3 +1700,138 @@ alongside the gate-2 demotion, where the network already is.**
   nothing about whether the block is damage — that is the judgement, and the judgement has no
   independent check beyond `Module:DamageData/data` listing the ability.
 - 78 of the 107 prose-only entries are still prose-only.
+
+---
+
+## 26. The coverage ceiling, and the honest state (2026-08-13)
+
+Three things were asked for and are answered here: the rows gate 2 was counting without
+checking, how far automatic extraction can go, and the single table the execution plan is
+rebuilt against.
+
+### 26.1 Gate 2 no longer counts a row it did not check
+
+A component whose base scales by champion level was added to gate 2's `matched` and `checked`
+totals on the reasoning that the ability box prints one "(based on level)" figure with nothing to
+line up rank by rank. That made an **uncompared row raise the pass count**, and an entry whose
+every row is level-scaled could reach gate 6 with a clean round-trip record behind which no
+comparison had happened.
+
+Those rows are now excluded from both counts, and checked properly instead. The check lives in
+the batch runner, where the network is, for the same reason the gate-2 demotion does
+(`draftFromTemplate` is pure and cannot fetch). Rendering the source block returns the wiki's
+entire per-level expansion in the `data-bot-values` attribute of the rendered span — the wiki's
+own Lua, expanding the same block our parser read.
+
+| Figure | Count | Definition |
+|---|---:|---|
+| rows the ability box cannot check | **9** | stored component with a level-scaled base whose label matched a rendered row |
+| **level-scaled components checked against the wiki's own expansion** | **38** | the 9 above plus the 29 prose components, which the box never rendered at all |
+| **matched** | **38** | every value agrees at the wiki's display precision |
+| disagreeing | 0 | |
+| no expansion to compare — recorded as no evidence, NOT as a pass | 0 | |
+
+Two ways the wiki's series is legitimately longer than ours, neither a disagreement: a piecewise
+progression generates values for levels 19 and 20 that the module itself does not display, and
+`{{pplevel}}` sets `tooltipSize = 41` so its series runs on past level 18 at the same slope. Our
+values are compared against the leading values of theirs.
+
+### 26.2 A defect found while sizing: `heals?` matched "health"
+
+`NOT_DAMAGE_NOUN` had no trailing word boundary, so **`heals?` matched the first four letters of
+"HEALTH"**. Every prose run reading "X% of the target's maximum health" was disqualified as a
+heal — Aatrox Deathbringer Stance, Jhin Whisper, Sejuani Icebreaker, Zed Contempt for the Weak
+and twenty more. It failed in the safe direction, so no wrong number was ever stored, and it was
+invisible for exactly that reason. `seconds?` inside "secondary", `range` inside "ranged" and
+`gold` inside "Golden" were the same trap waiting to happen.
+
+Fixed, with a regression test. It moved **no ability** — the affected sentences need the
+connective rule below as well — but it moved 49 blocks out of `not-damage`, which is what made
+the ceiling measurable at all.
+
+### 26.3 The ceiling: 47 of the 80 are reachable, 33 are not
+
+**DEFINITIONS.** The population is the **80 abilities on the prose-only worklist** — an entry
+that stored no component and whose template declares a damage type. *Reachable* means **the
+source states, structurally, both a damage value and what that value is**, so reading it needs
+only code and no judgement about which of several meanings applies. *Hard* means it does not.
+
+| | Abilities | Definition |
+|---|---:|---|
+| **R1** | **41** | A run of adjacent `{{as|…}}` blocks names a damage type and holds a value the existing classifier already reads. The shipped scanner misses them only because it triggers on a level progression, and these hold a flat ratio — `{{as|100% AD}} {{as|(+ 25% AP)}} {{as|'''bonus''' physical damage}}` (Blitzcrank E, Master Yi P, Sylas P, Corki P, Nocturne P). |
+| **R2** | **6** | The same, once ONE bounded connective — the literal words `as`, `of`, `equal to` — is allowed between the value run and the block that names it: `{{as|'''bonus''' magic damage}} equal to {{as|{{pplevel\|key=%\|4 to 10}} of the target's '''maximum''' health}}` (Aatrox P, Jarvan IV P, Sejuani P). Still reading a structure, not scanning a sentence. |
+| **H1** | **23** | A damage-named run exists but its value is not readable from it. |
+| **H2** | **10** | No damage-named run at all: the source never labels the number. |
+
+**Reachable: 47. Hard: 33.** Both counted over the same 80.
+
+**The 23 in H1, by what actually blocks them:**
+
+- **20** are the shape `{{as|'''bonus''' magic damage}}` standing alone — the naming block and
+  the value block separated by something that is not a bounded connective, most often the closing
+  brace of an enclosing `{{sti|…}}` wrapper or a clause. Some are reachable with more structural
+  work and some are not, and **which is which cannot be decided without a human reading the
+  sentence.** That is 20 sentences of hand inspection, not 20 permanent gaps.
+- **1** Caitlyn Headshot — the value is readable but its ratio is a `{{critical damage|…}}`
+  template this project does not read. Code.
+- **1** Aphelios Crescendum — a piecewise `{{pp}}` the parser still cannot expand. Code.
+- **1** Galio P — readable, and correctly refused: its ratio is `60% bonus magic resistance` and
+  the source never says whose (§16). **This one stays incomplete even after a human reads it.**
+
+### 26.4 What would actually resolve the hard 33 — the answer is not "a different source"
+
+**There is no second source.** Data Dragon carries no ability damage at all (§4), and
+`Module:DamageData/data` classifies instances without numbers (§11). The wiki's per-ability
+template is the only place these figures exist. So the choice is code, a human, or nothing.
+
+| Route | Abilities | What it means |
+|---|---:|---|
+| More structural code, no guessing | 2 | Caitlyn Headshot, Aphelios Crescendum — a template reader and a parser extension |
+| A human reads the sentence, then possibly code | 20 | The H1 noun-alone shape. A person decides whether a rule can reach it |
+| A human reads the rendered page and hand-authors it | 10 | H2 — the source never labels the number machine-readably |
+| **Nothing resolves it** | **1** | Galio P, and only its owner field: no source states whose magic resistance the ratio reads |
+
+**So the honest statement is: nothing here is beyond a human.** The wiki renders every one of
+these abilities and a person can read the number off the page. What has a hard ceiling is
+*automatic* extraction — 47 of 80 by code, 33 needing a person to look at least once.
+
+**Permanent incompleteness is a different and much smaller category**, and it is not about
+extraction at all. It is the case where **no source states the fact**, so a human reading the
+page would be guessing too. Today that is the 22 entries carrying an `unresolved-owner` (§16) —
+Malphite W's `(+ 15% armor)` with nobody named — of which Galio P is one. **Those must be
+surfaced to the user as permanently incomplete, not as work pending.** Everything else on the
+worklist is work.
+
+### 26.5 The honest state
+
+**DEFINITIONS.** *Entry* = one distinct wiki ability page, after alias dedupe. *Confirmed* = gate
+2 compared at least one row or component of that entry against the wiki's own rendering and found
+no disagreement; it is **not** `verified`, which additionally requires gate 5 (independent
+re-derivation), and gate 5 has not been run by any session. *Storable* = at least one stored
+component.
+
+| | Entries | Definition |
+|---|---:|---|
+| **Total ability pages** | **937** | distinct pages, after alias dedupe (§18) |
+| — storable | **618** | ≥1 stored damage component |
+| — declares damage, stored nothing (prose-only worklist) | **80** | the coverage problem of §26.3 |
+| — declares no damage, stored nothing | **239** | shields, heals, utility. Not a gap |
+| **Of the 618 storable:** | | |
+| — confirmed by gate 2, and `derived` | **528** | compared against the wiki, agreed, nothing else wrong |
+| — confirmed by gate 2, but `incomplete` for another reason | **34** | agrees with the wiki and still carries an unresolved owner or a schema failure |
+| — gate 2 disagreed | **46** | of which 24 were demoted from `derived` this run (§24) |
+| — no gate-2 evidence either way | **10** | nothing the rendering could compare; not counted as a pass |
+| **Verification, all 937** | | |
+| — `verified` | **0** | gate 5 has never been run |
+| — `derived` | **771** | includes the 239 non-damaging entries |
+| — `incomplete` | **166** | reasons in §19 |
+| **Permanently unreachable** | **22** | entries whose ratio owner no source states (§16). Not work; a property of the source |
+
+**Damage components stored: 930**, of which 30 came from description prose and 38 are
+level-scaled and independently confirmed.
+
+**The one number to design the plan around:** of 937 ability pages, **618 carry damage today and
+562 of those are confirmed against the wiki**. The gap is **80 abilities**, of which **47 are a
+coding job and 33 need a person to read them at least once**, and **22 entries across the whole
+roster can never be completed at all** because the source does not state whose stat a ratio
+reads. The product must say so on those, rather than imply they are pending.

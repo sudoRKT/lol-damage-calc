@@ -121,6 +121,34 @@ describe('the refusals that stop a wrong number rather than a missing one', () =
   });
 });
 
+describe('the non-damage nouns are whole words', () => {
+  it('does not read "health" as "heal"', () => {
+    // The failure this pins: `heals?` without a trailing word boundary matches the first four
+    // letters of "health", which disqualified every percent-of-health passive in the game.
+    const r = scan('X', 'Y', {
+      description:
+        "deal {{as|{{pp|10 to 20}} of the target's '''maximum''' health|magic damage}} {{as|magic damage}}.",
+    });
+    expect(r.skipped.map((s) => s.refusal)).not.toContain('not-damage');
+    expect(r.rows).toHaveLength(1);
+  });
+
+  it('still refuses a genuine heal', () => {
+    const r = scan('X', 'Y', {
+      description: "{{as|{{pp|10 to 20}} heals him for 5% of his '''maximum''' health}} {{as|magic damage}}.",
+    });
+    expect(r.rows).toHaveLength(0);
+    expect(r.skipped.map((s) => s.refusal)).toContain('not-damage');
+  });
+
+  it('does not read "secondary" as "second"', () => {
+    const r = scan('X', 'Y', {
+      description: 'deal {{as|{{pp|10 to 20}}|magic damage}} to secondary targets {{as|magic damage}}.',
+    });
+    expect(r.skipped.map((s) => s.refusal)).not.toContain('not-damage');
+  });
+});
+
 describe('{{pplevel}} is the same mechanism as {{pp}}', () => {
   it('reads a pplevel block wrapped as damage', () => {
     const r = scan('Akshan', 'Dirty Fighting', {

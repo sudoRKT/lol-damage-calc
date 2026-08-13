@@ -44,8 +44,15 @@ const DAMAGE_NOUN = /\b(physical|magic|true)\s+damage\b/i;
  * 2026-08-13. The list is deliberately broad: a term here costs a false negative, and a term
  * missing from it costs invented damage.
  */
+// NOTE THE TRAILING \b, AND DO NOT REMOVE IT. Without it `heals?` matches the first four
+// letters of "HEALTH", so every run reading "X% of the target's maximum health" was disqualified
+// as a heal — which silenced a whole class of passive: Aatrox Deathbringer Stance, Jhin Whisper,
+// Sejuani Icebreaker, Zed Contempt for the Weak and twenty more. It failed in the safe
+// direction, so nothing wrong was ever stored, and it was invisible for exactly that reason.
+// `seconds?` inside "secondary", `range` inside "ranged" and `gold` inside "Golden" are the same
+// trap waiting to happen.
 const NOT_DAMAGE_NOUN =
-  /\b(life ?steal|omnivamp|spell ?vamp|heals?|healed|healing|shields?|shielded|cooldown|seconds?|movement speed|attack speed|slows?|duration|mana|energy|gold|experience|range|radius|penetration|tenacity|regeneration|armou?r\b|magic resist)/i;
+  /\b(life ?steal|omnivamp|spell ?vamp|heals?|healed|healing|shields?|shielded|cooldown|seconds?|movement speed|attack speed|slows?|duration|mana|energy|gold|experience|range|radius|penetration|tenacity|regeneration|armou?r|magic resist)\b/i;
 
 /** Why a `{{pp}}` block in prose was not turned into damage. Every group is reported. */
 export type ProseRefusal =

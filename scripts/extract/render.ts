@@ -200,12 +200,18 @@ export async function renderLevelBlocks(
   const html = json.parse?.text ?? '';
   // One span per block, in source order. A block the wiki could not expand renders no span, so
   // the two lists would slip — which is why a count mismatch returns nulls rather than a guess.
-  const spans = [...html.matchAll(/data-bot-values="([^"]*)"/g)].map((m) =>
-    m[1]!
-      .split(';')
-      .map((s) => Number(s.trim()))
-      .filter((n) => Number.isFinite(n)),
-  );
+  // The attribute can carry a trailing `|displayMaxColumn=18` after the last value, so read
+  // values until the first entry that is not a number and STOP — filtering non-numbers out
+  // instead would silently close the gap and shift every later value one place left.
+  const spans = [...html.matchAll(/data-bot-values="([^"]*)"/g)].map((m) => {
+    const out: number[] = [];
+    for (const part of m[1]!.split(';')) {
+      const n = Number(part.trim());
+      if (!Number.isFinite(n) || part.trim() === '') break;
+      out.push(n);
+    }
+    return out;
+  });
   if (spans.length !== blocks.length) return blocks.map(() => null);
   return spans;
 }

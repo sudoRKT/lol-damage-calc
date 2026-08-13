@@ -188,7 +188,15 @@ export function statRows(fields: Record<string, string>): StatRow[] {
  */
 export const LEVEL_BLOCK_NAMES = ['pp', 'pplevel'] as const;
 
+/** A block that also remembers which template produced it. The name matters downstream: gate 2
+ *  re-renders the block, and `{{pp|13 to 30}}` and `{{pplevel|13 to 30}}` render differently. */
+export interface NamedBlock extends Block {
+  name: string;
+}
+
 /** Every champion-level progression block in `source`, in source order. */
-export function findLevelBlocks(source: string): Block[] {
-  return LEVEL_BLOCK_NAMES.flatMap((n) => findBlocks(source, n)).sort((a, b) => a.start - b.start);
+export function findLevelBlocks(source: string): NamedBlock[] {
+  return LEVEL_BLOCK_NAMES.flatMap((name) =>
+    findBlocks(source, name).map((b) => ({ ...b, name })),
+  ).sort((a, b) => a.start - b.start);
 }

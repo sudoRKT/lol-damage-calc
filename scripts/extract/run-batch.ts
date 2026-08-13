@@ -19,11 +19,13 @@ import {
   draftFromTemplate,
   fetchTemplates,
   roundTrip,
+  roundTripLevelScaled,
   wikiSlotAlias,
   type DraftAbility,
+  type LevelRoundTripResult,
 } from './harvest.ts';
 import { fetchDamageData } from './damage-data.ts';
-import { renderAbility } from './render.ts';
+import { renderAbility, renderLevelBlocks } from './render.ts';
 
 const SLOTS: AbilitySlot[] = ['P', 'Q', 'W', 'E', 'R'];
 const OUT_DIR = 'build/proposed-curated/abilities';
@@ -51,6 +53,7 @@ async function main(): Promise<void> {
 
   const drafts: DraftAbility[] = [];
   const roundTrips = [];
+  const levelRoundTrips: LevelRoundTripResult[] = [];
 
   for (const name of names) {
     const champ = byName.get(name);
@@ -134,6 +137,22 @@ async function main(): Promise<void> {
         }
         await sleep(300); // be a polite client
       }
+
+      // GATE 2 FOR LEVEL-SCALED VALUES. The ability box prints those as a single
+      // "(based on level)" figure, so `roundTrip` cannot check them and no longer pretends to.
+      // Re-rendering the source block returns the wiki's own full per-level expansion, which
+      // can. This lives here, not in `draftFromTemplate`, for the same reason the gate-2
+      // demotion does: it needs the network.
+      if (draft.levelSources.length > 0) {
+        let series: Array<number[] | null>;
+        try {
+          series = await renderLevelBlocks(draft.levelSources.map((l) => ({ name: l.name, inner: l.inner })));
+        } catch {
+          series = draft.levelSources.map(() => null);
+        }
+        levelRoundTrips.push(roundTripLevelScaled(draft, series));
+        await sleep(300);
+      }
     }
   }
 
@@ -151,6 +170,12 @@ async function main(): Promise<void> {
   for (const rt of roundTrips) {
     if (rt.mismatches.length === 0) continue;
     disagreed.set(rt.entry, rt.mismatches.map((m) => `[${m.label}] ${m.detail}`).join(' ;; '));
+  }
+  // A level-scaled disagreement demotes on exactly the same rule.
+  for (const lrt of levelRoundTrips) {
+    if (lrt.mismatches.length === 0) continue;
+    const detail = lrt.mismatches.map((m) => `[${m.componentId}] ${m.detail}`).join(' ;; ');
+    disagreed.set(lrt.entry, [disagreed.get(lrt.entry), detail].filter(Boolean).join(' ;; '));
   }
   let demoted = 0;
   for (const d of drafts) {
@@ -188,10 +213,10 @@ async function main(): Promise<void> {
   await writeFile(join(OUT_DIR, 'batch-01.json'), `${JSON.stringify(file, null, 2)}\n`);
   await writeFile(
     join(OUT_DIR, 'batch-01.report.json'),
-    `${JSON.stringify({ roundTrips, drafts: drafts.map(summarise) }, null, 2)}\n`,
+    `${JSON.stringify({ roundTrips, levelRoundTrips, drafts: drafts.map(summarise) }, null, 2)}\n`,
   );
 
-  report(file, drafts, roundTrips);
+  report(file, drafts, roundTrips, levelRoundTrips);
 }
 
 function summarise(d: DraftAbility) {
@@ -211,6 +236,7 @@ function report(
   file: CuratedFile,
   drafts: DraftAbility[],
   roundTrips: ReturnType<typeof roundTrip>[],
+  levelRoundTrips: LevelRoundTripResult[],
 ): void {
   const rtChecked = roundTrips.reduce((n, r) => n + r.checkedRows, 0);
   const rtMatched = roundTrips.reduce((n, r) => n + r.matchedRows, 0);
@@ -233,6 +259,16 @@ function report(
   const schema = reports.find((r) => r.gate === 'schema')!;
   line('1 schema', schema.checked, schema.passed, schema.failed);
   line('2 round-trip', rtChecked, rtMatched, rtChecked - rtMatched);
+  const lvChecked = levelRoundTrips.reduce((n, r) => n + r.checked, 0);
+  const lvMatched = levelRoundTrips.reduce((n, r) => n + r.matched, 0);
+  const lvUnrenderable = levelRoundTrips.reduce((n, r) => n + r.unrenderable, 0);
+  line('2 round-trip/lvl', lvChecked, lvMatched, lvChecked - lvMatched);
+  const notCompared = roundTrips.reduce((n, r) => n + r.levelScaledNotCompared, 0);
+  console.log(
+    `  (the ability box cannot check ${notCompared} level-scaled row(s); those are checked` +
+      ` against the wiki's own expansion of the source block instead. ${lvUnrenderable}` +
+      ` component(s) had no expansion to compare — no evidence, not a pass.)`,
+  );
   const sum = reports.find((r) => r.gate === 'sum-guard')!;
   line('3 sum-guard', sum.checked, sum.passed, sum.failed);
   const nc = reports.find((r) => r.gate === 'non-champion')!;

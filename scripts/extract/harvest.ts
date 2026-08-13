@@ -17,12 +17,17 @@ import type {
   InstanceType,
   Provenance,
 } from '../../src/types/data.ts';
-import { expandByRank, isLevelScaled } from '../../src/types/scaling.ts';
-import { compareAtDisplayPrecision, compareExpansion, gateSchema } from '../../src/types/validate-curated.ts';
+import { expandByRank, isLevelScaled, levelBreakpoints } from '../../src/types/scaling.ts';
+import {
+  agreesAtDisplayPrecision,
+  compareAtDisplayPrecision,
+  compareExpansion,
+  gateSchema,
+} from '../../src/types/validate-curated.ts';
 import { classifyRow, proposeRelations, type RowIssue, type ShapeId } from './classify.ts';
 import type { DamageInstance } from './damage-data.ts';
 import { scanProse, type ProseSkip } from './prose.ts';
-import { renderAbility, type RenderedRow } from './render.ts';
+import { renderAbility, renderLevelBlocks, type RenderedRow } from './render.ts';
 import { parseFields, parseVardefines, statRows } from './wikitext.ts';
 
 export const WIKI_API = 'https://wiki.leagueoflegends.com/en-us/api.php';
@@ -72,6 +77,8 @@ export interface DraftAbility {
   proseComponents: number;
   /** Every prose {{pp}} block that was NOT read, with the reason. Reported, never silent. */
   proseSkipped: ProseSkip[];
+  /** The level-progression block behind each level-scaled component, for gate 2 to re-render. */
+  levelSources: LevelSource[];
   /**
    * The template HAD damage rows and every one of them was dropped, so this entry would
    * contribute zero damage.
@@ -101,6 +108,14 @@ export interface TemplateSource {
   damageData?: Map<string, DamageInstance[]>;
 }
 
+/** A level-scaled component and the source block its numbers were read from. */
+export interface LevelSource {
+  componentId: string;
+  /** 'pp' or 'pplevel' — the two render differently, so the name has to travel with the text. */
+  name: string;
+  inner: string;
+}
+
 /** Build a draft entry from one ability template. */
 export function draftFromTemplate(src: TemplateSource, patch: string, fetched: string): DraftAbility {
   const fields = parseFields(src.wikitext);
@@ -112,6 +127,7 @@ export function draftFromTemplate(src: TemplateSource, patch: string, fetched: s
   const droppedRows: Array<{ label: string; why: string }> = [];
   const shapes: ShapeId[] = [];
   const components = [];
+  const levelSources: LevelSource[] = [];
 
   const rows = statRows(fields);
   let sourceDamageRows = 0;
@@ -128,6 +144,9 @@ export function draftFromTemplate(src: TemplateSource, patch: string, fetched: s
       if (c.shape) shapes.push(c.shape);
     }
     if (c.extraComponent) components.push(c.extraComponent);
+    if (c.levelSource && c.component) {
+      levelSources.push({ componentId: c.component.id, ...c.levelSource });
+    }
   }
   const levelingComponents = components.length;
 
@@ -169,6 +188,7 @@ export function draftFromTemplate(src: TemplateSource, patch: string, fetched: s
     components.push(c.component);
     if (c.extraComponent) components.push(c.extraComponent);
     if (c.shape) shapes.push(c.shape);
+    if (c.levelSource) levelSources.push({ componentId: c.component.id, ...c.levelSource });
     proseRows.push({ label: row.label, kept: true });
   }
   const proseComponents = components.length - levelingComponents;
@@ -237,6 +257,7 @@ export function draftFromTemplate(src: TemplateSource, patch: string, fetched: s
     droppedEveryDamageRow,
     proseComponents,
     proseSkipped: proseSkips,
+    levelSources,
   };
 }
 
@@ -446,4 +467,79 @@ export async function fetchTemplates(
   return out;
 }
 
-export { renderAbility };
+export { renderAbility, renderLevelBlocks };
+
+// ---------------------------------------------------------------------------
+// Gate 2 for level-scaled values — the half the ability box cannot check
+// ---------------------------------------------------------------------------
+
+export interface LevelRoundTripResult {
+  entry: string;
+  /** Components compared against the wiki's own expansion of their source block. */
+  checked: number;
+  matched: number;
+  /** Components whose block the wiki would not expand, so there is no evidence either way.
+   *  NOT counted as a pass. */
+  unrenderable: number;
+  mismatches: Array<{ componentId: string; expected: number[]; actual: number[]; detail: string }>;
+}
+
+/**
+ * Compare every level-scaled component against the wiki's own per-level expansion.
+ *
+ * WHY THIS EXISTS. `roundTrip` reads the rendered ability box, which prints a level-scaled value
+ * as a single "(based on level)" figure — there is no per-rank series to line up. Those rows
+ * were previously added to the pass count anyway, so a row nothing had compared raised the
+ * number of rows that agreed. They are now excluded there and checked here instead.
+ *
+ * The evidence is the `data-bot-values` attribute the wiki attaches to a rendered progression:
+ * the complete series, semicolon separated, produced by the wiki's own Lua from the same block
+ * our parser read. `series` is what `renderLevelBlocks` returned for each source, in order, with
+ * null for a block the wiki would not expand.
+ *
+ * The wiki's series can be LONGER than ours, in two documented ways, and neither is a
+ * disagreement: a piecewise progression generates values for levels 19 and 20 that the module
+ * itself does not display, and `{{pplevel}}` sets `tooltipSize = 41` so its series runs on past
+ * level 18 at the same slope. Our values are compared against the leading values of theirs.
+ */
+export function roundTripLevelScaled(
+  draft: DraftAbility,
+  series: Array<number[] | null>,
+): LevelRoundTripResult {
+  const key = `${draft.entry.champion}/${draft.entry.slot}/${draft.entry.abilityName}`;
+  const byId = new Map(draft.entry.components.map((c) => [c.id, c]));
+  const result: LevelRoundTripResult = { entry: key, checked: 0, matched: 0, unrenderable: 0, mismatches: [] };
+
+  for (const [i, src] of draft.levelSources.entries()) {
+    const component = byId.get(src.componentId);
+    if (!component || !isLevelScaled(component.base)) continue;
+    const wiki = series[i];
+    if (!wiki || wiki.length === 0) {
+      result.unrenderable += 1;
+      continue;
+    }
+    const ours = levelBreakpoints(component.base).map((b) => b.value);
+    if (wiki.length < ours.length) {
+      result.unrenderable += 1;
+      continue;
+    }
+    result.checked += 1;
+    const differences = ours
+      .map((v, k) => ({ index: k, expected: wiki[k]!, actual: v }))
+      .filter((d) => !agreesAtDisplayPrecision(d.expected, d.actual));
+    if (differences.length === 0) {
+      result.matched += 1;
+      continue;
+    }
+    result.mismatches.push({
+      componentId: src.componentId,
+      expected: wiki.slice(0, ours.length),
+      actual: ours,
+      detail: differences
+        .slice(0, 4)
+        .map((d) => `level ${d.index + 1}: wiki ${d.expected}, stored ${d.actual}`)
+        .join('; '),
+    });
+  }
+  return result;
+}

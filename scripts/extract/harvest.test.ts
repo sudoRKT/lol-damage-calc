@@ -2,7 +2,7 @@
 
 import { describe, expect, it } from 'vitest';
 
-import { damageTypeOf, draftFromTemplate, maxRankFor, roundTrip, wikiSlotAlias } from './harvest.ts';
+import { damageTypeOf, draftFromTemplate, maxRankFor, roundTrip, roundTripLevelScaled, wikiSlotAlias } from './harvest.ts';
 import { parseRenderedRows, splitRatioGroups } from './render.ts';
 
 describe('rank counts are declared, never inferred', () => {
@@ -173,5 +173,60 @@ describe('what the harvester will and will not claim', () => {
     );
     expect(draft.needsHandAuthoring).toBe(true);
     expect(draft.entry.components).toEqual([]);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Gate 2 for level-scaled values (DATA-SOURCES §25).
+// ---------------------------------------------------------------------------
+
+describe('roundTripLevelScaled', () => {
+  const ZIGGS = `
+|description  = deal {{as|{{pp|16+4*x for 6; then +8*x for 6; then +12*x for 8}}|magic damage}} {{as|(+ 50% AP)}} {{as|'''bonus''' magic damage}}.
+|damagetype   = Magic
+`;
+  const draft = () =>
+    draftFromTemplate(
+      { champion: 'Ziggs', slot: 'P', ability: 'Short Fuse', wikitext: ZIGGS, maxRank: 1 },
+      '16.16.1',
+      '2026-08-13',
+    );
+
+  it('records the source block behind a level-scaled component', () => {
+    const d = draft();
+    expect(d.levelSources).toHaveLength(1);
+    expect(d.levelSources[0]!.name).toBe('pp');
+    expect(d.levelSources[0]!.inner).toContain('16+4*x for 6');
+  });
+
+  it('confirms a component against the wiki expansion of the same block', () => {
+    const wiki = [20, 24, 28, 32, 36, 40, 48, 56, 64, 72, 80, 88, 100, 112, 124, 136, 148, 160, 172, 184];
+    const r = roundTripLevelScaled(draft(), [wiki]);
+    expect(r).toMatchObject({ checked: 1, matched: 1, unrenderable: 0 });
+    expect(r.mismatches).toHaveLength(0);
+  });
+
+  it('accepts a wiki series longer than ours — levels 19 and 20 are not a disagreement', () => {
+    // The module generates twenty values for a piecewise progression and displays eighteen;
+    // {{pplevel}} runs its tooltip out to forty-one. Neither is our value being wrong.
+    const wiki = [20, 24, 28, 32, 36, 40, 48, 56, 64, 72, 80, 88, 100, 112, 124, 136, 148, 160, 999, 999];
+    expect(roundTripLevelScaled(draft(), [wiki]).matched).toBe(1);
+  });
+
+  it('reports a real disagreement rather than absorbing it', () => {
+    const wiki = [20, 24, 28, 32, 36, 40, 48, 56, 64, 72, 80, 88, 100, 112, 124, 136, 148, 999];
+    const r = roundTripLevelScaled(draft(), [wiki]);
+    expect(r.matched).toBe(0);
+    expect(r.mismatches[0]!.detail).toContain('level 18: wiki 999, stored 160');
+  });
+
+  it('counts a block the wiki would not expand as no evidence, NOT as a pass', () => {
+    const r = roundTripLevelScaled(draft(), [null]);
+    expect(r).toMatchObject({ checked: 0, matched: 0, unrenderable: 1 });
+  });
+
+  it('counts a series too short to cover our values as no evidence either', () => {
+    const r = roundTripLevelScaled(draft(), [[20, 24, 28]]);
+    expect(r).toMatchObject({ checked: 0, matched: 0, unrenderable: 1 });
   });
 });
