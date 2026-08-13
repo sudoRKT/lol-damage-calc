@@ -25,6 +25,7 @@ import type {
   CuratedRune,
   Scaling,
 } from './data.ts';
+import { isHealthPoolStat } from './data.ts';
 import { ScalingError, expandByRank, isLevelScaled, levelBreakpoints } from './scaling.ts';
 
 export type Gate = 'schema' | 'round-trip' | 'sum-guard' | 'non-champion' | 'status-honesty';
@@ -56,6 +57,7 @@ const INSTANCE_TYPES = new Set([
   'on-hit',
   'dot-application',
 ]);
+const RATIO_OWNERS = new Set(['caster', 'target', 'unresolved']);
 const RATIO_STATS = new Set([
   'baseAD',
   'bonusAD',
@@ -177,6 +179,19 @@ function checkComponent(c: AbilityComponent, where: string, maxRank: number): st
       if (!RATIO_STATS.has(r.stat)) out.push(`${where}.ratios[${i}]: bad stat '${r.stat}'`);
       if (r.stat === 'stacks' && !r.counter) {
         out.push(`${where}.ratios[${i}]: stat 'stacks' requires a 'counter' key`);
+      }
+      // A health pool names a quantity but not a champion. Reading the wrong one is not a
+      // near miss -- Bel'Veth R's "20% of target's missing health" against the CASTER's
+      // missing health is a different number entirely, and nothing downstream could tell.
+      // So the owner is required, and 'unresolved' must be written down rather than left out.
+      if (isHealthPoolStat(r.stat) && r.owner === undefined) {
+        out.push(
+          `${where}.ratios[${i}]: stat '${r.stat}' is a health pool and requires an 'owner' ` +
+            `('caster' | 'target' | 'unresolved'). It is never defaulted.`,
+        );
+      }
+      if (r.owner !== undefined && !RATIO_OWNERS.has(r.owner)) {
+        out.push(`${where}.ratios[${i}]: bad owner '${r.owner}'`);
       }
       out.push(...checkScalingShape(r, `${where}.ratios[${i}]`));
     });
@@ -352,6 +367,24 @@ export function gateStatusHonesty(
   for (const a of file.abilities) {
     checked += 1;
     const key = abilityKey(a);
+
+    // An unresolved health owner is an admission that we do not know which champion the
+    // ability reads. That is the definition of 'incomplete' (SPECIFICATION §8), so claiming
+    // anything better is the dishonesty this gate exists to catch. Checked BEFORE the
+    // 'verified'-only skip below, because 'derived' is just as wrong a claim here.
+    const unresolved = a.components.flatMap((c) =>
+      c.ratios.filter((r) => r.owner === 'unresolved').map((r) => `${c.id}/${r.stat}`),
+    );
+    if (unresolved.length > 0 && a.verification !== 'incomplete') {
+      findings.push({
+        gate: 'status-honesty',
+        entry: key,
+        message:
+          `marked '${a.verification}' but ${unresolved.length} health ratio(s) do not say whose ` +
+          `health they read (${unresolved.join(', ')}). An unresolved owner is 'incomplete'.`,
+      });
+    }
+
     if (a.verification !== 'verified') continue;
     if (!evidence.roundTripPassed.has(key)) {
       findings.push({

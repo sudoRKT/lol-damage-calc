@@ -9,6 +9,7 @@ import {
   isDamageRow,
   parseRatio,
   proposeRelations,
+  ratioOwnerOf,
   ratioStatOf,
   shapeOf,
 } from './classify.ts';
@@ -34,6 +35,66 @@ describe('ratio stat resolution', () => {
 
   it('returns null for prose that names no stat we model', () => {
     expect(ratioStatOf('of the shield remaining')).toBeNull();
+  });
+});
+
+describe('health-pool ownership', () => {
+  // Every string below is literal ratio text from a template fetched on 2026-08-13.
+  it('reads the target when the source says the target', () => {
+    expect(ratioOwnerOf("(+ 20% of target's missing health)")).toBe('target');
+    expect(ratioOwnerOf("(+ 4% of the target's maximum health)")).toBe('target');
+    expect(ratioOwnerOf("(+ 3% of primary target's bonus health)")).toBe('target');
+  });
+
+  it('reads the caster when the source says the caster', () => {
+    expect(ratioOwnerOf('(+ 11% of his bonus health)')).toBe('caster');
+    expect(ratioOwnerOf('(+ 4% of her maximum health)')).toBe('caster');
+    expect(ratioOwnerOf("(+ 3% of Zac's bonus health)")).toBe('caster');
+    expect(ratioOwnerOf("(+ 1% per 100 Poppy's bonus health)")).toBe('caster');
+  });
+
+  it('refuses to pick a side when the source names neither', () => {
+    // 48 of the game's 176 health ratios read exactly like this. The wiki marking the target
+    // explicitly everywhere else is a convention, not a statement, so these stay unresolved.
+    expect(ratioOwnerOf('(+ 7% bonus health)')).toBe('unresolved');
+    expect(ratioOwnerOf('(+ 6% maximum health)')).toBe('unresolved');
+    expect(ratioOwnerOf('(+ 13% missing health)')).toBe('unresolved');
+    expect(ratioOwnerOf('(+ 5% of maximum health)')).toBe('unresolved');
+  });
+
+  it('leaves a compound expression unresolved rather than half-reading it', () => {
+    // Udyr Q is "(+ 1% per 100 bonus health) of the target's maximum health": the caster's
+    // bonus health is a COEFFICIENT and the target's maximum health is the PAYLOAD. The
+    // owner marker sits outside the ratio block, so the block alone must not claim either.
+    expect(ratioOwnerOf('(+ 1% per 100 bonus health)')).toBe('unresolved');
+  });
+
+  it('stamps the owner onto a parsed health ratio, and only onto health ratios', () => {
+    const target = parseRatio("(+ 4% of target's maximum health)", 5, NO_VARS);
+    expect(target.ratio).toMatchObject({ stat: 'maxHP', owner: 'target' });
+
+    const caster = parseRatio('(+ 11% of his bonus health)', 5, NO_VARS);
+    expect(caster.ratio).toMatchObject({ stat: 'bonusHP', owner: 'caster' });
+
+    const bare = parseRatio('(+ 7% bonus health)', 5, NO_VARS);
+    expect(bare.ratio).toMatchObject({ stat: 'bonusHP', owner: 'unresolved' });
+
+    // Ability power belongs to whoever cast the ability; there is nothing to disambiguate.
+    const ap = parseRatio('(+ 75% AP)', 5, NO_VARS);
+    expect(ap.ratio!.stat).toBe('AP');
+    expect(ap.ratio!.owner).toBeUndefined();
+  });
+
+  it('reports an unresolved owner as a row issue so it reaches the worklist', () => {
+    const r = row('Magic Damage', '{{ap|80 to 240}} {{as|(+ 7% bonus health)}}');
+    expect(r.component!.ratios[0]!.owner).toBe('unresolved');
+    expect(r.issues.map((i) => i.kind)).toContain('unresolved-owner');
+  });
+
+  it('raises no issue when the source did say whose health', () => {
+    const r = row('Magic Damage', "{{ap|55 to 215}} {{as|(+ 4% of target's maximum health)}}");
+    expect(r.component!.ratios[0]!.owner).toBe('target');
+    expect(r.issues).toEqual([]);
   });
 });
 

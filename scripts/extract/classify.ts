@@ -19,7 +19,14 @@
 //
 // Pure: no network, no filesystem. Tested by classify.test.ts.
 
-import type { AbilityComponent, DamageType, Ratio, RatioStat } from '../../src/types/data.ts';
+import type {
+  AbilityComponent,
+  DamageType,
+  Ratio,
+  RatioOwner,
+  RatioStat,
+} from '../../src/types/data.ts';
+import { isHealthPoolStat } from '../../src/types/data.ts';
 import { ALTERNATIVE_MARKERS } from '../../src/types/validate-curated.ts';
 import { ProgressionError, parseRankProgression } from './progression.ts';
 import { findBlocks, plainText, splitArgs, substituteVars } from './wikitext.ts';
@@ -109,6 +116,42 @@ const RATIO_STATS: Array<[RegExp, RatioStat]> = [
   [/\bstacks?\b/i, 'stacks'],
 ];
 
+/**
+ * WHOSE health a ratio reads, decided ONLY from what the ratio's own prose says.
+ *
+ * Established by scanning the `{{as|(+ …)}}` blocks of all 865 ability templates on
+ * 2026-08-13. 176 blocks name a health pool, in 45 distinct phrasings:
+ *
+ *   104  say the target outright  — "of target's maximum health", "of the target's missing
+ *                                    health", "of primary target's bonus health"
+ *    24  say the caster outright  — "of his bonus health", "of her maximum health",
+ *                                    "of Zac's bonus health", "per 100 Poppy's bonus health"
+ *    48  say NEITHER              — "(+ 7% bonus health)", "(+ 6% maximum health)"
+ *
+ * The 48 are NOT assigned a side here. There is a tempting argument that they must mean the
+ * caster, because the wiki marks the target explicitly in all 104 cases where it means the
+ * target. That is a convention, not a statement, and this project does not turn conventions
+ * into numbers: a convention holds until the one ability where it does not, and that ability
+ * ships a wrong number nobody can see. They are recorded as 'unresolved', which forces the
+ * entry to 'incomplete' at gate 6 and puts it on the hand-authoring worklist.
+ *
+ * Order matters: target is tested first, so a phrase naming both loses to the target reading
+ * only if the target marker is inside this block -- and a compound expression that puts the
+ * owner OUTSIDE the block (Udyr Q's "(+ 1% per 100 bonus health) of the target's maximum
+ * health") correctly falls through to 'unresolved' rather than being half-read.
+ */
+const OWNER_TARGET = /\b(?:primary\s+|the\s+)?(?:target|enemy|enemies|victim)(?:'s|s'|’s)/i;
+const OWNER_CASTER =
+  /\b(?:his|her|hers|its|your|their\s+own|its\s+own|own)\b|\b[A-Z][A-Za-z'’.]*(?:'s|’s)/;
+
+/** Decide a health ratio's owner from its own text. Never guesses; returns 'unresolved'. */
+export function ratioOwnerOf(text: string): RatioOwner {
+  const t = text.replace(/'''|''/g, '');
+  if (OWNER_TARGET.test(t)) return 'target';
+  if (OWNER_CASTER.test(t)) return 'caster';
+  return 'unresolved';
+}
+
 const HEALTH_STATS = new Set<RatioStat>(['maxHP', 'bonusHP', 'currentHP', 'missingHP']);
 const MANA_STATS = new Set<RatioStat>(['maxMana', 'currentMana']);
 const RESIST_STATS = new Set<RatioStat>(['armor', 'bonusArmor', 'magicResist', 'bonusMagicResist']);
@@ -122,7 +165,7 @@ export function ratioStatOf(text: string): RatioStat | null {
 }
 
 export interface RowIssue {
-  kind: 'unparsed-base' | 'unparsed-ratio' | 'unknown-stat' | 'no-value';
+  kind: 'unparsed-base' | 'unparsed-ratio' | 'unknown-stat' | 'no-value' | 'unresolved-owner';
   detail: string;
 }
 
@@ -155,8 +198,16 @@ export function parseRatio(
   const body = splitArgs(inner)[0] ?? '';
   if (!/\(\s*\+/.test(body)) return {}; // an {{as|…}} that is prose, not a ratio
   const text = body.replace(/^\s*\(\s*\+\s*/, '').replace(/\)\s*$/, '');
-  const stat = ratioStatOf(plainText(text) || text);
+  const flat = plainText(text) || text;
+  const stat = ratioStatOf(flat);
   if (!stat) return { issue: { kind: 'unknown-stat', detail: text.slice(0, 80) } };
+
+  // A health pool names a quantity but not a champion. Decide the owner from the same prose
+  // the stat came from, and record 'unresolved' where that prose does not say. Gate 1 rejects
+  // a health ratio with no owner, so this can never be silently skipped.
+  const owner: { owner?: RatioOwner } = isHealthPoolStat(stat)
+    ? { owner: ratioOwnerOf(flat) }
+    : {};
 
   // The magnitude is either a nested {{ap|…}} (a ratio that itself scales per rank — 244
   // measured) or a literal number before the '%'.
@@ -164,12 +215,12 @@ export function parseRatio(
   try {
     if (nested.length > 0) {
       const scaling = parseRankProgression(substituteVars(nested[0]!.inner, vars), maxRank);
-      return { ratio: { stat, ...scaling } };
+      return { ratio: { stat, ...owner, ...scaling } };
     }
     const num = /(-?\d+(?:\.\d+)?)\s*%/.exec(substituteVars(text, vars));
     if (!num) return { issue: { kind: 'unparsed-ratio', detail: text.slice(0, 80) } };
     const v = Number(num[1]);
-    return { ratio: { stat, scaling: 'linear', from: v, to: v } };
+    return { ratio: { stat, ...owner, scaling: 'linear', from: v, to: v } };
   } catch (e) {
     return {
       issue: {
@@ -220,8 +271,21 @@ export function classifyRow(
   const ratios: Ratio[] = [];
   for (const b of ratioBlocks) {
     const { ratio, issue } = parseRatio(b.inner, maxRank, vars);
-    if (ratio) ratios.push(ratio);
-    else if (issue) issues.push(issue);
+    if (ratio) {
+      ratios.push(ratio);
+      // Surface it as an issue, not just as a stored field: this both puts the row on the
+      // hand-authoring worklist in the batch report and drives the entry to 'incomplete'.
+      // Gate 6 is the backstop if this ever stops happening.
+      if (ratio.owner === 'unresolved') {
+        issues.push({
+          kind: 'unresolved-owner',
+          detail: `${ratio.stat}: source does not say whose health — "${b.inner
+            .replace(/\s+/g, ' ')
+            .trim()
+            .slice(0, 70)}"`,
+        });
+      }
+    } else if (issue) issues.push(issue);
   }
 
   let rest = value;

@@ -693,3 +693,96 @@ evidence. `manifest.json` carries `contestedChampions` — the apinames the inte
 on — and the counts. The flag is a **sidecar rather than a field on `Champion`**, because the
 type contract in `src/types/` is frozen and lead-owned; the interface joins by apiname. If the
 UI work needs it inside the champion record, that is a contract change for the lead to make.
+
+---
+
+## 16. Health-pool ownership (contract change, 2026-08-13)
+
+### The gap
+
+`RatioStat` named four health pools — `maxHP`, `bonusHP`, `currentHP`, `missingHP` — and said
+nothing about **whose** health. A pool without an owner is not a small omission. Bel'Veth R is
+`20% of target's missing health`; the same coefficient read off the caster is a different
+number, in a different direction, with an itemised breakdown that looks exactly as convincing.
+Nothing downstream — no gate, no round-trip, no reader — could tell the two apart.
+
+`Ratio` now carries `owner: 'caster' | 'target' | 'unresolved'`, **required on every health
+pool** (gate 1) and rejected if absent. It is optional on other stats; see the open gap below.
+
+### What the source actually says — measured, not assumed
+
+All **865 ability templates** on the roster were fetched and their `{{as|(+ …)}}` ratio blocks
+read on 2026-08-13. **176 blocks name a health pool, in 45 distinct phrasings:**
+
+| The block says | Count | Examples |
+|---|---:|---|
+| the target, outright | 104 | `of target's maximum health`, `of the target's missing health`, `of primary target's bonus health` |
+| the caster, outright | 24 | `of his bonus health`, `of her maximum health`, `of Zac's bonus health`, `per 100 Poppy's bonus health` |
+| **neither** | 48 | `(+ 7% bonus health)`, `(+ 6% maximum health)` |
+
+Of the 176, **96 sit on rows the harvester keeps as damage** (the other 80 are shields, heals,
+non-champion rows and Total summary rows, all dropped before storage). Running the shipped
+classifier over the full roster stores **74 target, 9 caster, 13 unresolved**, across 63
+abilities.
+
+### The 48 are NOT defaulted, and here is why not
+
+There is a tempting argument that a bare `bonus health` must mean the caster, because the wiki
+marks the target explicitly in **all 104** cases where it means the target. That is a
+**convention, not a statement.** A convention holds until the one ability where it does not,
+and that ability then ships a confident wrong number that nobody can see — the precise failure
+this project exists to prevent. So the bare cases are recorded as `unresolved`, which:
+
+- raises an `unresolved-owner` row issue, putting the ability on the hand-authoring worklist;
+- forces the entry to `verification: 'incomplete'` — enforced by **gate 6**, which now refuses
+  `derived` as well as `verified` for any ability carrying an unresolved owner.
+
+### The 13 unresolved, and what the source does say about each
+
+Each ability's own rendered prose was then read (`action=parse` of `{{Data X/Y|Ability}}`,
+prose only — the patch-history and Arena-differences boxes are the §13 trap and were excluded).
+That splits the 13 three ways:
+
+**(a) Five that the ability's own prose DOES resolve, to the caster, naming the same pool.**
+These are safe to hand-author into `/curated/` with the quoted sentence as evidence — that is a
+source statement, not a guess:
+
+| Entry | The sentence in the source |
+|---|---|
+| Cho'Gath R — Champion True Damage | "dealing true damage based on **Cho'Gath's bonus health**" |
+| Shen E — Physical Damage | "dealing physical damage based on **his bonus health**" |
+| Vladimir W — Magic Damage Per Tick | "dealt magic damage based on **his bonus health**" |
+| Vladimir E — Minimum Magic Damage | "deal magic damage … based on **his maximum health**" |
+| Vladimir E — Maximum Magic Damage | as above |
+
+**(b) Three that are compound and cannot be expressed by a single owner at all.** The health
+term is a *coefficient* on the caster, applied to a *payload* on the target:
+
+| Entry | The source |
+|---|---|
+| Udyr Q — Bonus Physical Damage On-Hit | "(+ 1% per **100 bonus health**) **of the target's maximum health**" |
+| Maokai E — Magic Damage | "deals magic damage … based on **their maximum health**", scaled "(+ 1% per 100 bonus health)" |
+| Maokai E — Magic Damage per Instance | as above |
+
+These are stored today as a single `bonusHP` ratio, which is **wrong independently of the owner
+field** — the magnitude is a per-100 coefficient, not a percentage of a pool. Flagged here as a
+finding; it needs a modelling decision, not a value correction.
+
+**(c) Five the source genuinely does not say.** Nothing in the leveling row or the prose names
+an owner for that pool. These stay `unresolved` and `incomplete`:
+
+Dr. Mundo W (Heart Zapper) · Dr. Mundo E (Blunt Force Trauma, ×2) · Gnar E (Hop) ·
+Nunu & Willump Q (Consume)
+
+Dr. Mundo E is the closest call: the prose attributes **his maximum health** and **his missing
+health** to Mundo, but the damage rows scale off **bonus health**, which no sentence attributes.
+Matching on the champion rather than on the pool would have resolved it — and would have been
+the same class of reasoning as the convention argument rejected above.
+
+### Open gap, stated rather than papered over
+
+**Armor, magic resistance and mana carry the identical ambiguity and are NOT yet enforced.**
+`armor`, `bonusArmor`, `magicResist`, `bonusMagicResist`, `maxMana` and `currentMana` may still
+be stored with no owner. The `owner` field accepts them, but gate 1 does not require it. Do not
+read the absence of an owner on an armor ratio as "it must be the target" — read it as
+"nobody has done this work yet."

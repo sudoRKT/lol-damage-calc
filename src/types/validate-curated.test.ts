@@ -6,7 +6,13 @@
 
 import { describe, expect, it } from 'vitest';
 
-import type { AbilityComponent, CuratedAbility, CuratedFile, Provenance } from './data.ts';
+import type {
+  AbilityComponent,
+  CuratedAbility,
+  CuratedFile,
+  Provenance,
+  RatioOwner,
+} from './data.ts';
 import {
   compareExpansion,
   gateNonChampion,
@@ -256,6 +262,69 @@ describe('gate 3 — the sum guard (the Aatrox check)', () => {
   });
 });
 
+describe('gate 1 — health-pool ownership', () => {
+  // A health pool names a quantity but not a champion. Bel'Veth R is "20% of target's
+  // missing health"; the same figure read off the CASTER is a different number entirely,
+  // and no downstream check would notice. So the owner is required, never defaulted.
+  // Bel'Veth R's real shape, with only the owner varied.
+  const health = (over: { owner?: RatioOwner } = {}) =>
+    ability({
+      components: [
+        comp({
+          id: 'd',
+          label: 'True Damage',
+          ratios: [{ stat: 'missingHP', scaling: 'linear', from: 20, to: 20, ...over }],
+        }),
+      ],
+    });
+
+  it('rejects a health ratio that does not say whose health it reads', () => {
+    const r = gateSchema(file([health()]));
+    expect(r.failed).toBe(1);
+    expect(r.findings[0]!.message).toMatch(/requires an 'owner'/);
+  });
+
+  it("accepts 'caster', 'target' and 'unresolved'", () => {
+    for (const owner of ['caster', 'target', 'unresolved'] as const) {
+      expect(gateSchema(file([health({ owner })])).failed).toBe(0);
+    }
+  });
+
+  it('rejects an owner value that is not one of the three', () => {
+    const r = gateSchema(file([health({ owner: 'enemy' as never })]));
+    expect(r.failed).toBe(1);
+    expect(r.findings.some((f) => /bad owner 'enemy'/.test(f.message))).toBe(true);
+  });
+
+  it('requires the owner on every health pool, not just missing health', () => {
+    for (const stat of ['maxHP', 'bonusHP', 'currentHP', 'missingHP'] as const) {
+      const r = gateSchema(
+        file([
+          ability({
+            components: [
+              comp({ id: 'd', ratios: [{ stat, scaling: 'linear', from: 5, to: 5 }] }),
+            ],
+          }),
+        ]),
+      );
+      expect(r.failed, `${stat} should require an owner`).toBe(1);
+    }
+  });
+
+  it('does not demand an owner on a stat that has only one possible reading', () => {
+    const r = gateSchema(
+      file([
+        ability({
+          components: [
+            comp({ id: 'd', ratios: [{ stat: 'AP', scaling: 'linear', from: 75, to: 75 }] }),
+          ],
+        }),
+      ]),
+    );
+    expect(r.failed).toBe(0);
+  });
+});
+
 describe('gate 4 — non-champion rows', () => {
   it('catches a minion/monster row that leaked through harvest', () => {
     const r = gateNonChampion(
@@ -279,6 +348,68 @@ describe('gate 4 — non-champion rows', () => {
 
 describe('gate 6 — status honesty', () => {
   const key = 'Lux/Q/Light Binding';
+
+  const unresolvedHealth = (verification: CuratedAbility['verification']) =>
+    ability({
+      verification,
+      sourceRevision: 1,
+      components: [
+        comp({
+          id: 'd',
+          label: 'Magic Damage',
+          ratios: [
+            { stat: 'bonusHP', owner: 'unresolved', scaling: 'linear', from: 7, to: 7 },
+          ],
+        }),
+      ],
+    });
+
+  it("refuses 'derived' when an ability does not know whose health it reads", () => {
+    // 'derived' means "extracted from source, not independently confirmed". An unresolved
+    // owner means the source did not say — that is 'incomplete', a weaker claim.
+    const r = gateStatusHonesty(file([unresolvedHealth('derived')]), {
+      roundTripPassed: new Set([key]),
+      independentlyChecked: new Set([key]),
+    });
+    expect(r.failed).toBe(1);
+    expect(r.findings[0]!.message).toMatch(/do not say whose health/);
+  });
+
+  it("refuses 'verified' for the same reason, even with both evidence gates recorded", () => {
+    const r = gateStatusHonesty(file([unresolvedHealth('verified')]), {
+      roundTripPassed: new Set([key]),
+      independentlyChecked: new Set([key]),
+    });
+    expect(r.findings.some((f) => /do not say whose health/.test(f.message))).toBe(true);
+  });
+
+  it("accepts 'incomplete' with an unresolved owner — that is the honest state", () => {
+    const r = gateStatusHonesty(file([unresolvedHealth('incomplete')]), {
+      roundTripPassed: new Set(),
+      independentlyChecked: new Set(),
+    });
+    expect(r.failed).toBe(0);
+  });
+
+  it('says nothing about an ability whose owners are all resolved', () => {
+    const r = gateStatusHonesty(
+      file([
+        ability({
+          verification: 'derived',
+          components: [
+            comp({
+              id: 'd',
+              ratios: [
+                { stat: 'missingHP', owner: 'target', scaling: 'linear', from: 20, to: 20 },
+              ],
+            }),
+          ],
+        }),
+      ]),
+      { roundTripPassed: new Set(), independentlyChecked: new Set() },
+    );
+    expect(r.failed).toBe(0);
+  });
 
   it("refuses 'verified' with no recorded gate 2 or gate 5 pass", () => {
     const r = gateStatusHonesty(file([ability({ verification: 'verified', sourceRevision: 1 })]), {

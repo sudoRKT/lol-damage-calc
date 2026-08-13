@@ -150,6 +150,13 @@ Two things worth knowing about how these fit together:
   to it — so the partition holds even when the role definitions were not loaded. Every write,
   allowed or refused, is appended to `.claude/boundary-audit.log`, which is the audit trail:
   it records which agent wrote which file, and whether any agent tried to reach across.
+- **The partitioned areas are:** `src/engine/` · `scripts/fetch/` + `public/data/` ·
+  `scripts/extract/` + `build/proposed-curated/` · `src/ui/` · `src/url/`. A path in none of
+  them is refused to every agent, and belongs to the lead — that includes `src/types/`,
+  `/curated/`, and the project's Markdown. Two directories share one area when one agent
+  needs both to do one job: the fetcher writes the data it fetches, the harvester writes the
+  drafts it harvests. `src/url/` is the one name not fixed by prior work; rename it in the
+  hook if the scenario↔URL encoder lands somewhere else.
 - **Publishing is a lead action.** Agents are refused `git push` by the hook rather than by a
   blanket rule, so the lead can still do its job. Agents are also instructed not to commit.
 
@@ -199,3 +206,8 @@ active (hook + read-only filesystem).
 Not yet built (each is its own partitioned area, per the technical-foundation plan): the
 engine, the data pipeline, the curated override file, the scenario↔URL encoder, and the UI.
 Nothing has been verified against the practice tool yet.
+
+Health-pool ratios carry an owner (`caster` / `target` / `unresolved`) as of 2026-08-13; the
+rule, the full-roster measurement behind it, and the 13-entry unresolved worklist are in
+DATA-SOURCES.md §16. Armor, magic resistance and mana have the same gap and are not yet
+enforced — that is recorded there too, not fixed.

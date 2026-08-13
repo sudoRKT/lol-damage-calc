@@ -171,11 +171,46 @@ export type RatioStat =
    *  stacks, Veigar stacks, Cho'Gath Feast stacks. Requires `Ratio.counter`. */
   | 'stacks';
 
+/**
+ * WHOSE stat a ratio reads.
+ *
+ * WHY THIS EXISTS. `maxHP` on its own names a pool but not a champion, and the two readings
+ * are not close: Bel'Veth R is `20% of target's missing health`, and an engine that read the
+ * caster's missing health instead would return a confident, itemised, entirely wrong number
+ * with nothing on screen to say so. A scan of all 865 ability templates on 2026-08-13 found
+ * 176 health-pool ratios — 104 stating the target, 24 stating the caster, 48 stating neither.
+ * A default would have silently decided those 48; there is no majority safe enough to guess
+ * with, and the minority case is exactly where the error is largest.
+ *
+ * 'unresolved' is therefore a real, storable state, not a placeholder to be filled in later
+ * by whoever notices. It means: the source names a health pool and does not say whose. An
+ * entry carrying one is forced to `verification: 'incomplete'` by gate 6, so it can never be
+ * presented to a user as though it were settled.
+ */
+export type RatioOwner = 'caster' | 'target' | 'unresolved';
+
+/** The health pools. A ratio on one of these MUST carry an `owner` (gate 1). */
+export const HEALTH_POOL_STATS = ['maxHP', 'bonusHP', 'currentHP', 'missingHP'] as const;
+export type HealthPoolStat = (typeof HEALTH_POOL_STATS)[number];
+
+export function isHealthPoolStat(stat: RatioStat): stat is HealthPoolStat {
+  return (HEALTH_POOL_STATS as readonly string[]).includes(stat);
+}
+
 export type Ratio = {
   stat: RatioStat;
   /** Required when `stat` is 'stacks'. Names the counter, and must match a key the scenario
    *  supplies in ChampionConfig.persistent (e.g. 'nasusQ'). */
   counter?: string;
+  /**
+   * Whose stat this reads. REQUIRED on every health-pool stat (maxHP / bonusHP / currentHP /
+   * missingHP) and rejected by gate 1 if absent.
+   *
+   * Optional elsewhere for now. Armor, magic resistance and mana carry the same ambiguity and
+   * are NOT yet enforced — that is a known, recorded gap rather than a claim that they are
+   * safe. Do not read the absence of an owner on an armor ratio as "it must be the target".
+   */
+  owner?: RatioOwner;
 } & Scaling;
 
 /**
