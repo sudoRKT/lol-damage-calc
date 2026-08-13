@@ -391,6 +391,18 @@
   color: var(--text-primary);
 }
 
+/* Abilities the result excludes, named rather than dropped (SPECIFICATION §8). Neutral —
+ * the mark itself is glyph and label, never a hue, and never styled as a shortfall. */
+.burn__excluded {
+  list-style: none;
+  margin: var(--space-3) 0 0;
+  padding: 0;
+}
+
+.burn__excluded li {
+  margin-block-start: var(--space-1);
+}
+
 /* --------------------------------------------------------------------------
  * The resistance-math popover (DESIGN.md §7 "Interaction"). --elev-2 is the only genuine
  * shadow in the product and popovers are the only thing that gets it (§5).
@@ -505,6 +517,26 @@
  * 0 and which §7 says is absent from the settled chart anyway. The odometer is switched off
  * in the component, which reads the same media query.
  */
+/*
+ * THE SETTLED CHART IS REACHABLE BY A TIMER, NEVER ONLY BY A FRAME.
+ *
+ * Every animation above starts from a COLLAPSED keyframe with `backwards` fill, so a browser
+ * that does not advance the animation — a hidden tab does not — leaves the plot empty. This
+ * was observed, not theorised: opened in a tab that was not compositing, every riser sat at
+ * `scaleY(0)` and the headline total read 0. Once the component's own timer says playback is
+ * over it adds `burn--settled`, and the animations come off exactly as they do under reduced
+ * motion.
+ */
+.burn--settled .burn__tread,
+.burn--settled .burn__bar,
+.burn--settled .burn__hatch,
+.burn--settled .burn__label,
+.burn--settled .burn__ghost,
+.burn--settled .burn__rule-stroke,
+.burn--settled .burn__callout {
+  animation: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .burn__tread,
   .burn__bar,

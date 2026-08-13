@@ -104,6 +104,20 @@ const HUE_ALLOWLIST: Record<string, string> = {
   '.chip__tag--physical': 'DESIGN.md §9 — icon-chip P/M/T corner tag',
   '.chip__tag--magic': 'DESIGN.md §9 — icon-chip P/M/T corner tag',
   '.chip__tag--true': 'DESIGN.md §9 — icon-chip P/M/T corner tag',
+  // DESIGN.md §7, the HP burndown. Every entry below colours DAMAGE DATA: a riser IS the
+  // damage it drops by, the hatch IS the damage-over-time tail, the rule IS the kill, and
+  // the ghost is the band of health a hit just removed. None of them is decoration, and none
+  // of them is a status, an interaction state or a surface.
+  '.burn__bar--physical': 'DESIGN.md §7 — riser coloured by the instance’s damage type',
+  '.burn__bar--magic': 'DESIGN.md §7 — riser coloured by the instance’s damage type',
+  '.burn__bar--true': 'DESIGN.md §7 — riser coloured by the instance’s damage type',
+  '.burn__hatch--physical': 'DESIGN.md §7 — the hatched DoT tail, in the DoT source’s hue',
+  '.burn__hatch--magic': 'DESIGN.md §7 — the hatched DoT tail, in the DoT source’s hue',
+  '.burn__hatch--true': 'DESIGN.md §7 — the hatched DoT tail, in the DoT source’s hue',
+  '.burn__chip--lethal': 'DESIGN.md §7 — the LETHAL callout chip’s 2px --lethal border',
+  '.burn__rule-stroke--lethal': 'DESIGN.md §7 — the 2px solid --lethal rule at the zero crossing',
+  '.burn__rule-stroke--dot': 'DESIGN.md §7 — the second, dashed --lethal rule at the DoT crossing',
+  '.burn__ghost': 'DESIGN.md §7 — the transient recent-damage ghost, --flash-recent at ~35%',
 };
 
 /**
@@ -131,6 +145,33 @@ const LENGTH_ALLOWLIST: Array<{ value: string; rule: string; reason: string }> =
     value: '100%',
     rule: '.chip__img',
     reason: 'the art fills the chip, whose size IS a token — a fraction, not a design length',
+  },
+  // DESIGN.md §7 states four stroke widths verbatim for the burndown. They are quoted, not
+  // chosen: "a 2px line in --hp-trace", "a 3px line dropping from Rᵢ", "a 2px solid --lethal
+  // vertical rule", and a callout chip "with a 2px --lethal border". Same standing as the
+  // focus-ring entry above — a value DESIGN.md itself writes down, with no token for it.
+  { value: '2px', rule: '.burn__tread', reason: 'DESIGN.md §7 — "a 2px line in --hp-trace"' },
+  { value: '3px', rule: '.burn__bar', reason: 'DESIGN.md §7 — "a 3px line dropping from Rᵢ"' },
+
+  {
+    value: '2px',
+    rule: '.burn__rule-stroke--lethal',
+    reason: 'DESIGN.md §7 — "a 2px solid --lethal vertical rule"',
+  },
+  {
+    value: '2px',
+    rule: '.burn__rule-stroke--dot',
+    reason: 'DESIGN.md §7 — "a second, dashed --lethal rule", same weight as the first',
+  },
+  {
+    value: '2px',
+    rule: '.burn__chip--lethal',
+    reason: 'DESIGN.md §7 — the callout chip is "bone text on --bg-panel with a 2px --lethal border"',
+  },
+  {
+    value: '2px',
+    rule: '.burn__riser:focus-visible',
+    reason: 'DESIGN.md §6 states the focus ring verbatim: a 2px bone outline offset 2px',
   },
 ];
 

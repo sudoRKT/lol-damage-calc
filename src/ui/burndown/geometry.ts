@@ -332,10 +332,20 @@ export function odometerAt(
   const startedAt = (landed - 1) * STEP_MS;
   const t = Math.min(1, Math.max(0, (elapsedMs - startedAt) / ODOMETER_MS));
 
+  // MID-ROLL FRAMES ARE ROUNDED TO WHOLE NUMBERS; the settled value never is.
+  //
+  // An odometer that spun through 240.53333 is unreadable, but rounding a SETTLED figure
+  // would be a second, undocumented rounding point (CLAUDE.md), so the two cases are kept
+  // apart: `t < 1` is a frame of an animation, `t === 1` is the engine's number and is
+  // passed through untouched.
+  const step = (a: number, b: number) => {
+    const v = a + (b - a) * t;
+    return t < 1 ? Math.round(v) : v;
+  };
   const byType: DamageByType = {
-    physical: from.physical + (to.physical - from.physical) * t,
-    magic: from.magic + (to.magic - from.magic) * t,
-    true: from.true + (to.true - from.true) * t,
+    physical: step(from.physical, to.physical),
+    magic: step(from.magic, to.magic),
+    true: step(from.true, to.true),
   };
   return { total: byType.physical + byType.magic + byType.true, byType };
 }

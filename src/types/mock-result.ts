@@ -135,10 +135,20 @@ export const MOCK_RESULT: Result = {
       icon: null,
       instanceType: 'on-hit',
       damageType: 'true',
-      raw: 120,
-      afterResistances: 120,
-      afterReductions: 120,
-      final: 120,
+      // AN INCOMPLETE ABILITY CONTRIBUTES NO DAMAGE. SPECIFICATION §8 makes that the status's
+      // whole meaning — "a figure is absent rather than wrong" — and requires the result's total
+      // to EXCLUDE it while still naming it.
+      //
+      // Corrected 2026-08-13. This instance carried 120 true damage into `runningTotal` and into
+      // `burst.byType.true` while ALSO being listed in `incompleteContributors` as excluded: the
+      // one canonical mock stated both that the damage counted and that it did not. Every
+      // component in this product is built and tested against this object, so a component author
+      // reading it would have learned the opposite of the rule. Found by the interface area's
+      // result-consistency sweep, which now checks the whole class rather than this entry.
+      raw: 0,
+      afterResistances: 0,
+      afterReductions: 0,
+      final: 0,
       crit: false,
       stateSnapshot: { conquerorStacks: 10, blackCleaverStacks: 1 },
       verification: 'incomplete',
@@ -165,10 +175,11 @@ export const MOCK_RESULT: Result = {
       verification: 'verified',
     },
   ],
-  runningTotal: [240, 420, 620, 740, 890],
+  // Instance 4 contributes 0, so the total does not move across it (620 -> 620).
+  runningTotal: [240, 420, 620, 620, 770],
   burst: {
-    total: 890,
-    byType: { physical: 570, magic: 200, true: 120 },
+    total: 770,
+    byType: { physical: 570, magic: 200, true: 0 },
   },
   dot: {
     total: 160,
@@ -184,18 +195,22 @@ export const MOCK_RESULT: Result = {
     ],
   },
   verdict: {
+    // BURST SURVIVES, BURST PLUS DAMAGE-OVER-TIME KILLS. That is deliberate and is now the
+    // canonical case: it is the only combination that exercises the second, dashed lethal rule
+    // DESIGN.md §7 specifies, and it makes the two-verdict requirement of §3.8 visibly do
+    // something rather than print the same word twice.
     burstOnly: {
       defenderHp: 800,
-      damageApplied: 890,
-      lethal: true,
-      lethalAtInstance: 5,
-      remainingHp: 0,
+      damageApplied: 770,
+      lethal: false,
+      lethalAtInstance: null,
+      remainingHp: 30,
     },
     burstPlusDot: {
       defenderHp: 800,
-      damageApplied: 1050,
+      damageApplied: 930,
       lethal: true,
-      lethalAtInstance: 5,
+      lethalAtInstance: null,
       remainingHp: 0,
     },
   },

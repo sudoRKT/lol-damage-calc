@@ -156,13 +156,14 @@ describe('damage-value/visible-tag', () => {
 // ---------------------------------------------------------------------------
 
 describe('aggregate-total/multi-type', () => {
-  const { total, byType } = MOCK_RESULT.burst; // 890 = 570 P + 200 M + 120 T
+  const { total, byType } = MOCK_RESULT.burst; // 770 = 570 P + 200 M (instance 4 is incomplete
+  // and contributes nothing, so there is no true damage in the split)
 
   it('the multi-type total announces itself and then its split', () => {
     inCell(<AggregateTotal total={total} byType={byType} />);
     expect(
       screen.getByRole('cell', {
-        name: '890 total damage — 570 physical, 200 magic, 120 true',
+        name: '770 total damage — 570 physical, 200 magic',
       }),
     ).toBeTruthy();
   });
@@ -177,7 +178,7 @@ describe('aggregate-total/multi-type', () => {
     expect(screen.queryByRole('cell', { name: /damage\d/ })).toBe(null);
     expect(screen.queryByRole('cell', { name: /\d[a-zA-Z]/ })).toBe(null);
     expect(
-      screen.getByRole('cell', { name: '890 total damage — 570 physical, 200 magic, 120 true' }),
+      screen.getByRole('cell', { name: '770 total damage — 570 physical, 200 magic' }),
     ).toBeTruthy();
   });
 
@@ -185,7 +186,7 @@ describe('aggregate-total/multi-type', () => {
     inCell(<AggregateTotal total={total} byType={byType} label="Total" />);
     expect(
       screen.getByRole('cell', {
-        name: 'Total: 890 total damage — 570 physical, 200 magic, 120 true',
+        name: 'Total: 770 total damage — 570 physical, 200 magic',
       }),
     ).toBeTruthy();
   });
@@ -193,7 +194,7 @@ describe('aggregate-total/multi-type', () => {
   it('the total itself is bone with NO tag — the one permitted exception', () => {
     const { container } = render(<AggregateTotal total={total} byType={byType} />);
     const figure = container.querySelector('.agg__total')!;
-    expect(figure.textContent).toBe('890');
+    expect(figure.textContent).toBe('770');
     // no damage-type class on the total, so it takes the bone `.agg` colour
     expect(figure.className).not.toMatch(/dmg--(physical|magic|true)/);
     // and the tag element is not inside it
@@ -203,10 +204,13 @@ describe('aggregate-total/multi-type', () => {
   it('cannot render the untagged total without the tagged composition bar', () => {
     const { container } = render(<AggregateTotal total={total} byType={byType} />);
     const tags = [...container.querySelectorAll('.dmg__tag')].map((n) => n.textContent);
-    expect(tags).toEqual(['P', 'M', 'T']);
-    for (const t of ['physical', 'magic', 'true']) {
+    expect(tags).toEqual(['P', 'M']);
+    // A segment exists for each type PRESENT in the split, and none for a type contributing
+    // nothing — a zero-width segment carrying a tag would announce damage that was not dealt.
+    for (const t of ['physical', 'magic']) {
       expect(container.querySelector(`.comp__bar--${t}`)).not.toBe(null);
     }
+    expect(container.querySelector('.comp__bar--true')).toBe(null);
   });
 
   it('a SINGLE-type total is not an aggregate — the tag comes back', () => {
@@ -228,6 +232,8 @@ describe('aggregate-total/multi-type', () => {
     const grows = [...container.querySelectorAll<HTMLElement>('.comp__seg')].map(
       (n) => n.style.flexGrow,
     );
-    expect(grows).toEqual([String(570 / 890), String(200 / 890), String(120 / 890)]);
+    // Two segments, not three: the corrected mock's incomplete instance contributes no true
+    // damage, so there is no true segment to size.
+    expect(grows).toEqual([String(570 / 770), String(200 / 770)]);
   });
 });
