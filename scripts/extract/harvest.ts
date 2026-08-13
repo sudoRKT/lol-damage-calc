@@ -16,6 +16,7 @@ import type {
   DamageType,
   InstanceType,
   Provenance,
+  Unresolvable,
 } from '../../src/types/data.ts';
 import { expandByRank, isLevelScaled, levelBreakpoints } from '../../src/types/scaling.ts';
 import {
@@ -27,6 +28,7 @@ import {
 import { classifyRow, proposeRelations, type RowIssue, type ShapeId } from './classify.ts';
 import type { DamageInstance } from './damage-data.ts';
 import { scanProse, type ProseSkip } from './prose.ts';
+import { statedTypesFor } from './damage-data.ts';
 import { renderAbility, renderLevelBlocks, type RenderedRow } from './render.ts';
 import { parseFields, parseVardefines, statRows } from './wikitext.ts';
 
@@ -203,25 +205,44 @@ export function draftFromTemplate(src: TemplateSource, patch: string, fetched: s
     fetched,
   };
 
+  // Does anything at all say this ability deals damage? Two independent sources are asked, and
+  // 'no-damage' is only claimed when BOTH are silent.
+  const declaresDamage = damageTypeOf(fields.damagetype) !== null;
+  const statedByModule =
+    statedTypesFor(src.damageData ?? new Map(), src.champion, src.ability).types.size > 0;
+
   const droppedEveryDamageRow = levelingComponents === 0 && sourceDamageRows > 0 && proseComponents === 0;
   // An ability with leveling rows, none of which are damage rows, is a genuinely
   // non-damaging ability (a shield, a heal) — not prose-only work. Only an ability with NO
-  // usable rows at all and a declared damage type goes on the hand-authored worklist.
-  const declaresDamage = damageTypeOf(fields.damagetype) !== null;
+  // usable rows at all that SOMETHING says deals damage goes on the hand-authored worklist.
+  // Module:DamageData/data is consulted as well as the template: 21 abilities declare no
+  // `damagetype` while the module states one, and calling those 'no damage' would assert
+  // against a source rather than merely fail to read one.
   const needsHandAuthoring =
-    withRelations.length === 0 && (droppedEveryDamageRow || (declaresDamage && rows.length === 0));
+    withRelations.length === 0 &&
+    (droppedEveryDamageRow || ((declaresDamage || statedByModule) && rows.length === 0));
 
+  // WHAT THE ABILITY IS, NOT WHAT WE MANAGED TO READ. `instanceType` was set from whether we
+  // stored a component, so the 80 abilities whose damage we cannot extract were labelled
+  // 'non-damaging-ability' — a claim about the game, made from a failure of ours. It is now set
+  // from what the sources SAY: the template's own `damagetype`, or Module:DamageData/data.
+  const dealsDamage = withRelations.length > 0 || declaresDamage || statedByModule;
   const entry: CuratedAbility = {
     champion: src.champion,
     slot: src.slot,
     abilityName: src.ability,
-    instanceType: instanceTypeFor(src.slot, withRelations.length > 0),
+    instanceType: instanceTypeFor(src.slot, dealsDamage),
     damageType,
     maxRank,
     components: withRelations,
     // Nothing the harvester produces is 'verified'. Verification is a gate outcome, not a
     // property a generator may assert about its own output.
-    verification: needsHandAuthoring || issues.length > 0 ? 'incomplete' : 'derived',
+    verification:
+      needsHandAuthoring || issues.length > 0
+        ? 'incomplete'
+        : withRelations.length === 0 && !dealsDamage
+          ? 'no-damage'
+          : 'derived',
     provenance,
     ...(src.revisionId !== undefined ? { sourceRevision: src.revisionId } : {}),
   };
@@ -240,6 +261,33 @@ export function draftFromTemplate(src: TemplateSource, patch: string, fetched: s
     version: 1, patch, fetched, abilities: [entry],
     itemEffects: [], runes: [], shards: [], exclusions: [],
   };
+  // PERMANENT IS NOT PENDING. A ratio whose owner no source states can never be resolved by
+  // anyone, so the entry records that as a fact about the source rather than leaving it to look
+  // like work nobody has got to (SPECIFICATION §8, DATA-SOURCES §27).
+  const unresolvable: Unresolvable[] = [];
+  withRelations.forEach((c, ci) => {
+    c.ratios.forEach((r, ri) => {
+      if (r.owner === 'unresolved') {
+        unresolvable.push({
+          field: `components[${ci}].ratios[${ri}].owner (${r.stat})`,
+          why: `the source names ${r.stat} and never says whose, and no other source states it`,
+        });
+      }
+      (r.multipliers ?? []).forEach((m, mi) => {
+        if (m.owner === 'unresolved') {
+          unresolvable.push({
+            field: `components[${ci}].ratios[${ri}].multipliers[${mi}].owner (${m.per})`,
+            why: `the source names ${m.per} and never says whose, and no other source states it`,
+          });
+        }
+      });
+    });
+  });
+  if (unresolvable.length > 0) {
+    entry.unresolvable = unresolvable;
+    entry.verification = 'incomplete';
+  }
+
   const schema = gateSchema(oneEntry);
   if (schema.failed > 0) {
     entry.verification = 'incomplete';

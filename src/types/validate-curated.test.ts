@@ -408,12 +408,20 @@ describe('gate 6 — status honesty', () => {
     expect(r.findings.some((f) => /do not say whose health/.test(f.message))).toBe(true);
   });
 
-  it("accepts 'incomplete' with an unresolved owner — that is the honest state", () => {
-    const r = gateStatusHonesty(file([unresolvedHealth('incomplete')]), {
-      roundTripPassed: new Set(),
-      independentlyChecked: new Set(),
-    });
-    expect(r.failed).toBe(0);
+  it("accepts 'incomplete' with an unresolved owner ONLY when it says the fact is unresolvable", () => {
+    // An unresolved owner can never be filled in — no source states it — so the entry has to
+    // say so. Without that the interface cannot tell a user "nobody can finish this" apart from
+    // "nobody has finished this yet".
+    const evidence = { roundTripPassed: new Set<string>(), independentlyChecked: new Set<string>() };
+    const bare = gateStatusHonesty(file([unresolvedHealth('incomplete')]), evidence);
+    expect(bare.failed).toBe(1);
+    expect(bare.findings[0]!.message).toMatch(/records no 'unresolvable' entry/);
+
+    const declaredEntry = unresolvedHealth('incomplete');
+    declaredEntry.unresolvable = [
+      { field: 'components[0].ratios[0].owner', why: 'the source names the pool and not whose' },
+    ];
+    expect(gateStatusHonesty(file([declaredEntry]), evidence).failed).toBe(0);
   });
 
   it('says nothing about an ability whose owners are all resolved', () => {
@@ -553,5 +561,88 @@ describe('agreesAtDisplayPrecision', () => {
     expect(r.clearedByDisplayRounding).toBe(1);
     expect(r.differences).toHaveLength(1);
     expect(r.differences[0]!.expected).toBe(275);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// 'no-damage', and permanent versus pending (DATA-SOURCES §27).
+// ---------------------------------------------------------------------------
+
+describe("the 'no-damage' status", () => {
+  const base = {
+    champion: 'Janna',
+    slot: 'E' as const,
+    abilityName: 'Eye Of The Storm',
+    damageType: 'magic' as const,
+    maxRank: 5,
+    provenance: { source: 'Template:Data Janna/E', patch: '16.16.1' },
+  };
+
+  it('accepts an entry that stores nothing and is typed as non-damaging', () => {
+    const f = {
+      version: 1, patch: '16.16.1', fetched: '2026-08-13',
+      abilities: [{ ...base, instanceType: 'non-damaging-ability' as const, verification: 'no-damage' as const, components: [] }],
+      itemEffects: [], runes: [], shards: [], exclusions: [],
+    };
+    expect(gateSchema(f).failed).toBe(0);
+    expect(gateStatusHonesty(f, { roundTripPassed: new Set(), independentlyChecked: new Set() }).failed).toBe(0);
+  });
+
+  it('refuses it on an entry that carries damage', () => {
+    const f = {
+      version: 1, patch: '16.16.1', fetched: '2026-08-13',
+      abilities: [{
+        ...base,
+        instanceType: 'non-damaging-ability' as const,
+        verification: 'no-damage' as const,
+        components: [{ id: 'd', damageType: 'magic' as const, base: { scaling: 'linear' as const, from: 10, to: 50 }, ratios: [] }],
+      }],
+      itemEffects: [], runes: [], shards: [], exclusions: [],
+    };
+    const r = gateSchema(f);
+    expect(r.failed).toBe(1);
+    expect(r.findings.some((x) => /claim that the ability deals none/.test(x.message))).toBe(true);
+  });
+
+  it('refuses it on an entry whose instance type says it damages', () => {
+    const f = {
+      version: 1, patch: '16.16.1', fetched: '2026-08-13',
+      abilities: [{ ...base, instanceType: 'damaging-ability' as const, verification: 'no-damage' as const, components: [] }],
+      itemEffects: [], runes: [], shards: [], exclusions: [],
+    };
+    const r = gateStatusHonesty(f, { roundTripPassed: new Set(), independentlyChecked: new Set() });
+    expect(r.failed).toBe(1);
+    expect(r.findings[0]!.message).toMatch(/instanceType is 'damaging-ability'/);
+  });
+
+  it("refuses 'unresolvable' on anything that is not incomplete", () => {
+    const f = {
+      version: 1, patch: '16.16.1', fetched: '2026-08-13',
+      abilities: [{
+        ...base,
+        instanceType: 'damaging-ability' as const,
+        verification: 'derived' as const,
+        components: [],
+        unresolvable: [{ field: 'x', why: 'no source states it' }],
+      }],
+      itemEffects: [], runes: [], shards: [], exclusions: [],
+    };
+    const r = gateStatusHonesty(f, { roundTripPassed: new Set(), independentlyChecked: new Set() });
+    expect(r.findings.some((x) => /recording a fact no source states/.test(x.message))).toBe(true);
+  });
+
+  it('requires an unresolvable entry to name the field and say why', () => {
+    const f = {
+      version: 1, patch: '16.16.1', fetched: '2026-08-13',
+      abilities: [{
+        ...base,
+        instanceType: 'damaging-ability' as const,
+        verification: 'incomplete' as const,
+        components: [],
+        unresolvable: [{ field: '', why: '' }],
+      }],
+      itemEffects: [], runes: [], shards: [], exclusions: [],
+    };
+    expect(gateSchema(f).failed).toBe(1);
   });
 });

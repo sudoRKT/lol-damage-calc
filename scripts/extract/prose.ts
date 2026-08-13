@@ -31,6 +31,7 @@
 // Pure: no network, no filesystem. Tested by prose.test.ts.
 
 import type { DamageType } from '../../src/types/data.ts';
+import { ratioStatOf } from './classify.ts';
 import { statedTypesFor, type DamageInstance } from './damage-data.ts';
 import { findBlocks, findLevelBlocks, plainText, splitArgs, substituteVars, type Block } from './wikitext.ts';
 
@@ -53,6 +54,37 @@ const DAMAGE_NOUN = /\b(physical|magic|true)\s+damage\b/i;
 // trap waiting to happen.
 const NOT_DAMAGE_NOUN =
   /\b(life ?steal|omnivamp|spell ?vamp|heals?|healed|healing|shields?|shielded|cooldown|seconds?|movement speed|attack speed|slows?|duration|mana|energy|gold|experience|range|radius|penetration|tenacity|regeneration|armou?r|magic resist)\b/i;
+
+/**
+ * What may sit between two `{{as}}` blocks for them to still be ONE figure.
+ *
+ * Whitespace and commas, or exactly one of three connective words. The wiki writes
+ * `{{as|'''bonus''' magic damage}} equal to {{as|{{pplevel|4 to 10}} of the target's maximum
+ * health}}` — the noun and the number in separate blocks, joined by two words. Allowing those
+ * three words is still reading a structure: both halves are wrapped and named by the source.
+ * It is NOT a licence to scan the sentence — anything else between two blocks ends the run.
+ */
+const CONNECTIVE = /^[\s,]*(?:as|of|equal to)?[\s,]*$/i;
+
+/**
+ * A block that NAMES the damage rather than carrying its value: it reads as a damage noun, is
+ * not a `(+ …)` addition, and holds no number of its own.
+ */
+function isNamingBlock(body: string, flat: string): boolean {
+  return (
+    DAMAGE_NOUN.test(flat) &&
+    !/\(\s*\+/.test(body) &&
+    findLevelBlocks(body).length === 0 &&
+    !/\d/.test(flat)
+  );
+}
+
+/**
+ * A run whose text is about damage but is not a damage instance. Mirrors the classifier's own
+ * `NOT_A_DAMAGE_ROW`: with the scanner widened past level progressions it now sees ordinary
+ * defensive prose, and "reduces magic damage taken" must not read as a magic damage instance.
+ */
+const NOT_A_DAMAGE_INSTANCE = /damage reduction|damage reduc|damage amp|damage taken|damage cap/i;
 
 /** Why a `{{pp}}` block in prose was not turned into damage. Every group is reported. */
 export type ProseRefusal =
@@ -77,6 +109,9 @@ export type ProseRefusal =
   /** The row was synthesised but the classifier could not read all of it. Partial storage would
    *  understate the ability, so nothing is stored. */
   | 'unreadable'
+  /** Every block in the run is a `(+ …)` addition, so whatever they add to is stated outside the
+   *  run. Storing the additions alone understates the ability at every rank. */
+  | 'bonus-only-run'
   /** The prose and `Module:DamageData/data` disagree about the damage type. */
   | 'type-conflict';
 
@@ -156,6 +191,14 @@ export function scanProse(opts: {
   const skipped: ProseSkip[] = [];
   const stated = statedTypesFor(damageData, champion, ability);
 
+  // An ability whose leveling rows already produced damage is left alone entirely: the prose
+  // restates that same damage and a second copy would double the ability's output. Returning
+  // here rather than per-run keeps the refusal counts meaningful — reported per ability, not
+  // once per sentence fragment.
+  if (hasLevelingComponents) {
+    return { rows: [], skipped: [{ refusal: 'has-leveling-rows', field: '-', source: '(whole ability)' }] };
+  }
+
   const fieldNames = Object.keys(fields)
     .filter((k) => /^description\d*$/.test(k))
     .sort();
@@ -163,8 +206,13 @@ export function scanProse(opts: {
   for (const field of fieldNames) {
     const text = fields[field]!;
     const ppBlocks = findLevelBlocks(text);
-    if (ppBlocks.length === 0) continue;
     const asBlocks = findBlocks(text, 'as');
+    if (asBlocks.length === 0) {
+      // Nothing in this field is wrapped, so nothing in it is labelled. Still report the
+      // progressions: a block left unread has to be counted, not silently passed over.
+      for (const p of ppBlocks) skipped.push({ refusal: 'no-wrapper', field, source: brief(text, p) });
+      continue;
+    }
     const ftBlocks = findBlocks(text, 'ft');
 
     // ONE DAMAGE INSTANCE IS ONE RUN of adjacent top-level `{{as}}` blocks, not one block.
@@ -175,7 +223,7 @@ export function scanProse(opts: {
     const runs: Block[][] = [];
     for (const b of topLevel) {
       const last = runs.at(-1)?.at(-1);
-      if (last && /^[\s,]*$/.test(text.slice(last.end, b.start))) runs.at(-1)!.push(b);
+      if (last && CONNECTIVE.test(text.slice(last.end, b.start))) runs.at(-1)!.push(b);
       else runs.push([b]);
     }
 
@@ -184,28 +232,26 @@ export function scanProse(opts: {
       const head = run[0]!;
       const tail = run.at(-1)!;
       const blocks = ppBlocks.filter((p) => p.start > head.start && p.end < tail.end);
-      if (blocks.length === 0) continue;
       blocks.forEach((p) => used.add(p.start));
-      if (blocks.some((p) => enclosing(ftBlocks, p))) {
-        skipped.push({ refusal: 'footnote-variant', field, source: brief(text, blocks[0]!) });
+      if (enclosing(ftBlocks, head) || blocks.some((p) => enclosing(ftBlocks, p))) {
+        skipped.push({ refusal: 'footnote-variant', field, source: brief(text, blocks[0] ?? head) });
         continue;
       }
-      const wrapper = head;
       const siblings = run.slice(1);
       const whole = readable(text.slice(head.start, tail.end));
       const source = text.slice(head.start, tail.end).replace(/\s+/g, ' ').slice(0, 160);
 
-      if (NOT_DAMAGE_NOUN.test(whole)) {
-        skipped.push({ refusal: 'not-damage', field, source, detail: whole.slice(0, 90) });
+      // A run that carries no progression block and names no damage is ordinary prose, not a
+      // value we failed to read. Only a run holding a progression is REPORTED when it is
+      // rejected here, so the refusal counts stay comparable with the ones in DATA-SOURCES §25.
+      const reportable = blocks.length > 0;
+      if (NOT_A_DAMAGE_INSTANCE.test(whole) || NOT_DAMAGE_NOUN.test(whole)) {
+        if (reportable) skipped.push({ refusal: 'not-damage', field, source, detail: whole.slice(0, 90) });
         continue;
       }
       const noun = DAMAGE_NOUN.exec(whole);
       if (!noun) {
-        skipped.push({ refusal: 'unclear', field, source, detail: whole.slice(0, 90) });
-        continue;
-      }
-      if (hasLevelingComponents) {
-        skipped.push({ refusal: 'has-leveling-rows', field, source });
+        if (reportable) skipped.push({ refusal: 'unclear', field, source, detail: whole.slice(0, 90) });
         continue;
       }
 
@@ -221,41 +267,82 @@ export function scanProse(opts: {
         continue;
       }
 
-      // The value is the wrapper's first argument (which holds the {{pp}}) plus the sibling
-      // blocks that are ratio groups. The sibling that carries only the damage noun is the
-      // LABEL, not part of the value.
-      const wrapperArg0 = splitArgs(wrapper.inner)[0] ?? '';
-      const valueParts = [wrapperArg0];
+      // Split the run into the block(s) that NAME the damage and the block(s) that carry its
+      // VALUE. Either can come first: the wiki writes both `{{as|<value>}} … {{as|magic damage}}`
+      // and `{{as|'''bonus''' magic damage}} equal to {{as|<value>}}`.
+      const valueParts: string[] = [];
       let labelPhrase = noun[0];
-      for (const sib of siblings) {
-        const body = splitArgs(sib.inner)[0] ?? '';
-        if (DAMAGE_NOUN.test(readable(body)) && !/\(\s*\+/.test(body) && findLevelBlocks(body).length === 0) {
-          const bonus = /\bbonus\b/i.test(readable(body)) ? 'bonus ' : '';
+      let sawPayload = false;
+      let baseFromPercent: string | undefined;
+      for (const b of [head, ...siblings]) {
+        const body = splitArgs(b.inner)[0] ?? '';
+        const flat = readable(body);
+        if (isNamingBlock(body, flat)) {
+          const bonus = /\bbonus\b/i.test(flat) ? 'bonus ' : '';
           labelPhrase = `${bonus}${noun[0]}`;
-          continue; // the noun phrase names the row
+          continue;
         }
-        valueParts.push(text.slice(sib.start, sib.end));
+        // A block whose whole argument IS a progression is the row's BASE, and the classifier
+        // reads a base unwrapped. Anything else stays wrapped: unwrapping
+        // `{{as|{{pplevel|4 to 10}} of the target's maximum health}}` would turn a percentage of
+        // health into four-to-ten flat damage, which is both wrong and entirely plausible.
+        const levelIn = findLevelBlocks(body);
+        const rankIn = findBlocks(body, 'ap');
+        const progression = levelIn[0] ?? rankIn[0];
+        // What the block says APART from its progression and its nested ratio groups. If that
+        // remainder names a stat, the progression is the MAGNITUDE OF A RATIO —
+        // `{{pplevel|4 to 10}} of the target's maximum health` — and unwrapping it would store
+        // "4 to 10 flat damage" instead of "4–10% of the target's health". If it names no stat,
+        // the progression is the row's base and the classifier needs it unwrapped.
+        let remainder = progression
+          ? body.slice(0, progression.start) + ' ' + body.slice(progression.end)
+          : body;
+        for (const nested of [...findBlocks(remainder, 'as')].reverse()) {
+          remainder = remainder.slice(0, nested.start) + ' ' + remainder.slice(nested.end);
+        }
+        const isBase = progression !== undefined && ratioStatOf(readable(remainder)) === null;
+        if (isBase) {
+          if (levelIn[0] && isPercentBlock(levelIn[0].inner)) baseFromPercent = levelIn[0].inner;
+          valueParts.push(body);
+        } else {
+          if (!/\(\s*\+/.test(body)) sawPayload = true;
+          valueParts.push(text.slice(b.start, b.end));
+        }
       }
-      const value = substituteVars(valueParts.join(' ').trim(), vars);
-
-      // A PERCENTAGE SITTING WHERE A FLAT BASE GOES cannot be stored as a base. Caitlyn
-      // Headshot's `{{pp|key=%|60 to 100 for 3|1 to 13}}` is 60%–100% OF ATTACK DAMAGE; stored
-      // as a base it becomes 60 to 100 flat damage — wrong, and plausible enough that nothing
-      // downstream would question it. A percentage inside a `(+ … )` ratio group is fine: that
-      // is what a ratio is, and the classifier stores it as one.
-      const inBasePosition = blocks.filter((p) => enclosing(asBlocks, p)?.start === head.start);
-      const percentBase = inBasePosition.filter((p) => isPercentBlock(p.inner));
-      if (percentBase.length > 0) {
+      // EVERY BLOCK IS A BARE `(+ …)` ADDITION AND THERE IS NOTHING TO ADD IT TO. A bonus group
+      // is by construction an addition to a value stated elsewhere; storing the group alone
+      // gives an ability its ratios with no payload and understates it at every rank. Akali's
+      // mark reads `{{as|(+ 60% '''bonus''' AD)}} {{as|(+ 55% AP)}}` and its base is a bare
+      // progression outside the run.
+      //
+      // A `(+ …)` group that CARRIES a progression is different and must not be caught here:
+      // `{{as|(+ {{pplevel|10 to 50}}% '''bonus''' AD)}}` is a complete scaled ratio, and it is
+      // how Warwick, Gwen, Katarina and Volibear state their whole passive. A first cut of this
+      // guard refused those four and dropped damage that was already being read correctly.
+      const runHasProgression = valueParts.some(
+        (v) => findLevelBlocks(v).length > 0 || findBlocks(v, 'ap').length > 0,
+      );
+      if (!sawPayload && !runHasProgression && valueParts.every((v) => /\{\{as\|/.test(v))) {
+        skipped.push({
+          refusal: 'bonus-only-run',
+          field,
+          source,
+          detail: 'every block is a "(+ …)" addition, so the value being added to is not here',
+        });
+        continue;
+      }
+      if (baseFromPercent !== undefined) {
         skipped.push({
           refusal: 'percent-payload',
           field,
           source,
-          detail: `the level-scaled value is a percentage of a stat, not a flat base: ${percentBase[0]!.inner
+          detail: `the level-scaled base is a percentage of a stat, not a flat base: ${baseFromPercent
             .replace(/\s+/g, ' ')
             .slice(0, 70)}`,
         });
         continue;
       }
+      const value = substituteVars(valueParts.join(' ').trim(), vars);
 
       rows.push({
         label: toLabel(labelPhrase),

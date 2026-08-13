@@ -149,6 +149,69 @@ describe('the non-damage nouns are whole words', () => {
   });
 });
 
+describe('a run of bonus groups with nothing to add them to', () => {
+  it('refuses a run whose every block is a bare "(+ …)" addition', () => {
+    // Akali's mark states its base as a bare progression OUTSIDE the wrapped run. Storing the
+    // additions alone would give the ability its ratios and no payload.
+    const r = scan('X', 'Y', {
+      description:
+        "empowers his attack to deal {{pplevel|35 to 53}} " +
+        "{{as|(+ 60% '''bonus''' AD)}} {{as|(+ 55% AP)}} {{as|'''bonus''' magic damage}}.",
+    });
+    expect(r.rows).toHaveLength(0);
+    expect(r.skipped.map((s) => s.refusal)).toContain('bonus-only-run');
+  });
+
+  it('KEEPS a bonus group whose magnitude is itself a progression — that is the whole damage', () => {
+    // Warwick, Katarina and Volibear state their entire passive this way. A first cut of the
+    // guard above refused all three and dropped damage that was already read correctly.
+    const r = scan('X', 'Y', {
+      description: "deal {{as|(+ {{pplevel|10 to 50}}% '''bonus''' AD)}} {{as|magic damage}}.",
+    });
+    expect(r.rows).toHaveLength(1);
+  });
+});
+
+describe('unwrapping a value block without changing what it means', () => {
+  it('unwraps a composite block so its nested ratios are read', () => {
+    // Illaoi and Seraphine put the base, both ratios and the noun inside ONE block.
+    const r = scan('X', 'Y', {
+      description: "deals {{as|{{pplevel|9 to 180}} {{as|(+ 110% AD)}} {{as|(+ 40% AP)}} physical damage}}.",
+    });
+    expect(r.rows).toHaveLength(1);
+    expect(r.rows[0]!.value).toContain('(+ 110% AD)');
+  });
+
+  it('does NOT unwrap a progression that is the magnitude of a ratio', () => {
+    // `{{pplevel|4 to 10}} of the target's maximum health` is 4-10% OF HEALTH. Unwrapped it
+    // becomes 4-to-10 flat damage — a different number, and a plausible one.
+    const r = scan('X', 'Y', {
+      description:
+        "deal {{as|'''bonus''' magic damage}} equal to {{as|{{pplevel|key=%|4 to 10}} of the target's '''maximum''' health}}.",
+    });
+    expect(r.rows).toHaveLength(1);
+    expect(r.rows[0]!.value).toMatch(/\{\{as\|\{\{pplevel/);
+    expect(r.skipped.map((s) => s.refusal)).not.toContain('percent-payload');
+  });
+});
+
+describe('one bounded connective joins a value to the noun that names it', () => {
+  it('joins across "equal to"', () => {
+    const r = scan('X', 'Y', {
+      description: "deal {{as|'''bonus''' magic damage}} equal to {{as|10% of the target's '''maximum''' health}}.",
+    });
+    expect(r.rows).toHaveLength(1);
+    expect(r.rows[0]!.label).toBe('Bonus Magic Damage');
+  });
+
+  it('does not join across anything else', () => {
+    const r = scan('X', 'Y', {
+      description: "deal {{as|'''bonus''' magic damage}} and then later on {{as|10% of the target's '''maximum''' health}}.",
+    });
+    expect(r.rows).toHaveLength(0);
+  });
+});
+
 describe('{{pplevel}} is the same mechanism as {{pp}}', () => {
   it('reads a pplevel block wrapped as damage', () => {
     const r = scan('Akshan', 'Dirty Fighting', {

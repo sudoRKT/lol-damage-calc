@@ -4,7 +4,48 @@
 export type DamageType = 'physical' | 'magic' | 'true';
 export type RangeType = 'Melee' | 'Ranged';
 export type AdaptiveType = 'Physical' | 'Magic';
-export type VerificationStatus = 'verified' | 'derived' | 'incomplete';
+/**
+ * How much an ability's damage figures can be trusted — plus one state that says there are none.
+ *
+ * 'verified'   expected value established from a documented formula or a published worked
+ *              example, and confirmed by a passing test
+ * 'derived'    extracted from source, not independently confirmed
+ * 'incomplete' known to have unmodelled components
+ * 'no-damage'  THE ABILITY DEALS NO DAMAGE. Not a statement about numbers — a statement that
+ *              there are none to make one about.
+ *
+ * WHY THE FOURTH EXISTS. 239 entries stored nothing and read 'derived', which claims they were
+ * "extracted from source, not independently confirmed" when there was nothing to extract. It
+ * inflated the derived count by a third and made the roster look better modelled than it is.
+ * Silence about damage and unconfirmed damage are different facts and must not share a word.
+ *
+ * 'no-damage' is a CLAIM, and it is only made when two sources are silent together: the
+ * ability's own template declares no `damagetype`, AND `Module:DamageData/data` states no
+ * damage instance for it. Where those two disagree — 21 abilities, Jinx Q and Zed W among them,
+ * where the module states a type the template omits — the entry is `incomplete`, because
+ * asserting "no damage" against a source that says otherwise is the confident wrong answer this
+ * project exists to prevent.
+ */
+export type VerificationStatus = 'verified' | 'derived' | 'incomplete' | 'no-damage';
+
+/**
+ * A fact an entry needs and that NO SOURCE STATES, so no amount of work will supply it.
+ *
+ * This is the difference between an entry nobody has got to yet and one nobody can ever finish.
+ * The 22 abilities carrying an unresolved ratio owner are the second kind: Malphite W reads
+ * `(+ 15% armor)` and the source never says whose armor, so a human reading the page would be
+ * guessing exactly as a parser would (DATA-SOURCES §16). Putting those on a worklist implies
+ * someone will get to them. Nobody can.
+ *
+ * An entry carrying one of these is `incomplete` and stays `incomplete` until the SOURCE
+ * changes. The interface must present it differently from work in progress (SPECIFICATION §8).
+ */
+export interface Unresolvable {
+  /** What is missing, e.g. "components[0].ratios[0].owner (armor)". */
+  field: string;
+  /** Why no source settles it, in plain English, for the user-facing note. */
+  why: string;
+}
 export type AbilitySlot = 'P' | 'Q' | 'W' | 'E' | 'R';
 
 /** Where a value came from and when — surfaced to the user (SPECIFICATION §7, §8). */
@@ -364,6 +405,9 @@ export interface CuratedAbility {
   modifiers?: Record<string, number>;
   stackYields?: StackYields;
   verification: VerificationStatus;
+  /** Facts this entry needs that no source states. Present means permanently incomplete, not
+   *  pending — see `Unresolvable`. Gate 6 requires `verification: 'incomplete'` alongside it. */
+  unresolvable?: Unresolvable[];
   notes?: string;
   provenance: Provenance;
   /** Set when this entry belongs to a form that is its own roster entry (SPECIFICATION §6,

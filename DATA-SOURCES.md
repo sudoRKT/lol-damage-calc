@@ -1835,3 +1835,147 @@ level-scaled and independently confirmed.
 coding job and 33 need a person to read them at least once**, and **22 entries across the whole
 roster can never be completed at all** because the source does not state whose stat a ratio
 reads. The product must say so on those, rather than imply they are pending.
+
+---
+
+## 27. Four statuses, the flat-ratio path, and permanent versus pending (2026-08-13)
+
+### 27.1 `no-damage` — a fourth status, and why the three did not suffice
+
+`derived` means "extracted from source, not independently confirmed". That is a claim **about
+numbers**, and 239 entries carried it while having none: shields, heals, dashes, utility. It
+inflated the derived count by roughly a third and made the roster look better modelled than it
+is. Silence about damage and unconfirmed damage are different facts and must not share a word.
+
+`VerificationStatus` now has a fourth arm, `'no-damage'`, and it is a **claim**, so it is made
+only when two independent sources are silent together:
+
+- the ability's own template declares no `damagetype`, **and**
+- `Module:DamageData/data` states no damage instance for it.
+
+**Where the two disagree, the entry is `incomplete`, never `no-damage`.** That is not
+hypothetical: **21 abilities declare no damage type while the module states one** — Jinx Q,
+Kalista P, Zed W, Senna P, Viego P, Xayah W, Zac P and fourteen more. Calling those "no damage"
+would assert an absence against a source that contradicts it. They are on the worklist instead,
+which is where undetected damage belongs.
+
+Two gates hold it: gate 1 refuses `no-damage` on an entry that carries components, and gate 6
+refuses it on an entry whose `instanceType` is not `non-damaging-ability`.
+
+**`instanceType` was fixed at the same time and for the same reason.** It was set from whether we
+had *stored* a component, so every ability whose damage we could not extract was labelled
+`non-damaging-ability` — a claim about the game made from a failure of ours. It is now set from
+what the sources say.
+
+| | Entries |
+|---|---:|
+| `no-damage` | **214** |
+| entries with no component that ARE on the worklist | 69 |
+| entries with no component that are `incomplete` for another reason | 13 |
+
+### 27.2 The flat-ratio path (§26.3 R1) and one bounded connective (R2)
+
+Both were built. The scanner no longer triggers only on a level progression; it triggers on any
+run of `{{as|…}}` blocks that names a damage type and carries a readable value, and a run may now
+span **exactly one** of the connective words `as`, `of`, `equal to`. Both halves are still wrapped
+and named by the source, so this is reading a structure — anything else between two blocks ends
+the run.
+
+**DEFINITIONS.** *Worklist* = an entry that stored no component and that at least one source says
+deals damage. Both columns below use that same definition, so the movement is like for like; the
+left column is the current code with the description path unable to fire.
+
+| Figure | Count |
+|---|---:|
+| worklist with the prose path disabled | **117** |
+| worklist as it now runs | **69** |
+| **abilities that moved off the worklist** | **48** |
+| abilities carrying ≥1 prose component | **52** (29 before this work, 23 new) |
+| prose components stored | **56** |
+
+**Gate 2 on everything that moved:**
+
+| Figure | Count | Definition |
+|---|---:|---|
+| abilities with prose components | 52 | |
+| **confirmed** | **26** | gate 2 compared ≥1 component and found no disagreement |
+| **disagreeing** | **0** | |
+| no evidence either way | 26 | nothing gate 2 can compare — see below |
+
+The 26 with no evidence are the newly reached flat-ratio abilities — Blitzcrank E, Master Yi P,
+Zed P, Nocturne P, Jarvan IV P and the rest. Their components have **no level progression to
+re-render and no leveling row in the ability box**, so neither half of gate 2 can reach them.
+That is recorded as *no evidence*, not as a pass. It is the honest state and it is the largest
+open weakness in the gate: 26 abilities carry damage nothing has checked.
+
+### 27.3 Three guards that had to exist, found by building it
+
+Widening the trigger exposed three ways to store a wrong number, each caught by measurement
+rather than by reasoning:
+
+- **`bonus-only-run`** — a run whose every block is a bare `(+ …)` addition. A bonus group is by
+  construction an addition to a value stated elsewhere; storing the group alone gives the ability
+  its ratios and no payload. Akali's mark is `{{as|(+ 60% '''bonus''' AD)}} {{as|(+ 55% AP)}}`
+  with its base a bare progression outside the run. **29 worklist abilities are refused by this.**
+  The first cut of the guard was too broad and refused Warwick, Katarina, Volibear and Gwen as
+  well, whose entire passive is `{{as|(+ {{pplevel|10 to 50}}% '''bonus''' AD)}}` — a complete
+  scaled ratio. A `(+ …)` group carrying a progression is now kept.
+- **The unwrap rule.** A block whose argument holds a progression is the row's base and must be
+  unwrapped for the classifier to read it — unless the rest of that block names a stat, in which
+  case the progression is the *magnitude of a ratio*. `{{pplevel|4 to 10}} of the target's
+  maximum health` unwrapped becomes "4 to 10 flat damage" instead of "4–10% of the target's
+  health": a different number, and a plausible one. Both forms are now pinned by tests.
+- **`NOT_A_DAMAGE_INSTANCE`** — with the scanner reading ordinary prose, "reduces magic damage
+  taken" would otherwise read as a magic damage instance. The classifier's own exclusion list is
+  applied to prose runs too.
+
+**One ability moved backwards, correctly.** Zeri P produced a component before and does not now:
+two runs on it claim the same label, and which is a variant of which is unstated, so
+`duplicate-label` refuses both. Previously only one run was visible and it was stored without
+question. The ambiguity was always there; it is now surfaced instead of resolved by accident.
+
+### 27.4 Permanent is not pending, and it is now in the data
+
+`CuratedAbility` gains `unresolvable?: Unresolvable[]` — a list of facts the entry needs that
+**no source states**, each naming the missing field and why nothing settles it. It is not a
+worklist item. It is a property of the source.
+
+**23 entries carry one**, all of them ratio owners the source declines to attribute (§16):
+Malphite W's `(+ 15% armor)` with nobody named, and its kin. Gate 6 enforces both directions — an
+entry with an unresolved owner that records no `unresolvable` fails, and an `unresolvable` on
+anything other than `incomplete` fails.
+
+`SPECIFICATION.md` §8 now records how the interface presents the difference: **pending** reads
+*"not yet modelled"* and will improve, **permanent** reads *"cannot be completed — the source does
+not record this"* and names the missing fact. §8 also records that `DESIGN.md` carries no glyph
+for `no-damage` or for the permanent/pending split, and that this is an open design decision
+rather than something to invent here.
+
+### 27.5 The state, re-measured
+
+Supersedes §26.5. Same definitions.
+
+| | Entries | Definition |
+|---|---:|---|
+| **Total ability pages** | **937** | distinct pages, after alias dedupe |
+| — storable | **641** | ≥1 stored damage component |
+| — worklist | **69** | stored nothing, a source says it damages |
+| — `no-damage` | **214** | stored nothing, both sources silent |
+| — no component, `incomplete` for another reason | 13 | |
+| **Of the 641 storable:** | | |
+| — confirmed by gate 2, and `derived` | **525** | |
+| — confirmed by gate 2, `incomplete` for another reason | **35** | |
+| — gate 2 disagreed | **46** | 24 demoted from `derived` this run |
+| — **no gate-2 evidence either way** | **35** | of which 26 are the new flat-ratio prose components |
+| **Verification, all 937** | | |
+| — `verified` / `derived` / `incomplete` / `no-damage` | **0 / 566 / 157 / 214** | |
+| **Permanently unreachable** | **23** | records an `unresolvable`; not work |
+
+**Damage components stored: 956**, of which 56 came from description prose.
+
+**The numbers to design the plan around.** 937 ability pages. **641 carry damage, 560 of those are
+confirmed against the wiki, 35 carry damage nothing has checked.** The gap is **69 abilities**,
+and after this session the cheap half of it is gone — what remains is dominated by 36 abilities
+whose number the source never labels and 29 whose payload sits outside the run that names it.
+**23 entries can never be completed by anyone.** No status above `derived` exists anywhere on the
+roster, because gate 5 has never been run.

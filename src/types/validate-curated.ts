@@ -47,7 +47,7 @@ export interface GateReport {
 
 const DAMAGE_TYPES = new Set(['physical', 'magic', 'true']);
 const SLOTS = new Set(['P', 'Q', 'W', 'E', 'R']);
-const STATUSES = new Set(['verified', 'derived', 'incomplete']);
+const STATUSES = new Set(['verified', 'derived', 'incomplete', 'no-damage']);
 const INSTANCE_TYPES = new Set([
   'basic-attack',
   'damaging-ability',
@@ -266,6 +266,18 @@ export function gateSchema(file: CuratedFile): GateReport {
       push('components must be an array (use [] for a non-damaging ability)');
       continue;
     }
+    // 'no-damage' says there is nothing to verify. An entry holding damage contradicts itself.
+    if (a.verification === 'no-damage' && a.components.length > 0) {
+      push(
+        `marked 'no-damage' but carries ${a.components.length} damage component(s). ` +
+          `The status is a claim that the ability deals none.`,
+      );
+    }
+    for (const [i, u] of (a.unresolvable ?? []).entries()) {
+      if (!u.field || !u.why) {
+        push(`unresolvable[${i}] must name the missing field and say why no source settles it`);
+      }
+    }
     const ids = new Set<string>();
     a.components.forEach((c, i) => {
       if (ids.has(c.id)) push(`duplicate component id '${c.id}'`);
@@ -407,6 +419,35 @@ export function gateStatusHonesty(
         message:
           `marked '${a.verification}' but ${unresolved.length} health ratio(s) do not say whose ` +
           `health they read (${unresolved.join(', ')}). An unresolved owner is 'incomplete'.`,
+      });
+    }
+
+    // PERMANENT IS NOT PENDING. An unresolved owner is a fact no source states, so it can never
+    // be filled in. It must SAY so in the data, or the interface cannot tell a user the
+    // difference between an ability nobody has finished and one nobody can finish.
+    if (unresolved.length > 0 && (a.unresolvable ?? []).length === 0) {
+      findings.push({
+        gate: 'status-honesty',
+        entry: key,
+        message:
+          `carries ${unresolved.length} unresolved ratio owner(s) (${unresolved.join(', ')}) but ` +
+          `records no 'unresolvable' entry. Without it this reads as work pending, which it is not.`,
+      });
+    }
+    if ((a.unresolvable ?? []).length > 0 && a.verification !== 'incomplete') {
+      findings.push({
+        gate: 'status-honesty',
+        entry: key,
+        message: `marked '${a.verification}' while recording a fact no source states. That is 'incomplete'.`,
+      });
+    }
+    // 'no-damage' is checkable against the entry's own instance type: the two are the same
+    // claim said twice, and disagreeing means one of them is wrong.
+    if (a.verification === 'no-damage' && a.instanceType !== 'non-damaging-ability') {
+      findings.push({
+        gate: 'status-honesty',
+        entry: key,
+        message: `marked 'no-damage' but its instanceType is '${a.instanceType}'.`,
       });
     }
 
