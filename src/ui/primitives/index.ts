@@ -28,7 +28,7 @@ export {
   VerificationStatusMark,
   STATE_STYLE,
   resolveDisplayState,
-  missingFactSuffix,
+  incompleteDetailSuffix,
 } from './VerificationStatusMark';
 export type {
   VerificationStatusMarkProps,

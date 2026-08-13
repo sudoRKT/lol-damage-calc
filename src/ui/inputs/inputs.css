@@ -1,0 +1,62 @@
+/*
+ * Numeric input. Every value token traces to DESIGN.md; token-audit.test.ts re-checks it
+ * mechanically across all of src/ui/ on every run.
+ *
+ * Interaction states are DESIGN.md §6: brightness, weight and border — never a hue. There
+ * is no green "valid" and no red "invalid" here, and there never will be.
+ */
+
+@import '../tokens.css';
+
+.numfield {
+  display: inline-flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.numfield__label {
+  font-family: var(--font-body);
+  font-size: var(--type-body-l); /* DESIGN.md §3 — "form field labels" */
+  line-height: var(--lh-body-l);
+  font-weight: 400;
+  color: var(--text-secondary);
+}
+
+.numfield__input {
+  /* Inputs sit in a WELL, not on a panel — DESIGN.md §11 quick reference, item 1. */
+  background: var(--bg-well);
+  color: var(--text-primary);
+  border: var(--border-steel);
+  border-radius: var(--radius-control); /* 2px — DESIGN.md §5 */
+  padding: var(--space-2) var(--space-3); /* DESIGN.md §4 — control inner padding */
+  font-family: var(--font-mono); /* DESIGN.md §3 — numbers are JetBrains Mono */
+  font-size: var(--type-num-m);
+  line-height: var(--lh-num-m);
+  font-weight: 400;
+}
+
+/* Hover: brighter surface and a stronger border. No hue. DESIGN.md §6. */
+.numfield__input:hover:not(:disabled) {
+  background: var(--bg-panel-raised);
+  border: var(--border-strong);
+}
+
+/* Focus: a 2px BONE outline offset 2px, always visible. DESIGN.md §6, §11 item 8. */
+.numfield__input:focus-visible {
+  outline: var(--border-active);
+  outline-offset: var(--space-0); /* 2px */
+}
+
+/* Disabled: muted text at 50%, no border emphasis. DESIGN.md §6. */
+.numfield__input:disabled {
+  color: var(--text-muted);
+  opacity: 0.5;
+}
+
+.numfield__hint {
+  font-family: var(--font-body);
+  font-size: var(--type-body-s);
+  line-height: var(--lh-body-s);
+  font-weight: 500; /* DESIGN.md §3 — --type-body-s is IBM Plex Sans 500 */
+  color: var(--text-secondary);
+}

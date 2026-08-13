@@ -80,13 +80,20 @@
   font-weight: 400;
 }
 
-/* The P / M / T tag. DESIGN.md §8: JetBrains Mono, 0.7em, same colour as the number
- * (inherited — never set here, so the tag can never drift off its value's hue).
- * 0.7em is DESIGN.md's own literal; there is no token for it. No weight is specified,
+/* The P / M / T tag. DESIGN.md §8: JetBrains Mono, `max(10px, 0.7em)`, same colour as the
+ * number (inherited — never set here, so the tag can never drift off its value's hue).
+ *
+ * THE 10px FLOOR (DESIGN.md §8, decided 2026-08-13). 0.7em alone rendered the tag at 7.7px
+ * on the 11px numeric role — below the 11px legibility premise that §8's own argument for
+ * letters over glyphs rests on. The floor binds on exactly the two smallest roles and
+ * changes nothing at 16px or the hero size, which is why it is written as a `max()` and not
+ * as a flat 10px: a flat value would shrink the hero tag from 19.6px to 10px.
+ *
+ * Both literals are DESIGN.md's own; there is no token for either. No weight is specified,
  * so none is set and the tag inherits its value's weight. */
 .dmg__tag {
   font-family: var(--font-mono);
-  font-size: 0.7em;
+  font-size: max(10px, 0.7em);
 }
 
 /* ---------------------------------------------------------------------------

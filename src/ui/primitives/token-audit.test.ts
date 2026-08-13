@@ -102,7 +102,8 @@ const HUE_ALLOWLIST: Record<string, string> = {
  * a visual design token file does not and should not cover.
  */
 const LENGTH_ALLOWLIST: Array<{ value: string; rule: string; reason: string }> = [
-  { value: '0.7em', rule: '.dmg__tag', reason: 'DESIGN.md §8 states the tag size as 0.7em' },
+  { value: '0.7em', rule: '.dmg__tag', reason: 'DESIGN.md §8 — the tag is max(10px, 0.7em)' },
+  { value: '10px', rule: '.dmg__tag', reason: 'DESIGN.md §8 — the tag’s hard 10px floor' },
   { value: '1px', rule: '.u-visually-hidden', reason: 'standard screen-reader clip idiom' },
   { value: '-1px', rule: '.u-visually-hidden', reason: 'standard screen-reader clip idiom' },
   { value: '50%', rule: '.u-visually-hidden', reason: 'standard screen-reader clip idiom' },
@@ -247,6 +248,81 @@ describe('token-audit/vocabulary', () => {
       }
     }
     expect(offenders).toEqual([]);
+  });
+});
+
+describe('token-audit/tag-floor', () => {
+  // DESIGN.md §8, decided 2026-08-13: the P/M/T tag renders at `max(10px, 0.7em)`.
+  //
+  // jsdom resolves neither `em` nor `max()`, and vitest does not load stylesheets into the
+  // test DOM at all, so `getComputedStyle` cannot answer this. Instead the real declaration
+  // is read out of primitives.css and evaluated against the real numeric role sizes in
+  // tokens.css — which is a stronger check than a computed style anyway, because it pins
+  // every role at once rather than the one that happened to be rendered.
+
+  /** The `.dmg__tag` font-size, exactly as the stylesheet states it. */
+  const declared = (() => {
+    for (const f of STYLESHEETS) {
+      for (const r of rules(read(f))) {
+        if (r.selector.trim() !== '.dmg__tag') continue;
+        const m = r.body.match(/font-size:\s*([^;]+);/);
+        if (m) return m[1]!.trim();
+      }
+    }
+    return null;
+  })();
+
+  /** Numeric role sizes in px, read from tokens.css. */
+  const roleSizes = (() => {
+    const out: Record<string, number> = {};
+    for (const m of read(TOKENS_FILE).matchAll(/(--type-num-[\w-]+):\s*([\d.]+)rem/g)) {
+      out[m[1]!] = parseFloat(m[2]!) * 16; // 16px root, per DESIGN.md §3
+    }
+    return out;
+  })();
+
+  /** Evaluate `max(Apx, Bem)` against a parent font size, the way a browser would. */
+  function evaluate(decl: string, parentPx: number): number {
+    const m = decl.match(/^max\(\s*([\d.]+)px\s*,\s*([\d.]+)em\s*\)$/);
+    if (!m) throw new Error(`tag-floor: cannot evaluate font-size "${decl}"`);
+    return Math.max(parseFloat(m[1]!), parseFloat(m[2]!) * parentPx);
+  }
+
+  it('declares the tag size as max(10px, 0.7em), not a bare em and not a flat px', () => {
+    expect(declared).toBe('max(10px, 0.7em)');
+  });
+
+  it('reads all four numeric roles from tokens.css', () => {
+    expect(roleSizes).toEqual({
+      '--type-num-hero': 28,
+      '--type-num-l': 16,
+      '--type-num-m': 13,
+      '--type-num-s': 11,
+    });
+  });
+
+  it('THE FLOOR BINDS on the two smallest roles — 11px and 13px both give a 10px tag', () => {
+    // Without the floor these were 7.7px and 9.1px, below the 11px legibility premise
+    // DESIGN.md §8's own argument for letters over glyphs rests on.
+    expect(evaluate(declared!, roleSizes['--type-num-s']!)).toBe(10);
+    expect(evaluate(declared!, roleSizes['--type-num-m']!)).toBe(10);
+    expect(evaluate(declared!, 11)).not.toBeCloseTo(7.7);
+    expect(evaluate(declared!, 13)).not.toBeCloseTo(9.1);
+  });
+
+  it('THE FLOOR DOES NOT BIND at 16px or hero — 0.7em still governs there', () => {
+    // This is the half that a component which simply hard-coded 10px everywhere would
+    // fail: the hero tag must still be 19.6px, not 10px.
+    expect(evaluate(declared!, roleSizes['--type-num-l']!)).toBeCloseTo(11.2);
+    expect(evaluate(declared!, roleSizes['--type-num-hero']!)).toBeCloseTo(19.6);
+    expect(evaluate(declared!, roleSizes['--type-num-hero']!)).not.toBe(10);
+  });
+
+  it('no numeric role renders a tag below 10px', () => {
+    const tooSmall = Object.entries(roleSizes).filter(
+      ([, px]) => evaluate(declared!, px) < 10,
+    );
+    expect(tooSmall).toEqual([]);
   });
 });
 

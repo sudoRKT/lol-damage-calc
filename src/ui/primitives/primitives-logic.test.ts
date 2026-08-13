@@ -13,11 +13,11 @@ import { describe, expect, it } from 'vitest';
 import { formatDamage, THIN_SPACE } from './DamageValue';
 import {
   STATE_STYLE,
-  missingFactSuffix,
+  incompleteDetailSuffix,
   resolveDisplayState,
 } from './VerificationStatusMark';
 import type { VerificationDisplayState } from './VerificationStatusMark';
-import type { VerificationStatus } from '../../types';
+import type { IncompleteReason, VerificationStatus } from '../../types';
 
 // ---------------------------------------------------------------------------
 // Formatting never invents precision (CLAUDE.md — one rounding point, in the engine)
@@ -51,9 +51,19 @@ describe('damage-format', () => {
 // Four data statuses onto five display states (SPECIFICATION §8, DESIGN.md §6)
 // ---------------------------------------------------------------------------
 
-const ARMOR_FACT = {
-  field: 'components[0].ratios[0].owner (armor)',
-  why: 'the source does not record whose armor this reads',
+const PERMANENT: IncompleteReason = {
+  kind: 'permanent',
+  missingFacts: [
+    {
+      field: 'components[0].ratios[0].owner (armor)',
+      why: 'the source does not record whose armor this reads',
+    },
+  ],
+};
+
+const PENDING: IncompleteReason = {
+  kind: 'pending',
+  note: 'the damage is stated in description prose that has not been read yet',
 };
 
 describe('verification-status/mapping', () => {
@@ -65,8 +75,8 @@ describe('verification-status/mapping', () => {
       ['no-damage', 'no-damage'],
     ];
     for (const [status, expected] of cases) expect(resolveDisplayState(status)).toBe(expected);
-    expect(resolveDisplayState('incomplete', [ARMOR_FACT])).toBe('incomplete-permanent');
-    expect(resolveDisplayState('incomplete', [])).toBe('incomplete-pending');
+    expect(resolveDisplayState('incomplete', PERMANENT)).toBe('incomplete-permanent');
+    expect(resolveDisplayState('incomplete', PENDING)).toBe('incomplete-pending');
   });
 
   it('uses exactly the glyphs and labels DESIGN.md §6 states', () => {
@@ -88,7 +98,7 @@ describe('verification-status/mapping', () => {
 
   it('refuses an unresolvable fact on any status but incomplete', () => {
     for (const s of ['verified', 'derived', 'no-damage'] as VerificationStatus[]) {
-      expect(() => resolveDisplayState(s, [ARMOR_FACT])).toThrow(/Only 'incomplete'/);
+      expect(() => resolveDisplayState(s, PERMANENT)).toThrow(/Only 'incomplete'/);
     }
   });
 
@@ -101,29 +111,43 @@ describe('verification-status/mapping', () => {
   });
 });
 
-describe('verification-status/missing-fact', () => {
-  it('uses the recorded prose reason', () => {
-    expect(missingFactSuffix([ARMOR_FACT])).toBe(
+describe('verification-status/incomplete-detail', () => {
+  it('uses the recorded prose reason for a permanent gap', () => {
+    expect(incompleteDetailSuffix(PERMANENT)).toBe(
       ' — the source does not record whose armor this reads',
     );
   });
 
-  it('falls back to naming the missing field when no prose reason was recorded', () => {
-    expect(missingFactSuffix([{ field: 'components[0].ratios[0].owner', why: '' }])).toBe(
-      ' — components[0].ratios[0].owner',
+  it('uses the note for a pending gap — both kinds name what is missing', () => {
+    expect(incompleteDetailSuffix(PENDING)).toBe(
+      ' — the damage is stated in description prose that has not been read yet',
     );
+  });
+
+  it('falls back to naming the missing field when no prose reason was recorded', () => {
+    expect(
+      incompleteDetailSuffix({
+        kind: 'permanent',
+        missingFacts: [{ field: 'components[0].ratios[0].owner', why: '' }],
+      }),
+    ).toBe(' — components[0].ratios[0].owner');
   });
 
   it('joins multiple missing facts rather than reporting only the first', () => {
     expect(
-      missingFactSuffix([
-        { field: 'a', why: 'no source states whose armor' },
-        { field: 'b', why: 'no source states whose mana' },
-      ]),
+      incompleteDetailSuffix({
+        kind: 'permanent',
+        missingFacts: [
+          { field: 'a', why: 'no source states whose armor' },
+          { field: 'b', why: 'no source states whose mana' },
+        ],
+      }),
     ).toBe(' — no source states whose armor; no source states whose mana');
   });
 
   it('returns nothing when the caller supplied nothing', () => {
-    expect(missingFactSuffix([])).toBe('');
+    expect(incompleteDetailSuffix(undefined)).toBe('');
+    expect(incompleteDetailSuffix({ kind: 'permanent' })).toBe('');
+    expect(incompleteDetailSuffix({ kind: 'pending' })).toBe('');
   });
 });

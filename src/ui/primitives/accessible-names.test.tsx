@@ -24,13 +24,23 @@ import { cleanup, render, screen } from '@testing-library/react';
 import type { ReactNode } from 'react';
 import { AggregateTotal, DamageValue } from './DamageValue';
 import { VerificationStatusMark } from './VerificationStatusMark';
-import type { DamageType, VerificationStatus, Unresolvable } from '../../types';
+import type { DamageType, VerificationStatus, IncompleteReason } from '../../types';
 
 afterEach(cleanup);
 
-const ARMOR_FACT: Unresolvable = {
-  field: 'components[0].ratios[0].owner (armor)',
-  why: 'the source does not record whose armor this reads',
+const PERMANENT: IncompleteReason = {
+  kind: 'permanent',
+  missingFacts: [
+    {
+      field: 'components[0].ratios[0].owner (armor)',
+      why: 'the source does not record whose armor this reads',
+    },
+  ],
+};
+
+const PENDING: IncompleteReason = {
+  kind: 'pending',
+  note: 'the damage is stated in description prose that has not been read yet',
 };
 
 /** Every state the two primitives can be rendered in. */
@@ -69,17 +79,17 @@ function everyState(): Array<{ id: string; node: ReactNode }> {
     node: <AggregateTotal total={160} byType={{ physical: 0, magic: 160, true: 0 }} />,
   });
 
-  const statuses: Array<[string, VerificationStatus, Unresolvable[] | undefined]> = [
+  const statuses: Array<[string, VerificationStatus, IncompleteReason | undefined]> = [
     ['verified', 'verified', undefined],
     ['derived', 'derived', undefined],
-    ['incomplete-pending', 'incomplete', undefined],
-    ['incomplete-permanent', 'incomplete', [ARMOR_FACT]],
+    ['incomplete-pending', 'incomplete', PENDING],
+    ['incomplete-permanent', 'incomplete', PERMANENT],
     ['no-damage', 'no-damage', undefined],
   ];
-  for (const [id, status, unresolvable] of statuses) {
+  for (const [id, status, reason] of statuses) {
     out.push({
       id: `VerificationStatusMark ${id}`,
-      node: <VerificationStatusMark status={status} unresolvable={unresolvable} />,
+      node: <VerificationStatusMark status={status} reason={reason} />,
     });
   }
   out.push({
@@ -91,7 +101,7 @@ function everyState(): Array<{ id: string; node: ReactNode }> {
     node: (
       <VerificationStatusMark
         status="incomplete"
-        unresolvable={[ARMOR_FACT]}
+        reason={PERMANENT}
         spokenSubject="Malphite W — Thunderclap"
       />
     ),
@@ -185,7 +195,7 @@ describe('accessible-names/sweep', () => {
     mount(
       <VerificationStatusMark
         status="incomplete"
-        unresolvable={[ARMOR_FACT]}
+        reason={PERMANENT}
         spokenSubject="Malphite W — Thunderclap"
       />,
     );

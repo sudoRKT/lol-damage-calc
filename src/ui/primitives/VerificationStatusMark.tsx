@@ -25,7 +25,7 @@
 // rather than warn generically: there, and only there, the accessible name is extended
 // with WHY no source settles it.
 
-import type { Unresolvable, VerificationStatus } from '../../types';
+import type { IncompleteReason, VerificationStatus } from '../../types';
 import './primitives.css';
 
 /** The five display states. Four come from the data; `incomplete` splits into two. */
@@ -61,24 +61,25 @@ export const STATE_STYLE: Record<VerificationDisplayState, StateStyle> = {
 /**
  * Which of the five display states a data status resolves to.
  *
- * The split is exactly the presence of an `Unresolvable` (src/types/data.ts): a fact no
- * source states, which is the difference between "nobody has got to it yet" and "nobody
- * can ever finish it".
+ * The split comes straight off the frozen contract: `InstanceResult.incompleteReason` and
+ * `DotSource.incompleteReason` carry `kind: 'pending' | 'permanent'` (src/types/result.ts),
+ * which is the difference between "nobody has got to it yet" and "nobody can ever finish
+ * it". An `incomplete` entry with no reason at all is treated as pending, because that is
+ * the weaker of the two claims and it is not this component's place to assert the stronger
+ * one on missing evidence.
  *
- * Throws if `unresolvable` arrives on a status other than `incomplete`. src/types/data.ts
- * records that gate 6 requires `verification: 'incomplete'` alongside one; a caller that
- * broke that pairing would render a mark claiming the wrong thing, so it fails loudly.
+ * Throws if a reason arrives on a status other than `incomplete`. The contract states the
+ * reason is present ONLY when `verification` is 'incomplete'; a caller that broke that
+ * pairing would render a mark claiming the wrong thing, so it fails loudly.
  */
 export function resolveDisplayState(
   status: VerificationStatus,
-  unresolvable?: Unresolvable[],
+  reason?: IncompleteReason,
 ): VerificationDisplayState {
-  const hasUnresolvable = unresolvable !== undefined && unresolvable.length > 0;
-
-  if (hasUnresolvable && status !== 'incomplete') {
+  if (reason !== undefined && status !== 'incomplete') {
     throw new Error(
-      `VerificationStatusMark: status '${status}' was given an unresolvable fact. Only ` +
-        `'incomplete' may carry one (src/types/data.ts, gate 6). Fix the caller.`,
+      `VerificationStatusMark: status '${status}' was given an incompleteReason. Only ` +
+        `'incomplete' may carry one (src/types/result.ts). Fix the caller.`,
     );
   }
 
@@ -90,7 +91,7 @@ export function resolveDisplayState(
     case 'no-damage':
       return 'no-damage';
     case 'incomplete':
-      return hasUnresolvable ? 'incomplete-permanent' : 'incomplete-pending';
+      return reason?.kind === 'permanent' ? 'incomplete-permanent' : 'incomplete-pending';
     default: {
       const never: never = status;
       throw new Error(`VerificationStatusMark: unknown verification status ${String(never)}`);
@@ -99,29 +100,41 @@ export function resolveDisplayState(
 }
 
 /**
- * The extra words a permanently-incomplete mark adds to its accessible name.
+ * The extra words an incomplete mark adds to its accessible name.
  *
- * Prefers each `Unresolvable.why` — plain-English prose written for exactly this note. If
- * an entry has no `why`, it falls back to naming the missing `field`, because a specific
- * field path is still a named missing fact and a generic warning is not. Returns an empty
- * string only when the caller supplied neither, which is a data defect rather than a state
- * this component invents copy for.
+ * SPECIFICATION §8 requires incomplete to be "presented as a deliberate refusal, naming
+ * what is missing" — so BOTH kinds carry their detail, not just the permanent one. Pending
+ * appends its `note`; permanent appends each missing fact.
+ *
+ * For a permanent reason it prefers each `Unresolvable.why` — plain-English prose written
+ * for exactly this note. If an entry has no `why` it falls back to naming the missing
+ * `field`, because a specific field path is still a named missing fact and a generic
+ * warning is not. It returns an empty string only when the caller supplied neither, which
+ * is a data defect rather than a state this component invents copy for.
  */
-export function missingFactSuffix(unresolvable: Unresolvable[]): string {
-  const reasons = unresolvable
+export function incompleteDetailSuffix(reason: IncompleteReason | undefined): string {
+  if (!reason) return '';
+
+  if (reason.kind === 'pending') {
+    const note = reason.note?.trim();
+    return note ? ` — ${note}` : '';
+  }
+
+  const facts = (reason.missingFacts ?? [])
     .map((u) => (u.why && u.why.trim() ? u.why.trim() : u.field && u.field.trim()))
     .filter((s): s is string => Boolean(s));
-  return reasons.length === 0 ? '' : ` — ${reasons.join('; ')}`;
+  return facts.length === 0 ? '' : ` — ${facts.join('; ')}`;
 }
 
 export interface VerificationStatusMarkProps {
   /** The status as the data records it (src/types/data.ts). */
   status: VerificationStatus;
   /**
-   * Facts no source states. Present and non-empty means PERMANENTLY incomplete, and its
-   * `why` text becomes part of the accessible name. Only valid with `incomplete`.
+   * Why the entry is incomplete, straight off `InstanceResult` / `DotSource`. `permanent`
+   * selects the `⊘` state and its `missingFacts` become part of the accessible name;
+   * `pending` selects `○` and its `note` does. Only valid with `incomplete`.
    */
-  unresolvable?: Unresolvable[];
+  reason?: IncompleteReason;
   /** What the status is about, e.g. "W — Infernal Chains". Spoken, not shown. */
   spokenSubject?: string;
 }
@@ -136,14 +149,13 @@ export interface VerificationStatusMarkProps {
  */
 export function VerificationStatusMark({
   status,
-  unresolvable,
+  reason,
   spokenSubject,
 }: VerificationStatusMarkProps) {
-  const state = resolveDisplayState(status, unresolvable);
+  const state = resolveDisplayState(status, reason);
   const { glyph, label } = STATE_STYLE[state];
 
-  const suffix =
-    state === 'incomplete-permanent' && unresolvable ? missingFactSuffix(unresolvable) : '';
+  const suffix = incompleteDetailSuffix(reason);
   const subject = spokenSubject ? `${spokenSubject}: ` : '';
 
   // THE WHOLE ACCESSIBLE NAME IS ONE TEXT NODE.
