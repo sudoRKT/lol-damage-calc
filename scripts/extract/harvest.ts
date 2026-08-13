@@ -18,8 +18,10 @@ import type {
   Provenance,
 } from '../../src/types/data.ts';
 import { expandByRank, isLevelScaled } from '../../src/types/scaling.ts';
-import { compareExpansion, gateSchema } from '../../src/types/validate-curated.ts';
+import { compareAtDisplayPrecision, compareExpansion, gateSchema } from '../../src/types/validate-curated.ts';
 import { classifyRow, proposeRelations, type RowIssue, type ShapeId } from './classify.ts';
+import type { DamageInstance } from './damage-data.ts';
+import { scanProse, type ProseSkip } from './prose.ts';
 import { renderAbility, type RenderedRow } from './render.ts';
 import { parseFields, parseVardefines, statRows } from './wikitext.ts';
 
@@ -66,6 +68,10 @@ export interface DraftAbility {
   /** True when the template carries damage but nothing machine-readable was found — the
    *  prose-only worklist (136 abilities measured). */
   needsHandAuthoring: boolean;
+  /** Components recovered from description prose rather than from a leveling row (§20a). */
+  proseComponents: number;
+  /** Every prose {{pp}} block that was NOT read, with the reason. Reported, never silent. */
+  proseSkipped: ProseSkip[];
   /**
    * The template HAD damage rows and every one of them was dropped, so this entry would
    * contribute zero damage.
@@ -89,6 +95,10 @@ export interface TemplateSource {
    *  `maxRankFor` applies — which is right for a passive and an assumption everywhere else,
    *  so it is the caller's job to supply this (DATA-SOURCES §22). */
   maxRank?: number;
+  /** Module:DamageData/data, indexed by champion and ability. The prose path needs it to read
+   *  a damage type rather than infer one; absent means the prose path has no cross-check and
+   *  every block it reads is recorded as unlisted. */
+  damageData?: Map<string, DamageInstance[]>;
 }
 
 /** Build a draft entry from one ability template. */
@@ -117,7 +127,51 @@ export function draftFromTemplate(src: TemplateSource, patch: string, fetched: s
       components.push(c.component);
       if (c.shape) shapes.push(c.shape);
     }
+    if (c.extraComponent) components.push(c.extraComponent);
   }
+  const levelingComponents = components.length;
+
+  // THE PROSE PATH (DATA-SOURCES §20a). Only for an ability whose leveling rows produced
+  // nothing: those are the prose-only worklist, and they are the only abilities where the
+  // description can be read without risking a second copy of damage already stored.
+  const prose = scanProse({
+    champion: src.champion,
+    ability: src.ability,
+    fields,
+    vars,
+    damageData: src.damageData ?? new Map(),
+    hasLevelingComponents: levelingComponents > 0,
+  });
+  const proseSkips = prose.skipped;
+  const proseRows: Array<{ label: string; kept: boolean }> = [];
+  for (const [index, row] of prose.rows.entries()) {
+    const c = classifyRow(row.label, row.value, {
+      maxRank,
+      damageType: row.damageType,
+      vars,
+      index: rows.length + index,
+    });
+    // ALL OR NOTHING. A prose row the classifier could not read in full would be stored short a
+    // term or a ratio, which understates the ability while looking complete. The row is dropped
+    // and reported instead.
+    if (!c.component || c.issues.length > 0 || c.dropped) {
+      proseSkips.push({
+        refusal: 'unreadable',
+        field: row.field,
+        source: row.value.replace(/\s+/g, ' ').slice(0, 160),
+        detail: c.dropped
+          ? `dropped as ${c.dropped}`
+          : c.issues.map((i) => `${i.kind}: ${i.detail}`).join(' | ').slice(0, 160) || 'no component produced',
+      });
+      proseRows.push({ label: row.label, kept: false });
+      continue;
+    }
+    components.push(c.component);
+    if (c.extraComponent) components.push(c.extraComponent);
+    if (c.shape) shapes.push(c.shape);
+    proseRows.push({ label: row.label, kept: true });
+  }
+  const proseComponents = components.length - levelingComponents;
 
   const withRelations = proposeRelations(components);
   const provenance: Provenance = {
@@ -129,7 +183,7 @@ export function draftFromTemplate(src: TemplateSource, patch: string, fetched: s
     fetched,
   };
 
-  const droppedEveryDamageRow = withRelations.length === 0 && sourceDamageRows > 0;
+  const droppedEveryDamageRow = levelingComponents === 0 && sourceDamageRows > 0 && proseComponents === 0;
   // An ability with leveling rows, none of which are damage rows, is a genuinely
   // non-damaging ability (a shield, a heal) — not prose-only work. Only an ability with NO
   // usable rows at all and a declared damage type goes on the hand-authored worklist.
@@ -174,7 +228,16 @@ export function draftFromTemplate(src: TemplateSource, patch: string, fetched: s
     }
   }
 
-  return { entry, shapes, issues, droppedRows, needsHandAuthoring, droppedEveryDamageRow };
+  return {
+    entry,
+    shapes,
+    issues,
+    droppedRows,
+    needsHandAuthoring,
+    droppedEveryDamageRow,
+    proseComponents,
+    proseSkipped: proseSkips,
+  };
 }
 
 // ---------------------------------------------------------------------------
@@ -188,6 +251,16 @@ export interface RoundTripResult {
   mismatches: Array<{ label: string; expected: number[]; actual: number[]; detail: string }>;
   /** Rows the wiki rendered that we could not line up with a stored component. */
   unmatchedRows: string[];
+  /** Values that differed only below the wiki's own display precision, and were therefore not
+   *  counted as disagreements. Reported so the clearing is visible rather than absorbed. */
+  displayRoundedValues: number;
+  /** Rows that would have been reported as disagreeing at 1e-6 and agree at the wiki's own
+   *  display precision. The count the change is judged by. */
+  rowsClearedByDisplayRounding: number;
+  /** Rows whose base scales by champion level. The ability box prints those as one "(based on
+   *  level)" figure, so this rendering cannot check them — they are neither checked nor
+   *  matched, and are reported so the gap is visible. */
+  levelScaledNotCompared: number;
 }
 
 function normaliseLabel(s: string): string {
@@ -199,13 +272,26 @@ function normaliseLabel(s: string): string {
  * A stored `linear` and a stored `explicit` must both reproduce the source exactly — this is
  * what makes it safe to let the harvester choose between them.
  */
-export function roundTrip(draft: DraftAbility, rendered: RenderedRow[]): RoundTripResult {
+export function roundTrip(
+  draft: DraftAbility,
+  rendered: RenderedRow[],
+  opts: { precision?: 'display' | 'exact' } = {},
+): RoundTripResult {
+  // 'exact' is the old 1e-6 comparison, kept so the effect of comparing at the wiki's own
+  // display precision can be MEASURED rather than asserted. Nothing calls it in normal use.
+  const compare =
+    opts.precision === 'exact'
+      ? (e: number[], a: number[]) => ({ differences: compareExpansion(e, a, 1e-6), clearedByDisplayRounding: 0 })
+      : compareAtDisplayPrecision;
   const key = `${draft.entry.champion}/${draft.entry.slot}/${draft.entry.abilityName}`;
   const byLabel = new Map(rendered.map((r) => [normaliseLabel(r.label), r]));
   const used = new Set<string>();
   const mismatches: RoundTripResult['mismatches'] = [];
   let checked = 0;
   let matched = 0;
+  let displayRounded = 0;
+  let rowsClearedByDisplayRounding = 0;
+  let levelScaledNotCompared = 0;
 
   for (const c of draft.entry.components) {
     const label = normaliseLabel(c.label ?? c.id);
@@ -217,14 +303,32 @@ export function roundTrip(draft: DraftAbility, rendered: RenderedRow[]): RoundTr
     if (isLevelScaled(c.base)) {
       // The rendered box prints a level-scaled value as a single figure with "(based on
       // level)", not a per-rank series, so there is nothing to line up rank by rank.
-      matched += 1;
+      //
+      // THIS ROW IS NOT EVIDENCE, AND USED TO BE COUNTED AS THOUGH IT WERE. It was previously
+      // added to `matched`, so a row nothing had compared raised the pass count — and an entry
+      // whose every row is level-scaled could reach gate 6 with a clean round-trip record
+      // behind which no comparison had happened. It is now counted separately and excluded
+      // from `checkedRows`, so an entry backed only by these rows has no round-trip evidence
+      // at all, which is the truth.
+      //
+      // These values CAN be checked, just not from this rendering: `renderLevelBlocks` reads
+      // the wiki's own full per-level expansion out of the block's `data-bot-values`. Wiring
+      // that in here needs the network, which this function does not have.
+      levelScaledNotCompared += 1;
+      checked -= 1;
       continue;
     }
+    const roundedBefore = displayRounded;
     const actual = expandByRank(c.base, draft.entry.maxRank);
     const expected = source.values;
     // A payload row has no base on either side: the wiki reports an empty base series and we
     // store zeros. Comparing them is meaningless, so compare only the ratios below.
-    const diff = expected.length === 0 ? [] : compareExpansion(expected, actual, 1e-6);
+    const baseCmp =
+      expected.length === 0
+        ? { differences: [], clearedByDisplayRounding: 0 }
+        : compare(expected, actual);
+    const diff = baseCmp.differences;
+    displayRounded += baseCmp.clearedByDisplayRounding;
 
     // RATIOS, not just the base. This check did not exist until 2026-08-13: gate 2 compared
     // base values only, so a ratio could be stored with the wrong magnitude — or a multiplier
@@ -239,14 +343,12 @@ export function roundTrip(draft: DraftAbility, rendered: RenderedRow[]): RoundTr
       // A ratio that does not scale per rank is rendered as ONE number, not a series of five
       // identical ones. Compare like with like, or every flat ratio in the game reports four
       // phantom disagreements.
-      const d =
+      const cmp =
         sourceRatio.length === 1
-          ? compareExpansion(
-              mine.map(() => sourceRatio[0]!),
-              mine,
-              1e-6,
-            )
-          : compareExpansion(sourceRatio, mine, 1e-6);
+          ? compare(mine.map(() => sourceRatio[0]!), mine)
+          : compare(sourceRatio, mine);
+      const d = cmp.differences;
+      displayRounded += cmp.clearedByDisplayRounding;
       if (d.length > 0) {
         ratioDiffs.push(
           `ratio ${i} (${r.stat}): ` +
@@ -257,6 +359,7 @@ export function roundTrip(draft: DraftAbility, rendered: RenderedRow[]): RoundTr
 
     if (diff.length === 0 && ratioDiffs.length === 0) {
       matched += 1;
+      if (displayRounded > roundedBefore) rowsClearedByDisplayRounding += 1;
     } else if (diff.length === 0) {
       mismatches.push({
         label: c.label ?? c.id,
@@ -280,7 +383,16 @@ export function roundTrip(draft: DraftAbility, rendered: RenderedRow[]): RoundTr
     .filter((r) => /damage/i.test(r.label) && !used.has(normaliseLabel(r.label)))
     .map((r) => r.label);
 
-  return { entry: key, checkedRows: checked, matchedRows: matched, mismatches, unmatchedRows };
+  return {
+    entry: key,
+    checkedRows: checked,
+    matchedRows: matched,
+    mismatches,
+    unmatchedRows,
+    displayRoundedValues: displayRounded,
+    rowsClearedByDisplayRounding,
+    levelScaledNotCompared,
+  };
 }
 
 /** Fetch a batch of ability templates, with their revision ids. */

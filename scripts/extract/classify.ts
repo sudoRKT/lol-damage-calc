@@ -34,7 +34,7 @@ import type {
 import { requiresOwner } from '../../src/types/data.ts';
 import { ALTERNATIVE_MARKERS } from '../../src/types/validate-curated.ts';
 import { ProgressionError, parseLevelProgression, parseRankProgression } from './progression.ts';
-import { findBlocks, plainText, splitArgs, substituteVars } from './wikitext.ts';
+import { findBlocks, findLevelBlocks, plainText, splitArgs, substituteVars } from './wikitext.ts';
 
 export type ShapeId = 'S1' | 'S2' | 'S3' | 'S4' | 'S5' | 'S6' | 'S7' | 'S8' | 'S9';
 
@@ -299,6 +299,9 @@ export function parseMultiplier(
 export interface ClassifiedRow {
   label: string;
   component?: AbilityComponent;
+  /** The second additive term of a row that states both a level-scaled and a per-rank base.
+   *  `base` holds one Scaling, so the two are stored as two components that add. */
+  extraComponent?: AbilityComponent;
   shape?: ShapeId;
   issues: RowIssue[];
   /** True when the row is deliberately not stored (summary row, non-champion row). */
@@ -362,11 +365,17 @@ export function parseRatio(
   const mult = multipliers.length > 0 ? { multipliers } : {};
 
   // The magnitude is either a nested {{ap|…}} (a ratio that itself scales per rank — 244
-  // measured) or a literal number before the '%'.
+  // measured), a nested {{pp|…}} (a ratio that scales by CHAMPION LEVEL — Aphelios's weapons
+  // write their bonus-AD ratio that way), or a literal number before the '%'.
   const nested = findBlocks(text, 'ap');
+  const nestedLevel = findLevelBlocks(text);
   try {
     if (nested.length > 0) {
       const scaling = parseRankProgression(substituteVars(nested[0]!.inner, vars), maxRank);
+      return { ratio: { stat, ...owner, ...mult, ...scaling } };
+    }
+    if (nestedLevel.length > 0) {
+      const scaling = parseLevelProgression(substituteVars(nestedLevel[0]!.inner, vars));
       return { ratio: { stat, ...owner, ...mult, ...scaling } };
     }
     const num = /(-?\d+(?:\.\d+)?)\s*%/.exec(substituteVars(text, vars));
@@ -496,11 +505,27 @@ export function classifyRow(
   // any row using it stored no base at all and the ability harvested to zero components.
   // `parseLevelProgression` already existed and was simply never called from here; it applies
   // the same documented linear rule on the level axis (DATA-SOURCES §11).
-  const levelBlocks = findBlocks(rest, 'pp');
+  const levelBlocks = findLevelBlocks(rest);
   const baseBlocks = findBlocks(rest, 'ap');
   let base: AbilityComponent['base'] | undefined;
   let hasBase = false;
-  if (levelBlocks.length > 0 && baseBlocks.length === 0) {
+  let secondTerm: AbilityComponent['base'] | undefined;
+
+  // A ROW CAN CARRY BOTH TERMS, AND THE LEVEL ONE USED TO VANISH.
+  //
+  // Malzahar W is `{{pp|5+3.5*(x-1)*(…)|formula=5 + 10.5 growth}} (+ {{ap|12 to 20}})
+  // {{as|(+ 40% bonus AD)}} {{as|(+ 20% AP)}}`: a level-scaled base PLUS a per-rank term PLUS
+  // two ratios. The `{{pp}}` path added on 2026-08-13 only fired when a row had no `{{ap}}`, so
+  // the rank term won and the level term was dropped in silence — the ability under-reported
+  // its damage by a whole component at every champion level (DATA-SOURCES §24).
+  //
+  // The two terms ADD, and `base` holds one Scaling, so the second is stored as its own
+  // component with `relation: 'adds'`. The LEVEL term is the primary one because that is what
+  // the wiki renders as the row's base, which keeps gate 2 comparing like with like.
+  //
+  // If either term is present and unreadable, NEITHER is stored. Storing one of two additive
+  // terms is not a partial answer, it is a wrong number that looks like a whole one.
+  if (levelBlocks.length > 0) {
     try {
       base = parseLevelProgression(substituteVars(levelBlocks[0]!.inner, vars));
       hasBase = true;
@@ -512,10 +537,16 @@ export function classifyRow(
         }`,
       });
     }
-  } else if (baseBlocks.length > 0) {
+  }
+  if (baseBlocks.length > 0) {
     try {
-      base = parseRankProgression(substituteVars(baseBlocks[0]!.inner, vars), maxRank);
-      hasBase = true;
+      const rank = parseRankProgression(substituteVars(baseBlocks[0]!.inner, vars), maxRank);
+      if (base === undefined && !issues.some((i) => i.kind === 'unparsed-base')) {
+        base = rank;
+        hasBase = true;
+      } else {
+        secondTerm = rank;
+      }
     } catch (e) {
       issues.push({
         kind: 'unparsed-base',
@@ -524,7 +555,12 @@ export function classifyRow(
         }`,
       });
     }
-  } else {
+  }
+  if (levelBlocks.length > 0 && baseBlocks.length > 0 && (base === undefined || secondTerm === undefined)) {
+    // One of the two additive terms could not be read. Refuse the row rather than store half.
+    return { label, issues };
+  }
+  if (levelBlocks.length === 0 && baseBlocks.length === 0) {
     const literal = plainText(rest).trim();
     const num = /^(-?\d+(?:\.\d+)?)\s*%?$/.exec(literal);
     if (num) {
@@ -557,7 +593,29 @@ export function classifyRow(
     ...(perHit ? { hits: 1 } : {}),
   };
 
-  return { label, component, shape: shapeOf(component, hasBase), issues };
+  // The per-rank half of a two-term row. It carries no ratios — they belong to the row as a
+  // whole and are already on the primary component, so putting them here too would apply them
+  // twice.
+  const extraComponent: AbilityComponent | undefined =
+    secondTerm === undefined
+      ? undefined
+      : {
+          id: `${component.id}-rank-term`,
+          label: `${label} (per-rank term)`,
+          damageType: opts.damageType,
+          base: secondTerm,
+          ratios: [],
+          relation: { kind: 'adds' },
+          ...(perHit ? { hits: 1 } : {}),
+        };
+
+  return {
+    label,
+    component,
+    ...(extraComponent ? { extraComponent } : {}),
+    shape: shapeOf(component, hasBase),
+    issues,
+  };
 }
 
 export function slugify(label: string): string {

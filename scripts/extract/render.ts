@@ -160,3 +160,52 @@ export async function renderAbility(
   if (!html) throw new Error(`wiki render returned no text for ${champion}/${ability}`);
   return parseRenderedRows(html);
 }
+
+/**
+ * Gate 2 for a level-scaled value: the wiki's own expansion of the very block we parsed.
+ *
+ * A description-prose component has no leveling row, so the ability box renders nothing to
+ * compare it against — `roundTrip` simply never sees it. Rendering the `{{pp|…}}` block on its
+ * own does give an independent check, and a complete one: the wiki attaches the entire
+ * per-level series to the rendered span as `data-bot-values`, semicolon separated. Its visible
+ * text is only a "20 – 184 (based on level)" summary, and the summary's upper figure is the
+ * LEVEL-20 value — the §13 extrapolation trap — so the attribute is read and the text is not.
+ *
+ * Several blocks may be rendered in one request; each yields one span, in order.
+ */
+export async function renderLevelBlocks(
+  blocks: Array<{ name: string; inner: string }>,
+  fetchImpl: typeof fetch = fetch,
+): Promise<Array<number[] | null>> {
+  if (blocks.length === 0) return [];
+  const body = new URLSearchParams({
+    action: 'parse',
+    text: blocks.map((b) => `{{${b.name}|${b.inner}}}`).join('\n\n'),
+    contentmodel: 'wikitext',
+    prop: 'text',
+    format: 'json',
+    formatversion: '2',
+    disablelimitreport: '1',
+  });
+  const res = await fetchImpl(API, {
+    method: 'POST',
+    body,
+    headers: {
+      'User-Agent': 'lol-damage-calc (curated-file build; contact rushi.lime49@gmail.com)',
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+  });
+  if (!res.ok) throw new Error(`wiki render failed for a level block: HTTP ${res.status}`);
+  const json = (await res.json()) as { parse?: { text?: string } };
+  const html = json.parse?.text ?? '';
+  // One span per block, in source order. A block the wiki could not expand renders no span, so
+  // the two lists would slip — which is why a count mismatch returns nulls rather than a guess.
+  const spans = [...html.matchAll(/data-bot-values="([^"]*)"/g)].map((m) =>
+    m[1]!
+      .split(';')
+      .map((s) => Number(s.trim()))
+      .filter((n) => Number.isFinite(n)),
+  );
+  if (spans.length !== blocks.length) return blocks.map(() => null);
+  return spans;
+}

@@ -22,6 +22,7 @@ import {
   wikiSlotAlias,
   type DraftAbility,
 } from './harvest.ts';
+import { fetchDamageData } from './damage-data.ts';
 import { renderAbility } from './render.ts';
 
 const SLOTS: AbilitySlot[] = ['P', 'Q', 'W', 'E', 'R'];
@@ -44,6 +45,9 @@ async function main(): Promise<void> {
   ) as { patch: string };
   const byName = new Map(roster.map((c) => [c.name, c]));
   const fetched = new Date().toISOString().slice(0, 10);
+  // Module:DamageData/data states the damage type of each instance. The prose path reads it
+  // rather than inferring a type, and refuses a block whose sentence contradicts it.
+  const damageData = await fetchDamageData();
 
   const drafts: DraftAbility[] = [];
   const roundTrips = [];
@@ -102,6 +106,7 @@ async function main(): Promise<void> {
           wikitext: page.content,
           revisionId: page.revid,
           maxRank: champ.abilityMaxRanks[slot],
+          damageData,
         },
         manifest.patch,
         fetched,
@@ -122,6 +127,9 @@ async function main(): Promise<void> {
               { label: '(render failed)', expected: [], actual: [], detail: String(e) },
             ],
             unmatchedRows: [],
+            displayRoundedValues: 0,
+            rowsClearedByDisplayRounding: 0,
+            levelScaledNotCompared: 0,
           });
         }
         await sleep(300); // be a polite client
@@ -264,6 +272,21 @@ function report(
           d.droppedRows.map((r) => `"${r.label}" (${r.why})`).join(', '),
       );
     }
+  }
+
+  const proseMoved = drafts.filter((d) => d.proseComponents > 0);
+  if (proseMoved.length > 0) {
+    console.log(`\n--- damage recovered from description prose (${proseMoved.length} abilities) ---`);
+    for (const d of proseMoved) {
+      console.log(`  ${d.entry.champion}/${d.entry.slot}/${d.entry.abilityName}: ${d.proseComponents} component(s)`);
+    }
+  }
+  const proseSkips = drafts.flatMap((d) => d.proseSkipped);
+  if (proseSkips.length > 0) {
+    const byCause = new Map<string, number>();
+    for (const s of proseSkips) byCause.set(s.refusal, (byCause.get(s.refusal) ?? 0) + 1);
+    console.log(`\n--- description-prose blocks NOT read, by cause (${proseSkips.length}) ---`);
+    for (const [c, n] of [...byCause].sort((a, b) => b[1] - a[1])) console.log(`  ${c.padEnd(18)} ${n}`);
   }
 
   const hand = drafts.filter((d) => d.needsHandAuthoring);

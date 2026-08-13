@@ -1322,7 +1322,15 @@ its file rather than a one-line rule.
 ## 20a. BRIEF — the description-prose extraction path (written 2026-08-13, unstarted)
 
 **This is a brief for a dedicated session. Everything needed to start is here; do not re-derive
-the sizing.** Nothing in it has been built.
+the sizing.**
+
+> **BUILT 2026-08-13 — the result is §25, and read it before trusting the sizing below.** Two
+> figures here are wrong. The scan counted `{{pp}}` only, and `{{pplevel}}` is the same
+> mechanism under a second name — 60 more abilities, 116 more blocks, Darius Hemorrhage among
+> them. And of the two abilities this brief names as flagship cases, Caitlyn Headshot is
+> deliberately refused (its value is a percentage of attack damage, not a flat base) and Darius
+> Hemorrhage is deliberately refused (its value sits in a footnote variant). 29 abilities moved,
+> not 107.
 
 ### Why it exists
 
@@ -1478,6 +1486,13 @@ rounded figure where we store the exact one: Rumble Q (wiki 140.63, stored 140.6
 (wiki 100, stored 99.9975), Zeri Q (wiki 3.71, stored 3.7125). A fourth cause worth naming, and
 an argument for comparing at display precision rather than 1e-6.
 
+> **DONE 2026-08-13 (§25).** Gate 2 now compares at the wiki's own rendering precision. Measured
+> by running the roster twice and changing nothing else, it clears **4 rows of the 56** — the 3
+> above plus one ratio-count row. It clears **none of the wiki-series-short group**, and could
+> not: a row in that group is one where the wiki printed no value at all at that rank, and a
+> missing value does not agree at any precision. The counts in the table above are the 1e-6
+> counts; §25 carries both columns.
+
 **The remaining 15 are real, and most share one root cause.** Twelve sit on abilities that also
 carry two components with the same id (§23) — Akali E, Anivia Q, Graves Q, Mel E, Sejuani W,
 Smolder Q, Sylas Q, Talon W, Twisted Fate W, Vel'Koz W, Vex R, Viktor E. One component shadows
@@ -1494,3 +1509,181 @@ so gate 2 confirms the diagnosis rather than finding them anew.
 
 None is diagnosed yet. All three are now `incomplete` rather than `derived`, which is the point:
 the numbers are no longer presented as understood.
+
+---
+
+## 25. The description-prose path — built (2026-08-13)
+
+The brief in §20a is implemented. This section is its result. **Every count states what it
+counts.** Measured over the same 937-page set as §19, after alias dedupe, on patch 16.16.1.
+
+### The five components the brief asked for
+
+1. **Prose scanner** — `scripts/extract/prose.ts` walks every `description*` field and finds
+   every champion-level progression block with its position and surrounding text.
+2. **The damage judgement** — same file. Structural, not proximity-based; see below.
+3. **Damage type from `Module:DamageData/data`** — `scripts/extract/damage-data.ts` reads the
+   module (1221 stated instances across 165 champions) and the prose path cross-checks against
+   it rather than inferring a type.
+4. **Piecewise progressions** — `; then` chains, in `progression.ts`.
+5. **Per-level `x` formulas** — same file, evaluated over levels 1..18.
+
+### A sixth shorthand the sizing did not count: `{{pplevel}}`
+
+`{{pp}}` is not the only champion-level shorthand. `Template:Pplevel` redirects to
+`Template:Passive progression level`, whose body is `{{#invoke:Ability progression|pplevel}}`,
+and that function is three lines: `args["defaultDisplayMaxLevel"] = "true";
+args["tooltipSize"] = 41; return p.pp(args)`. **It is `{{pp}}` with different tooltip
+furniture, and it parses identically.**
+
+**60 abilities use it in a description field, in 116 blocks.** §20a counted `{{pp}}` alone, so
+none of them were in its sizing — including **Darius Hemorrhage**, which that brief names as an
+ability contributing zero damage. Both names are now read (`findLevelBlocks`).
+
+### What moved
+
+| Figure | Count | Definition |
+|---|---:|---|
+| ability pages measured | 937 | distinct wiki pages, after alias dedupe |
+| **abilities that gained ≥1 component from description prose** | **29** | stored a component the leveling rows did not produce |
+| of those, ones that had **no** component at all before | 29 | every one was contributing zero damage |
+| of those, ones that **leave the prose-only worklist** | 28 | `needsHandAuthoring` true before, false after |
+| prose-derived components stored | 30 | one ability produced two |
+
+The 29 are almost entirely the innate passives the brief named: Ziggs Short Fuse, Lux
+Illumination, Braum Concussive Blows, Gwen A Thousand Cuts, Shaco Backstab, Sona Power Chord,
+Leona Sunlight, Warwick Eternal Hunger, Zeri Living Battery, Nautilus Staggering Blow and
+eleven more, plus all four of Aphelios's weapon Q's, his R, and Jayce's hammer form.
+
+**This is 29 of the 107 prose-only entries, not 107.** The remaining 78 are not read, and the
+reasons are counted below rather than described. Reporting the path as closing the gap would be
+false.
+
+### Gate 2 on everything that moved — 29 of 29 confirmed
+
+**The ability-box round-trip cannot check these rows: it checked 0.** An ability whose damage is
+in its description has no leveling row, so the rendered box prints nothing to compare against.
+Reporting "0 disagreements" from that would have been a pass with no evidence behind it.
+
+A round-trip that does work was built instead. Rendering the `{{pp}}`/`{{pplevel}}` block on its
+own returns the wiki's **entire per-level expansion** in the `data-bot-values` attribute of the
+rendered span — `20;24;28;32;36;40;48;56;64;72;80;88;100;112;124;136;148;160;172;184` for Ziggs
+Short Fuse. That is the wiki's own Lua expanding the same block our parser read, so it is
+independent evidence.
+
+| Figure | Count | Definition |
+|---|---:|---|
+| level-scaled prose components checked | **29** | compared value-by-value against the wiki's expansion |
+| **confirmed** | **29** | every value agrees at the wiki's display precision |
+| disagreeing | 0 | |
+| no comparable rendering | 0 | |
+
+The visible text of that span reads `20 – 184 (based on level)`, and **184 is the level-20
+value** — the §13 extrapolation trap. The attribute is read and the summary text is not.
+
+### The damage judgement, and what it refuses
+
+Nothing in the source marks a block as damage; the same shorthand carries cooldowns, life steal,
+heals, energy and movement speed. The rule is **structural**: the wiki wraps a value in an
+`{{as|…}}` block and names the thing there or in the `{{as}}` blocks immediately following, so
+reading the wrapper is reading a statement rather than guessing from nearby words. A run of
+adjacent `{{as}}` blocks is one damage instance — the wiki splits one figure across several,
+value first, each ratio in its own, the noun last.
+
+**435 description-field level blocks are not read.** A *block* is one `{{pp}}` or `{{pplevel}}`
+occurrence in a `description*` field.
+
+| Cause | Blocks | Abilities | Definition |
+|---|---:|---:|---|
+| **no-wrapper** | 244 | 163 | No `{{as|…}}` encloses the block, so nothing in the source says what the number is. Judging it would mean reading the surrounding sentence, which is the proximity heuristic §20a warns against. **The largest open group.** |
+| not-damage | 96 | 80 | The wrapper names a cooldown, heal, shield, life steal, energy, movement or attack speed. |
+| footnote-variant | 46 | 25 | The block sits inside a `{{ft|…}}` footnote, which states a conditional variant rather than a second instance. Summing it would double-count. Darius Hemorrhage is here. |
+| unclear | 17 | 14 | The wrapper names neither damage nor a non-damage noun. |
+| percent-payload | 12 | 10 | The value is a **percentage of a stat** (`key=%`) sitting where a flat base would go. Caitlyn Headshot's `{{pp|key=%|60 to 100 for 3|1 to 13}}` is 60–100% **of attack damage**; stored as a base it becomes 60–100 flat damage — wrong, and plausible. |
+| has-leveling-rows | 11 | 10 | The ability already has damage from its leveling rows; the prose usually restates it and a second copy would double the ability's output. |
+| duplicate-label | 9 | 4 | Two groups produced one label, so which is a variant of which is unstated. Both refused rather than one shadowing the other (§23). |
+
+Two of these are worth naming as deliberate losses rather than gaps: **Caitlyn Headshot** and
+**Darius Hemorrhage** are both refused, and both are abilities §20a named as flagship cases.
+Reading either would need a shape the library does not have (a level-scaled percentage of a
+stat) or a rule for conditional footnote variants. Neither is guessed at.
+
+### The Malzahar W case: a row carrying both a rank term and a level term
+
+`{{pp}}` was only read when a row had **no** `{{ap}}`, so a row with both dropped its level term
+in silence (§24). Six rows do this, and all six now store both:
+
+**Azir W · Kled W · Malzahar W · Mordekaiser Q · Tahm Kench Q · Zoe Q.**
+
+`base` holds one `Scaling`, so the two additive terms are stored as two components with
+`relation: 'adds'` — the level term as the primary (that is what the wiki renders as the row's
+base) and the rank term as `<id>-rank-term`. **If either term is unreadable, neither is stored:**
+half of a two-term row is not a partial answer, it is a wrong number that looks whole.
+
+### Gate 2 at the wiki's display precision
+
+§24 recorded three "value-differs" rows that were the wiki printing a rounded figure — Rumble Q
+140.63 against a stored 140.625. The comparison now uses the wiki's own rendering rule, read from
+`Module:Ability progression`: `round = args["round"] or 2`, applied by
+`floor(val * 10^d + 0.5) / 10^d`.
+
+**The rule, and why it is not a looser tolerance.** The stored value is put through that same
+half-up rounding at `max(decimals the wiki printed, 2)` and must print what the wiki printed. The
+`max` is load-bearing in both directions: using the printed decimals alone, a wiki `275` against a
+stored `275.4` would round to `275` and be waved through; using a flat 2 alone, a block carrying
+`round=3` would have a real third-decimal difference hidden. Only differences the wiki's renderer
+physically cannot show are cleared.
+
+**Measured by running the full roster twice, changing nothing but the comparison:**
+
+| Cause | at 1e-6 | at display precision | cleared |
+|---|---:|---:|---:|
+| render-failed | 6 | 6 | 0 |
+| **wiki-series-short** | 28 | 28 | **0** |
+| **ratio-count** | 10 | 9 | **1** |
+| value-differs | 18 | 15 | 3 |
+| **total disagreeing rows** | **56** | **52** | **4** (14 individual values) |
+| entries with ≥1 disagreement | 54 | 52 | 2 |
+| entries gate 2 demotes | 25 | 24 | 1 |
+
+**It clears none of the wiki-series-short group and one of the ratio-count group.** That is not a
+disappointment, it is the definition: a wiki-series-short row is one where the wiki printed *no*
+value at that rank, and a missing value cannot agree at any precision. The two groups have a
+different cause and needed a different fix; §20a and §24 are amended accordingly.
+
+### Gate 2 counts a row it never compared — found and stopped
+
+A row whose base scales by champion level was added to `matched` and to `checkedRows`, on the
+reasoning that the box prints one "(based on level)" figure with nothing to line up. That made an
+uncompared row raise the pass count, and an entry whose every row is level-scaled could reach
+gate 6 with a clean round-trip record behind which no comparison had happened.
+
+Those rows are now counted separately and excluded from both. **9 rows across the roster are in
+this state** — six of them the two-term rows above, which is why the wiki-series-short group fell
+from §24's 34 to 28: those six left the comparison pool rather than being reconciled.
+
+The fix for them exists and is not wired in: `renderLevelBlocks` checks exactly these values, and
+it is what confirmed 29 of 29 prose components. It needs the network, and `roundTrip` is a pure
+function. **Proposed, not implemented: move the level-scaled comparison into the batch runner
+alongside the gate-2 demotion, where the network already is.**
+
+### Full-roster gate 2 after this session
+
+| Figure | §24 | now |
+|---|---:|---:|
+| entries gate 2 can run on (≥1 stored component) | 589 | **618** |
+| entries with no components (skipped, not passed) | 348 | **319** |
+| entries matching on every row | 530 | 566 |
+| entries with ≥1 disagreement | 59 | 52 |
+| entries demoted from `derived` to `incomplete` | 28 | 24 |
+| rows checked / matched / disagreeing | 872 / 810 / 62 | 863 / 811 / 52 |
+| rows this rendering cannot check | not counted | 9 |
+
+### What is NOT claimed
+
+- Nothing produced by this path is better than `derived`, and an entry gate 1 or gate 2
+  disagrees with is `incomplete`.
+- The prose-block round-trip confirms that our expansion of a block matches the wiki's. It says
+  nothing about whether the block is damage — that is the judgement, and the judgement has no
+  independent check beyond `Module:DamageData/data` listing the ability.
+- 78 of the 107 prose-only entries are still prose-only.

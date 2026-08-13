@@ -20,8 +20,21 @@
 // Pure: no network, no filesystem. Tested by progression.test.ts.
 
 import type { Scaling } from '../../src/types/data.ts';
+import { splitArgs } from './wikitext.ts';
 
 export class ProgressionError extends Error {}
+
+/**
+ * The champion level cap, and the length `{{pp}}` fills a series to when nothing says otherwise.
+ *
+ * READ FROM THE SOURCE, not assumed: `Module:Ability progression` declares
+ * `local defaultSize = 18` and, where a series comes out longer than that with no second axis,
+ * displays only the first `defaultSize` values (`displayMaxColumn = defaultSize`). So a
+ * piecewise progression that generates twenty values — Ziggs Short Fuse and Zoe Q both do —
+ * describes levels 1..20 and the wiki itself shows 1..18. Storing the tail would be the
+ * level-20 extrapolation trap of DATA-SOURCES §13.
+ */
+export const MAX_LEVEL = 18;
 
 // ---------------------------------------------------------------------------
 // A deliberately small arithmetic evaluator: numbers, + - * / ^, parentheses,
@@ -163,10 +176,15 @@ function balancedPrefix(s: string): string {
 }
 
 /**
- * Evaluate a progression expression at one index, following `string_to_formula`: rewrite the
- * innermost `X to Y` span into the linear formula, then evaluate.
+ * Rewrite every `X to Y` span into the wiki's linear formula, leaving `x` symbolic.
+ *
+ * This is `string_to_formula` followed by the module's `gsub(useformula, "times", times)` — the
+ * result is an expression in `x` that the caller evaluates at x = 1..steps. Keeping `x` symbolic
+ * rather than substituting the index immediately is what lets one code path serve both an
+ * `X to Y` span and a written-out per-level formula such as `35 + (180-35)/17*(x-1)`; the module
+ * treats them identically, evaluating `expr(gsub(useformula, "x", x))` in both cases.
  */
-export function evaluateAt(expr: string, index: number, steps: number): number {
+export function rewriteToSpans(expr: string, steps: number): string {
   let cur = expr;
   for (let guard = 0; guard < 8 && / to /.test(` ${cur} `); guard += 1) {
     const at = cur.search(/(?<=^|[^A-Za-z])to(?=[^A-Za-z]|$)/);
@@ -180,11 +198,18 @@ export function evaluateAt(expr: string, index: number, steps: number): number {
     }
     const l = left.trim();
     const r = right.trim();
-    const rewritten =
-      steps === 1 ? `(${l})` : `((${l})+((${r})-(${l}))/(${steps - 1})*(${index - 1}))`;
+    const rewritten = steps === 1 ? `(${l})` : `((${l})+((${r})-(${l}))/(${steps - 1})*(x-1))`;
     cur = before.slice(0, before.length - left.length) + rewritten + after.slice(right.length);
   }
-  return evaluateArithmetic(cur);
+  return cur;
+}
+
+/**
+ * Evaluate a progression expression at one index, following `string_to_formula`: rewrite the
+ * innermost `X to Y` span into the linear formula, then evaluate at that index.
+ */
+export function evaluateAt(expr: string, index: number, steps: number): number {
+  return evaluateArithmetic(rewriteToSpans(expr, steps), { x: index });
 }
 
 /** Round the way the wiki's `rounding` helper does when a `round=N` argument is present. */
@@ -302,7 +327,10 @@ export function asLinearIfEven(series: number[], round?: number): Scaling {
  * hand-authored worklist instead.
  */
 export function parseLevelProgression(inner: string): Scaling {
-  const { args, round } = splitNamed(inner.split('|'));
+  // splitArgs, not String.split('|') — a naive split cuts a nested block in half. `type=` and
+  // `formula=` arguments routinely carry `[[File:Comet Spear.png|20px|border]]`, and splitting
+  // inside that turned the value argument into "20px" on 12 blocks.
+  const { args, round } = splitNamed(splitArgs(inner));
   if (args.length === 0) throw new ProgressionError('empty {{pp}}');
   const valueArg = args[0]!.trim();
   const levelArg = args[1]?.trim();
@@ -311,15 +339,27 @@ export function parseLevelProgression(inner: string): Scaling {
   // When the value side carries no explicit step count it defaults to one value per champion
   // level (18). If the level side is an explicit list, IT states the step count — "40 to 70"
   // against levels "1;7;13" is three values, not eighteen. Re-read with that length.
-  if (values.length === 18 && levelArg && /;/.test(levelArg)) {
+  if (values.length === MAX_LEVEL && levelArg && /;/.test(levelArg)) {
     const levelCount = levelArg.split(';').length;
-    if (levelCount !== 18) values = readSeries(valueArg, round, levelCount);
+    if (levelCount !== MAX_LEVEL) values = readSeries(valueArg, round, levelCount);
   }
-  const levels = levelArg ? readSeries(levelArg, undefined, values.length) : undefined;
+  let levels = levelArg ? readSeries(levelArg, undefined, values.length) : undefined;
 
   if (!levels) {
-    // No level list: the values sit at levels 1..18, one per level.
-    if (values.length === 18) return { scaling: 'byLevel', from: values[0]!, to: values[17]!, atLevels: [1, 18], steps: 18 };
+    // No level list: the values sit at levels 1..18, one per level. A piecewise progression can
+    // generate more than eighteen — Ziggs Short Fuse and Zoe Q both produce twenty — and the
+    // module itself shows only the first eighteen (see MAX_LEVEL). Keep those; the tail
+    // describes levels 19 and 20, which do not exist in normal play (DATA-SOURCES §13).
+    if (values.length > MAX_LEVEL) values = values.slice(0, MAX_LEVEL);
+    // `byLevel` is a from/to pair that the engine RE-INTERPOLATES linearly, so it may only be
+    // used for a series that really is linear. It was previously taken for any 18-value series
+    // without checking — harmless while every such series came from an `X to Y` span, and wrong
+    // the moment a piecewise curve produced one: Ziggs Short Fuse rises 4, then 8, then 12 per
+    // level, and stored as `byLevel 20 to 160` it would read 28.2 at level 2 instead of 24.
+    const even = asLinearIfEven(values, round);
+    if (values.length === MAX_LEVEL && even.scaling === 'linear') {
+      return { scaling: 'byLevel', from: even.from, to: even.to, atLevels: [1, MAX_LEVEL], steps: MAX_LEVEL };
+    }
     return { scaling: 'byLevelExplicit', values, atLevels: values.map((_, k) => k + 1) };
   }
   if (levels.length !== values.length) {
@@ -327,7 +367,17 @@ export function parseLevelProgression(inner: string): Scaling {
       `{{pp}} has ${values.length} values but ${levels.length} levels`,
     );
   }
-  if (levels.some((l) => l < 1 || l > 18 || !Number.isInteger(l))) {
+  // A level axis that runs past 18 — Mordekaiser Q's `1;10 to 20` is written that way — is the
+  // same over-generation as above. Drop the TRAILING steps beyond 18 and keep the rest. A level
+  // above 18 anywhere but at the end is not an over-run and is refused below.
+  while (levels.length > 0 && levels[levels.length - 1]! > MAX_LEVEL) {
+    levels = levels.slice(0, -1);
+    values = values.slice(0, -1);
+  }
+  if (levels.length === 0) {
+    throw new ProgressionError(`{{pp}} second axis has no step at or below champion level ${MAX_LEVEL}`);
+  }
+  if (levels.some((l) => l < 1 || l > MAX_LEVEL || !Number.isInteger(l))) {
     throw new ProgressionError(
       `{{pp}} second axis [${levels.join(', ')}] is not champion levels 1..18 — ` +
         `this template indexes something else (ability power, a percentage), so it cannot be ` +
@@ -349,22 +399,94 @@ export function parseLevelProgression(inner: string): Scaling {
   return { scaling: 'byLevelExplicit', values, atLevels: levels };
 }
 
-/** Read `a;b;c`, `X to Y for N`, `X to Y`, or a single constant into a series. */
+/** Does this expression use `x`, the wiki's champion-level variable? */
+function usesX(expr: string): boolean {
+  return /(?<=^|[^A-Za-z0-9_])x(?=[^A-Za-z0-9_]|$)/.test(expr);
+}
+
+/** Does this expression contain an `X to Y` span? */
+function usesTo(expr: string): boolean {
+  return /(?<=^|[^A-Za-z])to(?=[^A-Za-z]|$)/.test(expr);
+}
+
+/**
+ * One segment of a series: a constant, an `X to Y` span, or a formula written in `x`.
+ *
+ * `for N` states the segment's length. Where it is absent the module fills to `defaultSize`
+ * (18 champion levels), which is what `fallbackSteps` carries. A segment that varies but does
+ * not say how long it is, in a series that has other segments, is REFUSED rather than assumed
+ * to be 18 — in a chain the lengths have to add up and guessing one moves every level after it.
+ */
+function readSegment(
+  seg: string,
+  round: number | undefined,
+  fallbackSteps: number | undefined,
+): number[] {
+  const forN = /^(.*)\s+for\s+(\d+)$/.exec(seg) ?? /^(.*\sto\s.*?)\s+(\d+)$/.exec(seg);
+  let expr = forN ? forN[1]!.trim() : seg;
+  const varies = usesTo(expr) || usesX(expr);
+  if (!varies) return [roundTo(evaluateArithmetic(expr), round)];
+
+  if (!forN && fallbackSteps === undefined) {
+    throw new ProgressionError(
+      `segment "${seg}" varies but does not say over how many levels, and its length cannot be ` +
+        `read off the other axis — refusing to assume one`,
+    );
+  }
+  const steps = forN ? Number(forN[2]) : (fallbackSteps as number);
+  if (!Number.isInteger(steps) || steps < 1) {
+    throw new ProgressionError(`segment "${seg}" has a step count of ${steps}`);
+  }
+  if (usesTo(expr)) expr = rewriteToSpans(expr, steps);
+  return Array.from({ length: steps }, (_, k) =>
+    roundTo(evaluateArithmetic(expr, { x: k + 1 }), round),
+  );
+}
+
+/**
+ * Read one `{{pp}}`/`{{ap}}` axis argument into a series.
+ *
+ * The argument is a `;`-separated CHAIN of segments, which is how the module reads it
+ * (`lib.split(args[1], ";", true)`, then one pass per entry appending to the result). Three
+ * forms of chain occur and all three are the same mechanism:
+ *
+ *   `1;7;13`                                  three constants — a level list
+ *   `1;10 to 20`                              a constant, then a span
+ *   `16+4*x for 6; then +8*x for 6; then …`   a PIECEWISE progression (Ziggs Short Fuse)
+ *
+ * The word `then` is not decoration: the module substitutes the previous segment's last value
+ * for it (`gsub(useformula, "then", last_value, 1)`), so `then +8*x for 6` means "carry on from
+ * where the last segment ended, adding 8 per level, for six more levels". Reading it any other
+ * way gives a curve that is right at level 1 and wrong everywhere after.
+ */
 function readSeries(arg: string, round?: number, expectedLength?: number): number[] {
   const cleaned = arg.replace(/%/g, '').trim();
-  if (cleaned.includes(';')) {
-    return cleaned
-      .split(';')
-      .map((s) => s.trim())
-      .filter((s) => s !== '')
-      .map((s) => roundTo(evaluateArithmetic(s), round));
+  const segments = cleaned
+    .split(';')
+    .map((s) => s.trim())
+    .filter((s) => s !== '');
+  if (segments.length === 0) throw new ProgressionError(`empty progression argument "${arg}"`);
+
+  const target = expectedLength ?? MAX_LEVEL;
+  const out: number[] = [];
+  let last: number | undefined;
+  for (const [i, raw] of segments.entries()) {
+    let seg = raw;
+    if (/(?<![A-Za-z])then(?![A-Za-z])/.test(seg)) {
+      if (last === undefined) {
+        throw new ProgressionError(`"${seg}" says "then" but no segment precedes it`);
+      }
+      seg = seg.replace(/(?<![A-Za-z])then(?![A-Za-z])/, `${last}`);
+    }
+    // A segment that varies without stating a length is FILLED to the axis length, which is
+    // what the module does (`linear_filling` / `x_filling`, padding to `defaultSize` or to the
+    // other axis's length). Mordekaiser Q's level axis `1;10 to 20` relies on it: the span has
+    // to supply the eleven steps the value row still needs. Only the LAST segment may fill —
+    // a fill in the middle would have to guess where the following segments start.
+    const remainder = target - out.length;
+    const fallback = i === segments.length - 1 && remainder >= 1 ? remainder : undefined;
+    out.push(...readSegment(seg, round, fallback));
+    last = out[out.length - 1];
   }
-  const forN =
-    /^(.*)\s+for\s+(\d+)$/.exec(cleaned) ?? /^(.*\sto\s.*?)\s+(\d+)$/.exec(cleaned);
-  const expr = forN ? forN[1]!.trim() : cleaned;
-  const steps = forN ? Number(forN[2]) : (expectedLength ?? 18);
-  if (!/(?<=^|[^A-Za-z])to(?=[^A-Za-z]|$)/.test(expr)) {
-    return [roundTo(evaluateArithmetic(expr), round)];
-  }
-  return Array.from({ length: steps }, (_, k) => roundTo(evaluateAt(expr, k + 1, steps), round));
+  return out;
 }

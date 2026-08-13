@@ -466,6 +466,82 @@ export function compareExpansion(
   return out;
 }
 
+/**
+ * How many decimal places the wiki's renderer shows by default.
+ *
+ * READ FROM THE SOURCE: `Module:Ability progression` sets `round = args["round"] or 2` for a
+ * progression's display, and its `rounding` helper is `floor(val * 10^d + 0.5) / 10^d` — plain
+ * half-up. So the wiki prints 140.63 for a value of 140.625, 100 for 99.9975, and 3.71 for
+ * 3.7125. Gate 2 compared those at 1e-6 and reported three disagreements that were nothing of
+ * the kind (DATA-SOURCES §24).
+ */
+export const WIKI_DISPLAY_DECIMALS = 2;
+
+/**
+ * The wiki's rounding, followed literally rather than approximated.
+ *
+ * The `+ 1e-9` is not a fudge of the result, it is a fudge of the BOUNDARY. Lua and JavaScript
+ * both use doubles but reach a value by different arithmetic, so a figure that is exactly
+ * `14.275` in the module can be `14.274999999999999` here. Without the nudge those two round to
+ * different numbers and the round-trip reports a disagreement of one hundredth that does not
+ * exist. 1e-9 is nine orders of magnitude below the smallest figure the wiki prints.
+ */
+export function roundHalfUp(value: number, decimals: number): number {
+  const f = 10 ** decimals;
+  return Math.floor(value * f + 0.5 + 1e-9) / f;
+}
+
+/** Decimal places in a number as JavaScript prints it — the same shortest form Lua's tostring
+ *  produces, so it recovers how many places the wiki actually showed. */
+export function decimalsOf(value: number): number {
+  const s = String(value);
+  const dot = s.indexOf('.');
+  return dot < 0 ? 0 : s.length - dot - 1;
+}
+
+/**
+ * True when a stored value and the wiki's printed value differ ONLY in the digits the wiki
+ * does not print.
+ *
+ * THIS IS NOT A LOOSER TOLERANCE. It is the wiki's own renderer applied to our value: put the
+ * stored figure through the same half-up rounding and ask whether it prints what the wiki
+ * printed.
+ *
+ * The precision is `max(what the wiki printed, the module's default of 2)`, and the `max` is
+ * what stops the rule becoming a loose tolerance. Taking the printed decimals alone, a wiki
+ * value of `275` would be compared at zero decimals and a stored `275.4` would round to `275`
+ * and be waved through — a 0.4 error hidden by the comparison rule itself. At two decimals it
+ * stays 275.4, and stays a disagreement. Taking a flat two decimals alone would go wrong the
+ * other way on a block carrying `round=3`, where the wiki really does show a third decimal, so
+ * the printed precision wins where it is finer.
+ *
+ * What it therefore clears, and only this: values that differ below what the wiki's own
+ * renderer can show, where the round-trip has no evidence either way.
+ */
+export function agreesAtDisplayPrecision(wiki: number, stored: number): boolean {
+  if (!Number.isFinite(wiki) || !Number.isFinite(stored)) return false;
+  if (Math.abs(wiki - stored) <= 1e-6) return true;
+  const decimals = Math.max(decimalsOf(wiki), WIKI_DISPLAY_DECIMALS);
+  return roundHalfUp(stored, decimals) === roundHalfUp(wiki, decimals);
+}
+
+/**
+ * Gate 2's comparison at the precision the wiki actually renders.
+ * Returns the surviving disagreements and, separately, how many were cleared as display
+ * rounding — a count that is reported rather than absorbed.
+ */
+export function compareAtDisplayPrecision(
+  expected: number[],
+  actual: number[],
+): {
+  differences: Array<{ index: number; expected: number; actual: number }>;
+  clearedByDisplayRounding: number;
+} {
+  const strict = compareExpansion(expected, actual, 1e-6);
+  const differences = strict.filter((d) => !agreesAtDisplayPrecision(d.expected, d.actual));
+  return { differences, clearedByDisplayRounding: strict.length - differences.length };
+}
+
 /** Runs every machine gate. Gate 2 is reported separately by the harvester. */
 export function validateCuratedFile(
   file: CuratedFile,

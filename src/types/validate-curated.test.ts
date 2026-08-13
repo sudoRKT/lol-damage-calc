@@ -14,11 +14,15 @@ import type {
   RatioOwner,
 } from './data.ts';
 import {
+  agreesAtDisplayPrecision,
+  compareAtDisplayPrecision,
   compareExpansion,
+  decimalsOf,
   gateNonChampion,
   gateSchema,
   gateStatusHonesty,
   gateSumGuard,
+  roundHalfUp,
   validateCuratedFile,
 } from './validate-curated.ts';
 
@@ -492,5 +496,62 @@ describe('validateCuratedFile', () => {
       'status-honesty',
     ]);
     expect(reports.every((r) => r.failed === 0)).toBe(true);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Gate 2 at the wiki's display precision (DATA-SOURCES §24).
+// The three cases below are the three the full-roster run of 2026-08-13 reported as
+// value-differing rows which were in fact the wiki printing a rounded figure.
+// ---------------------------------------------------------------------------
+
+describe('agreesAtDisplayPrecision', () => {
+  it('clears the three display-rounding rows the roster run reported', () => {
+    expect(agreesAtDisplayPrecision(140.63, 140.625)).toBe(true); // Rumble Q
+    expect(agreesAtDisplayPrecision(100, 99.9975)).toBe(true); // Varus Q
+    expect(agreesAtDisplayPrecision(3.71, 3.7125)).toBe(true); // Zeri Q
+  });
+
+  it('does NOT clear a difference the wiki could have shown', () => {
+    // The failure this rule must not become: a printed 275 against a stored 275.4 rounds to
+    // 275 at zero decimals, and waving it through would hide a 0.4 error behind the
+    // comparison. Half of the last place at the wiki's own precision is the bound.
+    expect(agreesAtDisplayPrecision(275, 275.4)).toBe(false);
+    expect(agreesAtDisplayPrecision(150, 75)).toBe(false);
+    expect(agreesAtDisplayPrecision(3.71, 3.72)).toBe(false);
+  });
+
+  it('clears nothing the wiki would have printed differently', () => {
+    expect(agreesAtDisplayPrecision(10, 10.005)).toBe(false); // the wiki would print 10.01
+    expect(agreesAtDisplayPrecision(10, 10.0049)).toBe(true); // the wiki would print 10
+  });
+
+  it('survives the half-way boundary that floating point lands just under', () => {
+    // Zeri's passive: the module computes 14.275 and prints 14.28; our arithmetic reaches
+    // 14.274999999999999. Without the boundary nudge this reported a phantom disagreement.
+    expect(agreesAtDisplayPrecision(14.28, 14.274999999999999)).toBe(true);
+  });
+
+  it('uses the finer precision when the wiki printed more than two decimals', () => {
+    // A block carrying round=3 really does show a third decimal, so a difference there is real.
+    expect(agreesAtDisplayPrecision(1.234, 1.2349)).toBe(false);
+  });
+
+  it('refuses to compare a missing value', () => {
+    expect(agreesAtDisplayPrecision(Number.NaN, 5)).toBe(false);
+  });
+
+  it('follows the wiki rounding helper exactly, half up', () => {
+    expect(roundHalfUp(140.625, 2)).toBe(140.63);
+    expect(roundHalfUp(99.9975, 2)).toBe(100);
+    expect(decimalsOf(140.63)).toBe(2);
+    expect(decimalsOf(100)).toBe(0);
+  });
+
+  it('reports how many differences it cleared rather than absorbing them', () => {
+    const r = compareAtDisplayPrecision([140.63, 275], [140.625, 275.4]);
+    expect(r.clearedByDisplayRounding).toBe(1);
+    expect(r.differences).toHaveLength(1);
+    expect(r.differences[0]!.expected).toBe(275);
   });
 });

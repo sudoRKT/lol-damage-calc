@@ -172,3 +172,23 @@ export function statRows(fields: Record<string, string>): StatRow[] {
   }
   return rows;
 }
+
+/**
+ * The two template names that carry a CHAMPION-LEVEL progression.
+ *
+ * `{{pplevel}}` is not a different mechanism from `{{pp}}`: `Template:Pplevel` redirects to
+ * `Template:Passive progression level`, whose whole body is
+ * `{{#invoke:Ability progression|pplevel}}`, and that function is three lines —
+ * `args["defaultDisplayMaxLevel"] = "true"; args["tooltipSize"] = 41; return p.pp(args)`.
+ * It differs only in how the tooltip is drawn, so it parses identically.
+ *
+ * This matters because it was missed. The sizing in DATA-SOURCES §20a counted `{{pp}}` alone,
+ * and Darius Hemorrhage — one of the abilities that brief names as contributing zero damage —
+ * writes its numbers as `{{pplevel|13 to 30}}`. Sixty abilities use it in a description field.
+ */
+export const LEVEL_BLOCK_NAMES = ['pp', 'pplevel'] as const;
+
+/** Every champion-level progression block in `source`, in source order. */
+export function findLevelBlocks(source: string): Block[] {
+  return LEVEL_BLOCK_NAMES.flatMap((n) => findBlocks(source, n)).sort((a, b) => a.start - b.start);
+}

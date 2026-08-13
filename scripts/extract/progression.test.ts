@@ -241,3 +241,110 @@ describe('evaluateAt follows the documented rewrite', () => {
     expect(evaluateAt('80 to 240', 1, 1)).toBe(80);
   });
 });
+
+// ---------------------------------------------------------------------------
+// Piecewise progressions and per-level formulas (DATA-SOURCES §20a, components 4 and 5).
+//
+// EVERY EXPECTED VALUE BELOW COMES FROM THE SOURCE, NOT FROM THE PARSER. Each of these
+// templates carries a `formula=` argument in which the wiki states, in words, what the
+// shorthand means; the expectations are that sentence worked out by hand.
+// ---------------------------------------------------------------------------
+
+describe('piecewise progressions — the `; then` chain', () => {
+  it('Ziggs Short Fuse: "16 + 4 per level up to 6, then + 8 per level up to 12, then + 12 per level"', () => {
+    const s = parseLevelProgression('16+4*x for 6; then +8*x for 6; then +12*x for 8');
+    // 16+4x over x=1..6 -> 20,24,28,32,36,40 (levels 1..6)
+    // then 40+8x over x=1..6 -> 48,56,64,72,80,88 (levels 7..12)
+    // then 88+12x over x=1..8 -> 100,112,124,136,148,160,172,184 (levels 13..20)
+    // The wiki shows the first 18; levels 19 and 20 do not exist in normal play.
+    expect(s).toEqual({
+      scaling: 'byLevelExplicit',
+      values: [20, 24, 28, 32, 36, 40, 48, 56, 64, 72, 80, 88, 100, 112, 124, 136, 148, 160],
+      atLevels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18],
+    });
+  });
+
+  it('Zoe Q: "2 base, then +2 per level until 9, then +3 per level until 13, then +4 per level"', () => {
+    const s = parseLevelProgression('2; then +2*x for 8; then +3*x for 4; then +4*x for 7');
+    expect(s).toEqual({
+      scaling: 'byLevelExplicit',
+      values: [2, 4, 6, 8, 10, 12, 14, 16, 18, 21, 24, 27, 30, 34, 38, 42, 46, 50],
+      atLevels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18],
+    });
+  });
+
+  it('carries the previous segment\'s last value into "then", not a fresh start', () => {
+    // Read wrongly — as three independent segments — level 7 would be 8, not 48.
+    const s = parseLevelProgression('16+4*x for 6; then +8*x for 6; then +12*x for 8');
+    expect(s.scaling).toBe('byLevelExplicit');
+    if (s.scaling !== 'byLevelExplicit') throw new Error('unreachable');
+    expect(s.values[6]).toBe(48);
+  });
+
+  it('refuses "then" with nothing before it rather than treating it as zero', () => {
+    expect(() => parseLevelProgression('then +8*x for 6')).toThrow(ProgressionError);
+  });
+
+  it('refuses a varying segment of unstated length that is NOT the last one', () => {
+    // The last segment may fill whatever the axis still needs. One in the middle cannot:
+    // its length decides where every later segment starts, and nothing states it.
+    expect(() => parseLevelProgression('10; then +2*x; then +3*x for 4')).toThrow(ProgressionError);
+  });
+});
+
+describe('per-level formulas written in x', () => {
+  it('expands "20 + (240-20)/17*(x-1) for 20" across levels 1..18 (Pantheon Q)', () => {
+    // Twenty steps are generated and the last two describe levels 19 and 20, which are dropped.
+    // What remains rises evenly, so it takes the compact linear form.
+    const s = parseLevelProgression('20 + (240-20)/17*(x-1) for 20');
+    expect(s).toEqual({ scaling: 'byLevel', from: 20, to: 240, atLevels: [1, 18], steps: 18 });
+  });
+
+  it('defaults an x-formula with no step count to the module\'s 18 levels', () => {
+    const s = parseLevelProgression('5+3.5*(x-1)*(0.7025+0.0175*(x-1))');
+    expect(s.scaling).toBe('byLevelExplicit');
+    if (s.scaling !== 'byLevelExplicit') throw new Error('unreachable');
+    expect(s.values).toHaveLength(18);
+    expect(s.values[0]).toBe(5);
+    // Malzahar W's own annotation is "5 + 10.5 growth": 5 at level 1, and this at level 18.
+    expect(s.values[17]).toBeCloseTo(5 + 3.5 * 17 * (0.7025 + 0.0175 * 17), 9);
+  });
+
+  it('refuses the compact linear form for a curve that is not linear', () => {
+    // Malzahar W's growth is quadratic in x. Stored as a from/to pair the engine would
+    // re-interpolate it as a straight line and every middle level would be overstated.
+    const s = parseLevelProgression('5+3.5*(x-1)*(0.7025+0.0175*(x-1))');
+    if (s.scaling !== 'byLevelExplicit') throw new Error('unreachable');
+    const straightLine = 5 + ((s.values[17]! - 5) / 17) * 8;
+    expect(s.values[8]).not.toBeCloseTo(straightLine, 2);
+  });
+});
+
+describe('a chained level axis, and the level-18 cap', () => {
+  it('reads "1;10 to 20" as a level list rather than failing on the span', () => {
+    // Mordekaiser Q states its levels this way. Levels 19 and 20 are dropped with their values.
+    const s = parseLevelProgression('0 to 110 for 12|1;10 to 20');
+    expect(s.scaling).toBe('byLevelExplicit');
+    if (s.scaling !== 'byLevelExplicit') throw new Error('unreachable');
+    expect(s.atLevels).toEqual([1, 10, 11, 12, 13, 14, 15, 16, 17, 18]);
+    expect(s.values).toHaveLength(10);
+    expect(s.values[0]).toBe(0);
+  });
+
+  it('still refuses an axis that is not champion levels at all', () => {
+    // Hwei's Grim Visage indexes ability power; storing that as level scaling would be wrong.
+    expect(() => parseLevelProgression('0 to 100 for 5|0;250;500;750;1000')).toThrow(
+      ProgressionError,
+    );
+  });
+
+  it('reads a value argument through a nested file link without splitting it', () => {
+    // Pantheon R writes its axis label as an image. A naive split on "|" made the VALUE
+    // argument "20px", which failed with a message about "px" — twelve blocks did this.
+    // The axis here is Comet Spear's rank, not champion level, so it is still refused; what
+    // this test pins is that it is refused for the right reason.
+    expect(() =>
+      parseLevelProgression('type=[[File:Comet Spear.png|20px|border]] rank|40 to 190 for 6|0 to 5'),
+    ).toThrow(/second axis/);
+  });
+});

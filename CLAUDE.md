@@ -215,6 +215,16 @@ because the source never says whose armor, magic resistance or mana they read (M
 among them), and item and rune effects have not been harvested at all, so their 85 owner-
 bearing references are counted but unwritten.
 
+The description-prose extraction path is built (DATA-SOURCES §25). Abilities that state their
+damage in a sentence rather than a leveling row — almost all of them innate passives — used to
+harvest to zero damage. **29 abilities now carry damage they did not have, 28 of them leaving the
+prose-only worklist, and all 29 are confirmed value-by-value against the wiki's own expansion of
+the same block.** That is 29 of 107; the other 78 stay unread, grouped by cause in §25, and the
+largest group by far is blocks the source does not label at all. Everything the path produces is
+`derived` at most. Two rules it works by are worth carrying forward: a block whose meaning is not
+stated in the source is left unread rather than judged from the surrounding sentence, and a row
+that cannot be read in full is not stored in part.
+
 The shape library has a real gap: 32 abilities deal a percentage of a health pool whose
 percentage is itself scaled (`10–20% (+2.5% per 100 AP) of target's maximum health`). `Ratio`
 cannot express it, so those abilities are currently stored wrong. They are detected and forced
