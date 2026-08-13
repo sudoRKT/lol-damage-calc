@@ -311,47 +311,69 @@ systems exist to protect it.
 **Patch version display.** The patch version the calculation was performed against is
 displayed adjacent to every result, not relegated to a footer.
 
-**Per-ability verification status.** Every ability carries one of four statuses, surfaced
-in the interface alongside any result it contributes to:
+**Per-ability verification status.** Every ability carries one of four statuses, surfaced in the
+interface alongside any result it contributes to. Each is a claim about *evidence*, and the
+evidence behind each is stated here so the interface can describe it honestly rather than
+gesturing at it.
 
-- *Verified* — expected value established from a documented formula or a published worked
-  example, and confirmed by a passing test
-- *Derived* — extracted from source data, not independently confirmed
-- *Incomplete* — known to have unmodelled components
-- *No damage* — the ability deals none. This is not a statement about how far numbers can be
-  trusted; it is a statement that there are none to make one about. Without it, an ability with
-  nothing to extract reads as "extracted from source data, not independently confirmed", which
-  is false and which inflated the derived count by roughly a third. It is claimed only when two
-  independent sources are silent together — the ability's own data template declares no damage
-  type, and the wiki's damage-classification module lists no damage instance for it. Where those
-  two disagree the ability is *incomplete*, never *no damage*: asserting an absence against a
-  source that contradicts it is exactly the confident wrong answer this section exists to stop.
+- ***Derived* — the normal state, and a well-evidenced one.** The product claims three things
+  about a derived number, all of them checked mechanically on every entry, every run:
+  1. it agrees with the **source's own rendering** of the same ability — the wiki's software
+     expanding the same template our parser read, compared value by value at the precision the
+     wiki itself prints;
+  2. it **reconciles with the total the source states** — where the source publishes a total for
+     the ability, our components sum to it, which catches damage counted twice as well as damage
+     missing;
+  3. where **Riot's shipped game data** carries a counterpart array, it agrees with that too — a
+     source that is not the wiki and is not derived from it.
 
-The simulator never presents a derived figure as though it were verified.
+  What *derived* does **not** claim: that a second party re-derived it from scratch. Agreement
+  with a source cannot detect a source read wrongly in a consistent way — a value can be
+  transcribed perfectly and still be attached to the wrong stat, land the wrong number of times,
+  or be missing an instance the ability also has.
+
+- ***Verified* — a rarer and stronger claim.** Everything *derived* claims, **plus** an
+  independent re-derivation by a party that did not use this product's code or share its
+  assumptions, recorded with its evidence. This is deliberately a small set. It is not a target to
+  be maximised, and the interface never implies that a number lacking it is doubtful.
+
+- ***Incomplete* — we will not show a number we cannot stand behind.** Something about the ability
+  is unmodelled, unreconciled, or disputed between sources. **An incomplete ability contributes no
+  damage to a result** and says why. This is the status that carries the product's promise: a
+  figure is absent rather than wrong.
+
+- ***No damage*** — the ability deals none. Not a statement about trustworthiness; a statement
+  that there is nothing to make one about. Claimed only when the ability's own data template and
+  the wiki's damage-classification module are silent together; where they disagree the ability is
+  *incomplete*, never *no damage*.
+
+**How this reads to a user.** *Derived* is presented as the ordinary, expected state — checked
+against the source three ways — and never as a warning, a caution, or a lesser grade. *Verified*
+is presented as an additional assurance where it exists, not as the bar everything else fell short
+of. *Incomplete* is presented as a deliberate refusal, naming what is missing: "this ability's
+damage is not shown because …". A result containing an incomplete ability states plainly which
+ability and why, and the total it shows excludes it.
 
 **Permanently incomplete is shown differently from not-yet-complete.** Two abilities can both be
-*incomplete* for entirely different reasons, and a user deserves to know which one they are
-looking at:
+*incomplete* for entirely different reasons, and a user deserves to know which they are looking at:
 
 - **Pending** — the value exists in a source and this product has not extracted it yet. It will
   improve with work. The interface says so: *"not yet modelled."*
-- **Permanent** — a fact the ability needs is stated by **no source at all**, so no amount of
-  work will supply it. The clearest case is a damage ratio whose owner is unstated: the source
-  says an ability scales with *armor* and never says whose, so a person reading the page is
-  guessing exactly as a parser would. The interface must not imply that someone will get to it.
-  It says: *"cannot be completed — the source does not record this,"* and names the missing fact
-  rather than warning vaguely.
+- **Permanent** — a fact the ability needs is stated by **no source at all**, so no amount of work
+  will supply it. The clearest case is a damage ratio whose owner is unstated: the source says an
+  ability scales with *armor* and never says whose, so a person reading the page is guessing
+  exactly as a parser would. The interface must not imply that someone will get to it. It says:
+  *"cannot be completed — the source does not record this,"* and names the missing fact.
 
 An entry that is permanently incomplete records **which** fact is missing and **why no source
-settles it**, so the note can be specific rather than generic. The interface shows that reason
-to the user. A permanently incomplete ability is never silently dropped from a result, and never
-presented as though it were merely unfinished.
+settles it**, so the note is specific rather than generic. A permanently incomplete ability is
+never silently dropped from a result.
 
-Both distinctions are shown the way every other status is (§10.1) — by a glyph and a label,
-never by hue, since colour is reserved for damage type. The design token file records glyphs for
+Both distinctions are shown the way every other status is (§10.1) — by a glyph and a label, never
+by hue, since colour is reserved for damage type. The design token file records glyphs for
 *verified*, *derived* and *incomplete*. **It carries none for *no damage*, and none for the
-permanent-versus-pending distinction. That is an open design decision**, and it is deliberately
-left open here rather than invented: tokens are the design file's to define.
+permanent-versus-pending distinction. That is an open design decision**, deliberately left open
+here rather than invented: tokens are the design file's to define.
 
 **Contested base statistics.** The same principle extends to a champion's base statistics,
 which come from two sources that can disagree. Where a disagreement is settled by evidence,

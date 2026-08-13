@@ -215,6 +215,20 @@ because the source never says whose armor, magic resistance or mana they read (M
 among them), and item and rune effects have not been harvested at all, so their 85 owner-
 bearing references are counted but unwritten.
 
+**Gate 5's output is a DETECTOR, never a per-entry verdict.** Decided 2026-08-13 and binding.
+Verifying the roster by independent re-derivation is not 165 agent runs, it is 165 *per patch* —
+a pass is evidence about one revision of one page and is void the moment a value changes. So gate
+5 is sampled, and **a finding it makes becomes a mechanical check that runs on all 937 pages
+offline**. Every one of the seven classes it found in its first run became exactly that, which is
+why one 28-ability sample bought roster-wide coverage. When gate 5 finds something, the work is
+not to fix that entry — it is to write the check that finds every other instance of it.
+`derived` is the documented normal state (SPECIFICATION §8); `verified` is a small honest set and
+is never a target to maximise.
+
+**A falling count is usually the system working.** Making a gate more precise, or adding one,
+moves entries from `derived` to `incomplete` — that is evidence arriving, not regression. Compare
+counts only against a stated definition, never against yesterday's number alone.
+
 **Gate 5 ran at scale for the first time on 2026-08-13 and disagreed with half the sample — 14 of
 28 abilities (DATA-SOURCES §29).** Seven defect classes came out of it, each measured across the
 roster: a damage-over-time ability storing one tick as the whole ability (64 components at risk),

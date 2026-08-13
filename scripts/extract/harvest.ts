@@ -335,12 +335,23 @@ export function draftFromTemplate(src: TemplateSource, patch: string, fetched: s
   // two decimals, so N terms carry up to N/2 of the last place. Without that, Cassiopeia Q reads
   // 74.97 against 75 and reports a defect that is arithmetic, not damage.
   if (damageType !== null) {
-    const totalRow = rows.find(
-      (r) =>
-        /^total\b/i.test(stripRangeQualifier(r.label).rest) &&
-        /damage/i.test(r.label) &&
-        !NON_CHAMPION_TOTAL.test(r.label),
-    );
+    // THE TOTAL MUST COVER THE WHOLE ABILITY, or the comparison is meaningless. Fizz W prints
+    // "Total PASSIVE Magic Damage", which covers one of its three components; reconciling all
+    // three against it reports a defect that is a scope mismatch, not damage. A total is taken
+    // only when its label reduces to nothing once "Total", a Minimum/Maximum qualifier and the
+    // damage-type words are removed — so "Total Magic Damage" qualifies and "Total Fissure Magic
+    // Damage", "Total Single-Target Damage" and "Total Enhanced Damage" do not.
+    const wholeAbilityTotal = (label: string): boolean => {
+      const rest = stripRangeQualifier(label).rest;
+      if (!/^total\b/i.test(rest) || !/damage/i.test(label) || NON_CHAMPION_TOTAL.test(label)) return false;
+      return (
+        rest
+          .replace(/^total\b/i, '')
+          .replace(/\b(physical|magic|true|mixed|bonus|damage)\b/gi, '')
+          .replace(/[^a-z]/gi, '') === ''
+      );
+    };
+    const totalRow = rows.find((r) => wholeAbilityTotal(r.label));
     const additive = components.filter((x) => x.relation?.kind !== 'alternativeTo');
     if (totalRow && additive.length > 0) {
       const tc = classifyRow('Magic Damage', totalRow.value, { maxRank, damageType, vars, index: 0 });

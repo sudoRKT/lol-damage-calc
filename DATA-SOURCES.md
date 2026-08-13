@@ -2434,3 +2434,65 @@ independently re-derived. It will be able to say every number agrees with the so
 rendering, reconciles with the source's own stated total, and agrees with Riot's shipped data
 wherever that exists — and to name the ones that do not. That is a weaker claim than "verified" and
 a true one, which is the trade this project has made everywhere else.
+
+---
+
+## 33. Gate 7 worked, and what it found (2026-08-13)
+
+### The gate was tightened, and the count fell — that is precision, not weakening
+
+**A total must cover the WHOLE ability or the comparison is meaningless.** Fizz W prints "Total
+**Passive** Magic Damage", which covers one of its three components; reconciling all three against
+it reported a defect that was a scope mismatch. Gate 7 now takes a total only when its label
+reduces to nothing once "Total", a Minimum/Maximum qualifier and the damage-type words are
+removed — so "Total Magic Damage" qualifies and "Total Fissure Magic Damage", "Total Single-Target
+Damage" and "Total Enhanced Damage" do not.
+
+**65 → 51.** Fourteen were scope mismatches. The gate is stricter about what it will compare, not
+more forgiving about what it finds.
+
+| Figure | Count | Definition |
+|---|---:|---|
+| entries gate 7 ran on | **623** | ≥1 stored component; no whole-ability total means nothing to reconcile |
+| reconcile, or have no whole-ability total | 572 | |
+| **do not reconcile** | **51** | |
+| — **under-sum** | **33** | we sum to less than the stated total: **8** carry a repeating component (likely a hit count), **25** do not (a whole term absent) |
+| — **over-sum** | **18** | we sum to more: something is counted twice |
+
+### The over-sums share a cause, and it is not the one it looks like
+
+Gangplank R sums 1560 against 480; Hwei R 230 against 30. They look like runaway hit counts. They
+are not. **The dominant cause is a summary row that does not begin with "Total" and is therefore
+stored as a component**:
+
+- Gangplank R stores `Magic Damage Per Wave ×12 + Magic Damage Per Cluster + True Damage with +
+  **Maximum Mixed Total Damage with and**` — the last is a summary of the other three.
+- Gwen R stores `… + **Second Cast Total Damage** + **Third Cast Total Damage**`.
+
+`DERIVED_ROW` anchors on `^total`, so a summary with a qualifier in front of it is invisible to it.
+A second cause is a max-variant whose min sibling is labelled without the word "Minimum", so the
+pair is never matched — Evelynn Q stores `Magic Damage + Bonus Magic Damage + Magic Damage +
+Maximum Magic Damage`, all four adding.
+
+**Neither is fixed here, deliberately.** Widening the summary-row filter to match "Total" anywhere
+in a label would drop rows across the whole roster, and the ability that ends up storing nothing
+as a result is exactly the failure mode of DATA-SOURCES §23 — 32 abilities were once silently
+zeroed by a mis-scoped summary filter. That change needs its own measurement before it ships. The
+18 are recorded and their entries are `incomplete`.
+
+### The under-sums carrying a repeating component are mostly NOT hit counts
+
+Of the 8, the total-to-per-hit ratio is a whole number on only some: Miss Fortune R is exactly 14,
+Malzahar R exactly 10. The rest are 1.8, 3.33, 2.97, 1.33, 1.6, 1.67 — and the reason is visible in
+their component lists. **Kai'Sa Q, Xayah Q, Yuumi R and Zac R all store `X Per Hit [adds]` plus
+`Reduced X Per Hit [alternativeTo]`**: the ability hits once at full damage and several times at a
+reduced rate, and the total covers both. A model where an alternative simply replaces cannot say
+"one of these and five of those", so no hit count exists that would reconcile them.
+
+**That is a shape the library does not have, not a number that is missing**, and inventing a count
+to make the sum come out is precisely the guess this project refuses. They stay `incomplete`.
+Malzahar R additionally carries two components with the same label — the duplicate-id defect of
+§23 — so its clean ratio of 10 cannot be attributed to either.
+
+**Effect on the roster: `incomplete` 190 → 225, `derived` 541 → 506.** Thirty-five entries that
+read `derived` while failing to reconcile with their own source now say so.
