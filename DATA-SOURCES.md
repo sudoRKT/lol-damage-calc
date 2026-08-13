@@ -805,12 +805,35 @@ Re-measured across all 937, through the shipped harvester:
 | **Total** | **191** | 42 | 93 | 56 |
 
 Item and rune effects are counted as **source references**, because no code turns them into
-components yet — `itemEffects` and `runes` are empty in every batch produced so far. They are
-what will need an owner when those areas are built, and **48 of the 85 of them say nothing at
-all about whose stat they read** — a worse ratio than abilities, because item prose is written
-from the holder's point of view and rarely names anyone. Both readings genuinely occur in items,
-so this is not theoretical: Sunfire Aegis and Heartsteel scale off the holder, Liandry's and
-Demonic Embrace off the target.
+components yet — `itemEffects` and `runes` are empty in every batch produced so far. They are what
+will need an owner when those areas are built. Item prose is written from the holder's point of
+view and rarely names anyone, and both readings genuinely occur, so this is not theoretical:
+Sunfire Aegis and Heartsteel scale off the holder, Liandry's and Demonic Embrace off the target.
+
+> **⚠ THE ITEM AND RUNE ROWS ABOVE ARE SUPERSEDED, AND THIS SECTION'S PROSE CONTRADICTED ITS OWN
+> TABLE. Corrected 2026-08-13; the measurement that replaces them is §37.**
+>
+> Three defects, recorded rather than quietly overwritten, because each is a lesson:
+>
+> 1. **The prose said "48 of the 85 say nothing at all about whose stat they read." The table
+>    directly above it gives 29 + 14 = 43.** Two numbers for one quantity, four lines apart, and
+>    neither is now reproducible.
+> 2. **THIS SECTION NEVER STATED ITS COUNTING RULE, AND NO CODE IN THE REPOSITORY IMPLEMENTED IT.**
+>    That is the root defect and it is worse than either wrong number. A later measurement tried
+>    several readings — bare "health", regeneration compounds, raw substring counts — and none
+>    lands on 59 or 26. **A count nothing can re-derive cannot be checked, corrected, or trusted**;
+>    it can only be quoted. That is exactly how it survived.
+> 3. **The 85 is health-pools-only and was quoted downstream as though it covered all ten
+>    owner-required stats.** CLAUDE.md and PLAN.md both carried "85 owner-bearing effect
+>    references". Adding this section's own armor/MR/mana rows gives 111, not 85.
+>
+> **The rule this section should have carried, now stated and implemented in
+> `scripts/fetch/effect-census.ts`: one reference is one mention of one of the ten owner-required
+> stats within one effect's prose; the longest phrasing wins (so "bonus health" is one reference,
+> not two); compound stats that merely contain a stat word — "health regeneration", "armor
+> penetration" — are different stats and are NOT counted; bare "health"/"mana" with no qualifier
+> counts as its own reference.** Measured under that rule: **120 references** across all ten stats,
+> of which **72 are health pools** and **82 are not attributed to anyone**. See §37.
 
 ### Armor, magic resistance and mana — gap closed 2026-08-13
 
@@ -2308,7 +2331,9 @@ nothing. *Permanently unreachable* = the entry records an `unresolvable` — a f
 | — no gate-2 evidence either way | **2** | was 35 before §28's third round-trip |
 | **Permanently unreachable** | **23** | records an `unresolvable`; not work |
 
-**Damage components stored: 921.** Incomplete by reason, an entry may carry more than one:
+**Damage components stored: 921** — **superseded 2026-08-13; the measured figure is 917** (§36).
+The four are the summary rows §34.1's widened filter now drops. Incomplete by reason, an entry may
+carry more than one:
 
 | Reason | Entries |
 |---|---:|
@@ -2324,7 +2349,8 @@ nothing. *Permanently unreachable* = the entry records an `unresolvable` — a f
 | unknown stat | 3 |
 | split-payload / coefficient-shape / no-value | 2 / 2 / 2 |
 
-**Verified is 10 of 937 — 1.1%.** That is the number the plan has to move, and gate 5 is the only
+**Verified is 10 of 937 — 1.1%.** **SUPERSEDED 2026-08-13: the ledger holds 10, the runner promoted
+8, and it is 10 again only after §36 wired the third round-trip in.** That is the number the plan has to move, and gate 5 is the only
 thing that moves it.
 
 ---
@@ -2546,3 +2572,316 @@ is straightforward and is written down here so it need not be rediscovered: give
 an arm `{ kind: 'alternativeTo'; componentId: string; alsoLands?: number }`, meaning the component
 replaces the named one on its first application and lands `alsoLands` further times at its own
 value. That is additive to the contract and absent by default, exactly as `multipliers` was.
+
+---
+
+## 35. The npm audit findings, and why none of them ships (2026-08-13)
+
+`npm audit` reports **5 vulnerabilities — 3 moderate, 1 high, 1 critical**. This section exists so
+that result does not have to be re-derived every time someone runs the command. It records what
+each one is, and the reasoning that separates *local development exposure* from *shipped
+exposure*. That distinction is the whole answer here, so it is stated before the table.
+
+### The reasoning: what actually reaches a visitor
+
+This product is a **static site**. `npm run build` runs the bundler once on a developer's machine
+and emits a fixed set of files; a visitor's browser downloads those files and nothing else. There
+is no server-side execution, no API route, no runtime dependency resolution (SPECIFICATION §1,
+§13, §14).
+
+Three consequences follow, and they are what make the audit result benign:
+
+1. **A build tool is not a shipped artefact.** Vite and esbuild *produce* `dist/`; they are not
+   *in* it. A defect in the machine that prints a page is not a defect in the page.
+2. **A test runner never touches the artefact at all.** Vitest, `vite-node` and `@vitest/mocker`
+   run only when someone runs the suite.
+3. **The claim was verified, not assumed.** Measured 2026-08-13: `npx vite build` emits
+   `dist/index.html` (0.42 kB), one CSS file (1.53 kB) and one JS file (145.10 kB), plus the
+   champion/item/rune JSON. Searching every file in `dist/` for `jsdom`, `testing-library`,
+   `vitest` and `@vitest` returns **no matches**. **DEFINITION: "ships to a user" means the string
+   appears in a file under `dist/` after a production build.** Anything else is developer tooling.
+
+### The five, as reported
+
+| Package | Version | Severity | What it is | Ships? |
+|---|---|---|---|---|
+| **vitest** | 2.1.9 (dev) | **critical** | Arbitrary file read and execution **when the Vitest UI server is listening** | No |
+| **vite** | 5.4.21 (dev) | **high** | Path traversal in optimised-deps `.map` handling · `launch-editor` NTLMv2 hash disclosure via Windows UNC paths · `server.fs.deny` bypass via Windows alternate paths | No |
+| **esbuild** | 0.21.5 (dev) | moderate | Any website can send requests to the **dev server** and read the response | No |
+| **vite-node** | 2.1.9 (dev) | moderate | Inherited from vite | No |
+| **@vitest/mocker** | 2.1.9 (dev) | moderate | Inherited from vite | No |
+
+All five are `"dev": true` in `package-lock.json`, confirmed by reading the lockfile rather than
+by inspecting `package.json` alone.
+
+### Three specifics worth recording, because each narrows the exposure further
+
+- **The critical one cannot currently trigger.** It requires the Vitest **UI** server to be
+  listening. That UI is a separate package, `@vitest/ui`, and it is **not installed** — the
+  contents of `node_modules/@vitest/` are `expect`, `mocker`, `pretty-format`, `runner`,
+  `snapshot`, `spy`, `utils` and nothing else. The project's test scripts are `vitest run` and
+  `vitest`, neither of which starts a server.
+- **Two of the three vite advisories are Windows-only** (UNC paths, Windows alternate paths).
+  Development is on Linux (CLAUDE.md, "The machine this is built on").
+- **The remaining two concern `npm run dev`.** `vite.config.ts` sets no `server.host`, so the dev
+  server binds to localhost. Exploiting either requires visiting a hostile website *while* the dev
+  server is running on the same machine.
+
+### None of this arrived with the test dependencies
+
+`jsdom` 30.0.1, `@testing-library/react` 16.3.2 and `@testing-library/dom` 10.4.1 were added on
+2026-08-13 to make it possible to test that a rendered damage value announces "214 physical
+damage" to a screen reader (SPECIFICATION §10.1, DESIGN.md §8). **They carry none of the five.**
+Every advisory sits in vite, vitest, or a package one of those two pulls in — all of which
+predate that install.
+
+### The decision taken, and why
+
+**No action today.** Both fixes are **semver-major**: `vite` 5 → 8 and `vitest` 2 → 4. That is a
+toolchain replacement, not a patch. Applying it during a five-way parallel fan-out would
+invalidate work in flight and make every subsequent test failure ambiguous between "an agent
+broke it" and "the upgrade broke it".
+
+**Scheduled as its own piece of work once the fan-out has reported, with the full suite as the
+acceptance criterion** — the suite stood at **471 passed, 1 failed, of 472 across 24 files** at the
+time of this decision, so there is a real before-and-after to compare against rather than a guess.
+
+`npm audit fix --force` was **not** run and must not be: `--force` is what performs the major
+upgrade silently, which is precisely the change being deliberately deferred.
+
+### What would change this assessment
+
+Any one of these makes the finding above stale, and it should be re-derived rather than re-quoted:
+
+- `@vitest/ui` is installed (re-opens the critical finding's precondition).
+- `vite.config.ts` gains a `server.host` that binds beyond localhost.
+- The product stops being a static site — any server-side rendering or runtime bundling moves a
+  build tool into the shipped path.
+- A future advisory lands in `react` or `react-dom`, which **are** runtime dependencies and would
+  ship.
+
+---
+
+## 36. The parallel fan-out: what five concurrent areas measured (2026-08-13)
+
+Five areas ran concurrently — data pipeline, harvest, engine, interface, URL encoder. Each carried
+two standing instructions: **a defect becomes a mechanical check run over the whole population, not
+a fix to the entry that surfaced it**, and **a count without a definition is not a count**. This
+section records the harvest measurements. §37 records the effect census.
+
+### 36.1 The state, re-measured from code run today
+
+Method: all 1,071 ability-template names fetched once and cached, the harvester run over the cache
+offline reproducing the batch runner's ordering and alias dedupe, then the network round-trips over
+all 937 pages. Nothing below is quoted from a document.
+
+| Figure | Count | Definition |
+|---|---:|---|
+| distinct ability pages | **937** | after alias dedupe — reproduces §19 exactly |
+| storable | 623 | ≥1 stored damage component |
+| worklist | 69 | stored nothing, a source says it damages |
+| `no-damage` | 206 | stored nothing, every source silent |
+| **damage components stored** | **917** | **not 921** — see below |
+| verified / derived / incomplete / no-damage | **8 / 487 / 236 / 206** | before the repair in §36.2 |
+
+Gate 2 ability box: **799 of 839 rows matched, 40 failed** across 37 entries, 0 render failures.
+Gate 2 level series: **36 of 36 matched**. Gate 7 ran on 623 entries; **51 do not reconcile**.
+
+**917, not 921.** The four are the summary rows §34.1's widened filter drops: Gangplank R's
+"Maximum Mixed Total Damage with and", Gwen R's second and third cast totals, Xin Zhao W's "Slash
+Total Physical Damage". 921 was measured before that change landed.
+
+**Gate 7's split is 35 under / 16 over, not 33 / 18.** §34.1 restated the over-sums and never
+restated the under-sums. Two entries changed direction rather than disappearing; the total is 51
+either way.
+
+**Gate 7 compares only at rank 1**, and that was checked rather than assumed: re-run at every rank,
+**0 entries** pass at rank 1 and disagree later. The shortcut costs nothing on today's data. It is
+still a hole a future patch could fall through.
+
+### 36.2 A check the documents credited that the pipeline never ran
+
+**The batch runner imported `roundTrip` and `roundTripLevelScaled`. It did not import
+`roundTripProse`** — the third round-trip of §28, which exists, is exported from `harvest.ts`, and
+has passing tests. It had never been invoked.
+
+The evidence §28 describes is real: run by hand over the 52 abilities carrying prose components,
+**56 components checked, 56 matched, 0 disagreeing** — reproducing §28 exactly. **The documents
+were right about the evidence and wrong about the pipeline.** 26 abilities were recorded as
+confirmed on a check the shipped runner did not perform.
+
+| Figure | As the runner ran | With the third round-trip wired in |
+|---|---:|---:|
+| confirmed by gate 2 | 558 | **584** |
+| no gate-2 evidence either way | 28 | **2** |
+| `verified` | 8 | **10** |
+
+The two entries that could not reach `verified` were **Aphelios Q Moonshot** and **Ambessa P**: the
+promotion rule requires `checkedRows + levelScaledNotCompared > 0`, and their only evidence was the
+round-trip that never ran. **Wired in on 2026-08-13.**
+
+Why it was never wired in could not be established. The code and its tests are complete and
+passing, so it reads as an omission rather than a decision, and no document says either way.
+
+### 36.3 Gate 7's comment described behaviour gate 7 did not have
+
+`harvest.ts` read: *"Only `adds` components are summed, since an alternative replaces rather than
+joins."* **It did not.** Gate 7 ran before `proposeRelations`, the ability-wide pairing step. At the
+moment gate 7 summed, a row the pairing step would later mark `alternativeTo` still had no relation
+set, and the filter let it through.
+
+**Population: 88 entries carry 112 `alternativeTo` components; 14 also have a whole-ability total;
+12 of the 51 failures are affected, and 4 are reported in the WRONG DIRECTION** — Briar E,
+Renekton E, Rumble E and Taliyah Q are labelled over-sums when they are under-sums.
+
+**The fix was measured before it was proposed: 51 failures (35 under / 16 over) → 53 (41 under / 12
+over).** It reconciles **zero** entries and surfaces two new ones (Lulu Q Glitterlance, Zaahen W
+Dreaded Return).
+
+> **THE COUNT RISING FROM 51 TO 53 IS THE SYSTEM WORKING, NOT A REGRESSION.** Read it against the
+> definition, never against yesterday's number: gate 7 now compares what it always claimed to
+> compare, and the four wrong direction labels are the reason to do it. A future session comparing
+> 53 against 51 and concluding something broke would draw exactly the wrong lesson. This is
+> CLAUDE.md's "a falling count is usually the system working", in the other direction.
+
+### 36.4 The 51 gate-7 failures, classified
+
+Each class has a definition, a detector that runs offline over all 937 pages, and a measured
+population. The 51 partition cleanly. Detectors live in `scripts/extract/gate7-classes.ts`.
+
+| Class | Entries | Definition |
+|---|---:|---|
+| **U-MULT1** | **20** | Under-sum. Exactly one additive component; the stated total is the same whole number ≥2 times it at **every** rank. A missing multiplicity |
+| **U-MULT2** | **11** | Under-sum. Several components; removing one and dividing the remainder yields a consistent whole number ≥2 |
+| **O-SCOPE** | **8** | Over-sum. The stated "Total" equals one repeating component × its hit count exactly, at every rank — the total's scope is that component, and the label does not say so |
+| **O-PAIR** | **1** | Over-sum. A "Maximum X" whose sibling carries no "Minimum", so the pair is never matched. **7 entries roster-wide** |
+| Residue | **11** | No mechanical class fits. Falls to 7 once §36.3 lands |
+
+**U-MULT1's cause is precise:** the hit-count derivation of §30 only runs on a component whose
+*label* marks it repeating ("per Tick", "per Wave"). An ability landing twice under a plain
+"Physical Damage" label never reaches it. Four members were corroborated against the source's own
+prose rather than trusting the arithmetic: Riven Q *"can activate Broken Wings three times"* (×3),
+Aatrox W *"the target is dealt the same physical damage again"* (×2), Sett Q *"empowers his next
+two basic attacks"* (×2), Ornn R *"deals the same damage"* (×2).
+
+**U-MULT2 IS A DETECTOR, NOT A FIX.** It flags coincidences — Briar E "solves" at ×40 on a 2-damage
+term. Worse, **4 entries admit two readings that both reconcile at every rank**: Ziggs E is either
+one mine landing 5× at full damage, or one full mine plus 10 reduced ones. Also Nautilus E,
+Xayah Q, Yuumi R. They sit on §34.2's one-at-full-N-reduced shape, which the contract cannot
+express. **No mechanical rule can settle them. A person must read the ability.** Recorded as
+unresolved; not to be guessed.
+
+**A further roster-wide detector: 16 ability pages print more than one qualifying whole-ability
+total, and gate 7 arbitrarily takes the first** — which on Hwei R, Nilah R and Nunu E is the narrow
+damage-over-time total while the broader "Maximum Total …" row sits further down. **9 of the 16
+currently fail gate 7.**
+
+---
+
+## 37. The item and rune effect census (2026-08-13)
+
+The first measurement of the item and rune effect population. **A census, not a harvest** — no
+effect value was written and nothing was marked `verified`. It supersedes §16's item and rune rows.
+
+### 37.1 The population, and the per-field sourcing
+
+**The two halves of an effect come from different sources**, established per-field rather than
+inherited (§12's rule applied):
+
+- **Which items exist** — Data Dragon `item.json`, the §5 filter. **209** distinct items, funnel
+  reproduced exactly: 868 → 316 → 254 → 248 → 212 → 209.
+- **Item effect prose** — the wiki's `Module:ItemData/data`, joined by numeric id. All 209 matched.
+  **Data Dragon's own `description` is display HTML and its wording has already drifted**: Data
+  Dragon says Black Cleaver reduces "the target's Armor by 6%", the wiki says "6% armor reduction"
+  naming nobody. §16's ownership rule is built on the wiki's wording, so the wiki governs here.
+- **Rune prose** — Data Dragon `runesReforged.json` `longDesc`, 62 runes. There is no wiki module.
+- **Stat shards** — excluded. They appear in no source (§7) and are not to be invented.
+
+**291 effect entries: 229 item + 62 rune.** 157 of 209 items carry an `effects` block; **52 are
+pure-stat items with no passive at all**. **DEFINITION: one effect is one keyed entry**
+(`pass`/`pass2`/`pass3`/`act`/`consume`), with `description2` folded in as a rider clause rather
+than counted as a second effect.
+
+### 37.2 How much this engine has to model
+
+| | Count | Definition |
+|---|---:|---|
+| **In scope** | **168 of 291** | deals damage, or modifies a stat that can change a damage number or the survival verdict |
+| — deal damage | **81** | 66 item, 15 rune |
+| — modify a damage-relevant stat only | **87** | 60 conditional, 27 always-active |
+| Out of scope | 123 | wards, gold, movement speed, haste, tenacity, vision, cosmetics |
+| Conditional, whole population | 222 | **76 of the 81 damaging effects are conditional** |
+
+Movement speed, attack speed, ability haste, cooldowns and tenacity are filtered out of
+"damage-relevant" because **the engine models sequence, not elapsed time** (SPECIFICATION §3.2). A
+broader "modifies any stat" count of **169** is reported alongside so that judgement stays visible
+rather than baked in.
+
+**Machine-readable versus needs-a-person**, using §26.3's split: of the 81 damaging effects, **63
+state their value structurally and 18 need a person to read the sentence once** — 22%, against the
+41% §26.3 measured for abilities. **Item prose is better than PLAN.md §3 assumed, not worse.**
+
+All 40 sentences the classifier could not decide were hand-read. 18 deal damage; 22 do not, and
+they fail one recognisable way: **the damage is the trigger, not the payload**. "Dealing physical
+damage to enemy champions inflicts Grievous Wounds" is five items that deal nothing.
+
+### 37.3 Whose stat — the measurement that replaces §16's 85
+
+Counting rule stated in §16's correction box and implemented in `scripts/fetch/effect-census.ts`.
+
+| | Refs | Holder | Other champion | **Not stated** |
+|---|---:|---:|---:|---:|
+| Items, health pools | 55 | 10 | 10 | **35** |
+| Items, armor/MR/mana | 37 | 2 | 1 | **34** |
+| Runes, health pools | 17 | 9 | 0 | **8** |
+| Runes, armor/MR/mana | 11 | 6 | 0 | **5** |
+| **Total** | **120** | 27 | 11 | **82** |
+
+**56 distinct effects carry at least one stat the source never attributes** — 47 items, 9 runes.
+**These are `unresolvable`, not a worklist** (SPECIFICATION §8). The clusters: the mana-stacking
+family (Archangel's Staff, Manamune, Winter's Approach, Tear of the Goddess, Rod of Ages), the burn
+family (Sunfire Aegis, Hollow Radiance, Heartsteel, Titanic Hydra, Warmog's, Hullbreaker), the
+shred family (Black Cleaver `armor`, Bloodletter's Curse `magic resistance`), and four runes
+(Conditioning, Unflinching, Overgrowth, Demolish).
+
+**22 of the 82 unstated have a verb that implies the holder** ("gain +8 Armor"). **They were counted
+and deliberately NOT resolved** — that is the same convention argument §16 rejected for abilities,
+and Black Cleaver proves the convention can read backwards. **3** were resolved only by a possessive
+governing a coordinated pair ("increase **your** Armor and Magic Resist"), which is grammar rather
+than convention, and are flagged separately so the decision stays visible.
+
+**The permanent-incompleteness share is far higher here than for abilities: 56 of 291 effects,
+against 23 of 937 ability pages.**
+
+### 37.4 Seven defects, each swept over all 291
+
+Each was found by auditing the census's own output and became a rule over the whole population:
+
+1. **A damage trigger read as a damage instance** — 20 of the first run's 85. A run naming a damage
+   type with no value attached is never an instance.
+2. **Shield and heal wording tested flatly over a sentence** — cost 4 real damage instances
+   (Redemption, Eclipse, Malignance, Sundered Sky), because one sentence can heal an ally *and*
+   damage an enemy. Now positional: whichever verb is nearer the number governs it.
+3. **Excluding "critical strike" as non-damage** — deleted Essence Reaver, whose payload is physical
+   damage and whose *ratio* merely mentions crit chance.
+4. **Compound stat names counted as the ten stats** — "bonus health regeneration", "armor
+   penetration": 6 references that are different stats entirely.
+5. **A gerund read as a trigger wherever it appeared** — cost Scorch and Summon Aery, whose damage
+   verb is mid-clause. Position, not the word.
+6. **A rune label merely mentioning damage** — "Cooldown for damage restoration: 8s" handed
+   Presence of Mind, a mana rune, an 8-point damage instance.
+7. **The pronoun "its" treated as the holder** — World Atlas's "a minion below 30% of its maximum
+   health" is neither champion.
+
+### 37.5 Facts no source states, and two out of scope
+
+- **Three runes state a value the source does not contain**: `@f3@` (Unsealed Spellbook),
+  `@HealAmount@` (Absorb Life), `@BaseHeal@` (Font of Life) — unresolved Data Dragon placeholders.
+  The source does not state it; that is a result, not a gap.
+- **Two item effects are cross-reference stubs**: Armored Advance → Plated Steelcaps, Immortal Path
+  → Gluttonous Greaves. The fact is stated, on another page.
+- **Two damaging effects are out of champion-versus-champion scope**: Demolish (towers only) and
+  Umbral Glaive `pass3` (wards only).
+
+The census is `public/data/effect-census.json`, carrying its provenance, every definition in full,
+per-effect rows, and the recorded hand audit.

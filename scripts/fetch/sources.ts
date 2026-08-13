@@ -27,6 +27,20 @@ export function ddragonChampionDetailUrl(patch: string, apiname: string): string
   return `https://ddragon.leagueoflegends.com/cdn/${patch}/data/en_US/champion/${apiname}.json`;
 }
 
+/**
+ * The item module on the OFFICIAL wiki — the only place item EFFECT text exists in a
+ * structured form. Data Dragon's item `description` is display HTML with the numbers baked
+ * into a sentence; this module keys each item's effects as `pass` / `pass2` / `act`, which is
+ * what `CuratedItemEffect.key` in the frozen contract is defined against.
+ *
+ * Same `/en-us/` rule as the champion module: the bare `/api.php` 302-redirects to it, and
+ * the Fandom lookalike must never be used (DATA-SOURCES §1).
+ */
+export const WIKI_ITEM_MODULE_URL =
+  'https://wiki.leagueoflegends.com/en-us/api.php' +
+  '?action=query&prop=revisions&titles=Module:ItemData/data' +
+  '&rvslots=main&rvprop=content&format=json&formatversion=2';
+
 export function ddragonItemsUrl(patch: string): string {
   return `https://ddragon.leagueoflegends.com/cdn/${patch}/data/en_US/item.json`;
 }

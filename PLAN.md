@@ -16,12 +16,18 @@ input it was sized against has moved.** This one is built on the measurements in
 | — `no-damage` | **206** | stored nothing, and every source is silent about damage |
 | — no component, incomplete for another reason | 39 | |
 | **Of the 623 storable:** confirmed by gate 2 | **584** | gate 2 compared ≥1 row against the wiki's own rendering and found no disagreement |
-| — **verified** | **10** | confirmed AND independently re-derived (gate 5), recorded with evidence |
+| — **verified** | **8** | ledger holds 10; the runner promotes 8. Two lack gate-2 evidence because the prose round-trip was never wired in (§36). Corrected 2026-08-13 |
 | — gate 2 disagreed | 37 | forced `incomplete` |
 | — no gate-2 evidence either way | 2 | was 35 before the third round-trip (§28) |
 | **Permanently unreachable** | **23** | records an `unresolvable`: a fact no source states. Not work |
 
-**Damage components stored: 921.** Gate 7 (§32.3) reconciles 572 of 623; **51 do not**.
+**Damage components stored: 917** — corrected 2026-08-13 from 921. **DEFINITION: components
+surviving the summary, non-champion and unreadable-row filters, over 937 distinct pages.** The four
+missing against 921 are the summary rows §34.1's widened filter now drops (Gangplank R's "Maximum
+Mixed Total Damage with and", Gwen R's second and third cast totals, Xin Zhao W's "Slash Total
+Physical Damage"). 921 was measured before that change landed. Gate 7 leaves **51** unreconciled,
+split **35 under / 16 over** — not the 33/18 recorded here previously (§34.1 restated the over-sums
+and never restated the under-sums; two entries changed direction rather than disappearing).
 
 **The historic defect rate is 50%, not 10%.** Gate 5's first run disagreed with 14 of 28
 abilities. After seven classes were fixed it disagreed with 5 of 28 — 18%. **Plan against 18%

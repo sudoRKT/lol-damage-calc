@@ -1,0 +1,181 @@
+/*
+ * Primitives — the damage value and the verification status mark.
+ *
+ * EVERY value in this file traces to DESIGN.md. The trace is recorded in
+ * `token-audit.test.ts`, which re-checks it mechanically on every run across all of
+ * src/ui/, not just this file. If you need a colour, size, spacing step, radius or border
+ * that DESIGN.md does not define, RAISE IT — do not add it here (DESIGN.md preamble).
+ *
+ * The reserved-hue law (DESIGN.md §1): the only hues are the three damage types, lethal
+ * magenta and the recent-damage gold. Verification status is NOT one of them and is
+ * neutral here — glyph, label and --text-secondary only.
+ */
+
+@import '../tokens.css';
+
+/* ---------------------------------------------------------------------------
+ * Screen-reader-only text.
+ *
+ * The one rule in this file whose numbers are NOT design tokens, deliberately: 1px / 0 /
+ * -1px here are the standard clip-rect idiom for hiding text visually while leaving it in
+ * the accessibility tree. They are geometry for assistive technology, not visual design,
+ * and DESIGN.md's spacing scale neither covers them nor should. Allow-listed by name in
+ * token-audit.test.ts with this reason.
+ * --------------------------------------------------------------------------- */
+.u-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---------------------------------------------------------------------------
+ * The damage value (DESIGN.md §8, SPECIFICATION §10.1).
+ *
+ * `{number}<thin space>{P|M|T}` in the damage-type hue. The tag is mandatory and is
+ * never suppressed. Colour is the fast, redundant channel; the tag is the definitive one.
+ * --------------------------------------------------------------------------- */
+.dmg {
+  font-family: var(--font-mono); /* DESIGN.md §3 — numbers are JetBrains Mono */
+  white-space: nowrap; /* the number and its tag never break apart */
+}
+
+/* Damage-type hues — DESIGN.md §2 "Damage-type hues (semantic — this is the data)". */
+.dmg--physical {
+  color: var(--dmg-physical);
+}
+.dmg--magic {
+  color: var(--dmg-magic);
+}
+.dmg--true {
+  color: var(--dmg-true);
+}
+
+/* Numeric type roles — DESIGN.md §3 type scale. Weights are the ones that table states
+ * for each role (hero 700, l 500, m 400, s 400); tokens.css exposes no weight variable. */
+.dmg--hero {
+  font-size: var(--type-num-hero);
+  line-height: var(--lh-num-hero);
+  font-weight: 700;
+}
+.dmg--l {
+  font-size: var(--type-num-l);
+  line-height: var(--lh-num-l);
+  font-weight: 500;
+}
+.dmg--m {
+  font-size: var(--type-num-m);
+  line-height: var(--lh-num-m);
+  font-weight: 400;
+}
+.dmg--s {
+  font-size: var(--type-num-s);
+  line-height: var(--lh-num-s);
+  font-weight: 400;
+}
+
+/* The P / M / T tag. DESIGN.md §8: JetBrains Mono, 0.7em, same colour as the number
+ * (inherited — never set here, so the tag can never drift off its value's hue).
+ * 0.7em is DESIGN.md's own literal; there is no token for it. No weight is specified,
+ * so none is set and the tag inherits its value's weight. */
+.dmg__tag {
+  font-family: var(--font-mono);
+  font-size: 0.7em;
+}
+
+/* ---------------------------------------------------------------------------
+ * Multi-type aggregate total (DESIGN.md §7 "The rolling total", §8 last bullet).
+ * Bone, no tag — and never without the composition bar that carries the tags instead.
+ * --------------------------------------------------------------------------- */
+.agg {
+  display: inline-flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  font-family: var(--font-mono);
+  color: var(--text-primary); /* bone — type-agnostic, DESIGN.md §7 */
+}
+
+.agg__total--hero {
+  font-size: var(--type-num-hero);
+  line-height: var(--lh-num-hero);
+  font-weight: 700;
+}
+.agg__total--l {
+  font-size: var(--type-num-l);
+  line-height: var(--lh-num-l);
+  font-weight: 500;
+}
+
+.agg__label {
+  font-family: var(--font-display);
+  font-size: var(--type-eyebrow);
+  line-height: var(--lh-eyebrow);
+  letter-spacing: var(--ls-eyebrow);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  font-weight: 500; /* DESIGN.md §3 — --type-eyebrow is Saira 500 */
+}
+
+/* The composition bar — three segments in the damage hues, each carrying its tag. */
+.comp {
+  display: flex;
+  gap: var(--space-0);
+  align-items: flex-start;
+}
+
+.comp__seg {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-0);
+  min-width: 0;
+}
+
+.comp__bar {
+  height: var(--space-1); /* 4px — a thin bar, DESIGN.md §7 */
+  border-radius: var(--radius-cell); /* 0 — it aligns to the readout grid */
+}
+
+.comp__bar--physical {
+  background: var(--dmg-physical);
+}
+.comp__bar--magic {
+  background: var(--dmg-magic);
+}
+.comp__bar--true {
+  background: var(--dmg-true);
+}
+
+/* ---------------------------------------------------------------------------
+ * Verification status mark (DESIGN.md §6, SPECIFICATION §8).
+ *
+ * NEVER COLOURED. All five states share one colour (--text-secondary) and one type role.
+ * Every distinction between them is glyph and label — which is why they survive greyscale
+ * and why a verified figure and a derived figure never differ by a hue.
+ *
+ * Derived is the normal state and is styled identically to Verified: same size, same
+ * weight, same colour, no italic, no parenthesis, no caution mark. There is deliberately
+ * no per-state rule below.
+ * --------------------------------------------------------------------------- */
+.vstat {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--space-1);
+  font-family: var(--font-body);
+  font-size: var(--type-body-s);
+  line-height: var(--lh-body-s);
+  font-weight: 500; /* DESIGN.md §3 — --type-body-s is IBM Plex Sans 500 */
+  color: var(--text-secondary); /* DESIGN.md §6 — the one colour, for all five states */
+  white-space: nowrap;
+}
+
+/* The glyph carries a class for testing and for downstream layout, but DELIBERATELY has no
+ * rule of its own. Its shape is the whole signal — filled / half / open / open-struck /
+ * none — and ⊘ carries its own strike as part of the character. Nothing here decorates it,
+ * so it survives greyscale, 11px, and any font substitution, and no state can be given a
+ * visual weight the others do not have. */

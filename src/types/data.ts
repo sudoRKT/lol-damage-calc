@@ -123,7 +123,8 @@ export interface Champion {
 }
 
 /** Item, from Data Dragon. Only structured stats live here; passive VALUES are curated
- *  (DATA-SOURCES §5). The pool is the corrected 222 distinct items. */
+ *  (DATA-SOURCES §5). The pool is the corrected **209** distinct items — NOT 222, which is the
+ *  count under the broken filter before the id cutoff. Corrected 2026-08-13. */
 export interface Item {
   id: number;
   name: string;
@@ -432,7 +433,11 @@ export interface CuratedAbility {
 export interface CuratedItemEffect {
   itemId: number;
   itemName: string;
-  /** 'pass' / 'pass2' / 'act' — matches the keys in Module:ItemData/data/<Item Name>. */
+  /** The effect's key in Module:ItemData/data/<Item Name>. Observed live 2026-08-13 across all
+   *  209 classic items: 'pass', 'pass2', 'pass3' (8 effects), 'act', 'consume' (7 effects). This
+   *  comment listed only 'pass' / 'pass2' / 'act' until then. The field is a plain string, so the
+   *  omission broke nothing — it just under-described the source. `description2` is a rider clause
+   *  on the same effect and is NOT a separate key. */
   key: string;
   name: string;
   kind: 'passive' | 'active';

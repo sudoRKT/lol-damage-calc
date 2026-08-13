@@ -256,7 +256,12 @@ additionally exclude the mode-variant duplicate identifiers (every observed dupl
 six-digit id at or above 200000, while the real classic items keep their canonical 3–5 digit
 ids) and deduplicate by item name, keeping the canonical low id. For example, Redemption
 appears as id 3107 at 2300 gold and as id 323107 at 2800 gold, and only 3107 belongs in the
-pool. Only the corrected pool of 222 distinct items is presented to the user.
+pool. **Only the corrected pool of 209 distinct items is presented to the user.** (This read 222
+until 2026-08-13. 222 is real but measures the wrong thing — it is the count of distinct *names*
+under the broken filter, before the id cutoff. The full funnel and the rule that a fetch yielding
+222 means the id cutoff is not being applied are in DATA-SOURCES §5, which corrected this on
+2026-08-12; this file was not updated with it, and the stale figure was propagated into an agent
+brief before it was caught.)
 
 Ability ratios, item passive values, rune values, and per-ability stack yields are held in
 a hand-curated override file maintained within the project repository. This layer exists

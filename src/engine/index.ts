@@ -36,3 +36,23 @@ export {
 } from './crit';
 
 export { isExecuted, healthThresholdFromMaxHealth } from './execute';
+
+// The component model: one stored AbilityComponent -> one pre-mitigation damage figure.
+// It resolves a flat base plus any number of caster-only ratios (base/bonus/total attack
+// damage and ability power) on either the rank or the champion-level axis, and multiplies by
+// the component's own hit count. Anything it cannot resolve it REFUSES; `unsupportedReasons`
+// gives the same answer without throwing, so the exclusion can be counted across a data set.
+export {
+  evaluateComponent,
+  evaluateComponents,
+  unsupportedReasons,
+  isCoreRatioStat,
+  CORE_RATIO_STATS,
+  ComponentEvaluationError,
+  type CasterStats,
+  type ComponentContext,
+  type ComponentDamage,
+  type CoreRatio,
+  type CoreRatioStat,
+  type RatioContribution,
+} from './component';

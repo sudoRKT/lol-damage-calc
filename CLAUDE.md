@@ -239,9 +239,13 @@ literal (29 suspect), and "additional" damage stored as a replacement (1). **Non
 visible to gate 2**, because every one of them round-trips correctly — they are errors of meaning,
 not of transcription. Fix them before trusting any roster-wide figure.
 
-**11 entries are `verified`**, the first in the project, recorded in `verification/gate5-passes.json`.
-An entry reaches that status only when gate 5 passed it AND gate 2 agreed; the ledger is the only
-route and the batch runner enforces both.
+**8 entries are `verified` as the pipeline actually runs — corrected 2026-08-13.** This said 11;
+PLAN.md and DATA-SOURCES §31.4 said 10; the measured figure was 8. **DEFINITION: an entry is
+`verified` when the gate-5 ledger records an independent re-derivation AND the batch runner's own
+promotion rule fires, which requires gate-2 evidence (`checkedRows + levelScaledNotCompared > 0`).**
+The ledger holds 10. Two — Aphelios Q Moonshot and Ambessa P — were refused promotion because their
+only gate-2 evidence came from the prose round-trip the runner never invoked (§28, §36).
+`verification/gate5-passes.json` is still the only route in.
 
 Abilities carry FOUR verification statuses, not three: `verified`, `derived`, `incomplete` and
 `no-damage` (DATA-SOURCES §27). The fourth exists because 239 entries that deal no damage at all
@@ -266,8 +270,18 @@ is blocks the source does not label at all. Everything the path produces is
 stated in the source is left unread rather than judged from the surrounding sentence, and a row
 that cannot be read in full is not stored in part.
 
-The shape library has a real gap: 32 abilities deal a percentage of a health pool whose
-percentage is itself scaled (`10–20% (+2.5% per 100 AP) of target's maximum health`). `Ratio`
-cannot express it, so those abilities are currently stored wrong. They are detected and forced
-to `incomplete`; the proposed contract change is written up in DATA-SOURCES.md §17 and is
-waiting on a decision. Do not add the shape without one.
+**The coefficient shape is IN the contract and live — corrected 2026-08-13.** This paragraph used
+to say `Ratio` "cannot express it" and that the change was "waiting on a decision. Do not add the
+shape without one." That was true when written and stopped being true two commits later, in
+`202708d` ("give ratios a multiplier"), and nobody updated it. The stale text cost real work: an
+engine session refused 53 damage rows on the strength of it, and the lead repeated it in a brief.
+
+What is actually true: 32 abilities deal a percentage of a health pool whose percentage is itself
+scaled (`10–20% (+2.5% per 100 AP) of target's maximum health`), and `src/types/data.ts` expresses
+it with `RatioMultiplier` (`per`, optional `owner`, `per100`) on `Ratio.multipliers`. It is live in
+three places: the harvester captures multipliers including the split-across-blocks case, gate 1
+validates them and requires an owner where the stat needs one, and the `coefficient-shape` detector
+was narrowed to fire only when the multipliers were NOT captured (`classify.ts:602`).
+
+**What is still open is a measurement, not a decision:** how many of the 32 the live shape actually
+resolves, and how many still fail. Nobody has run that.
