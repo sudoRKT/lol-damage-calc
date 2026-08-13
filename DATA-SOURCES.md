@@ -1182,3 +1182,63 @@ thing DATA-SOURCES §11 warns must never be inferred, because the same shorthand
 - **Malzahar R** — two stored components share the label "Magic Damage Per Tick", so both map to
   one rendered row and the wrong one is compared. A duplicate-label defect, not a value defect.
 - **Yorick E** — our ratio order and the wiki's differ, so a positional comparison misaligns.
+
+---
+
+## 22. Ability rank counts — the wiki does not state them (2026-08-13)
+
+### Where the wiki states it: nowhere
+
+§11 says a rank count must never be inferred. It was being inferred anyway — `maxRankFor`
+returned 5 for Q/W/E and 3 for R for every champion in the game.
+
+Looking for the wiki's own statement: **there is none.** `Module:Ability progression` derives
+the fill count from the parent template's `skill` field — `fill = (skill ~= "R" and 5) or 3` —
+which is the same assumption. The ability data templates carry `skill = Q`, `champion`, icons,
+cooldowns and costs, and **no rank-count field**. Where an ability differs, the difference shows
+up only inside the value shorthand itself (`{{ap|3 to 8 6}}`), as the author working around the
+module's default.
+
+### Where it IS stated: Data Dragon's per-champion `maxrank`
+
+`.../data/en_US/champion/<apiname>.json` lists four spells, each with `maxrank`. This is a
+**structural** field, not one of the zero-filled damage fields (§4), so using it does not
+arbitrate an ability number through Data Dragon (§12). `Champion.abilityMaxRanks` now carries
+it and the harvester takes the rank count from there, never from the slot letter.
+
+### How wrong the assumption was
+
+**DEFINITION: a slot has a wrong rank count when Data Dragon's `maxrank` for it differs from
+the old 5/5/5/3 rule.** Measured over all 173 roster champions:
+
+**7 champions, 15 ability slots.**
+
+| Champion | Q | W | E | R | Why |
+|---|---|---|---|---|---|
+| **Udyr** | **6** | **6** | **6** | **6** | no ultimate; four stances each rank to 6 |
+| **Jayce** | **6** | **6** | **6** | **1** | two weapon forms; R is the transform |
+| **Aphelios** | **6** | **6** | **6** | 3 | five weapons |
+| **Yuumi** | **6** | 5 | 5 | 3 | |
+| Elise | 5 | 5 | 5 | **4** | transforming ultimate |
+| Karma | 5 | 5 | 5 | **4** | Mantra |
+| Nidalee | 5 | 5 | 5 | **4** | transforming ultimate |
+
+Every damage value on those 15 slots was wrong at every rank except the first and last, because
+`X to Y` interpolates across the count: Udyr Q read as 5 ranks gives 3/4.25/5.5/6.75/8, and the
+source says 3/4/5/6/7/8.
+
+### The residual, now loud instead of silent
+
+A **slot's** rank count is not uniform across the ability names in it. Karma's Soulflare and
+Nidalee's Takedown are second-form abilities sitting in slot Q, and their own shorthand gives
+**four** values — they follow the transforming ultimate, not the Q slot. Data Dragon has no
+separate spell for them, so it cannot state their count.
+
+Gate 1 now **fails** these rather than storing wrong middle values: "explicit scaling has 4
+values but the ability has 5 ranks", on Karma Q Soulflare and Nidalee Q Takedown. That is the
+correct outcome for now — the error moved from silent to loud.
+
+**Proposed, not implemented:** where an ability's own shorthand gives an explicit list, that
+list's length is itself a statement of its rank count, and should win over the slot's `maxrank`.
+That is reading the source, not inferring — but it changes how every explicit list in the game is
+validated, so it is a decision, not a tidy-up.

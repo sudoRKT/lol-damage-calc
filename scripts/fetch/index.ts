@@ -10,7 +10,7 @@ import { mkdir, rm, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import type { Provenance } from '../../src/types/data.ts';
+import type { AbilitySlot, Provenance } from '../../src/types/data.ts';
 import {
   assertOfficialWiki,
   highestChangesPatch,
@@ -28,6 +28,7 @@ import { fetchPatchNotes } from './patch-notes.ts';
 import { parseRunes, type RawRuneTree } from './runes.ts';
 import {
   championPortraitUrl,
+  ddragonChampionDetailUrl,
   ddragonChampionsUrl,
   ddragonItemsUrl,
   ddragonRunesUrl,
@@ -108,6 +109,37 @@ export async function run(): Promise<void> {
   const ddStats: Record<string, Record<string, number>> = {};
   for (const [apiname, entry] of Object.entries(ddChampions.data)) ddStats[apiname] = entry.stats;
 
+  // Ability RANK COUNTS. The wiki does not state them — Module:Ability progression derives
+  // 5-or-3 from the slot letter, the same assumption we made, and it is wrong for 21 abilities
+  // (Udyr's four stances rank to 6; Jayce's two forms to 6; Karma, Nidalee and Elise have
+  // 4-rank ultimates). Data Dragon's per-champion file states `maxrank` per spell, which is a
+  // structural field, not one of the zero-filled damage fields (DATA-SOURCES §22).
+  const SPELL_SLOTS: AbilitySlot[] = ['Q', 'W', 'E', 'R'];
+  const maxRanks = new Map<string, Partial<Record<AbilitySlot, number>>>();
+  for (const apiname of ddNames) {
+    try {
+      const detail = await fetchJson<{ data: Record<string, { spells: Array<{ maxrank: number }> }> }>(
+        ddragonChampionDetailUrl(patch, apiname),
+      );
+      const spells = detail.data[apiname]?.spells ?? [];
+      const byslot: Partial<Record<AbilitySlot, number>> = {};
+      SPELL_SLOTS.forEach((slot, i) => {
+        const r = spells[i]?.maxrank;
+        if (typeof r === 'number' && r > 0) byslot[slot] = r;
+      });
+      maxRanks.set(apiname, byslot);
+    } catch {
+      // A missing detail file leaves the slot absent, which the harvester reports rather than
+      // filling in with the old assumption.
+      maxRanks.set(apiname, {});
+    }
+  }
+  const oddRanks = [...maxRanks].filter(([, m]) =>
+    (m.Q ?? 5) !== 5 || (m.W ?? 5) !== 5 || (m.E ?? 5) !== 5 || (m.R ?? 3) !== 3,
+  );
+  console.log(`ability rank counts: read from Data Dragon for ${maxRanks.size} champions; ${oddRanks.length} differ from the 5/5/5/3 assumption`);
+  for (const [apiname, m] of oddRanks) console.log(`  ${apiname}: Q${m.Q ?? '-'} W${m.W ?? '-'} E${m.E ?? '-'} R${m.R ?? '-'}`);
+
   const { champions: resolvedWiki, overrides, contestedApinames } = buildOverrides(
     wikiChampions,
     ddStats,
@@ -138,7 +170,7 @@ export async function run(): Promise<void> {
     patch,
     fetched,
   };
-  const { champions, withheld } = joinChampions(resolvedWiki, ddNames, championProvenance);
+  const { champions, withheld } = joinChampions(resolvedWiki, ddNames, championProvenance, maxRanks);
   console.log(`champions kept: ${champions.length}; withheld: ${withheld.length}`);
   for (const entry of withheld) {
     console.log(`  withheld "${entry.wikiName}" — ${entry.reason}`);

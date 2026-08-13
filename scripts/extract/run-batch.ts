@@ -91,8 +91,18 @@ async function main(): Promise<void> {
         continue;
       }
       seenRevision.set(page.revid, abilityName);
+      // The rank count comes from Data Dragon's `maxrank`, never from the slot letter.
+      // Absent means Data Dragon did not describe that slot (the passive); the harvester
+      // falls back to its structural default of 1 there rather than to 5.
       const draft = draftFromTemplate(
-        { champion: name, slot, ability: abilityName, wikitext: page.content, revisionId: page.revid },
+        {
+          champion: name,
+          slot,
+          ability: abilityName,
+          wikitext: page.content,
+          revisionId: page.revid,
+          maxRank: champ.abilityMaxRanks[slot],
+        },
         manifest.patch,
         fetched,
       );

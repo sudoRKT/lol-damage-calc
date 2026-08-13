@@ -20,6 +20,13 @@ export function ddragonChampionsUrl(patch: string): string {
   return `https://ddragon.leagueoflegends.com/cdn/${patch}/data/en_US/champion.json`;
 }
 
+/** Per-champion detail file — the ONLY machine-readable statement of an ability's rank count.
+ *  The wiki does not state it: Module:Ability progression derives 5-or-3 from the slot letter,
+ *  which is the same assumption we were making and is wrong for 21 abilities (DATA-SOURCES §22). */
+export function ddragonChampionDetailUrl(patch: string, apiname: string): string {
+  return `https://ddragon.leagueoflegends.com/cdn/${patch}/data/en_US/champion/${apiname}.json`;
+}
+
 export function ddragonItemsUrl(patch: string): string {
   return `https://ddragon.leagueoflegends.com/cdn/${patch}/data/en_US/item.json`;
 }

@@ -211,6 +211,8 @@ export function joinChampions(
   wikiChampions: WikiChampion[],
   dataDragonApinames: Set<string>,
   provenance: Provenance,
+  /** apiname -> slot -> rank count, from Data Dragon's per-champion `maxrank`. */
+  maxRanks: Map<string, Partial<Record<AbilitySlot, number>>> = new Map(),
 ): JoinResult {
   const withheld: WithheldChampion[] = [];
   const kept: WikiChampion[] = [];
@@ -257,6 +259,7 @@ export function joinChampions(
       id: winner.id,
       stats: winner.stats,
       abilityNames: winner.abilityNames,
+      abilityMaxRanks: maxRanks.get(winner.apiname) ?? {},
       // Data Dragon names every champion portrait "<apiname>.png". Safe to build rather
       // than look up, because roster membership is already gated on the apiname existing
       // in Data Dragon a few lines above.

@@ -84,13 +84,17 @@ export interface TemplateSource {
   ability: string;
   wikitext: string;
   revisionId?: number;
+  /** Rank count STATED by Data Dragon for this slot. When absent the structural default in
+   *  `maxRankFor` applies — which is right for a passive and an assumption everywhere else,
+   *  so it is the caller's job to supply this (DATA-SOURCES §22). */
+  maxRank?: number;
 }
 
 /** Build a draft entry from one ability template. */
 export function draftFromTemplate(src: TemplateSource, patch: string, fetched: string): DraftAbility {
   const fields = parseFields(src.wikitext);
   const vars = parseVardefines(src.wikitext);
-  const maxRank = maxRankFor(src.slot);
+  const maxRank = src.maxRank ?? maxRankFor(src.slot);
   const damageType = damageTypeOf(fields.damagetype) ?? 'magic';
 
   const issues: RowIssue[] = [];

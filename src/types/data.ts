@@ -63,6 +63,18 @@ export interface Champion {
    * `sourceRevision` on CuratedAbility records. See DATA-SOURCES §18.
    */
   abilityNames: Partial<Record<AbilitySlot, string[]>>;
+  /**
+   * How many ranks each ability slot actually has, from Data Dragon's per-champion `maxrank`.
+   *
+   * NEVER inferred. The old rule — 5 for Q/W/E, 3 for R — is wrong for 21 abilities across 8
+   * champions: Udyr's four stances rank to 6 because he has no ultimate, Jayce's two forms to
+   * 6, and Karma, Nidalee and Elise have 4-rank ultimates. A wrong rank count does not fail
+   * loudly; it silently moves every middle value, because `X to Y` interpolates across the
+   * count (DATA-SOURCES §11, §22).
+   *
+   * Absent for a slot Data Dragon does not describe (the passive, which does not rank).
+   */
+  abilityMaxRanks: Partial<Record<AbilitySlot, number>>;
   /** Data Dragon portrait filename, e.g. "Aatrox.png" — matches Item.icon and Rune.icon.
    *  A champion is only in the roster once this asset exists (DATA-SOURCES §1). */
   icon: string;
