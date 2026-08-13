@@ -2216,3 +2216,113 @@ tests before anything relied on it:
 
 This is a genuinely independent source: not derived from the wiki, and it settled several disputes
 outright. §4's conclusion that Riot exposes no ability damage is true of **Data Dragon** only.
+
+---
+
+## 31. The residue, and Riot's own arrays run over everything (2026-08-13)
+
+### 31.1 The five that still disagreed, diagnosed
+
+Three of the five were fixed the same day and verified directly (§30). What matters is whether
+each is a CLASS with a population behind it or a one-off.
+
+| Ability | What is wrong | New class or survivor | Population | Definition of the population |
+|---|---|---|---:|---|
+| **Heimerdinger W** | Rockets land 1, **4** and **15** times; all three components store one hit. The wiki's combined row states the arithmetic literally (`initial + 4× + 15×`). | **Survivor of class 1.** The tick-count derivation deliberately refuses an ability with more than one repeating component, because a single total cannot be attributed among them. | **69** | **TOTAL-MISMATCH**: the ability has a dropped `Total` damage row that expands, and our additive components do not sum to it at rank 1. A missing instance, a missing multiplicity or a dropped term — the detector does not say which |
+| **Ahri Q** | Deals magic outbound and true on the return; the rows do not say which is which, so nothing is stored. | **Survivor** of the damage-type work, in its second form: not an absent type but two. | **28** | **TYPE-SPLIT**: `Module:DamageData/data` states more damage types for the ability than we store |
+| **Akshan P** | Regression I introduced: a two-token `Physical Magic` was read as "no type" and gated the prose path off. Fixed. | **New class**, created and closed the same day. | **24** | **TWO-TOKEN TYPE**: the ability's own template names more than one damage type |
+| **Ambessa Q ×2** | "Increased X" stored as adding to "X" when it is the doubled form of the same hit. Fixed. | **New class.** | **19** | **EMPOWERED PAIR**: a stored "Increased/Enhanced/Empowered X" row now paired as `alternativeTo` its base row |
+
+**None of the five is a one-off.** Every one has a population, and the largest — 69 entries whose
+stored damage does not reconcile with the total the wiki prints — is a check that did not exist
+before and that no one has to sample to run.
+
+**Two cautions on the 69.** It catches over-counting as well as under (Evelynn Q sums 140 against
+a stated total of 45; Dr. Mundo W 100 against 80), so it is a worklist, not a defect count. And
+it has a known false positive: Cassiopeia Q reads 74.97 against 75, which is the wiki's own
+two-decimal rounding of a per-tick figure multiplied back up, not an error.
+
+### 31.2 Riot's shipped arrays, run across the whole roster
+
+172 of 173 champion dumps retrieved. This is **not gate 5 and confers nothing**: it compares
+numbers, not meaning, so it cannot see a missing instance, a wrong multiplicity or a wrong damage
+type — the three things that did the most damage in §29. What it can do is run on everything at
+once, and a disagreement it finds is a defect nobody had to sample to reach.
+
+**Matching is by VALUE, not by name.** Riot names arrays freely and there is no mapping from our
+row labels to theirs, so every array a champion ships is offset past the unlearned rank and
+truncated at the ability's rank count, and we ask whether any of them reproduces our series.
+
+| Figure | Count | Definition |
+|---|---:|---|
+| components checked | **810** | a stored component with a rank-scaled, non-zero base, on a champion whose dump was retrieved |
+| **matched** | **606** | some shipped array, offset and truncated, reproduces our series at **every** rank |
+| **near-miss — a disagreement** | **1** | some shipped array reproduces it on more than half its ranks but not all. That is the shape of a real defect |
+| no counterpart | 203 | no shipped array comes close. **NOT a defect**: many stored rows are arithmetic on another row — a 35% handle, a 0.6 secondary — that Riot ships as a multiplier rather than as its own array |
+| not checkable this way | 108 | a level-scaled base (Riot ships those as formulas, not arrays) or a payload row whose base is zero |
+| dump unavailable | 3 | components on the one champion with no retrievable dump |
+
+**606 independent confirmations in one pass**, against a source that is not the wiki and is not
+derived from it. Set beside gate 5's 28 abilities in two rounds of five agents, that is the
+argument for keeping this check in the pipeline.
+
+### 31.3 The one disagreement, and it is real
+
+**Nunu & Willump R (Absolute Zero), Maximum Magic Damage.**
+
+- The wiki writes `{{ap|625 to 1275}}`, which its own documented linear rule expands to
+  **625 / 950 / 1275**.
+- Riot ships `BaseDamage = [625, 625, 925, 1275, 1275, 1275, 1275]`, which offset and truncated is
+  **625 / 925 / 1275**.
+
+**The two sources state different numbers at rank 2, by 25.** This is not a rounding artifact and
+not a trap in the referee — the array is explicit and its first and last ranks agree with the
+wiki. Either the wiki's shorthand is a lossy summary of a curve that is not linear, or the shipped
+array is stale.
+
+**It is recorded and not reconciled.** Nothing here silently adopts 925: the project's rule is that
+a disagreement between sources is a finding to surface, and the tie-break used for champion base
+statistics — the wiki's own patch notes — has not been consulted for ability values and may not
+even cover this. **Nunu R must not sit at `derived` while two of Riot's own sources disagree about
+it**, and resolving it is the first item of ability-level source policy the plan needs.
+
+### 31.4 The state
+
+**DEFINITIONS.** *Entry* = one distinct wiki ability page after alias dedupe. *Storable* = ≥1
+stored component. *Confirmed* = gate 2 compared at least one row or component against the wiki's
+own rendering and found no disagreement. *Verified* = confirmed **and** an independent gate-5
+re-derivation is recorded in `verification/gate5-passes.json`; a CommunityDragon match confers
+nothing. *Permanently unreachable* = the entry records an `unresolvable` — a fact no source states.
+
+| | Entries | |
+|---|---:|---|
+| **Total ability pages** | **937** | |
+| — storable | **623** | ≥1 stored damage component |
+| — worklist | **69** | stored nothing, a source says it damages |
+| — `no-damage` | **206** | stored nothing, every source silent about damage |
+| — no component, incomplete for another reason | 39 | |
+| **Of the 623 storable:** | | |
+| — **confirmed by gate 2** | **584** | |
+| — **verified** | **10** | confirmed AND independently re-derived |
+| — gate 2 disagreed | **37** | forced to `incomplete` |
+| — no gate-2 evidence either way | **2** | was 35 before §28's third round-trip |
+| **Permanently unreachable** | **23** | records an `unresolvable`; not work |
+
+**Damage components stored: 921.** Incomplete by reason, an entry may carry more than one:
+
+| Reason | Entries |
+|---|---:|
+| prose-only | 69 |
+| unknown-hit-count | 42 |
+| round-trip-disagreement | 37 |
+| unknown-damage-type | 27 |
+| unresolvable-owner | 23 |
+| unresolved-owner | 22 |
+| schema-invalid | 18 |
+| unparsed-ratio | 12 |
+| unparsed-base | 7 |
+| unknown stat | 3 |
+| split-payload / coefficient-shape / no-value | 2 / 2 / 2 |
+
+**Verified is 10 of 937 — 1.1%.** That is the number the plan has to move, and gate 5 is the only
+thing that moves it.
