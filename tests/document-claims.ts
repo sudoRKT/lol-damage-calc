@@ -46,6 +46,17 @@ export interface Claim {
   /** The document the claim is written in. */
   doc: string;
   /**
+   * Restricts the search to one `## ` section, by its heading prefix.
+   *
+   * THIS IS NOT A CONVENIENCE. DATA-SOURCES.md is mostly a dated historical record, and a
+   * superseded figure inside a dated finding is SUPPOSED to stay where it is. Without this,
+   * an anchor written for the current-state table silently matched a superseded table
+   * thirteen sections earlier and reported the document wrong when it was right about
+   * history and right about the present — it was the CHECK that was reading the wrong row.
+   * Naming the section makes "only current-state claims are checked" mechanical.
+   */
+  section?: string;
+  /**
    * Locates the claim. MUST capture the number in group 1. Written to match the surrounding
    * words as well as the digits, so that a reworded sentence fails loudly rather than silently
    * matching some other number further down the file.
@@ -303,9 +314,30 @@ export const CLAIMS: Claim[] = [
   {
     id: 'components-stored-data-sources',
     doc: 'DATA-SOURCES.md',
+    section: '## 36.',
     anchor: /\| \*\*damage components stored\*\* \| \*\*(\d+)\*\* \|/,
     derive: () => measurements().componentsStored,
     definition: 'Same population as components-stored-plan.',
+  },
+  {
+    id: 'gate7-failures-plan',
+    doc: 'PLAN.md',
+    anchor: /\*\*Gate 7 leaves (\d+) entries unreconciled/,
+    derive: () => measurements().gate7.failures,
+    definition:
+      'Storable entries whose ADDITIVE components do not sum to the whole-ability total the ' +
+      'source itself states, at rank 1, within the wiki\'s own two-decimal display rounding. ' +
+      'Alternatives are excluded, and totals naming minions, monsters or structures are skipped. ' +
+      'THIS NUMBER ROSE FROM 51 WHEN THE GATE WAS MADE MORE PRECISE — read it against this ' +
+      'definition, never against an earlier figure.',
+  },
+  {
+    id: 'gate7-failures-data-sources',
+    doc: 'DATA-SOURCES.md',
+    section: '## 36.',
+    anchor: /Gate 7 ran on \d+ entries; \*\*(\d+) do not reconcile\*\*/,
+    derive: () => measurements().gate7.failures,
+    definition: 'Same population as gate7-failures-plan. The two documents must not drift apart.',
   },
   {
     id: 'champion-roster-size',

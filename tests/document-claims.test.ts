@@ -16,7 +16,21 @@ import {
 
 /** Pulls the claimed number out of its document. Throws if the anchor no longer matches. */
 function claimed(claim: Claim): number {
-  const text = readDoc(claim.doc);
+  let text = readDoc(claim.doc);
+  if (claim.section) {
+    // Slice from the named heading to the next top-level heading. A claim that names a section
+    // and cannot find it FAILS — a renamed section must not silently widen the search back to
+    // the whole document, which is how a current-state anchor matched a superseded table.
+    const start = text.indexOf(`\n${claim.section}`);
+    if (start < 0) {
+      throw new Error(
+        `claim '${claim.id}' names section '${claim.section}' of ${claim.doc}, which no longer exists.`,
+      );
+    }
+    const rest = text.slice(start + 1);
+    const end = rest.indexOf('\n## ', 1);
+    text = end < 0 ? rest : rest.slice(0, end);
+  }
   const m = claim.anchor.exec(text);
   if (!m) {
     throw new Error(
@@ -111,9 +125,8 @@ describe('the check cannot quietly stop checking', () => {
     // eslint-disable-next-line no-console
     console.log(
       `[document-claims] ${covered} claims re-derived and checked; ` +
-        `${declaredUncovered} groups declared uncovered with reasons. ` +
-        `The largest uncovered group is every roster-wide ability figure, which needs a ` +
-        `937-page network harvest — see UNCOVERED['ability-roster-figures'].`,
+        `${declaredUncovered} groups declared uncovered with reasons: ` +
+        `${UNCOVERED.map((u) => u.id).join(', ')}.`,
     );
     expect(covered).toBeGreaterThan(0);
     expect(declaredUncovered).toBeGreaterThan(0);

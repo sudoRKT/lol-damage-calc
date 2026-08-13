@@ -2685,7 +2685,9 @@ all 937 pages. Nothing below is quoted from a document.
 | verified / derived / incomplete / no-damage | **8 / 487 / 236 / 206** | before the repair in §36.2 |
 
 Gate 2 ability box: **799 of 839 rows matched, 40 failed** across 37 entries, 0 render failures.
-Gate 2 level series: **36 of 36 matched**. Gate 7 ran on 623 entries; **51 do not reconcile**.
+Gate 2 level series: **36 of 36 matched**. Gate 7 ran on 623 entries; **53 do not reconcile**, split
+**41 under / 12 over** — measured AFTER the relation fix of §36.3, which is why it is not the 51 the
+same run produced before it.
 
 **917, not 921.** The four are the summary rows §34.1's widened filter drops: Gangplank R's
 "Maximum Mixed Total Damage with and", Gwen R's second and third cast totals, Xin Zhao W's "Slash
@@ -2761,11 +2763,32 @@ population. The 51 partition cleanly. Detectors live in `scripts/extract/gate7-c
 
 | Class | Entries | Definition |
 |---|---:|---|
-| **U-MULT1** | **20** | Under-sum. Exactly one additive component; the stated total is the same whole number ≥2 times it at **every** rank. A missing multiplicity |
-| **U-MULT2** | **11** | Under-sum. Several components; removing one and dividing the remainder yields a consistent whole number ≥2 |
-| **O-SCOPE** | **8** | Over-sum. The stated "Total" equals one repeating component × its hit count exactly, at every rank — the total's scope is that component, and the label does not say so |
-| **O-PAIR** | **1** | Over-sum. A "Maximum X" whose sibling carries no "Minimum", so the pair is never matched. **7 entries roster-wide** |
-| Residue | **11** | No mechanical class fits. Falls to 7 once §36.3 lands |
+| **U-MULT1** | **26** | Under-sum. Exactly one additive component; the stated total is the same whole number ≥2 times it at **every** rank. A missing multiplicity |
+| **RESIDUE** | **11** | No mechanical class fits. Needs a person |
+| **MULTIPLE-TOTALS** | **9** | The source prints more than one qualifying whole-ability total and gate 7 compared against the first. Which is the whole ability is not decidable from the labels |
+| **O-SCOPE** | **5** | Over-sum. The stated "Total" equals one repeating component × its hit count exactly at every rank — the total's scope is that component, and the label does not say so |
+| **U-MULT2** | **2** | Under-sum. Several components; removing one and dividing the remainder yields a consistent whole number ≥2 |
+| **O-PAIR** | **0** | Over-sum. A "Maximum X" whose sibling carries no "Minimum". Zero today; the detector stays because the shape recurs |
+
+**11 of the 53 are AMBIGUOUS** — the arithmetic admits more than one reading, so no rule may settle
+them and they stay `incomplete`.
+
+> **THESE POPULATIONS ARE NOT THE ONES THE FIRST CLASSIFICATION PRODUCED, and the difference is
+> instructive rather than a correction.** That pass, run in a scratchpad before the relation fix,
+> gave U-MULT1 20, U-MULT2 11, O-SCOPE 8, O-PAIR 1 and residue 11 over 51 failures. Two things
+> moved them, both deliberate:
+>
+> 1. **Gate 7 now honours relations (§36.3)**, so the failure set itself changed — 53 entries, not
+>    the same 51.
+> 2. **MULTIPLE-TOTALS is tested FIRST**, and it absorbs 9 entries the earlier pass distributed
+>    among the other classes. That ordering is correct: when the source prints several qualifying
+>    totals, gate 7 compared against an arbitrary one, and every other class would then be
+>    reasoning about the wrong number. Nine entries that looked like under-sums or scope
+>    mismatches were really "we compared the wrong total".
+>
+> U-MULT2 falling from 11 to 2 is the same effect: most of what it had claimed were entries whose
+> total was the wrong total to begin with. **Compare each figure against its definition, never
+> against the earlier pass's number for the same name.**
 
 **U-MULT1's cause is precise:** the hit-count derivation of §30 only runs on a component whose
 *label* marks it repeating ("per Tick", "per Wave"). An ability landing twice under a plain

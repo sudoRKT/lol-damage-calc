@@ -1,0 +1,48 @@
+{
+  "what": "Roster-wide measurements from a full-roster harvest. Written ONLY by a full-roster run. tests/document-claims.test.ts compares the project documents against these figures; a document that disagrees fails the suite. Every figure states what it counts.",
+  "patch": "16.16.1",
+  "generatedOn": "2026-08-13",
+  "coverage": {
+    "championsRequested": 173,
+    "championsMeasured": 173,
+    "championsInRoster": 173,
+    "fullRoster": true
+  },
+  "definitions": {
+    "abilityPages": "distinct wiki ability pages after alias dedupe by revision id",
+    "storable": "entries with at least one stored damage component",
+    "worklist": "entries that stored nothing and that at least one source says deal damage",
+    "noDamage": "entries that stored nothing and about which every source is silent",
+    "componentsStored": "damage components surviving the summary, non-champion and unreadable-row filters",
+    "confirmedByGate2": "storable entries where at least one of the three round-trips compared something and none disagreed. NOT verified, which additionally requires an independent re-derivation",
+    "gate7Failures": "storable entries whose additive components do not sum to the whole-ability total the source itself states, at rank 1"
+  },
+  "abilityPages": 937,
+  "storable": 623,
+  "worklist": 69,
+  "componentsStored": 917,
+  "verification": {
+    "verified": 10,
+    "derived": 483,
+    "incomplete": 238,
+    "noDamage": 206
+  },
+  "gate2": {
+    "confirmed": 584,
+    "disagreed": 37,
+    "noEvidence": 2
+  },
+  "gate7": {
+    "failures": 53,
+    "underSum": 41,
+    "overSum": 12,
+    "byClass": {
+      "U-MULT1": 26,
+      "RESIDUE": 11,
+      "O-SCOPE": 5,
+      "MULTIPLE-TOTALS": 9,
+      "U-MULT2": 2
+    },
+    "ambiguous": 11
+  }
+}

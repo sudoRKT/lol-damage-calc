@@ -25,9 +25,12 @@ input it was sized against has moved.** This one is built on the measurements in
 surviving the summary, non-champion and unreadable-row filters, over 937 distinct pages.** The four
 missing against 921 are the summary rows §34.1's widened filter now drops (Gangplank R's "Maximum
 Mixed Total Damage with and", Gwen R's second and third cast totals, Xin Zhao W's "Slash Total
-Physical Damage"). 921 was measured before that change landed. Gate 7 leaves **51** unreconciled,
-split **35 under / 16 over** — not the 33/18 recorded here previously (§34.1 restated the over-sums
-and never restated the under-sums; two entries changed direction rather than disappearing).
+Physical Damage"). 921 was measured before that change landed.
+
+**Gate 7 leaves 53 entries unreconciled, split 41 under / 12 over.** Measured on a full-roster run,
+2026-08-13. It read 51 (35/16) until gate 7 was made to honour component relations (§36.3): the
+gate had been summing alternatives it always claimed to exclude. **THE RISE IS THE GATE BECOMING
+MORE PRECISE — compare it against that definition, never against 51.**
 
 **The historic defect rate is 50%, not 10%.** Gate 5's first run disagreed with 14 of 28
 abilities. After seven classes were fixed it disagreed with 5 of 28 — 18%. **Plan against 18%
