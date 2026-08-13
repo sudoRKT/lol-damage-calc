@@ -20,12 +20,14 @@ import {
   fetchTemplates,
   roundTrip,
   roundTripLevelScaled,
+  roundTripProse,
   wikiSlotAlias,
   type DraftAbility,
   type LevelRoundTripResult,
+  type ProseRoundTripResult,
 } from './harvest.ts';
 import { fetchDamageData } from './damage-data.ts';
-import { renderAbility, renderLevelBlocks } from './render.ts';
+import { renderAbilityDetail, renderLevelBlocks } from './render.ts';
 
 const SLOTS: AbilitySlot[] = ['P', 'Q', 'W', 'E', 'R'];
 const OUT_DIR = 'build/proposed-curated/abilities';
@@ -103,6 +105,7 @@ async function main(): Promise<void> {
   const drafts: DraftAbility[] = [];
   const roundTrips = [];
   const levelRoundTrips: LevelRoundTripResult[] = [];
+  const proseRoundTrips: ProseRoundTripResult[] = [];
 
   for (const name of names) {
     const champ = byName.get(name);
@@ -166,10 +169,22 @@ async function main(): Promise<void> {
       drafts.push(draft);
 
       // Gate 2: compare our expansion to what the wiki itself renders.
+      //
+      // THE THIRD ROUND-TRIP RUNS HERE TOO, and did not until 2026-08-13 (DATA-SOURCES §36.2).
+      // `roundTripProse` existed, was exported, and had passing tests, and this runner never
+      // imported it — so 26 abilities whose only evidence is the rendered description were
+      // recorded as confirmed on a check that never executed, and two entries the gate-5 ledger
+      // had cleared could not reach `verified` for want of it.
+      //
+      // It costs no extra network traffic: `renderAbilityDetail` returns the leveling rows and
+      // the rendered description from the SAME fetch that gate 2 already made.
       if (draft.entry.components.length > 0) {
         try {
-          const rendered = await renderAbility(name, abilityName);
-          roundTrips.push(roundTrip(draft, rendered));
+          const rendered = await renderAbilityDetail(name, abilityName);
+          roundTrips.push(roundTrip(draft, rendered.rows));
+          if (draft.proseComponentIds.length > 0) {
+            proseRoundTrips.push(roundTripProse(draft, rendered.prose, draft.proseComponentIds));
+          }
         } catch (e) {
           roundTrips.push({
             entry: `${name}/${slot}/${abilityName}`,
@@ -226,6 +241,15 @@ async function main(): Promise<void> {
     const detail = lrt.mismatches.map((m) => `[${m.componentId}] ${m.detail}`).join(' ;; ');
     disagreed.set(lrt.entry, [disagreed.get(lrt.entry), detail].filter(Boolean).join(' ;; '));
   }
+  // So does a prose disagreement. This round-trip is deliberately WEAKER than the other two —
+  // it confirms the figures we stored are the figures the wiki prints, in that order, and says
+  // nothing about whether we attached them to the right stat — but a disagreement is still a
+  // disagreement, and an entry the wiki's own rendering contradicts may not read `derived`.
+  for (const prt of proseRoundTrips) {
+    if (prt.mismatches.length === 0) continue;
+    const detail = prt.mismatches.map((m) => `[${m.componentId}] ${m.detail}`).join(' ;; ');
+    disagreed.set(prt.entry, [disagreed.get(prt.entry), detail].filter(Boolean).join(' ;; '));
+  }
   let demoted = 0;
   for (const d of drafts) {
     const key = `${d.entry.champion}/${d.entry.slot}/${d.entry.abilityName}`;
@@ -267,7 +291,15 @@ async function main(): Promise<void> {
     if (d.entry.verification !== 'derived') continue;
     if (!gate5.has(key)) continue;
     const rt = roundTrips.find((r) => r.entry === key);
-    if (!rt || rt.mismatches.length > 0 || rt.checkedRows + rt.levelScaledNotCompared === 0) continue;
+    if (!rt || rt.mismatches.length > 0) continue;
+    // GATE-2 EVIDENCE MAY COME FROM ANY OF THE THREE ROUND-TRIPS. Requiring it from the ability
+    // box alone is what kept Aphelios Q Moonshot and Ambessa P out of `verified` — their only
+    // evidence is the rendered description, because a flat ratio has no leveling row to compare
+    // and no progression to re-render (DATA-SOURCES §28, §36.2).
+    const prt = proseRoundTrips.find((p) => p.entry === key);
+    if (prt && prt.mismatches.length > 0) continue;
+    const evidence = rt.checkedRows + rt.levelScaledNotCompared + (prt?.matched ?? 0);
+    if (evidence === 0) continue;
     d.entry.verification = 'verified';
     promoted += 1;
   }
@@ -299,10 +331,10 @@ async function main(): Promise<void> {
   await writeFile(join(OUT_DIR, 'batch-01.json'), `${JSON.stringify(file, null, 2)}\n`);
   await writeFile(
     join(OUT_DIR, 'batch-01.report.json'),
-    `${JSON.stringify({ roundTrips, levelRoundTrips, drafts: drafts.map(summarise) }, null, 2)}\n`,
+    `${JSON.stringify({ roundTrips, levelRoundTrips, proseRoundTrips, drafts: drafts.map(summarise) }, null, 2)}\n`,
   );
 
-  report(file, drafts, roundTrips, levelRoundTrips, [...gate5.keys()]);
+  report(file, drafts, roundTrips, levelRoundTrips, proseRoundTrips, [...gate5.keys()]);
 }
 
 function summarise(d: DraftAbility) {
@@ -323,6 +355,7 @@ function report(
   drafts: DraftAbility[],
   roundTrips: ReturnType<typeof roundTrip>[],
   levelRoundTrips: LevelRoundTripResult[],
+  proseRoundTrips: ProseRoundTripResult[],
   gate5Keys: string[],
 ): void {
   const rtChecked = roundTrips.reduce((n, r) => n + r.checkedRows, 0);
@@ -330,9 +363,13 @@ function report(
   const rtFailedEntries = roundTrips.filter((r) => r.mismatches.length > 0);
 
   // Gate 6 evidence: only entries whose every checked row round-tripped are eligible.
-  const roundTripPassed = new Set(
-    roundTrips.filter((r) => r.mismatches.length === 0 && r.checkedRows > 0).map((r) => r.entry),
-  );
+  // Evidence from ANY of the three round-trips counts. The prose round-trip was omitted from
+  // this set until 2026-08-13, which is why 26 abilities carried damage nothing had checked.
+  const proseFailed = new Set(proseRoundTrips.filter((p) => p.mismatches.length > 0).map((p) => p.entry));
+  const roundTripPassed = new Set([
+    ...roundTrips.filter((r) => r.mismatches.length === 0 && r.checkedRows > 0).map((r) => r.entry),
+    ...proseRoundTrips.filter((p) => p.mismatches.length === 0 && p.matched > 0).map((p) => p.entry),
+  ].filter((e) => !proseFailed.has(e)));
   const reports = validateCuratedFile(file, {
     roundTripPassed,
     independentlyChecked: new Set(gate5Keys),
