@@ -2139,3 +2139,80 @@ is vestigial and wrong** for at least Caitlyn Q and Ashe W, disagreeing with bot
 Riot's own live data. This is a genuine third referee for ability damage — the first this project
 has found — and §4's conclusion that Riot exposes no usable ability numbers is true of Data
 Dragon only, not of the game data.
+
+---
+
+## 30. The seven defects fixed, and gate 5 re-run on the identical sample (2026-08-13)
+
+**The disagreement rate fell from 14 of 28 to 5 of 28 — 50% to 18%.** Same 28 abilities, same four
+groups, same five independent agents, the only change being the extractor. The sample was not
+altered and no criterion was relaxed.
+
+### What each fix does, what it touches, and what changed status
+
+| # | Fix | Population it touches | Effect |
+|---|---|---:|---|
+| 1 | **Tick count derived, not guessed.** The `Total` row the wiki also prints is divided by the per-tick row; where that is the same whole number ≥2 at every rank (compared at the wiki's display precision, since a per-tick figure is rounded) it becomes `hits`. | 109 per-hit components | **42 now carry a real count** — Cassiopeia Q 7, Alistar E 10, Dr. Mundo W 16, Fiddlesticks R 20. **42 entries raise `unknown-hit-count` and are forced `incomplete`** rather than storing one tick as the ability. |
+| 2 | **A bare percentage is a modifier, not damage.** Once the progression and ratio blocks are removed, a row leaving only a `%` is a multiplier on something else. Labels are deliberately not used: "Increased Physical Damage" is real damage and "Damage Increase" is not, and no wording rule separates them. | 44 components labelled modifier/increase/effectiveness | Aurelion Sol W now stores **nothing** instead of 108–112 phantom magic damage; 10 components dropped, the rest were genuine damage rows. |
+| 3 | **A flat literal beside a ratio is a base.** `{{as|15|physical damage}}` names no stat, so the ratio reader returned nothing and the number vanished. | 29 suspect prose components | Aphelios Calibrum stores **15 (+15% bonus AD)** instead of the ratio alone. |
+| 4 | **A damage type is never defaulted.** Template field, else `Module:DamageData/data`, else the row's own label — and where none of the three states one, **nothing is stored**. | 14 entries were storing damage under a silent magic default | Caitlyn W is **physical**, as the module states. 27 entries now raise `unknown-damage-type` and store nothing. |
+| 5 | **The payload is no longer confused with its multiplier.** `isMultiplierGroup` was matching "per 100" inside a NESTED block, so a health payload containing a multiplier was itself lifted as one. | 12 ratios carrying the swap signature | **0 remain.** Ambessa Q and Briar W now read as the source writes them, with the scaling term present. |
+| 6 | **A second-form ability takes the rank count its own row states**, where the template also carries a "scales with … rank" header — the source saying it twice. | 6 abilities | All six now store damage: Heimerdinger W and E at 3 ranks, Nidalee Q/W/E and Karma Q at 4. Previously correct-but-unreachable. |
+| 7 | **"Additional" overrides a variant marker.** | 1 component | Camille W's outer cone now `adds`, as its own notes say ("an additional instance… it will trigger effects twice"). |
+
+**Where a fix could not be made without guessing, it was not made.** The 42 abilities whose tick
+count does not divide evenly keep `hits: 1` and are `incomplete`, not given a plausible count.
+Ahri Q stores nothing rather than picking one of the two damage types its template states.
+
+### Two more defects, found by the re-run itself
+
+- **Refusing a two-token damage type dropped whole abilities, including a verified one.** Akshan P
+  declares `Physical Magic`, which states two types rather than none, and gating the prose path on
+  the ability-level field silenced both of its instances. A prose instance names its own type in
+  the wrapper it sits in, so it never needed that field. **Akshan P was withdrawn from the gate-5
+  ledger** rather than carried forward on trust: it must be re-confirmed, not assumed.
+- **"Increased X" beside "X" is the doubled form of one hit, not a second hit.** Ambessa Q stored
+  both as adding, overstating a single-target cast by 50%. Riot's own data settles it — the lesser
+  row is the greater one times a `Min_Ratio` of 0.5. Paired structurally now, by label.
+
+### The rate, stated honestly
+
+| | Round 1 | Round 2 |
+|---|---:|---:|
+| Abilities | 28 | 28 |
+| AGREE | 14 | **23** |
+| DISAGREE | **14 (50%)** | **5 (18%)** |
+
+Of the five that disagreed in round 2, **three were fixed after their reports landed** (Akshan P,
+and both halves of Ambessa Q) and verified directly. **Two remain open**: Heimerdinger W, whose
+rockets land 4 and 15 times and whose combined row states so — the same class as fix 1 but with
+three components, which the derivation deliberately refuses; and Ahri Q, which needs its two
+instances split by type before either can be stored. **18% is the measured rate. It is not 7%,
+and the three post-hoc fixes must not be counted into it.**
+
+### The absent-instance sweep
+
+**DEF: gate 2 found no disagreement on every row it compared, AND the wiki rendered at least one
+damage row we did not store.** That is the Ahri Q shape — every stored number right, a whole
+instance missing.
+
+**167 entries.** Most are rows deliberately dropped (Total summaries, minion and monster rows), so
+the figure is an upper bound on the defect rather than a count of it. The sharper measure is the
+second: **DEF: `Module:DamageData/data` states more damage types for the ability than we store —
+21 entries**, including Akshan R, Camille Q, Draven R, Pantheon W and R, Samira P and E. Those are
+abilities that deal two types where we hold one, and each is a candidate for the same split Ahri Q
+needs. Neither figure is a defect count; both are worklists.
+
+### CommunityDragon adopted as a third referee — after verifying it
+
+`scripts/extract/game-data.ts`, with all three traps verified against known values and pinned by
+tests before anything relied on it:
+
+1. **Index 0 is the unlearned rank.** Lux Q ships `[40, 80, 120, 160, 200, 240, 280]` and deals 80
+   at rank 1. Reading indices 0..4 shifts every rank by one.
+2. **The array runs past the real maximum.** Seven entries for a five-rank ability; the tail is dead.
+3. **A game-mode override sits beside the real values.** `DataValuesModeOverride.cherry` is Arena,
+   where Lux Q reads 70..310 — a self-consistent set of numbers for a mode this product does not model.
+
+This is a genuinely independent source: not derived from the wiki, and it settled several disputes
+outright. §4's conclusion that Riot exposes no ability damage is true of **Data Dragon** only.
