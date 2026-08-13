@@ -94,6 +94,7 @@ const HUE_ALLOWLIST: Record<string, string> = {
   '.comp__bar--physical': 'DESIGN.md §7 — composition bar segment',
   '.comp__bar--magic': 'DESIGN.md §7 — composition bar segment',
   '.comp__bar--true': 'DESIGN.md §7 — composition bar segment',
+  '.verdict--lethal': 'DESIGN.md §7 — the LETHAL callout, the one permitted use of --lethal',
 };
 
 /**
@@ -107,6 +108,16 @@ const LENGTH_ALLOWLIST: Array<{ value: string; rule: string; reason: string }> =
   { value: '1px', rule: '.u-visually-hidden', reason: 'standard screen-reader clip idiom' },
   { value: '-1px', rule: '.u-visually-hidden', reason: 'standard screen-reader clip idiom' },
   { value: '50%', rule: '.u-visually-hidden', reason: 'standard screen-reader clip idiom' },
+  {
+    value: '2px',
+    rule: '.field input:focus-visible, .field select:focus-visible, button:focus-visible',
+    reason: 'DESIGN.md §6 states the focus ring verbatim: a 2px bone outline offset 2px',
+  },
+  {
+    value: '100%',
+    rule: '.breakdown',
+    reason: 'a table filling its panel — a fraction of the parent, not a design length',
+  },
 ];
 
 /** Split flat CSS into { selector, body } pairs. These stylesheets have no nesting. */
@@ -228,11 +239,24 @@ describe('token-audit/vocabulary', () => {
 
   it('every font-weight is one of the weights DESIGN.md §3 says to load', () => {
     // Saira 500/600 · IBM Plex Sans 400/500/600 · JetBrains Mono 400/500/700.
+    //
+    // A weight TOKEN is also accepted, and is the preferred form. The eight tokens were added to
+    // DESIGN.md §3 and tokens.css on 2026-08-13; before that the file stated a weight per role in
+    // prose only, so components carried numeric literals and this check could compare them
+    // against nothing but a table. The token list here is read from tokens.css rather than
+    // restated, so a token that stops existing fails instead of silently passing.
     const LOADED = new Set(['400', '500', '600', '700']);
+    const declared = new Set(
+      [...stripCssComments(read(TOKENS_FILE)).matchAll(/--(weight-[a-z-]+)\s*:\s*(\d{3})\s*;/g)]
+        .filter((m) => LOADED.has(m[2]!))
+        .map((m) => `var(--${m[1]!})`),
+    );
+    expect(declared.size, 'tokens.css declares no weight tokens').toBeGreaterThan(0);
     const offenders: string[] = [];
     for (const f of STYLESHEETS) {
       for (const m of stripCssComments(read(f)).matchAll(/font-weight:\s*([^;]+);/g)) {
-        if (!LOADED.has(m[1]!.trim())) offenders.push(`${rel(f)}: font-weight: ${m[1]!.trim()}`);
+        const v = m[1]!.trim();
+        if (!LOADED.has(v) && !declared.has(v)) offenders.push(`${rel(f)}: font-weight: ${v}`);
       }
     }
     expect(offenders).toEqual([]);

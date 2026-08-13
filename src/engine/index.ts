@@ -56,3 +56,12 @@ export {
   type CoreRatioStat,
   type RatioContribution,
 } from './component';
+
+// Per-level champion statistics. League's growth is not linear; the formula and the level-18
+// identity it is checked against are documented in champion-stats.ts.
+export {
+  championStatAtLevel,
+  growthMultiplier,
+  resolveBaseStats,
+  type ChampionBaseStats,
+} from './champion-stats';

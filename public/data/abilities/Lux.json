@@ -1,0 +1,190 @@
+{
+  "what": "Lux ability entries, extracted for the vertical slice (src/ui/slice).",
+  "provenance": {
+    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "patch": "16.16.1",
+    "fetched": "2026-08-13",
+    "extractedOn": "2026-08-13",
+    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best; Q is the one entry an independent re-derivation has confirmed. The slice states each entry's status on screen and must never present these as settled.",
+    "regenerate": "re-run the full-roster batch, then re-extract the Lux entries"
+  },
+  "abilities": [
+    {
+      "champion": "Lux",
+      "slot": "P",
+      "abilityName": "Illumination",
+      "instanceType": "on-hit",
+      "damageType": "magic",
+      "maxRank": 1,
+      "components": [
+        {
+          "id": "bonus-magic-damage",
+          "label": "Bonus Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "byLevel",
+            "from": 30,
+            "to": 200,
+            "atLevels": [
+              1,
+              18
+            ],
+            "steps": 18
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 35,
+              "to": 35
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Lux/Illumination",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Illumination",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4038408
+    },
+    {
+      "champion": "Lux",
+      "slot": "Q",
+      "abilityName": "Light Binding",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 80,
+            "to": 240
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 75,
+              "to": 75
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "verified",
+      "provenance": {
+        "source": "Template:Data Lux/Light Binding",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Light%20Binding",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4007675
+    },
+    {
+      "champion": "Lux",
+      "slot": "W",
+      "abilityName": "Prismatic Barrier",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 5,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Lux/Prismatic Barrier",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Prismatic%20Barrier",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3992656
+    },
+    {
+      "champion": "Lux",
+      "slot": "E",
+      "abilityName": "Lucent Singularity",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 65,
+            "to": 265
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 80,
+              "to": 80
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Lux/Lucent Singularity",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Lucent%20Singularity",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4007677
+    },
+    {
+      "champion": "Lux",
+      "slot": "R",
+      "abilityName": "Final Spark",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 3,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 300,
+            "to": 500
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 120,
+              "to": 120
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Lux/Final Spark",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Final%20Spark",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3919833
+    }
+  ]
+}

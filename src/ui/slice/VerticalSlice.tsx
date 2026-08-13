@@ -1,0 +1,234 @@
+// THE VERTICAL SLICE. One attacker, one defender, one combo, one number — end to end.
+//
+// This is a PROOF THAT THE PIECES CONNECT, not the product's interface. It exists because every
+// decision in this project until now was made against documents and tests, and nothing had ever
+// rendered a real number from real stored data.
+//
+// It uses what exists rather than building anything new: the harvester's stored Lux entries, the
+// engine's component evaluator and resistance formula, and Area E's two primitives for damage
+// values and verification status. Everything it CANNOT do is printed on screen rather than filled
+// in — see `compute.ts` for the list and the reason for each.
+
+import { useEffect, useMemo, useState } from 'react';
+
+import { DamageValue, VerificationStatusMark } from '../primitives';
+import { NumberInput } from '../inputs';
+import type { CuratedAbility } from '../../types/data';
+import { resolveBaseStats, type ChampionBaseStats } from '../../engine/champion-stats';
+import { computeSlice, type SliceAttacker } from './compute';
+import './slice.css';
+
+/** Defenders offered. A short list, because the slice is a proof and not a picker. */
+const DEFENDERS = ['Garen', 'Ahri', 'Malphite', 'Jinx'] as const;
+
+interface ChampionFile {
+  name: string;
+  stats: ChampionBaseStats;
+}
+
+interface AbilityFile {
+  provenance: { patch: string; fetched: string; warning: string };
+  abilities: CuratedAbility[];
+}
+
+const SLOTS = ['P', 'Q', 'W', 'E', 'R'] as const;
+
+export function VerticalSlice() {
+  const [file, setFile] = useState<AbilityFile | null>(null);
+  const [defenderName, setDefenderName] = useState<string>('Garen');
+  const [defender, setDefender] = useState<ChampionFile | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  const [attackerLevel, setAttackerLevel] = useState(6);
+  const [defenderLevel, setDefenderLevel] = useState(6);
+  const [ranks, setRanks] = useState<SliceAttacker['ranks']>({ Q: 1, W: 1, E: 1, R: 1 });
+  const [combo, setCombo] = useState<string[]>(['E', 'Q', 'R']);
+
+  useEffect(() => {
+    fetch('/data/abilities/Lux.json')
+      .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`Lux.json: ${r.status}`))))
+      .then(setFile)
+      .catch((e: unknown) => setError(String(e)));
+  }, []);
+
+  useEffect(() => {
+    fetch(`/data/champions/${defenderName}.json`)
+      .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`${defenderName}: ${r.status}`))))
+      .then(setDefender)
+      .catch((e: unknown) => setError(String(e)));
+  }, [defenderName]);
+
+  const result = useMemo(() => {
+    if (!file || !defender) return null;
+    return computeSlice(
+      file.abilities,
+      combo,
+      { level: attackerLevel, ranks },
+      { name: defender.name, level: defenderLevel, stats: defender.stats },
+    );
+  }, [file, defender, combo, attackerLevel, defenderLevel, ranks]);
+
+  const defenderStats = defender ? resolveBaseStats(defender.stats, defenderLevel) : null;
+
+  if (error) return <main className="slice"><p className="slice__error">Could not load data: {error}</p></main>;
+  if (!file || !defender || !result || !defenderStats) return <main className="slice"><p>Loading…</p></main>;
+
+  const maxRankOf = (slot: string) => file.abilities.find((a) => a.slot === slot)?.maxRank ?? 1;
+
+  return (
+    <main className="slice">
+      <p className="slice__eyebrow">Bench Test · vertical slice</p>
+      <h1 className="slice__title">Lux vs {defender.name}</h1>
+      <p className="slice__sub">
+        Patch {file.provenance.patch} · abilities only · one attacker, one defender, one combo
+      </p>
+
+      <div className="slice__grid">
+        {/* ---------------- configuration ---------------- */}
+        <section className="panel" aria-labelledby="cfg-h">
+          <h2 id="cfg-h" className="panel__h">Configuration</h2>
+
+          <div className="field">
+            <NumberInput label="Lux level" value={attackerLevel} min={1} max={18} hint="1 to 18"
+              onChange={setAttackerLevel} />
+          </div>
+
+          <div className="ranks">
+            {(['Q', 'W', 'E', 'R'] as const).map((s) => (
+              <NumberInput key={s} label={`${s} rank`} value={ranks[s]} min={1} max={maxRankOf(s)}
+                onChange={(v) => setRanks({ ...ranks, [s]: v })} />
+            ))}
+          </div>
+
+          <label className="field">
+            <span>Defender</span>
+            <select value={defenderName} onChange={(e) => setDefenderName(e.target.value)}>
+              {DEFENDERS.map((d) => <option key={d} value={d}>{d}</option>)}
+            </select>
+          </label>
+
+          <div className="field">
+            <NumberInput label={`${defender.name} level`} value={defenderLevel} min={1} max={18}
+              hint="1 to 18" onChange={setDefenderLevel} />
+          </div>
+
+          <dl className="stats">
+            <div><dt>Health</dt><dd>{round(defenderStats.hp)}</dd></div>
+            <div><dt>Armor</dt><dd>{round(defenderStats.armor)}</dd></div>
+            <div><dt>Magic resist</dt><dd>{round(defenderStats.magicResist)}</dd></div>
+            <div><dt>Lux ability power</dt><dd>0</dd></div>
+          </dl>
+          <p className="note">
+            Ability power is 0 because this slice models no items, runes or stat shards. Every
+            ratio below therefore contributes nothing — it is shown, not hidden.
+          </p>
+        </section>
+
+        {/* ---------------- combo ---------------- */}
+        <section className="panel" aria-labelledby="combo-h">
+          <h2 id="combo-h" className="panel__h">Combo</h2>
+          <ol className="combo">
+            {combo.map((slot, i) => (
+              <li key={`${slot}-${i}`}>
+                <span className="combo__slot">{slot}</span>
+                <button type="button" onClick={() => setCombo(combo.filter((_, j) => j !== i))}
+                  aria-label={`Remove ${slot} from position ${i + 1}`}>remove</button>
+              </li>
+            ))}
+            {combo.length === 0 && <li className="note">No steps. Add one below.</li>}
+          </ol>
+          <div className="add">
+            {SLOTS.map((s) => (
+              <button type="button" key={s} onClick={() => setCombo([...combo, s])}>+ {s}</button>
+            ))}
+          </div>
+        </section>
+      </div>
+
+      {/* ---------------- result ---------------- */}
+      <section className="panel" aria-labelledby="res-h">
+        <h2 id="res-h" className="panel__h">Result</h2>
+        <table className="breakdown">
+          <caption className="u-visually-hidden">
+            Per-instance damage breakdown, in combo order, with a running total and each ability's
+            verification status.
+          </caption>
+          <thead>
+            <tr>
+              <th scope="col">#</th><th scope="col">Ability</th><th scope="col">Status</th>
+              <th scope="col">Base</th><th scope="col">Ratio</th>
+              <th scope="col">Raw</th><th scope="col">After resistances</th><th scope="col">Running total</th>
+            </tr>
+          </thead>
+          <tbody>
+            {result.instances.map((ins, i) => (
+              <tr key={ins.index}>
+                <td>{ins.index}</td>
+                <td>{ins.label}</td>
+                <td><VerificationStatusMark status={ins.verification} spokenSubject={ins.label} /></td>
+                {ins.damage ? (
+                  <>
+                    <td className="num">{ins.damage.base}</td>
+                    <td className="num">
+                      {ins.damage.ratios.map((r) => `${r.percent}% ${r.stat} → ${r.contribution}`).join(', ') || '—'}
+                    </td>
+                    <td><DamageValue value={ins.damage.raw} damageType={ins.damage.type} size="m" /></td>
+                    <td><DamageValue value={ins.damage.final} damageType={ins.damage.type} size="l"
+                      spokenContext="after resistances" /></td>
+                    <td className="num">{result.runningTotal[i]}</td>
+                  </>
+                ) : (
+                  <td colSpan={5} className="refused">
+                    not shown — {ins.refusal?.why.join('; ')}
+                  </td>
+                )}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
+        <p className="total">
+          Burst total{' '}
+          <DamageValue value={result.burstTotal} damageType="magic" size="hero" />
+          {' '}against {result.defenderHp} health
+        </p>
+
+        <p className={result.lethal ? 'verdict verdict--lethal' : 'verdict'}>
+          {result.lethal
+            ? `LETHAL · at instance ${result.lethalAtInstance}`
+            : `SURVIVES · ${result.remainingHp} health remaining`}
+          <span className="verdict__scope"> — burst only. Damage over time is not modelled here.</span>
+        </p>
+
+        {result.excluded.length > 0 && (
+          <div className="excluded">
+            <h3>Excluded from the total</h3>
+            <ul>
+              {result.excluded.map((e) => <li key={e.label}><strong>{e.label}</strong> — {e.why}</li>)}
+            </ul>
+          </div>
+        )}
+      </section>
+
+      {/* ---------------- honesty panel ---------------- */}
+      <section className="panel panel--limits" aria-labelledby="lim-h">
+        <h2 id="lim-h" className="panel__h">What this cannot show, and why</h2>
+        <ul>
+          <li><strong>Items, runes and stat shards</strong> — out of scope for the slice, so ability power is 0 and every ratio contributes nothing.</li>
+          <li><strong>Sequential state</strong> — the engine has no combo runner yet, so every instance resolves against the same defender stats. No armor shred, no stacks, no Bone Plating. Nothing in Lux's stored data mutates state, so these numbers are not wrong for her — but the model is absent.</li>
+          <li><strong>Damage over time</strong> — the separate-line requirement is not implemented. The verdict above is burst only.</li>
+          <li><strong>Critical strike, executes, shields, healing, damage reduction, penetration</strong> — not modelled.</li>
+          <li><strong>Lux's passive</strong> is an on-hit effect that a basic attack must apply. The slice will resolve it wherever you place it; it does not model the attack that triggers it.</li>
+          <li>
+            <strong>These are harvester drafts, not the curated file.</strong> {file.provenance.warning}
+          </li>
+        </ul>
+      </section>
+    </main>
+  );
+}
+
+/** Display rounding for a stat readout. The engine's own rounding point governs damage. */
+function round(n: number): number {
+  return Math.round(n * 100) / 100;
+}
