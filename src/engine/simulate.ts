@@ -35,6 +35,7 @@ import { resolveAdaptiveForce } from './adaptive';
 import { championStatAtLevel } from './champion-stats';
 import { runCombo, type ComboPlan, type PlannedInstance } from './combo';
 import { BASE_CRITICAL_STRIKE_MULTIPLIER } from './crit';
+import { resolveDefences } from './defences';
 
 // ---------------------------------------------------------------------------------------
 // What the caller supplies
@@ -970,6 +971,24 @@ export const SIMULATION_EXCLUSIONS: readonly string[] = [
     'from item passives and runes',
   'Movement speed, health regeneration and attack-speed effects on the number of attacks — the ' +
     'engine models sequence rather than elapsed time',
+
+  // ═══ THE THREE DEFENSIVE KINDS WITH NO STEP IN THE ENGINE ═══
+  //
+  // Added 2026-08-14 with the defensive wiring. Shields, damage reduction, type-specific
+  // reduction, resistance grants and healing are now built from the defender's own kit; these
+  // three are not, and each needs a new arm in the instance walk rather than a value in an
+  // existing shape. Counted over the 155 stored entries in the curated file, patch 16.16.1.
+  'Three kinds of defence the defender’s own kit can carry: invulnerability and dodge (18 ' +
+    'stored entries), spell shields (3) and abilities that grant maximum health (6). Each needs ' +
+    'a step this engine does not have — skipping an instance outright, cancelling one ability ' +
+    'before it lands, or changing the size of a health pool mid-sequence. A scenario switching ' +
+    'one on is told, by name, that it was not applied',
+
+  // A DEFENCE THAT RECURS. Measured over the file: 21 entries carry `overTime` and NOT ONE states
+  // how many times it occurs, so no whole-duration figure exists to apply.
+  'Defensive effects that recur over a duration — 21 stored entries, chiefly channelled heals. ' +
+    'None states how many times it occurs, and the engine has no time axis to derive a count ' +
+    'from, so no total can be formed',
 ];
 
 /**
@@ -1043,15 +1062,51 @@ export function planScenario(
   const withRiderRows = withRiders(planned, scenario.combo, scenario.attacker, catalogue, rangeType);
   const instances = withBurns(withRiderRows, scenario.combo, scenario.attacker, catalogue, rangeType);
 
+  // ═══ THE DEFENDER'S OWN KIT (SPECIFICATION §5) ═══
+  //
+  // Resolved against the defender's stat block BEFORE any resistance grant is folded in, because
+  // Taric W grants armor as a share of his own armor and reading a block that already carried the
+  // grant would compound it. See defences.ts.
+  const defenderRangeType = defenderChampion.stats.rangetype === 'Ranged' ? 'Ranged' : 'Melee';
+  const defences = resolveDefences({
+    effects: catalogue.defensiveEffects(scenario.defender.apiname),
+    abilities: catalogue.abilities(scenario.defender.apiname),
+    config: scenario.defender,
+    defender: defender.block,
+    rangeType: defenderRangeType,
+  });
+
+  // A RESISTANCE GRANT IS A STAT, NOT A NEW MECHANISM. It is added here and then meets the fixed
+  // four-step resistance-modifier order unchanged. It is added to the BONUS figure as well as the
+  // total, because that is what it is — Leona W's 20–50 armor is bonus armor, and percentage
+  // BONUS armor penetration reads that figure.
+  const defenderBlock: StatBlock =
+    defences.resistanceGrant.armor === 0 && defences.resistanceGrant.magicResist === 0
+      ? defender.block
+      : {
+          ...defender.block,
+          armor: defender.block.armor + defences.resistanceGrant.armor,
+          armorBonus: defender.block.armorBonus + defences.resistanceGrant.armor,
+          magicResist: defender.block.magicResist + defences.resistanceGrant.magicResist,
+          magicResistBonus:
+            defender.block.magicResistBonus + defences.resistanceGrant.magicResist,
+        };
+
   const unknownStats = [...attacker.unknownItemStats, ...defender.unknownItemStats];
   const plan: ComboPlan = {
     patch: options.patch ?? attackerChampion.provenance.patch,
     scenario,
     attacker: attacker.block,
-    defender: defender.block,
+    defender: defenderBlock,
     instances,
+    ...(defences.shields.length > 0 ? { defenderShields: defences.shields } : {}),
+    ...(defences.reductions.length > 0 ? { defenderReductions: defences.reductions } : {}),
+    ...(defences.sustain.length > 0 ? { unplacedSustain: defences.sustain } : {}),
     excludedMechanics: [
       ...SIMULATION_EXCLUSIONS,
+      // A DEFENCE THE READER SWITCHED ON AND THE ENGINE COULD NOT TAKE IS NAMED. Silence here
+      // would show a toggle that visibly does nothing, which is worse than a stated refusal.
+      ...defences.notes,
       // A STAT KEY NOBODY MAPPED IS NAMED, not dropped quietly. A patch adding one would
       // otherwise remove a stat from the build with nothing on screen to say so.
       ...(unknownStats.length > 0

@@ -239,6 +239,17 @@ export {
   type ComparisonSide,
 } from './build-comparison';
 
+// The defender's own kit, built from the catalogue and the scenario's toggles (SPECIFICATION §5).
+// `resolveDefences` is exported so the toggle population can be measured without running a combo.
+export {
+  defenceIsUp,
+  resolveDefences,
+  UNMODELLED_DEFENSIVE_KINDS,
+  type AppliedDefence,
+  type RefusedDefence,
+  type ResolvedDefences,
+} from './defences';
+
 // The detectors that run over a sweep. They PROPOSE; a person confirms (CLAUDE.md). `auditSweeps`
 // takes a Catalogue as an argument, so the same checks a fixture grid runs against can be run
 // over the published roster by a caller that is allowed to open it — the engine is not.

@@ -293,8 +293,16 @@ export interface SurvivalVerdict {
    * The verdict is still given exactly TWICE (§3.8, burst and burst + DoT). Healing is not a
    * third verdict: it is a term inside both.
    *
-   * 0 today. Nothing in the curated data grants the defender healing yet, and the engine states
-   * that in `ENGINE_EXCLUSIONS` rather than letting a zero read as a computed figure.
+   * NO LONGER ALWAYS ZERO. This said "0 today. Nothing in the curated data grants the defender
+   * healing yet" until 2026-08-14, when the engine began building the defender's own defences
+   * from the catalogue: **35 stored heals now resolve**, one toggle at a time, measured over the
+   * 155 stored defensive entries at level 11.
+   *
+   * A ZERO IS STILL A REAL ANSWER and reads differently now — it can mean no defence was
+   * switched on, or that a heal was switched on and the defender had no health missing to
+   * restore. Healing cannot exceed missing health, so a defender at full health counts zero
+   * however large the heal. The engine discloses that rather than letting the zero look like an
+   * arithmetic result.
    */
   healingApplied: number;
   lethal: boolean;
