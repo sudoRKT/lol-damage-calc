@@ -322,6 +322,19 @@ function checkComponent(c: AbilityComponent, where: string, maxRank: number): st
       });
     });
   }
+  // A RECURRING COMPONENT NEEDS A COUNT, and the count is `hits`. Without one there is no
+  // full-duration total to state, and §3.8 asks for exactly that.
+  if (c.overTime !== undefined) {
+    if (!c.overTime.sourceSays) {
+      out.push(`${where}: overTime must quote what the source says about the recurrence`);
+    }
+    if (c.hits === undefined && c.variableHits === undefined) {
+      out.push(
+        `${where}: marked as recurring but states no count. A full-duration total needs a ` +
+          `number of ticks, and a duration cannot supply one (SPECIFICATION §3.2).`,
+      );
+    }
+  }
   if (c.hits !== undefined && (!Number.isInteger(c.hits) || c.hits < 1)) {
     out.push(`${where}: hits must be an integer >= 1`);
   }

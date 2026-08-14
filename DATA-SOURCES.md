@@ -5119,3 +5119,67 @@ figure; that is a reason to read them, not evidence they have no burn.
 **A per-tick figure stored as a whole ability is a plausible wrong number, which is the failure
 this project exists to prevent. That makes the four in 57.2 the place to start, and it is a
 reading task rather than a coding one.**
+
+---
+
+## 58. The four, settled — and the class behind them (2026-08-14)
+
+### 58.1 The four sentences, read
+
+| ability | what the source says | verdict |
+|---|---|---|
+| **Aurelion Sol R** | *"the impact sends a massive shockwave that rapidly expands from the area **over 3 seconds**, dealing magic damage"* | **FALSE POSITIVE.** The three seconds are the wave's TRAVEL, not a tick rate. Each enemy is hit once as it passes. No stored component carries a hit count. Nothing to fix. |
+| **Xin Zhao R** | *"Pets, traps, ground AoEs, **DoTs**, and delayed-damage abilities will not damage Xin Zhao"* | **FALSE POSITIVE.** The phrase is in a note about what CANNOT damage him during the ultimate — his damage reduction, not his damage. Nothing to fix. |
+| **Fizz W** | *"Applies spell damage on the empowered attack, **persistent damage** additionally tagged as indirect damage **on the damage over time effect**"* | **REAL.** One of its three components is `Passive Magic Damage per Tick`, `hits: 6`. |
+| **Teemo E** | *"Toxic Shot deals proc **persistent damage (damage over time)**"* | **REAL.** One of its two components is `Magic Damage per Tick`, `hits: 4`. |
+
+**The answer to the question as posed: for both real cases the stored figure is ONE TICK, and the
+engine was multiplying it by the stored `hits` count into a full-duration total which then landed
+in the BURST line.** So it was neither of the two defects on its own — it was both halves of the
+data being right and the destination being wrong.
+
+### 58.2 The class, swept roster-wide
+
+**DEFINITION: components whose harvested label states a per-tick figure (matching `per tick`),
+over all 919 stored ability entries at patch 16.16.1.** The label is the wiki's own leveling-row
+name, so this is a stored fact rather than an inference from prose.
+
+| | |
+|---|---:|
+| components carrying a fixed `hits` count | **101**, across 82 abilities |
+| of those, label states a per-tick figure | **43**, across 39 abilities |
+| of those, the source PAGE also carries damage-over-time language | **4** |
+
+**The 16-page count that produced the four was measuring the wrong thing.** It searched the source
+page text for the phrase "damage over time", and most ability pages never use it — they state the
+recurrence in the leveling-row LABEL, which the harvester already stores. Searching the label
+finds **43** where searching the page found 4. The four incidents were the tip.
+
+The other 58 components with a `hits` count are genuine multi-hit: `per Arrow`, `per Bullet`, `per
+Spin`, `per Orb`, `per Missile`, `per Wave`, `per Stack`. Those land at once and belong in burst.
+**The two shapes are the same field and opposite meanings**, which is why the label cannot decide
+this on its own.
+
+### 58.3 What was done, and what was refused
+
+**4 components MARKED as recurring** — Fizz W, Teemo E, Teemo R, Nilah R — the entries whose
+source sentence was actually read. The engine now routes a component carrying `overTime` to the
+DoT line and never into burst.
+
+**37 entries WITHDRAWN to `incomplete`**, listed in full in the merge output. They carry a per-tick
+figure, nobody has read their sentence, and leaving the figure in the burst line would be choosing
+one of the two readings. **17 of them were `derived` and lose a published figure; 20 were already
+`incomplete`.** Alistar E, Cassiopeia Q, Karthus E, Malzahar E, Renekton R, Rumble Q and R, Singed
+Q and Swain R are among them — a good part of the game's burn roster.
+
+**Derived falls 474 → 457. Incomplete rises 229 → 246.** That is evidence arriving, not
+regression: those 17 entries were publishing a full-duration total as burst damage, and a plausible
+wrong number is worse than no number.
+
+**THE SPLIT IS PER COMPONENT, NOT PER ABILITY.** Teemo E deals magic damage on hit AND a per-tick
+burn from one entry. Marking the entry would have moved the on-hit figure out of burst too — a
+different wrong number. `AbilityComponent.overTime` is the new field; `instanceType:
+'dot-application'` could not express it.
+
+**Gate 1 refuses a recurring component that states no count.** A full-duration total needs a number
+of ticks, and §3.2 gives the engine no way to derive one from a duration.

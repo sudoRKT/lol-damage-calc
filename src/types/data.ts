@@ -570,6 +570,27 @@ export interface AbilityComponent {
   /** Present when the count is a property of the SITUATION rather than the ability. Mutually
    *  exclusive with `hits`. The count itself comes from the scenario, never from here. */
   variableHits?: VariableHitCount;
+  /**
+   * THIS COMPONENT'S DAMAGE RECURS OVER TIME. Added 2026-08-14.
+   *
+   * SPECIFICATION §3.8 makes this consequential rather than descriptive: damage over time is
+   * NEVER folded into the burst total, it is reported as its own line stating the total across
+   * the full duration, and the survival verdict is given twice. A component carrying this is
+   * routed to the DoT line and contributes nothing to burst.
+   *
+   * **WHY IT IS PER COMPONENT AND NOT PER ABILITY.** `instanceType: 'dot-application'` describes
+   * a whole entry, and the abilities that need this are MIXED: Teemo E deals magic damage on hit
+   * AND a separate per-tick burn, from one entry. Marking the entry would move the on-hit figure
+   * out of burst too, which is a different wrong number.
+   *
+   * **THE COUNT COMES FROM `hits`, NEVER FROM A DURATION.** The component holds one tick and
+   * `hits` holds how many times it lands, both stated by the source. This engine has no time
+   * axis (§3.2), so "over 3 seconds" is never converted into anything.
+   *
+   * `sourceSays` quotes what the source states, so a reader can check the classification without
+   * re-fetching the page.
+   */
+  overTime?: { sourceSays: string };
 }
 
 /** The seven instance types the combo parser distinguishes (SPECIFICATION §3.4). */

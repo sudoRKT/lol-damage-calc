@@ -296,3 +296,77 @@ describe('the second survival verdict finally means something', () => {
     expect(out.result.verdict.burstPlusDot.remainingHp).toBe(0);
   });
 });
+
+describe('an ability that is BOTH burst and damage over time splits, per component', () => {
+  // Teemo E is the live shape: magic damage on hit AND a separate per-tick burn, from one entry.
+  // Marking the whole entry as a DoT would move the on-hit figure out of burst too, which is a
+  // different wrong number — so the split is per component (DATA-SOURCES §58).
+  const mixed = {
+    champion: 'Lux',
+    slot: 'E' as const,
+    abilityName: 'Split Ability',
+    instanceType: 'damaging-ability' as const,
+    damageType: 'magic' as const,
+    maxRank: 5,
+    components: [
+      {
+        id: 'on-hit',
+        label: 'Magic Damage On-Hit',
+        damageType: 'magic' as const,
+        base: { scaling: 'explicit' as const, perRank: [40, 40, 40, 40, 40] },
+        ratios: [],
+      },
+      {
+        id: 'tick',
+        label: 'Magic Damage per Tick',
+        damageType: 'magic' as const,
+        base: { scaling: 'explicit' as const, perRank: [10, 10, 10, 10, 10] },
+        ratios: [],
+        hits: 4,
+        overTime: { sourceSays: 'the page calls it damage over time' },
+      },
+    ],
+    verification: 'derived' as const,
+    provenance: PROV,
+  };
+
+  function runSplit() {
+    const cat = fixtureCatalogue({
+      champions: [ATTACKER, DEFENDER],
+      items: [],
+      abilities: [mixed],
+    });
+    return simulate(
+      scenario({
+        attacker: championConfig({ apiname: 'Lux', level: 11 }),
+        defender: championConfig({ apiname: 'Garen', level: 11 }),
+        combo: [{ id: 'e', kind: 'ability', ref: 'E' }],
+      }),
+      cat,
+    );
+  }
+
+  it('puts the recurring half in the DoT line and the rest in burst', () => {
+    const out = runSplit();
+    if (!out.ok) throw new Error('refused');
+    expect(out.result.burst.total).toBe(40);
+    expect(out.result.dot.total).toBe(40); // 10 a tick over 4 ticks
+    expect(out.result.dot.sources).toHaveLength(1);
+  });
+
+  it('NEVER folds the recurring half into burst, which §3.8 forbids', () => {
+    const out = runSplit();
+    if (!out.ok) throw new Error('refused');
+    // The burst figure is the on-hit component alone. If the tick leaked in it would be 80.
+    expect(out.result.burst.total).not.toBe(80);
+    expect(out.result.perInstance[0]!.final).toBe(40);
+  });
+
+  it('makes the two verdicts differ by exactly the recurring half', () => {
+    const out = runSplit();
+    if (!out.ok) throw new Error('refused');
+    const gap =
+      out.result.verdict.burstOnly.remainingHp - out.result.verdict.burstPlusDot.remainingHp;
+    expect(gap).toBe(out.result.dot.total);
+  });
+});

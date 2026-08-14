@@ -905,18 +905,46 @@ function planStep(
     return pendingInstance(step, unlearnedNote(ability.slot), label, 'unlearned');
   }
 
+  // ═══ A RECURRING COMPONENT LEAVES THE BURST LINE (added 2026-08-14) ═══
+  //
+  // SPECIFICATION §3.8: damage over time is NEVER folded into the burst total. An ability can be
+  // BOTH — Teemo E deals magic damage on hit AND a separate per-tick burn from the same entry —
+  // so the split is per component, not per ability. Each half keeps its own line.
+  const burstComponents = ability.components.filter((c) => !c.overTime);
+  const overTimeComponents = ability.components.filter((c) => c.overTime);
+
   return {
     stepId: step.id,
     sourceLabel: label,
     instanceType: ability.instanceType,
     verification: ability.verification,
-    damage: {
-      components: ability.components,
-      rank,
-      maxRank: ability.maxRank,
-      ...(step.hitCounts ? { hitCounts: step.hitCounts } : {}),
-      ...(step.options?.['forceCrit'] === true ? { crit: true } : {}),
-    },
+    ...(burstComponents.length > 0
+      ? {
+          damage: {
+            components: burstComponents,
+            rank,
+            maxRank: ability.maxRank,
+            ...(step.hitCounts ? { hitCounts: step.hitCounts } : {}),
+            ...(step.options?.['forceCrit'] === true ? { crit: true } : {}),
+          },
+        }
+      : {}),
+    ...(overTimeComponents.length > 0
+      ? {
+          dot: {
+            label,
+            verification: ability.verification,
+            damage: {
+              components: overTimeComponents,
+              rank,
+              maxRank: ability.maxRank,
+              ...(step.hitCounts ? { hitCounts: step.hitCounts } : {}),
+              // NO CRIT. A crit multiplies the instance that struck; a burn ticking afterwards
+              // is not that instance.
+            },
+          },
+        }
+      : {}),
   };
 }
 

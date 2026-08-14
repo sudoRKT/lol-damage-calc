@@ -360,6 +360,88 @@ export interface Refusal {
 }
 
 /**
+ * PER-TICK COMPONENTS: THE READ POPULATION, AND THE REFUSAL FOR EVERYTHING OUTSIDE IT.
+ *
+ * **DEFINITION: components whose harvested label states a per-tick figure (`per Tick`), over all
+ * 919 stored ability entries at patch 16.16.1 — 43 components across 39 abilities.** The label is
+ * the wiki's own leveling-row name, so this is a stored fact rather than prose inference.
+ *
+ * A per-tick figure multiplied by its `hits` count is a FULL-DURATION TOTAL, and until 2026-08-14
+ * every one of them sat in the burst line, which SPECIFICATION §3.8 forbids. That is one defect
+ * class, not the four incidents that surfaced it.
+ *
+ * **A DETECTOR PROPOSES, A PERSON CONFIRMS, AND STORAGE IS GATED ON THE CONFIRMED POPULATION**
+ * (CLAUDE.md). The label alone cannot decide: "Magic Damage Per Tick" and "Physical Damage Per
+ * Arrow" are the same shape and mean opposite things — one recurs over time, the other lands all
+ * at once. So:
+ *
+ *   - `READ_AS_OVER_TIME` lists the entries whose SOURCE SENTENCE was read on 2026-08-14 and
+ *     which the source itself calls damage over time. Those components are MARKED, and the engine
+ *     moves them to the DoT line.
+ *   - **Every other per-tick component makes its entry `incomplete`.** It is not marked as
+ *     recurring — nobody has read it — and it does not go on publishing a burst figure that
+ *     §3.8 says cannot be one. Refusing to choose is the rule; leaving the figure where it is
+ *     would be choosing.
+ *
+ * ADDING A MEMBER MEANS READING ITS SENTENCE, not widening the list.
+ */
+export const READ_AS_OVER_TIME: ReadonlyMap<string, string> = new Map([
+  [
+    'Fizz/W/Seastone Trident',
+    "the ability's own notes call it \"persistent damage ... on the damage over time effect\"",
+  ],
+  [
+    'Teemo/E/Toxic Shot',
+    "the ability's own notes say it \"deals proc persistent damage (damage over time)\"",
+  ],
+  [
+    'Teemo/R/Noxious Trap',
+    'the trap\'s damage is stated per tick over a duration, and the page calls it damage over time',
+  ],
+  [
+    'Nilah/R/Apotheosis',
+    'the page states the figure per tick across the channel and calls it damage over time',
+  ],
+]);
+
+/** True when a component's harvested label states a per-tick figure. */
+export const PER_TICK_LABEL = /per\s*tick/i;
+
+/**
+ * Mark the read population's per-tick components as recurring, and make every OTHER entry
+ * carrying one `incomplete` so no unread full-duration total stays in the burst line.
+ */
+export function classifyOverTime(abilities: CuratedAbility[]): {
+  marked: number;
+  refused: string[];
+} {
+  let marked = 0;
+  const refused: string[] = [];
+  for (const a of abilities) {
+    const perTick = a.components.filter((c) => PER_TICK_LABEL.test(c.label ?? ''));
+    if (perTick.length === 0) continue;
+    const why = READ_AS_OVER_TIME.get(abilityKey(a));
+    if (why) {
+      for (const c of perTick) {
+        c.overTime = { sourceSays: why };
+        marked += 1;
+      }
+      continue;
+    }
+    // NOT READ. The figure is withdrawn rather than moved or left where it is.
+    refused.push(abilityKey(a));
+    a.verification = 'incomplete';
+    a.notes =
+      a.notes ??
+      `this ability states a per-tick figure, so its damage recurs over time — and damage over ` +
+        `time is never part of a burst total (SPECIFICATION §3.8). Nobody has yet read the ` +
+        `source sentence to establish its full-duration shape, so no figure is published rather ` +
+        `than one published in the wrong place.`;
+  }
+  return { marked, refused };
+}
+
+/**
  * REFUSAL 1 — an ability entry gate 1 rejects.
  *
  * Found by running the lead's own gateSchema over the proposal, never by a rule invented here.
@@ -470,6 +552,11 @@ async function main(): Promise<void> {
   const items = await readJson<Item[]>(SOURCES.items);
   const manifest = await readJson<{ patch: string }>(SOURCES.manifest);
   const gate5 = await readJson<Array<{ entry: string }>>(SOURCES.gate5);
+
+  // PER-TICK COMPONENTS, BEFORE ANY GATE RUNS. Marking the read population and withdrawing the
+  // rest changes what gates 1 and 6 then see, which is the point: an entry made incomplete here
+  // must be judged as incomplete, not as the derived entry it was a moment ago.
+  const overTime = classifyOverTime(abilityFile.abilities);
 
   const abilityPass = refuseSchemaInvalidAbilities(
     abilityFile.abilities,
@@ -1043,6 +1130,11 @@ async function main(): Promise<void> {
   // Say it in words
   // -------------------------------------------------------------------------------------
   console.log('\n=== MERGE PROPOSAL ===');
+  console.log('--- per-tick components (SPECIFICATION §3.8) ---');
+  console.log(`  marked as recurring, from the read population: ${overTime.marked}`);
+  console.log(`  withdrawn to incomplete, unread: ${overTime.refused.length}`);
+  for (const k of overTime.refused) console.log(`    ${k}`);
+  console.log('');
   console.log(
     `merged: ${merged.abilities.length} abilities, ${merged.itemEffects.length} item effects, ` +
       `${merged.defensiveEffects!.length} defensive entries, ${merged.runes.length} runes, ` +
