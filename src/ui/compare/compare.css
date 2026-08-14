@@ -1,0 +1,391 @@
+/*
+ * The build-comparison surface. Every value traces to DESIGN.md;
+ * `../primitives/token-audit.test.ts` re-checks that across the whole area on every run.
+ *
+ * ═══ NO HUE IN THIS FILE, AND THAT IS THE POINT RATHER THAN AN OMISSION ═══
+ *
+ * DESIGN.md §1 reserves hue for the three damage types, lethal magenta and the recent-damage
+ * gold. A comparison surface is the one most tempted to break that law — green for the better
+ * build, red for the worse — so it is worth writing down that nothing here is coloured at all.
+ * Every damage figure on this surface is a `DamageValue` or an `AggregateTotal`, which carry
+ * their own hue and their own tag from `../primitives/primitives.css`. The panel, the difference
+ * block, the verdict lines and the two bars are neutral: graphite, steel and bone.
+ *
+ * The chart's bars are `--line-strong` on a `--bg-well` track — a filled neutral, the same
+ * standing as a gridline. Their LENGTH is the data; their colour says nothing and must not.
+ *
+ * ═══ NO MOTION ═══
+ *
+ * DESIGN.md §10: the motion budget is concentrated on the HP burndown, and everywhere else motion
+ * is functional or absent. Nothing on this surface animates, so there is no `prefers-reduced-
+ * motion` block to write — the sweep in `../primitives/token-audit.test.ts` requires one only for
+ * a stylesheet that animates something. If a bar ever grows in, it needs a block in the same
+ * commit, or it will stick at zero width forever for readers who asked for less motion.
+ */
+
+@import '../tokens.css';
+
+.cmp {
+  background: var(--bg-panel);
+  border: var(--border-steel);
+  border-radius: var(--radius-panel);
+  padding: var(--space-4);
+  font-family: var(--font-body);
+  color: var(--text-primary);
+}
+
+.cmp__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-block-end: var(--space-3);
+}
+
+.cmp__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: var(--weight-display);
+  font-size: var(--type-display-l);
+  line-height: var(--lh-display-l);
+}
+
+/* SPECIFICATION §8 — the patch sits adjacent to the result, never in a footer. */
+.cmp__patch {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: var(--type-num-s);
+  line-height: var(--lh-num-s);
+  font-weight: var(--weight-num);
+  color: var(--text-secondary);
+}
+
+.cmp__lead {
+  margin: 0 0 var(--space-3);
+  max-inline-size: var(--measure-prose-max);
+  font-family: var(--font-body);
+  font-size: var(--type-body-l);
+  line-height: var(--lh-body-l);
+  font-weight: var(--weight-body);
+  color: var(--text-primary);
+}
+
+.cmp__eyebrow {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: var(--weight-display-medium);
+  font-size: var(--type-eyebrow);
+  line-height: var(--lh-eyebrow);
+  letter-spacing: var(--ls-eyebrow);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.cmp__note {
+  margin: var(--space-2) 0 0;
+  max-inline-size: var(--measure-prose-max);
+  font-family: var(--font-body);
+  font-size: var(--type-body-s);
+  line-height: var(--lh-body-s);
+  font-weight: var(--weight-body-medium);
+  color: var(--text-secondary);
+}
+
+.cmp__note--block {
+  margin-block-start: var(--space-3);
+}
+
+.cmp__list {
+  list-style: none;
+  margin: var(--space-2) 0 0;
+  padding: 0;
+}
+
+.cmp__list li {
+  margin-block-start: var(--space-1);
+}
+
+.cmp__list--plain li {
+  max-inline-size: var(--measure-prose-max);
+  font-family: var(--font-body);
+  font-size: var(--type-body-m);
+  line-height: var(--lh-body-m);
+  font-weight: var(--weight-body);
+  color: var(--text-secondary);
+}
+
+/* A refusal path — `defender.level`, `attacker.items[2]` — is an identifier, so it is set in the
+   monospace face for the same reason every figure in this product is. */
+.cmp__path {
+  font-family: var(--font-mono);
+  font-size: var(--type-num-s);
+  line-height: var(--lh-num-s);
+  font-weight: var(--weight-num);
+  color: var(--text-primary);
+}
+
+.cmp__excluded-name {
+  font-family: var(--font-body);
+  font-size: var(--type-body-m);
+  line-height: var(--lh-body-m);
+  font-weight: var(--weight-body);
+  color: var(--text-primary);
+}
+
+/* --------------------------------------------------------------------------
+ * The two builds
+ *
+ * STACKED, FULL WIDTH, NOT SIDE BY SIDE IN TWO COLUMNS. Three reasons, and the third decides it:
+ * two columns halve the width available to a hero figure and its composition bar; a phone would
+ * have to drop to one column anyway, which needs a breakpoint DESIGN.md does not define; and
+ * stacking is what puts the two bars of the shared scale DIRECTLY above one another, which is the
+ * comparison the reader came for.
+ * -------------------------------------------------------------------------- */
+
+.cmp__sides {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin-block-start: var(--space-4);
+}
+
+/* THE ONE BREAKPOINT THIS PRODUCT HAS. DESIGN.md states exactly one viewport width in the whole
+   file — §7a's ~1280px, written as 80rem — and this is a use of that one, not a new one.
+   MEASURED at a 1280px viewport, on the clean comparison: stacked, the panel is 1096px tall —
+   more than a screen for two builds that are meant to be read against each other. Side by side it
+   is 892px, in two 572px columns whose tops align.
+   The CHART is deliberately left stacked either way: two bars one above the other on a shared
+   axis is the comparison, and putting them in two columns would destroy it. */
+@media (min-width: 80rem) {
+  .cmp__sides {
+    flex-direction: row;
+    gap: var(--space-5); /* the side-by-side gutter of DESIGN.md §4 */
+  }
+
+  .cmp__side {
+    flex: 1 1 0;
+    min-inline-size: 0;
+  }
+}
+
+.cmp__side {
+  background: var(--bg-well);
+  border: var(--border-steel);
+  border-radius: var(--radius-panel);
+  padding: var(--space-3);
+}
+
+.cmp__side-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.cmp__side-name {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: var(--weight-display-medium);
+  font-size: var(--type-display-m);
+  line-height: var(--lh-display-m);
+  color: var(--text-primary);
+}
+
+.cmp__figures {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-5);
+  margin-block-start: var(--space-3);
+}
+
+.cmp__figure {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-inline-size: 0;
+}
+
+.cmp__figure--difference {
+  margin-block-start: var(--space-3);
+}
+
+/* A total that is zero across all three damage types. It is WORDS rather than a `0`, because an
+   untagged zero with no composition bar is the one figure shape DESIGN.md §8 does not permit —
+   and "None" is also the more honest reading of a total with no damage in it. */
+.cmp__none {
+  font-family: var(--font-mono);
+  font-size: var(--type-num-l);
+  line-height: var(--lh-num-l);
+  font-weight: var(--weight-num);
+  color: var(--text-secondary);
+}
+
+.cmp__verdicts {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin-block-start: var(--space-3);
+}
+
+.cmp__verdict {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--type-body-m);
+  line-height: var(--lh-body-m);
+  font-weight: var(--weight-body);
+  color: var(--text-primary);
+}
+
+/* LETHALITY IS NEVER A COLOUR HERE. The burndown has the one licensed use of --lethal (DESIGN.md
+   §7, its zero-crossing rule and callout chip); on this surface the verdict is a sentence, and a
+   sentence survives greyscale, a screen reader and a screenshot identically. */
+.cmp__verdict-label {
+  color: var(--text-secondary);
+}
+
+.cmp__verdict-grid {
+  margin: var(--space-3) 0 0;
+}
+
+.cmp__verdict-grid dd {
+  margin: var(--space-1) 0 var(--space-2);
+  font-family: var(--font-body);
+  font-size: var(--type-body-m);
+  line-height: var(--lh-body-m);
+  font-weight: var(--weight-body);
+  color: var(--text-primary);
+}
+
+.cmp__split {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  list-style: none;
+  margin: var(--space-2) 0 0;
+  padding: 0;
+}
+
+.cmp__block {
+  margin-block-start: var(--space-5);
+}
+
+.cmp__difference {
+  margin-block-start: var(--space-6);
+  border-block-start: var(--border-steel);
+  padding-block-start: var(--space-4);
+}
+
+.cmp__refusal {
+  margin-block-start: var(--space-2);
+}
+
+/* --------------------------------------------------------------------------
+ * The shared scale
+ *
+ * Positions come from `../plot/` and arrive as inline percentages — data-derived geometry, the
+ * one thing an inline style is for in this area. Nothing here sets a colour, a size or a spacing
+ * value inline.
+ * -------------------------------------------------------------------------- */
+
+.cmp__plot {
+  margin-block-start: var(--space-3);
+}
+
+.cmp__rows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.cmp__row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.cmp__row-label {
+  flex: none;
+  inline-size: var(--space-8);
+  overflow-wrap: anywhere;
+  font-family: var(--font-display);
+  font-weight: var(--weight-display-medium);
+  font-size: var(--type-eyebrow);
+  line-height: var(--lh-eyebrow);
+  letter-spacing: var(--ls-eyebrow);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+/* `flex: 1 1 0` with `min-inline-size: 0` — the track takes the space that is left and can be
+   squeezed to nothing rather than pushing the page sideways on a phone. */
+.cmp__track {
+  position: relative;
+  flex: 1 1 0;
+  min-inline-size: 0;
+  block-size: var(--space-4);
+  background: var(--bg-well);
+  border: var(--border-steel);
+  border-radius: var(--radius-cell);
+}
+
+/* Every rule below is a zero-width element wearing a border, so the stroke widths are the border
+   TOKENS rather than lengths invented here. */
+.cmp__gridline {
+  position: absolute;
+  inset-block: 0;
+  inline-size: 0;
+  border-inline-start: var(--border-hair);
+}
+
+.cmp__bar {
+  position: absolute;
+  inset-block: var(--space-0);
+  inset-inline-start: 0;
+  background: var(--line-strong);
+  border-radius: var(--radius-cell);
+}
+
+/* THE TWO RULES OVERHANG THE TRACK, and that is a fix rather than a flourish. MEASURED at a
+   1280px viewport: the domain's top is the largest figure on the chart, so the largest bar's
+   damage-over-time mark lands at exactly the track's right-hand border — a 1px stroke sitting on
+   a 1px border, indistinguishable from the frame. Two pixels of overhang above and below make a
+   rule read as a rule wherever it falls, including on top of the frame. */
+.cmp__health {
+  position: absolute;
+  inset-block: calc(var(--space-1) * -1);
+  inline-size: 0;
+  border-inline-start: var(--border-strong);
+}
+
+/* Where the bar reaches once damage over time has resolved. DASHED, which is the convention the
+   burndown already uses for its damage-over-time crossing — a second rule of the same weight,
+   told apart by its stroke rather than by a hue. */
+.cmp__dotmark {
+  position: absolute;
+  inset-block: calc(var(--space-1) * -1);
+  inline-size: 0;
+  border-inline-start: var(--border-strong);
+  border-inline-start-style: dashed;
+}
+
+/* The axis is indented by exactly the label column plus its gap, so a tick sits over the point on
+   the track it names. */
+.cmp__axis {
+  position: relative;
+  block-size: var(--space-5);
+  margin-block-start: var(--space-1);
+  margin-inline-start: calc(var(--space-8) + var(--space-3));
+}
+
+.cmp__tick {
+  position: absolute;
+  font-family: var(--font-mono);
+  font-size: var(--type-num-s);
+  line-height: var(--lh-num-s);
+  font-weight: var(--weight-num);
+  color: var(--text-secondary);
+}

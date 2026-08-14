@@ -1,0 +1,29 @@
+/* DEV-ONLY styling for the build-comparison preview page. Not shipped: `vite build` builds
+   index.html only. Tokens only, like every other stylesheet in the area. */
+
+@import '../tokens.css';
+
+.preview {
+  background: var(--bg-base);
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.preview__case {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.preview__what {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: var(--weight-display-medium);
+  font-size: var(--type-eyebrow);
+  line-height: var(--lh-eyebrow);
+  letter-spacing: var(--ls-eyebrow);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
