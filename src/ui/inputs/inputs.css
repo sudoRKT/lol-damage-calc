@@ -8,10 +8,31 @@
 
 @import '../tokens.css';
 
+/* THE HINT SITS BESIDE THE LABEL, NOT UNDER THE FIELD. Stacked label / field / hint made every
+   numeric field three rows tall, and there are ten of them on the first screen. The grid
+   re-places the same three elements — the DOM order is untouched, so the label still precedes
+   its input for a screen reader and `aria-describedby` still points at the hint. */
 .numfield {
-  display: inline-flex;
-  flex-direction: column;
-  gap: var(--space-1);
+  display: inline-grid;
+  grid-template-columns: auto auto;
+  grid-template-areas:
+    'label hint'
+    'input input';
+  align-items: baseline;
+  justify-content: start;
+  gap: var(--space-1) var(--space-2);
+}
+
+.numfield__label {
+  grid-area: label;
+}
+
+.numfield__input {
+  grid-area: input;
+}
+
+.numfield__hint {
+  grid-area: hint;
 }
 
 .numfield__label {

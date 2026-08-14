@@ -69,8 +69,14 @@ export function ComboBuilder({
 
   return (
     <section className="combo" aria-label={`Combo — ${championName}`}>
+      {/* THE SHELF AND THE SEQUENCE ARE TWO LANES, SIDE BY SIDE. Both are one row of chips
+          against a 1327px panel, so stacking them spent a second row of height on white space.
+          Below the §7a breakpoint the lanes stack again. Reading order is unchanged: the shelf
+          is still first in the document, so keyboard and screen-reader order are untouched. */}
+      <div className="combo__lanes">
       <h2 className="combo__title">Combo</h2>
 
+      <div className="combo__lane">
       {/* ---- The shelf ---- */}
       <h3 className="combo__eyebrow" id="combo-shelf-label">
         Abilities
@@ -122,7 +128,9 @@ export function ComboBuilder({
           </button>
         </li>
       </ul>
+      </div>
 
+      <div className="combo__lane combo__lane--sequence">
       {/* ---- The sequence ---- */}
       <h3 className="combo__eyebrow" id="combo-sequence-label">
         Sequence
@@ -204,6 +212,8 @@ export function ComboBuilder({
           ))}
         </ol>
       )}
+      </div>
+      </div>
 
       {/* Every edit is announced. A reorder that is only visible is a reorder a screen reader
           user cannot confirm happened. */}

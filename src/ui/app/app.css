@@ -16,13 +16,54 @@
   font-family: var(--font-body);
   font-size: var(--type-body-l);
   line-height: var(--lh-body-l);
-  padding: var(--space-5);
+  /* DESIGN.md §4 names --space-7 for "top/bottom page regions" and --space-5 for the rail
+     gutter. The bottom is literal; the TOP is --space-5 deliberately, and it is a trade worth
+     stating: 48px of empty canvas above the page title pushes the signature element (§7) a
+     further 24px down a page whose whole problem was that the instrument sits below the fold. */
+  padding: var(--space-5) var(--space-5) var(--space-7);
   display: flex;
   flex-direction: column;
-  gap: var(--space-5);
+  /* ═══ THE PAGE RHYTHM IS GRADED, NOT UNIFORM ═══
+     This gap separates the page's three REGIONS — setup, result, detail — and is --space-6,
+     DESIGN.md §4's "separation between major sections". Panels INSIDE a region sit at
+     --space-4. §4 asks for exactly this: "prefer the smaller steps inside panels and reserve
+     the larger steps for separating major regions". Until 2026-08-14 every gap on this page
+     was --space-5, so configuration, combo, burndown, breakdown and stat blocks were all
+     separated identically and nothing grouped. */
+  gap: var(--space-6);
+}
+
+/* ---- The three regions ---- */
+
+/* A region is a group of panels that answer one question: what is being tested (setup), what
+   happened (result), and the itemised evidence (detail). Panels within one sit at --space-4;
+   regions are pushed apart by the --space-6 above. The 2:1 ratio is what makes the grouping
+   readable without a single new value. */
+.app__region {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+/* The result region is the signature element and its own caption plate. They are one object,
+   so they sit at the tightest step that still reads as two surfaces. */
+.app__region--result {
+  gap: var(--space-2);
 }
 
 /* ---- Header ---- */
+
+/* The masthead is one band, not three stacked lines: the eyebrow and the matchup title on the
+   left, the standing description on the right. It is the page's largest type (§3's
+   --type-display-xl) and it should not be followed by two more rows of small grey text before
+   the first control. */
+.app__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3) var(--space-5);
+}
 
 .app__eyebrow {
   margin: 0;
@@ -59,16 +100,20 @@
 
 /* ---- Two-column top row; single column below the §7a breakpoint ---- */
 
+/* The column gutter is --space-5, which is DESIGN.md §4's "grid gutter" verbatim. The ROW gap
+   — which only applies once the grid has collapsed to one column — is the region's own
+   --space-4, so a narrow viewport keeps the same rhythm the wide one has. */
 .app__row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: var(--space-5); /* DESIGN.md §4 — grid gutter */
+  gap: var(--space-4) var(--space-5);
   align-items: start;
 }
 
 .app__col {
   display: flex;
   flex-direction: column;
+  gap: var(--space-4);
 }
 
 /* 80rem = 1280px, the width DESIGN.md §7a states verbatim: "Below ~1280px the rails hide … and
@@ -128,11 +173,15 @@
 
 /* ---- The line that says what the result describes ---- */
 
+/* The caption plate on top of the instrument: what patch, what evidence, what that means.
+   It is one line of chrome above a 600px chart, so it takes the CONTROL padding step
+   (--space-3) rather than the panel step, and it reads as a plate rather than a panel. */
 .app__resulthead {
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
   gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
 }
 
 /* SPECIFICATION §8 — the patch, adjacent to the result. */

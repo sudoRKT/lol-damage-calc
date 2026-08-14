@@ -70,27 +70,34 @@ export function ChampionConfigPanel({
 
   return (
     <section className="config" aria-label={`${role} configuration`}>
-      <CombatantNameplate
-        role={role}
-        championName={champion?.name ?? 'No champion chosen'}
-        portraitSrc={champion ? portraitUrl(patch, champion.icon) : null}
-        level={config.level}
-      />
+      {/* THE NAMEPLATE AND THE PICKER SIT SIDE BY SIDE. Both are ~68px tall and neither needs
+          the full panel width, so stacking them cost a whole row of height for nothing. This
+          is layout only: the same two components, the same accessible names. */}
+      <div className="config__top">
+        <CombatantNameplate
+          role={role}
+          championName={champion?.name ?? 'No champion chosen'}
+          portraitSrc={champion ? portraitUrl(patch, champion.icon) : null}
+          level={config.level}
+        />
 
-      <ChampionPicker
-        label={`${role} champion`}
-        champions={champions}
-        selected={champion}
-        onSelect={(picked) =>
-          onChange(
-            // A new champion resets nothing else: level and ranks are the user's, and silently
-            // rewriting them would change a scenario they did not edit.
-            { ...config, apiname: picked.apiname },
-            picked,
-          )
-        }
-        patch={patch}
-      />
+        <div className="config__pick">
+          <ChampionPicker
+            label={`${role} champion`}
+            champions={champions}
+            selected={champion}
+            onSelect={(picked) =>
+              onChange(
+                // A new champion resets nothing else: level and ranks are the user's, and
+                // silently rewriting them would change a scenario they did not edit.
+                { ...config, apiname: picked.apiname },
+                picked,
+              )
+            }
+            patch={patch}
+          />
+        </div>
+      </div>
 
       <div className="config__fields">
         <NumberInput
@@ -129,12 +136,19 @@ export function ChampionConfigPanel({
         })}
       </div>
 
-      <p className="config__eyebrow">Not configured in this panel yet</p>
-      <ul className="config__missing">
-        {notConfigured.map((item) => (
-          <li key={item}>{item}</li>
-        ))}
-      </ul>
+      {/* WHAT IS NOT MODELLED HERE STAYS ON SCREEN, in full, unabridged — a panel that
+          silently omits runes invites a user to read a result as though their build had been
+          modelled. What changed is only its SHAPE: an eyebrow plus a three-line bulleted list
+          took ~100px of the first screen to say three short things, so it is now one wrapping
+          footnote row. Every item is still its own element with its own exact text. */}
+      <div className="config__note">
+        <p className="config__eyebrow">Not configured in this panel yet</p>
+        <ul className="config__missing">
+          {notConfigured.map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+        </ul>
+      </div>
     </section>
   );
 }

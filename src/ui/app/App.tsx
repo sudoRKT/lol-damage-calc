@@ -236,11 +236,13 @@ export function App({
   return (
     <main className="app">
       <header className="app__head">
-        <p className="app__eyebrow">Bench Test — League of Legends damage simulator</p>
-        <h1 className="app__title">
-          {attacker?.name ?? 'No attacker'} <span className="app__vs">vs</span>{' '}
-          {defender?.name ?? 'No defender'}
-        </h1>
+        <div className="app__nameplate">
+          <p className="app__eyebrow">Bench Test — League of Legends damage simulator</p>
+          <h1 className="app__title">
+            {attacker?.name ?? 'No attacker'} <span className="app__vs">vs</span>{' '}
+            {defender?.name ?? 'No defender'}
+          </h1>
+        </div>
         <p className="app__sub">
           Two champions, an ordered combo, and an itemised damage breakdown. The calculation runs
           entirely in this browser.
@@ -266,6 +268,11 @@ export function App({
         </section>
       ) : null}
 
+      {/* ═══ REGION 1 — SETUP: what is being tested ═══
+          The two combatants and the combo are one question, so they are one region and sit at
+          the region's own --space-4. DESIGN.md §7a's locked arrangement is unchanged:
+          configuration across the top row, burndown full width beneath. */}
+      <div className="app__region app__region--setup">
       {/* ---- The two combatants (DESIGN.md §7a: configuration across the top row) ---- */}
       <div className="app__row">
         <div className="app__col">
@@ -329,6 +336,7 @@ export function App({
         patch={data.patch}
         championName={attacker?.name ?? attackerName}
       />
+      </div>
 
       {/* ---- The result ---- */}
       {combo.length === 0 ? (
@@ -357,6 +365,12 @@ export function App({
 
       {simulation && simulation.ok ? (
         <>
+          {/* ═══ REGION 2 — RESULT: what happened ═══
+              The caption plate and the burndown are one instrument, so they sit at the
+              tightest step in the region grade. DESIGN.md §7 calls the burndown "the product's
+              remembered object"; putting it in a region of its own is what says so in layout
+              rather than only in prose. */}
+          <div className="app__region app__region--result">
           <section className="app__resulthead" aria-label="What this result describes">
             {/* SPECIFICATION §8: the patch sits ADJACENT to the result, never in a footer. */}
             <p className="app__patch">Patch {simulation.result.patch}</p>
@@ -368,7 +382,10 @@ export function App({
           </section>
 
           <HpBurndown result={simulation.result} />
+          </div>
 
+          {/* ═══ REGION 3 — DETAIL: the itemised evidence ═══ */}
+          <div className="app__region app__region--detail">
           <InstanceBreakdown result={simulation.result} />
 
           <div className="app__row">
@@ -384,6 +401,7 @@ export function App({
               portraitSrc={defender ? portraitUrl(data.patch, defender.icon) : null}
               stats={simulation.result.defenderStats}
             />
+          </div>
           </div>
         </>
       ) : null}

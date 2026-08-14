@@ -24,7 +24,16 @@
  * Shell
  * -------------------------------------------------------------------------- */
 
+/* THE BEZEL. Until 2026-08-14 the burndown had no frame at all — the plot inside it did, but
+   the signature element itself sat bare on the page canvas between two framed panels, which
+   made the product's remembered object (§7) the one thing on the page that was not an object.
+   DESIGN.md §5 calls --radius-panel "the outer corners of a panel / the instrument bezel", and
+   this is the instrument. No new value: the same three declarations every other panel carries. */
 .burn {
+  background: var(--bg-panel);
+  border: var(--border-steel);
+  border-radius: var(--radius-panel);
+  padding: var(--space-4);
   font-family: var(--font-body);
   font-size: var(--type-body-l);
   font-weight: var(--weight-body);
@@ -36,8 +45,16 @@
   align-items: flex-end;
   justify-content: space-between;
   gap: var(--space-5);
-  margin-bottom: var(--space-4);
+  margin-bottom: var(--space-3);
   flex-wrap: wrap;
+}
+
+.burn__ident,
+.burn__standing {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-3) var(--space-4);
 }
 
 .burn__title {
@@ -45,7 +62,7 @@
   font-weight: var(--weight-display);
   font-size: var(--type-display-l);
   line-height: var(--lh-display-l);
-  margin: 0 0 var(--space-2);
+  margin: 0;
 }
 
 .burn__patch {
@@ -70,7 +87,11 @@
   padding: var(--space-2) var(--space-3);
   font-family: var(--font-display);
   font-weight: var(--weight-display);
-  font-size: var(--type-display-m);
+  /* THE VERDICT IS THE ANSWER TO THE USER'S QUESTION, so it takes a section-header size
+     (DESIGN.md §3, --type-display-l) rather than a subsection one. It also puts the LETHAL
+     chip's magenta border unambiguously in §2's "large/bold only" band. */
+  font-size: var(--type-display-l);
+  line-height: var(--lh-display-l);
   color: var(--text-primary);
   white-space: nowrap;
 }

@@ -19,12 +19,31 @@
   padding: var(--space-4); /* DESIGN.md §4 — panel inner padding */
 }
 
+/* The panel heading is the first lane, not a row of its own above them. */
 .combo__title {
+  flex: none;
   font-family: var(--font-display);
   font-weight: var(--weight-display);
   font-size: var(--type-display-l);
   line-height: var(--lh-display-l);
-  margin: 0 0 var(--space-3);
+  margin: 0;
+}
+
+/* The shelf lane and the sequence lane. The sequence grows; the shelf takes what it needs. */
+.combo__lanes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--space-3) var(--space-5); /* --space-5 is DESIGN.md §4's grid gutter */
+}
+
+.combo__lane {
+  flex: 0 1 auto;
+  min-inline-size: 0;
+}
+
+.combo__lane--sequence {
+  flex: 1 1 0;
 }
 
 .combo__eyebrow {
@@ -35,7 +54,7 @@
   letter-spacing: var(--ls-eyebrow);
   text-transform: uppercase;
   color: var(--text-secondary);
-  margin: var(--space-4) 0 var(--space-2);
+  margin: 0 0 var(--space-2);
 }
 
 /* --------------------------------------------------------------------------

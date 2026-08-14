@@ -8,14 +8,31 @@
 
 @import '../tokens.css';
 
+/* The items panel is a panel in its own right now that it sits in the configuration region's
+   own rhythm — its top margin used to be the only thing separating it from the panel above,
+   which is the container's job, not this component's. */
 .items {
-  margin-block-start: var(--space-5);
+  background: var(--bg-panel);
+  border: var(--border-steel);
+  border-radius: var(--radius-panel);
+  padding: var(--space-4);
   font-family: var(--font-body);
   color: var(--text-primary);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2); /* DESIGN.md §4 — "gaps between related controls" */
+}
+
+.items__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
 }
 
 .items__title {
-  margin: 0 0 var(--space-2);
+  margin: 0;
   font-family: var(--font-display);
   font-weight: var(--weight-display-medium);
   font-size: var(--type-display-m);
@@ -25,16 +42,17 @@
 .items__count,
 .items__status,
 .items__empty {
-  margin: 0 0 var(--space-2);
-  font-size: var(--type-body-m);
-  line-height: var(--lh-body-m);
+  margin: 0;
+  font-size: var(--type-body-s);
+  line-height: var(--lh-body-s);
+  font-weight: var(--weight-body-medium);
   color: var(--text-secondary);
 }
 
 .items__build,
 .items__pool {
   list-style: none;
-  margin: 0 0 var(--space-3);
+  margin: 0;
   padding: 0;
   display: flex;
   flex-direction: column;
@@ -43,17 +61,36 @@
 
 /* The drawn pool is short by DESIGN rather than scrolled: DESIGN.md defines no height for a
    scrolling list region, and inventing one is forbidden (§0). `VISIBLE_MATCHES` in
-   ItemPicker.tsx caps the list instead, and the panel says so on screen. */
+   ItemPicker.tsx caps the list instead, and the panel says so on screen.
+   THE SAME EIGHT MATCHES, IN TWO COLUMNS. The list was eight full-width rows — 326px, the
+   single largest block on the first screen — to show eight short lines. Two columns halve
+   that height and hide nothing: the count and the cap are still printed above it. */
 .items__pool {
+  display: grid;
+  /* The column COUNT is not fixed; the minimum column WIDTH is, and it is composed from the
+     spacing scale rather than invented — the same construction, and the same open point, as
+     the plot's height in ../burndown/burndown.css and the picker's maximum height. Two columns
+     at a 1440px desktop, four when the panel goes full width, one on a phone. RAISED rather
+     than settled quietly: if a minimum-column-width token is wanted, it belongs in DESIGN.md. */
+  grid-template-columns: repeat(auto-fit, minmax(calc(var(--space-8) * 4), 1fr));
+  gap: var(--space-1);
   border: var(--border-hair);
   border-radius: var(--radius-control);
   padding: var(--space-1);
+}
+
+/* `min-inline-size: 0` and the wrap are what let a pool cell be narrower than its longest
+   line. Without them the two-column grid's own minimum width propagated all the way up and
+   pushed the whole page into a horizontal scroll on a phone. */
+.items__pool > li {
+  min-inline-size: 0;
 }
 
 .items__slot,
 .items__add {
   display: flex;
   align-items: center;
+  min-inline-size: 0;
   gap: var(--space-2);
   padding: var(--space-1) var(--space-2);
   background: var(--bg-well);
@@ -78,6 +115,11 @@
 
 .items__name {
   font-weight: var(--weight-body-medium);
+  min-inline-size: 0;
+}
+
+.items__grants {
+  min-inline-size: 0;
 }
 
 .items__grants,
@@ -113,14 +155,21 @@
   border: var(--border-strong);
 }
 
+/* The label sits beside the field, not above it. Still the field's own <label>. */
 .items__search {
   display: flex;
-  flex-direction: column;
-  gap: var(--space-1);
-  margin-block-end: var(--space-2);
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.items__search input {
+  flex: 1 1 0;
+  min-inline-size: 0;
 }
 
 .items__search-label {
+  white-space: nowrap;
   font-family: var(--font-display);
   font-weight: var(--weight-display-medium);
   font-size: var(--type-eyebrow);

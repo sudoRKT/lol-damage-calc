@@ -84,12 +84,16 @@ export function ItemPicker({ role, items, selected, onChange }: ItemPickerProps)
 
   return (
     <section className="items" aria-label={`${role} items`}>
-      <h3 className="items__title">Items</h3>
-
-      {/* ---- The build ---- */}
-      <p className="items__count">
-        {selected.length} of {ITEM_SLOTS} item slots used
-      </p>
+      {/* The title and the slot count are one statement — "Items, 0 of 6 slots used" — so they
+          share one line. Five stacked lines of chrome stood between this heading and the first
+          item; this is two. Nothing is dropped, only relaid. */}
+      <header className="items__head">
+        <h3 className="items__title">Items</h3>
+        {/* ---- The build ---- */}
+        <p className="items__count">
+          {selected.length} of {ITEM_SLOTS} item slots used
+        </p>
+      </header>
       {build.length === 0 ? (
         <p className="items__empty">No items. The build is base statistics only.</p>
       ) : (
@@ -124,6 +128,8 @@ export function ItemPicker({ role, items, selected, onChange }: ItemPickerProps)
       )}
 
       {/* ---- The pool ---- */}
+      {/* The search label sits BESIDE its field rather than above it. It is still the field's
+          own <label>, so the accessible name is unchanged; it is one line instead of two. */}
       <label className="items__search">
         <span className="items__search-label">{`Search ${role} items`}</span>
         <input

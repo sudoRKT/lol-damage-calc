@@ -239,8 +239,12 @@ export function HpBurndown({ result, title = 'HP burndown' }: HpBurndownProps) {
 
   return (
     <section className={`burn${settled ? ' burn--settled' : ''}`} aria-label={title}>
+      {/* ONE BAND, NOT TWO STACKED BLOCKS. The title, the rolling total, the patch and the
+          verdict are the instrument's readout plate and they sit on one baseline. Stacking the
+          title above the total spent a whole row of height above a chart that was already
+          below the fold. Nothing is added or removed — only laid out. */}
       <header className="burn__head">
-        <div>
+        <div className="burn__ident">
           <h2 className="burn__title">{title}</h2>
           <AggregateTotal
             label="Total"
@@ -249,7 +253,7 @@ export function HpBurndown({ result, title = 'HP burndown' }: HpBurndownProps) {
             size="hero"
           />
         </div>
-        <div>
+        <div className="burn__standing">
           <p className="burn__patch">Patch {result.patch}</p>
           {/*
             DESIGN.md §7 gives the kill exactly ONE chip and it sits on the rule: "A callout

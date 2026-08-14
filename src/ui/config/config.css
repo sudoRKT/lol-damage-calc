@@ -14,6 +14,25 @@
   padding: var(--space-4); /* DESIGN.md §4 — panel inner padding */
   font-family: var(--font-body);
   color: var(--text-primary);
+  /* Inside a panel, the smaller step — DESIGN.md §4, "prefer the smaller steps inside panels".
+     --space-3 is §4's "row rhythm". */
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+/* The nameplate and the champion field share one row. `min-inline-size: 0` on the field lets
+   it shrink instead of forcing the row to wrap at any width the two would both fit. */
+.config__top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--space-4);
+}
+
+.config__pick {
+  flex: 1 1 0;
+  min-inline-size: 0;
 }
 
 /* DESIGN.md §4 — "default gap between fields" is --space-4. */
@@ -21,11 +40,21 @@
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-4);
-  margin-block-start: var(--space-4);
+}
+
+/* The footnote row: the eyebrow labels a wrapping inline list rather than heading a bulleted
+   block. Same words, same elements, one or two lines instead of five. */
+.config__note {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-2) var(--space-3);
+  border-block-start: var(--border-hair);
+  padding-block-start: var(--space-3);
 }
 
 .config__eyebrow {
-  margin: var(--space-5) 0 var(--space-2);
+  margin: 0;
   font-family: var(--font-display);
   font-weight: var(--weight-display-medium);
   font-size: var(--type-eyebrow);
@@ -33,14 +62,32 @@
   letter-spacing: var(--ls-eyebrow);
   text-transform: uppercase;
   color: var(--text-secondary);
+  white-space: nowrap;
 }
 
+/* The items FLOW as text rather than as flex children. As flex items each one is unbreakable,
+   so three sentences of 40–86 characters took four lines in a 485px column; flowed inline they
+   take two. `display: inline` on the items is what allows a line break inside a sentence. */
 .config__missing {
+  flex: 1 1 0;
+  min-inline-size: 0;
+  list-style: none;
   margin: 0;
-  padding-inline-start: var(--space-4);
+  padding: 0;
   font-family: var(--font-body);
-  font-size: var(--type-body-m);
-  line-height: var(--lh-body-m);
-  font-weight: var(--weight-body);
+  font-size: var(--type-body-s);
+  line-height: var(--lh-body-s);
+  font-weight: var(--weight-body-medium);
   color: var(--text-secondary);
+}
+
+.config__missing li {
+  display: inline;
+}
+
+/* The separator between footnote items. A middle dot is the same mark the breakdown's state
+   column already uses to join phrases, so the page has one idiom for "and also". */
+.config__missing li + li::before {
+  content: ' · ';
+  color: var(--text-muted);
 }

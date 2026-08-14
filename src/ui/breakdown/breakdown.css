@@ -122,12 +122,34 @@
   padding: 0 var(--space-1);
 }
 
+/* ═══ THE STATE COLUMN IS WHY THIS TABLE IS TWICE THE DENSITY DESIGN.md ASKS FOR, AND THE
+   CAUSE IS NOT PADDING. MEASURED 2026-08-14, NOT ARGUED. ═══
+   A body row renders 63px. Its cells contribute: index 18px, source 19px, damage 25px,
+   running total 25px, evidence 16px — and STATE 46px, three wrapped lines in an 868px column.
+   Take 16px of --space-2 padding off 63 and 46 of the remaining 47 is this one cell.
+   Both of the obvious layout levers were already spent before this pass: the vertical padding
+   is already §4's --space-2, and this rule is already §3's smallest text role. The cell prints
+   THIRTEEN state phrases as running prose, eight of which read zero on a default scenario, and
+   no type size or column width gets thirteen phrases into a 32px row.
+   SO THE REMAINDER IS NOT A LAYOUT PROBLEM. Shortening the list is a decision about what the
+   table ASSERTS — SPECIFICATION §11 requires the state that applied at that point to be shown
+   — and that is raised, not taken here. */
 .breakdown__state {
   font-family: var(--font-body);
   font-size: var(--type-body-s);
   line-height: var(--lh-body-s);
   font-weight: var(--weight-body-medium);
   color: var(--text-secondary);
+}
+
+/* Ranked by what the reader is looking for: the figures and the evidence take exactly the
+   width they need, and the state annotation absorbs the rest instead of the other way round. */
+.breakdown__index,
+.breakdown__damage,
+.breakdown__running,
+.breakdown__evidence {
+  inline-size: 0;
+  white-space: nowrap;
 }
 
 .breakdown__damage,

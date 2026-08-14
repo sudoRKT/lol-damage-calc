@@ -16,17 +16,22 @@
   padding: var(--space-4);
   font-family: var(--font-body);
   color: var(--text-primary);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
 }
 
 /* --------------------------------------------------------------------------
  * The nameplate — the one place a portrait is full colour (DESIGN.md §9).
  * -------------------------------------------------------------------------- */
 
+/* The nameplate carries NO margin of its own. It appears in two places — the stat block and
+   the configuration strip — and a margin baked into it forced the second one to cancel it.
+   Each container states its own rhythm instead: `.statblock` above, `.config__top` beside. */
 .nameplate {
   display: flex;
   align-items: center;
   gap: var(--space-3);
-  margin-block-end: var(--space-4);
 }
 
 .nameplate__role {
