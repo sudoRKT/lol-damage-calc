@@ -119,7 +119,7 @@ describe('damage-value/announced-as-full-word', () => {
     expect(
       screen.getByRole('cell', { name: '250 true damage after resistances' }),
     ).toBeTruthy();
-    expect(container.querySelector('.dmg__tag')?.textContent).toBe('T');
+    expect(container.querySelector('.dmg__tag')?.textContent).toBe('true');
   });
 });
 
@@ -129,11 +129,15 @@ describe('damage-value/announced-as-full-word', () => {
 // ---------------------------------------------------------------------------
 
 describe('damage-value/visible-tag', () => {
-  it('draws the P / M / T tag beside the number for all three types', () => {
+  // THE TAG IS A WORD FRAGMENT, NOT A LETTER - changed 2026-08-14 (DESIGN-AUDIT.md part 2,
+  // option A). The letter was correct and unreadable: on an ability icon, `M` reads as an ability
+  // SLOT. The slot letter moved to the chip and the type became a word, so a slot letter never
+  // appears beside a figure and a type word never appears on an icon.
+  it('draws the phys / mag / true tag beside the number for all three types', () => {
     const expected: Array<[DamageType, string]> = [
-      ['physical', 'P'],
-      ['magic', 'M'],
-      ['true', 'T'],
+      ['physical', 'phys'],
+      ['magic', 'mag'],
+      ['true', 'true'],
     ];
     for (const [type, tag] of expected) {
       cleanup();
@@ -142,11 +146,14 @@ describe('damage-value/visible-tag', () => {
     }
   });
 
-  it('separates number from tag with a thin space, so it copies as "214 P"', () => {
+  it('separates number from tag with a thin space, so it copies as "214 phys"', () => {
     const { container } = render(<DamageValue value={214} damageType="physical" />);
     const visible = container.querySelector('[aria-hidden="true"]')!;
-    expect(visible.textContent).toBe('214 P');
-    expect(visible.textContent).not.toBe('214 P');
+        // The separator is a real U+2009 THIN SPACE inside the text, never CSS margin, so the
+    // value survives copy-paste with its type attached (DESIGN.md 4, 8). The NEGATIVE
+    // assertion below is the one that matters: an ordinary space would pass the first.
+    expect(visible.textContent).toBe('214 phys');
+    expect(visible.textContent).not.toBe('214 phys');
   });
 
   it('has no prop that can suppress the tag', () => {
@@ -209,7 +216,7 @@ describe('aggregate-total/multi-type', () => {
   it('cannot render the untagged total without the tagged composition bar', () => {
     const { container } = render(<AggregateTotal total={total} byType={byType} />);
     const tags = [...container.querySelectorAll('.dmg__tag')].map((n) => n.textContent);
-    expect(tags).toEqual(['P', 'M']);
+    expect(tags).toEqual(['phys', 'mag']);
     // A segment exists for each type PRESENT in the split, and none for a type contributing
     // nothing — a zero-width segment carrying a tag would announce damage that was not dealt.
     for (const t of ['physical', 'magic']) {
@@ -223,7 +230,7 @@ describe('aggregate-total/multi-type', () => {
     inCell(<AggregateTotal total={dotTotal} byType={dotByType} />);
     expect(screen.getByRole('cell', { name: '160 magic damage' })).toBeTruthy();
     const cell = screen.getByRole('cell', { name: '160 magic damage' });
-    expect(within(cell).getByText('M')).toBeTruthy();
+    expect(within(cell).getByText('mag')).toBeTruthy();
   });
 
   it('throws rather than showing a split that contradicts the total', () => {

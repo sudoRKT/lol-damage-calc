@@ -38,7 +38,11 @@
 /* Visibly "no damage type", not an omission — a neutral steel rule (§9). */
 .chip__underline--none { background: var(--line-steel); }
 
-/* The definitive cue: the P/M/T letter, in the numeric face, at the tag's floor size (§8). */
+/* THE CORNER TAG IS THE ABILITY SLOT, AND IT IS NEUTRAL (changed 2026-08-14).
+   It used to be the P/M/T damage-type letter, in the damage hue. It is now Q / W / E / R / P —
+   which slot the ability occupies — and a slot is NOT damage data, so DESIGN.md §1's reserved-hue
+   law puts it in --text-secondary with no per-type rule at all. That is why the three
+   `.chip__tag--*` colour rules that used to sit here are gone rather than renamed. */
 .chip__tag {
   position: absolute;
   top: 0;
@@ -49,12 +53,32 @@
   line-height: 1;
   padding: var(--space-0);
   background: var(--bg-base);
+  color: var(--text-secondary);
   border-bottom-left-radius: var(--radius-control);
 }
-.chip__tag--physical { color: var(--dmg-physical); }
-.chip__tag--magic { color: var(--dmg-magic); }
-.chip__tag--true { color: var(--dmg-true); }
-.chip__tag--none { color: var(--text-secondary); }
+
+/* The chip and the word beneath it are one object. */
+.chip-group {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-0);
+}
+
+/* THE DEFINITIVE DAMAGE-TYPE CUE, in text, beneath the icon: `phys` / `mag` / `true`, or an
+   em dash for an ability that deals none. Same vocabulary as a damage figure's tag (§8), so the
+   word under a chip and the word beside a number are visibly the same fact. The hue is the
+   redundant channel; this word is what survives greyscale. */
+.chip__type {
+  font-family: var(--font-mono);
+  font-weight: var(--weight-num);
+  font-size: var(--type-num-s);
+  line-height: var(--lh-num-s);
+}
+.chip__type--physical { color: var(--dmg-physical); }
+.chip__type--magic { color: var(--dmg-magic); }
+.chip__type--true { color: var(--dmg-true); }
+.chip__type--none { color: var(--text-secondary); }
 
 /* Hover brightens the chip. It never changes hue (§9). */
 .chip:hover { background: var(--bg-panel-raised); }

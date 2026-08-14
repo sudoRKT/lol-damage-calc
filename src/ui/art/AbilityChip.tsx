@@ -1,22 +1,50 @@
 // Official game art as a functional data-chip. DESIGN.md §9.
 //
 // Art is demoted to data in this product: an icon is never framed or gilded, it is a small square
-// that carries information. A COMBAT-RELEVANT chip carries two cues, and both are mandatory:
+// that carries information.
 //
-//   • a 2px bottom underline in its DAMAGE-TYPE colour — the fast channel, and
-//   • a small P/M/T corner tag — the definitive one, which is what makes it colourblind-safe.
+// ═══ WHAT THE CORNER TAG SAYS, AND WHY IT CHANGED ON 2026-08-14 ═══
 //
-// A NON-DAMAGING chip gets a neutral steel underline and an em-dash marker instead of a tag, so it
-// reads as "visibly no damage type" rather than as an omission. That distinction is §9's, and it is
-// the same principle as the `–` glyph for the no-damage verification state.
+// The corner used to carry the DAMAGE TYPE as `P` / `M` / `T`. The project owner, who plays the
+// game, read the `M` on an ability icon as an ability SLOT letter — because Q, W, E and R are what
+// a League player expects in exactly that position on exactly that object. The cue was correct and
+// unreadable, which makes it decoration rather than a cue.
 //
-// The specification requires this: "The combo builder presents abilities as their in-game icons
-// rather than as lettered buttons" (SPECIFICATION §10.1). Letters were a scaffold, not a choice.
+// So the corner now carries the SLOT, which is the notation a player already reads, and the damage
+// type is a word. Three cues, each in one place and one form:
+//
+//   • the CORNER TAG is the ability slot — Q, W, E, R, P — and it is NEUTRAL, because a slot
+//     letter is not damage data and DESIGN.md §1 reserves hue for damage data alone;
+//   • the 2px bottom UNDERLINE is the damage type, in its hue — the fast channel;
+//   • the WORD BENEATH the chip is the damage type in text — `phys` / `mag` / `true` — the
+//     definitive channel, and the same vocabulary a damage figure carries.
+//
+// ═══ WHY THE WORD BENEATH EXISTS, WHICH IS THE PART NOT TO REMOVE ═══
+//
+// Option A as written in DESIGN-AUDIT.md says damage type "leaves the chip entirely and appears
+// only where a NUMBER appears". Taken literally that leaves a shelf chip with its underline as its
+// ONLY visible damage-type cue — colour alone — for the many chips that never sit near a figure.
+// A player choosing abilities on the shelf has no result yet, so there is no number anywhere to
+// carry the type for them. That is the exact channel SPECIFICATION §10.1 exists to forbid, so the
+// word stays, moved off the icon rather than deleted with the letter.
+//
+// A NON-DAMAGING chip gets a neutral steel underline and an em-dash word, so it reads as "visibly
+// no damage type" rather than as an omission. That distinction is §9's, and it is the same
+// principle as the `–` glyph for the no-damage verification state.
+//
+// The specification requires the art itself: "The combo builder presents abilities as their
+// in-game icons rather than as lettered buttons" (SPECIFICATION §10.1). A corner tag on an icon is
+// not a lettered button — the icon is still what identifies the ability, and the letter says which
+// slot it occupies, exactly as the game's own interface does.
 
 import type { DamageType } from '../../types/data';
 import './art.css';
 
-const TAG: Record<DamageType, string> = { physical: 'P', magic: 'M', true: 'T' };
+/**
+ * The damage-type word a chip carries beneath it. Same vocabulary as `DamageValue`'s tag, so
+ * `mag` under a chip and `180 mag` in the table are visibly the same fact.
+ */
+const TYPE_WORD: Record<DamageType, string> = { physical: 'phys', magic: 'mag', true: 'true' };
 const FULL_WORD: Record<DamageType, string> = { physical: 'physical', magic: 'magic', true: 'true' };
 
 export type ChipSize = 'combo' | 'table' | 'inline';
@@ -70,17 +98,27 @@ export function AbilityChip({
   const cls = damageType === null ? 'chip__underline--none' : `chip__underline--${damageType}`;
   return (
     <span
-      className={`chip chip--${size}`}
+      className={`chip-group chip-group--${size}`}
       role={decorative ? undefined : 'img'}
       aria-hidden={decorative || undefined}
       aria-label={decorative ? undefined : chipAccessibleName(slot, abilityName, damageType)}
     >
-      {/* The image itself carries no accessible name: the wrapper is the labelled thing, so the
-          name is spoken once rather than twice. */}
-      <img className="chip__img" src={src} alt="" aria-hidden="true" />
-      <span className={`chip__underline ${cls}`} aria-hidden="true" />
-      <span className={`chip__tag chip__tag--${damageType ?? 'none'}`} aria-hidden="true">
-        {damageType === null ? '—' : TAG[damageType]}
+      <span className={`chip chip--${size}`}>
+        {/* The image itself carries no accessible name: the wrapper is the labelled thing, so the
+            name is spoken once rather than twice. */}
+        <img className="chip__img" src={src} alt="" aria-hidden="true" />
+        <span className={`chip__underline ${cls}`} aria-hidden="true" />
+        {/* The SLOT, not the damage type — and neutral, because a slot is not damage data. An
+            ability with no slot (a basic attack reaches here through a different component) draws
+            no tag at all rather than an empty box. */}
+        {slot ? (
+          <span className="chip__tag" aria-hidden="true">
+            {slot}
+          </span>
+        ) : null}
+      </span>
+      <span className={`chip__type chip__type--${damageType ?? 'none'}`} aria-hidden="true">
+        {damageType === null ? '—' : TYPE_WORD[damageType]}
       </span>
     </span>
   );

@@ -248,6 +248,25 @@ cue.**
 >
 > This is the useful part of the finding. A future session should not start by assuming the letter
 > is fixed.
+>
+> ---
+>
+> ### ⚠ CORRECTION, 2026-08-14 — THE REFRAMING ABOVE IS HALF WRONG, AND THE WRONG HALF MATTERS
+>
+> **SPECIFICATION §10.1 named the three letters literally**, in its own words: *"a damage-type tag
+> — `P` for physical, `M` for magic, `T` for true — placed with the value"*. The paragraph above
+> says the letter is DESIGN.md's addition. It is not, and the error was found only when the change
+> was implemented and the specification was re-read line by line.
+>
+> **What the reframing was RIGHT about:** the letter's PLACEMENT on the icon-chip is DESIGN.md §9's
+> addition, and the specification says nothing about it. That half stands.
+>
+> **What it was WRONG about:** adopting option A was a change to SPECIFICATION §10.1 as well as to
+> DESIGN.md, and it was made and recorded as one. The specification now carries the word tag and a
+> note explaining the change and this correction.
+>
+> **The lesson is not "read more carefully" — it is that an audit that reframes a constraint must
+> quote the constraint.** This one paraphrased it. A quotation would have shown the letters.
 
 ### Option A — the slot goes on the chip; the type becomes a word on the figure · **recommended**
 
@@ -266,6 +285,30 @@ word-fragment rather than a letter: `214 phys`, `180 mag`, `240 true`.
   the bar more often. **That path already exists and is tested** (DESIGN.md §7, resolved
   2026-08-14), so the cost is absorbed rather than new.
 - The chip's damage-type underline stays as the fast, redundant channel. It is already correct.
+
+> **WHAT IMPLEMENTING IT ACTUALLY COST, measured 2026-08-14. Two of these are larger than the
+> estimate above and one is a defect option A would have introduced.**
+>
+> 1. **"More often" turned out to be "always."** The longest inline composition-bar label measures
+>    70px at `--type-num-s`, and the narrowest bar this product draws is the breakdown's
+>    running-total column at **109px** — not the ~200px the threshold's original derivation
+>    assumed. Two shares sum to 1, so they cannot both clear 70/109, and every split of two or more
+>    damage types now puts its labels below the bar. The inline layout survives only for a
+>    single-type bar.
+> 2. **The same measurement showed the OLD threshold was already wrong.** At 0.25, a segment
+>    holding 30% of a 109px bar had 33px of room for a 52px one-letter label. That was a latent
+>    instance of the very defect the threshold exists to prevent, and it predates option A.
+> 3. **Option A as written removes the chip's only visible non-colour cue, and that was not
+>    adopted.** "Damage type leaves the chip entirely and appears only where a number appears"
+>    leaves a combo-shelf chip with its underline hue alone — and on the shelf there is no result
+>    yet, so there is no number anywhere to carry the type. The build keeps the type on the chip as
+>    a **word beneath it**, which is the same vocabulary a figure uses.
+> 4. **It made the mobile overflow worse, by a measured amount.** At a 375px viewport the plot area
+>    is 187px, so four burndown columns are 47px each while a riser label is 49–59px — wider than
+>    its own column. Two adjacent labels overlap, where the one-letter tag cleared by 6px. Page
+>    scrollWidth went 609px → 648px. Narrowing the label's inset was tried and rejected: the inset
+>    is what holds each label clear of the previous one, so shrinking it moves them together. This
+>    is folded into §6.5's mobile item, which is where the honest fix lives.
 
 ### Option B — solve it only where it breaks
 

@@ -20,7 +20,7 @@
 // that the page looks right. Looking at the page is a person's job, and this is what stops the
 // fix being removed by someone who cannot reproduce the failure.
 
-import { CompositionBar, labelsMustSitBelow } from './DamageValue';
+import { CompositionBar, MIN_SHARE_FOR_INLINE_LABEL, labelsMustSitBelow } from './DamageValue';
 import { describe, expect, it, afterEach } from 'vitest';
 import { cleanup, render } from '@testing-library/react';
 import { readFileSync } from 'node:fs';
@@ -74,11 +74,34 @@ describe('mandatory-cue-layout/when the labels move, and that they all move toge
     expect(labelsMustSitBelow(267, { physical: 42, magic: 225, true: 0 })).toBe(true);
   });
 
-  it('leaves them in the bar when every segment is wide enough for its own label', () => {
-    // Without this the rule would pass for an implementation that always moved them, which is a
-    // different design and not the one DESIGN.md §7 specifies.
-    expect(labelsMustSitBelow(300, { physical: 150, magic: 150, true: 0 })).toBe(false);
-    expect(labelsMustSitBelow(300, { physical: 100, magic: 100, true: 100 })).toBe(false);
+  it('leaves them in the bar for the one case that still fits — a single-type bar', () => {
+    // Without this the rule would pass for an implementation that always moved them
+    // unconditionally, which is a different design and not the one DESIGN.md §7 specifies.
+    // A single-type bar has one share of 1.0 and the whole width to draw it in.
+    expect(labelsMustSitBelow(300, { physical: 300, magic: 0, true: 0 })).toBe(false);
+  });
+
+  it('ANY SPLIT OF TWO OR MORE TYPES MOVES ITS LABELS — arithmetic, not a choice', () => {
+    // CHANGED 2026-08-14 with the tag, and this case used to assert the opposite. The tag was one
+    // character and the threshold 0.25; the tag is now up to four, and the threshold is 0.65,
+    // measured (70px of label in the 109px running-total bar). Two shares sum to 1, so they
+    // cannot both reach 0.65 — an even split moves, and so does every other.
+    expect(labelsMustSitBelow(300, { physical: 150, magic: 150, true: 0 })).toBe(true);
+    expect(labelsMustSitBelow(300, { physical: 100, magic: 100, true: 100 })).toBe(true);
+    expect(labelsMustSitBelow(1000, { physical: 340, magic: 660, true: 0 })).toBe(true);
+    // The boundary, pinned from both sides so the constant cannot drift unnoticed.
+    expect(labelsMustSitBelow(1000, { physical: 349, magic: 651, true: 0 })).toBe(true);
+    expect(MIN_SHARE_FOR_INLINE_LABEL).toBe(0.65);
+  });
+
+  it('THE OLD 0.25 WAS ALREADY TOO LOW, against the bar this product actually draws', () => {
+    // Measured, not assumed: the narrowest composition bar is the breakdown's running-total
+    // column at 109px, NOT the ~200px the old derivation supposed. Even the old one-letter
+    // label was 52px there, so a 0.3 share had 33px of room for it. This test states the case
+    // that used to pass and should not have, so the correction cannot be quietly undone.
+    const wouldHavePassedUnderTheOldRule = 0.3 >= 0.25;
+    expect(wouldHavePassedUnderTheOldRule).toBe(true);
+    expect(labelsMustSitBelow(1000, { physical: 300, magic: 700, true: 0 })).toBe(true);
   });
 
   it('ignores a type that contributed nothing — an absent segment cannot be too narrow', () => {
@@ -98,13 +121,18 @@ describe('mandatory-cue-layout/when the labels move, and that they all move toge
 
   it('keeps every tag, wherever the labels sit — the cue is relocated, never suppressed', () => {
     const below = render(<CompositionBar total={267} byType={{ physical: 42, magic: 225, true: 0 }} />);
-    expect(below.container.textContent).toContain('P');
-    expect(below.container.textContent).toContain('M');
+    expect(below.container.querySelectorAll('.comp__labels .dmg').length).toBe(2);
+    expect(below.container.textContent).toContain('phys');
+    expect(below.container.textContent).toContain('mag');
     cleanup();
-    const inside = render(<CompositionBar total={300} byType={{ physical: 150, magic: 150, true: 0 }} />);
-    expect(inside.container.querySelectorAll('.comp__seg .dmg').length).toBe(2);
-    expect(inside.container.textContent).toContain('P');
-    expect(inside.container.textContent).toContain('M');
+    // The other branch — a bar whose one segment is wide enough — keeps its label INSIDE, and it
+    // still carries the tag there. Since 2026-08-14 that branch is a single-type bar: two shares
+    // cannot both clear 0.65, so any real split moves. The cue is present either way, which is
+    // the claim this test makes.
+    const inside = render(<CompositionBar total={300} byType={{ physical: 300, magic: 0, true: 0 }} />);
+    expect(inside.container.querySelectorAll('.comp__seg .dmg').length).toBe(1);
+    expect(inside.container.querySelectorAll('.comp__labels').length).toBe(0);
+    expect(inside.container.textContent).toContain('phys');
   });
 
   it('the bar keeps proportional grow factors either way', () => {

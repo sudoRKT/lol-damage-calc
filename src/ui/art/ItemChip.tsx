@@ -52,7 +52,10 @@ export function ItemChip({ src, itemName, size = 'table', decorative = false }: 
       <img className="chip__img" src={src} alt="" aria-hidden="true" />
       {/* Neutral steel underline and an em dash: this chip deals no damage, and says so. */}
       <span className="chip__underline chip__underline--none" aria-hidden="true" />
-      <span className="chip__tag chip__tag--none" aria-hidden="true">
+      {/* An em dash, not a letter: an item has no ability slot, and the corner tag is the SLOT
+          now (changed 2026-08-14). `chip__tag--none` is gone along with the other per-type
+          colour rules — `.chip__tag` is neutral for everything it can hold. */}
+      <span className="chip__tag" aria-hidden="true">
         —
       </span>
     </span>

@@ -5,8 +5,9 @@
 // reader announces is the claim, and the visual cue is the redundant channel.
 
 import { describe, expect, it } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { cleanup, render, screen } from '@testing-library/react';
 
+import type { DamageType } from '../../types/data';
 import { AbilityChip, chipAccessibleName } from './AbilityChip.tsx';
 import { ChampionPortrait } from './ChampionPortrait.tsx';
 
@@ -35,11 +36,84 @@ describe('an ability chip announces the ability and its damage type in words', (
     expect(screen.getAllByRole('img')).toHaveLength(1);
   });
 
+  // =======================================================================================
+  // WHAT THE CHIP'S CORNER SAYS. Changed 2026-08-14 (DESIGN-AUDIT.md part 2, option A).
+  //
+  // It carried the damage type as P / M / T. The project owner read the `M` on an ability icon
+  // as an ability SLOT letter, because Q / W / E / R is what a League player expects in exactly
+  // that position. The cue was correct and unreadable, which makes it decoration.
+  //
+  // The three cues now, each in one place and one form: the corner is the SLOT and is neutral,
+  // the underline is the damage type in hue, and the WORD beneath is the damage type in text.
+  // =======================================================================================
+
+  it('the corner tag is the ability SLOT, not the damage type', () => {
+    for (const slot of ['Q', 'W', 'E', 'R', 'P']) {
+      cleanup();
+      const { container } = render(
+        <AbilityChip src={ICON} slot={slot} abilityName="An ability" damageType="magic" />,
+      );
+      expect(container.querySelector('.chip__tag')?.textContent).toBe(slot);
+    }
+  });
+
+  it('the corner tag carries NO damage-type class, because a slot is not damage data', () => {
+    // DESIGN.md §1 reserves hue for damage data. The letter that used to sit here was hued
+    // because it WAS the damage type; a slot letter must not be, and the mechanical form of
+    // that is that no per-type rule exists for it at all (see token-audit's hue allowlist).
+    const { container } = render(
+      <AbilityChip src={ICON} slot="Q" abilityName="Light Binding" damageType="physical" />,
+    );
+    const tag = container.querySelector('.chip__tag')!;
+    expect(tag.className).toBe('chip__tag');
+  });
+
+  it('the damage type is a WORD beneath the chip, in the same vocabulary a figure uses', () => {
+    const expected: Array<[DamageType, string]> = [
+      ['physical', 'phys'],
+      ['magic', 'mag'],
+      ['true', 'true'],
+    ];
+    for (const [type, word] of expected) {
+      cleanup();
+      const { container } = render(
+        <AbilityChip src={ICON} slot="Q" abilityName="An ability" damageType={type} />,
+      );
+      expect(container.querySelector(`.chip__type--${type}`)?.textContent).toBe(word);
+    }
+  });
+
+  it('A CHIP IS NEVER LEFT WITH COLOUR AS ITS ONLY DAMAGE-TYPE CUE', () => {
+    // This is the whole reason the word exists rather than the type simply leaving the chip.
+    // A shelf chip has no figure anywhere near it — the user has not run anything yet — so
+    // deleting the letter without replacing it would have left the underline hue alone,
+    // which is the channel SPECIFICATION §10.1 forbids.
+    for (const type of ['physical', 'magic', 'true'] as DamageType[]) {
+      cleanup();
+      const { container } = render(
+        <AbilityChip src={ICON} slot="W" abilityName="An ability" damageType={type} />,
+      );
+      const word = container.querySelector('.chip__type')!.textContent!;
+      expect(word.length).toBeGreaterThan(0);
+      expect(word).not.toBe('—');
+    }
+  });
+
+  it('a non-damaging ability says so in words too, rather than showing nothing', () => {
+    const { container } = render(
+      <AbilityChip src={ICON} slot="W" abilityName="Prismatic Barrier" damageType={null} />,
+    );
+    expect(container.querySelector('.chip__underline--none')).not.toBeNull();
+    expect(container.querySelector('.chip__type--none')?.textContent).toBe('—');
+    // …and it still gets its slot, because it still occupies one.
+    expect(container.querySelector('.chip__tag')?.textContent).toBe('W');
+  });
+
   it('a decorative chip is hidden, so a row that already names the source does not say it twice', () => {
     // Added 2026-08-13 with the breakdown table. A table row whose text is "Q — The Darkin Blade
     // (1st cast)" holding a labelled chip announced the ability twice. Same rule, and the same
     // reason, as ChampionPortrait's `decorative` — and the VISUAL cues are unaffected: the
-    // damage-type underline and the P/M/T tag are still drawn.
+    // damage-type underline, the SLOT corner tag and the damage-type WORD are all still drawn.
     const { container } = render(
       <span>
         <AbilityChip
@@ -55,7 +129,12 @@ describe('an ability chip announces the ability and its damage type in words', (
     );
     expect(screen.queryAllByRole('img')).toHaveLength(0);
     expect(container.querySelector('.chip__underline--physical')).not.toBeNull();
-    expect(container.querySelector('.chip__tag--physical')).not.toBeNull();
+    // The corner tag is the ability SLOT now, and it is neutral — it carries no damage-type
+    // class at all, because a slot letter is not damage data (DESIGN.md §1).
+    expect(container.querySelector('.chip__tag')?.textContent).toBe('Q');
+    expect(container.querySelector('.chip__tag--physical')).toBeNull();
+    // The damage type moved to the word beneath the chip, which IS damage data and is hued.
+    expect(container.querySelector('.chip__type--physical')?.textContent).toBe('phys');
   });
 
   it('covers all three damage types and the absence of one', () => {

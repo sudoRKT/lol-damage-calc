@@ -79,7 +79,7 @@ Hex values are exact. "Used for" and "Never used for" are binding.
 Note on true damage: it is a **warm** near-white. The HP trace (below) is a **cool**
 grey. That warm/cool split keeps true-damage marks distinct from the neutral HP line
 even for red-green colourblind viewers (the difference is on the blue-yellow axis, which
-red-green deficiency preserves). The mandatory `T` tag (§8) is the definitive cue.
+red-green deficiency preserves). The mandatory `true` tag (§8) is the definitive cue.
 
 ### Special markers
 
@@ -420,23 +420,34 @@ Above or beside the plot, the cumulative combo total in `--type-num-hero`
 (`--text-primary`, bone). As each step lands it **rolls** odometer-style to the new
 value (§8: this total is a sum across damage types, so it is **type-agnostic — bone, no
 tag**). Directly under it, a thin **composition bar** shows the physical/magic/true split
-of the total as three segments in the damage hues, each segment carrying its `P`/`M`/`T`
-tag so the split is colourblind-safe.
+of the total as three segments in the damage hues, each segment carrying its
+`phys`/`mag`/`true` tag so the split is colourblind-safe.
 
 #### When a segment is too narrow to carry its tag (resolved 2026-08-14)
 
 **THE BAR IS SIZED IN PROPORTION, ALWAYS. A segment is NEVER widened to fit its label.**
 
 This section and §8 appeared to conflict, and a build had already resolved it the wrong way.
-§7 says the segments are sized in proportion; §8 says the `P`/`M`/`T` tag is mandatory and
+§7 says the segments are sized in proportion; §8 says the damage-type tag is mandatory and
 never suppressed. On a short bar with a lopsided split — 42 physical against 225 magic — a
 segment can be narrower than the text it must carry, and the tags collided into the
 illegible string `4222 5 M`, losing the `P` entirely.
 
 **Neither rule bends. The labels move.** When any segment is too narrow for its own tagged
 value, **every** label leaves the bar and sits in a single row directly beneath it, in
-source order, each still carrying its own `P`/`M`/`T` tag and its own damage hue. The bar
-above becomes pure proportion; the row below carries the figures.
+source order, each still carrying its own `phys`/`mag`/`true` tag and its own damage hue. The
+bar above becomes pure proportion; the row below carries the figures.
+
+> **SINCE THE TAG BECAME A WORD (2026-08-14) THIS IS THE LAYOUT IN EVERY REAL CASE, and that is
+> arithmetic rather than a new decision.** The threshold at which a segment is judged too narrow
+> was recomputed from measurement: the longest inline label is 70px at `--type-num-s`, and the
+> narrowest composition bar this product draws is the breakdown's running-total column at 109px,
+> not the ~200px the original derivation assumed. 70/109 is 0.64, so the threshold is 0.65 — and
+> two shares sum to 1, so they cannot both reach it. **The inline branch survives only for a
+> single-type bar, and it is kept rather than deleted**, because the rule is about width and a
+> wider bar in a later layout restores it with no code change. It must never be tuned back down
+> to "get the inline layout back": the inline layout is what produced the illegible string. The
+> same measurement showed the OLD 0.25 threshold was already too permissive for a 109px bar.
 
 - **All the labels move together, never just the cramped one.** A row where two figures sit
   inside the bar and one sits below reads as three different kinds of thing.
@@ -478,7 +489,7 @@ nothing at all.
   admits no exception for healing, and green here would be the "success colour" that rule exists
   to forbid.
 - **Label:** the value with a leading **`+`**, in `--type-num-l`, `--text-secondary`, placed at
-  the top of the healing riser. **It carries NO `P`/`M`/`T` tag** — a heal is not damage, and
+  the top of the healing riser. **It carries NO damage-type tag** — a heal is not damage, and
   tagging it would make it read as one. The `+` is the cue that survives greyscale, copy-paste
   and a screen reader.
 - **Overhealing is stated, never silently clamped.** The riser stops at the axis top, because a
@@ -580,13 +591,32 @@ layout shift (§13).
 **Every rendered damage value carries a damage-type tag as well as its colour.** The tag
 is the definitive channel; colour is the fast, redundant one.
 
-### The cue: a `P` / `M` / `T` letter tag
+### The cue: a `phys` / `mag` / `true` word tag (changed 2026-08-14 — it was a letter)
 
-- **`P`** = Physical, **`M`** = Magic, **`T`** = True.
+> **WHY THIS CHANGED, AND WHY IT IS NOT A RETREAT FROM THE RULE.** The tag was `P` / `M` / `T`
+> until the project owner — who plays the game — read the `M` on an ability icon as an ability
+> **slot** letter. Q, W, E and R are what a League player expects in that position on that object,
+> so the cue was *correct and unreadable*, which makes it decoration rather than a cue.
+>
+> The fix removes the collision rather than softening it. **The ability SLOT now sits on the chip**
+> (§9), where a player already expects it, and **the damage TYPE appears as a word wherever a
+> number appears**. A slot letter never appears beside a figure and a type word never appears in a
+> chip corner, so position alone tells them apart.
+>
+> **A word is a stronger non-colour channel than a letter, not a weaker one**: no legend, no
+> learning, and it survives greyscale, copy-paste and a screen reader identically. The full
+> reasoning, and the two options rejected, are DESIGN-AUDIT.md part 2.
+
+- **`phys`** = Physical, **`mag`** = Magic, **`true`** = True. `true` is the whole word: it is
+  already short, and `tru` would be the only abbreviation on the page that is not also a word.
 - Rendered in **JetBrains Mono**, at **`max(10px, 0.7em)`** — 0.7em of the number it follows,
   **with a hard floor of 10px that it never goes below** — immediately after the number,
-  separated by a thin space, in the **same colour as the number** (the letter, not its colour,
-  is the cue). Example forms: `214 P`, `180 M`, `240 T`.
+  separated by a thin space, in the **same colour as the number** (the word, not its colour,
+  is the cue). Example forms: `214 phys`, `180 mag`, `240 true`.
+- **The tag is about three times the width it was.** That is a real layout cost and it is paid,
+  not avoided: the composition bar's inline-label threshold was recomputed from measurement and
+  now moves the labels below the bar for every split of two or more types (see the note under
+  §7). Anything that renders a damage figure in a narrow box must be sized against the word.
 
   **The separator is a real U+2009 THIN SPACE character**, not CSS margin — so the value copies
   as `214 P`. §4 records why, and `--space-0` is explicitly not used for this gap.
@@ -621,20 +651,26 @@ is the definitive channel; colour is the fast, redundant one.
 - **Screen readers:** the tag is visual; expose the full word to assistive technology via
   an accessible label so `214 P` is announced as "214 physical damage." The letter is
   never the only machine-readable signal.
-- **Icon-chips carry the tag too** (§9): a combat icon's damage-type underline is paired
-  with a small `P`/`M`/`T` corner tag, so the chip is colourblind-safe on the same terms
-  as the values.
+- **An icon-chip carries the type as a WORD BENEATH IT, never in its corner** (§9). The corner
+  of a chip is the ability SLOT. The chip's damage-type underline is the fast channel and the
+  word beneath is the definitive one, so the chip stays colourblind-safe on the same terms as
+  the values — **a chip is never left with hue as its only damage-type cue**, which matters most
+  on the combo shelf, where a player is choosing abilities and no damage figure exists yet.
 
-### Why a letter tag (and not a glyph, or a border style)
+### Why a text tag (and not a glyph, or a border style)
 
-- `P`/`M`/`T` map directly onto words League players already use — physical, magic, true —
-  so no legend is needed.
-- Three distinct letterforms stay unambiguous at 11px, where three small geometric glyphs
-  (▲/◆/●) blur together.
-- Text survives copy-paste and screen readers and expands cleanly to full words; a glyph
-  does not.
+- `phys`/`mag`/`true` are the words League players already use, so no legend is needed. This was
+  the argument for the letters too; the words make it literal rather than nearly so.
+- Text stays unambiguous at 11px, where three small geometric glyphs (▲/◆/●) blur together.
+- Text survives copy-paste and screen readers; a glyph does not. `214 phys` pasted into a bug
+  report still says what type it was.
 - A border style (solid/dashed/dotted) is a second *visual-only* channel that also fails
-  low-vision users and cannot ride alongside a floating combat number; the letter can.
+  low-vision users and cannot ride alongside a floating combat number; text can.
+
+**Why not a letter, which is what this section specified until 2026-08-14.** A single letter has
+to be learned, and one of the three collided with a notation the product already uses elsewhere.
+Three distinct letterforms do stay legible at 11px — the old argument was sound about legibility
+and silent about ambiguity, and ambiguity is what failed. A word cannot be mistaken for a slot.
 
 The DoT hatch (§7) and the verification glyphs (§6) follow the same philosophy: meaning is
 never left to colour alone.
@@ -651,8 +687,21 @@ is never framed or gilded (that ornamental treatment belonged to a rejected dire
 - Ability, item, and rune icons render as small squares: **32px** in the combo builder,
   **24px** in tables, **20px** inline. `--radius-control` (2px), `--border-steel`.
 - A **combat-relevant** icon-chip carries a **2px bottom underline in its damage-type
-  colour** *and* a small `P`/`M`/`T` corner tag (§8). The underline is the fast cue; the
-  tag makes it colourblind-safe.
+  colour**, a neutral **ability-slot corner tag** (`Q`/`W`/`E`/`R`/`P`), and the **damage type
+  as a word beneath it** — `phys` / `mag` / `true` (§8). The underline is the fast cue; the word
+  is what makes it colourblind-safe.
+
+  **Changed 2026-08-14, and the reason is a comprehension failure rather than a defect in the
+  cue.** The corner used to carry the damage type as `P`/`M`/`T`, and it was read as an ability
+  slot — which is exactly what a League player expects in a chip's corner. The corner now says
+  what it is read as, and the type moved to a word, matching the tag beside every figure.
+
+  **The corner tag is NEUTRAL** (`--text-secondary`). A slot letter is not damage data, so §1's
+  reserved-hue law forbids colouring it, and no per-type rule exists for it in the stylesheet.
+
+  **Do not delete the word and leave the underline alone.** On the combo shelf a chip sits nowhere
+  near a damage figure — the user has not run anything yet — so hue would be the only cue, which
+  is the one channel SPECIFICATION §10.1 exists to forbid.
 - A **non-damaging** ability/item/utility chip gets a neutral `--line-steel` underline and
   no tag (or an em-dash marker) — visibly "no damage type," not an omission.
 - Hover brightens the chip (`--bg-panel-raised`); it never changes hue.
@@ -743,7 +792,7 @@ motion disabled.
 1. Backgrounds: `--bg-base` behind everything, `--bg-panel` for raised surfaces,
    `--bg-well` for inputs and the plot.
 2. Text: bone `--text-primary`, secondary `--text-secondary`. Never invent a text colour.
-3. A damage number is **always** `{value}` in its damage hue **plus** its `P`/`M`/`T` tag.
+3. A damage number is **always** `{value}` in its damage hue **plus** its `phys`/`mag`/`true` tag.
    No exceptions except multi-type totals (bone, no tag, with a composition bar).
 4. Need to show success/error/status/interaction? Use a **neutral surface + glyph +
    label**, never a new hue (§1, §6).

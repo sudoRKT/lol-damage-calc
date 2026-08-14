@@ -18,11 +18,32 @@ import './primitives.css';
 /** The four numeric type roles in DESIGN.md §3. */
 export type DamageNumberSize = 'hero' | 'l' | 'm' | 's';
 
-/** DESIGN.md §8 — the letter tags, and the words assistive technology is given. */
+/**
+ * DESIGN.md §8 — the damage-type tag: a WORD FRAGMENT, not a letter.
+ *
+ * ═══ WHY THIS IS A WORD, CHANGED 2026-08-14 ═══
+ *
+ * It was `P` / `M` / `T` until the project owner read the `M` on an ability icon as an ability
+ * SLOT letter — Q, W, E, R are the letters a League player expects on that object — and asked for
+ * the collision removed rather than softened (DESIGN-AUDIT.md part 2, option A).
+ *
+ * The cue was never wrong; it was unreadable, which makes it decoration rather than a cue. So the
+ * ambiguous glyph is gone from the ambiguous place: the SLOT letter now sits on the chip, where a
+ * player already expects it, and the damage TYPE appears only where a number appears, as a word.
+ * A slot letter never appears beside a figure and a type word never appears on a chip, so position
+ * alone tells them apart.
+ *
+ * THIS STRENGTHENS THE COLOUR-ALONE RULE RATHER THAN WEAKENING IT. A word needs no legend and no
+ * learning, and it survives greyscale, copy-paste and a screen reader identically — `214 phys`
+ * pasted into a bug report still says what type it was.
+ *
+ * `true` is deliberately the whole word: it is already short, and `tru` would be the only
+ * abbreviation on the page that is not also an English word.
+ */
 const TAG: Record<DamageType, string> = {
-  physical: 'P',
-  magic: 'M',
-  true: 'T',
+  physical: 'phys',
+  magic: 'mag',
+  true: 'true',
 };
 
 const SPOKEN: Record<DamageType, string> = {
@@ -214,16 +235,46 @@ export interface CompositionBarProps {
  * exists only in a real browser, and a rule that cannot be evaluated in a test is a rule nothing
  * checks. The number is an approximation and is stated as one.
  *
- * HOW IT WAS ARRIVED AT, rather than picked: the longest realistic label is a five-digit figure,
- * a thin space and a tag — seven characters. At `--type-num-s` (11px) in JetBrains Mono, whose
- * advance width is 0.6em, that is about 46px. The narrowest place this bar appears is a
- * per-instance table cell at roughly 200px. 46/200 is 0.23, so a segment holding less than about
- * a quarter of the total cannot be relied on to fit its own label.
+ * ═══ RECOMPUTED 2026-08-14 FROM MEASUREMENT, AND THE MEASUREMENT CORRECTED THE OLD FIGURE TOO ═══
  *
- * The failure that prompted it sits well inside that: a 42-physical / 225-magic split is a 0.157
- * share, and it rendered as the illegible string "4222 5 M" with the `P` tag lost entirely.
+ * The previous value, 0.25, was derived from two ESTIMATES: a longest label of "about 46px" and
+ * "the narrowest place this bar appears is a per-instance table cell at roughly 200px". Both were
+ * then measured in a real browser, at `--type-num-s`, on the default scenario:
+ *
+ * | | Estimated | **Measured** |
+ * |---|---|---|
+ * | Longest label, old one-letter tag (`12 345 P`) | ~46px | **52px** |
+ * | Longest label, word tag (`12 345 phys`) | — | **70px** |
+ * | Narrowest composition bar in the product | ~200px | **109px** |
+ *
+ * **THE BAR IS HALF THE WIDTH THE OLD DERIVATION ASSUMED.** It is the breakdown's running-total
+ * column, and it measures 109px, not 200px. So 0.25 was already too permissive before the tag
+ * changed anything: 52/109 is 0.48, and a segment at a 0.3 share of a 109px bar had 33px for a
+ * 52px label. That is a pre-existing defect this recomputation happens to close.
+ *
+ * The threshold is therefore the measured worst case: 70px of label in a 109px bar is 0.64, and
+ * the value is rounded up to **0.65**.
+ *
+ * ═══ THE CONSEQUENCE, WHICH IS ARITHMETIC AND NOT A DECISION ═══
+ *
+ * Shares sum to 1, so two segments cannot both be at or above 0.65. **Every split with two or more
+ * damage types therefore puts its labels below the bar.** With today's bar widths the inline
+ * branch is reachable only for a SINGLE-type bar, where the one share is 1.0.
+ *
+ * That branch is kept rather than deleted, for two reasons: DESIGN.md §7 specifies both layouts,
+ * and the rule is about width rather than about a count — a wider bar in some future layout
+ * restores inline labels with no code change. What must not happen is the threshold being tuned
+ * downward to "get the inline layout back", because the inline layout is what produced the
+ * illegible string this rule exists to prevent.
+ *
+ * The failure that originally prompted the rule sits well inside the new threshold: a
+ * 42-physical / 225-magic split is a 0.157 share, and it rendered as "4222 5 M" with the `P` lost.
+ *
+ * "Too narrow" is still decided from the DATA and never from measured layout — a browser
+ * measurement informs this constant, but nothing at run time reads a width, so the rule stays
+ * evaluable in a test.
  */
-export const MIN_SHARE_FOR_INLINE_LABEL = 0.25;
+export const MIN_SHARE_FOR_INLINE_LABEL = 0.65;
 
 /**
  * Do the labels have to leave the bar? True when ANY present segment is too narrow for its own

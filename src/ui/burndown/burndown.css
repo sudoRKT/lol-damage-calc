@@ -236,6 +236,15 @@
 /* The riser's value, placed beside it (DESIGN.md §7). It sits INSIDE its own column, to the
  * left of the riser, in the empty space under that column's tread — so it can never overlap
  * the next column's label and never spills outside the plot. */
+/* ON A PHONE THIS LABEL IS WIDER THAN ITS OWN COLUMN, and no value in this rule fixes that.
+   MEASURED 2026-08-14 at a 375px viewport: the plot area is 187px, so four columns are 47px
+   each, while a riser label is 49-59px once the damage-type tag became a word. Two adjacent
+   labels therefore overlap, where the one-letter tag had cleared by 6px.
+   Narrowing this inset was tried and REJECTED because it makes it worse, not better: the inset
+   is what holds each label clear of the previous one, so shrinking it moves labels toward each
+   other. The arithmetic is in DESIGN-AUDIT.md §6.5, which now carries this as part of the
+   mobile item — the honest fix is a responsive treatment of the plot, which is a design
+   decision and not a value to tune here. */
 .burn__label {
   position: absolute;
   inset-inline-end: var(--space-3);

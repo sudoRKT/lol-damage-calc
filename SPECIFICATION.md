@@ -485,14 +485,38 @@ sequence against the target's health. The animation budget is concentrated there
 restrained everywhere else.
 
 Damage type is never conveyed by colour alone. Every rendered damage value carries a
-non-colour cue in addition to any colour: a damage-type tag — `P` for physical, `M` for
-magic, `T` for true — placed with the value and exposed to assistive technology as the
+non-colour cue in addition to any colour: a damage-type tag — `phys` for physical, `mag` for
+magic, `true` for true — placed with the value and exposed to assistive technology as the
 full word. Colour is a fast, redundant channel; the tag is the definitive one. This holds
 everywhere a damage figure appears, and the same principle governs any other colour-coded
 distinction in the interface (for example damage-over-time is additionally marked by a
 hatch pattern, and verification status by a glyph and label, not by hue). The agreed
 design token file for this product is `DESIGN.md` in the project root; it records the
 palette, type, spacing, motion, signature element, and this cue in buildable detail.
+
+**THE TAG WAS `P` / `M` / `T` UNTIL 2026-08-14, AND THIS PARAGRAPH IS THE CHANGE.** It is
+recorded here rather than only in DESIGN.md because **this file named the three letters
+literally** — a fact DESIGN-AUDIT.md got wrong when it proposed the change, on the reading that
+"the letter is DESIGN.md's addition, not the specification's". That reading was right about
+*where the letter sits on an icon-chip*, which is DESIGN.md §9's, and wrong about the letter
+itself, which was here. The change was therefore a change to this specification and is written
+down as one.
+
+What changed and what did not:
+
+- **The rule did not change.** Damage type is still never conveyed by colour alone, and the tag
+  is still the definitive channel. A word is a stronger non-colour cue than a letter, not a
+  weaker one: it needs no legend and survives greyscale, copy-paste and a screen reader.
+- **The cue's form changed**, because the letter was correct and unreadable. `M` on an ability
+  icon reads as an ability *slot* to a League player, since `Q` / `W` / `E` / `R` is what that
+  position on that object means in the game. A cue that is systematically misread is decoration.
+- **The ability slot now occupies the icon-chip corner**, and the damage type appears wherever a
+  number appears. A slot letter never appears beside a figure and a type word never appears in a
+  chip corner, so position alone disambiguates them.
+- **An icon-chip still carries the damage type**, as a word beneath it rather than in its corner.
+  It is not left to the underline hue alone, which would be the exact channel this section
+  forbids — and it matters most in the combo builder, where a player is choosing abilities and no
+  damage figure exists on screen yet.
 
 Three visual defaults recur in machine-generated design and are out of scope for this
 product: a cream background with high-contrast serif display type and a terracotta accent;

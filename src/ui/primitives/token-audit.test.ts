@@ -101,9 +101,12 @@ const HUE_ALLOWLIST: Record<string, string> = {
   '.chip__underline--physical': 'DESIGN.md §9 — icon-chip damage-type underline',
   '.chip__underline--magic': 'DESIGN.md §9 — icon-chip damage-type underline',
   '.chip__underline--true': 'DESIGN.md §9 — icon-chip damage-type underline',
-  '.chip__tag--physical': 'DESIGN.md §9 — icon-chip P/M/T corner tag',
-  '.chip__tag--magic': 'DESIGN.md §9 — icon-chip P/M/T corner tag',
-  '.chip__tag--true': 'DESIGN.md §9 — icon-chip P/M/T corner tag',
+  // The corner tag was the P/M/T damage-type letter and is now the ABILITY SLOT (2026-08-14).
+  // A slot letter is not damage data, so `.chip__tag` carries no hue at all and has no entry
+  // here. The damage type moved to the word beneath the chip, which IS damage data.
+  '.chip__type--physical': 'DESIGN.md §9 — the icon-chip’s damage-type word',
+  '.chip__type--magic': 'DESIGN.md §9 — the icon-chip’s damage-type word',
+  '.chip__type--true': 'DESIGN.md §9 — the icon-chip’s damage-type word',
   // DESIGN.md §7, the HP burndown. Every entry below colours DAMAGE DATA: a riser IS the
   // damage it drops by, the hatch IS the damage-over-time tail, the rule IS the kill, and
   // the ghost is the band of health a hit just removed. None of them is decoration, and none
