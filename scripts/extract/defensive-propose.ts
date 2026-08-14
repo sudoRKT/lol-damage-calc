@@ -9,13 +9,19 @@
 // a person confirms, storage is gated on the confirmed set).
 //
 // WHAT IT REFUSES, AND WHY THAT IS THE POINT. A defensive row is easy to read and hard to STORE.
-// The shape carries one `kind`, one optional `value` and a list of `ratios`; it carries no label,
-// no unit, no granted stat, no damage type, no relation between two rows and no statement that an
-// effect recurs. So a row whose meaning depends on any of those cannot be written down without
-// the entry asserting something the source did not say. Every such row is refused, with a class,
-// and the classes are counted — because the count is the measurement of exactly which contract
-// fields would release which entries. Refusing is cheap and reversible; a plausible wrong number
-// in the defender's stat block is neither.
+// A row whose meaning depends on a fact the entry cannot carry is refused, with a class, and the
+// classes are counted — the count is the measurement of exactly which contract fields would
+// release which entries. Refusing is cheap and reversible; a plausible wrong number in the
+// defender's stat block is neither.
+//
+// SIX OF THOSE CLASSES WERE ONE MISSING FIELD EACH, AND THE FIELDS LANDED ON 2026-08-14
+// (DATA-SOURCES §42.5). `CuratedDefensiveEffect` now carries `label`, `id` + `relation`,
+// `grantedStat`, `appliesToDamageType`, `overTime` and `unit`, and gate 1 validates every one of
+// them. This file populates them — but NOT from the row label. The label rules here are a
+// DETECTOR: they say a row needs reading. `defensive-shapes.ts` holds what a person found when
+// they read it, and a pair that trips a label rule without a reading is REPORTED
+// (`shape-not-read`), never written. Three rows would have been stored wrongly by their labels
+// alone, and each one is named in that file.
 //
 // Run:  node scripts/extract/defensive-propose.ts
 // Offline over the page cache. Its coverage is the cache's coverage, which the cache records.
@@ -36,6 +42,7 @@ import { expandByRank, isLevelScaled, levelBreakpoints } from '../../src/types/s
 import {
   agreesAtDisplayPrecision,
   compareAtDisplayPrecision,
+  gateSchema,
 } from '../../src/types/validate-curated.ts';
 
 import {
@@ -45,9 +52,18 @@ import {
   isMultiplierGroup,
   parseMultiplier,
   parseRatio,
+  slugify,
 } from './classify.ts';
 import { CONFIRMED, type ConfirmedEffect } from './defensive-confirmed.ts';
-import { scanPage, type Kind } from './defensive.ts';
+import {
+  READ_REFUSAL_CLASSES,
+  REFUSED_ON_READING,
+  SHAPES_READ,
+  readingFor,
+  type ReadRefusalClass,
+  type RowReading,
+} from './defensive-shapes.ts';
+import { flatten, scanPage, type Kind } from './defensive.ts';
 import { maxRankFor } from './harvest.ts';
 import { renderAbility, renderLevelBlocks, type RenderedRow } from './render.ts';
 import { CACHE_DIR, readCache, type CachedPage } from './page-cache.ts';
@@ -93,6 +109,9 @@ export const KIND_MAP: Record<Kind, CuratedDefensiveEffect['kind'] | null> = {
 
 export type RefusalClass =
   | 'no-leveling-row'
+  | 'shape-not-read'
+  | 'reading-stale'
+  | ReadRefusalClass
   | 'multiple-values-one-field'
   | 'needs-granted-stat'
   | 'needs-damage-type'
@@ -111,29 +130,44 @@ export const REFUSAL_CLASSES: Record<RefusalClass, string> = {
     'the effect has no {{st|Label|value}} row of its kind, so its value (if any) lives in a ' +
     'sentence. Out of scope for the row-based pass; counted so the remaining reading burden is ' +
     'visible rather than implied.',
+  'shape-not-read':
+    'THE FIELD EXISTS AND NOBODY HAS READ THE ROW. The row states one of the six facts the ' +
+    'contract gained on 2026-08-14 — which resistance, which damage type, a recurrence, a ' +
+    'relation to a sibling row, or a unit that is a rate rather than an amount — and the pair is ' +
+    'not in `defensive-shapes.ts`. A label is a candidate, never a decision (CLAUDE.md: a ' +
+    'detector proposes, a person confirms, and storage is gated on the confirmed population), ' +
+    'so it is REPORTED for someone to read rather than stored on the strength of its wording. ' +
+    'The classes listed beside it name which facts the label states.',
+  'reading-stale':
+    'a reading in `defensive-shapes.ts` no longer matches the page — a label it names is gone, ' +
+    'or a row of that kind appeared that it does not name. The reading is evidence about one ' +
+    'revision of one page, so a page that has moved under it is refused loudly rather than ' +
+    'stored against a reading of something else.',
+  ...READ_REFUSAL_CLASSES,
   'multiple-values-one-field':
-    'the kind has more than one leveling row on the page and the shape holds ONE value with no ' +
-    'label and no relation. Two entries of the same kind would be indistinguishable (Leona W ' +
-    'grants 20-50 armor AND 20-50 magic resistance), and picking one row silently drops the ' +
-    'other. Storing the pair needs a label and a relation, exactly as ability components have.',
+    'the kind has more than one leveling row on the page. Two entries of the same kind are told ' +
+    'apart by `label` and combined by `relation` — Leona W grants 20-50 armor AND 20-50 magic ' +
+    'resistance, and picking one row silently drops the other. Now storable, but only for a pair ' +
+    'a person has read: it takes a reading to know whether two rows add or alternate.',
   'needs-granted-stat':
-    'a resistance grant does not say WHICH resistance in the shape. `kind: resistance-grant` ' +
-    'plus a number cannot distinguish 7 armor from 7 magic resistance, and that is the ' +
-    'difference between mitigating physical and magic damage. The label says which; the entry ' +
-    'cannot.',
+    'a resistance grant must say WHICH resistance. `kind: resistance-grant` plus a number cannot ' +
+    'distinguish 7 armor from 7 magic resistance, and that is the difference between mitigating ' +
+    'physical and magic damage. Now storable in `grantedStat`, from a reading — "Bonus ' +
+    'Resistances" is one figure for both, and only the sentence says so.',
   'needs-damage-type':
-    'the effect applies to one damage type only — a magic shield, a physical-damage reduction — ' +
-    'and the shape has no field for the type. Stored without it, a magic-only shield absorbs ' +
-    'physical damage too.',
+    'the effect applies to one damage type only — a magic shield, a physical-damage reduction. ' +
+    'Now storable in `appliesToDamageType`, from a reading. Absent means all types, never ' +
+    '"unknown", so a type that was not read may not be left blank.',
   'needs-over-time':
     'the row states a per-tick or whole-channel figure, so the effect RECURS. ' +
     'SPECIFICATION §3.8 keeps damage over time out of the burst total precisely because the two ' +
-    'are different facts; the same is true of a heal spread over a channel. `CuratedItemEffect` ' +
-    'already has an `overTime` field for this; `CuratedDefensiveEffect` does not.',
+    'are different facts; the same is true of a heal spread over a channel. Now storable in ' +
+    '`overTime`, from a reading — the word "total" also means "across every target hit" ' +
+    '(Vladimir R), which is not over time at all.',
   'needs-relation':
     'the row is a Minimum/Maximum or base/empowered variant of another row on the same page. ' +
-    'Ability components carry `relation` for exactly this; a defensive effect has no way to say ' +
-    'that two values are alternatives rather than additions.',
+    'Now storable in `relation`, from a reading: summing two alternatives hands the defender ' +
+    'both, and only the sentence says which rows alternate.',
   'not-an-amount':
     'the row states a rate or an amplifier rather than an amount — life steal, omnivamp, ' +
     '"healing percentage" (a share of damage dealt), "increased healing" (a multiplier on other ' +
@@ -184,6 +218,11 @@ export interface Refusal {
 const CLASS_ORDER: RefusalClass[] = [
   'not-a-defensive-kind',
   'no-leveling-row',
+  'reading-stale',
+  'count-scaled-value',
+  'term-outside-the-row',
+  'recipient-not-expressible',
+  'shape-not-read',
   'needs-granted-stat',
   'needs-damage-type',
   'not-an-amount',
@@ -205,27 +244,57 @@ const CLASS_ORDER: RefusalClass[] = [
 export const OVER_TIME_LABEL = /\bper\s+(tick|second)\b|\btotal\b/i;
 /** Life steal, omnivamp and the "percentage"/"increased" amplifier labels. */
 export const NOT_AN_AMOUNT_LABEL = /life\s?steal|omnivamp|percentage|^increased\s+healing$/i;
-/** A damage type named in the label — "Magic Shield Strength", "Physical Damage Reduction". */
-export const TYPE_IN_LABEL = /\b(physical|magic|true)\b/i;
+/**
+ * A damage type named in the label — "Magic Shield Strength", "Physical Damage Reduction".
+ *
+ * NOT FOLLOWED BY "resist": "Bonus **Magic** Resistance" names a RESISTANCE, not a damage type,
+ * and `grantedStat` already carries its whole meaning. The wide pattern was caught by this file's
+ * own label-fact self-check, which reported four entries "stating a damage type they do not
+ * carry" — the entries were right and the pattern was wrong.
+ *
+ * MEASURED BEFORE THE CHANGE, over the rows of all 226 confirmed pages: the wide pattern matches
+ * **12** rows, the narrow one **6**. All six it drops are "... Magic Resistance"; all six it
+ * keeps are a real damage type (Physical/Magic Damage Reduction on Galio W and Amumu E, Magic
+ * Shield Strength on Galio W, Kassadin Q and Morgana E). No stored value changes either way —
+ * `appliesToDamageType` is written only from a reading — so this narrows what gets REPORTED as
+ * needing a reading, and nothing else.
+ */
+export const TYPE_IN_LABEL = /\b(physical|magic|true)\b(?!\s+resist)/i;
 
 /**
- * Which fact a label states that the entry could not carry, or `null` when it states none.
+ * EVERY shape fact this label states, or an empty list when it states none.
  *
- * ORDER IS DELIBERATE: the most specific reason wins, so a refusal names the field that would
- * actually release it rather than the first rule that happened to fire.
+ * WHAT THIS IS NOW. Until the contract gained the six fields these were refusals outright. They
+ * are now the DETECTOR half of the rule: a label naming one of these facts says the row cannot be
+ * stored from its label alone and needs a person to read the ability's sentence. `defensive-shapes.ts`
+ * is that reading. A pair that trips one of these and is not in the reading is refused
+ * `shape-not-read` and REPORTED — never widened into.
+ */
+export function labelFacts(kind: CuratedDefensiveEffect['kind'], label: string): RefusalClass[] {
+  const l = label.trim();
+  const out: RefusalClass[] = [];
+  if (kind === 'resistance-grant') out.push('needs-granted-stat');
+  // A resistance grant is never type-specific: `grantedStat` says which resistance, and a damage
+  // type on top of it would be a second, contradictory answer to the same question.
+  if (kind === 'type-specific-reduction' || (kind !== 'resistance-grant' && TYPE_IN_LABEL.test(l))) {
+    out.push('needs-damage-type');
+  }
+  if (NOT_AN_AMOUNT_LABEL.test(l)) out.push('not-an-amount');
+  if (OVER_TIME_LABEL.test(l)) out.push('needs-over-time');
+  if (RANGE_QUALIFIER.test(l) || EMPOWERED_QUALIFIER.test(l)) out.push('needs-relation');
+  return out;
+}
+
+/**
+ * The most specific fact a label states, or `null`. Kept as the single-reason view for reading;
+ * `labelFacts` is what the counts are taken from.
  */
 export function labelRefusal(
   kind: CuratedDefensiveEffect['kind'],
   label: string,
 ): RefusalClass | null {
-  const l = label.trim();
-  if (kind === 'resistance-grant') return 'needs-granted-stat';
-  if (kind === 'type-specific-reduction') return 'needs-damage-type';
-  if (TYPE_IN_LABEL.test(l)) return 'needs-damage-type';
-  if (NOT_AN_AMOUNT_LABEL.test(l)) return 'not-an-amount';
-  if (OVER_TIME_LABEL.test(l)) return 'needs-over-time';
-  if (RANGE_QUALIFIER.test(l) || EMPOWERED_QUALIFIER.test(l)) return 'needs-relation';
-  return null;
+  const facts = labelFacts(kind, label);
+  return CLASS_ORDER.find((c) => facts.includes(c)) ?? null;
 }
 
 // ---------------------------------------------------------------------------
@@ -369,12 +438,9 @@ export function parseDefensiveRow(
 // ---------------------------------------------------------------------------
 
 /**
- * What a proposal was read FROM, kept beside it because the entry cannot carry it.
- *
- * The row label is the source's own name for the number, and gate D2 needs it to line a stored
- * value up with the wiki's own rendering of the same row. `CuratedDefensiveEffect` has no label
- * field, so this lives in the run report rather than in the entry — which is itself the clearest
- * statement of what the missing field costs.
+ * What a proposal was read FROM. The label is now ON the entry as well; this keeps the raw
+ * wikitext and the rank count beside it, which gate D2 needs to line a stored value up with the
+ * wiki's own rendering of the same row.
  */
 export interface ProposalSource {
   key: string;
@@ -391,6 +457,13 @@ export interface ProposalRun {
   refusals: Refusal[];
   /** Non-champion rows dropped before counting a kind's rows. Reported, never silent. */
   nonChampionRowsDropped: Array<{ key: string; kind: Kind; label: string }>;
+  /**
+   * Rows a reading marks as granting to somebody who is NOT the defender — Braum W's "Ally Bonus
+   * Armor" beside his "Self Bonus Armor". Dropped for the same reason a non-champion row is
+   * (SPECIFICATION §5: one defender, champion versus champion), and reported for the same reason:
+   * a drop nobody can see is a silent decision.
+   */
+  otherRecipientRowsDropped: Array<{ key: string; kind: Kind; label: string }>;
 }
 
 export interface ProposeOptions {
@@ -426,7 +499,13 @@ export function proposeForPage(
   confirmed: ConfirmedEffect,
   opts: ProposeOptions,
 ): ProposalRun {
-  const run: ProposalRun = { proposals: [], sources: [], refusals: [], nonChampionRowsDropped: [] };
+  const run: ProposalRun = {
+    proposals: [],
+    sources: [],
+    refusals: [],
+    nonChampionRowsDropped: [],
+    otherRecipientRowsDropped: [],
+  };
   const scan = scanPage(page);
   const fields = parseFields(page.wikitext);
   const vars = parseVardefines(page.wikitext);
@@ -480,10 +559,65 @@ export function proposeForPage(
       continue;
     }
 
+    // A PAIR A PERSON READ AND REFUSED. Recorded here rather than in a comment, because a fact
+    // the contract cannot hold is a measurement, not an omission.
+    const readRefusal = REFUSED_ON_READING.find((r) => r.key === key && r.kind === censusKind);
+    if (readRefusal) {
+      run.refusals.push({
+        key,
+        kind: censusKind,
+        refusalClass: readRefusal.refusalClass,
+        blockedBy: [readRefusal.refusalClass],
+        detail: readRefusal.why,
+      });
+      continue;
+    }
+
+    const reading = readingFor(key, censusKind);
+
     // Non-champion rows go first. This product is champion-versus-champion (SPECIFICATION §5),
     // and the damage path already drops these rows for the same reason.
-    const all = scan.statRows.filter((r) => r.kind === censusKind);
+    //
+    // WHERE A READING EXISTS IT NAMES THE ROWS, and that list is authoritative — that is how
+    // Amumu E's and Galio W's "Physical Damage Reduction" rows reach the
+    // `type-specific-reduction` kind a person confirmed them as, when the label map files them
+    // under `damage-reduction`. Without it the pair reported "no leveling row of this kind on the
+    // page" while the rows sat on the page in plain sight.
+    const all = reading
+      ? reading.rows
+          .map((rr) => scan.statRows.find((r) => r.label === rr.label))
+          .filter((r): r is NonNullable<typeof r> => r !== undefined)
+      : scan.statRows.filter((r) => r.kind === censusKind);
+
+    if (reading) {
+      // THE READING MUST STILL MATCH THE PAGE. A reading is evidence about one revision, and a
+      // page that has moved under it is refused loudly rather than stored against a reading of
+      // something else.
+      const missing = reading.rows
+        .filter((rr) => !scan.statRows.some((r) => r.label === rr.label))
+        .map((rr) => rr.label);
+      const unnamed = scan.statRows
+        .filter((r) => r.kind === censusKind && !reading.rows.some((rr) => rr.label === r.label))
+        .map((r) => r.label);
+      if (missing.length > 0 || unnamed.length > 0) {
+        run.refusals.push({
+          key,
+          kind: censusKind,
+          refusalClass: 'reading-stale',
+          blockedBy: ['reading-stale'],
+          detail:
+            (missing.length > 0 ? `the reading names row(s) the page no longer has: ${missing.join(', ')}. ` : '') +
+            (unnamed.length > 0 ? `the page carries row(s) the reading does not name: ${unnamed.join(', ')}.` : ''),
+        });
+        continue;
+      }
+    }
+
     const rows = all.filter((r) => {
+      if (reading?.rows.find((rr) => rr.label === r.label)?.drop === 'other-recipient') {
+        run.otherRecipientRowsDropped.push({ key, kind: censusKind, label: r.label });
+        return false;
+      }
       if (!NON_CHAMPION_ROW.test(r.label)) return true;
       run.nonChampionRowsDropped.push({ key, kind: censusKind, label: r.label });
       return false;
@@ -508,35 +642,41 @@ export function proposeForPage(
     const perRow = rows.map((r) => {
       const reasons: RefusalClass[] = [];
       const notes: string[] = [];
-      const labelWhy = labelRefusal(kind, r.label);
-      if (labelWhy) {
-        reasons.push(labelWhy);
-        notes.push(`row "${r.label}"`);
+      const rowReading = reading?.rows.find((rr) => rr.label === r.label);
+      const facts = labelFacts(kind, r.label);
+      // THE DETECTOR HALF. A label naming one of the six facts is a candidate for a reading, and
+      // nothing more. With a reading in hand the facts are answered; without one the pair is
+      // reported so a person can read it, and the facts are listed so it is clear what for.
+      if (facts.length > 0 && !rowReading) {
+        reasons.push('shape-not-read', ...facts);
+        notes.push(`row "${r.label}" states ${facts.join(' + ')} and nobody has read it`);
       }
       const parsed = parseDefensiveRow(r.value, maxRank, vars);
       if (parsed.refusal) {
         reasons.push(parsed.refusal.refusalClass);
         notes.push(`row "${r.label}": ${parsed.refusal.detail}`);
-      } else {
-        // THE UNIT. The shape says nothing about whether a number is a percentage or an amount,
-        // so the only readable entries are the ones where the kind admits a single reading:
-        //   damage-reduction — every row-stated one is a percentage (measured: 6 of 6)
-        //   shield / heal / max-health-grant — an amount of health
-        // A row that contradicts its kind's reading is refused rather than stored under it.
-        const wantsPercentage = kind === 'damage-reduction';
-        if (parsed.value !== undefined && parsed.isPercentage !== wantsPercentage) {
-          reasons.push(wantsPercentage ? 'unit-not-expressible' : 'not-an-amount');
+      } else if (parsed.value !== undefined && parsed.isPercentage && !rowReading?.rateUnit) {
+        // A PERCENTAGE OF WHAT? `unit: 'percent'` means "a percentage of whatever the kind is
+        // about" — damage received for a reduction, maximum health for a max-health grant. A
+        // shield or a heal has no such quantity, so a bare percentage there is either a rate on
+        // damage dealt or an amplifier, and only a reading can say which.
+        if (kind === 'shield' || kind === 'heal') {
+          reasons.push('not-an-amount');
           notes.push(
-            `row "${r.label}" states ${parsed.isPercentage ? 'a percentage' : 'a flat amount'} ` +
-              `and kind '${kind}' can only be read as ${wantsPercentage ? 'a percentage' : 'an amount'}`,
+            `row "${r.label}" states a percentage and kind '${kind}' has no quantity for it to ` +
+              `be a percentage OF; a reading must say whether it is a rate or an amplifier`,
           );
         }
       }
-      return { row: r, parsed, reasons, notes };
+      return { row: r, parsed, reading: rowReading, reasons, notes };
     });
 
     const blockers = new Set<RefusalClass>(perRow.flatMap((p) => p.reasons));
-    if (rows.length > 1) blockers.add('multiple-values-one-field');
+    // Two rows of one kind are storable now — as two labelled, related entries — but only from a
+    // reading: it takes a sentence to know whether they add (Leona W's armor and magic
+    // resistance) or alternate (Shen R's minimum and maximum).
+    if (rows.length > 1 && !reading) blockers.add('multiple-values-one-field');
+    if (rows.length > 1 && !reading) blockers.add('shape-not-read');
     if (blockers.size > 0) {
       const notes = perRow.flatMap((p) => p.notes);
       run.refusals.push({
@@ -551,60 +691,120 @@ export function proposeForPage(
       continue;
     }
 
-    const row = rows[0]!;
-    const parsed = perRow[0]!.parsed;
-
-    // OWNERS THE SOURCE STATES FOR NOBODY. Recorded as permanently unresolvable and forced to
-    // 'incomplete' — never guessed from a verb or a convention (§16).
-    const unresolvable: Unresolvable[] = [];
-    parsed.ratios.forEach((r, ri) => {
-      if (requiresOwner(r.stat) && (r.owner === undefined || r.owner === 'unresolved')) {
-        unresolvable.push({
-          field: `ratios[${ri}].owner (${r.stat})`,
-          why: `the source names ${r.stat} and never says whose, and no other source states it`,
-        });
-      }
-      (r.multipliers ?? []).forEach((m, mi) => {
-        if (requiresOwner(m.per) && (m.owner === undefined || m.owner === 'unresolved')) {
+    for (const { row, parsed, reading: rowReading } of perRow) {
+      // OWNERS THE SOURCE STATES FOR NOBODY. Recorded as permanently unresolvable and forced to
+      // 'incomplete' — never guessed from a verb or a convention (§16).
+      const unresolvable: Unresolvable[] = [];
+      parsed.ratios.forEach((r, ri) => {
+        if (requiresOwner(r.stat) && (r.owner === undefined || r.owner === 'unresolved')) {
           unresolvable.push({
-            field: `ratios[${ri}].multipliers[${mi}].owner (${m.per})`,
-            why: `the source names ${m.per} and never says whose, and no other source states it`,
+            field: `ratios[${ri}].owner (${r.stat})`,
+            why: `the source names ${r.stat} and never says whose, and no other source states it`,
           });
         }
+        (r.multipliers ?? []).forEach((m, mi) => {
+          if (requiresOwner(m.per) && (m.owner === undefined || m.owner === 'unresolved')) {
+            unresolvable.push({
+              field: `ratios[${ri}].multipliers[${mi}].owner (${m.per})`,
+              why: `the source names ${m.per} and never says whose, and no other source states it`,
+            });
+          }
+        });
       });
-    });
 
-    const effect: CuratedDefensiveEffect = {
-      champion: page.champion,
-      slot: page.slot,
-      abilityName: page.abilityName,
-      kind,
-      activation: confirmed.activation,
-      ...(confirmed.activation === 'always-active'
-        ? {}
-        : { condition: confirmed.activationEvidence }),
-      ...(parsed.value ? { value: parsed.value } : {}),
-      ...(parsed.ratios.length > 0 ? { ratios: parsed.ratios } : {}),
-      ...(unresolvable.length > 0 ? { unresolvable } : {}),
-      // Nothing a generator produces is 'verified'. An entry carrying a fact no source states is
-      // 'incomplete' and stays there until the SOURCE changes.
-      verification: unresolvable.length > 0 ? 'incomplete' : 'derived',
-      provenance: {
-        source: `Template:Data ${page.champion}/${page.abilityName} — leveling row "${row.label}"`,
-        url: `https://wiki.leagueoflegends.com/en-us/Template:Data_${encodeURIComponent(
-          page.champion,
-        )}/${encodeURIComponent(page.abilityName)}`,
-        patch: opts.patch,
-        fetched: opts.fetched,
-      },
-    };
-    run.proposals.push(effect);
-    run.sources.push({ key, kind, label: row.label, raw: row.value, maxRank });
+      // THE UNIT. `flat` and `percent` are read off the row — the '%' is there or it is not.
+      // A rate and an amplifier are not readable that way and come only from a reading.
+      const unit: CuratedDefensiveEffect['unit'] | undefined =
+        rowReading?.rateUnit ??
+        (parsed.value === undefined ? undefined : parsed.isPercentage ? 'percent' : 'flat');
+
+      const effect: CuratedDefensiveEffect = {
+        champion: page.champion,
+        slot: page.slot,
+        abilityName: page.abilityName,
+        // The source's own name for the row. Present on every row-derived entry, not only the
+        // ambiguous ones: it is what a reader lines the entry up against the wiki page with.
+        label: row.label,
+        kind,
+        activation: confirmed.activation,
+        ...(confirmed.activation === 'always-active'
+          ? {}
+          : { condition: confirmed.activationEvidence }),
+        ...(rowReading?.grantedStat ? { grantedStat: rowReading.grantedStat } : {}),
+        ...(rowReading?.appliesToDamageType
+          ? { appliesToDamageType: rowReading.appliesToDamageType }
+          : {}),
+        ...(rowReading?.overTime ? { overTime: rowReading.overTime } : {}),
+        ...(unit ? { unit } : {}),
+        ...(parsed.value ? { value: parsed.value } : {}),
+        ...(parsed.ratios.length > 0 ? { ratios: parsed.ratios } : {}),
+        ...(unresolvable.length > 0 ? { unresolvable } : {}),
+        // Nothing a generator produces is 'verified'. An entry carrying a fact no source states is
+        // 'incomplete' and stays there until the SOURCE changes.
+        verification: unresolvable.length > 0 ? 'incomplete' : 'derived',
+        provenance: {
+          source: `Template:Data ${page.champion}/${page.abilityName} — leveling row "${row.label}"`,
+          url: `https://wiki.leagueoflegends.com/en-us/Template:Data_${encodeURIComponent(
+            page.champion,
+          )}/${encodeURIComponent(page.abilityName)}`,
+          patch: opts.patch,
+          fetched: opts.fetched,
+        },
+      };
+      run.proposals.push(effect);
+      run.sources.push({ key, kind, label: row.label, raw: row.value, maxRank });
+    }
   }
+
+  // IDENTITY AND RELATION, ASSIGNED ONCE THE WHOLE ABILITY IS KNOWN.
+  //
+  // Gate 1 requires an `id` on every entry of an ability that carries more than one — including
+  // two entries of DIFFERENT kinds, because an id has to be unique within the ability for a
+  // relation to have something unambiguous to point at. And it requires `relation` to be stated
+  // explicitly, never defaulted, once two entries share a kind: summing two alternatives hands
+  // the defender both.
+  assignIdsAndRelations(run.proposals, page, key);
 
   // `fields` is read for its side effect of proving the page parses; keep the reference honest.
   void fields;
   return run;
+}
+
+/** slugify a label into an id, falling back to the kind when two labels collide on one page. */
+function idFor(label: string, kind: string, taken: Set<string>): string {
+  const base = label ? slugify(label) : kind;
+  const id = taken.has(base) ? `${kind}-${base}` : base;
+  taken.add(id);
+  return id;
+}
+
+/**
+ * Give every entry on a multi-entry ability an id, and every entry sharing a kind an explicit
+ * relation. The alternation itself comes from the reading — this only writes it down.
+ */
+export function assignIdsAndRelations(
+  proposals: CuratedDefensiveEffect[],
+  page: { champion: string; slot: string; abilityName: string },
+  key: string,
+): void {
+  const mine = proposals.filter(
+    (p) =>
+      p.champion === page.champion && p.slot === page.slot && p.abilityName === page.abilityName,
+  );
+  if (mine.length < 2) return;
+  const taken = new Set<string>();
+  for (const p of mine) p.id = idFor(p.label ?? '', p.kind, taken);
+
+  for (const p of mine) {
+    const sameKind = mine.filter((s) => s.kind === p.kind);
+    if (sameKind.length < 2) continue;
+    const reading = SHAPES_READ.find((s) => s.key === key && KIND_MAP[s.kind] === p.kind);
+    const rowReading: RowReading | undefined = reading?.rows.find((r) => r.label === p.label);
+    const anchor = rowReading?.alternativeTo
+      ? sameKind.find((s) => s.label === rowReading.alternativeTo)
+      : undefined;
+    p.relation = anchor ? { kind: 'alternativeTo', componentId: anchor.id! } : { kind: 'adds' };
+  }
 }
 
 export function proposeAll(
@@ -614,7 +814,13 @@ export function proposeAll(
 ): ProposalRun {
   const byKey = new Map<string, CachedPage>();
   for (const p of pages) byKey.set(`${p.champion}/${p.slot}/${p.abilityName}`, p);
-  const out: ProposalRun = { proposals: [], sources: [], refusals: [], nonChampionRowsDropped: [] };
+  const out: ProposalRun = {
+    proposals: [],
+    sources: [],
+    refusals: [],
+    nonChampionRowsDropped: [],
+    otherRecipientRowsDropped: [],
+  };
   for (const c of confirmed) {
     const page = byKey.get(c.key);
     if (!page) continue; // the census's integrity check reports a key that names no page
@@ -623,6 +829,151 @@ export function proposeAll(
     out.sources.push(...r.sources);
     out.refusals.push(...r.refusals);
     out.nonChampionRowsDropped.push(...r.nonChampionRowsDropped);
+    out.otherRecipientRowsDropped.push(...r.otherRecipientRowsDropped);
+  }
+  return out;
+}
+
+// ---------------------------------------------------------------------------
+// THE SWEEPS.
+//
+// A defect found by reading one page becomes a check that runs over every page. None of these
+// stores or refuses anything by itself — each one produces a list for a person to read, which is
+// the only thing a pattern is allowed to do here. They exist because five separate mistakes were
+// available in this pass and four of them are invisible to gate 1 and gate D2: an entry can
+// round-trip perfectly against the wiki's own rendering and still mean the wrong thing.
+// ---------------------------------------------------------------------------
+
+/**
+ * THE SELF-CHECK: does every entry carry the fact its own label states?
+ *
+ * The six fields are only worth having if they are actually filled in. This walks the written
+ * entries — not the source, not the readings — and asks, of every label that names one of the six
+ * facts, whether the entry carries it. Two outcomes, kept apart on purpose:
+ *
+ *  - `defects`: the label states a fact and the entry does not carry it, and no reading decided
+ *    that. This must be zero; anything here is an entry claiming something the source contradicts.
+ *  - `decidedByAReading`: the label states a fact and a person deliberately did not carry it.
+ *    Vladimir R's "Maximum Total Heal" is the whole population — "total" there means across every
+ *    target hit, not over time, and a reading is the only thing that can say so.
+ */
+export function labelFactsCarried(
+  proposals: CuratedDefensiveEffect[],
+): { defects: string[]; decidedByAReading: string[] } {
+  const defects: string[] = [];
+  const decidedByAReading: string[] = [];
+  for (const e of proposals) {
+    if (!e.label) continue;
+    const siblingsOfKind = proposals.filter(
+      (s) =>
+        s.champion === e.champion &&
+        s.slot === e.slot &&
+        s.abilityName === e.abilityName &&
+        s.kind === e.kind,
+    ).length;
+    const carried: Record<string, boolean> = {
+      'needs-granted-stat': e.grantedStat !== undefined,
+      'needs-damage-type': e.appliesToDamageType !== undefined,
+      'needs-over-time': e.overTime !== undefined,
+      'not-an-amount': e.unit === 'percent-of-damage-dealt' || e.unit === 'healing-multiplier',
+      'needs-relation': e.relation !== undefined || siblingsOfKind < 2,
+    };
+    const read = SHAPES_READ.some(
+      (s) =>
+        s.key === `${e.champion}/${e.slot}/${e.abilityName}` &&
+        KIND_MAP[s.kind] === e.kind &&
+        s.rows.some((r) => r.label === e.label),
+    );
+    for (const fact of labelFacts(e.kind, e.label)) {
+      if (carried[fact] !== false) continue;
+      const line = `${e.champion}/${e.slot}/${e.abilityName} "${e.label}" states ${fact} and the entry does not carry it`;
+      (read ? decidedByAReading : defects).push(line);
+    }
+  }
+  return { defects, decidedByAReading };
+}
+
+export interface Sweeps {
+  /** A reading whose key or kind names no confirmed pair — a typo that would silently do nothing. */
+  readingsMatchingNoConfirmedPair: string[];
+  /** One row claimed by two readings on one page: it would be stored twice. */
+  rowsClaimedTwice: string[];
+  /**
+   * THE VLADIMIR R TRAP. A row labelled "Total …" on a page whose prose states no recurrence.
+   * "Total" means "over the duration" on 30-odd pages and "across every target hit" on two, and
+   * the label cannot tell them apart. Every hit here needs a person, and both known hits have one.
+   */
+  totalLabelWithNoRecurrenceInProse: string[];
+  /** Prose stating the figure scales with a count. Per stack is refused; per enemy hit is one in a 1v1. */
+  countScaledCandidates: string[];
+  /** Prose stating a cap or a maximum near the effect. The entry has no field for either. */
+  cappedCandidates: string[];
+  /** A confirmed kind with no row of that kind, on a page that has defensive rows of another kind. */
+  kindMismatch: string[];
+}
+
+const RECURRENCE_IN_PROSE = /every [\d.]+ seconds?|over the duration|per second|each second|every second/i;
+const COUNT_SCALED_IN_PROSE =
+  /per stack|for each stack|for every stack|for each champion|per target|for each infected|for each enemy|beyond the first/i;
+const CAP_IN_PROSE = /capped at|up to \d+% of the damage|maximum of \d/i;
+
+export function sweep(pages: CachedPage[], confirmed: readonly ConfirmedEffect[]): Sweeps {
+  const byKey = new Map<string, CachedPage>();
+  for (const p of pages) byKey.set(`${p.champion}/${p.slot}/${p.abilityName}`, p);
+  const confirmedPairs = new Set(confirmed.flatMap((c) => c.kinds.map((k) => `${c.key}/${k}`)));
+
+  const out: Sweeps = {
+    readingsMatchingNoConfirmedPair: [
+      ...SHAPES_READ.map((s) => `${s.key}/${s.kind}`),
+      ...REFUSED_ON_READING.map((r) => `${r.key}/${r.kind}`),
+    ].filter((p) => !confirmedPairs.has(p)),
+    rowsClaimedTwice: [],
+    totalLabelWithNoRecurrenceInProse: [],
+    countScaledCandidates: [],
+    cappedCandidates: [],
+    kindMismatch: [],
+  };
+
+  const claims = new Map<string, string[]>();
+  for (const s of SHAPES_READ) {
+    for (const r of s.rows) {
+      const k = `${s.key} :: ${r.label}`;
+      claims.set(k, [...(claims.get(k) ?? []), s.kind]);
+    }
+  }
+  for (const [k, kinds] of claims) {
+    if (kinds.length > 1) out.rowsClaimedTwice.push(`${k} claimed by ${kinds.join(' and ')}`);
+  }
+
+  for (const c of confirmed) {
+    const page = byKey.get(c.key);
+    if (!page) continue;
+    const scan = scanPage(page);
+    if (scan.statRows.length === 0) continue;
+    const fields = parseFields(page.wikitext);
+    const prose = Object.entries(fields)
+      .filter(([f]) => /^description/.test(f))
+      .map(([, v]) => flatten(v))
+      .join(' ');
+
+    for (const r of scan.statRows) {
+      if (/\btotal\b/i.test(r.label) && !RECURRENCE_IN_PROSE.test(prose)) {
+        out.totalLabelWithNoRecurrenceInProse.push(`${c.key} :: ${r.label}`);
+      }
+    }
+    const countMatch = COUNT_SCALED_IN_PROSE.exec(prose);
+    if (countMatch) out.countScaledCandidates.push(`${c.key} :: "${countMatch[0]}"`);
+    const capMatch = CAP_IN_PROSE.exec(prose);
+    if (capMatch) out.cappedCandidates.push(`${c.key} :: "${capMatch[0]}"`);
+
+    const rowKinds = new Set(scan.statRows.map((r) => r.kind));
+    for (const k of c.kinds) {
+      if (rowKinds.has(k) || k === 'immunity' || k === 'spell-shield') continue;
+      if (SHAPES_READ.some((s) => s.key === c.key && s.kind === k)) continue;
+      out.kindMismatch.push(
+        `${c.key} confirmed '${k}'; the page carries ${[...rowKinds].join(', ')} rows`,
+      );
+    }
   }
   return out;
 }
@@ -661,9 +1012,12 @@ export function gateDefensiveSchema(effects: CuratedDefensiveEffect[]): {
     'max-health-grant',
   ]);
   for (const e of effects) {
-    const key = `${e.champion}/${e.slot}/${e.abilityName}/${e.kind}`;
+    // KEYED BY ID AS WELL AS KIND. Two entries of one kind on one ability is the Leona W shape —
+    // armor and magic resistance from two rows — and gate 1 tells them apart by `id`. Keying on
+    // the kind alone would have called that a duplicate, which it is not.
+    const key = `${e.champion}/${e.slot}/${e.abilityName}/${e.kind}${e.id ? `#${e.id}` : ''}`;
     const push = (message: string) => findings.push({ entry: key, message });
-    if (seen.has(key)) push('duplicate entry — one champion/slot/ability/kind may appear once');
+    if (seen.has(key)) push('duplicate entry — one champion/slot/ability/kind/id may appear once');
     seen.add(key);
     if (!e.champion) push('missing champion');
     if (!['P', 'Q', 'W', 'E', 'R'].includes(e.slot)) push(`bad slot '${e.slot}'`);
@@ -937,6 +1291,23 @@ if (process.argv[1]?.endsWith('defensive-propose.ts')) {
   }
   const gate = gateDefensiveSchema(run.proposals);
 
+  // GATE 1 — THE LEAD'S VALIDATOR, NOT THIS FILE'S. `gateSchema` in src/types/validate-curated.ts
+  // is what the curated file is actually held to, and it now walks `defensiveEffects` in full,
+  // including `checkDefensiveEffect`'s twelve rules on the six shape fields. Running our own gate
+  // instead of it would only ever prove that this file agrees with itself.
+  const gate1 = gateSchema({
+    version: 1,
+    patch: manifest.patch,
+    fetched: cache.fetchedOn,
+    abilities: [],
+    defensiveEffects: run.proposals,
+    itemEffects: [],
+    runes: [],
+    shards: [],
+    exclusions: [],
+  });
+  const sweeps = sweep(cache.pages, CONFIRMED);
+
   const confirmedPageKinds = CONFIRMED.flatMap((c) => c.kinds.map((k) => ({ key: c.key, kind: k })));
   const out = {
     what:
@@ -976,6 +1347,50 @@ if (process.argv[1]?.endsWith('defensive-propose.ts')) {
     refusedByAnyBlocker: Object.fromEntries(
       CLASS_ORDER.map((c) => [c, run.refusals.filter((r) => r.blockedBy.includes(c)).length]),
     ),
+    theMeasuredFortyFour: (() => {
+      // DID THE 44 ACTUALLY LAND? A released pair still has to parse, still obeys the owner rule,
+      // and can still be refused by a person reading it. This counts the outcome rather than the
+      // release.
+      //
+      // DEFINITION of the population: every (page, kind) pair in `defensive-shapes.ts` EXCEPT the
+      // two typed reductions (Amumu E, Galio W), which DATA-SOURCES §42.5 counted under
+      // `no-leveling-row` rather than among the 44 — the label map files their rows under
+      // `damage-reduction`, so the six-field measurement never saw them.
+      const typed = new Set(['Amumu/E/Tantrum', 'Galio/W/Shield of Durand']);
+      const pairs = [
+        ...SHAPES_READ.filter((r) => !(r.kind === 'type-specific-reduction' && typed.has(r.key))).map(
+          (r) => ({ key: r.key, kind: r.kind }),
+        ),
+        ...REFUSED_ON_READING.map((r) => ({ key: r.key, kind: r.kind })),
+      ];
+      const written = pairs.filter((p) =>
+        run.proposals.some(
+          (e) =>
+            `${e.champion}/${e.slot}/${e.abilityName}` === p.key && e.kind === KIND_MAP[p.kind],
+        ),
+      );
+      const entries = run.proposals.filter((e) =>
+        pairs.some(
+          (p) =>
+            p.key === `${e.champion}/${e.slot}/${e.abilityName}` && KIND_MAP[p.kind] === e.kind,
+        ),
+      );
+      return {
+        what:
+          'the 44 pairs DATA-SOURCES §42.5 measured as released by the six shape fields, counted ' +
+          'by what happened to them.',
+        pairs: pairs.length,
+        pairsWritten: written.length,
+        pairsRefusedOnReading: REFUSED_ON_READING.length,
+        entriesWritten: entries.length,
+        entriesByVerification: tally(
+          entries as unknown as Array<Record<string, unknown>>,
+          'verification',
+        ),
+        refusedOnReading: REFUSED_ON_READING.map((r) => `${r.key}/${r.kind}: ${r.refusalClass}`),
+        alsoReadButNotAmongThe44: [...typed].map((k) => `${k}/type-specific-reduction`),
+      };
+    })(),
     whatOneFieldWouldRelease: {
       note:
         'DEFINITION: a refused (page, kind) pair is released by a set of classes when every ' +
@@ -1000,6 +1415,53 @@ if (process.argv[1]?.endsWith('defensive-propose.ts')) {
       },
     },
     gateD1: gate,
+    gate1: {
+      what:
+        "gate 1 as the lead defines it — gateSchema() in src/types/validate-curated.ts, run over " +
+        'these proposals as a CuratedFile with no abilities. This is the gate that decides ' +
+        'whether an entry could be merged at all. An entry it fails may claim no better than ' +
+        "'incomplete'.",
+      checked: gate1.checked,
+      passed: gate1.passed,
+      failed: gate1.failed,
+      findings: gate1.findings,
+    },
+    sweeps: {
+      what:
+        'checks run over the whole confirmed population, each one born from a single page read ' +
+        'wrongly. None of them stores or refuses anything: each produces a list for a person.',
+      definitions: {
+        readingsMatchingNoConfirmedPair:
+          'a reading whose (page, kind) is not in defensive-confirmed.ts. A typo here would fail ' +
+          'silently — the pair would simply look unread — so it is checked rather than trusted.',
+        rowsClaimedTwice: 'one row named by two readings on one page; it would be stored twice.',
+        totalLabelWithNoRecurrenceInProse:
+          'a row labelled "Total ..." on a page whose prose states no recurrence. "Total" means ' +
+          '"over the duration" on most pages and "across every target hit" on Vladimir R, and ' +
+          'the label cannot tell them apart.',
+        countScaledCandidates:
+          'prose stating the figure scales with a count. PER STACK is refused (Graves E is 7 to ' +
+          '19 armor per stack of 8); PER ENEMY HIT is one enemy in a champion-versus-champion ' +
+          'tool, so it is stored at its one-enemy value.',
+        cappedCandidates:
+          'prose stating a cap or a maximum somewhere on the page. The entry has no field for ' +
+          'either. UNREAD: this pattern fires on any "capped at" on the page, including caps on ' +
+          'damage against monsters, so it is a candidate list and nothing more.',
+        kindMismatch:
+          'a confirmed kind with no row of that kind on a page that has defensive rows of ' +
+          'another kind. Two of these were real (Amumu E, Galio W) and are now read; the rest ' +
+          'are effects whose value genuinely lives in a sentence.',
+      },
+      counts: Object.fromEntries(Object.entries(sweeps).map(([k, v]) => [k, v.length])),
+      lists: sweeps,
+      labelFactsCarried: {
+        what:
+          'of every written entry whose label names one of the six facts, whether the entry ' +
+          'carries it. `defects` must be zero. `decidedByAReading` is a person choosing not to ' +
+          'carry it, with the sentence that says why.',
+        ...labelFactsCarried(run.proposals),
+      },
+    },
     gateD2: {
       what:
         "the round trip against the wiki's own rendering of the same leveling row — the only " +
@@ -1011,6 +1473,7 @@ if (process.argv[1]?.endsWith('defensive-propose.ts')) {
     },
     refusals: run.refusals,
     nonChampionRowsDropped: run.nonChampionRowsDropped,
+    otherRecipientRowsDropped: run.otherRecipientRowsDropped,
     defensiveEffects: run.proposals,
   };
 
@@ -1043,9 +1506,34 @@ if (process.argv[1]?.endsWith('defensive-propose.ts')) {
     `  all six shape facts together: ${out.whatOneFieldWouldRelease.shapeFieldsTogether.pairs}`,
   );
   console.log(
-    `\ngate D1 (schema): ${gate.passed} passed, ${gate.failed} failed of ${gate.checked} checked`,
+    `\nthe 44 measured pairs: ${out.theMeasuredFortyFour.pairsWritten} written as ` +
+      `${out.theMeasuredFortyFour.entriesWritten} entries, ` +
+      `${out.theMeasuredFortyFour.pairsRefusedOnReading} refused on reading`,
+  );
+  console.log(
+    `\ngate D1 (this file's own schema gate): ${gate.passed} passed, ${gate.failed} failed of ${gate.checked} checked`,
   );
   for (const f of gate.findings.slice(0, 20)) console.log(`   ${f.entry}: ${f.message}`);
+  console.log(
+    `\ngate 1 (gateSchema, src/types/validate-curated.ts): ${gate1.passed} passed, ` +
+      `${gate1.failed} failed of ${gate1.checked} checked`,
+  );
+  for (const f of gate1.findings.slice(0, 25)) console.log(`   ${f.entry}: ${f.message}`);
+  const carried = labelFactsCarried(run.proposals);
+  console.log(
+    `\nlabel-fact self-check: ${carried.defects.length} entries state a fact they do not carry, ` +
+      `${carried.decidedByAReading.length} where a reading decided not to`,
+  );
+  for (const line of [...carried.defects, ...carried.decidedByAReading]) console.log(`   ${line}`);
+  console.log('\nsweeps over the confirmed population (lists, never decisions):');
+  for (const [k, v] of Object.entries(sweeps)) {
+    console.log(`  ${k.padEnd(38)} ${v.length}`);
+    for (const line of v.slice(0, 6)) console.log(`      ${line.slice(0, 130)}`);
+  }
+  console.log(
+    `\nrows dropped: ${run.nonChampionRowsDropped.length} non-champion, ` +
+      `${run.otherRecipientRowsDropped.length} granting to somebody who is not the defender`,
+  );
   if (offline) {
     console.log('\ngate D2 (round trip): NOT RUN (--offline). No entry here has round-trip evidence.');
   } else {

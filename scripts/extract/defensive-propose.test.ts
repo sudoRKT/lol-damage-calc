@@ -26,6 +26,20 @@ import {
   type Refusal,
 } from './defensive-propose.ts';
 import type { CachedPage } from './page-cache.ts';
+import { gateSchema } from '../../src/types/validate-curated.ts';
+
+/** Wrap defensive entries as the CuratedFile gate 1 walks. */
+const asFile = (defensiveEffects: CuratedDefensiveEffect[]) => ({
+  version: 1,
+  patch: '16.16.1',
+  fetched: '2026-08-13',
+  abilities: [],
+  defensiveEffects,
+  itemEffects: [],
+  runes: [],
+  shards: [],
+  exclusions: [],
+});
 
 const OPTS = { patch: '16.16.1', fetched: '2026-08-13' };
 
@@ -190,7 +204,7 @@ describe('proposing an entry', () => {
       'Galio',
       'W',
       'Shield of Durand',
-      "{{Ability data\n|leveling = {{st|Shield Strength|{{as|{{ap|7.5 to 13.5}}% of '''maximum''' health}}}}\n}}",
+      "{{Ability data\n|leveling = {{st|Magic Shield Strength|{{as|{{ap|7.5 to 13.5}}% of '''maximum''' health}}}}\n}}",
     );
     const run = proposeForPage(
       galio,
@@ -207,6 +221,33 @@ describe('proposing an entry', () => {
     expect(e.unresolvable?.[0]?.field).toContain('maxHP');
     // PERMANENT IS NOT PENDING: the entry says why nobody can ever finish it.
     expect(e.unresolvable?.[0]?.why).toMatch(/never says whose/);
+    // The shield absorbs MAGIC damage only, and the entry now says so. Stored without it, this
+    // shield would absorb physical damage the game does not let it absorb.
+    expect(e.appliesToDamageType).toBe('magic');
+  });
+
+  it('refuses loudly when a reading names a row the page no longer has', () => {
+    // The same page under its OLD row label. A reading is evidence about one revision, so a page
+    // that has moved under it is refused rather than stored against a reading of something else.
+    const galio = page(
+      'Galio',
+      'W',
+      'Shield of Durand',
+      "{{Ability data\n|leveling = {{st|Shield Strength|{{as|{{ap|7.5 to 13.5}}% of '''maximum''' health}}}}\n}}",
+    );
+    const run = proposeForPage(
+      galio,
+      {
+        key: 'Galio/W/Shield of Durand',
+        kinds: ['shield'],
+        activation: 'conditional',
+        activationEvidence: 'Active channel',
+      },
+      OPTS,
+    );
+    expect(run.proposals).toEqual([]);
+    expect(run.refusals[0]!.refusalClass).toBe('reading-stale');
+    expect(run.refusals[0]!.detail).toContain('Magic Shield Strength');
   });
 
   it("keeps a 'not-stated' activation and invents nothing for it", () => {
@@ -315,9 +356,10 @@ describe('proposing an entry', () => {
     expect(run.proposals[0]!.value).toEqual({ scaling: 'explicit', perRank: [12, 20, 28, 36, 44] });
   });
 
-  it('refuses a kind with two rows rather than picking one of them', () => {
-    // Leona W, quoted. Two real values, one field, no label: storing either alone drops the other
-    // and storing both makes two entries nothing can tell apart.
+  it('stores Leona W as TWO labelled entries, one per resistance', () => {
+    // Leona W, quoted. Two real values on one page. Before the six fields this was refused
+    // outright, because picking one row drops the other and which one it drops decides whether
+    // the defender mitigates physical or magic damage.
     const leona = page(
       'Leona',
       'W',
@@ -334,9 +376,173 @@ describe('proposing an entry', () => {
       },
       OPTS,
     );
+    expect(run.refusals).toEqual([]);
+    expect(run.proposals).toHaveLength(2);
+    const [armor, mr] = run.proposals;
+    expect(armor!.label).toBe('Bonus Armor');
+    expect(armor!.grantedStat).toBe('armor');
+    expect(mr!.grantedStat).toBe('magicResist');
+    // NOT 'both': that arm is for one figure granted to both resistances in one statement.
+    expect(armor!.grantedStat).not.toBe('both');
+    // They apply at the same time, and the intent is stated rather than defaulted.
+    expect(armor!.relation).toEqual({ kind: 'adds' });
+    expect(mr!.relation).toEqual({ kind: 'adds' });
+    expect(armor!.id).not.toBe(mr!.id);
+    expect(armor!.unit).toBe('flat');
+  });
+
+  it('refuses two rows of one kind on a page NOBODY HAS READ, rather than pairing them by label', () => {
+    // The same shape on a page with no reading. A label is a candidate, never a decision: two
+    // rows might add (Leona W) or alternate (Shen R), and only the sentence says which.
+    const madeUp = page(
+      'Nobody',
+      'W',
+      'Unread Ability',
+      "{{Ability data\n|leveling = {{st|Bonus Armor|{{ap|20 to 50}}}}{{st|Bonus Magic Resistance|{{ap|20 to 50}}}}\n}}",
+    );
+    const run = proposeForPage(
+      madeUp,
+      {
+        key: 'Nobody/W/Unread Ability',
+        kinds: ['resistance-grant'],
+        activation: 'conditional',
+        activationEvidence: 'Active',
+      },
+      OPTS,
+    );
     expect(run.proposals).toEqual([]);
-    expect(run.refusals[0]!.blockedBy).toContain('multiple-values-one-field');
+    expect(run.refusals[0]!.blockedBy).toContain('shape-not-read');
     expect(run.refusals[0]!.blockedBy).toContain('needs-granted-stat');
+    expect(run.refusals[0]!.blockedBy).toContain('multiple-values-one-field');
+  });
+
+  it('alternates a Minimum/Maximum pair instead of summing it', () => {
+    // Shen R, quoted. Summing these hands the defender a shield of both, which is the exact
+    // failure `relation` exists to prevent.
+    const shen = page(
+      'Shen',
+      'R',
+      'Stand United',
+      '{{Ability data\n|leveling = {{st|Minimum Shield Strength|{{ap|120 to 320}}}}' +
+        '{{st|Maximum Shield Strength|{{ap|120*1.6 to 320*1.6}}}}\n}}',
+    );
+    const run = proposeForPage(
+      shen,
+      {
+        key: 'Shen/R/Stand United',
+        kinds: ['shield'],
+        activation: 'conditional',
+        activationEvidence: 'Active channel',
+      },
+      OPTS,
+    );
+    expect(run.proposals).toHaveLength(2);
+    const [min, max] = run.proposals;
+    expect(min!.relation).toEqual({ kind: 'adds' });
+    expect(max!.relation).toEqual({ kind: 'alternativeTo', componentId: min!.id });
+  });
+
+  it('stores a rate as a rate, never as health restored', () => {
+    // Bel'Veth E, quoted. 20 to 40 in `value` with no unit reads as 20 to 40 health.
+    const belveth = page(
+      "Bel'Veth",
+      'E',
+      'Royal Maelstrom',
+      '{{Ability data\n|leveling = {{st|Life Steal|{{ap|20 to 40}}%}}\n}}',
+    );
+    const run = proposeForPage(
+      belveth,
+      {
+        key: "Bel'Veth/E/Royal Maelstrom",
+        kinds: ['heal'],
+        activation: 'conditional',
+        activationEvidence: 'Active; "enters a frenzy for 1.5 seconds"',
+      },
+      OPTS,
+    );
+    expect(run.proposals).toHaveLength(1);
+    expect(run.proposals[0]!.unit).toBe('percent-of-damage-dealt');
+  });
+
+  it('does NOT read Vladimir R\'s "Total" row as an over-time heal', () => {
+    // THE TRAP. "Total" means "over the duration" on thirty-odd pages and "across every target
+    // hit" here. Stored as over time, a heal that lands inside the burst would sit outside the
+    // burst verdict (SPECIFICATION §3.8).
+    const vlad = page(
+      'Vladimir',
+      'R',
+      'Hemoplague',
+      '{{Ability data\n|leveling = {{st|Heal|{{ap|150 to 350}}}}' +
+        '{{st|Maximum Total Heal|{{ap|150*(1+0.4*4) to 350*(1+0.4*4)}}}}\n}}',
+    );
+    const run = proposeForPage(
+      vlad,
+      {
+        key: 'Vladimir/R/Hemoplague',
+        kinds: ['heal'],
+        activation: 'conditional',
+        activationEvidence: 'Active; after the infection duration',
+      },
+      OPTS,
+    );
+    expect(run.proposals).toHaveLength(2);
+    expect(run.proposals.map((p) => p.overTime)).toEqual([undefined, undefined]);
+    expect(run.proposals[1]!.relation).toEqual({
+      kind: 'alternativeTo',
+      componentId: run.proposals[0]!.id,
+    });
+  });
+
+  it('records a recurrence only with the sentence it rests on', () => {
+    const swain = page(
+      'Swain',
+      'R',
+      'Demonic Ascension',
+      "{{Ability data\n|leveling = {{st|Heal per Tick|{{ap|15/2 to 45/2}} {{as|(+ {{ap|5/2}}% AP)}}}}\n}}",
+    );
+    const run = proposeForPage(
+      swain,
+      {
+        key: 'Swain/R/Demonic Ascension',
+        kinds: ['heal'],
+        activation: 'conditional',
+        activationEvidence: 'Active; maintained with Demonic Energy',
+      },
+      OPTS,
+    );
+    expect(run.proposals[0]!.overTime?.sourceSays).toMatch(/every 0\.5 seconds/);
+    // No count is invented: the source states a duration and an interval, not a number of ticks.
+    expect(run.proposals[0]!.overTime?.totalInstances).toBeUndefined();
+  });
+
+  it('drops a row granting to somebody who is not the defender, and says so', () => {
+    // Braum W, quoted. The Ally rows carry 12% bonus resistances and the Self rows 36%; storing
+    // all four would grant Braum both.
+    const braum = page(
+      'Braum',
+      'W',
+      'Stand Behind Me',
+      "{{Ability data\n|leveling = {{st|Ally Bonus Armor|{{ap|20 to 40}} {{as|(+ 12% '''bonus''' armor)}}}}" +
+        "{{st|Ally Bonus Magic Resistance|{{ap|20 to 40}} {{as|(+ 12% '''bonus''' magic resistance)}}}}" +
+        "{{st|Self Bonus Armor|{{ap|20 to 40}} {{as|(+ 36% '''bonus''' armor)}}}}" +
+        "{{st|Self Bonus Magic Resistance|{{ap|20 to 40}} {{as|(+ 36% '''bonus''' magic resistance)}}}}\n}}",
+    );
+    const run = proposeForPage(
+      braum,
+      {
+        key: 'Braum/W/Stand Behind Me',
+        kinds: ['resistance-grant'],
+        activation: 'conditional',
+        activationEvidence: 'Active; "for 3 seconds"',
+      },
+      OPTS,
+    );
+    expect(run.otherRecipientRowsDropped).toHaveLength(2);
+    expect(run.proposals).toHaveLength(2);
+    expect(run.proposals.map((p) => p.label)).toEqual([
+      'Self Bonus Armor',
+      'Self Bonus Magic Resistance',
+    ]);
   });
 });
 
@@ -506,5 +712,113 @@ describe("the rendered-row reader and the last value of a percentage series", ()
     expect(parseRenderedRows(mel, { readPercentSeries: true })[0]!.values).toEqual([
       40, 45, 50, 55, 60,
     ]);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// GATE 1 IS THE LEAD'S VALIDATOR, AND IT HAS TO BE SHOWN TO BITE.
+//
+// "161 passed, 0 failed" only means something if the gate fails the thing it exists to fail. Each
+// of these takes a proposal this file really produces, breaks exactly one of the six fields, and
+// checks that gate 1 says so. Without them, a gate that always passed would read identically.
+// ---------------------------------------------------------------------------
+
+describe('gate 1 refuses what the six fields exist to prevent', () => {
+  const leonaPage = page(
+    'Leona',
+    'W',
+    'Eclipse',
+    "{{Ability data\n|leveling = {{st|Bonus Armor|{{ap|20 to 50}}}}{{st|Bonus Magic Resistance|{{ap|20 to 50}}}}\n}}",
+  );
+  const leona = () =>
+    proposeForPage(
+      leonaPage,
+      {
+        key: 'Leona/W/Eclipse',
+        kinds: ['resistance-grant'],
+        activation: 'conditional',
+        activationEvidence: 'Active; "raises her guard for 3 seconds"',
+      },
+      OPTS,
+    ).proposals;
+
+  it('passes the pair as proposed', () => {
+    const r = gateSchema(asFile(leona()));
+    expect(r.failed).toBe(0);
+    expect(r.checked).toBe(2);
+  });
+
+  it('fails the pair once the labels are stripped', () => {
+    const broken = leona().map((e) => ({ ...e, label: undefined }));
+    const r = gateSchema(asFile(broken));
+    expect(r.failed).toBe(2);
+    expect(r.findings.map((f) => f.message).join(' ')).toMatch(/label/);
+  });
+
+  it('fails the pair once the relation is left to a default', () => {
+    const broken = leona().map((e) => ({ ...e, relation: undefined }));
+    expect(gateSchema(asFile(broken)).failed).toBe(2);
+  });
+
+  it('fails a resistance grant that does not say which resistance', () => {
+    const broken = leona().map((e) => ({ ...e, grantedStat: undefined }));
+    expect(gateSchema(asFile(broken)).failed).toBe(2);
+  });
+
+  it('fails a value that states no unit', () => {
+    const broken = leona().map((e) => ({ ...e, unit: undefined }));
+    expect(gateSchema(asFile(broken)).failed).toBe(2);
+  });
+
+  it('fails a rate stored on a kind that would read it as an amount', () => {
+    const broken = leona().map((e) => ({ ...e, unit: 'percent-of-damage-dealt' as const }));
+    const r = gateSchema(asFile(broken));
+    expect(r.failed).toBe(2);
+    expect(r.findings.map((f) => f.message).join(' ')).toMatch(/rate or an amplifier/);
+  });
+
+  it('fails a type-specific reduction with no damage type', () => {
+    const galio = proposeForPage(
+      page(
+        'Galio',
+        'W',
+        'Shield of Durand',
+        '{{Ability data\n|leveling = {{st|Physical Damage Reduction|{{ap|12.5 to 22.5}}%}}' +
+          '{{st|Magic Damage Reduction|{{ap|25 to 45}}%}}\n}}',
+      ),
+      {
+        key: 'Galio/W/Shield of Durand',
+        kinds: ['type-specific-reduction'],
+        activation: 'conditional',
+        activationEvidence: 'Active channel',
+      },
+      OPTS,
+    ).proposals;
+    expect(galio).toHaveLength(2);
+    expect(gateSchema(asFile(galio)).failed).toBe(0);
+    const broken = galio.map((e) => ({ ...e, appliesToDamageType: undefined }));
+    expect(gateSchema(asFile(broken)).failed).toBe(2);
+  });
+
+  it('fails an over-time claim with no sentence behind it', () => {
+    const swain = proposeForPage(
+      page(
+        'Swain',
+        'R',
+        'Demonic Ascension',
+        '{{Ability data\n|leveling = {{st|Heal per Tick|{{ap|15/2 to 45/2}}}}\n}}',
+      ),
+      {
+        key: 'Swain/R/Demonic Ascension',
+        kinds: ['heal'],
+        activation: 'conditional',
+        activationEvidence: 'Active',
+      },
+      OPTS,
+    ).proposals;
+    const broken = swain.map((e) => ({ ...e, overTime: { sourceSays: '' } }));
+    const r = gateSchema(asFile(broken));
+    expect(r.failed).toBe(1);
+    expect(r.findings.map((f) => f.message).join(' ')).toMatch(/quote the sentence/);
   });
 });
