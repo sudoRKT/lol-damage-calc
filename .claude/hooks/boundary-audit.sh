@@ -91,12 +91,24 @@ refuse() { # refuse <reason>
     echo "  path:  $rel"
     echo
     echo "This project partitions write access by directory (CLAUDE.md, 'Parallel execution')."
-    echo "  the engine area        -> src/engine/"
-    echo "  the data-pipeline area -> scripts/fetch/ and public/data/"
-    echo "  the extract area       -> scripts/extract/ and build/proposed-curated/"
-    echo "  the ui area            -> src/ui/"
-    echo "  the url area           -> src/url/"
-    echo "Everything else, including src/types/ and /curated/, is the lead session's to write."
+    echo "  engine        -> src/engine/"
+    echo "  data-pipeline -> scripts/fetch/ and public/data/"
+    echo "  extract       -> scripts/extract/ and build/proposed-curated/"
+    echo "  url           -> src/url/"
+    echo "  ui-burndown   -> src/ui/burndown/"
+    echo "  ui-breakdown  -> src/ui/breakdown/"
+    echo "  ui-combo      -> src/ui/combo/"
+    echo "  ui-config     -> src/ui/config/, picker/, items/, inputs/"
+    echo "  ui-stats      -> src/ui/stats/"
+    echo "  ui-site       -> src/ui/shell/, pages/, landing/, coverage/"
+    echo "  ui-curves     -> src/ui/curves/"
+    echo "  ui-compare    -> src/ui/compare/"
+    echo
+    echo "LEAD-ONLY, and named here so it is not discovered by being refused:"
+    echo "  src/ui/app/ (composes everything — an agent NEVER mounts its own component),"
+    echo "  src/ui/primitives/, src/ui/data/, src/ui/art/, src/ui/plot/,"
+    echo "  src/ui/preview/, src/ui/slice/, src/ui/tokens.css, src/ui/fonts.css,"
+    echo "  the four sweep tests at the src/ui root, src/types/, /curated/, and the Markdown."
     echo
     echo "Do NOT work around this, and do NOT write the file by another route. 'Blocked' is"
     echo "a valid state. Stop, and report to the lead what you need and why, so the lead can"
@@ -125,12 +137,47 @@ esac
 # are one area because the fetcher writes the data it fetches; scripts/extract/ and
 # build/proposed-curated/ are one area for the same reason -- the harvester writes the drafts
 # it harvests. Splitting either pair would refuse an agent doing one coherent job.
+#
+# src/ui WAS ONE AREA UNTIL 2026-08-14, and that was the throughput ceiling rather than tokens:
+# almost every remaining task touches the interface, so four agents queued for one directory.
+# It is now SEVEN areas, cut along the import graph rather than along the folder names.
+#
+# WIDENED, NOT WEAKENED. Every path that was writable by an agent before is still governed, and
+# the shared parts of src/ui are now refused to EVERY agent rather than being writable by the one
+# that claimed `ui` first. The list below is exhaustive; a src/ui path matching none of these
+# falls through to the refusal at the bottom, which is the intent.
+#
+# LEAD-ONLY INSIDE src/ui, AND WHY EACH — measured over every non-test import in the tree:
+#   src/ui/app/          composes 10 directories. Mounting is a lead action; an agent exports a
+#                        component and never wires it.
+#   src/ui/primitives/   imported by 7. Holds the P/M/T tag rule, the status mark, the table
+#                        scroller and token-audit.test.ts, which is itself a guard.
+#   src/ui/data/         imported by 6. The catalogue contract; changing it changes App.tsx too.
+#   src/ui/art/          imported by 6. Shared infrastructure — a changed export ripples into six
+#                        areas at once.
+#   src/ui/plot/         imported by the two chart areas. Shared axis and scale, same standing.
+#   src/ui/preview/      demo harnesses importing 6 directories each.
+#   src/ui/slice/
+#   src/ui/*.css         tokens.css and fonts.css: every component derives from them.
+#   src/ui/*.test.tsx    the four cross-cutting sweeps, each rendering 8 directories. They belong
+#                        to no area, exactly as tests/ does.
 case "$rel" in
   src/engine/*) area=engine ;;
   scripts/fetch/* | public/data/*) area=data ;;
   scripts/extract/* | build/proposed-curated/*) area=extract ;;
-  src/ui/*) area=ui ;;
   src/url/*) area=url ;;
+
+  # The seven interface areas. `config` travels with the three directories it imports, and
+  # `site` with the two that import it — splitting either would refuse an agent doing one job.
+  src/ui/burndown/*) area=ui-burndown ;;
+  src/ui/breakdown/*) area=ui-breakdown ;;
+  src/ui/combo/*) area=ui-combo ;;
+  src/ui/config/* | src/ui/picker/* | src/ui/items/* | src/ui/inputs/*) area=ui-config ;;
+  src/ui/stats/*) area=ui-stats ;;
+  src/ui/shell/* | src/ui/pages/* | src/ui/landing/* | src/ui/coverage/*) area=ui-site ;;
+  src/ui/curves/*) area=ui-curves ;;
+  src/ui/compare/*) area=ui-compare ;;
+
   *) refuse "an agent may only write inside a partitioned area; that path is in none" ;;
 esac
 
@@ -151,10 +198,14 @@ case "$agent" in
   # whereas the ledger only locks an area once someone has written to it. Named roles are also
   # what lets an area be re-deployed in a later fan-out — the ledger locks an area to its first
   # claimant for good, which is correct for concurrency and wrong across sessions.
+  #
+  # THE 'interface' ROLE WAS RETIRED ON 2026-08-14 and is refused outright. It owned src/ui/
+  # entirely, and after the split there is no single area for it to own — an agent spawned from
+  # it would claim whichever of the seven it wrote to first, which is the ledger's job and not a
+  # role's. Refusing is deliberate: silently falling through to the ledger would let a stale role
+  # keep working while meaning something different from what its file says.
   interface)
-    [ "$area" = ui ] || refuse "role 'interface' owns src/ui/ only"
-    record ALLOW "by-name:$area"
-    exit 0
+    refuse "the 'interface' role was retired when src/ui was split into seven areas (2026-08-14). Spawn an agent without a role and it will claim one area from its first write, or use a role that names the area you mean."
     ;;
   harvest)
     [ "$area" = extract ] || refuse "role 'harvest' owns scripts/extract/ and build/proposed-curated/ only"

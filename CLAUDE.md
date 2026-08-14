@@ -170,13 +170,29 @@ Two things worth knowing about how these fit together:
   to it — so the partition holds even when the role definitions were not loaded. Every write,
   allowed or refused, is appended to `.claude/boundary-audit.log`, which is the audit trail:
   it records which agent wrote which file, and whether any agent tried to reach across.
-- **The partitioned areas are:** `src/engine/` · `scripts/fetch/` + `public/data/` ·
-  `scripts/extract/` + `build/proposed-curated/` · `src/ui/` · `src/url/`. A path in none of
-  them is refused to every agent, and belongs to the lead — that includes `src/types/`,
-  `/curated/`, and the project's Markdown. Two directories share one area when one agent
-  needs both to do one job: the fetcher writes the data it fetches, the harvester writes the
-  drafts it harvests. `src/url/` is the one name not fixed by prior work; rename it in the
-  hook if the scenario↔URL encoder lands somewhere else.
+- **The partitioned areas are twelve, since 2026-08-14.** Four outside the interface —
+  `src/engine/` · `scripts/fetch/` + `public/data/` · `scripts/extract/` +
+  `build/proposed-curated/` · `src/url/` — and eight inside it: `ui-burndown`, `ui-breakdown`,
+  `ui-combo`, `ui-config` (`config/` + `picker/` + `items/` + `inputs/`), `ui-stats`, `ui-site`
+  (`shell/` + `pages/` + `landing/` + `coverage/`), `ui-curves`, `ui-compare`. Two directories
+  share one area when one agent needs both to do one job: the fetcher writes the data it fetches,
+  the harvester writes the drafts it harvests, and `config` travels with the three directories it
+  imports.
+- **`src/ui` was one area until 2026-08-14 and that was the throughput ceiling**, not tokens:
+  almost every remaining task touches the interface, so agents queued for one directory. The
+  split is cut along the IMPORT GRAPH, not the folder names.
+- **LEAD-ONLY INSIDE `src/ui`, named here rather than discovered by being refused:** `app/`
+  (composes 10 directories — **an agent never mounts its own component**, it exports one and the
+  lead wires it), `primitives/` (imported by 7, and holds the tag and status rules and the token
+  audit), `data/` (imported by 6, the catalogue contract), `art/` (imported by 6), `plot/` (the
+  shared axis and scale both chart areas read), `preview/` and `slice/` (demo harnesses importing
+  6 directories each), `tokens.css`, `fonts.css`, and the four cross-cutting sweep tests at the
+  `src/ui` root, each of which renders 8 directories at once. A path in no area is refused to
+  every agent and belongs to the lead — that also includes `src/types/`, `/curated/`, and the
+  project's Markdown.
+- **The `interface` role is RETIRED and refused by name.** It owned `src/ui/` entirely and now
+  owns none of the eight. Spawn an agent with no role and it claims one area from its first
+  write.
 - **Publishing is a lead action.** Agents are refused `git push` by the hook rather than by a
   blanket rule, so the lead can still do its job. Agents are also instructed not to commit.
 
