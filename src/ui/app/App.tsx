@@ -42,6 +42,7 @@ import type {
   Champion,
   ChampionConfig,
   ComboStep,
+  CuratedDefensiveEffect,
   CuratedItemEffect,
   Item,
   Scenario,
@@ -66,6 +67,8 @@ import {
   loadItems,
   loadItemEffects,
   itemEffectsById,
+  loadDefensiveEffects,
+  defensiveEffectsByChampion,
   loadOverrides,
   rosterPatch,
   type AbilitiesFile,
@@ -113,6 +116,8 @@ interface LoadedData {
   overrides: StatOverrideRecord[];
   /** The curated actives and riders. An empty list is a real answer — see `loadItemEffects`. */
   itemEffects: CuratedItemEffect[];
+  /** The defender's own defences. Empty is a real answer — see `loadDefensiveEffects`. */
+  defensiveEffects: CuratedDefensiveEffect[];
   patch: string;
 }
 
@@ -180,10 +185,18 @@ export function App({
       // Soft-failing on purpose: an absent item-effects file costs the effect rows and nothing
       // else, and the engine already names every effect it cannot reach (see loadItemEffects).
       loadItemEffects(fetchImpl),
+      loadDefensiveEffects(fetchImpl),
     ])
-      .then(([roster, items, overrides, itemEffects]) => {
+      .then(([roster, items, overrides, itemEffects, defensiveEffects]) => {
         if (!live) return;
-        setData({ roster, items, overrides, itemEffects, patch: rosterPatch(roster) });
+        setData({
+          roster,
+          items,
+          overrides,
+          itemEffects,
+          defensiveEffects,
+          patch: rosterPatch(roster),
+        });
       })
       .catch((e: unknown) => {
         if (live) setError(e instanceof Error ? e.message : String(e));
@@ -228,6 +241,9 @@ export function App({
       // nothing. It was missing until 2026-08-14, which is why none of that work reached a
       // visitor (DATA-SOURCES §57).
       itemEffects: itemEffectsById(data.itemEffects),
+      // Without this the engine's defensive lookup answers empty for every champion, and every
+      // toggle a reader sets does nothing at all (DATA-SOURCES §59).
+      defensiveEffects: defensiveEffectsByChampion(data.defensiveEffects),
     });
   }, [data, abilityFiles]);
 

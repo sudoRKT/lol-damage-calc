@@ -1,0 +1,6032 @@
+{
+  "what": "Curated defensive effects — what a champion's own kit does to damage they RECEIVE, copied verbatim from the protected override file. Each states its own verification status.",
+  "provenance": {
+    "source": "curated/curated-data.json (the protected override file)",
+    "patch": "16.16.1",
+    "fetched": "2026-08-14",
+    "extractedOn": "2026-08-14",
+    "regenerate": "node scripts/build-defensive-effects.ts",
+    "warning": "ALMOST EVERY ENTRY IS CONDITIONAL, and the engine cannot know whether a defence was up. The user states that in the scenario, keyed by defensiveToggleKey() from src/types/. ABSENT MEANS NOT UP — asserting a defence nobody stated would understate the damage. An entry marked incomplete contributes nothing and says why (SPECIFICATION §8)."
+  },
+  "counts": {
+    "total": 155,
+    "champions": 89,
+    "byActivation": {
+      "always-active": 1,
+      "conditional": 152,
+      "not-stated": 2
+    },
+    "byKind": {
+      "damage-reduction": 6,
+      "heal": 62,
+      "immunity": 18,
+      "max-health-grant": 6,
+      "resistance-grant": 16,
+      "shield": 41,
+      "spell-shield": 3,
+      "type-specific-reduction": 3
+    }
+  },
+  "defensiveEffects": [
+    {
+      "champion": "Alistar",
+      "slot": "R",
+      "abilityName": "Unbreakable Will",
+      "label": "Damage Reduction",
+      "kind": "damage-reduction",
+      "activation": "conditional",
+      "condition": "Active cast; \"For the next 7 seconds\"",
+      "unit": "percent",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          55,
+          65,
+          75
+        ]
+      },
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Alistar/Unbreakable Will — leveling row \"Damage Reduction\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Alistar/Unbreakable%20Will",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "Bel'Veth",
+      "slot": "E",
+      "abilityName": "Royal Maelstrom",
+      "label": "Damage Reduction",
+      "kind": "damage-reduction",
+      "activation": "conditional",
+      "condition": "Active; \"enters a frenzy for 1.5 seconds\"",
+      "unit": "percent",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          20,
+          30,
+          40,
+          50,
+          60
+        ]
+      },
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Bel'Veth/Royal Maelstrom — leveling row \"Damage Reduction\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Bel'Veth/Royal%20Maelstrom",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "damage-reduction"
+    },
+    {
+      "champion": "Bel'Veth",
+      "slot": "E",
+      "abilityName": "Royal Maelstrom",
+      "label": "Life Steal",
+      "kind": "heal",
+      "activation": "conditional",
+      "condition": "Active; \"enters a frenzy for 1.5 seconds\"",
+      "unit": "percent-of-damage-dealt",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          20,
+          25,
+          30,
+          35,
+          40
+        ]
+      },
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Bel'Veth/Royal Maelstrom — leveling row \"Life Steal\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Bel'Veth/Royal%20Maelstrom",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "life-steal"
+    },
+    {
+      "champion": "Braum",
+      "slot": "E",
+      "abilityName": "Unbreakable",
+      "label": "Damage reduction",
+      "kind": "damage-reduction",
+      "activation": "conditional",
+      "condition": "Active; directional — \"from enemies in the target direction\"",
+      "unit": "percent",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          35,
+          40,
+          45,
+          50,
+          55
+        ]
+      },
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Braum/Unbreakable — leveling row \"Damage reduction\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Braum/Unbreakable",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "Briar",
+      "slot": "E",
+      "abilityName": "Chilling Scream",
+      "label": "Heal Per Tick",
+      "kind": "heal",
+      "activation": "conditional",
+      "condition": "Active; \"while charging\"",
+      "overTime": {
+        "sourceSays": "Briar prepares to unleash a scream ... charging for up to 1 second, during which she ... heals herself every 0.25 seconds."
+      },
+      "ratios": [
+        {
+          "stat": "maxHP",
+          "owner": "unresolved",
+          "scaling": "explicit",
+          "perRank": [
+            2.5,
+            2.875,
+            3.25,
+            3.625,
+            4
+          ]
+        }
+      ],
+      "unresolvable": [
+        {
+          "field": "ratios[0].owner (maxHP)",
+          "why": "the source names maxHP and never says whose, and no other source states it"
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Briar/Chilling Scream — leveling row \"Heal Per Tick\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Briar/Chilling%20Scream",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "heal-per-tick",
+      "relation": {
+        "kind": "adds"
+      }
+    },
+    {
+      "champion": "Briar",
+      "slot": "E",
+      "abilityName": "Chilling Scream",
+      "label": "Maximum Heal",
+      "kind": "heal",
+      "activation": "conditional",
+      "condition": "Active; \"while charging\"",
+      "overTime": {
+        "sourceSays": "Briar prepares to unleash a scream ... charging for up to 1 second, during which she ... heals herself every 0.25 seconds."
+      },
+      "ratios": [
+        {
+          "stat": "maxHP",
+          "owner": "unresolved",
+          "scaling": "explicit",
+          "perRank": [
+            10,
+            11.5,
+            13,
+            14.5,
+            16
+          ]
+        }
+      ],
+      "unresolvable": [
+        {
+          "field": "ratios[0].owner (maxHP)",
+          "why": "the source names maxHP and never says whose, and no other source states it"
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Briar/Chilling Scream — leveling row \"Maximum Heal\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Briar/Chilling%20Scream",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "maximum-heal",
+      "relation": {
+        "kind": "alternativeTo",
+        "componentId": "heal-per-tick"
+      }
+    },
+    {
+      "champion": "Garen",
+      "slot": "W",
+      "abilityName": "Courage",
+      "label": "Damage Reduction",
+      "kind": "damage-reduction",
+      "activation": "conditional",
+      "condition": "Active for the reduction and shield; the per-stack resistances are a passive accumulation",
+      "unit": "percent",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          25,
+          29,
+          33,
+          37,
+          41
+        ]
+      },
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Garen/Courage — leveling row \"Damage Reduction\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Garen/Courage",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "damage-reduction"
+    },
+    {
+      "champion": "Garen",
+      "slot": "W",
+      "abilityName": "Courage",
+      "label": "Shield Strength",
+      "kind": "shield",
+      "activation": "conditional",
+      "condition": "Active for the reduction and shield; the per-stack resistances are a passive accumulation",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          65,
+          85,
+          105,
+          125,
+          145
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "bonusHP",
+          "owner": "unresolved",
+          "scaling": "explicit",
+          "perRank": [
+            18,
+            18,
+            18,
+            18,
+            18
+          ]
+        }
+      ],
+      "unresolvable": [
+        {
+          "field": "ratios[0].owner (bonusHP)",
+          "why": "the source names bonusHP and never says whose, and no other source states it"
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Garen/Courage — leveling row \"Shield Strength\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Garen/Courage",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "shield-strength"
+    },
+    {
+      "champion": "Gragas",
+      "slot": "W",
+      "abilityName": "Drunken Rage",
+      "label": "Damage Reduction",
+      "kind": "damage-reduction",
+      "activation": "conditional",
+      "condition": "Active; \"for 2.5 seconds\"",
+      "unit": "percent",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          10,
+          14,
+          18,
+          22,
+          26
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            4,
+            4,
+            4,
+            4,
+            4
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Gragas/Drunken Rage — leveling row \"Damage Reduction\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Gragas/Drunken%20Rage",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "Jax",
+      "slot": "E",
+      "abilityName": "Counter Strike",
+      "kind": "immunity",
+      "activation": "conditional",
+      "condition": "Active; \"a defensive stance\"; dodges basic attacks outright, 25% off AoE",
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Jax/Counter Strike — description prose (no amount is stated, and none exists)",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Jax/Counter%20Strike",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "Leona",
+      "slot": "W",
+      "abilityName": "Eclipse",
+      "label": "Bonus Armor",
+      "kind": "resistance-grant",
+      "activation": "conditional",
+      "condition": "Active; \"raises her guard for 3 seconds\"",
+      "grantedStat": "armor",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          20,
+          27.5,
+          35,
+          42.5,
+          50
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "bonusArmor",
+          "owner": "unresolved",
+          "scaling": "explicit",
+          "perRank": [
+            20,
+            20,
+            20,
+            20,
+            20
+          ]
+        }
+      ],
+      "unresolvable": [
+        {
+          "field": "ratios[0].owner (bonusArmor)",
+          "why": "the source names bonusArmor and never says whose, and no other source states it"
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Leona/Eclipse — leveling row \"Bonus Armor\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Leona/Eclipse",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "bonus-armor",
+      "relation": {
+        "kind": "adds"
+      }
+    },
+    {
+      "champion": "Leona",
+      "slot": "W",
+      "abilityName": "Eclipse",
+      "label": "Bonus Magic Resistance",
+      "kind": "resistance-grant",
+      "activation": "conditional",
+      "condition": "Active; \"raises her guard for 3 seconds\"",
+      "grantedStat": "magicResist",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          20,
+          27.5,
+          35,
+          42.5,
+          50
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "bonusMagicResist",
+          "owner": "unresolved",
+          "scaling": "explicit",
+          "perRank": [
+            20,
+            20,
+            20,
+            20,
+            20
+          ]
+        }
+      ],
+      "unresolvable": [
+        {
+          "field": "ratios[0].owner (bonusMagicResist)",
+          "why": "the source names bonusMagicResist and never says whose, and no other source states it"
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Leona/Eclipse — leveling row \"Bonus Magic Resistance\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Leona/Eclipse",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "bonus-magic-resistance",
+      "relation": {
+        "kind": "adds"
+      }
+    },
+    {
+      "champion": "Master Yi",
+      "slot": "W",
+      "abilityName": "Meditate",
+      "label": "Minimum Heal Per Tick",
+      "kind": "heal",
+      "activation": "conditional",
+      "condition": "Active channel; \"while channeling\"",
+      "overTime": {
+        "sourceSays": "Master Yi channels for up to 4 seconds, healing himself every 0.5 seconds, increased by 1% per 1% missing health."
+      },
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          15,
+          25,
+          35,
+          45,
+          55
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            12.5,
+            12.5,
+            12.5,
+            12.5,
+            12.5
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Master Yi/Meditate — leveling row \"Minimum Heal Per Tick\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Master%20Yi/Meditate",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "minimum-heal-per-tick",
+      "relation": {
+        "kind": "adds"
+      }
+    },
+    {
+      "champion": "Master Yi",
+      "slot": "W",
+      "abilityName": "Meditate",
+      "label": "Maximum Heal Per Tick",
+      "kind": "heal",
+      "activation": "conditional",
+      "condition": "Active channel; \"while channeling\"",
+      "overTime": {
+        "sourceSays": "Master Yi channels for up to 4 seconds, healing himself every 0.5 seconds, increased by 1% per 1% missing health."
+      },
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          30,
+          50,
+          70,
+          90,
+          110
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            25,
+            25,
+            25,
+            25,
+            25
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Master Yi/Meditate — leveling row \"Maximum Heal Per Tick\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Master%20Yi/Meditate",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "maximum-heal-per-tick",
+      "relation": {
+        "kind": "alternativeTo",
+        "componentId": "minimum-heal-per-tick"
+      }
+    },
+    {
+      "champion": "Master Yi",
+      "slot": "W",
+      "abilityName": "Meditate",
+      "label": "Minimum Total Heal",
+      "kind": "heal",
+      "activation": "conditional",
+      "condition": "Active channel; \"while channeling\"",
+      "overTime": {
+        "sourceSays": "Master Yi channels for up to 4 seconds, healing himself every 0.5 seconds, increased by 1% per 1% missing health."
+      },
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          120,
+          200,
+          280,
+          360,
+          440
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            100,
+            100,
+            100,
+            100,
+            100
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Master Yi/Meditate — leveling row \"Minimum Total Heal\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Master%20Yi/Meditate",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "minimum-total-heal",
+      "relation": {
+        "kind": "alternativeTo",
+        "componentId": "minimum-heal-per-tick"
+      }
+    },
+    {
+      "champion": "Master Yi",
+      "slot": "W",
+      "abilityName": "Meditate",
+      "label": "Maximum Total Heal",
+      "kind": "heal",
+      "activation": "conditional",
+      "condition": "Active channel; \"while channeling\"",
+      "overTime": {
+        "sourceSays": "Master Yi channels for up to 4 seconds, healing himself every 0.5 seconds, increased by 1% per 1% missing health."
+      },
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          240,
+          400,
+          560,
+          720,
+          880
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            200,
+            200,
+            200,
+            200,
+            200
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Master Yi/Meditate — leveling row \"Maximum Total Heal\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Master%20Yi/Meditate",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "maximum-total-heal",
+      "relation": {
+        "kind": "alternativeTo",
+        "componentId": "minimum-heal-per-tick"
+      }
+    },
+    {
+      "champion": "Warwick",
+      "slot": "E",
+      "abilityName": "Primal Howl",
+      "label": "Damage Reduction",
+      "kind": "damage-reduction",
+      "activation": "conditional",
+      "condition": "Active; \"for up to 2.75 seconds\"",
+      "unit": "percent",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          35,
+          40,
+          45,
+          50,
+          55
+        ]
+      },
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Warwick/Primal Howl — leveling row \"Damage Reduction\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Warwick/Primal%20Howl",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "Amumu",
+      "slot": "E",
+      "abilityName": "Tantrum",
+      "label": "Physical Damage Reduction",
+      "kind": "type-specific-reduction",
+      "activation": "always-active",
+      "appliesToDamageType": "physical",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          5,
+          7,
+          9,
+          11,
+          13
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "bonusArmor",
+          "owner": "unresolved",
+          "scaling": "explicit",
+          "perRank": [
+            3,
+            3,
+            3,
+            3,
+            3
+          ]
+        },
+        {
+          "stat": "bonusMagicResist",
+          "owner": "unresolved",
+          "scaling": "explicit",
+          "perRank": [
+            3,
+            3,
+            3,
+            3,
+            3
+          ]
+        }
+      ],
+      "unresolvable": [
+        {
+          "field": "ratios[0].owner (bonusArmor)",
+          "why": "the source names bonusArmor and never says whose, and no other source states it"
+        },
+        {
+          "field": "ratios[1].owner (bonusMagicResist)",
+          "why": "the source names bonusMagicResist and never says whose, and no other source states it"
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Amumu/Tantrum — leveling row \"Physical Damage Reduction\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Amumu/Tantrum",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "Galio",
+      "slot": "W",
+      "abilityName": "Shield of Durand",
+      "label": "Physical Damage Reduction",
+      "kind": "type-specific-reduction",
+      "activation": "conditional",
+      "condition": "Passive shield is periodic (\"Gain a shield\"), the physical/magic reduction is on the Active channel",
+      "appliesToDamageType": "physical",
+      "unit": "percent",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          12.5,
+          15,
+          17.5,
+          20,
+          22.5
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            1.5,
+            1.5,
+            1.5,
+            1.5,
+            1.5
+          ]
+        },
+        {
+          "stat": "bonusMagicResist",
+          "owner": "unresolved",
+          "scaling": "explicit",
+          "perRank": [
+            4,
+            4,
+            4,
+            4,
+            4
+          ]
+        },
+        {
+          "stat": "bonusHP",
+          "owner": "unresolved",
+          "scaling": "explicit",
+          "perRank": [
+            0.5,
+            0.5,
+            0.5,
+            0.5,
+            0.5
+          ]
+        }
+      ],
+      "unresolvable": [
+        {
+          "field": "ratios[1].owner (bonusMagicResist)",
+          "why": "the source names bonusMagicResist and never says whose, and no other source states it"
+        },
+        {
+          "field": "ratios[2].owner (bonusHP)",
+          "why": "the source names bonusHP and never says whose, and no other source states it"
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Galio/Shield of Durand — leveling row \"Physical Damage Reduction\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Galio/Shield%20of%20Durand",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "physical-damage-reduction",
+      "relation": {
+        "kind": "adds"
+      }
+    },
+    {
+      "champion": "Galio",
+      "slot": "W",
+      "abilityName": "Shield of Durand",
+      "label": "Magic Damage Reduction",
+      "kind": "type-specific-reduction",
+      "activation": "conditional",
+      "condition": "Passive shield is periodic (\"Gain a shield\"), the physical/magic reduction is on the Active channel",
+      "appliesToDamageType": "magic",
+      "unit": "percent",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          25,
+          30,
+          35,
+          40,
+          45
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            4,
+            4,
+            4,
+            4,
+            4
+          ]
+        },
+        {
+          "stat": "bonusMagicResist",
+          "owner": "unresolved",
+          "scaling": "explicit",
+          "perRank": [
+            8,
+            8,
+            8,
+            8,
+            8
+          ]
+        },
+        {
+          "stat": "bonusHP",
+          "owner": "unresolved",
+          "scaling": "explicit",
+          "perRank": [
+            1,
+            1,
+            1,
+            1,
+            1
+          ]
+        }
+      ],
+      "unresolvable": [
+        {
+          "field": "ratios[1].owner (bonusMagicResist)",
+          "why": "the source names bonusMagicResist and never says whose, and no other source states it"
+        },
+        {
+          "field": "ratios[2].owner (bonusHP)",
+          "why": "the source names bonusHP and never says whose, and no other source states it"
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Galio/Shield of Durand — leveling row \"Magic Damage Reduction\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Galio/Shield%20of%20Durand",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "magic-damage-reduction",
+      "relation": {
+        "kind": "adds"
+      }
+    },
+    {
+      "champion": "Galio",
+      "slot": "W",
+      "abilityName": "Shield of Durand",
+      "label": "Magic Shield Strength",
+      "kind": "shield",
+      "activation": "conditional",
+      "condition": "Passive shield is periodic (\"Gain a shield\"), the physical/magic reduction is on the Active channel",
+      "appliesToDamageType": "magic",
+      "ratios": [
+        {
+          "stat": "maxHP",
+          "owner": "unresolved",
+          "scaling": "explicit",
+          "perRank": [
+            7.5,
+            9,
+            10.5,
+            12,
+            13.5
+          ]
+        }
+      ],
+      "unresolvable": [
+        {
+          "field": "ratios[0].owner (maxHP)",
+          "why": "the source names maxHP and never says whose, and no other source states it"
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Galio/Shield of Durand — leveling row \"Magic Shield Strength\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Galio/Shield%20of%20Durand",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "magic-shield-strength"
+    },
+    {
+      "champion": "Nilah",
+      "slot": "W",
+      "abilityName": "Jubilant Veil",
+      "kind": "immunity",
+      "activation": "conditional",
+      "condition": "Active; \"for 2.25 seconds\"; magic only, plus dodging basic attacks",
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Nilah/Jubilant Veil — description prose (no amount is stated, and none exists)",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Nilah/Jubilant%20Veil",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "Anivia",
+      "slot": "P",
+      "abilityName": "Rebirth",
+      "kind": "immunity",
+      "activation": "conditional",
+      "condition": "\"upon taking fatal damage\"; resistances apply only \"while under resurrection\"",
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Anivia/Rebirth — description prose (no amount is stated, and none exists)",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Anivia/Rebirth",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "Braum",
+      "slot": "W",
+      "abilityName": "Stand Behind Me",
+      "label": "Self Bonus Armor",
+      "kind": "resistance-grant",
+      "activation": "conditional",
+      "condition": "Active; \"for 3 seconds\"; separate self and ally rows",
+      "grantedStat": "armor",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          20,
+          25,
+          30,
+          35,
+          40
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "bonusArmor",
+          "owner": "unresolved",
+          "scaling": "explicit",
+          "perRank": [
+            36,
+            36,
+            36,
+            36,
+            36
+          ]
+        }
+      ],
+      "unresolvable": [
+        {
+          "field": "ratios[0].owner (bonusArmor)",
+          "why": "the source names bonusArmor and never says whose, and no other source states it"
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Braum/Stand Behind Me — leveling row \"Self Bonus Armor\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Braum/Stand%20Behind%20Me",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "self-bonus-armor",
+      "relation": {
+        "kind": "adds"
+      }
+    },
+    {
+      "champion": "Braum",
+      "slot": "W",
+      "abilityName": "Stand Behind Me",
+      "label": "Self Bonus Magic Resistance",
+      "kind": "resistance-grant",
+      "activation": "conditional",
+      "condition": "Active; \"for 3 seconds\"; separate self and ally rows",
+      "grantedStat": "magicResist",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          20,
+          25,
+          30,
+          35,
+          40
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "bonusMagicResist",
+          "owner": "unresolved",
+          "scaling": "explicit",
+          "perRank": [
+            36,
+            36,
+            36,
+            36,
+            36
+          ]
+        }
+      ],
+      "unresolvable": [
+        {
+          "field": "ratios[0].owner (bonusMagicResist)",
+          "why": "the source names bonusMagicResist and never says whose, and no other source states it"
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Braum/Stand Behind Me — leveling row \"Self Bonus Magic Resistance\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Braum/Stand%20Behind%20Me",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "self-bonus-magic-resistance",
+      "relation": {
+        "kind": "adds"
+      }
+    },
+    {
+      "champion": "Briar",
+      "slot": "R",
+      "abilityName": "Certain Death",
+      "label": "Life Steal",
+      "kind": "heal",
+      "activation": "conditional",
+      "condition": "Active; resistances \"equal to 20% AD\" for the duration",
+      "unit": "percent-of-damage-dealt",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          10,
+          15,
+          20
+        ]
+      },
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Briar/Certain Death — leveling row \"Life Steal\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Briar/Certain%20Death",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "Gwen",
+      "slot": "W",
+      "abilityName": "Hallowed Mist",
+      "label": "Bonus Resistances",
+      "kind": "resistance-grant",
+      "activation": "conditional",
+      "condition": "Active; \"While inside the mist\"",
+      "grantedStat": "both",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          22,
+          24,
+          26,
+          28,
+          30
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            7,
+            7,
+            7,
+            7,
+            7
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Gwen/Hallowed Mist — leveling row \"Bonus Resistances\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Gwen/Hallowed%20Mist",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "Hecarim",
+      "slot": "W",
+      "abilityName": "Spirit of Dread",
+      "label": "Bonus Resistances",
+      "kind": "resistance-grant",
+      "activation": "conditional",
+      "condition": "Active; \"While active\"",
+      "grantedStat": "both",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          5,
+          10,
+          15,
+          20,
+          25
+        ]
+      },
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Hecarim/Spirit of Dread — leveling row \"Bonus Resistances\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Hecarim/Spirit%20of%20Dread",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "Jax",
+      "slot": "R",
+      "abilityName": "Grandmaster-at-Arms",
+      "label": "Bonus Armor",
+      "kind": "resistance-grant",
+      "activation": "conditional",
+      "condition": "Active; \"If this hits a champion\", scaling with champions hit",
+      "grantedStat": "armor",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          45,
+          60,
+          75
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "bonusAD",
+          "scaling": "explicit",
+          "perRank": [
+            40,
+            40,
+            40
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Jax/Grandmaster-at-Arms — leveling row \"Bonus Armor\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Jax/Grandmaster-at-Arms",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "bonus-armor",
+      "relation": {
+        "kind": "adds"
+      }
+    },
+    {
+      "champion": "Jax",
+      "slot": "R",
+      "abilityName": "Grandmaster-at-Arms",
+      "label": "Bonus Magic Resistance",
+      "kind": "resistance-grant",
+      "activation": "conditional",
+      "condition": "Active; \"If this hits a champion\", scaling with champions hit",
+      "grantedStat": "magicResist",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          27,
+          36,
+          45
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "bonusAD",
+          "scaling": "explicit",
+          "perRank": [
+            24,
+            24,
+            24
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Jax/Grandmaster-at-Arms — leveling row \"Bonus Magic Resistance\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Jax/Grandmaster-at-Arms",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "bonus-magic-resistance",
+      "relation": {
+        "kind": "adds"
+      }
+    },
+    {
+      "champion": "Kennen",
+      "slot": "R",
+      "abilityName": "Slicing Maelstrom",
+      "label": "Bonus Resistances",
+      "kind": "resistance-grant",
+      "activation": "conditional",
+      "condition": "Active; \"for 3 seconds\"",
+      "grantedStat": "both",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          25,
+          50,
+          75
+        ]
+      },
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Kennen/Slicing Maelstrom — leveling row \"Bonus Resistances\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kennen/Slicing%20Maelstrom",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "Malphite",
+      "slot": "W",
+      "abilityName": "Thunderclap",
+      "label": "Bonus Armor",
+      "kind": "resistance-grant",
+      "activation": "conditional",
+      "condition": "Passive armor, \"tripled while Granite Shield is active\" — the tripling is conditional",
+      "grantedStat": "armor",
+      "ratios": [
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            10,
+            15,
+            20,
+            25,
+            30
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Malphite/Thunderclap — leveling row \"Bonus Armor\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Malphite/Thunderclap",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "Nasus",
+      "slot": "R",
+      "abilityName": "Fury of the Sands",
+      "label": "Bonus Resistances",
+      "kind": "resistance-grant",
+      "activation": "conditional",
+      "condition": "Active; \"for 15 seconds\"",
+      "grantedStat": "both",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          40,
+          55,
+          70
+        ]
+      },
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Nasus/Fury of the Sands — leveling row \"Bonus Resistances\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Nasus/Fury%20of%20the%20Sands",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "bonus-resistances"
+    },
+    {
+      "champion": "Nasus",
+      "slot": "R",
+      "abilityName": "Fury of the Sands",
+      "label": "Bonus Health",
+      "kind": "max-health-grant",
+      "activation": "conditional",
+      "condition": "Active; \"for 15 seconds\"",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          300,
+          450,
+          600
+        ]
+      },
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Nasus/Fury of the Sands — leveling row \"Bonus Health\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Nasus/Fury%20of%20the%20Sands",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "bonus-health"
+    },
+    {
+      "champion": "Olaf",
+      "slot": "R",
+      "abilityName": "Ragnarok",
+      "label": "Bonus Resistances",
+      "kind": "resistance-grant",
+      "activation": "conditional",
+      "condition": "Active; the resistances are the passive half but are lost while the active runs",
+      "grantedStat": "both",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          10,
+          15,
+          20
+        ]
+      },
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Olaf/Ragnarok — leveling row \"Bonus Resistances\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Olaf/Ragnarok",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "Orianna",
+      "slot": "E",
+      "abilityName": "Command: Protect",
+      "label": "Bonus Resistances",
+      "kind": "resistance-grant",
+      "activation": "conditional",
+      "condition": "The resistances hold only for the unit The Ball is attached to",
+      "grantedStat": "both",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          6,
+          12,
+          18,
+          24,
+          30
+        ]
+      },
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Orianna/Command: Protect — leveling row \"Bonus Resistances\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Orianna/Command%3A%20Protect",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "bonus-resistances"
+    },
+    {
+      "champion": "Orianna",
+      "slot": "E",
+      "abilityName": "Command: Protect",
+      "label": "Shield Strength",
+      "kind": "shield",
+      "activation": "conditional",
+      "condition": "The resistances hold only for the unit The Ball is attached to",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          55,
+          90,
+          125,
+          160,
+          195
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            45,
+            45,
+            45,
+            45,
+            45
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Orianna/Command: Protect — leveling row \"Shield Strength\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Orianna/Command%3A%20Protect",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "shield-strength"
+    },
+    {
+      "champion": "Pantheon",
+      "slot": "E",
+      "abilityName": "Aegis Assault",
+      "kind": "immunity",
+      "activation": "conditional",
+      "condition": "Active channel; invulnerable to damage from the target direction, resistances only \"after recasting\"",
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Pantheon/Aegis Assault — description prose (no amount is stated, and none exists)",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Pantheon/Aegis%20Assault",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "Rammus",
+      "slot": "W",
+      "abilityName": "Defensive Ball Curl",
+      "label": "Bonus Armor",
+      "kind": "resistance-grant",
+      "activation": "conditional",
+      "condition": "Active; \"for 7 seconds\"",
+      "grantedStat": "armor",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          27,
+          32,
+          37,
+          42,
+          47
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "armor",
+          "owner": "unresolved",
+          "scaling": "explicit",
+          "perRank": [
+            30,
+            37.5,
+            45,
+            52.5,
+            60
+          ]
+        }
+      ],
+      "unresolvable": [
+        {
+          "field": "ratios[0].owner (armor)",
+          "why": "the source names armor and never says whose, and no other source states it"
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Rammus/Defensive Ball Curl — leveling row \"Bonus Armor\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Rammus/Defensive%20Ball%20Curl",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "bonus-armor",
+      "relation": {
+        "kind": "adds"
+      }
+    },
+    {
+      "champion": "Rammus",
+      "slot": "W",
+      "abilityName": "Defensive Ball Curl",
+      "label": "Bonus Magic Resistance",
+      "kind": "resistance-grant",
+      "activation": "conditional",
+      "condition": "Active; \"for 7 seconds\"",
+      "grantedStat": "magicResist",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          20,
+          25,
+          30,
+          35,
+          40
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "magicResist",
+          "owner": "unresolved",
+          "scaling": "explicit",
+          "perRank": [
+            30,
+            37.5,
+            45,
+            52.5,
+            60
+          ]
+        }
+      ],
+      "unresolvable": [
+        {
+          "field": "ratios[0].owner (magicResist)",
+          "why": "the source names magicResist and never says whose, and no other source states it"
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Rammus/Defensive Ball Curl — leveling row \"Bonus Magic Resistance\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Rammus/Defensive%20Ball%20Curl",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "bonus-magic-resistance",
+      "relation": {
+        "kind": "adds"
+      }
+    },
+    {
+      "champion": "Taric",
+      "slot": "W",
+      "abilityName": "Bastion",
+      "label": "Bonus Armor",
+      "kind": "resistance-grant",
+      "activation": "conditional",
+      "condition": "Passive armor to self, and to the ally only \"while the tether persists\"",
+      "grantedStat": "armor",
+      "ratios": [
+        {
+          "stat": "armor",
+          "owner": "caster",
+          "scaling": "explicit",
+          "perRank": [
+            6,
+            7,
+            8,
+            9,
+            10
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Taric/Bastion — leveling row \"Bonus Armor\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Taric/Bastion",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "Trundle",
+      "slot": "R",
+      "abilityName": "Subjugate",
+      "label": "Total Healing",
+      "kind": "heal",
+      "activation": "conditional",
+      "condition": "Active; steals resistances from the target, so it depends on the target",
+      "overTime": {
+        "sourceSays": "Half of the drain's total damage, healing, and resistances reduction is applied on-cast, while the other half is applied every second over the next 4 seconds."
+      },
+      "ratios": [
+        {
+          "stat": "maxHP",
+          "owner": "target",
+          "multipliers": [
+            {
+              "per": "AP",
+              "per100": {
+                "scaling": "linear",
+                "from": 2,
+                "to": 2
+              }
+            }
+          ],
+          "scaling": "explicit",
+          "perRank": [
+            20,
+            25,
+            30
+          ]
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Trundle/Subjugate — leveling row \"Total Healing\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Trundle/Subjugate",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "Annie",
+      "slot": "E",
+      "abilityName": "Molten Shield",
+      "label": "Shield Strength",
+      "kind": "shield",
+      "activation": "conditional",
+      "condition": "Active; \"for 3 seconds\"",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          60,
+          95,
+          130,
+          165,
+          200
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            40,
+            40,
+            40,
+            40,
+            40
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Annie/Molten Shield — leveling row \"Shield Strength\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Annie/Molten%20Shield",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "Azir",
+      "slot": "E",
+      "abilityName": "Shifting Sands",
+      "label": "Shield Strength",
+      "kind": "shield",
+      "activation": "conditional",
+      "condition": "Active; \"for 1.5 seconds\"",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          70,
+          110,
+          150,
+          190,
+          230
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            60,
+            60,
+            60,
+            60,
+            60
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Azir/Shifting Sands — leveling row \"Shield Strength\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Azir/Shifting%20Sands",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "Diana",
+      "slot": "W",
+      "abilityName": "Pale Cascade",
+      "label": "Shield Strength",
+      "kind": "shield",
+      "activation": "conditional",
+      "condition": "Active; doubled \"if all three spheres detonate\"",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          45,
+          60,
+          75,
+          90,
+          105
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            30,
+            30,
+            30,
+            30,
+            30
+          ]
+        },
+        {
+          "stat": "bonusHP",
+          "owner": "unresolved",
+          "scaling": "explicit",
+          "perRank": [
+            11,
+            11,
+            11,
+            11,
+            11
+          ]
+        }
+      ],
+      "unresolvable": [
+        {
+          "field": "ratios[1].owner (bonusHP)",
+          "why": "the source names bonusHP and never says whose, and no other source states it"
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Diana/Pale Cascade — leveling row \"Shield Strength\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Diana/Pale%20Cascade",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "shield-strength",
+      "relation": {
+        "kind": "adds"
+      }
+    },
+    {
+      "champion": "Diana",
+      "slot": "W",
+      "abilityName": "Pale Cascade",
+      "label": "Maximum Shield Strength",
+      "kind": "shield",
+      "activation": "conditional",
+      "condition": "Active; doubled \"if all three spheres detonate\"",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          90,
+          120,
+          150,
+          180,
+          210
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            60,
+            60,
+            60,
+            60,
+            60
+          ]
+        },
+        {
+          "stat": "bonusHP",
+          "owner": "unresolved",
+          "scaling": "explicit",
+          "perRank": [
+            22,
+            22,
+            22,
+            22,
+            22
+          ]
+        }
+      ],
+      "unresolvable": [
+        {
+          "field": "ratios[1].owner (bonusHP)",
+          "why": "the source names bonusHP and never says whose, and no other source states it"
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Diana/Pale Cascade — leveling row \"Maximum Shield Strength\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Diana/Pale%20Cascade",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "maximum-shield-strength",
+      "relation": {
+        "kind": "alternativeTo",
+        "componentId": "shield-strength"
+      }
+    },
+    {
+      "champion": "Ekko",
+      "slot": "W",
+      "abilityName": "Parallel Convergence",
+      "label": "Shield Strength",
+      "kind": "shield",
+      "activation": "conditional",
+      "condition": "\"If Ekko enters the sphere before it expires\"",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          100,
+          120,
+          140,
+          160,
+          180
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            150,
+            150,
+            150,
+            150,
+            150
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Ekko/Parallel Convergence — leveling row \"Shield Strength\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Ekko/Parallel%20Convergence",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "Hwei",
+      "slot": "W",
+      "abilityName": "Pool of Reflection",
+      "label": "Initial Shield Strength",
+      "kind": "shield",
+      "activation": "conditional",
+      "condition": "Active; \"while within the area\"; \"reduced to 85% for allies\"",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          50,
+          70,
+          90,
+          110,
+          130
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            30,
+            30,
+            30,
+            30,
+            30
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Hwei/Pool of Reflection — leveling row \"Initial Shield Strength\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Hwei/Pool%20of%20Reflection",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "initial-shield-strength",
+      "relation": {
+        "kind": "adds"
+      }
+    },
+    {
+      "champion": "Hwei",
+      "slot": "W",
+      "abilityName": "Pool of Reflection",
+      "label": "Total Maximum Shield",
+      "kind": "shield",
+      "activation": "conditional",
+      "condition": "Active; \"while within the area\"; \"reduced to 85% for allies\"",
+      "overTime": {
+        "sourceSays": "The shield refreshes and increases in strength by an amount every 0.25 over the duration while they remain in the area."
+      },
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          100,
+          140,
+          180,
+          220,
+          260
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            60,
+            60,
+            60,
+            60,
+            60
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Hwei/Pool of Reflection — leveling row \"Total Maximum Shield\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Hwei/Pool%20of%20Reflection",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "total-maximum-shield",
+      "relation": {
+        "kind": "alternativeTo",
+        "componentId": "initial-shield-strength"
+      }
+    },
+    {
+      "champion": "Ivern",
+      "slot": "E",
+      "abilityName": "Triggerseed",
+      "label": "Shield Strength",
+      "kind": "shield",
+      "activation": "conditional",
+      "condition": "Active; \"for 2 seconds\"",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          75,
+          115,
+          155,
+          195,
+          235
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            50,
+            50,
+            50,
+            50,
+            50
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Ivern/Triggerseed — leveling row \"Shield Strength\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Ivern/Triggerseed",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "Janna",
+      "slot": "E",
+      "abilityName": "Eye of the Storm",
+      "label": "Shield Strength",
+      "kind": "shield",
+      "activation": "conditional",
+      "condition": "Active; \"for 4 seconds\"",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          80,
+          120,
+          160,
+          200,
+          240
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            55,
+            55,
+            55,
+            55,
+            55
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Janna/Eye of the Storm — leveling row \"Shield Strength\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Janna/Eye%20of%20the%20Storm",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "Jarvan IV",
+      "slot": "W",
+      "abilityName": "Golden Aegis",
+      "label": "Shield Strength",
+      "kind": "shield",
+      "activation": "conditional",
+      "condition": "Active; \"increased by 1.3% of his maximum health for each enemy champion hit\"",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          60,
+          80,
+          100,
+          120,
+          140
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "bonusAD",
+          "scaling": "explicit",
+          "perRank": [
+            70,
+            70,
+            70,
+            70,
+            70
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Jarvan IV/Golden Aegis — leveling row \"Shield Strength\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Jarvan%20IV/Golden%20Aegis",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "K'Sante",
+      "slot": "E",
+      "abilityName": "Footwork",
+      "label": "Shield Strength",
+      "kind": "shield",
+      "activation": "conditional",
+      "condition": "Active; \"for 2 seconds\"; ally receives it only \"if the target ally is a champion\"",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          70,
+          112.5,
+          155,
+          197.5,
+          240
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "bonusHP",
+          "owner": "unresolved",
+          "scaling": "explicit",
+          "perRank": [
+            13.5,
+            13.5,
+            13.5,
+            13.5,
+            13.5
+          ]
+        }
+      ],
+      "unresolvable": [
+        {
+          "field": "ratios[0].owner (bonusHP)",
+          "why": "the source names bonusHP and never says whose, and no other source states it"
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data K'Sante/Footwork — leveling row \"Shield Strength\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_K'Sante/Footwork",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "Kai'Sa",
+      "slot": "R",
+      "abilityName": "Killer Instinct",
+      "label": "Shield Strength",
+      "kind": "shield",
+      "activation": "conditional",
+      "condition": "Active; requires a Plasma-affected enemy within 4 seconds",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          100,
+          150,
+          200
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "totalAD",
+          "scaling": "explicit",
+          "perRank": [
+            90,
+            135,
+            180
+          ]
+        },
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            120,
+            120,
+            120
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Kai'Sa/Killer Instinct — leveling row \"Shield Strength\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kai'Sa/Killer%20Instinct",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "Karma",
+      "slot": "E",
+      "abilityName": "Inspire",
+      "label": "Shield Strength",
+      "kind": "shield",
+      "activation": "conditional",
+      "condition": "Active; \"for 2.5 seconds\"",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          80,
+          130,
+          180,
+          230,
+          280
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            60,
+            60,
+            60,
+            60,
+            60
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Karma/Inspire — leveling row \"Shield Strength\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Karma/Inspire",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "Kassadin",
+      "slot": "Q",
+      "abilityName": "Null Sphere",
+      "label": "Magic Shield Strength",
+      "kind": "shield",
+      "activation": "conditional",
+      "condition": "Active; magic-only shield \"for 1.5 seconds\"",
+      "appliesToDamageType": "magic",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          80,
+          110,
+          140,
+          170,
+          200
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            30,
+            30,
+            30,
+            30,
+            30
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Kassadin/Null Sphere — leveling row \"Magic Shield Strength\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kassadin/Null%20Sphere",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "Lee Sin",
+      "slot": "W",
+      "abilityName": "Safeguard",
+      "label": "Shield Strength",
+      "kind": "shield",
+      "activation": "conditional",
+      "condition": "Active; \"for 2 seconds\"",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          60,
+          105,
+          150,
+          195,
+          240
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            80,
+            80,
+            80,
+            80,
+            80
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Lee Sin/Safeguard — leveling row \"Shield Strength\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lee%20Sin/Safeguard",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "Lulu",
+      "slot": "E",
+      "abilityName": "Help, Pix!",
+      "label": "Shield Strength",
+      "kind": "shield",
+      "activation": "conditional",
+      "condition": "Active; \"If the target is a champion\"",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          70,
+          110,
+          150,
+          190,
+          230
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            50,
+            50,
+            50,
+            50,
+            50
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Lulu/Help, Pix! — leveling row \"Shield Strength\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lulu/Help%2C%20Pix!",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "Lux",
+      "slot": "W",
+      "abilityName": "Prismatic Barrier",
+      "label": "Shield Strength",
+      "kind": "shield",
+      "activation": "conditional",
+      "condition": "Active; \"can stack up to 2 times\" — out and back",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          40,
+          55,
+          70,
+          85,
+          100
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            40,
+            40,
+            40,
+            40,
+            40
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Lux/Prismatic Barrier — leveling row \"Shield Strength\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Prismatic%20Barrier",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "shield-strength",
+      "relation": {
+        "kind": "adds"
+      }
+    },
+    {
+      "champion": "Lux",
+      "slot": "W",
+      "abilityName": "Prismatic Barrier",
+      "label": "Maximum Shield",
+      "kind": "shield",
+      "activation": "conditional",
+      "condition": "Active; \"can stack up to 2 times\" — out and back",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          80,
+          110,
+          140,
+          170,
+          200
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            80,
+            80,
+            80,
+            80,
+            80
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Lux/Prismatic Barrier — leveling row \"Maximum Shield\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Prismatic%20Barrier",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "maximum-shield",
+      "relation": {
+        "kind": "alternativeTo",
+        "componentId": "shield-strength"
+      }
+    },
+    {
+      "champion": "Mel",
+      "slot": "W",
+      "abilityName": "Rebuttal",
+      "label": "Shield",
+      "kind": "shield",
+      "activation": "conditional",
+      "condition": "Active; \"for 0.75 seconds\"; also destroys hostile projectiles that collide",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          80,
+          110,
+          140,
+          170,
+          200
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            70,
+            70,
+            70,
+            70,
+            70
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Mel/Rebuttal — leveling row \"Shield\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Mel/Rebuttal",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "shield"
+    },
+    {
+      "champion": "Mel",
+      "slot": "W",
+      "abilityName": "Rebuttal",
+      "kind": "spell-shield",
+      "activation": "conditional",
+      "condition": "Active; \"for 0.75 seconds\"; also destroys hostile projectiles that collide",
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Mel/Rebuttal — description prose (no amount is stated, and none exists)",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Mel/Rebuttal",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "spell-shield"
+    },
+    {
+      "champion": "Milio",
+      "slot": "E",
+      "abilityName": "Warm Hugs",
+      "label": "Shield Strength",
+      "kind": "shield",
+      "activation": "conditional",
+      "condition": "Active; \"for 2.5 seconds\"",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          45,
+          75,
+          105,
+          135,
+          165
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            45,
+            45,
+            45,
+            45,
+            45
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Milio/Warm Hugs — leveling row \"Shield Strength\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Milio/Warm%20Hugs",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "Morgana",
+      "slot": "E",
+      "abilityName": "Black Shield",
+      "label": "Magic Shield Strength",
+      "kind": "shield",
+      "activation": "conditional",
+      "condition": "Active; magic-only; \"for 5 seconds\"",
+      "appliesToDamageType": "magic",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          100,
+          155,
+          210,
+          265,
+          320
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            70,
+            70,
+            70,
+            70,
+            70
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Morgana/Black Shield — leveling row \"Magic Shield Strength\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Morgana/Black%20Shield",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "Naafiri",
+      "slot": "R",
+      "abilityName": "Hounds' Pursuit",
+      "label": "Shield",
+      "kind": "shield",
+      "activation": "conditional",
+      "condition": "Active; \"for 3 seconds\"",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          100,
+          150,
+          200
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "bonusAD",
+          "scaling": "explicit",
+          "perRank": [
+            150,
+            150,
+            150
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Naafiri/Hounds' Pursuit — leveling row \"Shield\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Naafiri/Hounds'%20Pursuit",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "Nautilus",
+      "slot": "W",
+      "abilityName": "Titan's Wrath",
+      "label": "Shield Strength",
+      "kind": "shield",
+      "activation": "conditional",
+      "condition": "Active; \"for 6 seconds\"",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          50,
+          60,
+          70,
+          80,
+          90
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "maxHP",
+          "owner": "unresolved",
+          "scaling": "explicit",
+          "perRank": [
+            8,
+            9,
+            10,
+            11,
+            12
+          ]
+        }
+      ],
+      "unresolvable": [
+        {
+          "field": "ratios[0].owner (maxHP)",
+          "why": "the source names maxHP and never says whose, and no other source states it"
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Nautilus/Titan's Wrath — leveling row \"Shield Strength\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Nautilus/Titan's%20Wrath",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "Nunu & Willump",
+      "slot": "R",
+      "abilityName": "Absolute Zero",
+      "label": "Shield Strength",
+      "kind": "shield",
+      "activation": "conditional",
+      "condition": "Active channel; \"any of the duo's remaining shield will decay over 3 seconds\"",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          65,
+          75,
+          85
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            150,
+            150,
+            150
+          ]
+        },
+        {
+          "stat": "bonusHP",
+          "owner": "unresolved",
+          "scaling": "explicit",
+          "perRank": [
+            30,
+            40,
+            50
+          ]
+        }
+      ],
+      "unresolvable": [
+        {
+          "field": "ratios[1].owner (bonusHP)",
+          "why": "the source names bonusHP and never says whose, and no other source states it"
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Nunu & Willump/Absolute Zero — leveling row \"Shield Strength\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Nunu%20%26%20Willump/Absolute%20Zero",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "Olaf",
+      "slot": "W",
+      "abilityName": "Tough It Out",
+      "label": "Shield Strength",
+      "kind": "shield",
+      "activation": "conditional",
+      "condition": "Active; \"capped at 70% missing health\" — depends on current health",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          10,
+          40,
+          70,
+          100,
+          130
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "missingHP",
+          "owner": "unresolved",
+          "scaling": "explicit",
+          "perRank": [
+            17.5,
+            17.5,
+            17.5,
+            17.5,
+            17.5
+          ]
+        }
+      ],
+      "unresolvable": [
+        {
+          "field": "ratios[0].owner (missingHP)",
+          "why": "the source names missingHP and never says whose, and no other source states it"
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Olaf/Tough It Out — leveling row \"Shield Strength\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Olaf/Tough%20It%20Out",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "Rakan",
+      "slot": "E",
+      "abilityName": "Battle Dance",
+      "label": "Shield Strength",
+      "kind": "shield",
+      "activation": "conditional",
+      "condition": "Active; \"for 3 seconds\"",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          50,
+          75,
+          100,
+          125,
+          150
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            70,
+            70,
+            70,
+            70,
+            70
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Rakan/Battle Dance — leveling row \"Shield Strength\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Rakan/Battle%20Dance",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "Rell",
+      "slot": "W",
+      "abilityName": "Ferromancy: Crash Down",
+      "label": "Shield Strength",
+      "kind": "shield",
+      "activation": "conditional",
+      "condition": "Active; \"lasts until destroyed or casting Ferromancy\"",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          20,
+          40,
+          60,
+          80,
+          100
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "maxHP",
+          "owner": "unresolved",
+          "scaling": "explicit",
+          "perRank": [
+            11,
+            11,
+            11,
+            11,
+            11
+          ]
+        }
+      ],
+      "unresolvable": [
+        {
+          "field": "ratios[0].owner (maxHP)",
+          "why": "the source names maxHP and never says whose, and no other source states it"
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Rell/Ferromancy: Crash Down — leveling row \"Shield Strength\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Rell/Ferromancy%3A%20Crash%20Down",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "Renata Glasc",
+      "slot": "E",
+      "abilityName": "Loyalty Program",
+      "label": "Shield Strength",
+      "kind": "shield",
+      "activation": "conditional",
+      "condition": "Active; \"for 3 seconds\"",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          50,
+          65,
+          80,
+          95,
+          110
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            50,
+            50,
+            50,
+            50,
+            50
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Renata Glasc/Loyalty Program — leveling row \"Shield Strength\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Renata%20Glasc/Loyalty%20Program",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "Riven",
+      "slot": "E",
+      "abilityName": "Valor",
+      "label": "Shield Strength",
+      "kind": "shield",
+      "activation": "conditional",
+      "condition": "Active; \"for 1.5 seconds\"",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          70,
+          95,
+          120,
+          145,
+          170
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "bonusAD",
+          "scaling": "explicit",
+          "perRank": [
+            110,
+            110,
+            110,
+            110,
+            110
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Riven/Valor — leveling row \"Shield Strength\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Riven/Valor",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "Rumble",
+      "slot": "W",
+      "abilityName": "Scrap Shield",
+      "label": "Shield Strength",
+      "kind": "shield",
+      "activation": "conditional",
+      "condition": "Active; enhanced by 50% in the Danger Zone heat state",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          25,
+          55,
+          85,
+          115,
+          145
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            30,
+            30,
+            30,
+            30,
+            30
+          ]
+        },
+        {
+          "stat": "maxHP",
+          "owner": "unresolved",
+          "scaling": "explicit",
+          "perRank": [
+            4,
+            4,
+            4,
+            4,
+            4
+          ]
+        }
+      ],
+      "unresolvable": [
+        {
+          "field": "ratios[1].owner (maxHP)",
+          "why": "the source names maxHP and never says whose, and no other source states it"
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Rumble/Scrap Shield — leveling row \"Shield Strength\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Rumble/Scrap%20Shield",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "shield-strength",
+      "relation": {
+        "kind": "adds"
+      }
+    },
+    {
+      "champion": "Rumble",
+      "slot": "W",
+      "abilityName": "Scrap Shield",
+      "label": "Enhanced Shield Strength",
+      "kind": "shield",
+      "activation": "conditional",
+      "condition": "Active; enhanced by 50% in the Danger Zone heat state",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          37.5,
+          82.5,
+          127.5,
+          172.5,
+          217.5
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            45,
+            45,
+            45,
+            45,
+            45
+          ]
+        },
+        {
+          "stat": "maxHP",
+          "owner": "unresolved",
+          "scaling": "explicit",
+          "perRank": [
+            6,
+            6,
+            6,
+            6,
+            6
+          ]
+        }
+      ],
+      "unresolvable": [
+        {
+          "field": "ratios[1].owner (maxHP)",
+          "why": "the source names maxHP and never says whose, and no other source states it"
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Rumble/Scrap Shield — leveling row \"Enhanced Shield Strength\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Rumble/Scrap%20Shield",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "enhanced-shield-strength",
+      "relation": {
+        "kind": "alternativeTo",
+        "componentId": "shield-strength"
+      }
+    },
+    {
+      "champion": "Seraphine",
+      "slot": "W",
+      "abilityName": "Surround Sound",
+      "label": "Shield Strength",
+      "kind": "shield",
+      "activation": "conditional",
+      "condition": "Active; the heal fires only \"If Seraphine already had a shield at the time of cast\"",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          60,
+          80,
+          100,
+          120,
+          140
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            20,
+            20,
+            20,
+            20,
+            20
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Seraphine/Surround Sound — leveling row \"Shield Strength\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Seraphine/Surround%20Sound",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "shield-strength"
+    },
+    {
+      "champion": "Seraphine",
+      "slot": "W",
+      "abilityName": "Surround Sound",
+      "label": "Heal",
+      "kind": "heal",
+      "activation": "conditional",
+      "condition": "Active; the heal fires only \"If Seraphine already had a shield at the time of cast\"",
+      "ratios": [
+        {
+          "stat": "missingHP",
+          "owner": "target",
+          "scaling": "explicit",
+          "perRank": [
+            8,
+            10,
+            12,
+            14,
+            16
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Seraphine/Surround Sound — leveling row \"Heal\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Seraphine/Surround%20Sound",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "heal"
+    },
+    {
+      "champion": "Shyvana",
+      "slot": "W",
+      "abilityName": "Inferno Aegis",
+      "label": "Shield Strength",
+      "kind": "shield",
+      "activation": "conditional",
+      "condition": "Active; \"increased by 30% for every nearby enemy champion\"",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          60,
+          80,
+          100,
+          120,
+          140
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "bonusHP",
+          "owner": "unresolved",
+          "scaling": "explicit",
+          "perRank": [
+            12,
+            12,
+            12,
+            12,
+            12
+          ]
+        }
+      ],
+      "unresolvable": [
+        {
+          "field": "ratios[0].owner (bonusHP)",
+          "why": "the source names bonusHP and never says whose, and no other source states it"
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Shyvana/Inferno Aegis — leveling row \"Shield Strength\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Shyvana/Inferno%20Aegis",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "Sion",
+      "slot": "W",
+      "abilityName": "Soul Furnace",
+      "label": "Shield Strength",
+      "kind": "shield",
+      "activation": "conditional",
+      "condition": "Active shield; the bonus health is a permanent kill-stack accumulation",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          60,
+          75,
+          90,
+          105,
+          120
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            40,
+            40,
+            40,
+            40,
+            40
+          ]
+        },
+        {
+          "stat": "maxHP",
+          "owner": "unresolved",
+          "scaling": "explicit",
+          "perRank": [
+            8,
+            10,
+            12,
+            14,
+            16
+          ]
+        }
+      ],
+      "unresolvable": [
+        {
+          "field": "ratios[1].owner (maxHP)",
+          "why": "the source names maxHP and never says whose, and no other source states it"
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Sion/Soul Furnace — leveling row \"Shield Strength\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Sion/Soul%20Furnace",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "Sona",
+      "slot": "W",
+      "abilityName": "Aria of Perseverance",
+      "label": "Shield Strength",
+      "kind": "shield",
+      "activation": "conditional",
+      "condition": "Active; \"for 1.5 seconds\"",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          25,
+          45,
+          65,
+          85,
+          105
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            25,
+            25,
+            25,
+            25,
+            25
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Sona/Aria of Perseverance — leveling row \"Shield Strength\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Sona/Aria%20of%20Perseverance",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "shield-strength"
+    },
+    {
+      "champion": "Sona",
+      "slot": "W",
+      "abilityName": "Aria of Perseverance",
+      "label": "Heal",
+      "kind": "heal",
+      "activation": "conditional",
+      "condition": "Active; \"for 1.5 seconds\"",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          30,
+          45,
+          60,
+          75,
+          90
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            30,
+            30,
+            30,
+            30,
+            30
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Sona/Aria of Perseverance — leveling row \"Heal\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Sona/Aria%20of%20Perseverance",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "heal"
+    },
+    {
+      "champion": "Urgot",
+      "slot": "E",
+      "abilityName": "Disdain",
+      "label": "Shield Strength",
+      "kind": "shield",
+      "activation": "conditional",
+      "condition": "Active; \"for 4 seconds\"",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          55,
+          75,
+          95,
+          115,
+          135
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "bonusAD",
+          "scaling": "explicit",
+          "perRank": [
+            135,
+            135,
+            135,
+            135,
+            135
+          ]
+        },
+        {
+          "stat": "bonusHP",
+          "owner": "unresolved",
+          "scaling": "explicit",
+          "perRank": [
+            13.5,
+            13.5,
+            13.5,
+            13.5,
+            13.5
+          ]
+        }
+      ],
+      "unresolvable": [
+        {
+          "field": "ratios[1].owner (bonusHP)",
+          "why": "the source names bonusHP and never says whose, and no other source states it"
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Urgot/Disdain — leveling row \"Shield Strength\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Urgot/Disdain",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "Vex",
+      "slot": "W",
+      "abilityName": "Personal Space",
+      "label": "Shield Strength",
+      "kind": "shield",
+      "activation": "conditional",
+      "condition": "Active; \"for 2.5 seconds\"",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          50,
+          75,
+          100,
+          125,
+          150
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            75,
+            75,
+            75,
+            75,
+            75
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Vex/Personal Space — leveling row \"Shield Strength\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Vex/Personal%20Space",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "Yuumi",
+      "slot": "E",
+      "abilityName": "Zoomies",
+      "label": "Shield",
+      "kind": "shield",
+      "activation": "conditional",
+      "condition": "Active; \"for 3 seconds\"",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          65,
+          90,
+          115,
+          140,
+          165
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            40,
+            40,
+            40,
+            40,
+            40
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Yuumi/Zoomies — leveling row \"Shield\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Yuumi/Zoomies",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "Nocturne",
+      "slot": "W",
+      "abilityName": "Shroud of Darkness",
+      "kind": "spell-shield",
+      "activation": "conditional",
+      "condition": "Active; \"for 1.5 seconds\"",
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Nocturne/Shroud of Darkness — description prose (no amount is stated, and none exists)",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Nocturne/Shroud%20of%20Darkness",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "Sivir",
+      "slot": "E",
+      "abilityName": "Spell Shield",
+      "kind": "spell-shield",
+      "activation": "conditional",
+      "condition": "Active; \"for 1.5 seconds\"; the heal fires only \"Upon successfully blocking a hostile effect\"",
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Sivir/Spell Shield — description prose (no amount is stated, and none exists)",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Sivir/Spell%20Shield",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "spell-shield"
+    },
+    {
+      "champion": "Sivir",
+      "slot": "E",
+      "abilityName": "Spell Shield",
+      "label": "Heal",
+      "kind": "heal",
+      "activation": "conditional",
+      "condition": "Active; \"for 1.5 seconds\"; the heal fires only \"Upon successfully blocking a hostile effect\"",
+      "ratios": [
+        {
+          "stat": "totalAD",
+          "scaling": "explicit",
+          "perRank": [
+            60,
+            65,
+            70,
+            75,
+            80
+          ]
+        },
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            50,
+            50,
+            50,
+            50,
+            50
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Sivir/Spell Shield — leveling row \"Heal\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Sivir/Spell%20Shield",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "heal"
+    },
+    {
+      "champion": "Bard",
+      "slot": "R",
+      "abilityName": "Tempered Fate",
+      "kind": "immunity",
+      "activation": "conditional",
+      "condition": "Active; stasis \"for 2.5 seconds\", applied to ALL units including enemies",
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Bard/Tempered Fate — description prose (no amount is stated, and none exists)",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Bard/Tempered%20Fate",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "Ekko",
+      "slot": "R",
+      "abilityName": "Chronobreak",
+      "kind": "immunity",
+      "activation": "conditional",
+      "condition": "Active; \"enters stasis at the start of the cast time\"",
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Ekko/Chronobreak — description prose (no amount is stated, and none exists)",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Ekko/Chronobreak",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "immunity"
+    },
+    {
+      "champion": "Ekko",
+      "slot": "R",
+      "abilityName": "Chronobreak",
+      "label": "Minimum Heal",
+      "kind": "heal",
+      "activation": "conditional",
+      "condition": "Active; \"enters stasis at the start of the cast time\"",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          100,
+          150,
+          200
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            60,
+            60,
+            60
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Ekko/Chronobreak — leveling row \"Minimum Heal\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Ekko/Chronobreak",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "minimum-heal",
+      "relation": {
+        "kind": "adds"
+      }
+    },
+    {
+      "champion": "Ekko",
+      "slot": "R",
+      "abilityName": "Chronobreak",
+      "label": "Maximum Heal",
+      "kind": "heal",
+      "activation": "conditional",
+      "condition": "Active; \"enters stasis at the start of the cast time\"",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          400,
+          600,
+          800
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            240,
+            240,
+            240
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Ekko/Chronobreak — leveling row \"Maximum Heal\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Ekko/Chronobreak",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "maximum-heal",
+      "relation": {
+        "kind": "alternativeTo",
+        "componentId": "minimum-heal"
+      }
+    },
+    {
+      "champion": "Karthus",
+      "slot": "P",
+      "abilityName": "Death Defied",
+      "kind": "immunity",
+      "activation": "conditional",
+      "condition": "\"upon taking fatal damage\"; \"prevents all incoming damage\" only in that state",
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Karthus/Death Defied — description prose (no amount is stated, and none exists)",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Karthus/Death%20Defied",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "Kayle",
+      "slot": "R",
+      "abilityName": "Divine Judgment",
+      "kind": "immunity",
+      "activation": "conditional",
+      "condition": "Active; \"invulnerability for 2.5 seconds\", self or ally",
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Kayle/Divine Judgment — description prose (no amount is stated, and none exists)",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kayle/Divine%20Judgment",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "Kindred",
+      "slot": "R",
+      "abilityName": "Lamb's Respite",
+      "kind": "immunity",
+      "activation": "conditional",
+      "condition": "Active zone; invulnerable only on reaching the 10% maximum-health threshold",
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Kindred/Lamb's Respite — description prose (no amount is stated, and none exists)",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kindred/Lamb's%20Respite",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "immunity"
+    },
+    {
+      "champion": "Kindred",
+      "slot": "R",
+      "abilityName": "Lamb's Respite",
+      "label": "Heal",
+      "kind": "heal",
+      "activation": "conditional",
+      "condition": "Active zone; invulnerable only on reaching the 10% maximum-health threshold",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          225,
+          300,
+          375
+        ]
+      },
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Kindred/Lamb's Respite — leveling row \"Heal\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kindred/Lamb's%20Respite",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "heal"
+    },
+    {
+      "champion": "Kog'Maw",
+      "slot": "P",
+      "abilityName": "Icathian Surprise",
+      "kind": "immunity",
+      "activation": "conditional",
+      "condition": "On death only; \"becomes invulnerable, untargetable\"",
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Kog'Maw/Icathian Surprise — description prose (no amount is stated, and none exists)",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kog'Maw/Icathian%20Surprise",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "Lissandra",
+      "slot": "R",
+      "abilityName": "Frozen Tomb",
+      "kind": "immunity",
+      "activation": "conditional",
+      "condition": "Self-cast Active; \"entering stasis for 2.5 seconds\"",
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Lissandra/Frozen Tomb — description prose (no amount is stated, and none exists)",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lissandra/Frozen%20Tomb",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "immunity"
+    },
+    {
+      "champion": "Lissandra",
+      "slot": "R",
+      "abilityName": "Frozen Tomb",
+      "label": "Minimum Heal per Tick",
+      "kind": "heal",
+      "activation": "conditional",
+      "condition": "Self-cast Active; \"entering stasis for 2.5 seconds\"",
+      "overTime": {
+        "sourceSays": "Lissandra instantly entombs herself in ice, entering stasis for 2.5 seconds and healing herself every 0.25 seconds over the duration."
+      },
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          10,
+          15,
+          20
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            5.5,
+            5.5,
+            5.5
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Lissandra/Frozen Tomb — leveling row \"Minimum Heal per Tick\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lissandra/Frozen%20Tomb",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "minimum-heal-per-tick",
+      "relation": {
+        "kind": "adds"
+      }
+    },
+    {
+      "champion": "Lissandra",
+      "slot": "R",
+      "abilityName": "Frozen Tomb",
+      "label": "Maximum Heal per Tick",
+      "kind": "heal",
+      "activation": "conditional",
+      "condition": "Self-cast Active; \"entering stasis for 2.5 seconds\"",
+      "overTime": {
+        "sourceSays": "Lissandra instantly entombs herself in ice, entering stasis for 2.5 seconds and healing herself every 0.25 seconds over the duration."
+      },
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          20,
+          30,
+          40
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            11,
+            11,
+            11
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Lissandra/Frozen Tomb — leveling row \"Maximum Heal per Tick\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lissandra/Frozen%20Tomb",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "maximum-heal-per-tick",
+      "relation": {
+        "kind": "alternativeTo",
+        "componentId": "minimum-heal-per-tick"
+      }
+    },
+    {
+      "champion": "Lissandra",
+      "slot": "R",
+      "abilityName": "Frozen Tomb",
+      "label": "Minimum Total Heal",
+      "kind": "heal",
+      "activation": "conditional",
+      "condition": "Self-cast Active; \"entering stasis for 2.5 seconds\"",
+      "overTime": {
+        "sourceSays": "Lissandra instantly entombs herself in ice, entering stasis for 2.5 seconds and healing herself every 0.25 seconds over the duration."
+      },
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          100,
+          150,
+          200
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            55,
+            55,
+            55
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Lissandra/Frozen Tomb — leveling row \"Minimum Total Heal\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lissandra/Frozen%20Tomb",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "minimum-total-heal",
+      "relation": {
+        "kind": "alternativeTo",
+        "componentId": "minimum-heal-per-tick"
+      }
+    },
+    {
+      "champion": "Lissandra",
+      "slot": "R",
+      "abilityName": "Frozen Tomb",
+      "label": "Maximum Total Heal",
+      "kind": "heal",
+      "activation": "conditional",
+      "condition": "Self-cast Active; \"entering stasis for 2.5 seconds\"",
+      "overTime": {
+        "sourceSays": "Lissandra instantly entombs herself in ice, entering stasis for 2.5 seconds and healing herself every 0.25 seconds over the duration."
+      },
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          200,
+          300,
+          400
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            110,
+            110,
+            110
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Lissandra/Frozen Tomb — leveling row \"Maximum Total Heal\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lissandra/Frozen%20Tomb",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "maximum-total-heal",
+      "relation": {
+        "kind": "alternativeTo",
+        "componentId": "minimum-heal-per-tick"
+      }
+    },
+    {
+      "champion": "Sion",
+      "slot": "P",
+      "abilityName": "Glory in Death",
+      "kind": "immunity",
+      "activation": "conditional",
+      "condition": "\"Upon taking fatal damage\"; stasis 1.5s, then a health-draining revived state",
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Sion/Glory in Death — description prose (no amount is stated, and none exists)",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Sion/Glory%20in%20Death",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "Taric",
+      "slot": "R",
+      "abilityName": "Cosmic Radiance",
+      "kind": "immunity",
+      "activation": "conditional",
+      "condition": "Active; \"become invulnerable for 2.5 seconds\" after a delay",
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Taric/Cosmic Radiance — description prose (no amount is stated, and none exists)",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Taric/Cosmic%20Radiance",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "Xin Zhao",
+      "slot": "R",
+      "abilityName": "Crescent Guard",
+      "kind": "immunity",
+      "activation": "not-stated",
+      "condition": "\"invulnerable against enemy champions far away from him\" — the condition is a DISTANCE, and the engine models no positions. The source states the condition; this project cannot represent it",
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Xin Zhao/Crescent Guard — description prose (no amount is stated, and none exists)",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Xin%20Zhao/Crescent%20Guard",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "Zaahen",
+      "slot": "P",
+      "abilityName": "Cultivation of War",
+      "kind": "immunity",
+      "activation": "conditional",
+      "condition": "\"if Zaahen would take lethal damage while at maximum stacks of Determination\"",
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Zaahen/Cultivation of War — description prose (no amount is stated, and none exists)",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Zaahen/Cultivation%20of%20War",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "Zac",
+      "slot": "P",
+      "abilityName": "Cell Division",
+      "kind": "immunity",
+      "activation": "conditional",
+      "condition": "\"Periodically, upon taking fatal damage\"; \"cannot take damage from sources other than the redirected damage from his bloblets\"",
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Zac/Cell Division — description prose (no amount is stated, and none exists)",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Zac/Cell%20Division",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "Zilean",
+      "slot": "R",
+      "abilityName": "Chronoshift",
+      "kind": "immunity",
+      "activation": "conditional",
+      "condition": "\"If the target takes fatal damage within the duration\"",
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Zilean/Chronoshift — description prose (no amount is stated, and none exists)",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Zilean/Chronoshift",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "immunity"
+    },
+    {
+      "champion": "Zilean",
+      "slot": "R",
+      "abilityName": "Chronoshift",
+      "label": "Heal",
+      "kind": "heal",
+      "activation": "conditional",
+      "condition": "\"If the target takes fatal damage within the duration\"",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          600,
+          850,
+          1100
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            200,
+            200,
+            200
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Zilean/Chronoshift — leveling row \"Heal\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Zilean/Chronoshift",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "heal"
+    },
+    {
+      "champion": "Kayn",
+      "slot": "P",
+      "abilityName": "The Darkin Scythe",
+      "kind": "immunity",
+      "activation": "not-stated",
+      "condition": "Invulnerable only \"While near his team's summoning platform\" during form selection — outside any combat sequence this engine models",
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Kayn/The Darkin Scythe — description prose (no amount is stated, and none exists)",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kayn/The%20Darkin%20Scythe",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "Bel'Veth",
+      "slot": "R",
+      "abilityName": "Endless Banquet",
+      "label": "Bonus Health",
+      "kind": "max-health-grant",
+      "activation": "conditional",
+      "condition": "True Form; the heal needs a Void Coral",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          100,
+          250,
+          400
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "bonusAD",
+          "scaling": "explicit",
+          "perRank": [
+            150,
+            150,
+            150
+          ]
+        },
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            150,
+            150,
+            150
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Bel'Veth/Endless Banquet — leveling row \"Bonus Health\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Bel'Veth/Endless%20Banquet",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "bonus-health"
+    },
+    {
+      "champion": "Bel'Veth",
+      "slot": "R",
+      "abilityName": "Endless Banquet",
+      "label": "Heal",
+      "kind": "heal",
+      "activation": "conditional",
+      "condition": "True Form; the heal needs a Void Coral",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          100,
+          250,
+          400
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "bonusAD",
+          "scaling": "explicit",
+          "perRank": [
+            150,
+            150,
+            150
+          ]
+        },
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            150,
+            150,
+            150
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Bel'Veth/Endless Banquet — leveling row \"Heal\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Bel'Veth/Endless%20Banquet",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "heal"
+    },
+    {
+      "champion": "Lulu",
+      "slot": "R",
+      "abilityName": "Wild Growth",
+      "label": "Bonus Health",
+      "kind": "max-health-grant",
+      "activation": "conditional",
+      "condition": "Active; \"For the next 7 seconds\"",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          275,
+          425,
+          575
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            55,
+            55,
+            55
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Lulu/Wild Growth — leveling row \"Bonus Health\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lulu/Wild%20Growth",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "Renekton",
+      "slot": "R",
+      "abilityName": "Dominus",
+      "label": "Bonus Health",
+      "kind": "max-health-grant",
+      "activation": "conditional",
+      "condition": "Active; \"for 15 seconds\"",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          300,
+          500,
+          700
+        ]
+      },
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Renekton/Dominus — leveling row \"Bonus Health\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Renekton/Dominus",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "Shyvana",
+      "slot": "R",
+      "abilityName": "Dragon's Descent",
+      "label": "Bonus Health",
+      "kind": "max-health-grant",
+      "activation": "conditional",
+      "condition": "Dragon form; the bonus health holds only in form",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          150,
+          250,
+          350
+        ]
+      },
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Shyvana/Dragon's Descent — leveling row \"Bonus Health\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Shyvana/Dragon's%20Descent",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "Volibear",
+      "slot": "R",
+      "abilityName": "Stormbringer",
+      "label": "Bonus Health",
+      "kind": "max-health-grant",
+      "activation": "conditional",
+      "condition": "Active; the bonus health holds for the duration",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          175,
+          350,
+          525
+        ]
+      },
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Volibear/Stormbringer — leveling row \"Bonus Health\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Volibear/Stormbringer",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "Aatrox",
+      "slot": "R",
+      "abilityName": "World Ender",
+      "label": "Increased Healing",
+      "kind": "heal",
+      "activation": "conditional",
+      "condition": "Active; an AMPLIFIER — \"receives increased self-healing from all sources\"",
+      "unit": "healing-multiplier",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          50,
+          75,
+          100
+        ]
+      },
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Aatrox/World Ender — leveling row \"Increased Healing\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Aatrox/World%20Ender",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "Bard",
+      "slot": "W",
+      "abilityName": "Caretaker's Shrine",
+      "label": "Minimum Heal",
+      "kind": "heal",
+      "activation": "conditional",
+      "condition": "The shrine must be walked over, and its power grows with time",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          25,
+          50,
+          75,
+          100,
+          125
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            40,
+            40,
+            40,
+            40,
+            40
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Bard/Caretaker's Shrine — leveling row \"Minimum Heal\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Bard/Caretaker's%20Shrine",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "minimum-heal",
+      "relation": {
+        "kind": "adds"
+      }
+    },
+    {
+      "champion": "Bard",
+      "slot": "W",
+      "abilityName": "Caretaker's Shrine",
+      "label": "Maximum Heal",
+      "kind": "heal",
+      "activation": "conditional",
+      "condition": "The shrine must be walked over, and its power grows with time",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          50,
+          87.5,
+          125,
+          162.5,
+          200
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            70,
+            70,
+            70,
+            70,
+            70
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Bard/Caretaker's Shrine — leveling row \"Maximum Heal\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Bard/Caretaker's%20Shrine",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "maximum-heal",
+      "relation": {
+        "kind": "alternativeTo",
+        "componentId": "minimum-heal"
+      }
+    },
+    {
+      "champion": "Cassiopeia",
+      "slot": "E",
+      "abilityName": "Twin Fang",
+      "label": "Heal",
+      "kind": "heal",
+      "activation": "conditional",
+      "condition": "\"Against a poisoned target\"",
+      "ratios": [
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            10,
+            11.5,
+            13,
+            14.5,
+            16
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Cassiopeia/Twin Fang — leveling row \"Heal\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Cassiopeia/Twin%20Fang",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "Fiora",
+      "slot": "R",
+      "abilityName": "Grand Challenge",
+      "label": "Heal per Tick",
+      "kind": "heal",
+      "activation": "conditional",
+      "condition": "The Victory Zone appears only on the target's death",
+      "overTime": {
+        "sourceSays": "a Grand Challenge Victory Zone is created on their death location for 5 seconds, which heals Fiora and all allies within the area every 0.25 seconds."
+      },
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          18.75,
+          25,
+          31.25
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "bonusAD",
+          "scaling": "explicit",
+          "perRank": [
+            15,
+            15,
+            15
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Fiora/Grand Challenge — leveling row \"Heal per Tick\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Fiora/Grand%20Challenge",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "heal-per-tick",
+      "relation": {
+        "kind": "adds"
+      }
+    },
+    {
+      "champion": "Fiora",
+      "slot": "R",
+      "abilityName": "Grand Challenge",
+      "label": "Maximum Heal",
+      "kind": "heal",
+      "activation": "conditional",
+      "condition": "The Victory Zone appears only on the target's death",
+      "overTime": {
+        "sourceSays": "a Grand Challenge Victory Zone is created on their death location for 5 seconds, which heals Fiora and all allies within the area every 0.25 seconds."
+      },
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          375,
+          500,
+          625
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "bonusAD",
+          "scaling": "explicit",
+          "perRank": [
+            300,
+            300,
+            300
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Fiora/Grand Challenge — leveling row \"Maximum Heal\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Fiora/Grand%20Challenge",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "maximum-heal",
+      "relation": {
+        "kind": "alternativeTo",
+        "componentId": "heal-per-tick"
+      }
+    },
+    {
+      "champion": "Gangplank",
+      "slot": "W",
+      "abilityName": "Remove Scurvy",
+      "label": "Heal",
+      "kind": "heal",
+      "activation": "conditional",
+      "condition": "Active; scales with missing health",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          45,
+          70,
+          95,
+          120,
+          145
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            90,
+            90,
+            90,
+            90,
+            90
+          ]
+        },
+        {
+          "stat": "missingHP",
+          "owner": "unresolved",
+          "scaling": "explicit",
+          "perRank": [
+            13,
+            13,
+            13,
+            13,
+            13
+          ]
+        }
+      ],
+      "unresolvable": [
+        {
+          "field": "ratios[1].owner (missingHP)",
+          "why": "the source names missingHP and never says whose, and no other source states it"
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Gangplank/Remove Scurvy — leveling row \"Heal\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Gangplank/Remove%20Scurvy",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "Irelia",
+      "slot": "Q",
+      "abilityName": "Bladesurge",
+      "label": "Heal",
+      "kind": "heal",
+      "activation": "conditional",
+      "condition": "Active; on collision",
+      "ratios": [
+        {
+          "stat": "totalAD",
+          "scaling": "explicit",
+          "perRank": [
+            9,
+            10,
+            11,
+            12,
+            13
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Irelia/Bladesurge — leveling row \"Heal\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Irelia/Bladesurge",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "Janna",
+      "slot": "R",
+      "abilityName": "Monsoon",
+      "label": "Heal Per Tick",
+      "kind": "heal",
+      "activation": "conditional",
+      "condition": "Active channel; \"for up to 3 seconds\"",
+      "overTime": {
+        "sourceSays": "Janna also channels for up to 3 seconds, healing herself and nearby allies every 0.25 seconds."
+      },
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          25,
+          37.5,
+          50
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            12.5,
+            12.5,
+            12.5
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Janna/Monsoon — leveling row \"Heal Per Tick\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Janna/Monsoon",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "heal-per-tick",
+      "relation": {
+        "kind": "adds"
+      }
+    },
+    {
+      "champion": "Janna",
+      "slot": "R",
+      "abilityName": "Monsoon",
+      "label": "Total Heal",
+      "kind": "heal",
+      "activation": "conditional",
+      "condition": "Active channel; \"for up to 3 seconds\"",
+      "overTime": {
+        "sourceSays": "Janna also channels for up to 3 seconds, healing herself and nearby allies every 0.25 seconds."
+      },
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          300,
+          450,
+          600
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            150,
+            150,
+            150
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Janna/Monsoon — leveling row \"Total Heal\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Janna/Monsoon",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "total-heal",
+      "relation": {
+        "kind": "alternativeTo",
+        "componentId": "heal-per-tick"
+      }
+    },
+    {
+      "champion": "Kayle",
+      "slot": "W",
+      "abilityName": "Celestial Blessing",
+      "label": "Heal",
+      "kind": "heal",
+      "activation": "conditional",
+      "condition": "Active",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          55,
+          80,
+          105,
+          130,
+          155
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            25,
+            25,
+            25,
+            25,
+            25
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Kayle/Celestial Blessing — leveling row \"Heal\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kayle/Celestial%20Blessing",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "Kayn",
+      "slot": "E",
+      "abilityName": "Shadow Step",
+      "label": "Heal",
+      "kind": "heal",
+      "activation": "conditional",
+      "condition": "\"upon entering terrain for the first time\"",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          90,
+          100,
+          110,
+          120,
+          130
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "bonusAD",
+          "scaling": "explicit",
+          "perRank": [
+            45,
+            45,
+            45,
+            45,
+            45
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Kayn/Shadow Step — leveling row \"Heal\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kayn/Shadow%20Step",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "Kha'Zix",
+      "slot": "W",
+      "abilityName": "Void Spike",
+      "label": "Heal",
+      "kind": "heal",
+      "activation": "conditional",
+      "condition": "\"if he is within the explosion\"",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          55,
+          75,
+          95,
+          115,
+          135
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            50,
+            50,
+            50,
+            50,
+            50
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Kha'Zix/Void Spike — leveling row \"Heal\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kha'Zix/Void%20Spike",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "Milio",
+      "slot": "W",
+      "abilityName": "Cozy Campfire",
+      "label": "Heal per Tick",
+      "kind": "heal",
+      "activation": "conditional",
+      "condition": "Allies must be near the fuemigo",
+      "overTime": {
+        "sourceSays": "Allied champions near the fuemigo gain bonus attack range ... and heal every 0.25 over the duration."
+      },
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          2.8,
+          3.5999999999999996,
+          4.4,
+          5.2,
+          6
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            0.6,
+            0.6,
+            0.6,
+            0.6,
+            0.6
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Milio/Cozy Campfire — leveling row \"Heal per Tick\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Milio/Cozy%20Campfire",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "heal-per-tick",
+      "relation": {
+        "kind": "adds"
+      }
+    },
+    {
+      "champion": "Milio",
+      "slot": "W",
+      "abilityName": "Cozy Campfire",
+      "label": "Total Heal",
+      "kind": "heal",
+      "activation": "conditional",
+      "condition": "Allies must be near the fuemigo",
+      "overTime": {
+        "sourceSays": "Allied champions near the fuemigo gain bonus attack range ... and heal every 0.25 over the duration."
+      },
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          70,
+          90,
+          110,
+          130,
+          150
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            15,
+            15,
+            15,
+            15,
+            15
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Milio/Cozy Campfire — leveling row \"Total Heal\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Milio/Cozy%20Campfire",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "total-heal",
+      "relation": {
+        "kind": "alternativeTo",
+        "componentId": "heal-per-tick"
+      }
+    },
+    {
+      "champion": "Milio",
+      "slot": "R",
+      "abilityName": "Breath of Life",
+      "label": "Heal",
+      "kind": "heal",
+      "activation": "conditional",
+      "condition": "Active",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          150,
+          250,
+          350
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            50,
+            50,
+            50
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Milio/Breath of Life — leveling row \"Heal\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Milio/Breath%20of%20Life",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "Naafiri",
+      "slot": "Q",
+      "abilityName": "Darkin Daggers",
+      "label": "Heal",
+      "kind": "heal",
+      "activation": "conditional",
+      "condition": "\"If that target is also a champion or large monster\"",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          45,
+          60,
+          75,
+          90,
+          105
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "bonusAD",
+          "scaling": "explicit",
+          "perRank": [
+            40,
+            40,
+            40,
+            40,
+            40
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Naafiri/Darkin Daggers — leveling row \"Heal\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Naafiri/Darkin%20Daggers",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "Nami",
+      "slot": "W",
+      "abilityName": "Ebb and Flow",
+      "label": "Heal",
+      "kind": "heal",
+      "activation": "conditional",
+      "condition": "Active; bounce count changes the effectiveness",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          55,
+          80,
+          105,
+          130,
+          155
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            40,
+            40,
+            40,
+            40,
+            40
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Nami/Ebb and Flow — leveling row \"Heal\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Nami/Ebb%20and%20Flow",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "heal",
+      "relation": {
+        "kind": "adds"
+      }
+    },
+    {
+      "champion": "Nami",
+      "slot": "W",
+      "abilityName": "Ebb and Flow",
+      "label": "Minimum Heal",
+      "kind": "heal",
+      "activation": "conditional",
+      "condition": "Active; bounce count changes the effectiveness",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          33,
+          48,
+          63,
+          78,
+          93
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            24,
+            24,
+            24,
+            24,
+            24
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Nami/Ebb and Flow — leveling row \"Minimum Heal\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Nami/Ebb%20and%20Flow",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "minimum-heal",
+      "relation": {
+        "kind": "alternativeTo",
+        "componentId": "heal"
+      }
+    },
+    {
+      "champion": "Nidalee",
+      "slot": "E",
+      "abilityName": "Primal Surge",
+      "label": "Minimum Heal",
+      "kind": "heal",
+      "activation": "conditional",
+      "condition": "Active; increased by the target's missing health",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          50,
+          75,
+          100,
+          125,
+          150
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            35,
+            35,
+            35,
+            35,
+            35
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Nidalee/Primal Surge — leveling row \"Minimum Heal\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Nidalee/Primal%20Surge",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "minimum-heal",
+      "relation": {
+        "kind": "adds"
+      }
+    },
+    {
+      "champion": "Nidalee",
+      "slot": "E",
+      "abilityName": "Primal Surge",
+      "label": "Maximum Heal",
+      "kind": "heal",
+      "activation": "conditional",
+      "condition": "Active; increased by the target's missing health",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          100,
+          150,
+          200,
+          250,
+          300
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            70,
+            70,
+            70,
+            70,
+            70
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Nidalee/Primal Surge — leveling row \"Maximum Heal\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Nidalee/Primal%20Surge",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "maximum-heal",
+      "relation": {
+        "kind": "alternativeTo",
+        "componentId": "minimum-heal"
+      }
+    },
+    {
+      "champion": "Renekton",
+      "slot": "Q",
+      "abilityName": "Cull the Meek",
+      "label": "Champion Healing",
+      "kind": "heal",
+      "activation": "conditional",
+      "condition": "Scales with enemies hit; \"Against champions, the healing is increased\"; tripled at full Fury",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          12,
+          20,
+          28,
+          36,
+          44
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "bonusAD",
+          "scaling": "explicit",
+          "perRank": [
+            17,
+            17,
+            17,
+            17,
+            17
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Renekton/Cull the Meek — leveling row \"Champion Healing\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Renekton/Cull%20the%20Meek",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "Senna",
+      "slot": "Q",
+      "abilityName": "Piercing Darkness",
+      "label": "Healing",
+      "kind": "heal",
+      "activation": "conditional",
+      "condition": "Active; heals Senna and allied champions hit",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          40,
+          60,
+          80,
+          100,
+          120
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "bonusAD",
+          "scaling": "explicit",
+          "perRank": [
+            40,
+            40,
+            40,
+            40,
+            40
+          ]
+        },
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            35,
+            35,
+            35,
+            35,
+            35
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Senna/Piercing Darkness — leveling row \"Healing\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Senna/Piercing%20Darkness",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "Soraka",
+      "slot": "Q",
+      "abilityName": "Starcall",
+      "label": "Total Heal",
+      "kind": "heal",
+      "activation": "conditional",
+      "condition": "The heal fires only on hitting an enemy champion",
+      "overTime": {
+        "sourceSays": "Rejuvenation: Heal every 0.2 seconds and gain bonus movement speed that decays over the duration."
+      },
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          60,
+          75,
+          90,
+          105,
+          120
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            30,
+            30,
+            30,
+            30,
+            30
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Soraka/Starcall — leveling row \"Total Heal\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Soraka/Starcall",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "total-heal",
+      "relation": {
+        "kind": "adds"
+      }
+    },
+    {
+      "champion": "Soraka",
+      "slot": "Q",
+      "abilityName": "Starcall",
+      "label": "Heal per Tick",
+      "kind": "heal",
+      "activation": "conditional",
+      "condition": "The heal fires only on hitting an enemy champion",
+      "overTime": {
+        "sourceSays": "Rejuvenation: Heal every 0.2 seconds and gain bonus movement speed that decays over the duration."
+      },
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          5,
+          6.25,
+          7.5,
+          8.75,
+          10
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            2.5,
+            2.5,
+            2.5,
+            2.5,
+            2.5
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Soraka/Starcall — leveling row \"Heal per Tick\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Soraka/Starcall",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "heal-per-tick",
+      "relation": {
+        "kind": "alternativeTo",
+        "componentId": "total-heal"
+      }
+    },
+    {
+      "champion": "Soraka",
+      "slot": "W",
+      "abilityName": "Astral Infusion",
+      "label": "Heal",
+      "kind": "heal",
+      "activation": "conditional",
+      "condition": "Active; paid for with her own health",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          90,
+          110,
+          130,
+          150,
+          170
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            50,
+            50,
+            50,
+            50,
+            50
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Soraka/Astral Infusion — leveling row \"Heal\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Soraka/Astral%20Infusion",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "Soraka",
+      "slot": "R",
+      "abilityName": "Wish",
+      "label": "Heal",
+      "kind": "heal",
+      "activation": "conditional",
+      "condition": "Active; \"increased by 50% on targets below 40% of their maximum health\"",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          150,
+          250,
+          350
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            50,
+            50,
+            50
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Soraka/Wish — leveling row \"Heal\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Soraka/Wish",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "heal",
+      "relation": {
+        "kind": "adds"
+      }
+    },
+    {
+      "champion": "Soraka",
+      "slot": "R",
+      "abilityName": "Wish",
+      "label": "Increased Heal",
+      "kind": "heal",
+      "activation": "conditional",
+      "condition": "Active; \"increased by 50% on targets below 40% of their maximum health\"",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          225,
+          375,
+          525
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            75,
+            75,
+            75
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Soraka/Wish — leveling row \"Increased Heal\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Soraka/Wish",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "increased-heal",
+      "relation": {
+        "kind": "alternativeTo",
+        "componentId": "heal"
+      }
+    },
+    {
+      "champion": "Swain",
+      "slot": "R",
+      "abilityName": "Demonic Ascension",
+      "label": "Heal per Tick",
+      "kind": "heal",
+      "activation": "conditional",
+      "condition": "Active drain; \"per target affected\"",
+      "overTime": {
+        "sourceSays": "Swain is ghosted and drains the lifeforce of nearby enemies, both dealing magic damage and healing himself every 0.5 seconds per target affected."
+      },
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          7.5,
+          15,
+          22.5
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            2.5,
+            2.5,
+            2.5
+          ]
+        },
+        {
+          "stat": "bonusHP",
+          "owner": "caster",
+          "scaling": "explicit",
+          "perRank": [
+            0.75,
+            0.75,
+            0.75
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Swain/Demonic Ascension — leveling row \"Heal per Tick\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Swain/Demonic%20Ascension",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "Sylas",
+      "slot": "W",
+      "abilityName": "Kingslayer",
+      "label": "Minimum Heal",
+      "kind": "heal",
+      "activation": "conditional",
+      "condition": "\"If this damages a champion\"; increased by his missing health",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          20,
+          40,
+          60,
+          80,
+          100
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            30,
+            30,
+            30,
+            30,
+            30
+          ]
+        },
+        {
+          "stat": "bonusHP",
+          "owner": "caster",
+          "scaling": "explicit",
+          "perRank": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Sylas/Kingslayer — leveling row \"Minimum Heal\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Sylas/Kingslayer",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "minimum-heal",
+      "relation": {
+        "kind": "adds"
+      }
+    },
+    {
+      "champion": "Sylas",
+      "slot": "W",
+      "abilityName": "Kingslayer",
+      "label": "Maximum Heal",
+      "kind": "heal",
+      "activation": "conditional",
+      "condition": "\"If this damages a champion\"; increased by his missing health",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          40,
+          80,
+          120,
+          160,
+          200
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            60,
+            60,
+            60,
+            60,
+            60
+          ]
+        },
+        {
+          "stat": "bonusHP",
+          "owner": "caster",
+          "scaling": "explicit",
+          "perRank": [
+            10,
+            10,
+            10,
+            10,
+            10
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Sylas/Kingslayer — leveling row \"Maximum Heal\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Sylas/Kingslayer",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "maximum-heal",
+      "relation": {
+        "kind": "alternativeTo",
+        "componentId": "minimum-heal"
+      }
+    },
+    {
+      "champion": "Tahm Kench",
+      "slot": "Q",
+      "abilityName": "Tongue Lash",
+      "label": "Heal",
+      "kind": "heal",
+      "activation": "conditional",
+      "condition": "\"If this hits an enemy champion\"",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          10,
+          15,
+          20,
+          25,
+          30
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "missingHP",
+          "owner": "unresolved",
+          "scaling": "explicit",
+          "perRank": [
+            5,
+            5.5,
+            6,
+            6.5,
+            7
+          ]
+        }
+      ],
+      "unresolvable": [
+        {
+          "field": "ratios[0].owner (missingHP)",
+          "why": "the source names missingHP and never says whose, and no other source states it"
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Tahm Kench/Tongue Lash — leveling row \"Heal\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Tahm%20Kench/Tongue%20Lash",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "Tryndamere",
+      "slot": "Q",
+      "abilityName": "Bloodlust",
+      "label": "Minimum Heal",
+      "kind": "heal",
+      "activation": "conditional",
+      "condition": "Active; scales with Fury consumed",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          30,
+          40,
+          50,
+          60,
+          70
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            30,
+            30,
+            30,
+            30,
+            30
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Tryndamere/Bloodlust — leveling row \"Minimum Heal\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Tryndamere/Bloodlust",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "minimum-heal",
+      "relation": {
+        "kind": "adds"
+      }
+    },
+    {
+      "champion": "Tryndamere",
+      "slot": "Q",
+      "abilityName": "Bloodlust",
+      "label": "Maximum Heal",
+      "kind": "heal",
+      "activation": "conditional",
+      "condition": "Active; scales with Fury consumed",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          80,
+          135,
+          190,
+          245,
+          300
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            150,
+            150,
+            150,
+            150,
+            150
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Tryndamere/Bloodlust — leveling row \"Maximum Heal\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Tryndamere/Bloodlust",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "maximum-heal",
+      "relation": {
+        "kind": "alternativeTo",
+        "componentId": "minimum-heal"
+      }
+    },
+    {
+      "champion": "Vladimir",
+      "slot": "Q",
+      "abilityName": "Transfusion",
+      "label": "Heal",
+      "kind": "heal",
+      "activation": "conditional",
+      "condition": "Active; the additional heal requires Crimson Rush",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          20,
+          25,
+          30,
+          35,
+          40
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            35,
+            35,
+            35,
+            35,
+            35
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Vladimir/Transfusion — leveling row \"Heal\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Vladimir/Transfusion",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "Vladimir",
+      "slot": "R",
+      "abilityName": "Hemoplague",
+      "label": "Heal",
+      "kind": "heal",
+      "activation": "conditional",
+      "condition": "\"for each infected champion, reduced to 40% for champions beyond the first\"",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          150,
+          250,
+          350
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            70,
+            70,
+            70
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Vladimir/Hemoplague — leveling row \"Heal\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Vladimir/Hemoplague",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "heal",
+      "relation": {
+        "kind": "adds"
+      }
+    },
+    {
+      "champion": "Vladimir",
+      "slot": "R",
+      "abilityName": "Hemoplague",
+      "label": "Maximum Total Heal",
+      "kind": "heal",
+      "activation": "conditional",
+      "condition": "\"for each infected champion, reduced to 40% for champions beyond the first\"",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          390,
+          650,
+          910
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "AP",
+          "scaling": "explicit",
+          "perRank": [
+            182,
+            182,
+            182
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Vladimir/Hemoplague — leveling row \"Maximum Total Heal\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Vladimir/Hemoplague",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "id": "maximum-total-heal",
+      "relation": {
+        "kind": "alternativeTo",
+        "componentId": "heal"
+      }
+    },
+    {
+      "champion": "Volibear",
+      "slot": "W",
+      "abilityName": "Frenzied Maul",
+      "label": "Heal",
+      "kind": "heal",
+      "activation": "conditional",
+      "condition": "\"If the target is already Wounded\"",
+      "unit": "flat",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          20,
+          35,
+          50,
+          65,
+          80
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "missingHP",
+          "owner": "caster",
+          "scaling": "explicit",
+          "perRank": [
+            8,
+            11,
+            14,
+            17,
+            20
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Volibear/Frenzied Maul — leveling row \"Heal\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Volibear/Frenzied%20Maul",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "Warwick",
+      "slot": "Q",
+      "abilityName": "Jaws of the Beast",
+      "label": "Healing Percentage",
+      "kind": "heal",
+      "activation": "conditional",
+      "condition": "Active; heals for a percentage of damage dealt",
+      "unit": "percent-of-damage-dealt",
+      "value": {
+        "scaling": "explicit",
+        "perRank": [
+          25,
+          37.5,
+          50,
+          62.5,
+          75
+        ]
+      },
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Warwick/Jaws of the Beast — leveling row \"Healing Percentage\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Warwick/Jaws%20of%20the%20Beast",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "Yorick",
+      "slot": "Q",
+      "abilityName": "Last Rites",
+      "label": "Heal",
+      "kind": "heal",
+      "activation": "conditional",
+      "condition": "Empowered attack; \"reduced by 50% against non-champions\"",
+      "unit": "flat",
+      "value": {
+        "scaling": "byLevelExplicit",
+        "values": [
+          10,
+          12,
+          14,
+          16,
+          18,
+          20,
+          23,
+          26,
+          29,
+          32,
+          35,
+          38,
+          43,
+          48,
+          53,
+          58,
+          63,
+          68
+        ],
+        "atLevels": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18
+        ]
+      },
+      "ratios": [
+        {
+          "stat": "missingHP",
+          "owner": "caster",
+          "scaling": "explicit",
+          "perRank": [
+            6,
+            7,
+            8,
+            9,
+            10
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Yorick/Last Rites — leveling row \"Heal\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Yorick/Last%20Rites",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    },
+    {
+      "champion": "Zaahen",
+      "slot": "Q",
+      "abilityName": "The Darkin Glaive",
+      "label": "Champion Healing",
+      "kind": "heal",
+      "activation": "conditional",
+      "condition": "\"If the target was a champion, minion, or monster\"",
+      "ratios": [
+        {
+          "stat": "maxHP",
+          "owner": "caster",
+          "scaling": "explicit",
+          "perRank": [
+            5,
+            6,
+            7,
+            8,
+            9
+          ]
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Zaahen/The Darkin Glaive — leveling row \"Champion Healing\"",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Zaahen/The%20Darkin%20Glaive",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      }
+    }
+  ]
+}

@@ -50,6 +50,9 @@ export const OVERRIDES_URL = '/data/overrides.json';
 /** Where the curated item effects are published (`scripts/build-item-effects.ts`). */
 export const ITEM_EFFECTS_URL = '/data/item-effects.json';
 
+/** Where the curated defensive effects are published (`scripts/build-defensive-effects.ts`). */
+export const DEFENSIVE_EFFECTS_URL = '/data/defensive-effects.json';
+
 /** One champion's harvested abilities. `{Champion}` is the Data Dragon apiname, e.g. `Lux`. */
 export function abilitiesUrl(apiname: string): string {
   return `/data/abilities/${apiname}.json`;
@@ -144,6 +147,40 @@ export async function loadItemEffects(
     throw new Error(`Item effects: ${url} carried no itemEffects list`);
   }
   return file.itemEffects;
+}
+
+/**
+ * Fetch the curated defensive effects — what a champion's own kit does to damage they receive.
+ *
+ * Fails soft for the same reason `loadItemEffects` does: an absent file costs the defensive rows
+ * and nothing else, and both the panel and the engine already report an unreachable defence
+ * rather than pretending it did something. A malformed file is still an error.
+ */
+export async function loadDefensiveEffects(
+  fetchImpl: typeof fetch = fetch,
+  url: string = DEFENSIVE_EFFECTS_URL,
+): Promise<CuratedDefensiveEffect[]> {
+  const response = await fetchImpl(url);
+  if (response.status === 404) return [];
+  if (!response.ok) throw new Error(`Defensive effects: ${url} returned ${response.status}`);
+  const file = (await response.json()) as { defensiveEffects?: CuratedDefensiveEffect[] };
+  if (!Array.isArray(file?.defensiveEffects)) {
+    throw new Error(`Defensive effects: ${url} carried no defensiveEffects list`);
+  }
+  return file.defensiveEffects;
+}
+
+/** Group published defensive effects by champion, ready for `CatalogueSources.defensiveEffects`. */
+export function defensiveEffectsByChampion(
+  effects: readonly CuratedDefensiveEffect[],
+): ReadonlyMap<string, readonly CuratedDefensiveEffect[]> {
+  const byName = new Map<string, CuratedDefensiveEffect[]>();
+  for (const e of effects) {
+    const list = byName.get(e.champion) ?? [];
+    list.push(e);
+    byName.set(e.champion, list);
+  }
+  return byName;
 }
 
 /** Group published effects by item id, ready for `CatalogueSources.itemEffects`. */
