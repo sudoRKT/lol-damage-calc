@@ -7,8 +7,15 @@
 "Bench Test". Everything below was measured rather than judged, so a later session can act on it
 without re-deriving it — and can tell what has moved by re-running the same measurements.
 
-**Nothing here has been implemented.** This is an audit and a set of options. The order of work is
-at the end.
+**STATUS, 2026-08-14: item 1 of the order of work at the end is DONE and item 2 is in progress.**
+The original text of this file is preserved below exactly as it was measured, because a record that
+is edited to match the present cannot show what moved. **Section 6 at the end is the re-measurement**
+— every figure taken the same way, on the same viewport and scenario. Read this file top to bottom
+for the diagnosis and section 6 for the current state.
+
+Two things this file now also carries, and both are conclusions rather than observations:
+**§3's type histogram is NOT a target and must not be optimised** (section 6.3), and a
+**SPECIFICATION §10 violation on mobile that predates all of this work** (section 6.5).
 
 > **Every count states what it counts.** Where a figure is a share, both the numerator and the
 > denominator are named. Where a figure came from the DOM, the selector and the state of the page
@@ -290,19 +297,127 @@ buys the least, and requires reversing a written argument to get it.
 
 ## 4. Proposed order of work
 
-1. **Layout and hierarchy.** The fold problem, the spacing grade (§4), table density. This is where
-   the "form" reading actually lives, and it is the cheapest to change — no new components, mostly
-   spacing and sizing. Get the burndown above the fold, or make it the page's unmistakable anchor.
+1. ~~**Layout and hierarchy.** The fold problem, the spacing grade (§4), table density.~~
+   **DONE 2026-08-14** — commits `658d61c` and `a09cd0c`. Re-measured in section 6.
 2. **The tag decision** (Part 2). It changes chips, values and the composition bar together, so it
-   is better done once, after the layout settles.
+   is better done once, after the layout settles. **Option A adopted 2026-08-14** by the project
+   owner, on the comprehension finding rather than on the cue being wrong.
 3. **The instrument details.** `--elev-1`'s machined edge; the stray asymmetric radius.
 4. **Reserved containers and the missing requirements.** Ad slots, both disclaimers, the report
    control — all layout-affecting, so they should land before anything is called finished.
-5. **§9's portrait tint** — cool toward `--bg-panel` rather than plain greyscale. Smallest item.
+5. **The mobile horizontal overflow** (section 6.5). A SPECIFICATION §10 violation, pre-existing,
+   and the only item on this list that is a spec breach rather than a design shortfall.
+6. **§9's portrait tint** — cool toward `--bg-panel` rather than plain greyscale. Smallest item.
 
 > **One caution worth carrying forward.** Items 1 and 3 are where "Bench Test" actually lives, and
 > they are the two most tempting to defer, because nothing is *broken*. The interface is correct
 > and characterless. Correctness is what we already have.
+
+---
+
+## 6. The re-measurement, 2026-08-14
+
+Same viewport (1440×1100), same scenario (Lux vs Garen, level 6, no items), same method as
+everything above. Commits `658d61c` (layout and hierarchy) and `a09cd0c` (the item pool and the
+state column).
+
+### 6.1 Region geometry — the headline figure moved
+
+**DEFINITION unchanged from §0:** `getBoundingClientRect()` plus `window.scrollY` for the top
+edge, the element's own rendered height, `document.documentElement.scrollHeight` for the page.
+
+| | Audited | Now |
+|---|---:|---:|
+| Page height | 3,793px (**3.4 screens**) | 3,286px (**2.99 screens**) |
+| Configuration row `.app__row` | 921px | **413px** |
+| Combo builder `.combo` | 226px | **107px** |
+| **HP burndown `.burn` — top edge** | **1,409px** (309px below the fold) | **750px (350px above it)** |
+| The chart itself `.burn__plot` — top edge | 1,541px | **865px** (235px above the fold) |
+| Per-instance breakdown `.breakdown-panel` | 2,066px | 1,414px |
+
+**The fold is at 1,100px. The whole instrument header and the first 235px of the chart are now
+above it.** §0's sentence — "the entire first screen is inputs" — no longer holds: the first screen
+is both champions, the combo, the running total, the verdict and the top of the burndown.
+
+### 6.2 The spacing grade (§4)
+
+**DEFINITION:** rendered vertical distance between adjacent top-level children of `.app`, plus the
+computed `gap` of each container, on the default scenario.
+
+Before, one value: `--space-5` (24px) between every region, and 24px page padding on all sides.
+Now: **32px** between the three regions (setup / result / detail), **16px** between panels inside a
+region, **24px** as the side-by-side grid gutter, **48px** at the page foot, **8px** between the
+burndown and its caption plate. Five steps where there was one. §4 was amended the same day to
+record the page-top asymmetry rather than leave it as an undocumented deviation.
+
+### 6.3 §3's TYPE HISTOGRAM IS NOT A TARGET — DECIDED 2026-08-14, DO NOT OPTIMISE IT
+
+**DEFINITION unchanged from §3:** visible elements (`offsetParent !== null`) containing text with
+no element children. **366 before, 366 after. Nodes at 18px or above: 15 before, 15 after.**
+
+**That figure did not move, it was not supposed to, and a later session must not treat it as a
+score to raise.** §3 above measured it as a *symptom* of the interface reading as a form. It was a
+correct symptom and the wrong lever, for a reason that is only visible once you try to move it:
+
+> **DESIGN.md §3 assigns its large roles to a short, fixed list of elements** — the page title and
+> the matchup header (`--type-display-xl`), panel and section headers (`--type-display-l`),
+> subsection labels (`--type-display-m`), the rolling combo total (`--type-num-hero`) — and assigns
+> 11–13px *by name* to everything else: table number cells, chip labels, axis captions, footnotes.
+> **On this page those assignments produce almost exactly 15 nodes.** Raising the count means
+> granting a large role to an element §3 does not give it to, which is a change to DESIGN.md
+> disguised as a polish pass.
+
+**Hierarchy here comes from the anchors having POSITION and SEPARATION, not from there being more
+of them.** What actually changed: the 32px matchup sits alone in a masthead band instead of over
+two rows of grey text; the 28px rolling total and the verdict sit together inside a framed
+instrument above the fold instead of below it; and the 24px section headers are separated by 32px
+region gaps instead of being one of eight identically-spaced panels. None of that is visible in a
+histogram, which is why the histogram stopped being the measure.
+
+The one type change made was the verdict chip, `--type-display-m` → `--type-display-l`. It is the
+answer to the user's question, and it also puts the LETHAL chip's magenta border unambiguously
+inside §2's "large/bold only" contrast rule, which at 18px bold was marginal.
+
+### 6.4 The breakdown table
+
+**DEFINITION:** rendered height of each `<tr>` in `.breakdown tbody`, default scenario, with no row
+expanded. **Before: 63 / 63 / 63 / 63. Now: 39 / 40 / 63 / 63.**
+
+§4 above attributed this to padding and it is worth recording that **that was wrong**: the vertical
+padding was already `--space-2`, and the state text was already `--type-body-s`, so both of the
+obvious levers were spent before the pass began. The cause was that the cell printed the whole
+state snapshot on every row — **12 phrases, 6 of which read zero on every row.** The column now
+carries only what differs from the entry state, the entry state is printed once below the table,
+and each row has an expand holding its full unfiltered snapshot.
+
+**The two rows still at 63px are a different cause and are not waste.** From instance 3 the running
+total spans two damage types, making it an untagged aggregate — which DESIGN.md §8 permits only
+beside a tagged composition bar. 18px of figure plus 22px of bar and labels is 44px of construction
+§8 requires. Reducing those rows means revisiting §8, not the layout.
+
+### 6.5 TRACKED WORK — the page scrolls sideways on a phone, and that is a SPECIFICATION violation
+
+**DEFINITION:** `document.documentElement.scrollWidth` against `clientWidth` at a 375×812 viewport,
+default scenario. **scrollWidth 579px against a 375px viewport — 204px of horizontal overflow.**
+
+**The cause is the `.breakdown` table**, whose six columns have a combined minimum width no phone
+viewport can hold. Every other panel fits: the configuration and item panels each have a
+minimum-content width of 282px, inside the 327px available.
+
+**This PREDATES the layout work and was measured against the untouched code to be certain** — the
+overflow is 579px both before and after commit `658d61c`. It is therefore out of scope for that
+pass and is recorded here rather than being left to be rediscovered.
+
+**It is nonetheless a spec violation, not a rough edge.** SPECIFICATION §10: *"The interface is
+fully responsive. Layouts adapt for mobile, where a significant share of usage occurs."* A table
+that forces the whole page to scroll horizontally is the single most common way a layout fails that
+sentence, and it fails it on the product's primary output.
+
+Not fixed here, and deliberately not fixed in passing: the honest options are a horizontally
+scrolling container around the table alone (keeps every column, confines the scroll), or a stacked
+card layout per instance below some width (loses column alignment, which is most of what makes a
+frame-data readout readable). That is a design decision, and it is the fifth item in the order of
+work below rather than something to bolt on.
 
 ---
 
