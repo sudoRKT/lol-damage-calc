@@ -581,11 +581,15 @@ function riderInstance(
 ): PlannedInstance {
   const stepId = `${carrier.id}-rider-${ordinal}`;
   const label = `${itemName} — ${effect.name}`;
+  // Presentational only: it lets the burndown bracket this row under the attack that carried it,
+  // without the engine merging the two instances (src/types/result.ts, `carriedBy`).
+  const carriedBy = carrier.id;
   const components = effect.components ?? [];
 
   if (effect.verification === 'incomplete' || components.length === 0) {
     return {
       stepId,
+      carriedBy,
       sourceLabel: label,
       instanceType: 'on-hit',
       verification: effect.verification === 'no-damage' ? 'no-damage' : 'incomplete',
@@ -610,6 +614,7 @@ function riderInstance(
 
   return {
     stepId,
+    carriedBy,
     sourceLabel: label,
     instanceType: 'on-hit',
     verification: effect.verification,

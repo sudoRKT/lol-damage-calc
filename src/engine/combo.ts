@@ -232,6 +232,8 @@ export interface PlannedInstance {
   damage?: PlannedDamage;
   /** A DoT this instance registers. */
   dot?: PlannedDot;
+  /** The instance this one rode on, by `stepId`. Presentational only — see InstanceResult. */
+  carriedBy?: string;
   /**
    * Health this instance restores, to either champion. PLACED healing: it resolves immediately
    * after this instance's damage, in this instance's position, because that is the only place
@@ -500,6 +502,7 @@ export function runCombo(plan: ComboPlan): Result {
     perInstance.push({
       index: position + 1,
       stepId: instance.stepId,
+      ...(instance.carriedBy ? { carriedBy: instance.carriedBy } : {}),
       sourceLabel: instance.sourceLabel,
       icon: instance.icon ?? null,
       instanceType: instance.instanceType,

@@ -198,6 +198,12 @@ export function riserName(column: BurndownColumn, maxHp: number, statusLabel: st
   } else {
     parts.push(`Instance ${column.position}`);
     parts.push(column.sourceLabel);
+    // A RIDER SAYS WHAT IT RODE ON. Sighted readers get the bracket; this is the same fact,
+    // spoken. Without it a screen-reader user hears four unrelated instances where the chart
+    // shows one bracketed moment.
+    if (column.groupId && column.groupIndex > 1) {
+      parts.push(`riding on ${column.groupLabel}`);
+    }
     const type = column.damageType ? SPOKEN_TYPE[column.damageType] : '';
     parts.push(`${column.damage} ${type} damage${column.crit ? ', critical strike' : ''}`);
     // THE WORD AND THE DIRECTION CARRY THE HEAL, not a colour and not a stroke style. A screen
@@ -370,10 +376,31 @@ export function HpBurndown({ result, title = 'HP burndown' }: HpBurndownProps) {
           </div>
         </div>
 
+        {/* THE X AXIS, AND THE BRACKET UNDER A GROUP.
+
+            A basic attack carrying three on-hit item effects is four columns and one moment. The
+            bracket says so without the engine merging anything (geometry.ts, `groupColumns`).
+
+            NO HUE, AND NONE IS PERMITTED. DESIGN.md §1 reserves colour for the three damage
+            types, lethal magenta and the recent-damage gold; a grouping bracket is not damage
+            data. It is drawn in --hp-trace, the same neutral the healing trace uses, and its
+            non-colour cue is its SHAPE — a rule with turned-up ends, which nothing else here has.
+
+            Only the first column of a group prints a label; the rest print nothing, so the group
+            reads as one labelled moment rather than as N labelled columns. */}
         <ol className="burn__xaxis" aria-hidden="true">
           {model.columns.map((c) => (
-            <li className="burn__xlabel" key={`${c.kind}-${c.position}`}>
-              {c.axisLabel}
+            <li
+              className={`burn__xlabel${c.groupId ? ' burn__xlabel--grouped' : ''}`}
+              key={`${c.kind}-${c.position}`}
+            >
+              {c.groupId && c.groupIndex > 1 ? null : c.axisLabel}
+              {c.groupId && c.groupIndex === 1 ? (
+                <span
+                  className="burn__bracket"
+                  style={{ '--burn-group-span': c.groupSize } as CSSProperties}
+                />
+              ) : null}
             </li>
           ))}
           {model.columns.length === 0 ? <li className="burn__xlabel">—</li> : null}

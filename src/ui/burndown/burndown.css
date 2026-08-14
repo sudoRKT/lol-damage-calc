@@ -444,6 +444,42 @@
   color: var(--text-secondary);
 }
 
+/* --------------------------------------------------------------------------
+ * THE GROUP BRACKET (added 2026-08-14).
+ *
+ * A basic attack carrying three on-hit item effects is FOUR columns in the chart and ONE drop on
+ * a health bar. The bracket says so in the drawing; the engine merges nothing, keeps four
+ * resistance breakdowns, and keeps the riders out of the carrier's critical strike.
+ *
+ * NO NEW HUE AND NO NEW TOKEN. DESIGN.md §1 reserves colour for the three damage types, lethal
+ * magenta and the transient recent-damage gold. A grouping bracket is not damage data — it is
+ * chrome — so it takes --border-hair, the hairline the token file already defines, rather than
+ * the healing trace's --hp-trace: the trace is health data and this is not. Its cue is entirely
+ * SHAPE: a rule with two turned-up ends, which nothing else in this chart has.
+ *
+ * The width comes from --burn-group-span, the number of columns in the group, set inline by the
+ * component. Each column is `flex: 1 1 0` of the same axis, so N columns is N times this
+ * column's own width; the 100% accounts for this label's own box and the gap between them.
+ * -------------------------------------------------------------------------- */
+
+.burn__xlabel--grouped {
+  position: relative;
+}
+
+.burn__bracket {
+  position: absolute;
+  inset-block-start: 100%;
+  inset-inline-start: 50%;
+  inline-size: calc(var(--burn-group-span, 1) * 100%);
+  block-size: var(--space-2);
+  margin-block-start: var(--space-1);
+  /* The rule itself, with the two turned-up ends. */
+  border-block-start: var(--border-hair);
+  border-inline: var(--border-hair);
+  border-block-end: 0;
+  pointer-events: none;
+}
+
 /* SPECIFICATION §3.2, quoted verbatim by DESIGN.md §7 as the axis caption. */
 .burn__caption {
   margin: var(--space-2) 0 0;

@@ -240,6 +240,22 @@ export interface InstanceResult {
   /** Present ONLY when `verification` is 'incomplete'. Says whether the gap will ever close.
    *  An incomplete instance contributes no damage and states why (SPECIFICATION §8). */
   incompleteReason?: IncompleteReason;
+  /**
+   * THE INSTANCE THIS ONE RODE ON, by `stepId`. Added 2026-08-14.
+   *
+   * An on-hit or Spellblade item effect is its own instance — it keeps its own resistance
+   * working and is never multiplied by its carrier's critical strike (DATA-SOURCES §53.3, §55).
+   * But a reader watching a health bar sees ONE drop when a basic attack carrying three on-hit
+   * effects lands, not four, and four separate columns misrepresent that moment.
+   *
+   * This lets the burndown BRACKET them under one axis label without the engine merging
+   * anything. It is PRESENTATIONAL AND STRICTLY ADDITIVE: no arithmetic reads it, and deleting
+   * every use of it would change no damage figure, no resistance step, no crit decision and
+   * neither survival verdict. That is exactly the property folding did not have.
+   *
+   * Absent for an instance that stands on its own, which is every instance a user places.
+   */
+  carriedBy?: string;
 }
 
 export interface DotSource {

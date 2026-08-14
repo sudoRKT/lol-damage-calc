@@ -82,6 +82,24 @@ export interface BurndownColumn {
   /** The instance this column came from — burst columns only. */
   instance: InstanceResult | null;
   /**
+   * THE GROUP THIS COLUMN BELONGS TO. Added 2026-08-14.
+   *
+   * An on-hit or Spellblade item effect is its own instance and its own column, which is what
+   * keeps its resistance working and its crit correct (DATA-SOURCES §53.3). But a reader
+   * watching a health bar sees ONE drop when a basic attack carrying three on-hit effects lands.
+   * A group brackets those columns under one axis label WITHOUT the engine merging anything.
+   *
+   * `groupId` is the carrier's `stepId`, shared by the carrier and everything that rode on it.
+   * `null` for a column that stands alone, which is most of them. `groupIndex` is the column's
+   * 1-based place within its group, and `groupSize` the group's total — so the first column can
+   * draw the bracket and the rest need no special case.
+   */
+  groupId: string | null;
+  groupIndex: number;
+  groupSize: number;
+  /** The group's own label: what the reader sees under the bracket, e.g. `inst 3`. */
+  groupLabel: string | null;
+  /**
    * HEALTH THE DEFENDER REGAINED IN THIS COLUMN, after its damage. Added 2026-08-14.
    *
    * Absent (0) on every column of a scenario with no healing, so the chart is unchanged for
@@ -124,6 +142,66 @@ export interface BurndownModel {
   dotLethalRuleFraction: number | null;
   burstVerdictText: string;
   dotVerdictText: string;
+}
+
+/**
+ * BRACKET EACH CARRIER WITH WHAT RODE ON IT — the drawing's answer to a real objection.
+ *
+ * A basic attack carrying three on-hit item effects is FOUR instances in the engine and ONE
+ * moment in the game. Keeping four instances is what preserves each one's resistance working and
+ * keeps the riders out of the carrier's critical strike (DATA-SOURCES §53.3); showing four
+ * unrelated columns is what misrepresents the health bar, which drops once.
+ *
+ * So the grouping happens HERE, in the geometry, and nowhere else. It is strictly additive:
+ * remove every line of it and every number in the chart is identical.
+ *
+ * A group is (carrier, everything whose `carriedBy` names it). It is deliberately built from
+ * ADJACENCY as well as identity — a rider is emitted immediately after its carrier, and a group
+ * that could jump a gap would bracket columns that are not next to each other, which cannot be
+ * drawn as one bracket and would not mean anything if it could.
+ *
+ * The axis label of a group is the CARRIER's. A reader looking at the bracket is looking at the
+ * moment the attack landed, not at the third effect that rode along with it.
+ */
+export function groupColumns(columns: BurndownColumn[]): void {
+  let i = 0;
+  while (i < columns.length) {
+    const carrier = columns[i]!;
+    // Only a burst column can carry, and a column that rode on something is never itself a
+    // carrier — riders do not nest.
+    if (carrier.kind !== 'burst' || carrier.instance?.carriedBy) {
+      i += 1;
+      continue;
+    }
+    const carrierStepId = carrier.instance?.stepId;
+    if (!carrierStepId) {
+      i += 1;
+      continue;
+    }
+    // Walk forward while the next column rode on THIS carrier. Stops at the first that did not,
+    // which is what keeps a group contiguous.
+    let end = i + 1;
+    while (
+      end < columns.length &&
+      columns[end]!.kind === 'burst' &&
+      columns[end]!.instance?.carriedBy === carrierStepId
+    ) {
+      end += 1;
+    }
+    const size = end - i;
+    // A carrier with nothing riding on it is not a group. Bracketing one column says there is
+    // something to group when there is not.
+    if (size > 1) {
+      for (let j = i; j < end; j += 1) {
+        const column = columns[j]!;
+        column.groupId = carrierStepId;
+        column.groupIndex = j - i + 1;
+        column.groupSize = size;
+        column.groupLabel = carrier.axisLabel;
+      }
+    }
+    i = end;
+  }
 }
 
 function zeroByType(): DamageByType {
@@ -202,6 +280,11 @@ export function buildBurndownModel(result: Result): BurndownModel {
       kind: 'heal',
       position: 0,
       axisLabel: 'heal',
+      // The unplaced-healing and +DoT columns never group: neither rode on anything.
+      groupId: null,
+      groupIndex: 1,
+      groupSize: 1,
+      groupLabel: null,
       sourceLabel: 'Healing the sequence cannot place',
       damage: 0,
       hpBefore: hp,
@@ -261,12 +344,20 @@ export function buildBurndownModel(result: Result): BurndownModel {
       incompleteReason: instance.incompleteReason,
       crit: instance.crit,
       instance,
+      // Filled by `groupColumns` below, once every column exists — a group is a fact about
+      // neighbours, so it cannot be decided while walking one column at a time.
+      groupId: null,
+      groupIndex: 1,
+      groupSize: 1,
+      groupLabel: null,
       healing: wanted,
       healingWasted: wanted - healed,
       healRiserTop: frac(hpAfter),
       healRiserBottom: frac(hpAfterDamage),
     });
   });
+
+  groupColumns(columns);
 
   const burstColumnCount = columns.filter((c) => c.kind === 'burst').length;
   const hasDot = result.dot.total > 0;
@@ -302,6 +393,11 @@ export function buildBurndownModel(result: Result): BurndownModel {
       kind: 'dot',
       position: burstColumnCount + 1,
       axisLabel: '+DoT',
+      // The unplaced-healing and +DoT columns never group: neither rode on anything.
+      groupId: null,
+      groupIndex: 1,
+      groupSize: 1,
+      groupLabel: null,
       sourceLabel: result.dot.sources.map((s) => s.label).join(', ') || 'Damage over time',
       damage: result.dot.total,
       hpBefore,
