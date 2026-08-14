@@ -4188,3 +4188,127 @@ Data Dragon cannot settle it either — it exposes no ability ratios at all (SPE
 865 planned instances, every one through `simulate` and then through every assertion the interface
 makes about a Result. **Zero complaints, zero refusals.** One passing matchup would prove almost
 nothing; a champion whose kit produces an awkward shape is what a seam check is for.
+
+---
+
+## 48. The defensive entries, written (2026-08-14)
+
+The six shape fields landed in the contract on 2026-08-14 (§42.5) and nothing had used them.
+`defensive-propose.ts` now populates all six.
+
+| Figure | Before | After |
+|---|---:|---:|
+| confirmed pages / (page, kind) pairs | 226 / 282 | unchanged |
+| **pairs proposed** | 88 | **132** |
+| **pairs refused** | 194 | **150** |
+| **entries written** | 88 | **161** |
+| `shapeFieldsTogether.pairs` | 44 | **0** |
+
+**DEFINITIONS.** A *pair* is one (page, kind) — a page carrying a shield and a heal is one
+confirmed effect and two pairs. An *entry* is one `CuratedDefensiveEffect`. **Before, one pair
+could only ever be one entry, which is exactly why 27 pairs were refused; now one pair is one
+entry PER LEVELING ROW, so 132 pairs produce 161 entries.** The "before" column was not quoted
+from this document — the previous code was re-run over the same page cache and reproduced
+88 / 194 / 44 exactly.
+
+Coverage: 937 pages in the cache, 0 fetch chunks failed.
+
+### 48.1 Released is not written
+
+**42 of the 44 measured pairs were written, as 70 entries — 56 `derived`, 14 `incomplete`.** The
+other two were read and refused, and neither is a parsing failure:
+
+- **Graves E** grants 7–19 armour **per stack** of True Grit, stacking to eight. The entry has no
+  counter for a flat value, so the row is between one and one-eighth of the real grant.
+- **Briar W** heals "5% of her maximum health **plus** a percentage of the damage dealt", and only
+  the percentage has a row. One entry holds one unit.
+
+Both were inside the earlier "released by the six fields" measurement. **A pair a field releases
+still has to parse and still obeys every other rule** — the §42.5 figure sized the FIELD's reach,
+not the number of entries that would result, and the difference is 2.
+
+### 48.2 Gate 1, run by the lead
+
+**161 checked, 161 passed, 0 failed** — run independently over the proposals rather than accepted
+from the area's own report. No entry claims `verified`; no entry carries a `value` without a
+`unit`; no entry records an `unresolvable` fact while claiming better than `incomplete`. Statuses:
+**133 `derived`, 28 `incomplete`, 0 `verified`.**
+
+**Leona W is stored the way §42.5 requires** and this was checked directly: two entries, labels
+"Bonus Armor" and "Bonus Magic Resistance", `grantedStat` `armor` and `magicResist`, both `adds`,
+**neither `both`**.
+
+**8 negative controls** take entries the file really produces, break exactly one field, and require
+gate 1 to catch it — a gate that always passed would print the same line as a gate that works.
+
+**Gate D2** (round trip against the wiki's own rendering, over all 161): **138 matched, 1
+mismatched, 22 nothing-to-compare** — the 22 being immunities and spell shields, which have no row
+and are never counted as passes. The one mismatch is **Trundle R**, where the wiki prints
+`20–30% (+2% per 100 AP)` as two groups and the entry correctly stores one ratio carrying a
+multiplier. **That is a limit of gate D2's group counting, not a data defect**, and it will fire on
+any entry using the multiplier shape. The entry stays `incomplete`, because the rule is that an
+entry gate 2 disagrees with is `incomplete` — the rule was not bent to accommodate a known-good
+value.
+
+### 48.3 Three rows a label rule would have decided wrongly
+
+Storage is gated on a read population (`defensive-shapes.ts`), not on a regular expression. These
+are why:
+
+1. **Vladimir R "Maximum Total Heal"** — "total" fires every over-time rule in this project, and
+   here it means **across every target hit**, delivered at one moment. Stored as `overTime`, a heal
+   that lands inside the burst would sit outside the burst verdict.
+2. **Graves E** and **Briar W**, above.
+
+### 48.4 Two real defects, each swept over the whole confirmed population
+
+- **`kindMismatch` — 14, of which 2 were real.** **Amumu E** and **Galio W** reported "no leveling
+  row of this kind on the page" while their "Physical Damage Reduction" rows sat in plain sight,
+  because the label map filed a typed reduction under plain `damage-reduction`. Both are now routed
+  correctly, and 3 of the new `type-specific-reduction` entries come from it. The other 12 are
+  effects whose value genuinely lives in a sentence.
+- **`labelFactsCarried` — 0 defects, and it caught a bug in the detector itself.** It reported four
+  entries "stating a damage type they do not carry"; the entries were right and the pattern was
+  wrong — it fired on "Bonus **Magic** Resistance", where the word names a resistance. **Measured
+  before the change:** the wide pattern matches 12 rows across the 226 confirmed pages, the
+  narrowed one 6, and all 6 dropped are "… Magic Resistance". No stored value moved and the
+  before/after entry sets are byte-identical.
+
+### 48.5 What still refuses — 150 pairs, by class
+
+**140 are `no-leveling-row`** — the effect's value lives in a sentence rather than a row. That is
+**93% of all remaining refusals and the whole remaining reading burden.** 2 are
+`not-a-defensive-kind` (attacker debuffs, excluded by §40.5). The other 8 are parse failures:
+Kled R and Senna R (an unreadable ratio), Thresh W ("+2 per Soul collected" outside every readable
+block), Udyr W twice (a 6-rank axis against a 5-rank slot, and two additive terms), Ambessa R (an
+unknown stat), plus the two read-and-refused above.
+
+**`needs-granted-stat`, `needs-damage-type` and `unit-not-expressible` now block ZERO pairs.** Four
+pairs carry `shape-not-read`, and **not one is blocked by that alone** — every one also has a parse
+blocker, so reading them today would release nothing.
+
+### 48.6 A MODELLING QUESTION RAISED AND NOT DECIDED: whose defensive effect is it?
+
+**Shen R shields only an ALLY and never Shen, yet it is stored as Shen's defensive entry.** So did
+the previous 88. Braum W is the same shape and was handled locally — its "Ally Bonus Armor" rows
+are dropped and reported, exactly as non-champion rows are, because a 1v1 has one defender and
+storing both would grant Braum the 12% ally value on top of his own 36%.
+
+**The general question is unresolved and is the lead's:** many confirmed effects target "the target
+allied champion". If the defender model is strictly one champion, some of these are not defensive
+entries at all and should not be in the population. It is recorded here rather than decided,
+because deciding it silently would either grant a defender protection they never receive or drop
+one they do.
+
+### 48.7 Three further contract limits, reported rather than worked around
+
+1. **No field for a conditional multiplier.** Malphite W's armour grant is "tripled while Granite
+   Shield is active". The untripled row is stored; the entry is already `incomplete` for a separate
+   reason — the source never says whose armour the percentage reads. Population: 1.
+2. **No field for a cap.** Amumu E reduces each physical instance by a flat 5–13 "capped at 50% of
+   the damage instance". **It was stored rather than refused**, because the cap binds only on
+   instances below about 26 damage and the error is one-directional. That judgement is recorded
+   here rather than buried in the data. Leona W and Fizz P are the same family with no row at all.
+3. **`value` cannot carry a `RatioMultiplier`.** Galio W states "(+4% per 100 AP)" beside a flat
+   percentage, so those terms land on `ratios` instead — which is what puts Trundle R's mismatch on
+   gate D2.
