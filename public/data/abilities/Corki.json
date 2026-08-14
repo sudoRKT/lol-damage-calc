@@ -110,7 +110,7 @@
           "hits": 5
         }
       ],
-      "verification": "derived",
+      "verification": "incomplete",
       "provenance": {
         "source": "Template:Data Corki/Valkyrie",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Corki/Valkyrie",
@@ -118,6 +118,7 @@
         "fetched": "2026-08-14"
       },
       "sourceRevision": 4007589,
+      "notes": "this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). Nobody has yet read the source sentence to establish its full-duration shape, so no figure is published rather than one published in the wrong place.",
       "icon": "CarpetBomb.png"
     },
     {
@@ -156,7 +157,7 @@
           "hits": 16
         }
       ],
-      "verification": "derived",
+      "verification": "incomplete",
       "provenance": {
         "source": "Template:Data Corki/Gatling Gun",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Corki/Gatling%20Gun",
@@ -164,6 +165,7 @@
         "fetched": "2026-08-14"
       },
       "sourceRevision": 3948411,
+      "notes": "this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). Nobody has yet read the source sentence to establish its full-duration shape, so no figure is published rather than one published in the wrong place.",
       "icon": "GGun.png"
     },
     {

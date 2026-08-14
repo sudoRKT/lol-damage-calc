@@ -1002,14 +1002,15 @@
      "hits": 10
     }
    ],
-   "verification": "derived",
+   "verification": "incomplete",
    "provenance": {
     "source": "Template:Data Alistar/Trample",
     "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Alistar/Trample",
     "patch": "16.16.1",
     "fetched": "2026-08-14"
    },
-   "sourceRevision": 4038209
+   "sourceRevision": 4038209,
+   "notes": "this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). Nobody has yet read the source sentence to establish its full-duration shape, so no figure is published rather than one published in the wrong place."
   },
   {
    "champion": "Alistar",
@@ -2830,14 +2831,15 @@
      "hits": 20
     }
    ],
-   "verification": "derived",
+   "verification": "incomplete",
    "provenance": {
     "source": "Template:Data Aurelion Sol/Singularity",
     "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Aurelion%20Sol/Singularity",
     "patch": "16.16.1",
     "fetched": "2026-08-14"
    },
-   "sourceRevision": 4038217
+   "sourceRevision": 4038217,
+   "notes": "this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). Nobody has yet read the source sentence to establish its full-duration shape, so no figure is published rather than one published in the wrong place."
   },
   {
    "champion": "Aurelion Sol",
@@ -5020,14 +5022,15 @@
      "hits": 7
     }
    ],
-   "verification": "derived",
+   "verification": "incomplete",
    "provenance": {
     "source": "Template:Data Cassiopeia/Noxious Blast",
     "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Cassiopeia/Noxious%20Blast",
     "patch": "16.16.1",
     "fetched": "2026-08-14"
    },
-   "sourceRevision": 3906813
+   "sourceRevision": 3906813,
+   "notes": "this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). Nobody has yet read the source sentence to establish its full-duration shape, so no figure is published rather than one published in the wrong place."
   },
   {
    "champion": "Cassiopeia",
@@ -5442,14 +5445,15 @@
      "hits": 5
     }
    ],
-   "verification": "derived",
+   "verification": "incomplete",
    "provenance": {
     "source": "Template:Data Corki/Valkyrie",
     "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Corki/Valkyrie",
     "patch": "16.16.1",
     "fetched": "2026-08-14"
    },
-   "sourceRevision": 4007589
+   "sourceRevision": 4007589,
+   "notes": "this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). Nobody has yet read the source sentence to establish its full-duration shape, so no figure is published rather than one published in the wrong place."
   },
   {
    "champion": "Corki",
@@ -5487,14 +5491,15 @@
      "hits": 16
     }
    ],
-   "verification": "derived",
+   "verification": "incomplete",
    "provenance": {
     "source": "Template:Data Corki/Gatling Gun",
     "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Corki/Gatling%20Gun",
     "patch": "16.16.1",
     "fetched": "2026-08-14"
    },
-   "sourceRevision": 3948411
+   "sourceRevision": 3948411,
+   "notes": "this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). Nobody has yet read the source sentence to establish its full-duration shape, so no figure is published rather than one published in the wrong place."
   },
   {
    "champion": "Corki",
@@ -6122,7 +6127,8 @@
      "field": "components[1].ratios[0].owner (bonusHP)",
      "why": "the source names bonusHP and never says whose, and no other source states it"
     }
-   ]
+   ],
+   "notes": "this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). Nobody has yet read the source sentence to establish its full-duration shape, so no figure is published rather than one published in the wrong place."
   },
   {
    "champion": "Dr. Mundo",
@@ -7510,14 +7516,15 @@
      "hits": 20
     }
    ],
-   "verification": "derived",
+   "verification": "incomplete",
    "provenance": {
     "source": "Template:Data Fiddlesticks/Crowstorm",
     "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Fiddlesticks/Crowstorm",
     "patch": "16.16.1",
     "fetched": "2026-08-14"
    },
-   "sourceRevision": 4004933
+   "sourceRevision": 4004933,
+   "notes": "this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). Nobody has yet read the source sentence to establish its full-duration shape, so no figure is published rather than one published in the wrong place."
   },
   {
    "champion": "Fiora",
@@ -7737,7 +7744,10 @@
      "relation": {
       "kind": "adds"
      },
-     "hits": 6
+     "hits": 6,
+     "overTime": {
+      "sourceSays": "the ability's own notes call it \"persistent damage ... on the damage over time effect\""
+     }
     },
     {
      "id": "active-magic-damage",
@@ -9533,14 +9543,15 @@
      "hits": 5
     }
    ],
-   "verification": "derived",
+   "verification": "incomplete",
    "provenance": {
     "source": "Template:Data Hecarim/Spirit of Dread",
     "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Hecarim/Spirit%20of%20Dread",
     "patch": "16.16.1",
     "fetched": "2026-08-14"
    },
-   "sourceRevision": 3725548
+   "sourceRevision": 3725548,
+   "notes": "this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). Nobody has yet read the source sentence to establish its full-duration shape, so no figure is published rather than one published in the wrong place."
   },
   {
    "champion": "Hecarim",
@@ -10143,14 +10154,15 @@
      "hits": 10
     }
    ],
-   "verification": "derived",
+   "verification": "incomplete",
    "provenance": {
     "source": "Template:Data Hwei/Molten Fissure",
     "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Hwei/Molten%20Fissure",
     "patch": "16.16.1",
     "fetched": "2026-08-14"
    },
-   "sourceRevision": 4026407
+   "sourceRevision": 4026407,
+   "notes": "this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). Nobody has yet read the source sentence to establish its full-duration shape, so no figure is published rather than one published in the wrong place."
   },
   {
    "champion": "Hwei",
@@ -11883,14 +11895,15 @@
      "hits": 4
     }
    ],
-   "verification": "derived",
+   "verification": "incomplete",
    "provenance": {
     "source": "Template:Data Jayce/Lightning Field",
     "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Jayce/Lightning%20Field",
     "patch": "16.16.1",
     "fetched": "2026-08-14"
    },
-   "sourceRevision": 3948933
+   "sourceRevision": 3948933,
+   "notes": "this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). Nobody has yet read the source sentence to establish its full-duration shape, so no figure is published rather than one published in the wrong place."
   },
   {
    "champion": "Jayce",
@@ -18447,14 +18460,15 @@
      "hits": 16
     }
    ],
-   "verification": "derived",
+   "verification": "incomplete",
    "provenance": {
     "source": "Template:Data Malzahar/Malefic Visions",
     "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Malzahar/Malefic%20Visions",
     "patch": "16.16.1",
     "fetched": "2026-08-14"
    },
-   "sourceRevision": 4015185
+   "sourceRevision": 4015185,
+   "notes": "this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). Nobody has yet read the source sentence to establish its full-duration shape, so no figure is published rather than one published in the wrong place."
   },
   {
    "champion": "Maokai",
@@ -19352,14 +19366,15 @@
      "hits": 8
     }
    ],
-   "verification": "derived",
+   "verification": "incomplete",
    "provenance": {
     "source": "Template:Data Miss Fortune/Make It Rain",
     "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Miss%20Fortune/Make%20It%20Rain",
     "patch": "16.16.1",
     "fetched": "2026-08-14"
    },
-   "sourceRevision": 3936384
+   "sourceRevision": 3936384,
+   "notes": "this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). Nobody has yet read the source sentence to establish its full-duration shape, so no figure is published rather than one published in the wrong place."
   },
   {
    "champion": "Miss Fortune",
@@ -21088,14 +21103,15 @@
      "hits": 4
     }
    ],
-   "verification": "derived",
+   "verification": "incomplete",
    "provenance": {
     "source": "Template:Data Nidalee/Bushwhack",
     "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Nidalee/Bushwhack",
     "patch": "16.16.1",
     "fetched": "2026-08-14"
    },
-   "sourceRevision": 4015217
+   "sourceRevision": 4015217,
+   "notes": "this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). Nobody has yet read the source sentence to establish its full-duration shape, so no figure is published rather than one published in the wrong place."
   },
   {
    "champion": "Nidalee",
@@ -21384,7 +21400,10 @@
      "relation": {
       "kind": "adds"
      },
-     "hits": 4
+     "hits": 4,
+     "overTime": {
+      "sourceSays": "the page states the figure per tick across the channel and calls it damage over time"
+     }
     },
     {
      "id": "burst-physical-damage",
@@ -21563,14 +21582,15 @@
      "hits": 4
     }
    ],
-   "verification": "derived",
+   "verification": "incomplete",
    "provenance": {
     "source": "Template:Data Nocturne/Unspeakable Horror",
     "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Nocturne/Unspeakable%20Horror",
     "patch": "16.16.1",
     "fetched": "2026-08-14"
    },
-   "sourceRevision": 4015219
+   "sourceRevision": 4015219,
+   "notes": "this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). Nobody has yet read the source sentence to establish its full-duration shape, so no figure is published rather than one published in the wrong place."
   },
   {
    "champion": "Nocturne",
@@ -24445,14 +24465,15 @@
      "hits": 8
     }
    ],
-   "verification": "derived",
+   "verification": "incomplete",
    "provenance": {
     "source": "Template:Data Rell/Magnet Storm",
     "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Rell/Magnet%20Storm",
     "patch": "16.16.1",
     "fetched": "2026-08-14"
    },
-   "sourceRevision": 4008010
+   "sourceRevision": 4008010,
+   "notes": "this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). Nobody has yet read the source sentence to establish its full-duration shape, so no figure is published rather than one published in the wrong place."
   },
   {
    "champion": "Renata Glasc",
@@ -24799,14 +24820,15 @@
      "hits": 30
     }
    ],
-   "verification": "derived",
+   "verification": "incomplete",
    "provenance": {
     "source": "Template:Data Renekton/Dominus",
     "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Renekton/Dominus",
     "patch": "16.16.1",
     "fetched": "2026-08-14"
    },
-   "sourceRevision": 3963895
+   "sourceRevision": 3963895,
+   "notes": "this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). Nobody has yet read the source sentence to establish its full-duration shape, so no figure is published rather than one published in the wrong place."
   },
   {
    "champion": "Rengar",
@@ -30567,7 +30589,10 @@
      "relation": {
       "kind": "adds"
      },
-     "hits": 4
+     "hits": 4,
+     "overTime": {
+      "sourceSays": "the ability's own notes say it \"deals proc persistent damage (damage over time)\""
+     }
     }
    ],
    "verification": "derived",
@@ -30610,7 +30635,10 @@
      "relation": {
       "kind": "adds"
      },
-     "hits": 4
+     "hits": 4,
+     "overTime": {
+      "sourceSays": "the trap's damage is stated per tick over a duration, and the page calls it damage over time"
+     }
     }
    ],
    "verification": "incomplete",
@@ -31917,14 +31945,15 @@
      "hits": 8
     }
    ],
-   "verification": "derived",
+   "verification": "incomplete",
    "provenance": {
     "source": "Template:Data Udyr/Wingborne Storm",
     "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Udyr/Wingborne%20Storm",
     "patch": "16.16.1",
     "fetched": "2026-08-14"
    },
-   "sourceRevision": 4008208
+   "sourceRevision": 4008208,
+   "notes": "this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). Nobody has yet read the source sentence to establish its full-duration shape, so no figure is published rather than one published in the wrong place."
   },
   {
    "champion": "Urgot",
@@ -33977,7 +34006,8 @@
      "field": "components[0].ratios[0].owner (bonusHP)",
      "why": "the source names bonusHP and never says whose, and no other source states it"
     }
-   ]
+   ],
+   "notes": "this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). Nobody has yet read the source sentence to establish its full-duration shape, so no figure is published rather than one published in the wrong place."
   },
   {
    "champion": "Vladimir",
@@ -36177,14 +36207,15 @@
      "hits": 4
     }
    ],
-   "verification": "derived",
+   "verification": "incomplete",
    "provenance": {
     "source": "Template:Data Yunara/Arc of Judgment",
     "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Yunara/Arc%20of%20Judgment",
     "patch": "16.16.1",
     "fetched": "2026-08-14"
    },
-   "sourceRevision": 4008650
+   "sourceRevision": 4008650,
+   "notes": "this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). Nobody has yet read the source sentence to establish its full-duration shape, so no figure is published rather than one published in the wrong place."
   },
   {
    "champion": "Yunara",

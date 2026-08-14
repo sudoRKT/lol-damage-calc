@@ -62,7 +62,7 @@
           "hits": 7
         }
       ],
-      "verification": "derived",
+      "verification": "incomplete",
       "provenance": {
         "source": "Template:Data Cassiopeia/Noxious Blast",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Cassiopeia/Noxious%20Blast",
@@ -70,6 +70,7 @@
         "fetched": "2026-08-14"
       },
       "sourceRevision": 3906813,
+      "notes": "this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). Nobody has yet read the source sentence to establish its full-duration shape, so no figure is published rather than one published in the wrong place.",
       "icon": "CassiopeiaQ.png"
     },
     {

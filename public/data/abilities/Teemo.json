@@ -144,7 +144,10 @@
           "relation": {
             "kind": "adds"
           },
-          "hits": 4
+          "hits": 4,
+          "overTime": {
+            "sourceSays": "the ability's own notes say it \"deals proc persistent damage (damage over time)\""
+          }
         }
       ],
       "verification": "derived",
@@ -188,7 +191,10 @@
           "relation": {
             "kind": "adds"
           },
-          "hits": 4
+          "hits": 4,
+          "overTime": {
+            "sourceSays": "the trap's damage is stated per tick over a duration, and the page calls it damage over time"
+          }
         }
       ],
       "verification": "incomplete",

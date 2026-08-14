@@ -178,7 +178,7 @@
           "hits": 4
         }
       ],
-      "verification": "derived",
+      "verification": "incomplete",
       "provenance": {
         "source": "Template:Data Yunara/Arc of Judgment",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Yunara/Arc%20of%20Judgment",
@@ -186,6 +186,7 @@
         "fetched": "2026-08-14"
       },
       "sourceRevision": 4008650,
+      "notes": "this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). Nobody has yet read the source sentence to establish its full-duration shape, so no figure is published rather than one published in the wrong place.",
       "icon": "YunaraW.png"
     },
     {

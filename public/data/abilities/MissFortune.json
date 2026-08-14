@@ -163,7 +163,7 @@
           "hits": 8
         }
       ],
-      "verification": "derived",
+      "verification": "incomplete",
       "provenance": {
         "source": "Template:Data Miss Fortune/Make It Rain",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Miss%20Fortune/Make%20It%20Rain",
@@ -171,6 +171,7 @@
         "fetched": "2026-08-14"
       },
       "sourceRevision": 3936384,
+      "notes": "this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). Nobody has yet read the source sentence to establish its full-duration shape, so no figure is published rather than one published in the wrong place.",
       "icon": "MissFortuneScattershot.png"
     },
     {

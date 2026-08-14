@@ -201,24 +201,30 @@ describe('ability files: the figures are the harvester’s, unaltered', () => {
     expect(blitz.unresolvable![0]!.why).toMatch(/never says whose/);
   });
 
-  it('the published verification statuses reproduce the roster measurement exactly', () => {
-    // DEFINITION: each entry's own status, over the 937 published entries. These are the same
-    // four figures `verification/measurements.json` records for the full-roster run, so a
-    // disagreement means the published files and the measured roster have drifted apart.
+  it('the published verification statuses reproduce the OVERRIDE FILE exactly', () => {
+    // DEFINITION: each entry's own status, over the 937 published entries — the 919 in the
+    // override file plus the 18 carried refusals, which are 'incomplete' by construction.
+    //
+    // THIS COMPARED AGAINST `verification/measurements.json` UNTIL 2026-08-14, and that was the
+    // WRONG AUTHORITY — it measures the HARVEST, a stage earlier than the merge. When the merge
+    // withdrew 17 per-tick entries to incomplete (DATA-SOURCES §58), the harvest measurement
+    // stayed correct about the harvest and stopped describing what is published. The two are
+    // different questions and had been sharing one assertion.
+    //
+    // The override file is what the publish step actually reads, so it is what this compares to.
+    // `document-claims.test.ts` still holds the documents to `measurements.json`, which is the
+    // right authority for a statement about the harvest.
     const counts: Record<string, number> = {};
     for (const file of files.values()) {
       for (const a of file.abilities) counts[a.verification] = (counts[a.verification] ?? 0) + 1;
     }
-    const measured = readJson<{ verification: Record<string, number> }>(
-      'verification',
-      'measurements.json',
-    ).verification;
-    expect(counts).toEqual({
-      verified: measured.verified,
-      derived: measured.derived,
-      incomplete: measured.incomplete,
-      'no-damage': measured.noDamage,
-    });
+    const fromOverride: Record<string, number> = {};
+    for (const a of overrideFile.abilities) {
+      fromOverride[a.verification] = (fromOverride[a.verification] ?? 0) + 1;
+    }
+    // The carried refusals are incomplete by construction and are not in the override file.
+    fromOverride['incomplete'] = (fromOverride['incomplete'] ?? 0) + refusedKeys.size;
+    expect(counts).toEqual(fromOverride);
   });
 
   it('every file warns that a derived figure is not a settled one', () => {

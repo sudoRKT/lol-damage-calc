@@ -178,7 +178,10 @@
           "relation": {
             "kind": "adds"
           },
-          "hits": 4
+          "hits": 4,
+          "overTime": {
+            "sourceSays": "the page states the figure per tick across the channel and calls it damage over time"
+          }
         },
         {
           "id": "burst-physical-damage",

@@ -99,7 +99,10 @@
           "relation": {
             "kind": "adds"
           },
-          "hits": 6
+          "hits": 6,
+          "overTime": {
+            "sourceSays": "the ability's own notes call it \"persistent damage ... on the damage over time effect\""
+          }
         },
         {
           "id": "active-magic-damage",
