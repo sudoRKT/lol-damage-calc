@@ -305,8 +305,13 @@ const NOT_MODELLED: Record<string, string> = {
  * pass `"R — Final Spark"`: the fallback exists for steps where nothing was harvested and there
  * is no name to give, not as the normal case.
  */
-function pendingInstance(step: ComboStep, note: string, label?: string): PlannedInstance {
-  const reason: IncompleteReason = { kind: 'pending', note };
+function pendingInstance(
+  step: ComboStep,
+  note: string,
+  label?: string,
+  cause?: IncompleteReason['cause'],
+): PlannedInstance {
+  const reason: IncompleteReason = { kind: 'pending', note, ...(cause ? { cause } : {}) };
   return {
     stepId: step.id,
     sourceLabel: label ?? `${step.kind} — ${step.ref}`,
@@ -433,7 +438,10 @@ function planStep(
   // Rank 0 is a statement the SCENARIO makes, not a property of the ability. If a scenario says
   // R is rank 0, the reader set it to 0.
   if (step.ref !== 'P' && rank < 1) {
-    return pendingInstance(step, unlearnedNote(ability.slot), label);
+    // `cause: 'unlearned'` is what lets the interface say "you have not learned this" rather
+    // than "we could not model this". Without it the only way to tell the two apart is to match
+    // on the prose above, and the product ends up apologising for the reader's own build.
+    return pendingInstance(step, unlearnedNote(ability.slot), label, 'unlearned');
   }
 
   return {

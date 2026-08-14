@@ -48,6 +48,25 @@ export interface IncompleteReason {
   /** Present when kind is 'pending'. Plain English, e.g. "the damage is stated in prose that
    *  has not been read yet". */
   note?: string;
+  /**
+   * WHOSE GAP THIS IS. Added 2026-08-14.
+   *
+   * `kind` says what the FUTURE holds — pending will improve, permanent will not. It says nothing
+   * about whose decision caused the exclusion, and those are different questions with different
+   * answers for the reader.
+   *
+   * Every reason before this one described something MISSING FROM OUR DATA. An ability the user
+   * has not put a point in is not that: nothing is missing, no work will change it, and the
+   * remedy is one keystroke in the reader's own hands. Without this field the interface can only
+   * tell the two apart by matching on prose, and it was apologising for the reader's own build —
+   * "at least one ability in this combo could not be modelled" when the truth is that they chose
+   * not to learn it.
+   *
+   * ABSENT means "a gap in what this product knows", which is every other reason and stays the
+   * default. Optional and additive on purpose: no existing producer, consumer or exhaustive
+   * switch changes.
+   */
+  cause?: 'unlearned';
 }
 
 export interface DamageByType {

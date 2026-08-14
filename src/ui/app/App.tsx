@@ -46,6 +46,7 @@ import type {
   Scenario,
   VerificationStatus,
 } from '../../types';
+import type { Result } from '../../types/result';
 import { simulate, type Catalogue, type SimulationResult } from '../../engine';
 import { CURRENT_URL_VERSION } from '../../url';
 import { ChampionConfigPanel } from '../config';
@@ -405,7 +406,7 @@ export function App({
               status={simulation.result.verificationSummary}
               spokenSubject="Least-evidenced ability in this combo"
             />
-            <p className="app__resultnote">{summaryNote(simulation.result.verificationSummary)}</p>
+            <p className="app__resultnote">{summaryNote(simulation.result.verificationSummary, simulation.result.incompleteContributors)}</p>
           </section>
 
           <HpBurndown result={simulation.result} />
@@ -453,14 +454,50 @@ export function App({
  * the reader needs to be told that damage is MISSING from the total, not that the evidence is
  * normal. DESIGN.md §6 and SPECIFICATION §8 both turn on the same point: *derived* must never read
  * as a shortfall, and *incomplete* must never read as ordinary.
+ *
+ * ═══ AND IT MUST NOT APOLOGISE FOR THE READER'S OWN BUILD (2026-08-14) ═══
+ *
+ * `incomplete` used to print one sentence: "At least one ability in this combo could not be
+ * modelled." That became false the moment an unlearned ability started being excluded. A reader
+ * who chose not to put a point in their ultimate was being told the PRODUCT had failed to model
+ * it — the product apologising for their decision, which is both wrong and quietly
+ * confidence-destroying about everything else on the page.
+ *
+ * The two are told apart by `IncompleteReason.cause`, not by matching on prose. A combo can
+ * contain both, and then it says both: they are different facts and collapsing them into one
+ * sentence loses whichever the reader needed.
  */
-export function summaryNote(status: VerificationStatus): string {
+export function summaryNote(
+  status: VerificationStatus,
+  excluded: Result['incompleteContributors'] = [],
+): string {
   switch (status) {
-    case 'incomplete':
+    case 'incomplete': {
+      const unlearned = excluded.filter((c) => c.reason.cause === 'unlearned');
+      const unmodelled = excluded.filter((c) => c.reason.cause !== 'unlearned');
+
+      // Said first when it is the only cause, because it is the reader's to fix and is not a
+      // shortcoming of the data.
+      const yours =
+        `${unlearned.length === 1 ? 'One ability in this combo has' : `${unlearned.length} abilities in this combo have`} ` +
+        'no points in it yet, so it deals nothing. That is your build, not a gap in our data — ' +
+        'raise its rank to include it.';
+      const ours =
+        `${unmodelled.length === 1 ? 'One ability' : `${unmodelled.length} abilities`} in this combo ` +
+        'could not be modelled. Each contributes no damage, is named below with the reason, and ' +
+        'is excluded from the total.';
+
+      if (unlearned.length > 0 && unmodelled.length === 0) return yours;
+      if (unmodelled.length > 0 && unlearned.length === 0) return ours;
+      if (unlearned.length > 0 && unmodelled.length > 0) return `${yours} Separately, ${ours.charAt(0).toLowerCase()}${ours.slice(1)}`;
+
+      // `incomplete` with nothing in the list — the status came from somewhere this list does not
+      // cover. Say the honest general thing rather than name a count that is not there.
       return (
         'At least one ability in this combo could not be modelled. It contributes no damage, it ' +
         'is named below with the reason, and the total excludes it.'
       );
+    }
     case 'no-damage':
       return 'Nothing in this combo deals damage, so there is no figure to have evidence about.';
     case 'verified':
