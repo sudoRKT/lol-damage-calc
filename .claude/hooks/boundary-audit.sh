@@ -214,10 +214,38 @@ case "$agent" in
     ;;
 esac
 
-# 2. Enforcement by ledger: first agent to write an area owns it, exclusively and for good.
+# 2. Enforcement by ledger: first agent to write an area owns it, exclusively.
+#
+# STALE CLAIMS ARE EXPIRED, ADDED 2026-08-14 AFTER IT BIT. The ledger used to hold a claim
+# FOREVER, which is right within one fan-out and wrong across sessions — and on 2026-08-14 two
+# live agents were refused their own areas by claims left behind on 12 and 13 August. The hook's
+# own comment had predicted exactly this and nothing acted on it.
+#
+# A claim older than LEDGER_TTL_HOURS is dropped on sight. It is a TIME rule rather than a
+# liveness check because this hook cannot ask whether a process is still running, and guessing
+# that it is not would be the wrong kind of certainty. 12 hours is far longer than any fan-out
+# this project has run and far shorter than the gap between sessions.
+#
+# THIS DOES NOT WEAKEN THE ONE-WRITER RULE. Two agents running at the same time are minutes
+# apart, never hours, so no live claim is ever expired by it.
+LEDGER_TTL_HOURS="${LEDGER_TTL_HOURS:-12}"
 touch "$ledger"
 exec 9>"$ledger.lock"
 flock 9 2>/dev/null || true
+
+cutoff="$(date -d "-${LEDGER_TTL_HOURS} hours" -Is 2>/dev/null || true)"
+if [ -n "$cutoff" ] && [ -s "$ledger" ]; then
+  fresh="$(awk -F'\t' -v c="$cutoff" '$3 >= c' "$ledger" || true)"
+  dropped="$(awk -F'\t' -v c="$cutoff" '$3 < c { print $1 }' "$ledger" || true)"
+  if [ -n "$dropped" ]; then
+    printf '%s' "$fresh" >"$ledger"
+    [ -n "$fresh" ] && printf '\n' >>"$ledger"
+    for a in $dropped; do
+      printf '%s\tEXPIRE\t-\t-\t-\t%s\tclaim older than %sh, released\n' \
+        "$(date -Is)" "$a" "$LEDGER_TTL_HOURS" >>"$log"
+    done
+  fi
+fi
 
 owner="$(awk -F'\t' -v a="$area" '$1 == a { print $2 }' "$ledger" | head -1)"
 mine="$(awk -F'\t' -v i="$aid" '$2 == i { print $1 }' "$ledger" | head -1)"
