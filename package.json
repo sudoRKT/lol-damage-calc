@@ -12,7 +12,9 @@
     "test": "vitest run --passWithNoTests",
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit",
-    "build:coverage": "node scripts/site/build-coverage.ts"
+    "build:coverage": "node scripts/site/build-coverage.ts",
+    "patch:check": "node scripts/fetch/patch-pipeline.ts --dry-run",
+    "patch:apply": "node scripts/fetch/patch-pipeline.ts"
   },
   "dependencies": {
     "@fontsource/ibm-plex-sans": "^5.3.0",

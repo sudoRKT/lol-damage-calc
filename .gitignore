@@ -22,3 +22,15 @@ dist/
 # Draft curated entries produced by scripts/extract. Proposals only — the real
 # curated file is /curated/, which no script may write.
 build/
+
+# The patch pipeline's state, split by what each file IS (SPECIFICATION §9).
+#
+# snapshot.json is COMMITTED and is not listed here. It is the baseline the deterministic diff
+# compares against, so without it a run has nothing to compare to — and its movement inside a
+# commit is precisely the record of what a patch changed, which is what §9's "every data state is
+# recoverable through version history" asks for.
+#
+# These two are the OUTPUT of a run, not state. §9 says the pipeline's output is a pull request;
+# they belong in that pull request, not in the working tree of everyone who runs a dry run.
+scripts/fetch/state/review-queue.json
+scripts/fetch/state/last-diff.json

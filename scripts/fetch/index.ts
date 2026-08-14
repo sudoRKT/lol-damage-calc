@@ -10,7 +10,8 @@ import { mkdir, rm, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import type { AbilitySlot, Provenance } from '../../src/types/data.ts';
+import type { AbilitySlot, Champion, Item, Provenance, Rune } from '../../src/types/data.ts';
+import type { StatOverride } from './overrides.ts';
 import {
   assertEveryChampionStatesAResource,
   assertOfficialWiki,
@@ -65,7 +66,29 @@ interface DataDragonChampionSummary {
   >;
 }
 
-export async function run(): Promise<void> {
+/**
+ * Everything one fetch produces, before anything is written to disk.
+ *
+ * The build and the write are separate so the patch pipeline (SPECIFICATION §9) can run its
+ * deterministic diff and its validation bounds against a candidate BEFORE it lands in
+ * public/data — a bound that fires after the file is written has not halted anything. Running
+ * `node scripts/fetch/index.ts` still does both, in order, and behaves exactly as before.
+ */
+export interface FetchPayload {
+  patch: string;
+  fetched: string;
+  champions: Champion[];
+  items: Item[];
+  runes: Rune[];
+  trees: ReturnType<typeof parseRunes>['trees'];
+  overrides: StatOverride[];
+  contestedApinames: string[];
+  wikiHighestChangesPatch: string | null;
+  manifest: Record<string, unknown>;
+  sources: Record<string, string>;
+}
+
+export async function buildPayload(): Promise<FetchPayload> {
   const fetched = new Date().toISOString();
 
   // 1. Patch. The user-facing patch always comes from versions.json — never from the
@@ -205,27 +228,17 @@ export async function run(): Promise<void> {
   const { runes, trees } = parseRunes(rawRunes, runeIconUrl);
   console.log(`runes: ${trees.length} trees, ${runes.length} runes`);
 
-  // 6. Write. The per-champion split is regenerated from scratch each run so a champion
-  //    removed upstream cannot linger as a stale file.
-  await mkdir(OUT_DIR, { recursive: true });
-  await rm(join(OUT_DIR, 'champions'), { recursive: true, force: true });
+  // 6. Assemble the manifest. Nothing is written yet — see FetchPayload.
+  const files: string[] = ['champions.json', 'items.json', 'runes.json', 'overrides.json'];
+  for (const champion of champions) files.push(`champions/${champion.apiname}.json`);
 
-  const files: string[] = [];
-  files.push('champions.json');
-  await writeJson('champions.json', champions);
-  await writeJson('items.json', items);
-  files.push('items.json');
-  await writeJson('runes.json', { trees, runes });
-  files.push('runes.json');
-  // The override ledger is a sidecar rather than a field on Champion, because the Champion
-  // shape in src/types/ is frozen and lead-owned. The interface joins it by apiname.
-  await writeJson('overrides.json', overrides);
-  files.push('overrides.json');
-  for (const champion of champions) {
-    const relative = `champions/${champion.apiname}.json`;
-    await writeJson(relative, champion);
-    files.push(relative);
-  }
+  const sourceUrls: Record<string, string> = {
+    patch: VERSIONS_URL,
+    championStats: WIKI_CHAMPION_MODULE_URL,
+    championArt: ddragonChampionsUrl(patch),
+    items: ddragonItemsUrl(patch),
+    runes: ddragonRunesUrl(patch),
+  };
 
   const manifest = {
     patch,
@@ -258,13 +271,7 @@ export async function run(): Promise<void> {
       documentedIn: 'DATA-SOURCES.md §3 and §15',
     },
     files: [...files, 'manifest.json'],
-    sources: {
-      patch: VERSIONS_URL,
-      championStats: WIKI_CHAMPION_MODULE_URL,
-      championArt: ddragonChampionsUrl(patch),
-      items: ddragonItemsUrl(patch),
-      runes: ddragonRunesUrl(patch),
-    },
+    sources: sourceUrls,
     // Champion art is not part of the frozen Champion contract, so the interface builds
     // portrait URLs itself: <championPortraitBase>/<apiname>.png. Item and rune icons are
     // already absolute URLs inside their records.
@@ -286,9 +293,47 @@ export async function run(): Promise<void> {
       'Ability damage, item passive values, rune values and stat shards are NOT in these files — they are curated. DATA-SOURCES §9.',
     ],
   };
-  const manifestBytes = await writeJson('manifest.json', manifest);
 
-  console.log(`wrote ${files.length + 1} files to public/data (manifest ${manifestBytes} bytes)`);
+  return {
+    patch,
+    fetched,
+    champions,
+    items,
+    runes,
+    trees,
+    overrides,
+    contestedApinames,
+    wikiHighestChangesPatch: highest?.raw ?? null,
+    manifest,
+    sources: sourceUrls,
+  };
+}
+
+/**
+ * Write a built payload to public/data. The per-champion split is regenerated from scratch
+ * each run so a champion removed upstream cannot linger as a stale file.
+ */
+export async function writePayload(payload: FetchPayload): Promise<void> {
+  await mkdir(OUT_DIR, { recursive: true });
+  await rm(join(OUT_DIR, 'champions'), { recursive: true, force: true });
+
+  await writeJson('champions.json', payload.champions);
+  await writeJson('items.json', payload.items);
+  await writeJson('runes.json', { trees: payload.trees, runes: payload.runes });
+  // The override ledger is a sidecar rather than a field on Champion, because the Champion
+  // shape in src/types/ is frozen and lead-owned. The interface joins it by apiname.
+  await writeJson('overrides.json', payload.overrides);
+  for (const champion of payload.champions) {
+    await writeJson(`champions/${champion.apiname}.json`, champion);
+  }
+  const manifestBytes = await writeJson('manifest.json', payload.manifest);
+
+  const fileCount = (payload.manifest['files'] as string[] | undefined)?.length ?? 0;
+  console.log(`wrote ${fileCount} files to public/data (manifest ${manifestBytes} bytes)`);
+}
+
+export async function run(): Promise<void> {
+  await writePayload(await buildPayload());
 }
 
 // Only run when executed directly, so tests can import this module without firing the
