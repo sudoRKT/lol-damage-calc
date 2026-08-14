@@ -239,11 +239,12 @@ deleted — it is a trade, not a principle.
 
 ## 4a. Layout measures — lengths that are not spacing (added 2026-08-14)
 
-Three lengths in this product are neither a spacing step nor a type size: how tall the burndown's
-plot area is, how tall an open picker list may grow before it scrolls, and how narrow a column in
-a responsive list grid may become before the grid drops a column. This file defined none of them,
-so each was **composed inline from the spacing scale** — `calc(var(--space-8) * 5)` and the like —
-by whichever component needed it, each with a comment saying it was raised rather than settled.
+Some lengths in this product are neither a spacing step nor a type size: how tall the burndown's
+plot area is, how tall an open picker list may grow before it scrolls, how wide a popover may grow
+before its text wraps, and how narrow a column in a responsive list grid may become before the grid
+drops a column. This file defined none of them, so each was **composed inline from the spacing
+scale** — `calc(var(--space-8) * 5)` and the like — by whichever component needed it, each with a
+comment saying it was raised rather than settled.
 
 **Three occurrences of the same construction is a token.** They are named here.
 
@@ -251,9 +252,18 @@ by whichever component needed it, each with a comment saying it was raised rathe
 |---|---:|---|---|
 | `--measure-plot-block` | 320px | `--space-8` × 5 | The height of the burndown's plot area (§7) |
 | `--measure-popover-max-block` | 320px | `--space-8` × 5 | The height at which an open picker list starts to scroll (§5) |
+| `--measure-popover-max-inline` | 256px | `--space-8` × 4 | The width at which a popover stops growing and its text wraps — the burndown's resistance-math popover (§7) |
 | `--measure-list-column-min` | 256px | `--space-8` × 4 | The narrowest a column may be in a responsive list grid before the grid drops to fewer columns |
 
-Two rules about them, both binding:
+**A FOURTH WAS FOUND AFTER THE FIRST THREE WERE NAMED, and it is the reason the rule is worth
+stating rather than just applying.** `--measure-popover-max-inline` was still composed inline in
+`burndown.css` when this section was first written; a search for the construction turned it up
+immediately afterwards. Two of these measures share a value with another (320px twice, 256px
+twice) and **that is not a reason to merge them**: a popover's maximum width and a grid column's
+minimum width are different facts that happen to agree today, and collapsing them would mean one
+could never move without the other.
+
+Three rules about them, all binding:
 
 - **They are derived from the spacing scale and stay on it.** A new layout measure is
   `--space-8 × n`, never an arbitrary number. That is what keeps them in the same system as
@@ -261,6 +271,8 @@ Two rules about them, both binding:
 - **A layout measure is not a spacing step and never substitutes for one.** Do not use
   `--measure-plot-block` as a margin, and do not use `--space-8` as a plot height now that a
   name for it exists.
+- **Two measures that happen to share a value are still two measures.** Name them for what they
+  govern, never for how big they are.
 
 `--measure-list-column-min` is what makes a list grid responsive without a breakpoint: the item
 pool is two columns at a 1440px desktop, four when its panel goes full width, and one on a phone,

@@ -497,7 +497,13 @@
   box-shadow: var(--elev-2);
   padding: var(--space-3);
   inline-size: max-content;
-  max-inline-size: calc(var(--space-8) * 4);
+  /* This was the FOURTH inline composition of the spacing scale, and it was still here after the
+     first three were named — found by searching for the construction rather than by remembering
+     it. DESIGN.md §4a now calls it `--measure-popover-max-inline`, at the same value and derived
+     the same way. It shares its value with `--measure-list-column-min` and is deliberately a
+     separate token: a popover's maximum width and a grid column's minimum width are different
+     facts that happen to agree today. */
+  max-inline-size: var(--measure-popover-max-inline);
   animation: burn-fade-in 140ms ease-out;
 }
 

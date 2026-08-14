@@ -103,7 +103,11 @@
    * used as a spacing step and a spacing step is never used as a layout measure. */
   --measure-plot-block: 320px; /* --space-8 x 5 — the burndown plot area's height */
   --measure-popover-max-block: 320px; /* --space-8 x 5 — where an open picker starts to scroll */
+  --measure-popover-max-inline: 256px; /* --space-8 x 4 — where a popover stops widening */
   --measure-list-column-min: 256px; /* --space-8 x 4 — narrowest column in a responsive list */
+  /* Two pairs above share a value. They are NOT merged: a popover's maximum width and a grid
+   * column's minimum width are different facts that agree today, and one must be able to move
+   * without dragging the other with it. DESIGN.md §4a states this as a rule. */
 
   /* ---- Radius (nothing exceeds 4px — this is an instrument) ---- */
   --radius-cell: 0px; /* table cells, the plot grid */
