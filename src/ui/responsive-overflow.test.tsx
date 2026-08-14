@@ -54,6 +54,7 @@ import { dirname, join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { MOCK_RESULT } from '../types';
 import { InstanceBreakdown } from './breakdown';
+import { DamageCurve, MOCK_RESISTANCE_SERIES } from './curves';
 import { HpBurndown } from './burndown';
 import { StatBlockPanel } from './stats';
 import { SCROLL_REGION_SUFFIX } from './primitives';
@@ -106,6 +107,11 @@ function rules(css: string): Array<{ selector: string; body: string }> {
 const FILES_WITH_TABLES = [
   'breakdown/InstanceBreakdown.tsx',
   'burndown/HpBurndown.tsx',
+  // Added 2026-08-14 with the curves area. THIS LIST IS THE TRIPWIRE WORKING: a new table
+  // arrived and the sweep went red naming the file, which is exactly what it is for. It is a
+  // lead-only file, so the agent that wrote the table reported the three lines it needed
+  // instead of editing it — the correct move, and the second area to be held up by it that day.
+  'curves/DamageCurve.tsx',
   'slice/VerticalSlice.tsx',
   'stats/StatBlockPanel.tsx',
 ];
@@ -132,6 +138,11 @@ const FIXTURES: Fixture[] = [
     id: 'InstanceBreakdown (canonical mock — per-instance table + the DoT table)',
     node: <InstanceBreakdown result={MOCK_RESULT} />,
     tables: 2,
+  },
+  {
+    id: 'DamageCurve (mock resistance sweep)',
+    node: <DamageCurve series={MOCK_RESISTANCE_SERIES} />,
+    tables: 1,
   },
   {
     id: 'HpBurndown (canonical mock — the two-verdict table)',
@@ -163,6 +174,7 @@ describe('responsive-overflow/population', () => {
     expect(rendered).toEqual([
       'breakdown/InstanceBreakdown.tsx',
       'burndown/HpBurndown.tsx',
+      'curves/DamageCurve.tsx',
       'stats/StatBlockPanel.tsx',
     ]);
     expect(FIXTURES).toHaveLength(rendered.length);
@@ -179,7 +191,7 @@ describe('responsive-overflow/population', () => {
       );
       tables += here;
     }
-    expect(tables).toBe(4);
+    expect(tables).toBe(5);
   });
 
   it('is looking at a non-empty stylesheet surface', () => {

@@ -1,0 +1,27 @@
+/* DEV-ONLY preview page styling (see preview.tsx). Not shipped: `vite build` only builds
+   index.html, so nothing here reaches dist/. Tokens only, like everything else in the area. */
+
+@import '../tokens.css';
+
+.preview {
+  min-height: 100vh;
+  background: var(--bg-base);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  padding: var(--space-5);
+  box-sizing: border-box;
+}
+
+.preview__case {
+  margin-bottom: var(--space-6);
+}
+
+.preview__what {
+  font-family: var(--font-display);
+  font-weight: var(--weight-display-medium);
+  font-size: var(--type-eyebrow);
+  letter-spacing: var(--ls-eyebrow);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin: 0 0 var(--space-3);
+}

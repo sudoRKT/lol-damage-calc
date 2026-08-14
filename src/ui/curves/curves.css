@@ -1,0 +1,405 @@
+/*
+ * THE SWEEP CURVE'S LOOK. Every value here is a token from `../tokens.css`;
+ * `../primitives/token-audit.test.ts` re-checks that across the whole area on every run.
+ *
+ * ═══ NO HUE IN THIS FILE, AND THAT IS A DESIGN DECISION RATHER THAN AN OVERSIGHT ═══
+ *
+ * DESIGN.md §1 reserves colour for the three damage types, lethal magenta and the transient
+ * recent-damage gold. A curve of a combo's TOTAL output is not one damage type — it is usually all
+ * three at once — so there is no hue it could honestly wear, and giving it one would be inventing a
+ * fourth meaning for colour in a product whose whole colour system says otherwise.
+ *
+ * So the three lines are neutral and are told apart by SHAPE:
+ *   • burst total     — solid
+ *   • damage over time — dashed  (the same "dashed means the DoT one" cue DESIGN.md §7 already uses
+ *                                 for the second LETHAL rule on the burndown)
+ *   • target health    — dotted, in --hp-trace, which is the neutral grey §7 already spends on the
+ *                        remaining-health line. The same quantity keeps the same colour across two
+ *                        charts.
+ * Every damage figure with a TYPE is in the table beneath the plot, through `AggregateTotal`, which
+ * carries its own hue and its own tagged composition bar from `../primitives/primitives.css`.
+ *
+ * ═══ TWO VALUES THAT HAD NO TOKEN, STATED RATHER THAN SMUGGLED ═══
+ *
+ * DESIGN.md §7 writes stroke widths for the burndown verbatim ("a 2px line in --hp-trace"), and the
+ * token file has no stroke-width token to name them with, so `burndown.css` carries literals with
+ * allow-list entries in `../primitives/token-audit.test.ts`. That allow-list is not this area's to
+ * edit, so the curve's strokes use --space-0 (2px, DESIGN.md §4's "hairline insets") and the
+ * legend's swatch uses --space-5 x --space-2. Both are the right SIZE and the wrong KIND of token,
+ * and a `--stroke-*` scale is raised to the lead rather than invented here.
+ *
+ * ═══ NO MOTION AT ALL ═══
+ *
+ * DESIGN.md §10: "the budget is concentrated on the HP burndown". A curve arrives whole. There is
+ * therefore no animation in this file and no reduced-motion block, which is the honest form of
+ * "readable with all motion disabled" — there is no motion to disable.
+ */
+
+@import '../tokens.css';
+
+.curve-panel {
+  background: var(--bg-panel);
+  border: var(--border-steel);
+  border-radius: var(--radius-panel);
+  padding: var(--space-4);
+  font-family: var(--font-body);
+  font-size: var(--type-body-m);
+  line-height: var(--lh-body-m);
+  color: var(--text-primary);
+}
+
+.curve-panel__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-block-end: var(--space-3);
+}
+
+.curve-panel__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: var(--weight-display);
+  font-size: var(--type-display-l);
+  line-height: var(--lh-display-l);
+}
+
+/* How much of the range computed. A count, so it is in the mono face like every other figure. */
+.curve-panel__coverage {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-weight: var(--weight-num);
+  font-size: var(--type-num-s);
+  line-height: var(--lh-num-s);
+  color: var(--text-secondary);
+}
+
+/* The incomparable-range warning. It is separated by a BORDER and a surface, never by a colour
+ * (DESIGN.md §1, §6) — this is a status, and a status may not introduce a hue. */
+.curve-panel__alarm {
+  background: var(--bg-well);
+  border: var(--border-strong);
+  border-radius: var(--radius-panel);
+  padding: var(--space-3);
+  margin-block-end: var(--space-3);
+}
+
+.curve-panel__eyebrow {
+  margin: 0 0 var(--space-1);
+  font-family: var(--font-display);
+  font-weight: var(--weight-display-medium);
+  font-size: var(--type-eyebrow);
+  line-height: var(--lh-eyebrow);
+  letter-spacing: var(--ls-eyebrow);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.curve-panel__note {
+  margin: 0;
+  max-inline-size: var(--measure-prose-max);
+  color: var(--text-secondary);
+}
+
+.curve-panel__note--floor {
+  margin-block-end: var(--space-3);
+}
+
+.curve-panel__figure {
+  margin: 0 0 var(--space-4);
+}
+
+.curve-panel__block {
+  margin-block-start: var(--space-4);
+}
+
+.curve-panel__list {
+  margin: 0;
+  padding-inline-start: var(--space-4);
+  max-inline-size: var(--measure-prose-max);
+  color: var(--text-secondary);
+}
+
+/* --------------------------------------------------------------------------
+ * The plot itself.
+ *
+ * FLEX, NOT GRID, and the reason is mechanical: `../responsive-overflow.test.tsx` refuses a grid
+ * track that can be pushed wider than its share, and a fixed-width rail track cannot express an
+ * explicit minimum. A flex rail with `flex: 0 0 <width>` beside a `flex: 1 1 0; min-inline-size: 0`
+ * plot says the same thing and cannot push the page sideways on a phone.
+ * -------------------------------------------------------------------------- */
+
+.curve__axis-name {
+  margin: 0 0 var(--space-1);
+  font-size: var(--type-body-s);
+  line-height: var(--lh-body-s);
+  font-weight: var(--weight-body-medium);
+  color: var(--text-secondary);
+}
+
+.curve__axis-name--x {
+  margin: var(--space-1) 0 0;
+  text-align: center;
+}
+
+.curve__chart {
+  display: flex;
+  align-items: stretch;
+  gap: var(--space-2);
+}
+
+.curve__rail {
+  position: relative;
+  flex: 0 0 var(--space-7);
+  block-size: var(--measure-plot-block);
+}
+
+/* A zero-height anchor whose label centres on the tick. It is done this way rather than with a
+ * translate because a percentage translate is a length literal, and the token audit reads every
+ * length in this file. A flex box of zero size centres an over-sized child on its own position. */
+.curve__ytick {
+  position: absolute;
+  inset-inline: 0;
+  block-size: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  font-family: var(--font-mono);
+  font-weight: var(--weight-num);
+  font-size: var(--type-num-s);
+  line-height: var(--lh-num-s);
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.curve__plot {
+  position: relative;
+  flex: 1 1 0;
+  min-inline-size: 0;
+  block-size: var(--measure-plot-block);
+  background: var(--bg-well);
+  border: var(--border-steel);
+  border-radius: var(--radius-cell);
+}
+
+/* DESIGN.md §7: horizontal grid lines at rounded intervals in --line-subtle, and the zero line in
+ * --line-strong. The same rule for the same reason on a second chart. */
+.curve__grid {
+  position: absolute;
+  inset-inline: 0;
+  border-block-start: var(--border-hair);
+}
+
+.curve__grid--zero {
+  border-block-start: var(--border-strong);
+}
+
+.curve__svg {
+  position: absolute;
+  inset: 0;
+}
+
+/* THE THREE LINE SHAPES. Neutral by law (§1) and distinguished by stroke pattern. */
+.curve__line {
+  fill: none;
+  stroke-width: var(--space-0);
+  stroke-linejoin: round;
+  /* A run of ONE point is emitted as a zero-length segment (geometry.ts). A round cap is what
+   * renders it as a visible dot instead of nothing. */
+  stroke-linecap: round;
+}
+
+.curve__line--burst {
+  stroke: var(--text-primary);
+}
+
+.curve__line--dot {
+  stroke: var(--text-secondary);
+  stroke-dasharray: var(--space-1) var(--space-1);
+}
+
+.curve__line--targetHealth {
+  stroke: var(--hp-trace);
+  stroke-dasharray: var(--space-0) var(--space-1);
+}
+
+/* A refused point: a hatched band at its position on the axis, so the gap in the line has a cause
+ * a reader can see. Zero-width anchor, same construction as the tick labels. */
+.curve__refused {
+  position: absolute;
+  inset-block: 0;
+  inline-size: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.curve__refused-band {
+  align-self: stretch;
+  /* MEASURED IN A BROWSER: `inline-size` alone rendered ZERO pixels wide. The band is a flex item
+   * in a zero-width anchor, so the default `flex-shrink: 1` shrank it to the container. The refused
+   * point was marked with nothing at all — the exact silence this mark exists to break. */
+  flex: 0 0 var(--space-2);
+  background: repeating-linear-gradient(
+    45deg,
+    var(--line-strong) 0 var(--space-0),
+    transparent var(--space-0) var(--space-1)
+  );
+}
+
+.curve__xaxis {
+  position: relative;
+  block-size: var(--space-5);
+  margin-inline-start: calc(var(--space-7) + var(--space-2));
+}
+
+.curve__xtick {
+  position: absolute;
+  inset-block-start: var(--space-1);
+  inline-size: 0;
+  display: flex;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-weight: var(--weight-num);
+  font-size: var(--type-num-s);
+  line-height: var(--lh-num-s);
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+/* The measurable label inside each zero-width anchor. It carries no size of its own — the anchor's
+   font rules cascade into it — and exists so a browser can be asked whether two labels collide. */
+.curve__ytick-text,
+.curve__xtick-text {
+  display: block;
+}
+
+.curve__xtick--start {
+  justify-content: flex-start;
+}
+
+.curve__xtick--end {
+  justify-content: flex-end;
+}
+
+/* --------------------------------------------------------------------------
+ * Legend and description
+ * -------------------------------------------------------------------------- */
+
+.curve__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-4);
+  margin: var(--space-3) 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--type-body-s);
+  line-height: var(--lh-body-s);
+  color: var(--text-secondary);
+}
+
+.curve__legend-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.curve__swatch {
+  flex: 0 0 var(--space-5);
+  block-size: var(--space-2);
+  overflow: visible;
+}
+
+.curve__legend-hatch {
+  flex: 0 0 var(--space-5);
+  block-size: var(--space-2);
+  background: repeating-linear-gradient(
+    45deg,
+    var(--line-strong) 0 var(--space-0),
+    transparent var(--space-0) var(--space-1)
+  );
+}
+
+.curve__description {
+  margin: var(--space-2) 0 0;
+  max-inline-size: var(--measure-prose-max);
+  font-size: var(--type-body-s);
+  line-height: var(--lh-body-s);
+  color: var(--text-secondary);
+}
+
+/* --------------------------------------------------------------------------
+ * The point-by-point table. Cell padding is DESIGN.md §4's stated default:
+ * --space-2 vertical, --space-3 horizontal. Hard-edged cells, per §5.
+ * -------------------------------------------------------------------------- */
+
+.curve-table {
+  border-collapse: collapse;
+  background: var(--bg-well);
+  font-size: var(--type-body-m);
+  line-height: var(--lh-body-m);
+}
+
+.curve-table th,
+.curve-table td {
+  padding: var(--space-2) var(--space-3);
+  border: var(--border-hair);
+  border-radius: var(--radius-cell);
+  text-align: left;
+  vertical-align: baseline;
+  white-space: nowrap;
+}
+
+.curve-table thead th {
+  font-family: var(--font-display);
+  font-weight: var(--weight-display-medium);
+  font-size: var(--type-eyebrow);
+  line-height: var(--lh-eyebrow);
+  letter-spacing: var(--ls-eyebrow);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  border-block-end: var(--border-steel);
+}
+
+.curve-table__x {
+  font-family: var(--font-mono);
+  font-weight: var(--weight-num);
+  font-size: var(--type-num-m);
+  line-height: var(--lh-num-m);
+  color: var(--text-primary);
+}
+
+.curve-table__figure {
+  text-align: right;
+}
+
+.curve-table__hp {
+  font-family: var(--font-mono);
+  font-weight: var(--weight-num);
+  font-size: var(--type-num-m);
+  line-height: var(--lh-num-m);
+  text-align: right;
+  color: var(--text-secondary);
+}
+
+.curve-table__none {
+  color: var(--text-muted);
+}
+
+.curve-table__evidence {
+  white-space: normal;
+}
+
+.curve-table__floor {
+  display: block;
+  font-size: var(--type-body-s);
+  line-height: var(--lh-body-s);
+  color: var(--text-secondary);
+}
+
+/* A refused row states the engine's own words. It wraps, because a refusal is a sentence. */
+.curve-table__refusal {
+  white-space: normal;
+  max-inline-size: var(--measure-prose-max);
+  color: var(--text-secondary);
+}
