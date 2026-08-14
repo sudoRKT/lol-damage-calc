@@ -1,0 +1,331 @@
+{
+  "what": "Shaco ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "provenance": {
+    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "patch": "16.16.1",
+    "fetched": "2026-08-13",
+    "extractedOn": "2026-08-14",
+    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
+    "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
+  },
+  "abilities": [
+    {
+      "champion": "Shaco",
+      "slot": "P",
+      "abilityName": "Backstab",
+      "instanceType": "on-hit",
+      "damageType": "physical",
+      "maxRank": 1,
+      "components": [
+        {
+          "id": "bonus-physical-damage",
+          "label": "Bonus Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "byLevel",
+            "from": 20,
+            "to": 30,
+            "atLevels": [
+              1,
+              18
+            ],
+            "steps": 18
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 20,
+              "to": 20
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Shaco/Backstab",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Shaco/Backstab",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3985836,
+      "icon": "Jester_CarefulStrikes.png"
+    },
+    {
+      "champion": "Shaco",
+      "slot": "Q",
+      "abilityName": "Deceive",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "bonus-physical-damage",
+          "label": "Bonus Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 25,
+            "to": 65
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 60,
+              "to": 60
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Shaco/Deceive",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Shaco/Deceive",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4023266,
+      "icon": "Deceive.png"
+    },
+    {
+      "champion": "Shaco",
+      "slot": "W",
+      "abilityName": "Jack in the Box",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 10,
+            "to": 30
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 12,
+              "to": 12
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "increased-damage",
+          "label": "Increased Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 25,
+            "to": 85
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 18,
+              "to": 18
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Shaco/Jack in the Box",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Shaco/Jack%20in%20the%20Box",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3990300,
+      "icon": "JackInTheBox.png"
+    },
+    {
+      "champion": "Shaco",
+      "slot": "E",
+      "abilityName": "Two-Shiv Poison",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 70,
+            "to": 170
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 80,
+              "to": 80
+            },
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 60,
+              "to": 60
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "increased-damage",
+          "label": "Increased Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 105,
+            "to": 255
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "explicit",
+              "perRank": [
+                120,
+                120,
+                120,
+                120,
+                120
+              ]
+            },
+            {
+              "stat": "AP",
+              "scaling": "explicit",
+              "perRank": [
+                90,
+                90,
+                90,
+                90,
+                90
+              ]
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Shaco/Two-Shiv Poison",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Shaco/Two-Shiv%20Poison",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3985833,
+      "icon": "TwoShivPoison.png"
+    },
+    {
+      "champion": "Shaco",
+      "slot": "R",
+      "abilityName": "Hallucinate",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 3,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 150,
+            "to": 300
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 70,
+              "to": 70
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "modified-magic-damage",
+          "label": "Modified Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 10,
+            "to": 30
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 10,
+              "to": 10
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "increased-modified-damage",
+          "label": "Increased Modified Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 25,
+            "to": 75
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 15,
+              "to": 15
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Shaco/Hallucinate",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Shaco/Hallucinate",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4013796,
+      "icon": "HallucinateFull.png"
+    }
+  ],
+  "art": {
+    "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Shaco.json",
+    "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
+    "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
+    "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"
+  }
+}

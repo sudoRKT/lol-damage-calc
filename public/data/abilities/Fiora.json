@@ -1,0 +1,154 @@
+{
+  "what": "Fiora ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "provenance": {
+    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "patch": "16.16.1",
+    "fetched": "2026-08-13",
+    "extractedOn": "2026-08-14",
+    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
+    "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
+  },
+  "abilities": [
+    {
+      "champion": "Fiora",
+      "slot": "P",
+      "abilityName": "Duelist's Dance",
+      "instanceType": "on-hit",
+      "damageType": "true",
+      "maxRank": 1,
+      "components": [],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Fiora/Duelist's Dance",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Fiora/Duelist's%20Dance",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4038335,
+      "icon": "Fiora_P.png"
+    },
+    {
+      "champion": "Fiora",
+      "slot": "Q",
+      "abilityName": "Lunge",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "physical-damage",
+          "label": "Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 70,
+            "to": 110
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 90,
+              "to": 110
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Fiora/Lunge",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Fiora/Lunge",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4007770,
+      "icon": "FioraQ.png"
+    },
+    {
+      "champion": "Fiora",
+      "slot": "W",
+      "abilityName": "Riposte",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 110,
+            "to": 270
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 100,
+              "to": 100
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Fiora/Riposte",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Fiora/Riposte",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4007365,
+      "icon": "FioraW.png"
+    },
+    {
+      "champion": "Fiora",
+      "slot": "E",
+      "abilityName": "Bladework",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Fiora/Bladework",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Fiora/Bladework",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3906658,
+      "icon": "FioraE.png"
+    },
+    {
+      "champion": "Fiora",
+      "slot": "R",
+      "abilityName": "Grand Challenge",
+      "instanceType": "damaging-ability",
+      "damageType": "true",
+      "maxRank": 3,
+      "components": [],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Fiora/Grand Challenge",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Fiora/Grand%20Challenge",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4007516,
+      "icon": "FioraR.png"
+    }
+  ],
+  "art": {
+    "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Fiora.json",
+    "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
+    "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
+    "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"
+  }
+}

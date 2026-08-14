@@ -1,0 +1,283 @@
+{
+  "what": "Nunu & Willump ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "provenance": {
+    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "patch": "16.16.1",
+    "fetched": "2026-08-13",
+    "extractedOn": "2026-08-14",
+    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
+    "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
+  },
+  "abilities": [
+    {
+      "champion": "Nunu & Willump",
+      "slot": "P",
+      "abilityName": "Call of the Freljord",
+      "instanceType": "on-hit",
+      "damageType": "physical",
+      "maxRank": 1,
+      "components": [
+        {
+          "id": "physical-damage",
+          "label": "Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              0
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "linear",
+              "from": 30,
+              "to": 30
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Nunu & Willump/Call of the Freljord",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Nunu%20%26%20Willump/Call%20of%20the%20Freljord",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4013400,
+      "icon": "NunuPassive.png"
+    },
+    {
+      "champion": "Nunu & Willump",
+      "slot": "Q",
+      "abilityName": "Consume",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "champion-magic-damage",
+          "label": "Champion Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 60,
+            "to": 220
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 65,
+              "to": 65
+            },
+            {
+              "stat": "bonusHP",
+              "owner": "unresolved",
+              "scaling": "linear",
+              "from": 5,
+              "to": 5
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Nunu & Willump/Consume",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Nunu%20%26%20Willump/Consume",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3985877,
+      "unresolvable": [
+        {
+          "field": "components[0].ratios[1].owner (bonusHP)",
+          "why": "the source names bonusHP and never says whose, and no other source states it"
+        }
+      ],
+      "icon": "NunuQ.png"
+    },
+    {
+      "champion": "Nunu & Willump",
+      "slot": "W",
+      "abilityName": "Biggest Snowball Ever!",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "minimum-magic-damage",
+          "label": "Minimum Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 36,
+            "to": 72
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 30,
+              "to": 30
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "maximum-magic-damage",
+          "label": "Maximum Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 180,
+            "to": 360
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "explicit",
+              "perRank": [
+                150,
+                150,
+                150,
+                150,
+                150
+              ]
+            }
+          ],
+          "relation": {
+            "kind": "alternativeTo",
+            "componentId": "minimum-magic-damage"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Nunu & Willump/Biggest Snowball Ever!",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Nunu%20%26%20Willump/Biggest%20Snowball%20Ever!",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4007735,
+      "icon": "NunuW.png"
+    },
+    {
+      "champion": "Nunu & Willump",
+      "slot": "E",
+      "abilityName": "Snowball Barrage",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage-per-hit",
+          "label": "Magic Damage Per Hit",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 15,
+            "to": 45
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 12,
+              "to": 12
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          },
+          "hits": 3
+        },
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 20,
+            "to": 60
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 80,
+              "to": 80
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Nunu & Willump/Snowball Barrage",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Nunu%20%26%20Willump/Snowball%20Barrage",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4013466,
+      "icon": "NunuE.png"
+    },
+    {
+      "champion": "Nunu & Willump",
+      "slot": "R",
+      "abilityName": "Absolute Zero",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 3,
+      "components": [
+        {
+          "id": "maximum-magic-damage",
+          "label": "Maximum Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 625,
+            "to": 1275
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 300,
+              "to": 300
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Nunu & Willump/Absolute Zero",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Nunu%20%26%20Willump/Absolute%20Zero",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4010574,
+      "icon": "NunuR.png"
+    }
+  ],
+  "art": {
+    "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Nunu.json",
+    "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
+    "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
+    "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"
+  }
+}

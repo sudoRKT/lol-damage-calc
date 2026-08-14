@@ -1,0 +1,392 @@
+{
+  "what": "Gnar ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "provenance": {
+    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "patch": "16.16.1",
+    "fetched": "2026-08-13",
+    "extractedOn": "2026-08-14",
+    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
+    "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
+  },
+  "abilities": [
+    {
+      "champion": "Gnar",
+      "slot": "P",
+      "abilityName": "Rage Gene",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 1,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Gnar/Rage Gene",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Gnar/Rage%20Gene",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3999602,
+      "icon": "Gnar_Passive.png"
+    },
+    {
+      "champion": "Gnar",
+      "slot": "Q",
+      "abilityName": "Boomerang Throw",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "physical-damage",
+          "label": "Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 5,
+            "to": 165
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "linear",
+              "from": 125,
+              "to": 125
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "reduced-damage",
+          "label": "Reduced Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 2.5,
+            "to": 82.5
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "explicit",
+              "perRank": [
+                62.5,
+                62.5,
+                62.5,
+                62.5,
+                62.5
+              ]
+            }
+          ],
+          "relation": {
+            "kind": "alternativeTo",
+            "componentId": "physical-damage"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Gnar/Boomerang Throw",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Gnar/Boomerang%20Throw",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4007601,
+      "icon": "GnarQ.png"
+    },
+    {
+      "champion": "Gnar",
+      "slot": "Q",
+      "abilityName": "Boulder Toss",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "physical-damage",
+          "label": "Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 45,
+            "to": 225
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "linear",
+              "from": 140,
+              "to": 140
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Gnar/Boulder Toss",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Gnar/Boulder%20Toss",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3589588,
+      "icon": "GnarQ.png"
+    },
+    {
+      "champion": "Gnar",
+      "slot": "W",
+      "abilityName": "Hyper",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "bonus-magic-damage",
+          "label": "Bonus Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 0,
+            "to": 40
+          },
+          "ratios": [
+            {
+              "stat": "maxHP",
+              "owner": "target",
+              "scaling": "linear",
+              "from": 6,
+              "to": 14
+            },
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 100,
+              "to": 100
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Gnar/Hyper",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Gnar/Hyper",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3932657,
+      "icon": "GnarW.png"
+    },
+    {
+      "champion": "Gnar",
+      "slot": "W",
+      "abilityName": "Wallop",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "physical-damage",
+          "label": "Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 45,
+            "to": 165
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "linear",
+              "from": 100,
+              "to": 100
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Gnar/Wallop",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Gnar/Wallop",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4022698,
+      "icon": "GnarW.png"
+    },
+    {
+      "champion": "Gnar",
+      "slot": "E",
+      "abilityName": "Hop",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "physical-damage",
+          "label": "Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 50,
+            "to": 190
+          },
+          "ratios": [
+            {
+              "stat": "maxHP",
+              "owner": "unresolved",
+              "scaling": "linear",
+              "from": 6,
+              "to": 6
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Gnar/Hop",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Gnar/Hop",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4007742,
+      "unresolvable": [
+        {
+          "field": "components[0].ratios[0].owner (maxHP)",
+          "why": "the source names maxHP and never says whose, and no other source states it"
+        }
+      ],
+      "icon": "GnarE.png"
+    },
+    {
+      "champion": "Gnar",
+      "slot": "E",
+      "abilityName": "Crunch",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "physical-damage",
+          "label": "Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 80,
+            "to": 220
+          },
+          "ratios": [
+            {
+              "stat": "maxHP",
+              "owner": "caster",
+              "scaling": "linear",
+              "from": 6,
+              "to": 6
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Gnar/Crunch",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Gnar/Crunch",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4007743,
+      "icon": "GnarE.png"
+    },
+    {
+      "champion": "Gnar",
+      "slot": "R",
+      "abilityName": "GNAR!",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 3,
+      "components": [
+        {
+          "id": "physical-damage",
+          "label": "Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 200,
+            "to": 400
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 50,
+              "to": 50
+            },
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 100,
+              "to": 100
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "increased-damage",
+          "label": "Increased Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 300,
+            "to": 600
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 75,
+              "to": 75
+            },
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 150,
+              "to": 150
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Gnar/GNAR!",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Gnar/GNAR!",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3936277,
+      "icon": "GnarR.png"
+    }
+  ],
+  "art": {
+    "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Gnar.json",
+    "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
+    "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
+    "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"
+  }
+}

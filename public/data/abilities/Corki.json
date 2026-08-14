@@ -1,0 +1,240 @@
+{
+  "what": "Corki ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "provenance": {
+    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "patch": "16.16.1",
+    "fetched": "2026-08-13",
+    "extractedOn": "2026-08-14",
+    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
+    "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
+  },
+  "abilities": [
+    {
+      "champion": "Corki",
+      "slot": "P",
+      "abilityName": "Hextech Munitions",
+      "instanceType": "on-hit",
+      "maxRank": 1,
+      "components": [],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Corki/Hextech Munitions",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Corki/Hextech%20Munitions",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4050625,
+      "icon": "Corki_RapidReload.png"
+    },
+    {
+      "champion": "Corki",
+      "slot": "Q",
+      "abilityName": "Phosphorus Bomb",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 60,
+            "to": 240
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 125,
+              "to": 125
+            },
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 100,
+              "to": 100
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Corki/Phosphorus Bomb",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Corki/Phosphorus%20Bomb",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4007588,
+      "icon": "PhosphorusBomb.png"
+    },
+    {
+      "champion": "Corki",
+      "slot": "W",
+      "abilityName": "Valkyrie",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage-per-tick",
+          "label": "Magic Damage Per Tick",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 30,
+            "to": 90
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 40,
+              "to": 40
+            },
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 30,
+              "to": 30
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          },
+          "hits": 5
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Corki/Valkyrie",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Corki/Valkyrie",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4007589,
+      "icon": "CarpetBomb.png"
+    },
+    {
+      "champion": "Corki",
+      "slot": "E",
+      "abilityName": "Gatling Gun",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "physical-damage-per-tick",
+          "label": "Physical Damage Per Tick",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 5,
+            "to": 17.5
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "explicit",
+              "perRank": [
+                15,
+                15,
+                15,
+                15,
+                15
+              ]
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          },
+          "hits": 16
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Corki/Gatling Gun",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Corki/Gatling%20Gun",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3948411,
+      "icon": "GGun.png"
+    },
+    {
+      "champion": "Corki",
+      "slot": "R",
+      "abilityName": "Missile Barrage",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 3,
+      "components": [
+        {
+          "id": "physical-damage",
+          "label": "Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 90,
+            "to": 250
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 85,
+              "to": 85
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "big-one-physical-damage",
+          "label": "Big One Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 180,
+            "to": 500
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "explicit",
+              "perRank": [
+                170,
+                170,
+                170
+              ]
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Corki/Missile Barrage",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Corki/Missile%20Barrage",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4042863,
+      "icon": "MissileBarrage.png"
+    }
+  ],
+  "art": {
+    "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Corki.json",
+    "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
+    "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
+    "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"
+  }
+}

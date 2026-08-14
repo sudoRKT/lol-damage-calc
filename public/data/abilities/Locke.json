@@ -1,0 +1,285 @@
+{
+  "what": "Locke ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "provenance": {
+    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "patch": "16.16.1",
+    "fetched": "2026-08-13",
+    "extractedOn": "2026-08-14",
+    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
+    "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
+  },
+  "abilities": [
+    {
+      "champion": "Locke",
+      "slot": "P",
+      "abilityName": "Silver Stake",
+      "instanceType": "on-hit",
+      "damageType": "magic",
+      "maxRank": 1,
+      "components": [],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Locke/Silver Stake",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Locke/Silver%20Stake",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4038404,
+      "icon": "Locke_Passive.png"
+    },
+    {
+      "champion": "Locke",
+      "slot": "Q",
+      "abilityName": "Ritual Nails",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage-per-nail",
+          "label": "Magic Damage per Nail",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 40,
+            "to": 72
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 20,
+              "to": 20
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "maximum-nail-damage",
+          "label": "Maximum Nail Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 120,
+            "to": 216
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "explicit",
+              "perRank": [
+                60,
+                60,
+                60,
+                60,
+                60
+              ]
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "one-stack-bonus-damage",
+          "label": "One Stack Bonus Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 18,
+            "to": 50
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 25,
+              "to": 35
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "two-stacks-bonus-damage",
+          "label": "Two Stacks Bonus Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 43.199999999999996,
+            "to": 120
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 60,
+              "to": 84
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "three-stacks-bonus-damage",
+          "label": "Three Stacks Bonus Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 75.6,
+            "to": 210
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 105,
+              "to": 147
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Locke/Ritual Nails",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Locke/Ritual%20Nails",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4046580,
+      "icon": "LockeQ.png"
+    },
+    {
+      "champion": "Locke",
+      "slot": "W",
+      "abilityName": "Soul Ignition",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 5,
+      "components": [],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Locke/Soul Ignition",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Locke/Soul%20Ignition",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4050571,
+      "icon": "LockeW.png"
+    },
+    {
+      "champion": "Locke",
+      "slot": "E",
+      "abilityName": "Ashen Pursuit",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "blink-magic-damage",
+          "label": "Blink Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 40,
+            "to": 80
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 40,
+              "to": 40
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "dash-magic-damage",
+          "label": "Dash Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 40,
+            "to": 120
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 40,
+              "to": 40
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Locke/Ashen Pursuit",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Locke/Ashen%20Pursuit",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4038873,
+      "icon": "LockeE.png"
+    },
+    {
+      "champion": "Locke",
+      "slot": "R",
+      "abilityName": "Purgatory",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 3,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 150,
+            "to": 300
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 60,
+              "to": 60
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Locke/Purgatory",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Locke/Purgatory",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4051476,
+      "icon": "LockeR.png"
+    }
+  ],
+  "art": {
+    "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Locke.json",
+    "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
+    "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
+    "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"
+  }
+}

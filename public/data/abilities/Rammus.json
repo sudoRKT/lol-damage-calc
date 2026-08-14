@@ -1,0 +1,153 @@
+{
+  "what": "Rammus ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "provenance": {
+    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "patch": "16.16.1",
+    "fetched": "2026-08-13",
+    "extractedOn": "2026-08-14",
+    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
+    "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
+  },
+  "abilities": [
+    {
+      "champion": "Rammus",
+      "slot": "P",
+      "abilityName": "Spiked Shell",
+      "instanceType": "on-hit",
+      "damageType": "magic",
+      "maxRank": 1,
+      "components": [],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Rammus/Spiked Shell",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Rammus/Spiked%20Shell",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3910990,
+      "icon": "Armordillo_ScavengeArmor.png"
+    },
+    {
+      "champion": "Rammus",
+      "slot": "Q",
+      "abilityName": "Powerball",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 80,
+            "to": 240
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 100,
+              "to": 100
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Rammus/Powerball",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Rammus/Powerball",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3988570,
+      "icon": "PowerBall.png"
+    },
+    {
+      "champion": "Rammus",
+      "slot": "W",
+      "abilityName": "Defensive Ball Curl",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Rammus/Defensive Ball Curl",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Rammus/Defensive%20Ball%20Curl",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3982827,
+      "icon": "DefensiveBallCurl.png"
+    },
+    {
+      "champion": "Rammus",
+      "slot": "E",
+      "abilityName": "Frenzying Taunt",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 5,
+      "components": [],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Rammus/Frenzying Taunt",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Rammus/Frenzying%20Taunt",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3910038,
+      "icon": "PuncturingTaunt.png"
+    },
+    {
+      "champion": "Rammus",
+      "slot": "R",
+      "abilityName": "Soaring Slam",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 3,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 150,
+            "to": 350
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 60,
+              "to": 60
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Rammus/Soaring Slam",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Rammus/Soaring%20Slam",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4008005,
+      "icon": "Tremors2.png"
+    }
+  ],
+  "art": {
+    "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Rammus.json",
+    "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
+    "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
+    "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"
+  }
+}

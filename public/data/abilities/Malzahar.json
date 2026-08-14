@@ -1,0 +1,298 @@
+{
+  "what": "Malzahar ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "provenance": {
+    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "patch": "16.16.1",
+    "fetched": "2026-08-13",
+    "extractedOn": "2026-08-14",
+    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
+    "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
+  },
+  "abilities": [
+    {
+      "champion": "Malzahar",
+      "slot": "P",
+      "abilityName": "Void Shift",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 1,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Malzahar/Void Shift",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Malzahar/Void%20Shift",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4035856,
+      "icon": "Malzahar_Passive.png"
+    },
+    {
+      "champion": "Malzahar",
+      "slot": "Q",
+      "abilityName": "Call of the Void",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 70,
+            "to": 210
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 55,
+              "to": 55
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Malzahar/Call of the Void",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Malzahar/Call%20of%20the%20Void",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3906985,
+      "icon": "MalzaharQ.png"
+    },
+    {
+      "champion": "Malzahar",
+      "slot": "W",
+      "abilityName": "Void Swarm",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "byLevelExplicit",
+            "values": [
+              5,
+              7.52,
+              10.162500000000001,
+              12.9275,
+              15.815,
+              18.825000000000003,
+              21.9575,
+              25.212500000000002,
+              28.59,
+              32.09,
+              35.712500000000006,
+              39.4575,
+              43.325,
+              47.315000000000005,
+              51.4275,
+              55.6625,
+              60.02,
+              64.5
+            ],
+            "atLevels": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 40,
+              "to": 40
+            },
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 20,
+              "to": 20
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "magic-damage-rank-term",
+          "label": "Magic Damage (per-rank term)",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 12,
+            "to": 20
+          },
+          "ratios": [],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Malzahar/Void Swarm",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Malzahar/Void%20Swarm",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4041818,
+      "icon": "MalzaharW.png"
+    },
+    {
+      "champion": "Malzahar",
+      "slot": "E",
+      "abilityName": "Malefic Visions",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage-per-tick",
+          "label": "Magic Damage Per Tick",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 5,
+            "to": 13.75
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "explicit",
+              "perRank": [
+                5,
+                5,
+                5,
+                5,
+                5
+              ]
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          },
+          "hits": 16
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Malzahar/Malefic Visions",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Malzahar/Malefic%20Visions",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4015185,
+      "icon": "MalzaharE.png"
+    },
+    {
+      "champion": "Malzahar",
+      "slot": "R",
+      "abilityName": "Nether Grasp",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 3,
+      "components": [
+        {
+          "id": "magic-damage-per-tick",
+          "label": "Magic Damage Per Tick",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 12.5,
+            "to": 27.5
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 8,
+              "to": 8
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          },
+          "hits": 1
+        },
+        {
+          "id": "magic-damage-per-tick",
+          "label": "Magic Damage Per Tick",
+          "damageType": "magic",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              0,
+              0,
+              0
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "maxHP",
+              "owner": "target",
+              "multipliers": [
+                {
+                  "per": "AP",
+                  "per100": {
+                    "scaling": "linear",
+                    "from": 0.25,
+                    "to": 0.25
+                  }
+                }
+              ],
+              "scaling": "linear",
+              "from": 1,
+              "to": 2
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          },
+          "hits": 1
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Malzahar/Nether Grasp",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Malzahar/Nether%20Grasp",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4015186,
+      "icon": "MalzaharR.png"
+    }
+  ],
+  "art": {
+    "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Malzahar.json",
+    "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
+    "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
+    "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"
+  }
+}

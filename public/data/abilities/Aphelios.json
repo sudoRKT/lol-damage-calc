@@ -1,0 +1,506 @@
+{
+  "what": "Aphelios ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "provenance": {
+    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "patch": "16.16.1",
+    "fetched": "2026-08-13",
+    "extractedOn": "2026-08-14",
+    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
+    "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
+  },
+  "abilities": [
+    {
+      "champion": "Aphelios",
+      "slot": "P",
+      "abilityName": "The Hitman and the Seer",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 1,
+      "components": [],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Aphelios/The Hitman and the Seer",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Aphelios/The%20Hitman%20and%20the%20Seer",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4022691,
+      "icon": "ApheliosP.png"
+    },
+    {
+      "champion": "Aphelios",
+      "slot": "P",
+      "abilityName": "Calibrum",
+      "instanceType": "on-hit",
+      "damageType": "physical",
+      "maxRank": 1,
+      "components": [
+        {
+          "id": "bonus-physical-damage",
+          "label": "Bonus Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              15
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 15,
+              "to": 15
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Aphelios/Calibrum",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Aphelios/Calibrum",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4034686,
+      "icon": "ApheliosP.png"
+    },
+    {
+      "champion": "Aphelios",
+      "slot": "P",
+      "abilityName": "Severum",
+      "instanceType": "on-hit",
+      "damageType": "physical",
+      "maxRank": 1,
+      "components": [],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Aphelios/Severum",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Aphelios/Severum",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4023347,
+      "icon": "ApheliosP.png"
+    },
+    {
+      "champion": "Aphelios",
+      "slot": "P",
+      "abilityName": "Gravitum",
+      "instanceType": "on-hit",
+      "damageType": "physical",
+      "maxRank": 1,
+      "components": [],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Aphelios/Gravitum",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Aphelios/Gravitum",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3999163,
+      "icon": "ApheliosP.png"
+    },
+    {
+      "champion": "Aphelios",
+      "slot": "P",
+      "abilityName": "Infernum",
+      "instanceType": "on-hit",
+      "damageType": "physical",
+      "maxRank": 1,
+      "components": [
+        {
+          "id": "physical-damage",
+          "label": "Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              0
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "linear",
+              "from": 110,
+              "to": 110
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Aphelios/Infernum",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Aphelios/Infernum",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4046493,
+      "icon": "ApheliosP.png"
+    },
+    {
+      "champion": "Aphelios",
+      "slot": "P",
+      "abilityName": "Crescendum",
+      "instanceType": "on-hit",
+      "damageType": "physical",
+      "maxRank": 1,
+      "components": [],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Aphelios/Crescendum",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Aphelios/Crescendum",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4022137,
+      "icon": "ApheliosP.png"
+    },
+    {
+      "champion": "Aphelios",
+      "slot": "Q",
+      "abilityName": "Weapons of the Faithful",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 6,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Aphelios/Weapons of the Faithful",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Aphelios/Weapons%20of%20the%20Faithful",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3963883,
+      "icon": "ApheliosQ_ClientTooltipWrapper.png"
+    },
+    {
+      "champion": "Aphelios",
+      "slot": "Q",
+      "abilityName": "Moonshot",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 6,
+      "components": [
+        {
+          "id": "physical-damage",
+          "label": "Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "byLevel",
+            "from": 70,
+            "to": 160,
+            "atLevels": [
+              1,
+              13
+            ],
+            "steps": 7
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "byLevel",
+              "from": 42,
+              "to": 60,
+              "atLevels": [
+                1,
+                13
+              ],
+              "steps": 7
+            },
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 100,
+              "to": 100
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "verified",
+      "provenance": {
+        "source": "Template:Data Aphelios/Moonshot",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Aphelios/Moonshot",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3993664,
+      "icon": "ApheliosQ_ClientTooltipWrapper.png"
+    },
+    {
+      "champion": "Aphelios",
+      "slot": "Q",
+      "abilityName": "Onslaught",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 6,
+      "components": [
+        {
+          "id": "physical-damage",
+          "label": "Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "byLevel",
+              "from": 20,
+              "to": 41,
+              "atLevels": [
+                1,
+                13
+              ],
+              "steps": 7
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Aphelios/Onslaught",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Aphelios/Onslaught",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4034687,
+      "icon": "ApheliosQ_ClientTooltipWrapper.png"
+    },
+    {
+      "champion": "Aphelios",
+      "slot": "Q",
+      "abilityName": "Binding Eclipse",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 6,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "byLevel",
+            "from": 50,
+            "to": 140,
+            "atLevels": [
+              1,
+              13
+            ],
+            "steps": 7
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "byLevel",
+              "from": 32,
+              "to": 50,
+              "atLevels": [
+                1,
+                13
+              ],
+              "steps": 7
+            },
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 70,
+              "to": 70
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Aphelios/Binding Eclipse",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Aphelios/Binding%20Eclipse",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3983351,
+      "icon": "ApheliosQ_ClientTooltipWrapper.png"
+    },
+    {
+      "champion": "Aphelios",
+      "slot": "Q",
+      "abilityName": "Duskwave",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 6,
+      "components": [],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Aphelios/Duskwave",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Aphelios/Duskwave",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4034688,
+      "icon": "ApheliosQ_ClientTooltipWrapper.png"
+    },
+    {
+      "champion": "Aphelios",
+      "slot": "Q",
+      "abilityName": "Sentry",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 6,
+      "components": [
+        {
+          "id": "physical-damage",
+          "label": "Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "byLevel",
+            "from": 35,
+            "to": 125,
+            "atLevels": [
+              1,
+              13
+            ],
+            "steps": 7
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "byLevel",
+              "from": 34,
+              "to": 52,
+              "atLevels": [
+                1,
+                13
+              ],
+              "steps": 7
+            },
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 50,
+              "to": 50
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Aphelios/Sentry",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Aphelios/Sentry",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4034689,
+      "icon": "ApheliosQ_ClientTooltipWrapper.png"
+    },
+    {
+      "champion": "Aphelios",
+      "slot": "W",
+      "abilityName": "Phase",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 6,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Aphelios/Phase",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Aphelios/Phase",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3970739,
+      "icon": "ApheliosW.png"
+    },
+    {
+      "champion": "Aphelios",
+      "slot": "E",
+      "abilityName": "Weapon Queue System",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 6,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Aphelios/Weapon Queue System",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Aphelios/Weapon%20Queue%20System",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3998993,
+      "icon": "ApheliosE_ClientTooltipWrapper.png"
+    },
+    {
+      "champion": "Aphelios",
+      "slot": "R",
+      "abilityName": "Moonlight Vigil",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 3,
+      "components": [
+        {
+          "id": "bonus-physical-damage",
+          "label": "Bonus Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "byLevel",
+            "from": 50,
+            "to": 150,
+            "atLevels": [
+              6,
+              16
+            ],
+            "steps": 3
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 25,
+              "to": 25
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Aphelios/Moonlight Vigil",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Aphelios/Moonlight%20Vigil",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3996444,
+      "icon": "ApheliosR.png"
+    }
+  ],
+  "art": {
+    "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Aphelios.json",
+    "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
+    "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
+    "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"
+  }
+}

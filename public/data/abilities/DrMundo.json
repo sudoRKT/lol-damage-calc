@@ -1,0 +1,286 @@
+{
+  "what": "Dr. Mundo ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "provenance": {
+    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "patch": "16.16.1",
+    "fetched": "2026-08-13",
+    "extractedOn": "2026-08-14",
+    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
+    "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
+  },
+  "abilities": [
+    {
+      "champion": "Dr. Mundo",
+      "slot": "P",
+      "abilityName": "Goes Where He Pleases",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 1,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Dr. Mundo/Goes Where He Pleases",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Dr.%20Mundo/Goes%20Where%20He%20Pleases",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4038331,
+      "icon": "DrMundo_P.png"
+    },
+    {
+      "champion": "Dr. Mundo",
+      "slot": "Q",
+      "abilityName": "Infected Bonesaw",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "currentHP",
+              "owner": "target",
+              "scaling": "linear",
+              "from": 20,
+              "to": 30
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "minimum-damage",
+          "label": "Minimum Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 80,
+            "to": 280
+          },
+          "ratios": [],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Dr. Mundo/Infected Bonesaw",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Dr.%20Mundo/Infected%20Bonesaw",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4008441,
+      "icon": "DrMundoQ.png"
+    },
+    {
+      "champion": "Dr. Mundo",
+      "slot": "W",
+      "abilityName": "Heart Zapper",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage-per-tick",
+          "label": "Magic Damage per Tick",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 5,
+            "to": 20
+          },
+          "ratios": [],
+          "relation": {
+            "kind": "adds"
+          },
+          "hits": 16
+        },
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 20,
+            "to": 80
+          },
+          "ratios": [
+            {
+              "stat": "bonusHP",
+              "owner": "unresolved",
+              "scaling": "linear",
+              "from": 7,
+              "to": 7
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Dr. Mundo/Heart Zapper",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Dr.%20Mundo/Heart%20Zapper",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4038332,
+      "unresolvable": [
+        {
+          "field": "components[1].ratios[0].owner (bonusHP)",
+          "why": "the source names bonusHP and never says whose, and no other source states it"
+        }
+      ],
+      "icon": "DrMundoW.png"
+    },
+    {
+      "champion": "Dr. Mundo",
+      "slot": "E",
+      "abilityName": "Blunt Force Trauma",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "bonus-attack-damage",
+          "label": "Bonus Attack Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "maxHP",
+              "owner": "unresolved",
+              "scaling": "linear",
+              "from": 2,
+              "to": 3.2
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "minimum-bonus-physical-damage",
+          "label": "Minimum Bonus Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 5,
+            "to": 45
+          },
+          "ratios": [
+            {
+              "stat": "bonusHP",
+              "owner": "unresolved",
+              "scaling": "linear",
+              "from": 5,
+              "to": 5
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "maximum-bonus-physical-damage",
+          "label": "Maximum Bonus Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 7,
+            "to": 62.99999999999999
+          },
+          "ratios": [
+            {
+              "stat": "bonusHP",
+              "owner": "unresolved",
+              "scaling": "explicit",
+              "perRank": [
+                7,
+                7,
+                7,
+                7,
+                7
+              ]
+            }
+          ],
+          "relation": {
+            "kind": "alternativeTo",
+            "componentId": "minimum-bonus-physical-damage"
+          }
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Dr. Mundo/Blunt Force Trauma",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Dr.%20Mundo/Blunt%20Force%20Trauma",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4051473,
+      "unresolvable": [
+        {
+          "field": "components[0].ratios[0].owner (maxHP)",
+          "why": "the source names maxHP and never says whose, and no other source states it"
+        },
+        {
+          "field": "components[1].ratios[0].owner (bonusHP)",
+          "why": "the source names bonusHP and never says whose, and no other source states it"
+        },
+        {
+          "field": "components[2].ratios[0].owner (bonusHP)",
+          "why": "the source names bonusHP and never says whose, and no other source states it"
+        }
+      ],
+      "icon": "DrMundoE.png"
+    },
+    {
+      "champion": "Dr. Mundo",
+      "slot": "R",
+      "abilityName": "Maximum Dosage",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 3,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Dr. Mundo/Maximum Dosage",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Dr.%20Mundo/Maximum%20Dosage",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4037515,
+      "icon": "DrMundoR.png"
+    }
+  ],
+  "art": {
+    "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/DrMundo.json",
+    "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
+    "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
+    "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"
+  }
+}

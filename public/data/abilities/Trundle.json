@@ -1,0 +1,216 @@
+{
+  "what": "Trundle ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "provenance": {
+    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "patch": "16.16.1",
+    "fetched": "2026-08-13",
+    "extractedOn": "2026-08-14",
+    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
+    "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
+  },
+  "abilities": [
+    {
+      "champion": "Trundle",
+      "slot": "P",
+      "abilityName": "King's Tribute",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 1,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Trundle/King's Tribute",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Trundle/King's%20Tribute",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3986655,
+      "icon": "Trundle_Passive.png"
+    },
+    {
+      "champion": "Trundle",
+      "slot": "Q",
+      "abilityName": "Chomp",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "bonus-physical-damage",
+          "label": "Bonus Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 10,
+            "to": 90
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "linear",
+              "from": 15,
+              "to": 55
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "bonus-attack-damage",
+          "label": "Bonus Attack Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 20,
+            "to": 40
+          },
+          "ratios": [],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Trundle/Chomp",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Trundle/Chomp",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3949665,
+      "icon": "TrundleTrollSmash.png"
+    },
+    {
+      "champion": "Trundle",
+      "slot": "W",
+      "abilityName": "Frozen Domain",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 5,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Trundle/Frozen Domain",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Trundle/Frozen%20Domain",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3945305,
+      "icon": "trundledesecrate.png"
+    },
+    {
+      "champion": "Trundle",
+      "slot": "E",
+      "abilityName": "Pillar of Ice",
+      "instanceType": "damaging-ability",
+      "damageType": "true",
+      "maxRank": 5,
+      "components": [],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Trundle/Pillar of Ice",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Trundle/Pillar%20of%20Ice",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4008207,
+      "icon": "TrundleCircle.png"
+    },
+    {
+      "champion": "Trundle",
+      "slot": "R",
+      "abilityName": "Subjugate",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 3,
+      "components": [
+        {
+          "id": "initial-magic-damage",
+          "label": "Initial Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              0,
+              0,
+              0
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "maxHP",
+              "owner": "target",
+              "multipliers": [
+                {
+                  "per": "AP",
+                  "per100": {
+                    "scaling": "linear",
+                    "from": 1,
+                    "to": 1
+                  }
+                }
+              ],
+              "scaling": "linear",
+              "from": 10,
+              "to": 15
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "magic-damage-per-second",
+          "label": "Magic Damage Per Second",
+          "damageType": "magic",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              0,
+              0,
+              0
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "maxHP",
+              "owner": "target",
+              "multipliers": [
+                {
+                  "per": "AP",
+                  "per100": {
+                    "scaling": "linear",
+                    "from": 0.25,
+                    "to": 0.25
+                  }
+                }
+              ],
+              "scaling": "linear",
+              "from": 2.5,
+              "to": 3.75
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          },
+          "hits": 1
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Trundle/Subjugate",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Trundle/Subjugate",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4015247,
+      "icon": "TrundlePain.png"
+    }
+  ],
+  "art": {
+    "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Trundle.json",
+    "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
+    "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
+    "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"
+  }
+}

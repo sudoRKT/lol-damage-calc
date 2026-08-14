@@ -1,5 +1,5 @@
 {
-  "what": "Lux ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "what": "Rengar ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
@@ -10,33 +10,45 @@
   },
   "abilities": [
     {
-      "champion": "Lux",
+      "champion": "Rengar",
       "slot": "P",
-      "abilityName": "Illumination",
-      "instanceType": "on-hit",
-      "damageType": "magic",
+      "abilityName": "Unseen Predator",
+      "instanceType": "non-damaging-ability",
       "maxRank": 1,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Rengar/Unseen Predator",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Rengar/Unseen%20Predator",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4010963,
+      "icon": "Rengar_P.png"
+    },
+    {
+      "champion": "Rengar",
+      "slot": "Q",
+      "abilityName": "Savagery",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
       "components": [
         {
-          "id": "bonus-magic-damage",
-          "label": "Bonus Magic Damage",
-          "damageType": "magic",
+          "id": "additional-physical-damage",
+          "label": "Additional Physical Damage",
+          "damageType": "physical",
           "base": {
-            "scaling": "byLevel",
-            "from": 30,
-            "to": 200,
-            "atLevels": [
-              1,
-              18
-            ],
-            "steps": 18
+            "scaling": "linear",
+            "from": 20,
+            "to": 160
           },
           "ratios": [
             {
-              "stat": "AP",
+              "stat": "totalAD",
               "scaling": "linear",
-              "from": 35,
-              "to": 35
+              "from": 5,
+              "to": 5
             }
           ],
           "relation": {
@@ -46,75 +58,18 @@
       ],
       "verification": "derived",
       "provenance": {
-        "source": "Template:Data Lux/Illumination",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Illumination",
+        "source": "Template:Data Rengar/Savagery",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Rengar/Savagery",
         "patch": "16.16.1",
         "fetched": "2026-08-13"
       },
-      "sourceRevision": 4038408,
-      "icon": "LuxIlluminatingFraulein.png"
+      "sourceRevision": 4013462,
+      "icon": "RengarQ.png"
     },
     {
-      "champion": "Lux",
-      "slot": "Q",
-      "abilityName": "Light Binding",
-      "instanceType": "damaging-ability",
-      "damageType": "magic",
-      "maxRank": 5,
-      "components": [
-        {
-          "id": "magic-damage",
-          "label": "Magic Damage",
-          "damageType": "magic",
-          "base": {
-            "scaling": "linear",
-            "from": 80,
-            "to": 240
-          },
-          "ratios": [
-            {
-              "stat": "AP",
-              "scaling": "linear",
-              "from": 75,
-              "to": 75
-            }
-          ],
-          "relation": {
-            "kind": "adds"
-          }
-        }
-      ],
-      "verification": "verified",
-      "provenance": {
-        "source": "Template:Data Lux/Light Binding",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Light%20Binding",
-        "patch": "16.16.1",
-        "fetched": "2026-08-13"
-      },
-      "sourceRevision": 4007675,
-      "icon": "LuxLightBinding.png"
-    },
-    {
-      "champion": "Lux",
+      "champion": "Rengar",
       "slot": "W",
-      "abilityName": "Prismatic Barrier",
-      "instanceType": "non-damaging-ability",
-      "maxRank": 5,
-      "components": [],
-      "verification": "no-damage",
-      "provenance": {
-        "source": "Template:Data Lux/Prismatic Barrier",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Prismatic%20Barrier",
-        "patch": "16.16.1",
-        "fetched": "2026-08-13"
-      },
-      "sourceRevision": 3992656,
-      "icon": "LuxPrismaticWave.png"
-    },
-    {
-      "champion": "Lux",
-      "slot": "E",
-      "abilityName": "Lucent Singularity",
+      "abilityName": "Battle Roar",
       "instanceType": "damaging-ability",
       "damageType": "magic",
       "maxRank": 5,
@@ -125,8 +80,8 @@
           "damageType": "magic",
           "base": {
             "scaling": "linear",
-            "from": 65,
-            "to": 265
+            "from": 50,
+            "to": 170
           },
           "ratios": [
             {
@@ -143,37 +98,37 @@
       ],
       "verification": "derived",
       "provenance": {
-        "source": "Template:Data Lux/Lucent Singularity",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Lucent%20Singularity",
+        "source": "Template:Data Rengar/Battle Roar",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Rengar/Battle%20Roar",
         "patch": "16.16.1",
         "fetched": "2026-08-13"
       },
-      "sourceRevision": 4007677,
-      "icon": "LuxLightStrikeKugel.png"
+      "sourceRevision": 4009100,
+      "icon": "RengarW.png"
     },
     {
-      "champion": "Lux",
-      "slot": "R",
-      "abilityName": "Final Spark",
+      "champion": "Rengar",
+      "slot": "E",
+      "abilityName": "Bola Strike",
       "instanceType": "damaging-ability",
-      "damageType": "magic",
-      "maxRank": 3,
+      "damageType": "physical",
+      "maxRank": 5,
       "components": [
         {
-          "id": "magic-damage",
-          "label": "Magic Damage",
-          "damageType": "magic",
+          "id": "physical-damage",
+          "label": "Physical Damage",
+          "damageType": "physical",
           "base": {
             "scaling": "linear",
-            "from": 300,
-            "to": 500
+            "from": 55,
+            "to": 235
           },
           "ratios": [
             {
-              "stat": "AP",
+              "stat": "bonusAD",
               "scaling": "linear",
-              "from": 120,
-              "to": 120
+              "from": 80,
+              "to": 80
             }
           ],
           "relation": {
@@ -183,18 +138,61 @@
       ],
       "verification": "derived",
       "provenance": {
-        "source": "Template:Data Lux/Final Spark",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Final%20Spark",
+        "source": "Template:Data Rengar/Bola Strike",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Rengar/Bola%20Strike",
         "patch": "16.16.1",
         "fetched": "2026-08-13"
       },
-      "sourceRevision": 3919833,
-      "icon": "LuxR.png"
+      "sourceRevision": 4009137,
+      "icon": "RengarE.png"
+    },
+    {
+      "champion": "Rengar",
+      "slot": "R",
+      "abilityName": "Thrill of the Hunt",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 3,
+      "components": [
+        {
+          "id": "physical-damage",
+          "label": "Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              0,
+              0,
+              0
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "linear",
+              "from": 100,
+              "to": 100
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Rengar/Thrill of the Hunt",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Rengar/Thrill%20of%20the%20Hunt",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4013463,
+      "icon": "RengarR.png"
     }
   ],
   "art": {
     "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
-    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Lux.json",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Rengar.json",
     "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
     "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
     "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"

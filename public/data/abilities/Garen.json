@@ -1,0 +1,244 @@
+{
+  "what": "Garen ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "provenance": {
+    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "patch": "16.16.1",
+    "fetched": "2026-08-13",
+    "extractedOn": "2026-08-14",
+    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
+    "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
+  },
+  "abilities": [
+    {
+      "champion": "Garen",
+      "slot": "P",
+      "abilityName": "Perseverance",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 1,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Garen/Perseverance",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Garen/Perseverance",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4038338,
+      "icon": "Garen_Passive.png"
+    },
+    {
+      "champion": "Garen",
+      "slot": "Q",
+      "abilityName": "Decisive Strike",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "bonus-physical-damage",
+          "label": "Bonus Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 30,
+            "to": 150
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "linear",
+              "from": 50,
+              "to": 50
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Garen/Decisive Strike",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Garen/Decisive%20Strike",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4004895,
+      "icon": "GarenQ.png"
+    },
+    {
+      "champion": "Garen",
+      "slot": "W",
+      "abilityName": "Courage",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 5,
+      "components": [],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Garen/Courage",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Garen/Courage",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3932284,
+      "icon": "GarenW.png"
+    },
+    {
+      "champion": "Garen",
+      "slot": "E",
+      "abilityName": "Judgment",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "physical-damage-per-spin",
+          "label": "Physical Damage Per Spin",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 4,
+            "to": 16
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "linear",
+              "from": 40,
+              "to": 52
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          },
+          "hits": 1
+        },
+        {
+          "id": "critical-strike-damage-per-spin",
+          "label": "Critical Strike Damage Per Spin",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 5.2,
+            "to": 20.8
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "linear",
+              "from": 52,
+              "to": 67.60000000000001
+            }
+          ],
+          "relation": {
+            "kind": "alternativeTo",
+            "componentId": "physical-damage-per-spin"
+          },
+          "hits": 1
+        },
+        {
+          "id": "increased-damage-per-spin",
+          "label": "Increased Damage Per Spin",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 5,
+            "to": 20
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "linear",
+              "from": 50,
+              "to": 65
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          },
+          "hits": 1
+        },
+        {
+          "id": "increased-critical-strike-damage-per-spin",
+          "label": "Increased Critical Strike Damage Per Spin",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 6.5,
+            "to": 26
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "linear",
+              "from": 65,
+              "to": 84.5
+            }
+          ],
+          "relation": {
+            "kind": "alternativeTo",
+            "componentId": "critical-strike-damage-per-spin"
+          },
+          "hits": 1
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Garen/Judgment",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Garen/Judgment",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4009435,
+      "icon": "GarenE.png"
+    },
+    {
+      "champion": "Garen",
+      "slot": "R",
+      "abilityName": "Demacian Justice",
+      "instanceType": "damaging-ability",
+      "damageType": "true",
+      "maxRank": 3,
+      "components": [
+        {
+          "id": "true-damage",
+          "label": "True Damage",
+          "damageType": "true",
+          "base": {
+            "scaling": "linear",
+            "from": 125,
+            "to": 275
+          },
+          "ratios": [
+            {
+              "stat": "missingHP",
+              "owner": "target",
+              "scaling": "linear",
+              "from": 25,
+              "to": 35
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Garen/Demacian Justice",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Garen/Demacian%20Justice",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4042864,
+      "icon": "GarenR.png"
+    }
+  ],
+  "art": {
+    "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Garen.json",
+    "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
+    "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
+    "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"
+  }
+}

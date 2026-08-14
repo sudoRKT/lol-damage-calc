@@ -1,0 +1,331 @@
+{
+  "what": "Mel ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "provenance": {
+    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "patch": "16.16.1",
+    "fetched": "2026-08-13",
+    "extractedOn": "2026-08-14",
+    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
+    "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
+  },
+  "abilities": [
+    {
+      "champion": "Mel",
+      "slot": "P",
+      "abilityName": "Searing Brilliance",
+      "instanceType": "on-hit",
+      "damageType": "magic",
+      "maxRank": 1,
+      "components": [],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Mel/Searing Brilliance",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Mel/Searing%20Brilliance",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4038410,
+      "icon": "Mel_Passive.png"
+    },
+    {
+      "champion": "Mel",
+      "slot": "Q",
+      "abilityName": "Radiant Volley",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "initial-explosion-magic-damage",
+          "label": "Initial Explosion Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 60,
+            "to": 160
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 55,
+              "to": 55
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "magic-damage-per-subsequent-explosion",
+          "label": "Magic Damage per Subsequent Explosion",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 5,
+            "to": 13
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 5,
+              "to": 5
+            }
+          ],
+          "relation": {
+            "kind": "alternativeTo",
+            "componentId": "initial-explosion-magic-damage"
+          }
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Mel/Radiant Volley",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Mel/Radiant%20Volley",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4042677,
+      "icon": "MelQ.png"
+    },
+    {
+      "champion": "Mel",
+      "slot": "W",
+      "abilityName": "Rebuttal",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "replicated-projectile-magic-damage-modifier",
+          "label": "Replicated Projectile Magic Damage Modifier",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 40,
+            "to": 60
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 5,
+              "to": 5
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Mel/Rebuttal",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Mel/Rebuttal",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4050141,
+      "icon": "MelW.png"
+    },
+    {
+      "champion": "Mel",
+      "slot": "E",
+      "abilityName": "Solar Snare",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "orb-magic-damage",
+          "label": "Orb Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 60,
+            "to": 240
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 70,
+              "to": 70
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "field-magic-damage-per-tick",
+          "label": "Field Magic Damage per Tick",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 2,
+            "to": 8
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 1,
+              "to": 1
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          },
+          "hits": 1
+        },
+        {
+          "id": "field-magic-damage-per-second",
+          "label": "Field Magic Damage per Second",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 16,
+            "to": 64
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "explicit",
+              "perRank": [
+                8,
+                8,
+                8,
+                8,
+                8
+              ]
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          },
+          "hits": 1
+        },
+        {
+          "id": "field-magic-damage-per-second",
+          "label": "Field Magic Damage per Second",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 8,
+            "to": 32
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "explicit",
+              "perRank": [
+                4,
+                4,
+                4,
+                4,
+                4
+              ]
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          },
+          "hits": 1
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Mel/Solar Snare",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Mel/Solar%20Snare",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4007692,
+      "icon": "MelE.png"
+    },
+    {
+      "champion": "Mel",
+      "slot": "R",
+      "abilityName": "Golden Eclipse",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 3,
+      "components": [
+        {
+          "id": "increased-stored-damage",
+          "label": "Increased Stored Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 10,
+            "to": 30
+          },
+          "ratios": [],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "stored-damage-increase-per-stack",
+          "label": "Stored Damage Increase per Stack",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 1,
+            "to": 3
+          },
+          "ratios": [],
+          "relation": {
+            "kind": "adds"
+          },
+          "hits": 1
+        },
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 125,
+            "to": 275
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 30,
+              "to": 30
+            },
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 4,
+              "to": 4
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Mel/Golden Eclipse",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Mel/Golden%20Eclipse",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4036107,
+      "icon": "MelR.png"
+    }
+  ],
+  "art": {
+    "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Mel.json",
+    "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
+    "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
+    "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"
+  }
+}

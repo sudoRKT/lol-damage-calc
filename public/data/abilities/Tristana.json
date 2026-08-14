@@ -1,0 +1,325 @@
+{
+  "what": "Tristana ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "provenance": {
+    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "patch": "16.16.1",
+    "fetched": "2026-08-13",
+    "extractedOn": "2026-08-14",
+    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
+    "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
+  },
+  "abilities": [
+    {
+      "champion": "Tristana",
+      "slot": "P",
+      "abilityName": "Draw a Bead",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 1,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Tristana/Draw a Bead",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Tristana/Draw%20a%20Bead",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3986179,
+      "icon": "Tristana_Passive.png"
+    },
+    {
+      "champion": "Tristana",
+      "slot": "Q",
+      "abilityName": "Rapid Fire",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 5,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Tristana/Rapid Fire",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Tristana/Rapid%20Fire",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4026462,
+      "icon": "TristanaQ.png"
+    },
+    {
+      "champion": "Tristana",
+      "slot": "W",
+      "abilityName": "Rocket Jump",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 70,
+            "to": 210
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 100,
+              "to": 100
+            },
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 50,
+              "to": 50
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Tristana/Rocket Jump",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Tristana/Rocket%20Jump",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4007758,
+      "icon": "TristanaW.png"
+    },
+    {
+      "champion": "Tristana",
+      "slot": "E",
+      "abilityName": "Explosive Charge",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 45,
+            "to": 105
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 25,
+              "to": 25
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "minimum-physical-damage",
+          "label": "Minimum Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 60,
+            "to": 160
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 80,
+              "to": 80
+            },
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 50,
+              "to": 50
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "bonus-damage-per-stack",
+          "label": "Bonus Damage Per Stack",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 15,
+            "to": 40
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "explicit",
+              "perRank": [
+                20,
+                20,
+                20,
+                20,
+                20
+              ]
+            },
+            {
+              "stat": "AP",
+              "scaling": "explicit",
+              "perRank": [
+                12.5,
+                12.5,
+                12.5,
+                12.5,
+                12.5
+              ]
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          },
+          "hits": 1
+        },
+        {
+          "id": "full-stack-bonus-damage",
+          "label": "Full Stack Bonus Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 60,
+            "to": 160
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "explicit",
+              "perRank": [
+                80,
+                80,
+                80,
+                80,
+                80
+              ]
+            },
+            {
+              "stat": "AP",
+              "scaling": "explicit",
+              "perRank": [
+                50,
+                50,
+                50,
+                50,
+                50
+              ]
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "full-stack-physical-damage",
+          "label": "Full Stack Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 120,
+            "to": 320
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "explicit",
+              "perRank": [
+                160,
+                160,
+                160,
+                160,
+                160
+              ]
+            },
+            {
+              "stat": "AP",
+              "scaling": "explicit",
+              "perRank": [
+                100,
+                100,
+                100,
+                100,
+                100
+              ]
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Tristana/Explosive Charge",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Tristana/Explosive%20Charge",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4008204,
+      "icon": "TristanaE.png"
+    },
+    {
+      "champion": "Tristana",
+      "slot": "R",
+      "abilityName": "Buster Shot",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 3,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 225,
+            "to": 325
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 70,
+              "to": 70
+            },
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 100,
+              "to": 100
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Tristana/Buster Shot",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Tristana/Buster%20Shot",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4008205,
+      "icon": "TristanaR.png"
+    }
+  ],
+  "art": {
+    "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Tristana.json",
+    "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
+    "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
+    "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"
+  }
+}

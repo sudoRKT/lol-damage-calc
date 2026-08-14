@@ -1,0 +1,380 @@
+{
+  "what": "Jayce ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "provenance": {
+    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "patch": "16.16.1",
+    "fetched": "2026-08-13",
+    "extractedOn": "2026-08-14",
+    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
+    "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
+  },
+  "abilities": [
+    {
+      "champion": "Jayce",
+      "slot": "P",
+      "abilityName": "Hextech Capacitor",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 1,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Jayce/Hextech Capacitor",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Jayce/Hextech%20Capacitor",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4042868,
+      "icon": "Jayce_Passive.png"
+    },
+    {
+      "champion": "Jayce",
+      "slot": "P",
+      "abilityName": "Hextech Capacitor 2",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 1,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Jayce/Hextech Capacitor 2",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Jayce/Hextech%20Capacitor%202",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3347927,
+      "icon": "Jayce_Passive.png"
+    },
+    {
+      "champion": "Jayce",
+      "slot": "Q",
+      "abilityName": "To the Skies!",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 6,
+      "components": [
+        {
+          "id": "physical-damage",
+          "label": "Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 60,
+            "to": 310
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 135,
+              "to": 135
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Jayce/To the Skies!",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Jayce/To%20the%20Skies!",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3989865,
+      "icon": "JayceToTheSkies.png"
+    },
+    {
+      "champion": "Jayce",
+      "slot": "Q",
+      "abilityName": "Shock Blast",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 6,
+      "components": [
+        {
+          "id": "physical-damage",
+          "label": "Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 80,
+            "to": 285
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 130,
+              "to": 130
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "increased-damage",
+          "label": "Increased Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 112,
+            "to": 399
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "explicit",
+              "perRank": [
+                182,
+                182,
+                182,
+                182,
+                182,
+                182
+              ]
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Jayce/Shock Blast",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Jayce/Shock%20Blast",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4007609,
+      "icon": "JayceToTheSkies.png"
+    },
+    {
+      "champion": "Jayce",
+      "slot": "W",
+      "abilityName": "Lightning Field",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 6,
+      "components": [
+        {
+          "id": "magic-damage-per-tick",
+          "label": "Magic Damage Per Tick",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 35,
+            "to": 110
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 25,
+              "to": 25
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          },
+          "hits": 4
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Jayce/Lightning Field",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Jayce/Lightning%20Field",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3948933,
+      "icon": "JayceStaticField.png"
+    },
+    {
+      "champion": "Jayce",
+      "slot": "W",
+      "abilityName": "Hyper Charge",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 6,
+      "components": [
+        {
+          "id": "physical-damage",
+          "label": "Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "linear",
+              "from": 70,
+              "to": 110
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Jayce/Hyper Charge",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Jayce/Hyper%20Charge",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3965005,
+      "icon": "JayceStaticField.png"
+    },
+    {
+      "champion": "Jayce",
+      "slot": "E",
+      "abilityName": "Thundering Blow",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 6,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "maxHP",
+              "owner": "target",
+              "scaling": "linear",
+              "from": 8,
+              "to": 22
+            },
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 100,
+              "to": 100
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Jayce/Thundering Blow",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Jayce/Thundering%20Blow",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3965179,
+      "icon": "JayceThunderingBlow.png"
+    },
+    {
+      "champion": "Jayce",
+      "slot": "E",
+      "abilityName": "Acceleration Gate",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 6,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Jayce/Acceleration Gate",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Jayce/Acceleration%20Gate",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4005101,
+      "icon": "JayceThunderingBlow.png"
+    },
+    {
+      "champion": "Jayce",
+      "slot": "R",
+      "abilityName": "Transform Mercury Cannon",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 1,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Jayce/Transform Mercury Cannon",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Jayce/Transform%20Mercury%20Cannon",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3989867,
+      "icon": "JayceStanceHtG.png"
+    },
+    {
+      "champion": "Jayce",
+      "slot": "R",
+      "abilityName": "Transform Mercury Hammer",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 1,
+      "components": [
+        {
+          "id": "bonus-magic-damage",
+          "label": "Bonus Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "byLevel",
+            "from": 25,
+            "to": 130,
+            "atLevels": [
+              1,
+              16
+            ],
+            "steps": 4
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 30,
+              "to": 30
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Jayce/Transform Mercury Hammer",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Jayce/Transform%20Mercury%20Hammer",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4049966,
+      "icon": "JayceStanceHtG.png"
+    }
+  ],
+  "art": {
+    "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Jayce.json",
+    "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
+    "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
+    "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"
+  }
+}

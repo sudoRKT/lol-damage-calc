@@ -1,0 +1,223 @@
+{
+  "what": "Nilah ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "provenance": {
+    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "patch": "16.16.1",
+    "fetched": "2026-08-13",
+    "extractedOn": "2026-08-14",
+    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
+    "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
+  },
+  "abilities": [
+    {
+      "champion": "Nilah",
+      "slot": "P",
+      "abilityName": "Joy Unending",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 1,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Nilah/Joy Unending",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Nilah/Joy%20Unending",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3960984,
+      "icon": "NIlahP.png"
+    },
+    {
+      "champion": "Nilah",
+      "slot": "Q",
+      "abilityName": "Formless Blade",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "minimum-physical-damage",
+          "label": "Minimum Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 0,
+            "to": 40
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "linear",
+              "from": 100,
+              "to": 100
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "maximum-physical-damage",
+          "label": "Maximum Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 0,
+            "to": 76.39999999999999
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "explicit",
+              "perRank": [
+                191,
+                191,
+                191,
+                191,
+                191
+              ]
+            }
+          ],
+          "relation": {
+            "kind": "alternativeTo",
+            "componentId": "minimum-physical-damage"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Nilah/Formless Blade",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Nilah/Formless%20Blade",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4007708,
+      "icon": "NilahQ.png"
+    },
+    {
+      "champion": "Nilah",
+      "slot": "W",
+      "abilityName": "Jubilant Veil",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 5,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Nilah/Jubilant Veil",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Nilah/Jubilant%20Veil",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3845922,
+      "icon": "NilahW.png"
+    },
+    {
+      "champion": "Nilah",
+      "slot": "E",
+      "abilityName": "Slipstream",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "physical-damage",
+          "label": "Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 60,
+            "to": 100
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 20,
+              "to": 20
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Nilah/Slipstream",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Nilah/Slipstream",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3927625,
+      "icon": "NilahE.png"
+    },
+    {
+      "champion": "Nilah",
+      "slot": "R",
+      "abilityName": "Apotheosis",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 3,
+      "components": [
+        {
+          "id": "physical-damage-per-tick",
+          "label": "Physical Damage per Tick",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 15,
+            "to": 35
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 10,
+              "to": 10
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          },
+          "hits": 4
+        },
+        {
+          "id": "burst-physical-damage",
+          "label": "Burst Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 125,
+            "to": 325
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 100,
+              "to": 100
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Nilah/Apotheosis",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Nilah/Apotheosis",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4007709,
+      "icon": "NilahR.png"
+    }
+  ],
+  "art": {
+    "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Nilah.json",
+    "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
+    "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
+    "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"
+  }
+}

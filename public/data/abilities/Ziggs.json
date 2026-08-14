@@ -1,0 +1,311 @@
+{
+  "what": "Ziggs ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "provenance": {
+    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "patch": "16.16.1",
+    "fetched": "2026-08-13",
+    "extractedOn": "2026-08-14",
+    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
+    "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
+  },
+  "abilities": [
+    {
+      "champion": "Ziggs",
+      "slot": "P",
+      "abilityName": "Short Fuse",
+      "instanceType": "on-hit",
+      "damageType": "magic",
+      "maxRank": 1,
+      "components": [
+        {
+          "id": "bonus-magic-damage",
+          "label": "Bonus Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "byLevelExplicit",
+            "values": [
+              20,
+              24,
+              28,
+              32,
+              36,
+              40,
+              48,
+              56,
+              64,
+              72,
+              80,
+              88,
+              100,
+              112,
+              124,
+              136,
+              148,
+              160
+            ],
+            "atLevels": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 50,
+              "to": 50
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Ziggs/Short Fuse",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Ziggs/Short%20Fuse",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4005222,
+      "icon": "ZiggsPassiveReady.png"
+    },
+    {
+      "champion": "Ziggs",
+      "slot": "Q",
+      "abilityName": "Bouncing Bomb",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 80,
+            "to": 280
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 60,
+              "to": 80
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Ziggs/Bouncing Bomb",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Ziggs/Bouncing%20Bomb",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4008669,
+      "icon": "ZiggsQ.png"
+    },
+    {
+      "champion": "Ziggs",
+      "slot": "W",
+      "abilityName": "Satchel Charge",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 70,
+            "to": 210
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 50,
+              "to": 50
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Ziggs/Satchel Charge",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Ziggs/Satchel%20Charge",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4008672,
+      "icon": "ZiggsW.png"
+    },
+    {
+      "champion": "Ziggs",
+      "slot": "E",
+      "abilityName": "Hexplosive Minefield",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage-per-mine",
+          "label": "Magic Damage per Mine",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 30,
+            "to": 190
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 25,
+              "to": 45
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          },
+          "variableHits": {
+            "kind": "repeatsAtReducedRate",
+            "rate": 0.4,
+            "maxAdditional": 10,
+            "sourceSays": "An enemy takes 40% damage from subsequent mines."
+          }
+        },
+        {
+          "id": "reduced-damage-per-mine",
+          "label": "Reduced Damage per Mine",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 12,
+            "to": 76
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 10,
+              "to": 18
+            }
+          ],
+          "relation": {
+            "kind": "alternativeTo",
+            "componentId": "magic-damage-per-mine"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Ziggs/Hexplosive Minefield",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Ziggs/Hexplosive%20Minefield",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4008673,
+      "icon": "ZiggsE.png"
+    },
+    {
+      "champion": "Ziggs",
+      "slot": "R",
+      "abilityName": "Mega Inferno Bomb",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 3,
+      "components": [
+        {
+          "id": "epicenter-magic-damage",
+          "label": "Epicenter Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 300,
+            "to": 700
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 100,
+              "to": 100
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "reduced-damage",
+          "label": "Reduced Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 195,
+            "to": 455
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "explicit",
+              "perRank": [
+                65,
+                65,
+                65
+              ]
+            }
+          ],
+          "relation": {
+            "kind": "alternativeTo",
+            "componentId": "epicenter-magic-damage"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Ziggs/Mega Inferno Bomb",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Ziggs/Mega%20Inferno%20Bomb",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4008677,
+      "icon": "ZiggsR.png"
+    }
+  ],
+  "art": {
+    "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Ziggs.json",
+    "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
+    "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
+    "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"
+  }
+}

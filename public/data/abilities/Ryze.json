@@ -1,0 +1,213 @@
+{
+  "what": "Ryze ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "provenance": {
+    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "patch": "16.16.1",
+    "fetched": "2026-08-13",
+    "extractedOn": "2026-08-14",
+    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
+    "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
+  },
+  "abilities": [
+    {
+      "champion": "Ryze",
+      "slot": "P",
+      "abilityName": "Arcane Mastery",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 1,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Ryze/Arcane Mastery",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Ryze/Arcane%20Mastery",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4005387,
+      "icon": "Ryze_P.png"
+    },
+    {
+      "champion": "Ryze",
+      "slot": "Q",
+      "abilityName": "Overload",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 75,
+            "to": 155
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 55,
+              "to": 55
+            },
+            {
+              "stat": "maxMana",
+              "owner": "unresolved",
+              "scaling": "linear",
+              "from": 2,
+              "to": 2
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Ryze/Overload",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Ryze/Overload",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3936361,
+      "unresolvable": [
+        {
+          "field": "components[0].ratios[1].owner (maxMana)",
+          "why": "the source names maxMana and never says whose, and no other source states it"
+        }
+      ],
+      "icon": "RyzeQWrapper.png"
+    },
+    {
+      "champion": "Ryze",
+      "slot": "W",
+      "abilityName": "Rune Prison",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 60,
+            "to": 180
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 60,
+              "to": 60
+            },
+            {
+              "stat": "maxMana",
+              "owner": "unresolved",
+              "scaling": "linear",
+              "from": 3,
+              "to": 3
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Ryze/Rune Prison",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Ryze/Rune%20Prison",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3989878,
+      "unresolvable": [
+        {
+          "field": "components[0].ratios[1].owner (maxMana)",
+          "why": "the source names maxMana and never says whose, and no other source states it"
+        }
+      ],
+      "icon": "RyzeW.png"
+    },
+    {
+      "champion": "Ryze",
+      "slot": "E",
+      "abilityName": "Spell Flux",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 60,
+            "to": 180
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 50,
+              "to": 50
+            },
+            {
+              "stat": "maxMana",
+              "owner": "unresolved",
+              "scaling": "linear",
+              "from": 2,
+              "to": 2
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Ryze/Spell Flux",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Ryze/Spell%20Flux",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4008024,
+      "unresolvable": [
+        {
+          "field": "components[0].ratios[1].owner (maxMana)",
+          "why": "the source names maxMana and never says whose, and no other source states it"
+        }
+      ],
+      "icon": "RyzeE.png"
+    },
+    {
+      "champion": "Ryze",
+      "slot": "R",
+      "abilityName": "Realm Warp",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 3,
+      "components": [],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Ryze/Realm Warp",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Ryze/Realm%20Warp",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4008025,
+      "icon": "RyzeR.png"
+    }
+  ],
+  "art": {
+    "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Ryze.json",
+    "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
+    "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
+    "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"
+  }
+}

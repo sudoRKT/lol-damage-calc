@@ -1,0 +1,185 @@
+{
+  "what": "Lulu ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "provenance": {
+    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "patch": "16.16.1",
+    "fetched": "2026-08-13",
+    "extractedOn": "2026-08-14",
+    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
+    "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
+  },
+  "abilities": [
+    {
+      "champion": "Lulu",
+      "slot": "P",
+      "abilityName": "Pix, Faerie Companion",
+      "instanceType": "on-hit",
+      "damageType": "magic",
+      "maxRank": 1,
+      "components": [],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Lulu/Pix, Faerie Companion",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lulu/Pix%2C%20Faerie%20Companion",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4046485,
+      "icon": "Lulu_PixFaerieCompanion.png"
+    },
+    {
+      "champion": "Lulu",
+      "slot": "Q",
+      "abilityName": "Glitterlance",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 60,
+            "to": 200
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 50,
+              "to": 50
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          },
+          "variableHits": {
+            "kind": "repeatsAtReducedRate",
+            "rate": 0.5,
+            "maxAdditional": 1,
+            "sourceSays": "Enemies take {{ccs|50% damage|magic}} from a second bolt."
+          }
+        },
+        {
+          "id": "reduced-damage",
+          "label": "Reduced Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 30,
+            "to": 100
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "explicit",
+              "perRank": [
+                25,
+                25,
+                25,
+                25,
+                25
+              ]
+            }
+          ],
+          "relation": {
+            "kind": "alternativeTo",
+            "componentId": "magic-damage"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Lulu/Glitterlance",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lulu/Glitterlance",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3881438,
+      "icon": "LuluQ.png"
+    },
+    {
+      "champion": "Lulu",
+      "slot": "W",
+      "abilityName": "Whimsy",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 5,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Lulu/Whimsy",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lulu/Whimsy",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4007673,
+      "icon": "LuluW.png"
+    },
+    {
+      "champion": "Lulu",
+      "slot": "E",
+      "abilityName": "Help, Pix!",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 70,
+            "to": 230
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 50,
+              "to": 50
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Lulu/Help, Pix!",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lulu/Help%2C%20Pix!",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3945270,
+      "icon": "LuluE.png"
+    },
+    {
+      "champion": "Lulu",
+      "slot": "R",
+      "abilityName": "Wild Growth",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 3,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Lulu/Wild Growth",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lulu/Wild%20Growth",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4007674,
+      "icon": "LuluR.png"
+    }
+  ],
+  "art": {
+    "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Lulu.json",
+    "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
+    "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
+    "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"
+  }
+}

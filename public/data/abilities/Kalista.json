@@ -1,0 +1,214 @@
+{
+  "what": "Kalista ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "provenance": {
+    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "patch": "16.16.1",
+    "fetched": "2026-08-13",
+    "extractedOn": "2026-08-14",
+    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
+    "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
+  },
+  "abilities": [
+    {
+      "champion": "Kalista",
+      "slot": "P",
+      "abilityName": "Martial Poise",
+      "instanceType": "on-hit",
+      "damageType": "physical",
+      "maxRank": 1,
+      "components": [],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Kalista/Martial Poise",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kalista/Martial%20Poise",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4024157,
+      "icon": "Kalista_Passive.png"
+    },
+    {
+      "champion": "Kalista",
+      "slot": "Q",
+      "abilityName": "Pierce",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "physical-damage",
+          "label": "Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 10,
+            "to": 270
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "linear",
+              "from": 105,
+              "to": 105
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Kalista/Pierce",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kalista/Pierce",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3997075,
+      "icon": "KalistaMysticShot.png"
+    },
+    {
+      "champion": "Kalista",
+      "slot": "W",
+      "abilityName": "Sentinel",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "bonus-magic-damage",
+          "label": "Bonus Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "maxHP",
+              "owner": "target",
+              "scaling": "linear",
+              "from": 10,
+              "to": 18
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Kalista/Sentinel",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kalista/Sentinel",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4007621,
+      "icon": "KalistaW.png"
+    },
+    {
+      "champion": "Kalista",
+      "slot": "E",
+      "abilityName": "Rend",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "physical-damage",
+          "label": "Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 5,
+            "to": 45
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "linear",
+              "from": 70,
+              "to": 70
+            },
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 65,
+              "to": 65
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "bonus-damage-per-additional-stack",
+          "label": "Bonus Damage per Additional Stack",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 7,
+            "to": 35
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "linear",
+              "from": 20,
+              "to": 50
+            },
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 50,
+              "to": 50
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Kalista/Rend",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kalista/Rend",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4004071,
+      "icon": "KalistaExpungeWrapper.png"
+    },
+    {
+      "champion": "Kalista",
+      "slot": "R",
+      "abilityName": "Fate's Call",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 3,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Kalista/Fate's Call",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kalista/Fate's%20Call",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4015001,
+      "icon": "KalistaRx.png"
+    }
+  ],
+  "art": {
+    "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Kalista.json",
+    "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
+    "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
+    "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"
+  }
+}

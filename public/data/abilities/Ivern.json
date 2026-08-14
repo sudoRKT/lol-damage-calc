@@ -1,5 +1,5 @@
 {
-  "what": "Lux ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "what": "Ivern ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
@@ -10,54 +10,27 @@
   },
   "abilities": [
     {
-      "champion": "Lux",
+      "champion": "Ivern",
       "slot": "P",
-      "abilityName": "Illumination",
+      "abilityName": "Friend of the Forest",
       "instanceType": "on-hit",
-      "damageType": "magic",
+      "damageType": "true",
       "maxRank": 1,
-      "components": [
-        {
-          "id": "bonus-magic-damage",
-          "label": "Bonus Magic Damage",
-          "damageType": "magic",
-          "base": {
-            "scaling": "byLevel",
-            "from": 30,
-            "to": 200,
-            "atLevels": [
-              1,
-              18
-            ],
-            "steps": 18
-          },
-          "ratios": [
-            {
-              "stat": "AP",
-              "scaling": "linear",
-              "from": 35,
-              "to": 35
-            }
-          ],
-          "relation": {
-            "kind": "adds"
-          }
-        }
-      ],
-      "verification": "derived",
+      "components": [],
+      "verification": "incomplete",
       "provenance": {
-        "source": "Template:Data Lux/Illumination",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Illumination",
+        "source": "Template:Data Ivern/Friend of the Forest",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Ivern/Friend%20of%20the%20Forest",
         "patch": "16.16.1",
         "fetched": "2026-08-13"
       },
-      "sourceRevision": 4038408,
-      "icon": "LuxIlluminatingFraulein.png"
+      "sourceRevision": 4038386,
+      "icon": "IvernP.png"
     },
     {
-      "champion": "Lux",
+      "champion": "Ivern",
       "slot": "Q",
-      "abilityName": "Light Binding",
+      "abilityName": "Rootcaller",
       "instanceType": "damaging-ability",
       "damageType": "magic",
       "maxRank": 5,
@@ -69,14 +42,14 @@
           "base": {
             "scaling": "linear",
             "from": 80,
-            "to": 240
+            "to": 260
           },
           "ratios": [
             {
               "stat": "AP",
               "scaling": "linear",
-              "from": 75,
-              "to": 75
+              "from": 70,
+              "to": 70
             }
           ],
           "relation": {
@@ -84,37 +57,81 @@
           }
         }
       ],
-      "verification": "verified",
+      "verification": "derived",
       "provenance": {
-        "source": "Template:Data Lux/Light Binding",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Light%20Binding",
+        "source": "Template:Data Ivern/Rootcaller",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Ivern/Rootcaller",
         "patch": "16.16.1",
         "fetched": "2026-08-13"
       },
-      "sourceRevision": 4007675,
-      "icon": "LuxLightBinding.png"
+      "sourceRevision": 4009163,
+      "icon": "IvernQ.png"
     },
     {
-      "champion": "Lux",
+      "champion": "Ivern",
       "slot": "W",
-      "abilityName": "Prismatic Barrier",
-      "instanceType": "non-damaging-ability",
+      "abilityName": "Brushmaker",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
       "maxRank": 5,
-      "components": [],
-      "verification": "no-damage",
+      "components": [
+        {
+          "id": "additional-magic-damage",
+          "label": "Additional Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 20,
+            "to": 50
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 20,
+              "to": 20
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "ally-additional-magic-damage",
+          "label": "Ally Additional Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 10,
+            "to": 30
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 10,
+              "to": 10
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
       "provenance": {
-        "source": "Template:Data Lux/Prismatic Barrier",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Prismatic%20Barrier",
+        "source": "Template:Data Ivern/Brushmaker",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Ivern/Brushmaker",
         "patch": "16.16.1",
         "fetched": "2026-08-13"
       },
-      "sourceRevision": 3992656,
-      "icon": "LuxPrismaticWave.png"
+      "sourceRevision": 4025374,
+      "icon": "IvernW.png"
     },
     {
-      "champion": "Lux",
+      "champion": "Ivern",
       "slot": "E",
-      "abilityName": "Lucent Singularity",
+      "abilityName": "Triggerseed",
       "instanceType": "damaging-ability",
       "damageType": "magic",
       "maxRank": 5,
@@ -125,8 +142,8 @@
           "damageType": "magic",
           "base": {
             "scaling": "linear",
-            "from": 65,
-            "to": 265
+            "from": 70,
+            "to": 150
           },
           "ratios": [
             {
@@ -143,58 +160,36 @@
       ],
       "verification": "derived",
       "provenance": {
-        "source": "Template:Data Lux/Lucent Singularity",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Lucent%20Singularity",
+        "source": "Template:Data Ivern/Triggerseed",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Ivern/Triggerseed",
         "patch": "16.16.1",
         "fetched": "2026-08-13"
       },
-      "sourceRevision": 4007677,
-      "icon": "LuxLightStrikeKugel.png"
+      "sourceRevision": 3994759,
+      "icon": "IvernE.png"
     },
     {
-      "champion": "Lux",
+      "champion": "Ivern",
       "slot": "R",
-      "abilityName": "Final Spark",
+      "abilityName": "Daisy!",
       "instanceType": "damaging-ability",
-      "damageType": "magic",
+      "damageType": "physical",
       "maxRank": 3,
-      "components": [
-        {
-          "id": "magic-damage",
-          "label": "Magic Damage",
-          "damageType": "magic",
-          "base": {
-            "scaling": "linear",
-            "from": 300,
-            "to": 500
-          },
-          "ratios": [
-            {
-              "stat": "AP",
-              "scaling": "linear",
-              "from": 120,
-              "to": 120
-            }
-          ],
-          "relation": {
-            "kind": "adds"
-          }
-        }
-      ],
-      "verification": "derived",
+      "components": [],
+      "verification": "incomplete",
       "provenance": {
-        "source": "Template:Data Lux/Final Spark",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Final%20Spark",
+        "source": "Template:Data Ivern/Daisy!",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Ivern/Daisy!",
         "patch": "16.16.1",
         "fetched": "2026-08-13"
       },
-      "sourceRevision": 3919833,
-      "icon": "LuxR.png"
+      "sourceRevision": 3976509,
+      "icon": "IvernR.png"
     }
   ],
   "art": {
     "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
-    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Lux.json",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Ivern.json",
     "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
     "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
     "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"

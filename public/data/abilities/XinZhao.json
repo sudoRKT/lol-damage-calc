@@ -1,0 +1,283 @@
+{
+  "what": "Xin Zhao ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "provenance": {
+    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "patch": "16.16.1",
+    "fetched": "2026-08-13",
+    "extractedOn": "2026-08-14",
+    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
+    "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
+  },
+  "abilities": [
+    {
+      "champion": "Xin Zhao",
+      "slot": "P",
+      "abilityName": "Determination",
+      "instanceType": "on-hit",
+      "damageType": "physical",
+      "maxRank": 1,
+      "components": [
+        {
+          "id": "bonus-physical-damage",
+          "label": "Bonus Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              0
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "byLevel",
+              "from": 15,
+              "to": 60,
+              "atLevels": [
+                1,
+                16
+              ],
+              "steps": 4
+            },
+            {
+              "stat": "AP",
+              "scaling": "byLevel",
+              "from": 5,
+              "to": 20,
+              "atLevels": [
+                1,
+                16
+              ],
+              "steps": 4
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Xin Zhao/Determination",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Xin%20Zhao/Determination",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4051470,
+      "icon": "XinZhaoReworkP.png"
+    },
+    {
+      "champion": "Xin Zhao",
+      "slot": "Q",
+      "abilityName": "Three Talon Strike",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "bonus-physical-damage",
+          "label": "Bonus Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 15,
+            "to": 75
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 40,
+              "to": 40
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Xin Zhao/Three Talon Strike",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Xin%20Zhao/Three%20Talon%20Strike",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3986754,
+      "icon": "XinZhaoQ.png"
+    },
+    {
+      "champion": "Xin Zhao",
+      "slot": "W",
+      "abilityName": "Wind Becomes Lightning",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "physical-damage-per-slash",
+          "label": "Physical Damage per Slash",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 7.5,
+            "to": 17.5
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "explicit",
+              "perRank": [
+                7.5,
+                7.5,
+                7.5,
+                7.5,
+                7.5
+              ]
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          },
+          "hits": 1
+        },
+        {
+          "id": "thrust-physical-damage",
+          "label": "Thrust Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 50,
+            "to": 190
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "linear",
+              "from": 90,
+              "to": 90
+            },
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 65,
+              "to": 65
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Xin Zhao/Wind Becomes Lightning",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Xin%20Zhao/Wind%20Becomes%20Lightning",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4026481,
+      "icon": "XinZhaoW.png"
+    },
+    {
+      "champion": "Xin Zhao",
+      "slot": "E",
+      "abilityName": "Audacious Charge",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 50,
+            "to": 150
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 120,
+              "to": 120
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Xin Zhao/Audacious Charge",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Xin%20Zhao/Audacious%20Charge",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4026484,
+      "icon": "XinZhaoE.png"
+    },
+    {
+      "champion": "Xin Zhao",
+      "slot": "R",
+      "abilityName": "Crescent Guard",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 3,
+      "components": [
+        {
+          "id": "physical-damage",
+          "label": "Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 75,
+            "to": 275
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 100,
+              "to": 100
+            },
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 110,
+              "to": 110
+            },
+            {
+              "stat": "currentHP",
+              "owner": "target",
+              "scaling": "linear",
+              "from": 15,
+              "to": 15
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Xin Zhao/Crescent Guard",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Xin%20Zhao/Crescent%20Guard",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4008632,
+      "icon": "XinZhaoR.png"
+    }
+  ],
+  "art": {
+    "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/XinZhao.json",
+    "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
+    "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
+    "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"
+  }
+}

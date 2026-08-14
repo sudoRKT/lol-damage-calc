@@ -1,5 +1,5 @@
 {
-  "what": "Lux ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "what": "Neeko ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
@@ -10,33 +10,107 @@
   },
   "abilities": [
     {
-      "champion": "Lux",
+      "champion": "Neeko",
       "slot": "P",
-      "abilityName": "Illumination",
-      "instanceType": "on-hit",
-      "damageType": "magic",
+      "abilityName": "Inherent Glamour",
+      "instanceType": "non-damaging-ability",
       "maxRank": 1,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Neeko/Inherent Glamour",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Neeko/Inherent%20Glamour",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4049951,
+      "icon": "Neeko_P.png"
+    },
+    {
+      "champion": "Neeko",
+      "slot": "Q",
+      "abilityName": "Blooming Burst",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "initial-magic-damage",
+          "label": "Initial Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 60,
+            "to": 260
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 60,
+              "to": 60
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "subsequent-magic-damage",
+          "label": "Subsequent Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 35,
+            "to": 135
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 25,
+              "to": 25
+            }
+          ],
+          "relation": {
+            "kind": "alternativeTo",
+            "componentId": "initial-magic-damage"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Neeko/Blooming Burst",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Neeko/Blooming%20Burst",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3961205,
+      "icon": "NeekoQ.png"
+    },
+    {
+      "champion": "Neeko",
+      "slot": "W",
+      "abilityName": "Shapesplitter",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
       "components": [
         {
           "id": "bonus-magic-damage",
           "label": "Bonus Magic Damage",
           "damageType": "magic",
           "base": {
-            "scaling": "byLevel",
+            "scaling": "linear",
             "from": 30,
-            "to": 200,
-            "atLevels": [
-              1,
-              18
-            ],
-            "steps": 18
+            "to": 170
           },
           "ratios": [
             {
               "stat": "AP",
               "scaling": "linear",
-              "from": 35,
-              "to": 35
+              "from": 60,
+              "to": 60
             }
           ],
           "relation": {
@@ -46,75 +120,18 @@
       ],
       "verification": "derived",
       "provenance": {
-        "source": "Template:Data Lux/Illumination",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Illumination",
+        "source": "Template:Data Neeko/Shapesplitter",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Neeko/Shapesplitter",
         "patch": "16.16.1",
         "fetched": "2026-08-13"
       },
-      "sourceRevision": 4038408,
-      "icon": "LuxIlluminatingFraulein.png"
+      "sourceRevision": 4022848,
+      "icon": "NeekoW.png"
     },
     {
-      "champion": "Lux",
-      "slot": "Q",
-      "abilityName": "Light Binding",
-      "instanceType": "damaging-ability",
-      "damageType": "magic",
-      "maxRank": 5,
-      "components": [
-        {
-          "id": "magic-damage",
-          "label": "Magic Damage",
-          "damageType": "magic",
-          "base": {
-            "scaling": "linear",
-            "from": 80,
-            "to": 240
-          },
-          "ratios": [
-            {
-              "stat": "AP",
-              "scaling": "linear",
-              "from": 75,
-              "to": 75
-            }
-          ],
-          "relation": {
-            "kind": "adds"
-          }
-        }
-      ],
-      "verification": "verified",
-      "provenance": {
-        "source": "Template:Data Lux/Light Binding",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Light%20Binding",
-        "patch": "16.16.1",
-        "fetched": "2026-08-13"
-      },
-      "sourceRevision": 4007675,
-      "icon": "LuxLightBinding.png"
-    },
-    {
-      "champion": "Lux",
-      "slot": "W",
-      "abilityName": "Prismatic Barrier",
-      "instanceType": "non-damaging-ability",
-      "maxRank": 5,
-      "components": [],
-      "verification": "no-damage",
-      "provenance": {
-        "source": "Template:Data Lux/Prismatic Barrier",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Prismatic%20Barrier",
-        "patch": "16.16.1",
-        "fetched": "2026-08-13"
-      },
-      "sourceRevision": 3992656,
-      "icon": "LuxPrismaticWave.png"
-    },
-    {
-      "champion": "Lux",
+      "champion": "Neeko",
       "slot": "E",
-      "abilityName": "Lucent Singularity",
+      "abilityName": "Tangle-Barbs",
       "instanceType": "damaging-ability",
       "damageType": "magic",
       "maxRank": 5,
@@ -125,15 +142,15 @@
           "damageType": "magic",
           "base": {
             "scaling": "linear",
-            "from": 65,
-            "to": 265
+            "from": 70,
+            "to": 210
           },
           "ratios": [
             {
               "stat": "AP",
               "scaling": "linear",
-              "from": 80,
-              "to": 80
+              "from": 65,
+              "to": 65
             }
           ],
           "relation": {
@@ -143,18 +160,18 @@
       ],
       "verification": "derived",
       "provenance": {
-        "source": "Template:Data Lux/Lucent Singularity",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Lucent%20Singularity",
+        "source": "Template:Data Neeko/Tangle-Barbs",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Neeko/Tangle-Barbs",
         "patch": "16.16.1",
         "fetched": "2026-08-13"
       },
-      "sourceRevision": 4007677,
-      "icon": "LuxLightStrikeKugel.png"
+      "sourceRevision": 4007703,
+      "icon": "NeekoE.png"
     },
     {
-      "champion": "Lux",
+      "champion": "Neeko",
       "slot": "R",
-      "abilityName": "Final Spark",
+      "abilityName": "Pop Blossom",
       "instanceType": "damaging-ability",
       "damageType": "magic",
       "maxRank": 3,
@@ -165,8 +182,8 @@
           "damageType": "magic",
           "base": {
             "scaling": "linear",
-            "from": 300,
-            "to": 500
+            "from": 150,
+            "to": 550
           },
           "ratios": [
             {
@@ -183,18 +200,18 @@
       ],
       "verification": "derived",
       "provenance": {
-        "source": "Template:Data Lux/Final Spark",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Final%20Spark",
+        "source": "Template:Data Neeko/Pop Blossom",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Neeko/Pop%20Blossom",
         "patch": "16.16.1",
         "fetched": "2026-08-13"
       },
-      "sourceRevision": 3919833,
-      "icon": "LuxR.png"
+      "sourceRevision": 4022847,
+      "icon": "NeekoR.png"
     }
   ],
   "art": {
     "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
-    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Lux.json",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Neeko.json",
     "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
     "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
     "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"

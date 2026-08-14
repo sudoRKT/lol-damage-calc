@@ -1,0 +1,271 @@
+{
+  "what": "Kog'Maw ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "provenance": {
+    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "patch": "16.16.1",
+    "fetched": "2026-08-13",
+    "extractedOn": "2026-08-14",
+    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
+    "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
+  },
+  "abilities": [
+    {
+      "champion": "Kog'Maw",
+      "slot": "P",
+      "abilityName": "Icathian Surprise",
+      "instanceType": "on-hit",
+      "damageType": "true",
+      "maxRank": 1,
+      "components": [
+        {
+          "id": "true-damage",
+          "label": "True Damage",
+          "damageType": "true",
+          "base": {
+            "scaling": "byLevel",
+            "from": 140,
+            "to": 650,
+            "atLevels": [
+              1,
+              18
+            ],
+            "steps": 18
+          },
+          "ratios": [],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Kog'Maw/Icathian Surprise",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kog'Maw/Icathian%20Surprise",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4038400,
+      "icon": "KogMaw_IcathianSurprise.png"
+    },
+    {
+      "champion": "Kog'Maw",
+      "slot": "Q",
+      "abilityName": "Caustic Spittle",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 80,
+            "to": 260
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 90,
+              "to": 90
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Kog'Maw/Caustic Spittle",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kog'Maw/Caustic%20Spittle",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3960434,
+      "icon": "KogMawQ.png"
+    },
+    {
+      "champion": "Kog'Maw",
+      "slot": "W",
+      "abilityName": "Bio-Arcane Barrage",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "bonus-magic-damage",
+          "label": "Bonus Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "maxHP",
+              "owner": "target",
+              "multipliers": [
+                {
+                  "per": "AP",
+                  "per100": {
+                    "scaling": "linear",
+                    "from": 1.5,
+                    "to": 1.5
+                  }
+                }
+              ],
+              "scaling": "linear",
+              "from": 3,
+              "to": 6
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Kog'Maw/Bio-Arcane Barrage",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kog'Maw/Bio-Arcane%20Barrage",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3949878,
+      "icon": "KogMawBioArcaneBarrage.png"
+    },
+    {
+      "champion": "Kog'Maw",
+      "slot": "E",
+      "abilityName": "Void Ooze",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 70,
+            "to": 230
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 65,
+              "to": 65
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Kog'Maw/Void Ooze",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kog'Maw/Void%20Ooze",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3965135,
+      "icon": "KogMawVoidOoze.png"
+    },
+    {
+      "champion": "Kog'Maw",
+      "slot": "R",
+      "abilityName": "Living Artillery",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 3,
+      "components": [
+        {
+          "id": "minimum-magic-damage",
+          "label": "Minimum Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 100,
+            "to": 180
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 75,
+              "to": 75
+            },
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 35,
+              "to": 45
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "maximum-magic-damage",
+          "label": "Maximum Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 200,
+            "to": 360
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "explicit",
+              "perRank": [
+                150,
+                150,
+                150
+              ]
+            },
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 70,
+              "to": 90
+            }
+          ],
+          "relation": {
+            "kind": "alternativeTo",
+            "componentId": "minimum-magic-damage"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Kog'Maw/Living Artillery",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kog'Maw/Living%20Artillery",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4007636,
+      "icon": "KogMawLivingArtillery.png"
+    }
+  ],
+  "art": {
+    "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/KogMaw.json",
+    "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
+    "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
+    "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"
+  }
+}

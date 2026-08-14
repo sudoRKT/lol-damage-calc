@@ -1,0 +1,305 @@
+{
+  "what": "Jinx ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "provenance": {
+    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "patch": "16.16.1",
+    "fetched": "2026-08-13",
+    "extractedOn": "2026-08-14",
+    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
+    "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
+  },
+  "abilities": [
+    {
+      "champion": "Jinx",
+      "slot": "P",
+      "abilityName": "Get Excited!",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 1,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Jinx/Get Excited!",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Jinx/Get%20Excited!",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3973632,
+      "icon": "Jinx_Passive.png"
+    },
+    {
+      "champion": "Jinx",
+      "slot": "Q",
+      "abilityName": "Switcheroo!",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "physical-damage",
+          "label": "Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "linear",
+              "from": 110,
+              "to": 110
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Jinx/Switcheroo!",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Jinx/Switcheroo!",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3992483,
+      "icon": "JinxQ.png"
+    },
+    {
+      "champion": "Jinx",
+      "slot": "W",
+      "abilityName": "Zap!",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "physical-damage",
+          "label": "Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 10,
+            "to": 210
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "linear",
+              "from": 140,
+              "to": 140
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Jinx/Zap!",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Jinx/Zap!",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3907092,
+      "icon": "JinxW.png"
+    },
+    {
+      "champion": "Jinx",
+      "slot": "E",
+      "abilityName": "Flame Chompers!",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 90,
+            "to": 290
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 100,
+              "to": 100
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Jinx/Flame Chompers!",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Jinx/Flame%20Chompers!",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3993368,
+      "icon": "JinxE.png"
+    },
+    {
+      "champion": "Jinx",
+      "slot": "R",
+      "abilityName": "Super Mega Death Rocket!",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 3,
+      "components": [
+        {
+          "id": "maximum-physical-damage",
+          "label": "Maximum Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 200,
+            "to": 500
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 120,
+              "to": 120
+            },
+            {
+              "stat": "missingHP",
+              "owner": "target",
+              "scaling": "linear",
+              "from": 25,
+              "to": 35
+            }
+          ],
+          "relation": {
+            "kind": "alternativeTo",
+            "componentId": "minimum-physical-damage"
+          }
+        },
+        {
+          "id": "minimum-physical-damage",
+          "label": "Minimum Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 20,
+            "to": 50
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "explicit",
+              "perRank": [
+                12,
+                12,
+                12
+              ]
+            },
+            {
+              "stat": "missingHP",
+              "owner": "target",
+              "scaling": "linear",
+              "from": 25,
+              "to": 35
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "maximum-secondary-damage",
+          "label": "Maximum Secondary Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 160,
+            "to": 400
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "explicit",
+              "perRank": [
+                96,
+                96,
+                96
+              ]
+            },
+            {
+              "stat": "missingHP",
+              "owner": "target",
+              "scaling": "linear",
+              "from": 20,
+              "to": 28
+            }
+          ],
+          "relation": {
+            "kind": "alternativeTo",
+            "componentId": "minimum-secondary-damage"
+          }
+        },
+        {
+          "id": "minimum-secondary-damage",
+          "label": "Minimum Secondary Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 16,
+            "to": 40
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "explicit",
+              "perRank": [
+                9.600000000000001,
+                9.600000000000001,
+                9.600000000000001
+              ]
+            },
+            {
+              "stat": "missingHP",
+              "owner": "target",
+              "scaling": "linear",
+              "from": 20,
+              "to": 28
+            }
+          ],
+          "relation": {
+            "kind": "alternativeTo",
+            "componentId": "minimum-physical-damage"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Jinx/Super Mega Death Rocket!",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Jinx/Super%20Mega%20Death%20Rocket!",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4007616,
+      "icon": "JinxR.png"
+    }
+  ],
+  "art": {
+    "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Jinx.json",
+    "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
+    "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
+    "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"
+  }
+}

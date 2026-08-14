@@ -1,0 +1,254 @@
+{
+  "what": "Bel'Veth ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "provenance": {
+    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "patch": "16.16.1",
+    "fetched": "2026-08-13",
+    "extractedOn": "2026-08-14",
+    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
+    "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
+  },
+  "abilities": [
+    {
+      "champion": "Bel'Veth",
+      "slot": "P",
+      "abilityName": "Death in Lavender",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 1,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Bel'Veth/Death in Lavender",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Bel'Veth/Death%20in%20Lavender",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4050294,
+      "icon": "Belveth_Passive.png"
+    },
+    {
+      "champion": "Bel'Veth",
+      "slot": "Q",
+      "abilityName": "Void Surge",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "physical-damage",
+          "label": "Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 12,
+            "to": 20
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "linear",
+              "from": 105,
+              "to": 105
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Bel'Veth/Void Surge",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Bel'Veth/Void%20Surge",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4050295,
+      "icon": "BelvethQ.png"
+    },
+    {
+      "champion": "Bel'Veth",
+      "slot": "W",
+      "abilityName": "Above and Below",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 80,
+            "to": 320
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 150,
+              "to": 150
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Bel'Veth/Above and Below",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Bel'Veth/Above%20and%20Below",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4046855,
+      "icon": "BelvethW.png"
+    },
+    {
+      "champion": "Bel'Veth",
+      "slot": "E",
+      "abilityName": "Royal Maelstrom",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "minimum-physical-damage-per-hit",
+          "label": "Minimum Physical Damage per hit",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 10,
+            "to": 18
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "linear",
+              "from": 12,
+              "to": 12
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          },
+          "hits": 1
+        },
+        {
+          "id": "maximum-physical-damage-per-hit",
+          "label": "Maximum Physical Damage per hit",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 20,
+            "to": 36
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "explicit",
+              "perRank": [
+                24,
+                24,
+                24,
+                24,
+                24
+              ]
+            }
+          ],
+          "relation": {
+            "kind": "alternativeTo",
+            "componentId": "minimum-physical-damage-per-hit"
+          },
+          "hits": 1
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Bel'Veth/Royal Maelstrom",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Bel'Veth/Royal%20Maelstrom",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4046605,
+      "icon": "BelvethE.png"
+    },
+    {
+      "champion": "Bel'Veth",
+      "slot": "R",
+      "abilityName": "Endless Banquet",
+      "instanceType": "damaging-ability",
+      "damageType": "true",
+      "maxRank": 3,
+      "components": [
+        {
+          "id": "bonus-true-damage",
+          "label": "Bonus True Damage",
+          "damageType": "true",
+          "base": {
+            "scaling": "linear",
+            "from": 2,
+            "to": 6
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 3,
+              "to": 3
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "true-damage",
+          "label": "True Damage",
+          "damageType": "true",
+          "base": {
+            "scaling": "linear",
+            "from": 150,
+            "to": 250
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 150,
+              "to": 150
+            },
+            {
+              "stat": "missingHP",
+              "owner": "target",
+              "scaling": "linear",
+              "from": 20,
+              "to": 20
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Bel'Veth/Endless Banquet",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Bel'Veth/Endless%20Banquet",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4051340,
+      "icon": "BelvethR.png"
+    }
+  ],
+  "art": {
+    "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Belveth.json",
+    "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
+    "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
+    "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"
+  }
+}

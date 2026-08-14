@@ -1,0 +1,267 @@
+{
+  "what": "Skarner ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "provenance": {
+    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "patch": "16.16.1",
+    "fetched": "2026-08-13",
+    "extractedOn": "2026-08-14",
+    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
+    "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
+  },
+  "abilities": [
+    {
+      "champion": "Skarner",
+      "slot": "P",
+      "abilityName": "Threads of Vibration",
+      "instanceType": "on-hit",
+      "damageType": "magic",
+      "maxRank": 1,
+      "components": [],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Skarner/Threads of Vibration",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Skarner/Threads%20of%20Vibration",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4050105,
+      "icon": "Skarner_Passive.png"
+    },
+    {
+      "champion": "Skarner",
+      "slot": "Q",
+      "abilityName": "Shattered Earth",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "bonus-physical-damage-per-hit",
+          "label": "Bonus Physical Damage per Hit",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 10,
+            "to": 50
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 90,
+              "to": 90
+            },
+            {
+              "stat": "bonusHP",
+              "owner": "caster",
+              "scaling": "linear",
+              "from": 3,
+              "to": 3
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          },
+          "hits": 3
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Skarner/Shattered Earth",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Skarner/Shattered%20Earth",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4051324,
+      "icon": "SkarnerQ.png"
+    },
+    {
+      "champion": "Skarner",
+      "slot": "Q",
+      "abilityName": "Upheaval",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "physical-damage",
+          "label": "Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 10,
+            "to": 50
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 90,
+              "to": 90
+            },
+            {
+              "stat": "bonusHP",
+              "owner": "caster",
+              "scaling": "linear",
+              "from": 3,
+              "to": 3
+            },
+            {
+              "stat": "maxHP",
+              "owner": "target",
+              "scaling": "linear",
+              "from": 11,
+              "to": 11
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Skarner/Upheaval",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Skarner/Upheaval",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4008045,
+      "icon": "SkarnerQ.png"
+    },
+    {
+      "champion": "Skarner",
+      "slot": "W",
+      "abilityName": "Seismic Bastion",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 50,
+            "to": 130
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 80,
+              "to": 80
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Skarner/Seismic Bastion",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Skarner/Seismic%20Bastion",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4008046,
+      "icon": "SkarnerW.png"
+    },
+    {
+      "champion": "Skarner",
+      "slot": "E",
+      "abilityName": "Ixtal's Impact",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "physical-damage",
+          "label": "Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 30,
+            "to": 150
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 120,
+              "to": 120
+            },
+            {
+              "stat": "maxHP",
+              "owner": "caster",
+              "scaling": "linear",
+              "from": 6,
+              "to": 6
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Skarner/Ixtal's Impact",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Skarner/Ixtal's%20Impact",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4000401,
+      "icon": "SkarnerE.png"
+    },
+    {
+      "champion": "Skarner",
+      "slot": "R",
+      "abilityName": "Impale",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 3,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 150,
+            "to": 350
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 100,
+              "to": 100
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Skarner/Impale",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Skarner/Impale",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4008047,
+      "icon": "SkarnerR.png"
+    }
+  ],
+  "art": {
+    "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Skarner.json",
+    "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
+    "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
+    "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"
+  }
+}

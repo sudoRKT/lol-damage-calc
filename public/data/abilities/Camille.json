@@ -1,0 +1,260 @@
+{
+  "what": "Camille ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "provenance": {
+    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "patch": "16.16.1",
+    "fetched": "2026-08-13",
+    "extractedOn": "2026-08-14",
+    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
+    "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
+  },
+  "abilities": [
+    {
+      "champion": "Camille",
+      "slot": "P",
+      "abilityName": "Adaptive Defenses",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 1,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Camille/Adaptive Defenses",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Camille/Adaptive%20Defenses",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4051341,
+      "icon": "Camille_Passive.png"
+    },
+    {
+      "champion": "Camille",
+      "slot": "Q",
+      "abilityName": "Precision Protocol",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "bonus-physical-damage",
+          "label": "Bonus Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "linear",
+              "from": 20,
+              "to": 40
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Camille/Precision Protocol",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Camille/Precision%20Protocol",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3972807,
+      "icon": "CamilleQ.png"
+    },
+    {
+      "champion": "Camille",
+      "slot": "W",
+      "abilityName": "Tactical Sweep",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "physical-damage",
+          "label": "Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 60,
+            "to": 160
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 60,
+              "to": 60
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "outer-cone-additional-damage",
+          "label": "Outer Cone Additional Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "maxHP",
+              "owner": "target",
+              "multipliers": [
+                {
+                  "per": "bonusAD",
+                  "per100": {
+                    "scaling": "linear",
+                    "from": 2.5,
+                    "to": 2.5
+                  }
+                }
+              ],
+              "scaling": "linear",
+              "from": 7,
+              "to": 9
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Camille/Tactical Sweep",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Camille/Tactical%20Sweep",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4051342,
+      "icon": "CamilleW.png"
+    },
+    {
+      "champion": "Camille",
+      "slot": "E",
+      "abilityName": "Hookshot",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 5,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Camille/Hookshot",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Camille/Hookshot",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3922084,
+      "icon": "CamilleE.png"
+    },
+    {
+      "champion": "Camille",
+      "slot": "E",
+      "abilityName": "Wall Dive",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "physical-damage",
+          "label": "Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 60,
+            "to": 180
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 75,
+              "to": 75
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Camille/Wall Dive",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Camille/Wall%20Dive",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4007586,
+      "icon": "CamilleE.png"
+    },
+    {
+      "champion": "Camille",
+      "slot": "R",
+      "abilityName": "The Hextech Ultimatum",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 3,
+      "components": [
+        {
+          "id": "bonus-magic-damage",
+          "label": "Bonus Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              0,
+              0,
+              0
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "currentHP",
+              "owner": "target",
+              "scaling": "linear",
+              "from": 4,
+              "to": 8
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Camille/The Hextech Ultimatum",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Camille/The%20Hextech%20Ultimatum",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4037519,
+      "icon": "CamilleR.png"
+    }
+  ],
+  "art": {
+    "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Camille.json",
+    "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
+    "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
+    "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"
+  }
+}

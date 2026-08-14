@@ -1,0 +1,194 @@
+{
+  "what": "Kindred ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "provenance": {
+    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "patch": "16.16.1",
+    "fetched": "2026-08-13",
+    "extractedOn": "2026-08-14",
+    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
+    "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
+  },
+  "abilities": [
+    {
+      "champion": "Kindred",
+      "slot": "P",
+      "abilityName": "Mark of the Kindred",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 1,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Kindred/Mark of the Kindred",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kindred/Mark%20of%20the%20Kindred",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3994253,
+      "icon": "Kindred_Passive.png"
+    },
+    {
+      "champion": "Kindred",
+      "slot": "Q",
+      "abilityName": "Dance of Arrows",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "physical-damage",
+          "label": "Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 40,
+            "to": 140
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 75,
+              "to": 75
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Kindred/Dance of Arrows",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kindred/Dance%20of%20Arrows",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4007746,
+      "icon": "KindredQ.png"
+    },
+    {
+      "champion": "Kindred",
+      "slot": "W",
+      "abilityName": "Wolf's Frenzy",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 25,
+            "to": 45
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 20,
+              "to": 20
+            },
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 20,
+              "to": 20
+            },
+            {
+              "stat": "currentHP",
+              "owner": "target",
+              "scaling": "linear",
+              "from": 1.5,
+              "to": 1.5
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Kindred/Wolf's Frenzy",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kindred/Wolf's%20Frenzy",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4038396,
+      "icon": "KindredW.png"
+    },
+    {
+      "champion": "Kindred",
+      "slot": "E",
+      "abilityName": "Mounting Dread",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "additional-physical-damage",
+          "label": "Additional Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 80,
+            "to": 200
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 100,
+              "to": 100
+            },
+            {
+              "stat": "missingHP",
+              "owner": "target",
+              "scaling": "linear",
+              "from": 5,
+              "to": 5
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Kindred/Mounting Dread",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kindred/Mounting%20Dread",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4022506,
+      "icon": "KindredEWrapper.png"
+    },
+    {
+      "champion": "Kindred",
+      "slot": "R",
+      "abilityName": "Lamb's Respite",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 3,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Kindred/Lamb's Respite",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kindred/Lamb's%20Respite",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4024177,
+      "icon": "KindredR.png"
+    }
+  ],
+  "art": {
+    "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Kindred.json",
+    "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
+    "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
+    "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"
+  }
+}

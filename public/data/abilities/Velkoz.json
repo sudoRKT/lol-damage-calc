@@ -1,5 +1,5 @@
 {
-  "what": "Lux ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "what": "Vel'Koz ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
@@ -10,35 +10,28 @@
   },
   "abilities": [
     {
-      "champion": "Lux",
+      "champion": "Vel'Koz",
       "slot": "P",
-      "abilityName": "Illumination",
+      "abilityName": "Organic Deconstruction",
       "instanceType": "on-hit",
-      "damageType": "magic",
+      "damageType": "true",
       "maxRank": 1,
       "components": [
         {
-          "id": "bonus-magic-damage",
-          "label": "Bonus Magic Damage",
-          "damageType": "magic",
+          "id": "true-damage",
+          "label": "True Damage",
+          "damageType": "true",
           "base": {
             "scaling": "byLevel",
-            "from": 30,
-            "to": 200,
+            "from": 35,
+            "to": 180,
             "atLevels": [
               1,
               18
             ],
             "steps": 18
           },
-          "ratios": [
-            {
-              "stat": "AP",
-              "scaling": "linear",
-              "from": 35,
-              "to": 35
-            }
-          ],
+          "ratios": [],
           "relation": {
             "kind": "adds"
           }
@@ -46,18 +39,18 @@
       ],
       "verification": "derived",
       "provenance": {
-        "source": "Template:Data Lux/Illumination",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Illumination",
+        "source": "Template:Data Vel'Koz/Organic Deconstruction",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Vel'Koz/Organic%20Deconstruction",
         "patch": "16.16.1",
         "fetched": "2026-08-13"
       },
-      "sourceRevision": 4038408,
-      "icon": "LuxIlluminatingFraulein.png"
+      "sourceRevision": 3986690,
+      "icon": "VelKoz_Passive.png"
     },
     {
-      "champion": "Lux",
+      "champion": "Vel'Koz",
       "slot": "Q",
-      "abilityName": "Light Binding",
+      "abilityName": "Plasma Fission",
       "instanceType": "damaging-ability",
       "damageType": "magic",
       "maxRank": 5,
@@ -75,8 +68,8 @@
             {
               "stat": "AP",
               "scaling": "linear",
-              "from": 75,
-              "to": 75
+              "from": 90,
+              "to": 90
             }
           ],
           "relation": {
@@ -84,37 +77,81 @@
           }
         }
       ],
-      "verification": "verified",
+      "verification": "derived",
       "provenance": {
-        "source": "Template:Data Lux/Light Binding",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Light%20Binding",
+        "source": "Template:Data Vel'Koz/Plasma Fission",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Vel'Koz/Plasma%20Fission",
         "patch": "16.16.1",
         "fetched": "2026-08-13"
       },
-      "sourceRevision": 4007675,
-      "icon": "LuxLightBinding.png"
+      "sourceRevision": 4008544,
+      "icon": "VelkozQ.png"
     },
     {
-      "champion": "Lux",
+      "champion": "Vel'Koz",
       "slot": "W",
-      "abilityName": "Prismatic Barrier",
-      "instanceType": "non-damaging-ability",
+      "abilityName": "Void Rift",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
       "maxRank": 5,
-      "components": [],
-      "verification": "no-damage",
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 30,
+            "to": 110
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 20,
+              "to": 20
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 45,
+            "to": 165
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 25,
+              "to": 25
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "incomplete",
       "provenance": {
-        "source": "Template:Data Lux/Prismatic Barrier",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Prismatic%20Barrier",
+        "source": "Template:Data Vel'Koz/Void Rift",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Vel'Koz/Void%20Rift",
         "patch": "16.16.1",
         "fetched": "2026-08-13"
       },
-      "sourceRevision": 3992656,
-      "icon": "LuxPrismaticWave.png"
+      "sourceRevision": 4008545,
+      "icon": "VelkozW.png"
     },
     {
-      "champion": "Lux",
+      "champion": "Vel'Koz",
       "slot": "E",
-      "abilityName": "Lucent Singularity",
+      "abilityName": "Tectonic Disruption",
       "instanceType": "damaging-ability",
       "damageType": "magic",
       "maxRank": 5,
@@ -125,15 +162,15 @@
           "damageType": "magic",
           "base": {
             "scaling": "linear",
-            "from": 65,
-            "to": 265
+            "from": 70,
+            "to": 190
           },
           "ratios": [
             {
               "stat": "AP",
               "scaling": "linear",
-              "from": 80,
-              "to": 80
+              "from": 30,
+              "to": 30
             }
           ],
           "relation": {
@@ -143,58 +180,35 @@
       ],
       "verification": "derived",
       "provenance": {
-        "source": "Template:Data Lux/Lucent Singularity",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Lucent%20Singularity",
+        "source": "Template:Data Vel'Koz/Tectonic Disruption",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Vel'Koz/Tectonic%20Disruption",
         "patch": "16.16.1",
         "fetched": "2026-08-13"
       },
-      "sourceRevision": 4007677,
-      "icon": "LuxLightStrikeKugel.png"
+      "sourceRevision": 3952590,
+      "icon": "VelkozE.png"
     },
     {
-      "champion": "Lux",
+      "champion": "Vel'Koz",
       "slot": "R",
-      "abilityName": "Final Spark",
+      "abilityName": "Life Form Disintegration Ray",
       "instanceType": "damaging-ability",
-      "damageType": "magic",
       "maxRank": 3,
-      "components": [
-        {
-          "id": "magic-damage",
-          "label": "Magic Damage",
-          "damageType": "magic",
-          "base": {
-            "scaling": "linear",
-            "from": 300,
-            "to": 500
-          },
-          "ratios": [
-            {
-              "stat": "AP",
-              "scaling": "linear",
-              "from": 120,
-              "to": 120
-            }
-          ],
-          "relation": {
-            "kind": "adds"
-          }
-        }
-      ],
-      "verification": "derived",
+      "components": [],
+      "verification": "incomplete",
       "provenance": {
-        "source": "Template:Data Lux/Final Spark",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Final%20Spark",
+        "source": "Template:Data Vel'Koz/Life Form Disintegration Ray",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Vel'Koz/Life%20Form%20Disintegration%20Ray",
         "patch": "16.16.1",
         "fetched": "2026-08-13"
       },
-      "sourceRevision": 3919833,
-      "icon": "LuxR.png"
+      "sourceRevision": 4012050,
+      "icon": "VelkozR.png"
     }
   ],
   "art": {
     "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
-    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Lux.json",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Velkoz.json",
     "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
     "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
     "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"

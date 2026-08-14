@@ -1,0 +1,203 @@
+{
+  "what": "Udyr ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "provenance": {
+    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "patch": "16.16.1",
+    "fetched": "2026-08-13",
+    "extractedOn": "2026-08-14",
+    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
+    "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
+  },
+  "abilities": [
+    {
+      "champion": "Udyr",
+      "slot": "P",
+      "abilityName": "Bridge Between",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 1,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Udyr/Bridge Between",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Udyr/Bridge%20Between",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3983420,
+      "icon": "Udyr_P.png"
+    },
+    {
+      "champion": "Udyr",
+      "slot": "Q",
+      "abilityName": "Wilding Claw",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 6,
+      "components": [
+        {
+          "id": "bonus-physical-damage",
+          "label": "Bonus Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "maxHP",
+              "owner": "target",
+              "multipliers": [
+                {
+                  "per": "bonusAD",
+                  "per100": {
+                    "scaling": "linear",
+                    "from": 3.5,
+                    "to": 3.5
+                  }
+                }
+              ],
+              "scaling": "linear",
+              "from": 3,
+              "to": 8
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "bonus-physical-damage-on-hit",
+          "label": "Bonus Physical Damage On-Hit",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 6,
+            "to": 36
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 20,
+              "to": 20
+            },
+            {
+              "stat": "bonusHP",
+              "owner": "unresolved",
+              "scaling": "linear",
+              "from": 1,
+              "to": 2
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Udyr/Wilding Claw",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Udyr/Wilding%20Claw",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4049976,
+      "unresolvable": [
+        {
+          "field": "components[1].ratios[1].owner (bonusHP)",
+          "why": "the source names bonusHP and never says whose, and no other source states it"
+        }
+      ],
+      "icon": "UdyrQ.png"
+    },
+    {
+      "champion": "Udyr",
+      "slot": "W",
+      "abilityName": "Iron Mantle",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 6,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Udyr/Iron Mantle",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Udyr/Iron%20Mantle",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4013279,
+      "icon": "UdyrW.png"
+    },
+    {
+      "champion": "Udyr",
+      "slot": "E",
+      "abilityName": "Blazing Stampede",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 6,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Udyr/Blazing Stampede",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Udyr/Blazing%20Stampede",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4013348,
+      "icon": "UdyrE.png"
+    },
+    {
+      "champion": "Udyr",
+      "slot": "R",
+      "abilityName": "Wingborne Storm",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 6,
+      "components": [
+        {
+          "id": "magic-damage-per-tick",
+          "label": "Magic Damage per Tick",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 10,
+            "to": 50
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 17.5,
+              "to": 17.5
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          },
+          "hits": 8
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Udyr/Wingborne Storm",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Udyr/Wingborne%20Storm",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4008208,
+      "icon": "UdyrR.png"
+    }
+  ],
+  "art": {
+    "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Udyr.json",
+    "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
+    "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
+    "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"
+  }
+}

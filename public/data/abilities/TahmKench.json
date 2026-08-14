@@ -1,0 +1,290 @@
+{
+  "what": "Tahm Kench ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "provenance": {
+    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "patch": "16.16.1",
+    "fetched": "2026-08-13",
+    "extractedOn": "2026-08-14",
+    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
+    "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
+  },
+  "abilities": [
+    {
+      "champion": "Tahm Kench",
+      "slot": "P",
+      "abilityName": "An Acquired Taste",
+      "instanceType": "on-hit",
+      "damageType": "magic",
+      "maxRank": 1,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "byLevelExplicit",
+            "values": [
+              5,
+              10,
+              15,
+              20,
+              25,
+              30,
+              35,
+              40,
+              45,
+              50,
+              55,
+              60
+            ],
+            "atLevels": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12
+            ]
+          },
+          "ratios": [],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Tahm Kench/An Acquired Taste",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Tahm%20Kench/An%20Acquired%20Taste",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4008458,
+      "icon": "TahmKenchP.png"
+    },
+    {
+      "champion": "Tahm Kench",
+      "slot": "Q",
+      "abilityName": "Tongue Lash",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "byLevelExplicit",
+            "values": [
+              5,
+              10,
+              15,
+              20,
+              25,
+              30,
+              35,
+              40,
+              45,
+              50,
+              55,
+              60
+            ],
+            "atLevels": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 100,
+              "to": 100
+            },
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 1.25,
+              "to": 1.25
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "magic-damage-rank-term",
+          "label": "Magic Damage (per-rank term)",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 75,
+            "to": 255
+          },
+          "ratios": [],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Tahm Kench/Tongue Lash",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Tahm%20Kench/Tongue%20Lash",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4040842,
+      "icon": "TahmKenchQ.png"
+    },
+    {
+      "champion": "Tahm Kench",
+      "slot": "W",
+      "abilityName": "Abyssal Dive",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 100,
+            "to": 240
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 150,
+              "to": 150
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Tahm Kench/Abyssal Dive",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Tahm%20Kench/Abyssal%20Dive",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4020963,
+      "icon": "TahmKenchW.png"
+    },
+    {
+      "champion": "Tahm Kench",
+      "slot": "E",
+      "abilityName": "Thick Skin",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 5,
+      "components": [],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Tahm Kench/Thick Skin",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Tahm%20Kench/Thick%20Skin",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4021898,
+      "icon": "TahmKenchE.png"
+    },
+    {
+      "champion": "Tahm Kench",
+      "slot": "R",
+      "abilityName": "Devour",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 3,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Tahm Kench/Devour",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Tahm%20Kench/Devour",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4044345,
+      "icon": "TahmKenchRWrapper.png"
+    },
+    {
+      "champion": "Tahm Kench",
+      "slot": "R",
+      "abilityName": "Regurgitate",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 3,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 100,
+            "to": 400
+          },
+          "ratios": [
+            {
+              "stat": "maxHP",
+              "owner": "target",
+              "multipliers": [
+                {
+                  "per": "AP",
+                  "per100": {
+                    "scaling": "linear",
+                    "from": 7,
+                    "to": 7
+                  }
+                }
+              ],
+              "scaling": "linear",
+              "from": 15,
+              "to": 15
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Tahm Kench/Regurgitate",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Tahm%20Kench/Regurgitate",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4013502,
+      "icon": "TahmKenchRWrapper.png"
+    }
+  ],
+  "art": {
+    "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/TahmKench.json",
+    "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
+    "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
+    "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"
+  }
+}

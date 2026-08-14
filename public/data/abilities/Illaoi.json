@@ -1,0 +1,239 @@
+{
+  "what": "Illaoi ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "provenance": {
+    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "patch": "16.16.1",
+    "fetched": "2026-08-13",
+    "extractedOn": "2026-08-14",
+    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
+    "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
+  },
+  "abilities": [
+    {
+      "champion": "Illaoi",
+      "slot": "P",
+      "abilityName": "Prophet of an Elder God",
+      "instanceType": "on-hit",
+      "damageType": "physical",
+      "maxRank": 1,
+      "components": [
+        {
+          "id": "physical-damage",
+          "label": "Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "byLevel",
+            "from": 9,
+            "to": 180,
+            "atLevels": [
+              1,
+              18
+            ],
+            "steps": 18
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "linear",
+              "from": 110,
+              "to": 110
+            },
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 40,
+              "to": 40
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Illaoi/Prophet of an Elder God",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Illaoi/Prophet%20of%20an%20Elder%20God",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4050910,
+      "icon": "Illaoi_P.png"
+    },
+    {
+      "champion": "Illaoi",
+      "slot": "Q",
+      "abilityName": "Tentacle Smash",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Illaoi/Tentacle Smash",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Illaoi/Tentacle%20Smash",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4016298,
+      "icon": "IllaoiQ.png"
+    },
+    {
+      "champion": "Illaoi",
+      "slot": "W",
+      "abilityName": "Harsh Lesson",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "additional-physical-damage",
+          "label": "Additional Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "maxHP",
+              "owner": "target",
+              "multipliers": [
+                {
+                  "per": "totalAD",
+                  "per100": {
+                    "scaling": "linear",
+                    "from": 3.5,
+                    "to": 3.5
+                  }
+                }
+              ],
+              "scaling": "linear",
+              "from": 3,
+              "to": 5
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "minimum-physical-damage",
+          "label": "Minimum Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 20,
+            "to": 60
+          },
+          "ratios": [],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Illaoi/Harsh Lesson",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Illaoi/Harsh%20Lesson",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4049941,
+      "icon": "IllaoiW.png"
+    },
+    {
+      "champion": "Illaoi",
+      "slot": "E",
+      "abilityName": "Test of Spirit",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "damage-transmission",
+          "label": "Damage Transmission",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 25,
+            "to": 45
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "linear",
+              "from": 8,
+              "to": 8
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Illaoi/Test of Spirit",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Illaoi/Test%20of%20Spirit",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4049942,
+      "icon": "IllaoiE.png"
+    },
+    {
+      "champion": "Illaoi",
+      "slot": "R",
+      "abilityName": "Leap of Faith",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 3,
+      "components": [
+        {
+          "id": "physical-damage",
+          "label": "Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 150,
+            "to": 350
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 50,
+              "to": 50
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Illaoi/Leap of Faith",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Illaoi/Leap%20of%20Faith",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4050880,
+      "icon": "IllaoiR.png"
+    }
+  ],
+  "art": {
+    "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Illaoi.json",
+    "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
+    "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
+    "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"
+  }
+}

@@ -1,5 +1,5 @@
 {
-  "what": "Lux ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "what": "Veigar ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
@@ -10,54 +10,26 @@
   },
   "abilities": [
     {
-      "champion": "Lux",
+      "champion": "Veigar",
       "slot": "P",
-      "abilityName": "Illumination",
-      "instanceType": "on-hit",
-      "damageType": "magic",
+      "abilityName": "Phenomenal Evil Power",
+      "instanceType": "non-damaging-ability",
       "maxRank": 1,
-      "components": [
-        {
-          "id": "bonus-magic-damage",
-          "label": "Bonus Magic Damage",
-          "damageType": "magic",
-          "base": {
-            "scaling": "byLevel",
-            "from": 30,
-            "to": 200,
-            "atLevels": [
-              1,
-              18
-            ],
-            "steps": 18
-          },
-          "ratios": [
-            {
-              "stat": "AP",
-              "scaling": "linear",
-              "from": 35,
-              "to": 35
-            }
-          ],
-          "relation": {
-            "kind": "adds"
-          }
-        }
-      ],
-      "verification": "derived",
+      "components": [],
+      "verification": "no-damage",
       "provenance": {
-        "source": "Template:Data Lux/Illumination",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Illumination",
+        "source": "Template:Data Veigar/Phenomenal Evil Power",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Veigar/Phenomenal%20Evil%20Power",
         "patch": "16.16.1",
         "fetched": "2026-08-13"
       },
-      "sourceRevision": 4038408,
-      "icon": "LuxIlluminatingFraulein.png"
+      "sourceRevision": 3932550,
+      "icon": "VeigarEntropy.png"
     },
     {
-      "champion": "Lux",
+      "champion": "Veigar",
       "slot": "Q",
-      "abilityName": "Light Binding",
+      "abilityName": "Baleful Strike",
       "instanceType": "damaging-ability",
       "damageType": "magic",
       "maxRank": 5,
@@ -75,126 +47,148 @@
             {
               "stat": "AP",
               "scaling": "linear",
-              "from": 75,
+              "from": 50,
+              "to": 70
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Veigar/Baleful Strike",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Veigar/Baleful%20Strike",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4050924,
+      "icon": "VeigarBalefulStrike.png"
+    },
+    {
+      "champion": "Veigar",
+      "slot": "W",
+      "abilityName": "Dark Matter",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 85,
+            "to": 305
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 70,
+              "to": 110
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Veigar/Dark Matter",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Veigar/Dark%20Matter",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3991312,
+      "icon": "VeigarDarkMatter.png"
+    },
+    {
+      "champion": "Veigar",
+      "slot": "E",
+      "abilityName": "Event Horizon",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 5,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Veigar/Event Horizon",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Veigar/Event%20Horizon",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4016714,
+      "icon": "VeigarEventHorizon.png"
+    },
+    {
+      "champion": "Veigar",
+      "slot": "R",
+      "abilityName": "Primordial Burst",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 3,
+      "components": [
+        {
+          "id": "minimum-magic-damage",
+          "label": "Minimum Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 175,
+            "to": 325
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 65,
               "to": 75
             }
           ],
           "relation": {
             "kind": "adds"
           }
-        }
-      ],
-      "verification": "verified",
-      "provenance": {
-        "source": "Template:Data Lux/Light Binding",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Light%20Binding",
-        "patch": "16.16.1",
-        "fetched": "2026-08-13"
-      },
-      "sourceRevision": 4007675,
-      "icon": "LuxLightBinding.png"
-    },
-    {
-      "champion": "Lux",
-      "slot": "W",
-      "abilityName": "Prismatic Barrier",
-      "instanceType": "non-damaging-ability",
-      "maxRank": 5,
-      "components": [],
-      "verification": "no-damage",
-      "provenance": {
-        "source": "Template:Data Lux/Prismatic Barrier",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Prismatic%20Barrier",
-        "patch": "16.16.1",
-        "fetched": "2026-08-13"
-      },
-      "sourceRevision": 3992656,
-      "icon": "LuxPrismaticWave.png"
-    },
-    {
-      "champion": "Lux",
-      "slot": "E",
-      "abilityName": "Lucent Singularity",
-      "instanceType": "damaging-ability",
-      "damageType": "magic",
-      "maxRank": 5,
-      "components": [
+        },
         {
-          "id": "magic-damage",
-          "label": "Magic Damage",
+          "id": "maximum-magic-damage",
+          "label": "Maximum Magic Damage",
           "damageType": "magic",
           "base": {
             "scaling": "linear",
-            "from": 65,
-            "to": 265
+            "from": 350,
+            "to": 650
           },
           "ratios": [
             {
               "stat": "AP",
               "scaling": "linear",
-              "from": 80,
-              "to": 80
+              "from": 130,
+              "to": 150
             }
           ],
           "relation": {
-            "kind": "adds"
+            "kind": "alternativeTo",
+            "componentId": "minimum-magic-damage"
           }
         }
       ],
       "verification": "derived",
       "provenance": {
-        "source": "Template:Data Lux/Lucent Singularity",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Lucent%20Singularity",
+        "source": "Template:Data Veigar/Primordial Burst",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Veigar/Primordial%20Burst",
         "patch": "16.16.1",
         "fetched": "2026-08-13"
       },
-      "sourceRevision": 4007677,
-      "icon": "LuxLightStrikeKugel.png"
-    },
-    {
-      "champion": "Lux",
-      "slot": "R",
-      "abilityName": "Final Spark",
-      "instanceType": "damaging-ability",
-      "damageType": "magic",
-      "maxRank": 3,
-      "components": [
-        {
-          "id": "magic-damage",
-          "label": "Magic Damage",
-          "damageType": "magic",
-          "base": {
-            "scaling": "linear",
-            "from": 300,
-            "to": 500
-          },
-          "ratios": [
-            {
-              "stat": "AP",
-              "scaling": "linear",
-              "from": 120,
-              "to": 120
-            }
-          ],
-          "relation": {
-            "kind": "adds"
-          }
-        }
-      ],
-      "verification": "derived",
-      "provenance": {
-        "source": "Template:Data Lux/Final Spark",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Final%20Spark",
-        "patch": "16.16.1",
-        "fetched": "2026-08-13"
-      },
-      "sourceRevision": 3919833,
-      "icon": "LuxR.png"
+      "sourceRevision": 4004085,
+      "icon": "VeigarR.png"
     }
   ],
   "art": {
     "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
-    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Lux.json",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Veigar.json",
     "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
     "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
     "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"

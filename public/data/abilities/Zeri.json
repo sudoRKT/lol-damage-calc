@@ -1,0 +1,249 @@
+{
+  "what": "Zeri ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "provenance": {
+    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "patch": "16.16.1",
+    "fetched": "2026-08-13",
+    "extractedOn": "2026-08-14",
+    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
+    "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
+  },
+  "abilities": [
+    {
+      "champion": "Zeri",
+      "slot": "P",
+      "abilityName": "Living Battery",
+      "instanceType": "on-hit",
+      "damageType": "magic",
+      "maxRank": 1,
+      "components": [],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Zeri/Living Battery",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Zeri/Living%20Battery",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4051663,
+      "icon": "ZeriP.png"
+    },
+    {
+      "champion": "Zeri",
+      "slot": "Q",
+      "abilityName": "Burst Fire",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "physical-damage-per-hit",
+          "label": "Physical Damage per Hit",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 3.14,
+            "to": 5.43
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "linear",
+              "from": 14.57,
+              "to": 15.71
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          },
+          "hits": 7
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Zeri/Burst Fire",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Zeri/Burst%20Fire",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4041832,
+      "icon": "ZeriQ.png"
+    },
+    {
+      "champion": "Zeri",
+      "slot": "W",
+      "abilityName": "Ultrashock Laser",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "physical-damage",
+          "label": "Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 30,
+            "to": 190
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "linear",
+              "from": 120,
+              "to": 120
+            },
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 50,
+              "to": 50
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "critical-strike-damage",
+          "label": "Critical Strike Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 45,
+            "to": 285
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "explicit",
+              "perRank": [
+                180,
+                180,
+                180,
+                180,
+                180
+              ]
+            },
+            {
+              "stat": "AP",
+              "scaling": "explicit",
+              "perRank": [
+                75,
+                75,
+                75,
+                75,
+                75
+              ]
+            }
+          ],
+          "relation": {
+            "kind": "alternativeTo",
+            "componentId": "physical-damage"
+          }
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Zeri/Ultrashock Laser",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Zeri/Ultrashock%20Laser",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4013271,
+      "icon": "ZeriW.png"
+    },
+    {
+      "champion": "Zeri",
+      "slot": "E",
+      "abilityName": "Spark Surge",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "bonus-magic-damage",
+          "label": "Bonus Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 22,
+            "to": 30
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 20,
+              "to": 20
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Zeri/Spark Surge",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Zeri/Spark%20Surge",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4015351,
+      "icon": "ZeriE.png"
+    },
+    {
+      "champion": "Zeri",
+      "slot": "R",
+      "abilityName": "Lightning Crash",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 3,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 150,
+            "to": 350
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 60,
+              "to": 60
+            },
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 110,
+              "to": 110
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Zeri/Lightning Crash",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Zeri/Lightning%20Crash",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4016978,
+      "icon": "ZeriR.png"
+    }
+  ],
+  "art": {
+    "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Zeri.json",
+    "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
+    "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
+    "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"
+  }
+}

@@ -1,0 +1,229 @@
+{
+  "what": "Master Yi ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "provenance": {
+    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "patch": "16.16.1",
+    "fetched": "2026-08-13",
+    "extractedOn": "2026-08-14",
+    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
+    "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
+  },
+  "abilities": [
+    {
+      "champion": "Master Yi",
+      "slot": "P",
+      "abilityName": "Double Strike",
+      "instanceType": "on-hit",
+      "damageType": "physical",
+      "maxRank": 1,
+      "components": [
+        {
+          "id": "physical-damage",
+          "label": "Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              0
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "linear",
+              "from": 50,
+              "to": 50
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Master Yi/Double Strike",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Master%20Yi/Double%20Strike",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3999525,
+      "icon": "MasterYi_Passive1.png"
+    },
+    {
+      "champion": "Master Yi",
+      "slot": "Q",
+      "abilityName": "Alpha Strike",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "primary-physical-damage",
+          "label": "Primary Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 20,
+            "to": 100
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "linear",
+              "from": 70,
+              "to": 70
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "reduced-damage-per-hit",
+          "label": "Reduced Damage per hit",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 5,
+            "to": 25
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "explicit",
+              "perRank": [
+                17.5,
+                17.5,
+                17.5,
+                17.5,
+                17.5
+              ]
+            }
+          ],
+          "relation": {
+            "kind": "alternativeTo",
+            "componentId": "primary-physical-damage"
+          },
+          "hits": 1
+        },
+        {
+          "id": "maximum-single-target-damage",
+          "label": "Maximum Single-Target Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 35,
+            "to": 175
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "explicit",
+              "perRank": [
+                122.5,
+                122.5,
+                122.5,
+                122.5,
+                122.5
+              ]
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Master Yi/Alpha Strike",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Master%20Yi/Alpha%20Strike",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4032850,
+      "icon": "AlphaStrike.png"
+    },
+    {
+      "champion": "Master Yi",
+      "slot": "W",
+      "abilityName": "Meditate",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 5,
+      "components": [],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Master Yi/Meditate",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Master%20Yi/Meditate",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4039653,
+      "icon": "Meditate.png"
+    },
+    {
+      "champion": "Master Yi",
+      "slot": "E",
+      "abilityName": "Wuju Style",
+      "instanceType": "damaging-ability",
+      "damageType": "true",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "bonus-true-damage",
+          "label": "Bonus True Damage",
+          "damageType": "true",
+          "base": {
+            "scaling": "linear",
+            "from": 20,
+            "to": 40
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 35,
+              "to": 35
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Master Yi/Wuju Style",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Master%20Yi/Wuju%20Style",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3959670,
+      "icon": "WujuStyle.png"
+    },
+    {
+      "champion": "Master Yi",
+      "slot": "R",
+      "abilityName": "Highlander",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 3,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Master Yi/Highlander",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Master%20Yi/Highlander",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4001544,
+      "icon": "Highlander.png"
+    }
+  ],
+  "art": {
+    "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/MasterYi.json",
+    "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
+    "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
+    "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"
+  }
+}

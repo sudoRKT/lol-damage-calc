@@ -1,5 +1,5 @@
 {
-  "what": "Lux ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "what": "Warwick ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
@@ -10,9 +10,9 @@
   },
   "abilities": [
     {
-      "champion": "Lux",
+      "champion": "Warwick",
       "slot": "P",
-      "abilityName": "Illumination",
+      "abilityName": "Eternal Hunger",
       "instanceType": "on-hit",
       "damageType": "magic",
       "maxRank": 1,
@@ -23,8 +23,8 @@
           "damageType": "magic",
           "base": {
             "scaling": "byLevel",
-            "from": 30,
-            "to": 200,
+            "from": 6,
+            "to": 55,
             "atLevels": [
               1,
               18
@@ -33,10 +33,16 @@
           },
           "ratios": [
             {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 15,
+              "to": 15
+            },
+            {
               "stat": "AP",
               "scaling": "linear",
-              "from": 35,
-              "to": 35
+              "from": 10,
+              "to": 10
             }
           ],
           "relation": {
@@ -46,18 +52,18 @@
       ],
       "verification": "derived",
       "provenance": {
-        "source": "Template:Data Lux/Illumination",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Illumination",
+        "source": "Template:Data Warwick/Eternal Hunger",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Warwick/Eternal%20Hunger",
         "patch": "16.16.1",
         "fetched": "2026-08-13"
       },
-      "sourceRevision": 4038408,
-      "icon": "LuxIlluminatingFraulein.png"
+      "sourceRevision": 4022413,
+      "icon": "WarwickP.png"
     },
     {
-      "champion": "Lux",
+      "champion": "Warwick",
       "slot": "Q",
-      "abilityName": "Light Binding",
+      "abilityName": "Jaws of the Beast",
       "instanceType": "damaging-ability",
       "damageType": "magic",
       "maxRank": 5,
@@ -67,16 +73,34 @@
           "label": "Magic Damage",
           "damageType": "magic",
           "base": {
-            "scaling": "linear",
-            "from": 80,
-            "to": 240
+            "scaling": "explicit",
+            "perRank": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
           },
           "ratios": [
             {
+              "stat": "maxHP",
+              "owner": "target",
+              "scaling": "linear",
+              "from": 6,
+              "to": 10
+            },
+            {
+              "stat": "totalAD",
+              "scaling": "linear",
+              "from": 120,
+              "to": 120
+            },
+            {
               "stat": "AP",
               "scaling": "linear",
-              "from": 75,
-              "to": 75
+              "from": 100,
+              "to": 100
             }
           ],
           "relation": {
@@ -84,117 +108,72 @@
           }
         }
       ],
-      "verification": "verified",
+      "verification": "derived",
       "provenance": {
-        "source": "Template:Data Lux/Light Binding",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Light%20Binding",
+        "source": "Template:Data Warwick/Jaws of the Beast",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Warwick/Jaws%20of%20the%20Beast",
         "patch": "16.16.1",
         "fetched": "2026-08-13"
       },
-      "sourceRevision": 4007675,
-      "icon": "LuxLightBinding.png"
+      "sourceRevision": 4007380,
+      "icon": "WarwickQ.png"
     },
     {
-      "champion": "Lux",
+      "champion": "Warwick",
       "slot": "W",
-      "abilityName": "Prismatic Barrier",
+      "abilityName": "Blood Hunt",
       "instanceType": "non-damaging-ability",
       "maxRank": 5,
       "components": [],
       "verification": "no-damage",
       "provenance": {
-        "source": "Template:Data Lux/Prismatic Barrier",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Prismatic%20Barrier",
+        "source": "Template:Data Warwick/Blood Hunt",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Warwick/Blood%20Hunt",
         "patch": "16.16.1",
         "fetched": "2026-08-13"
       },
-      "sourceRevision": 3992656,
-      "icon": "LuxPrismaticWave.png"
+      "sourceRevision": 3980738,
+      "icon": "WarwickW.png"
     },
     {
-      "champion": "Lux",
+      "champion": "Warwick",
       "slot": "E",
-      "abilityName": "Lucent Singularity",
-      "instanceType": "damaging-ability",
-      "damageType": "magic",
+      "abilityName": "Primal Howl",
+      "instanceType": "non-damaging-ability",
       "maxRank": 5,
-      "components": [
-        {
-          "id": "magic-damage",
-          "label": "Magic Damage",
-          "damageType": "magic",
-          "base": {
-            "scaling": "linear",
-            "from": 65,
-            "to": 265
-          },
-          "ratios": [
-            {
-              "stat": "AP",
-              "scaling": "linear",
-              "from": 80,
-              "to": 80
-            }
-          ],
-          "relation": {
-            "kind": "adds"
-          }
-        }
-      ],
-      "verification": "derived",
+      "components": [],
+      "verification": "incomplete",
       "provenance": {
-        "source": "Template:Data Lux/Lucent Singularity",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Lucent%20Singularity",
+        "source": "Template:Data Warwick/Primal Howl",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Warwick/Primal%20Howl",
         "patch": "16.16.1",
         "fetched": "2026-08-13"
       },
-      "sourceRevision": 4007677,
-      "icon": "LuxLightStrikeKugel.png"
+      "sourceRevision": 4047663,
+      "icon": "WarwickE.png"
     },
     {
-      "champion": "Lux",
+      "champion": "Warwick",
       "slot": "R",
-      "abilityName": "Final Spark",
+      "abilityName": "Infinite Duress",
       "instanceType": "damaging-ability",
       "damageType": "magic",
       "maxRank": 3,
-      "components": [
-        {
-          "id": "magic-damage",
-          "label": "Magic Damage",
-          "damageType": "magic",
-          "base": {
-            "scaling": "linear",
-            "from": 300,
-            "to": 500
-          },
-          "ratios": [
-            {
-              "stat": "AP",
-              "scaling": "linear",
-              "from": 120,
-              "to": 120
-            }
-          ],
-          "relation": {
-            "kind": "adds"
-          }
-        }
-      ],
-      "verification": "derived",
+      "components": [],
+      "verification": "incomplete",
       "provenance": {
-        "source": "Template:Data Lux/Final Spark",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Final%20Spark",
+        "source": "Template:Data Warwick/Infinite Duress",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Warwick/Infinite%20Duress",
         "patch": "16.16.1",
         "fetched": "2026-08-13"
       },
-      "sourceRevision": 3919833,
-      "icon": "LuxR.png"
+      "sourceRevision": 4015471,
+      "icon": "WarwickR.png"
     }
   ],
   "art": {
     "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
-    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Lux.json",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Warwick.json",
     "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
     "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
     "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"

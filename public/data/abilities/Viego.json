@@ -1,0 +1,230 @@
+{
+  "what": "Viego ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "provenance": {
+    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "patch": "16.16.1",
+    "fetched": "2026-08-13",
+    "extractedOn": "2026-08-14",
+    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
+    "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
+  },
+  "abilities": [
+    {
+      "champion": "Viego",
+      "slot": "P",
+      "abilityName": "Sovereign's Domination",
+      "instanceType": "on-hit",
+      "damageType": "physical",
+      "maxRank": 1,
+      "components": [],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Viego/Sovereign's Domination",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Viego/Sovereign's%20Domination",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4050183,
+      "icon": "Viego_Passive.png"
+    },
+    {
+      "champion": "Viego",
+      "slot": "Q",
+      "abilityName": "Blade of the Ruined King",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "bonus-physical-damage",
+          "label": "Bonus Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "currentHP",
+              "owner": "target",
+              "scaling": "linear",
+              "from": 2,
+              "to": 6
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "minimum-bonus-damage",
+          "label": "Minimum Bonus Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 10,
+            "to": 30
+          },
+          "ratios": [],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "physical-damage",
+          "label": "Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 25,
+            "to": 85
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "linear",
+              "from": 70,
+              "to": 70
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Viego/Blade of the Ruined King",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Viego/Blade%20of%20the%20Ruined%20King",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4009446,
+      "icon": "ViegoQ.png"
+    },
+    {
+      "champion": "Viego",
+      "slot": "W",
+      "abilityName": "Spectral Maw",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 80,
+            "to": 300
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 100,
+              "to": 100
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Viego/Spectral Maw",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Viego/Spectral%20Maw",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4008551,
+      "icon": "ViegoW.png"
+    },
+    {
+      "champion": "Viego",
+      "slot": "E",
+      "abilityName": "Harrowed Path",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 5,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Viego/Harrowed Path",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Viego/Harrowed%20Path",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4045890,
+      "icon": "ViegoE.png"
+    },
+    {
+      "champion": "Viego",
+      "slot": "R",
+      "abilityName": "Heartbreaker",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 3,
+      "components": [
+        {
+          "id": "physical-damage",
+          "label": "Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              0,
+              0,
+              0
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "missingHP",
+              "owner": "target",
+              "multipliers": [
+                {
+                  "per": "bonusAD",
+                  "per100": {
+                    "scaling": "linear",
+                    "from": 5,
+                    "to": 5
+                  }
+                }
+              ],
+              "scaling": "linear",
+              "from": 12,
+              "to": 20
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Viego/Heartbreaker",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Viego/Heartbreaker",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4001566,
+      "icon": "ViegoR.png"
+    }
+  ],
+  "art": {
+    "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Viego.json",
+    "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
+    "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
+    "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"
+  }
+}

@@ -1,5 +1,5 @@
 {
-  "what": "Lux ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "what": "Kayle ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
@@ -10,54 +10,27 @@
   },
   "abilities": [
     {
-      "champion": "Lux",
+      "champion": "Kayle",
       "slot": "P",
-      "abilityName": "Illumination",
+      "abilityName": "Divine Ascent",
       "instanceType": "on-hit",
       "damageType": "magic",
       "maxRank": 1,
-      "components": [
-        {
-          "id": "bonus-magic-damage",
-          "label": "Bonus Magic Damage",
-          "damageType": "magic",
-          "base": {
-            "scaling": "byLevel",
-            "from": 30,
-            "to": 200,
-            "atLevels": [
-              1,
-              18
-            ],
-            "steps": 18
-          },
-          "ratios": [
-            {
-              "stat": "AP",
-              "scaling": "linear",
-              "from": 35,
-              "to": 35
-            }
-          ],
-          "relation": {
-            "kind": "adds"
-          }
-        }
-      ],
-      "verification": "derived",
+      "components": [],
+      "verification": "incomplete",
       "provenance": {
-        "source": "Template:Data Lux/Illumination",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Illumination",
+        "source": "Template:Data Kayle/Divine Ascent",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kayle/Divine%20Ascent",
         "patch": "16.16.1",
         "fetched": "2026-08-13"
       },
-      "sourceRevision": 4038408,
-      "icon": "LuxIlluminatingFraulein.png"
+      "sourceRevision": 4051190,
+      "icon": "Kayle_P.png"
     },
     {
-      "champion": "Lux",
+      "champion": "Kayle",
       "slot": "Q",
-      "abilityName": "Light Binding",
+      "abilityName": "Radiant Blast",
       "instanceType": "damaging-ability",
       "damageType": "magic",
       "maxRank": 5,
@@ -68,15 +41,21 @@
           "damageType": "magic",
           "base": {
             "scaling": "linear",
-            "from": 80,
-            "to": 240
+            "from": 60,
+            "to": 180
           },
           "ratios": [
             {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 60,
+              "to": 60
+            },
+            {
               "stat": "AP",
               "scaling": "linear",
-              "from": 75,
-              "to": 75
+              "from": 50,
+              "to": 50
             }
           ],
           "relation": {
@@ -84,56 +63,99 @@
           }
         }
       ],
-      "verification": "verified",
+      "verification": "derived",
       "provenance": {
-        "source": "Template:Data Lux/Light Binding",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Light%20Binding",
+        "source": "Template:Data Kayle/Radiant Blast",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kayle/Radiant%20Blast",
         "patch": "16.16.1",
         "fetched": "2026-08-13"
       },
-      "sourceRevision": 4007675,
-      "icon": "LuxLightBinding.png"
+      "sourceRevision": 4005105,
+      "icon": "KayleQ.png"
     },
     {
-      "champion": "Lux",
+      "champion": "Kayle",
       "slot": "W",
-      "abilityName": "Prismatic Barrier",
+      "abilityName": "Celestial Blessing",
       "instanceType": "non-damaging-ability",
       "maxRank": 5,
       "components": [],
       "verification": "no-damage",
       "provenance": {
-        "source": "Template:Data Lux/Prismatic Barrier",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Prismatic%20Barrier",
+        "source": "Template:Data Kayle/Celestial Blessing",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kayle/Celestial%20Blessing",
         "patch": "16.16.1",
         "fetched": "2026-08-13"
       },
-      "sourceRevision": 3992656,
-      "icon": "LuxPrismaticWave.png"
+      "sourceRevision": 3997873,
+      "icon": "KayleW.png"
     },
     {
-      "champion": "Lux",
+      "champion": "Kayle",
       "slot": "E",
-      "abilityName": "Lucent Singularity",
+      "abilityName": "Starfire Spellblade",
       "instanceType": "damaging-ability",
       "damageType": "magic",
       "maxRank": 5,
       "components": [
         {
-          "id": "magic-damage",
-          "label": "Magic Damage",
+          "id": "passive-damage",
+          "label": "Passive Damage",
           "damageType": "magic",
           "base": {
             "scaling": "linear",
-            "from": 65,
-            "to": 265
+            "from": 15,
+            "to": 35
           },
           "ratios": [
             {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 10,
+              "to": 10
+            },
+            {
               "stat": "AP",
               "scaling": "linear",
-              "from": 80,
-              "to": 80
+              "from": 20,
+              "to": 20
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "bonus-magic-damage",
+          "label": "Bonus Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "missingHP",
+              "owner": "target",
+              "multipliers": [
+                {
+                  "per": "AP",
+                  "per100": {
+                    "scaling": "linear",
+                    "from": 1.5,
+                    "to": 1.5
+                  }
+                }
+              ],
+              "scaling": "linear",
+              "from": 8,
+              "to": 10
             }
           ],
           "relation": {
@@ -143,18 +165,18 @@
       ],
       "verification": "derived",
       "provenance": {
-        "source": "Template:Data Lux/Lucent Singularity",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Lucent%20Singularity",
+        "source": "Template:Data Kayle/Starfire Spellblade",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kayle/Starfire%20Spellblade",
         "patch": "16.16.1",
         "fetched": "2026-08-13"
       },
-      "sourceRevision": 4007677,
-      "icon": "LuxLightStrikeKugel.png"
+      "sourceRevision": 3982990,
+      "icon": "KayleE.png"
     },
     {
-      "champion": "Lux",
+      "champion": "Kayle",
       "slot": "R",
-      "abilityName": "Final Spark",
+      "abilityName": "Divine Judgment",
       "instanceType": "damaging-ability",
       "damageType": "magic",
       "maxRank": 3,
@@ -165,15 +187,21 @@
           "damageType": "magic",
           "base": {
             "scaling": "linear",
-            "from": 300,
-            "to": 500
+            "from": 200,
+            "to": 400
           },
           "ratios": [
             {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 100,
+              "to": 100
+            },
+            {
               "stat": "AP",
               "scaling": "linear",
-              "from": 120,
-              "to": 120
+              "from": 70,
+              "to": 70
             }
           ],
           "relation": {
@@ -183,18 +211,18 @@
       ],
       "verification": "derived",
       "provenance": {
-        "source": "Template:Data Lux/Final Spark",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Final%20Spark",
+        "source": "Template:Data Kayle/Divine Judgment",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kayle/Divine%20Judgment",
         "patch": "16.16.1",
         "fetched": "2026-08-13"
       },
-      "sourceRevision": 3919833,
-      "icon": "LuxR.png"
+      "sourceRevision": 3962015,
+      "icon": "KayleR.png"
     }
   ],
   "art": {
     "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
-    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Lux.json",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Kayle.json",
     "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
     "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
     "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"

@@ -1,0 +1,417 @@
+{
+  "what": "Nidalee ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "provenance": {
+    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "patch": "16.16.1",
+    "fetched": "2026-08-13",
+    "extractedOn": "2026-08-14",
+    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
+    "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
+  },
+  "abilities": [
+    {
+      "champion": "Nidalee",
+      "slot": "P",
+      "abilityName": "Prowl",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 1,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Nidalee/Prowl",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Nidalee/Prowl",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4007706,
+      "icon": "Nidalee_Passive.png"
+    },
+    {
+      "champion": "Nidalee",
+      "slot": "Q",
+      "abilityName": "Javelin Toss",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "minimum-magic-damage",
+          "label": "Minimum Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 70,
+            "to": 150
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 50,
+              "to": 50
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "maximum-magic-damage",
+          "label": "Maximum Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 227.5,
+            "to": 487.5
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "explicit",
+              "perRank": [
+                162.5,
+                162.5,
+                162.5,
+                162.5,
+                162.5
+              ]
+            }
+          ],
+          "relation": {
+            "kind": "alternativeTo",
+            "componentId": "minimum-magic-damage"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Nidalee/Javelin Toss",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Nidalee/Javelin%20Toss",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3971597,
+      "icon": "JavelinToss.png"
+    },
+    {
+      "champion": "Nidalee",
+      "slot": "Q",
+      "abilityName": "Takedown",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 4,
+      "components": [
+        {
+          "id": "minimum-magic-damage",
+          "label": "Minimum Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 5,
+            "to": 80
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "linear",
+              "from": 75,
+              "to": 75
+            },
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 40,
+              "to": 40
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "maximum-magic-damage",
+          "label": "Maximum Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              10,
+              67.5,
+              137.5,
+              220
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "linear",
+              "from": 150,
+              "to": 206.25
+            },
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 80,
+              "to": 110
+            }
+          ],
+          "relation": {
+            "kind": "alternativeTo",
+            "componentId": "minimum-magic-damage"
+          }
+        },
+        {
+          "id": "enhanced-minimum-damage",
+          "label": "'-Enhanced Minimum Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 6.5,
+            "to": 104
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "explicit",
+              "perRank": [
+                97.5,
+                97.5,
+                97.5,
+                97.5
+              ]
+            },
+            {
+              "stat": "AP",
+              "scaling": "explicit",
+              "perRank": [
+                52,
+                52,
+                52,
+                52
+              ]
+            }
+          ],
+          "relation": {
+            "kind": "alternativeTo",
+            "componentId": "minimum-magic-damage"
+          }
+        },
+        {
+          "id": "enhanced-maximum-damage",
+          "label": "'-Enhanced Maximum Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              13,
+              87.75,
+              178.75,
+              286
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "linear",
+              "from": 195,
+              "to": 268.125
+            },
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 104,
+              "to": 143
+            }
+          ],
+          "relation": {
+            "kind": "alternativeTo",
+            "componentId": "minimum-magic-damage"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Nidalee/Takedown",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Nidalee/Takedown",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3948934,
+      "icon": "JavelinToss.png"
+    },
+    {
+      "champion": "Nidalee",
+      "slot": "W",
+      "abilityName": "Bushwhack",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage-per-tick",
+          "label": "Magic Damage Per Tick",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 10,
+            "to": 50
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 5,
+              "to": 5
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          },
+          "hits": 4
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Nidalee/Bushwhack",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Nidalee/Bushwhack",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4015217,
+      "icon": "Bushwhack.png"
+    },
+    {
+      "champion": "Nidalee",
+      "slot": "W",
+      "abilityName": "Pounce",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 4,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 55,
+            "to": 190
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 50,
+              "to": 50
+            },
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 30,
+              "to": 30
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Nidalee/Pounce",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Nidalee/Pounce",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4007707,
+      "icon": "Bushwhack.png"
+    },
+    {
+      "champion": "Nidalee",
+      "slot": "E",
+      "abilityName": "Primal Surge",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 5,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Nidalee/Primal Surge",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Nidalee/Primal%20Surge",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3907033,
+      "icon": "PrimalSurge.png"
+    },
+    {
+      "champion": "Nidalee",
+      "slot": "E",
+      "abilityName": "Swipe",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 4,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 70,
+            "to": 250
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 70,
+              "to": 70
+            },
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 55,
+              "to": 55
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Nidalee/Swipe",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Nidalee/Swipe",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3959337,
+      "icon": "PrimalSurge.png"
+    },
+    {
+      "champion": "Nidalee",
+      "slot": "R",
+      "abilityName": "Aspect of the Cougar",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 4,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Nidalee/Aspect of the Cougar",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Nidalee/Aspect%20of%20the%20Cougar",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3547669,
+      "icon": "AspectOfTheCougar.png"
+    }
+  ],
+  "art": {
+    "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Nidalee.json",
+    "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
+    "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
+    "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"
+  }
+}

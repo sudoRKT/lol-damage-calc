@@ -1,0 +1,255 @@
+{
+  "what": "Taliyah ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "provenance": {
+    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "patch": "16.16.1",
+    "fetched": "2026-08-13",
+    "extractedOn": "2026-08-14",
+    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
+    "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
+  },
+  "abilities": [
+    {
+      "champion": "Taliyah",
+      "slot": "P",
+      "abilityName": "Rock Surfing",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 1,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Taliyah/Rock Surfing",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Taliyah/Rock%20Surfing",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3986175,
+      "icon": "Taliyah_Passive.png"
+    },
+    {
+      "champion": "Taliyah",
+      "slot": "Q",
+      "abilityName": "Threaded Volley",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 55,
+            "to": 125
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 50,
+              "to": 50
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          },
+          "variableHits": {
+            "kind": "repeatsAtReducedRate",
+            "rate": 0.4,
+            "maxAdditional": 4,
+            "sourceSays": "Subsequent hits deal 40% damage."
+          }
+        },
+        {
+          "id": "reduced-damage",
+          "label": "Reduced Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 22,
+            "to": 50
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "explicit",
+              "perRank": [
+                20,
+                20,
+                20,
+                20,
+                20
+              ]
+            }
+          ],
+          "relation": {
+            "kind": "alternativeTo",
+            "componentId": "magic-damage"
+          }
+        },
+        {
+          "id": "empowered-damage",
+          "label": "Empowered Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 99,
+            "to": 225
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "explicit",
+              "perRank": [
+                90,
+                90,
+                90,
+                90,
+                90
+              ]
+            }
+          ],
+          "relation": {
+            "kind": "alternativeTo",
+            "componentId": "magic-damage"
+          }
+        },
+        {
+          "id": "secondary-target-damage",
+          "label": "Secondary Target Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 55,
+            "to": 125
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 50,
+              "to": 50
+            }
+          ],
+          "relation": {
+            "kind": "alternativeTo",
+            "componentId": "magic-damage"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Taliyah/Threaded Volley",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Taliyah/Threaded%20Volley",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4013247,
+      "icon": "TaliyahQ.png"
+    },
+    {
+      "champion": "Taliyah",
+      "slot": "W",
+      "abilityName": "Seismic Shove",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Taliyah/Seismic Shove",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Taliyah/Seismic%20Shove",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4028078,
+      "icon": "TaliyahWVC.png"
+    },
+    {
+      "champion": "Taliyah",
+      "slot": "E",
+      "abilityName": "Unraveled Earth",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 60,
+            "to": 240
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 60,
+              "to": 60
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "detonation-magic-damage",
+          "label": "Detonation Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 25,
+            "to": 85
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 30,
+              "to": 30
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Taliyah/Unraveled Earth",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Taliyah/Unraveled%20Earth",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3985881,
+      "icon": "TaliyahE.png"
+    },
+    {
+      "champion": "Taliyah",
+      "slot": "R",
+      "abilityName": "Weaver's Wall",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 3,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Taliyah/Weaver's Wall",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Taliyah/Weaver's%20Wall",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4008075,
+      "icon": "TaliyahR.png"
+    }
+  ],
+  "art": {
+    "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Taliyah.json",
+    "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
+    "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
+    "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"
+  }
+}

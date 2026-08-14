@@ -1,5 +1,5 @@
 {
-  "what": "Lux ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "what": "Ahri ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
@@ -10,54 +10,110 @@
   },
   "abilities": [
     {
-      "champion": "Lux",
+      "champion": "Ahri",
       "slot": "P",
-      "abilityName": "Illumination",
-      "instanceType": "on-hit",
-      "damageType": "magic",
+      "abilityName": "Essence Theft",
+      "instanceType": "non-damaging-ability",
       "maxRank": 1,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Ahri/Essence Theft",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Ahri/Essence%20Theft",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4038191,
+      "icon": "Ahri_SoulEater2.png"
+    },
+    {
+      "champion": "Ahri",
+      "slot": "Q",
+      "abilityName": "Orb of Deception",
+      "instanceType": "damaging-ability",
+      "maxRank": 5,
+      "components": [],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Ahri/Orb of Deception",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Ahri/Orb%20of%20Deception",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4007396,
+      "icon": "AhriQ.png"
+    },
+    {
+      "champion": "Ahri",
+      "slot": "W",
+      "abilityName": "Fox-Fire",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
       "components": [
         {
-          "id": "bonus-magic-damage",
-          "label": "Bonus Magic Damage",
+          "id": "primary-magic-damage",
+          "label": "Primary Magic Damage",
           "damageType": "magic",
           "base": {
-            "scaling": "byLevel",
-            "from": 30,
-            "to": 200,
-            "atLevels": [
-              1,
-              18
-            ],
-            "steps": 18
+            "scaling": "linear",
+            "from": 40,
+            "to": 120
           },
           "ratios": [
             {
               "stat": "AP",
               "scaling": "linear",
-              "from": 35,
-              "to": 35
+              "from": 40,
+              "to": 40
             }
           ],
           "relation": {
             "kind": "adds"
           }
+        },
+        {
+          "id": "subsequent-magic-damage",
+          "label": "Subsequent Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 16,
+            "to": 48
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "explicit",
+              "perRank": [
+                16,
+                16,
+                16,
+                16,
+                16
+              ]
+            }
+          ],
+          "relation": {
+            "kind": "alternativeTo",
+            "componentId": "primary-magic-damage"
+          }
         }
       ],
       "verification": "derived",
       "provenance": {
-        "source": "Template:Data Lux/Illumination",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Illumination",
+        "source": "Template:Data Ahri/Fox-Fire",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Ahri/Fox-Fire",
         "patch": "16.16.1",
         "fetched": "2026-08-13"
       },
-      "sourceRevision": 4038408,
-      "icon": "LuxIlluminatingFraulein.png"
+      "sourceRevision": 4007399,
+      "icon": "AhriW.png"
     },
     {
-      "champion": "Lux",
-      "slot": "Q",
-      "abilityName": "Light Binding",
+      "champion": "Ahri",
+      "slot": "E",
+      "abilityName": "Charm",
       "instanceType": "damaging-ability",
       "damageType": "magic",
       "maxRank": 5,
@@ -75,65 +131,8 @@
             {
               "stat": "AP",
               "scaling": "linear",
-              "from": 75,
-              "to": 75
-            }
-          ],
-          "relation": {
-            "kind": "adds"
-          }
-        }
-      ],
-      "verification": "verified",
-      "provenance": {
-        "source": "Template:Data Lux/Light Binding",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Light%20Binding",
-        "patch": "16.16.1",
-        "fetched": "2026-08-13"
-      },
-      "sourceRevision": 4007675,
-      "icon": "LuxLightBinding.png"
-    },
-    {
-      "champion": "Lux",
-      "slot": "W",
-      "abilityName": "Prismatic Barrier",
-      "instanceType": "non-damaging-ability",
-      "maxRank": 5,
-      "components": [],
-      "verification": "no-damage",
-      "provenance": {
-        "source": "Template:Data Lux/Prismatic Barrier",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Prismatic%20Barrier",
-        "patch": "16.16.1",
-        "fetched": "2026-08-13"
-      },
-      "sourceRevision": 3992656,
-      "icon": "LuxPrismaticWave.png"
-    },
-    {
-      "champion": "Lux",
-      "slot": "E",
-      "abilityName": "Lucent Singularity",
-      "instanceType": "damaging-ability",
-      "damageType": "magic",
-      "maxRank": 5,
-      "components": [
-        {
-          "id": "magic-damage",
-          "label": "Magic Damage",
-          "damageType": "magic",
-          "base": {
-            "scaling": "linear",
-            "from": 65,
-            "to": 265
-          },
-          "ratios": [
-            {
-              "stat": "AP",
-              "scaling": "linear",
-              "from": 80,
-              "to": 80
+              "from": 85,
+              "to": 85
             }
           ],
           "relation": {
@@ -143,18 +142,18 @@
       ],
       "verification": "derived",
       "provenance": {
-        "source": "Template:Data Lux/Lucent Singularity",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Lucent%20Singularity",
+        "source": "Template:Data Ahri/Charm",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Ahri/Charm",
         "patch": "16.16.1",
         "fetched": "2026-08-13"
       },
-      "sourceRevision": 4007677,
-      "icon": "LuxLightStrikeKugel.png"
+      "sourceRevision": 3909373,
+      "icon": "AhriE.png"
     },
     {
-      "champion": "Lux",
+      "champion": "Ahri",
       "slot": "R",
-      "abilityName": "Final Spark",
+      "abilityName": "Spirit Rush",
       "instanceType": "damaging-ability",
       "damageType": "magic",
       "maxRank": 3,
@@ -165,15 +164,15 @@
           "damageType": "magic",
           "base": {
             "scaling": "linear",
-            "from": 300,
-            "to": 500
+            "from": 75,
+            "to": 175
           },
           "ratios": [
             {
               "stat": "AP",
               "scaling": "linear",
-              "from": 120,
-              "to": 120
+              "from": 35,
+              "to": 35
             }
           ],
           "relation": {
@@ -183,18 +182,18 @@
       ],
       "verification": "derived",
       "provenance": {
-        "source": "Template:Data Lux/Final Spark",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Final%20Spark",
+        "source": "Template:Data Ahri/Spirit Rush",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Ahri/Spirit%20Rush",
         "patch": "16.16.1",
         "fetched": "2026-08-13"
       },
-      "sourceRevision": 3919833,
-      "icon": "LuxR.png"
+      "sourceRevision": 4007764,
+      "icon": "AhriR.png"
     }
   ],
   "art": {
     "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
-    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Lux.json",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Ahri.json",
     "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
     "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
     "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"

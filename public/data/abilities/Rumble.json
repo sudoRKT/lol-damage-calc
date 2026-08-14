@@ -1,0 +1,537 @@
+{
+  "what": "Rumble ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "provenance": {
+    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "patch": "16.16.1",
+    "fetched": "2026-08-13",
+    "extractedOn": "2026-08-14",
+    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
+    "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
+  },
+  "abilities": [
+    {
+      "champion": "Rumble",
+      "slot": "P",
+      "abilityName": "Junkyard Titan",
+      "instanceType": "on-hit",
+      "damageType": "magic",
+      "maxRank": 1,
+      "components": [],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Rumble/Junkyard Titan",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Rumble/Junkyard%20Titan",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3985666,
+      "icon": "Rumble_JunkyardTitan1.png"
+    },
+    {
+      "champion": "Rumble",
+      "slot": "Q",
+      "abilityName": "Flamespitter",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "minimum-magic-damage",
+          "label": "Minimum Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 12.5,
+            "to": 37.5
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "explicit",
+              "perRank": [
+                26.25,
+                26.25,
+                26.25,
+                26.25,
+                26.25
+              ]
+            },
+            {
+              "stat": "maxHP",
+              "owner": "target",
+              "scaling": "linear",
+              "from": 1.5,
+              "to": 2
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "magic-damage-per-second",
+          "label": "Magic Damage per Second",
+          "damageType": "magic",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              16.67,
+              25,
+              33.33,
+              41.67,
+              50
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "explicit",
+              "perRank": [
+                35,
+                35,
+                35,
+                35,
+                35
+              ]
+            },
+            {
+              "stat": "maxHP",
+              "owner": "target",
+              "scaling": "linear",
+              "from": 2,
+              "to": 2.667
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          },
+          "hits": 1
+        },
+        {
+          "id": "magic-damage-per-tick",
+          "label": "Magic Damage per Tick",
+          "damageType": "magic",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              4.167,
+              6.25,
+              8.333,
+              10.417,
+              12.5
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "explicit",
+              "perRank": [
+                8.75,
+                8.75,
+                8.75,
+                8.75,
+                8.75
+              ]
+            },
+            {
+              "stat": "maxHP",
+              "owner": "target",
+              "scaling": "explicit",
+              "perRank": [
+                0.5,
+                0.542,
+                0.583,
+                0.625,
+                0.667
+              ]
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          },
+          "hits": 1
+        },
+        {
+          "id": "maximum-magic-damage",
+          "label": "Maximum Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 62.5,
+            "to": 187.5
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "explicit",
+              "perRank": [
+                131.25,
+                131.25,
+                131.25,
+                131.25,
+                131.25
+              ]
+            },
+            {
+              "stat": "maxHP",
+              "owner": "target",
+              "scaling": "explicit",
+              "perRank": [
+                7.5,
+                8.13,
+                8.75,
+                9.38,
+                10
+              ]
+            }
+          ],
+          "relation": {
+            "kind": "alternativeTo",
+            "componentId": "minimum-magic-damage"
+          }
+        },
+        {
+          "id": "minimum-enhanced-damage",
+          "label": "Minimum Enhanced Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 18.75,
+            "to": 56.25
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "explicit",
+              "perRank": [
+                39.375,
+                39.375,
+                39.375,
+                39.375,
+                39.375
+              ]
+            },
+            {
+              "stat": "maxHP",
+              "owner": "target",
+              "scaling": "explicit",
+              "perRank": [
+                2.25,
+                2.438,
+                2.625,
+                2.813,
+                3
+              ]
+            }
+          ],
+          "relation": {
+            "kind": "alternativeTo",
+            "componentId": "minimum-magic-damage"
+          }
+        },
+        {
+          "id": "enhanced-damage-per-second",
+          "label": "Enhanced Damage per Second",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 25,
+            "to": 75
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "explicit",
+              "perRank": [
+                52.5,
+                52.5,
+                52.5,
+                52.5,
+                52.5
+              ]
+            },
+            {
+              "stat": "maxHP",
+              "owner": "target",
+              "scaling": "linear",
+              "from": 3,
+              "to": 4
+            }
+          ],
+          "relation": {
+            "kind": "alternativeTo",
+            "componentId": "minimum-magic-damage"
+          },
+          "hits": 1
+        },
+        {
+          "id": "enhanced-damage-per-tick",
+          "label": "Enhanced Damage per Tick",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 6.25,
+            "to": 18.75
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "explicit",
+              "perRank": [
+                13.125,
+                13.125,
+                13.125,
+                13.125,
+                13.125
+              ]
+            },
+            {
+              "stat": "maxHP",
+              "owner": "target",
+              "scaling": "linear",
+              "from": 0.75,
+              "to": 1
+            }
+          ],
+          "relation": {
+            "kind": "alternativeTo",
+            "componentId": "minimum-magic-damage"
+          },
+          "hits": 1
+        },
+        {
+          "id": "maximum-enhanced-damage",
+          "label": "Maximum Enhanced Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 93.75,
+            "to": 281.25
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "explicit",
+              "perRank": [
+                196.88,
+                196.88,
+                196.88,
+                196.88,
+                196.88
+              ]
+            },
+            {
+              "stat": "maxHP",
+              "owner": "target",
+              "scaling": "explicit",
+              "perRank": [
+                11.25,
+                12.19,
+                13.13,
+                14.06,
+                15
+              ]
+            }
+          ],
+          "relation": {
+            "kind": "alternativeTo",
+            "componentId": "minimum-enhanced-damage"
+          }
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Rumble/Flamespitter",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Rumble/Flamespitter",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4034705,
+      "icon": "RumbleFlameThrower.png"
+    },
+    {
+      "champion": "Rumble",
+      "slot": "W",
+      "abilityName": "Scrap Shield",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 5,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Rumble/Scrap Shield",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Rumble/Scrap%20Shield",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3923327,
+      "icon": "RumbleShield.png"
+    },
+    {
+      "champion": "Rumble",
+      "slot": "E",
+      "abilityName": "Electro Harpoon",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 55,
+            "to": 155
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 50,
+              "to": 50
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "enhanced-damage",
+          "label": "Enhanced Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 82.5,
+            "to": 232.5
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "explicit",
+              "perRank": [
+                75,
+                75,
+                75,
+                75,
+                75
+              ]
+            }
+          ],
+          "relation": {
+            "kind": "alternativeTo",
+            "componentId": "magic-damage"
+          }
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Rumble/Electro Harpoon",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Rumble/Electro%20Harpoon",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4008020,
+      "icon": "RumbleGrenade.png"
+    },
+    {
+      "champion": "Rumble",
+      "slot": "R",
+      "abilityName": "The Equalizer",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 3,
+      "components": [
+        {
+          "id": "magic-damage-per-tick",
+          "label": "Magic Damage per Tick",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 30,
+            "to": 70
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "explicit",
+              "perRank": [
+                8.75,
+                8.75,
+                8.75
+              ]
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          },
+          "hits": 1
+        },
+        {
+          "id": "magic-damage-per-second",
+          "label": "Magic Damage per Second",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 120,
+            "to": 280
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "explicit",
+              "perRank": [
+                35,
+                35,
+                35
+              ]
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          },
+          "hits": 1
+        },
+        {
+          "id": "maximum-magic-damage",
+          "label": "Maximum Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 600,
+            "to": 1400
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "explicit",
+              "perRank": [
+                175,
+                175,
+                175
+              ]
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Rumble/The Equalizer",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Rumble/The%20Equalizer",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4008021,
+      "icon": "RumbleCarpetBomb.png"
+    }
+  ],
+  "art": {
+    "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Rumble.json",
+    "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
+    "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
+    "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"
+  }
+}

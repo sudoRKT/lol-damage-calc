@@ -1,0 +1,211 @@
+{
+  "what": "Shen ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "provenance": {
+    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "patch": "16.16.1",
+    "fetched": "2026-08-13",
+    "extractedOn": "2026-08-14",
+    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
+    "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
+  },
+  "abilities": [
+    {
+      "champion": "Shen",
+      "slot": "P",
+      "abilityName": "Ki Barrier",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 1,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Shen/Ki Barrier",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Shen/Ki%20Barrier",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3985839,
+      "icon": "Shen_Passive.png"
+    },
+    {
+      "champion": "Shen",
+      "slot": "Q",
+      "abilityName": "Twilight Assault",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "bonus-magic-damage",
+          "label": "Bonus Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "byLevel",
+            "from": 10,
+            "to": 40,
+            "atLevels": [
+              1,
+              16
+            ],
+            "steps": 6
+          },
+          "ratios": [
+            {
+              "stat": "maxHP",
+              "owner": "target",
+              "multipliers": [
+                {
+                  "per": "AP",
+                  "per100": {
+                    "scaling": "linear",
+                    "from": 1.5,
+                    "to": 1.5
+                  }
+                }
+              ],
+              "scaling": "linear",
+              "from": 2,
+              "to": 4
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "increased-bonus-damage",
+          "label": "Increased Bonus Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "byLevel",
+            "from": 10,
+            "to": 40,
+            "atLevels": [
+              1,
+              16
+            ],
+            "steps": 6
+          },
+          "ratios": [
+            {
+              "stat": "maxHP",
+              "owner": "target",
+              "multipliers": [
+                {
+                  "per": "AP",
+                  "per100": {
+                    "scaling": "linear",
+                    "from": 2,
+                    "to": 2
+                  }
+                }
+              ],
+              "scaling": "linear",
+              "from": 5,
+              "to": 7
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Shen/Twilight Assault",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Shen/Twilight%20Assault",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4008038,
+      "icon": "ShenQ.png"
+    },
+    {
+      "champion": "Shen",
+      "slot": "W",
+      "abilityName": "Spirit's Refuge",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 5,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Shen/Spirit's Refuge",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Shen/Spirit's%20Refuge",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3977238,
+      "icon": "ShenW.png"
+    },
+    {
+      "champion": "Shen",
+      "slot": "E",
+      "abilityName": "Shadow Dash",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "physical-damage",
+          "label": "Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 60,
+            "to": 160
+          },
+          "ratios": [
+            {
+              "stat": "bonusHP",
+              "owner": "unresolved",
+              "scaling": "linear",
+              "from": 11,
+              "to": 11
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Shen/Shadow Dash",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Shen/Shadow%20Dash",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4007754,
+      "unresolvable": [
+        {
+          "field": "components[0].ratios[0].owner (bonusHP)",
+          "why": "the source names bonusHP and never says whose, and no other source states it"
+        }
+      ],
+      "icon": "ShenE.png"
+    },
+    {
+      "champion": "Shen",
+      "slot": "R",
+      "abilityName": "Stand United",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 3,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Shen/Stand United",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Shen/Stand%20United",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4004939,
+      "icon": "ShenR.png"
+    }
+  ],
+  "art": {
+    "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Shen.json",
+    "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
+    "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
+    "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"
+  }
+}

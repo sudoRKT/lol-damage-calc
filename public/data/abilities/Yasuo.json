@@ -1,0 +1,263 @@
+{
+  "what": "Yasuo ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "provenance": {
+    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "patch": "16.16.1",
+    "fetched": "2026-08-13",
+    "extractedOn": "2026-08-14",
+    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
+    "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
+  },
+  "abilities": [
+    {
+      "champion": "Yasuo",
+      "slot": "P",
+      "abilityName": "Way of the Wanderer",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 1,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Yasuo/Way of the Wanderer",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Yasuo/Way%20of%20the%20Wanderer",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3986755,
+      "icon": "Yasuo_Passive.png"
+    },
+    {
+      "champion": "Yasuo",
+      "slot": "Q",
+      "abilityName": "Steel Tempest",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "physical-damage",
+          "label": "Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 20,
+            "to": 120
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "linear",
+              "from": 105,
+              "to": 105
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "critical-strike-damage",
+          "label": "Critical Strike Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 20,
+            "to": 120
+          },
+          "ratios": [],
+          "relation": {
+            "kind": "alternativeTo",
+            "componentId": "physical-damage"
+          }
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Yasuo/Steel Tempest",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Yasuo/Steel%20Tempest",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4049047,
+      "icon": "YasuoQ1Wrapper.png"
+    },
+    {
+      "champion": "Yasuo",
+      "slot": "W",
+      "abilityName": "Wind Wall",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 5,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Yasuo/Wind Wall",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Yasuo/Wind%20Wall",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4008635,
+      "icon": "YasuoW.png"
+    },
+    {
+      "champion": "Yasuo",
+      "slot": "E",
+      "abilityName": "Sweeping Blade",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 70,
+            "to": 130
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 20,
+              "to": 20
+            },
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 60,
+              "to": 60
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "bonus-damage-per-stack",
+          "label": "Bonus Damage per Stack",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 17.5,
+            "to": 32.5
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "explicit",
+              "perRank": [
+                5,
+                5,
+                5,
+                5,
+                5
+              ]
+            },
+            {
+              "stat": "AP",
+              "scaling": "explicit",
+              "perRank": [
+                15,
+                15,
+                15,
+                15,
+                15
+              ]
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          },
+          "hits": 8
+        },
+        {
+          "id": "maximum-bonus-damage",
+          "label": "Maximum Bonus Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 70,
+            "to": 130
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 20,
+              "to": 20
+            },
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 60,
+              "to": 60
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Yasuo/Sweeping Blade",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Yasuo/Sweeping%20Blade",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4008638,
+      "icon": "YasuoE.png"
+    },
+    {
+      "champion": "Yasuo",
+      "slot": "R",
+      "abilityName": "Last Breath",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 3,
+      "components": [
+        {
+          "id": "physical-damage",
+          "label": "Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              200,
+              350,
+              500
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 150,
+              "to": 150
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Yasuo/Last Breath",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Yasuo/Last%20Breath",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4027670,
+      "icon": "YasuoR.png"
+    }
+  ],
+  "art": {
+    "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Yasuo.json",
+    "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
+    "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
+    "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"
+  }
+}

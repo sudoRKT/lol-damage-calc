@@ -1,0 +1,191 @@
+{
+  "what": "Gwen ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "provenance": {
+    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "patch": "16.16.1",
+    "fetched": "2026-08-13",
+    "extractedOn": "2026-08-14",
+    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
+    "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
+  },
+  "abilities": [
+    {
+      "champion": "Gwen",
+      "slot": "P",
+      "abilityName": "A Thousand Cuts",
+      "instanceType": "on-hit",
+      "damageType": "magic",
+      "maxRank": 1,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "byLevel",
+            "from": 8,
+            "to": 30,
+            "atLevels": [
+              1,
+              18
+            ],
+            "steps": 18
+          },
+          "ratios": [],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Gwen/A Thousand Cuts",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Gwen/A%20Thousand%20Cuts",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4051343,
+      "icon": "Gwen_Passive.png"
+    },
+    {
+      "champion": "Gwen",
+      "slot": "Q",
+      "abilityName": "Snip Snip!",
+      "instanceType": "damaging-ability",
+      "maxRank": 5,
+      "components": [],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Gwen/Snip Snip!",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Gwen/Snip%20Snip!",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4026398,
+      "icon": "GwenQ.png"
+    },
+    {
+      "champion": "Gwen",
+      "slot": "W",
+      "abilityName": "Hallowed Mist",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 5,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Gwen/Hallowed Mist",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Gwen/Hallowed%20Mist",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3973613,
+      "icon": "GwenW.png"
+    },
+    {
+      "champion": "Gwen",
+      "slot": "E",
+      "abilityName": "Skip 'n Slash",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Gwen/Skip 'n Slash",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Gwen/Skip%20'n%20Slash",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4026400,
+      "icon": "GwenE.png"
+    },
+    {
+      "champion": "Gwen",
+      "slot": "R",
+      "abilityName": "Needlework",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 3,
+      "components": [
+        {
+          "id": "magic-damage-per-needle",
+          "label": "Magic Damage per Needle",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 30,
+            "to": 70
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 10,
+              "to": 10
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "damage-with",
+          "label": "Damage with",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 30,
+            "to": 70
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 10,
+              "to": 10
+            },
+            {
+              "stat": "maxHP",
+              "owner": "target",
+              "multipliers": [
+                {
+                  "per": "AP",
+                  "per100": {
+                    "scaling": "explicit",
+                    "perRank": [
+                      0.6,
+                      0.6,
+                      0.6
+                    ]
+                  }
+                }
+              ],
+              "scaling": "linear",
+              "from": 1,
+              "to": 1
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Gwen/Needlework",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Gwen/Needlework",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4007603,
+      "icon": "GwenR.png"
+    }
+  ],
+  "art": {
+    "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Gwen.json",
+    "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
+    "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
+    "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"
+  }
+}

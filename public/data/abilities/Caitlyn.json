@@ -1,0 +1,220 @@
+{
+  "what": "Caitlyn ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "provenance": {
+    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "patch": "16.16.1",
+    "fetched": "2026-08-13",
+    "extractedOn": "2026-08-14",
+    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
+    "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
+  },
+  "abilities": [
+    {
+      "champion": "Caitlyn",
+      "slot": "P",
+      "abilityName": "Headshot",
+      "instanceType": "on-hit",
+      "damageType": "physical",
+      "maxRank": 1,
+      "components": [],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Caitlyn/Headshot",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Caitlyn/Headshot",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3982560,
+      "icon": "Caitlyn_Headshot.png"
+    },
+    {
+      "champion": "Caitlyn",
+      "slot": "Q",
+      "abilityName": "Piltover Peacemaker",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "physical-damage",
+          "label": "Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 50,
+            "to": 210
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "linear",
+              "from": 125,
+              "to": 205
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "reduced-damage",
+          "label": "Reduced Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 30,
+            "to": 126
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "linear",
+              "from": 75,
+              "to": 123
+            }
+          ],
+          "relation": {
+            "kind": "alternativeTo",
+            "componentId": "physical-damage"
+          }
+        }
+      ],
+      "verification": "verified",
+      "provenance": {
+        "source": "Template:Data Caitlyn/Piltover Peacemaker",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Caitlyn/Piltover%20Peacemaker",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4007583,
+      "icon": "CaitlynQ.png"
+    },
+    {
+      "champion": "Caitlyn",
+      "slot": "W",
+      "abilityName": "Yordle Snap Trap",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "damage-increase",
+          "label": "Damage Increase",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 35,
+            "to": 215
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 30,
+              "to": 30
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Caitlyn/Yordle Snap Trap",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Caitlyn/Yordle%20Snap%20Trap",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4023135,
+      "icon": "CaitlynW.png"
+    },
+    {
+      "champion": "Caitlyn",
+      "slot": "E",
+      "abilityName": "90 Caliber Net",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 80,
+            "to": 280
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 80,
+              "to": 80
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Caitlyn/90 Caliber Net",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Caitlyn/90%20Caliber%20Net",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4007584,
+      "icon": "CaitlynE.png"
+    },
+    {
+      "champion": "Caitlyn",
+      "slot": "R",
+      "abilityName": "Ace in the Hole",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 3,
+      "components": [
+        {
+          "id": "physical-damage",
+          "label": "Physical damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 300,
+            "to": 650
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 100,
+              "to": 100
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Caitlyn/Ace in the Hole",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Caitlyn/Ace%20in%20the%20Hole",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3982561,
+      "icon": "CaitlynR.png"
+    }
+  ],
+  "art": {
+    "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Caitlyn.json",
+    "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
+    "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
+    "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"
+  }
+}

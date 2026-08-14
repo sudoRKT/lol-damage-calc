@@ -1,0 +1,220 @@
+{
+  "what": "Cho'Gath ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "provenance": {
+    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "patch": "16.16.1",
+    "fetched": "2026-08-13",
+    "extractedOn": "2026-08-14",
+    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
+    "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
+  },
+  "abilities": [
+    {
+      "champion": "Cho'Gath",
+      "slot": "P",
+      "abilityName": "Carnivore",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 1,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Cho'Gath/Carnivore",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Cho'Gath/Carnivore",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4038297,
+      "icon": "GreenTerror_TailSpike.png"
+    },
+    {
+      "champion": "Cho'Gath",
+      "slot": "Q",
+      "abilityName": "Rupture",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 80,
+            "to": 300
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 100,
+              "to": 100
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Cho'Gath/Rupture",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Cho'Gath/Rupture",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3906815,
+      "icon": "Rupture.png"
+    },
+    {
+      "champion": "Cho'Gath",
+      "slot": "W",
+      "abilityName": "Feral Scream",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 80,
+            "to": 280
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 70,
+              "to": 70
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Cho'Gath/Feral Scream",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Cho'Gath/Feral%20Scream",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3906605,
+      "icon": "FeralScream.png"
+    },
+    {
+      "champion": "Cho'Gath",
+      "slot": "E",
+      "abilityName": "Vorpal Spikes",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 20,
+            "to": 100
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 30,
+              "to": 30
+            },
+            {
+              "stat": "maxHP",
+              "owner": "target",
+              "scaling": "linear",
+              "from": 2.5,
+              "to": 3.9
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Cho'Gath/Vorpal Spikes",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Cho'Gath/Vorpal%20Spikes",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3971127,
+      "icon": "VorpalSpikes.png"
+    },
+    {
+      "champion": "Cho'Gath",
+      "slot": "R",
+      "abilityName": "Feast",
+      "instanceType": "damaging-ability",
+      "damageType": "true",
+      "maxRank": 3,
+      "components": [
+        {
+          "id": "champion-true-damage",
+          "label": "Champion True Damage",
+          "damageType": "true",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              300,
+              475,
+              650
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 50,
+              "to": 50
+            },
+            {
+              "stat": "bonusHP",
+              "owner": "unresolved",
+              "scaling": "linear",
+              "from": 10,
+              "to": 10
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Cho'Gath/Feast",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Cho'Gath/Feast",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3932267,
+      "unresolvable": [
+        {
+          "field": "components[0].ratios[1].owner (bonusHP)",
+          "why": "the source names bonusHP and never says whose, and no other source states it"
+        }
+      ],
+      "icon": "Feast.png"
+    }
+  ],
+  "art": {
+    "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Chogath.json",
+    "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
+    "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
+    "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"
+  }
+}

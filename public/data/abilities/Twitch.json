@@ -1,0 +1,220 @@
+{
+  "what": "Twitch ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "provenance": {
+    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "patch": "16.16.1",
+    "fetched": "2026-08-13",
+    "extractedOn": "2026-08-14",
+    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
+    "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
+  },
+  "abilities": [
+    {
+      "champion": "Twitch",
+      "slot": "P",
+      "abilityName": "Deadly Venom",
+      "instanceType": "on-hit",
+      "damageType": "true",
+      "maxRank": 1,
+      "components": [],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Twitch/Deadly Venom",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Twitch/Deadly%20Venom",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4013286,
+      "icon": "Twitch_Passive.png"
+    },
+    {
+      "champion": "Twitch",
+      "slot": "Q",
+      "abilityName": "Ambush",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 5,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Twitch/Ambush",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Twitch/Ambush",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3982645,
+      "icon": "TwitchHideInShadows.png"
+    },
+    {
+      "champion": "Twitch",
+      "slot": "W",
+      "abilityName": "Venom Cask",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 5,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Twitch/Venom Cask",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Twitch/Venom%20Cask",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4012250,
+      "icon": "TwitchVenomCask.png"
+    },
+    {
+      "champion": "Twitch",
+      "slot": "E",
+      "abilityName": "Contaminate",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "base-physical-damage",
+          "label": "Base Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 20,
+            "to": 60
+          },
+          "ratios": [],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "physical-damage-per-stack",
+          "label": "Physical Damage Per Stack",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 15,
+            "to": 35
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 35,
+              "to": 35
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          },
+          "hits": 1
+        },
+        {
+          "id": "minimum-mixed-damage",
+          "label": "Minimum Mixed Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 35,
+            "to": 95
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 35,
+              "to": 35
+            },
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 35,
+              "to": 35
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "maximum-mixed-damage",
+          "label": "Maximum Mixed Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 110,
+            "to": 270
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 210,
+              "to": 210
+            },
+            {
+              "stat": "AP",
+              "scaling": "explicit",
+              "perRank": [
+                210,
+                210,
+                210,
+                210,
+                210
+              ]
+            }
+          ],
+          "relation": {
+            "kind": "alternativeTo",
+            "componentId": "minimum-mixed-damage"
+          }
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Twitch/Contaminate",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Twitch/Contaminate",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3907215,
+      "icon": "TwitchExpunge.png"
+    },
+    {
+      "champion": "Twitch",
+      "slot": "R",
+      "abilityName": "Spray and Pray",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 3,
+      "components": [
+        {
+          "id": "bonus-attack-damage",
+          "label": "Bonus Attack Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 30,
+            "to": 60
+          },
+          "ratios": [],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Twitch/Spray and Pray",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Twitch/Spray%20and%20Pray",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3993607,
+      "icon": "TwitchFullAutomatic.png"
+    }
+  ],
+  "art": {
+    "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Twitch.json",
+    "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
+    "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
+    "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"
+  }
+}

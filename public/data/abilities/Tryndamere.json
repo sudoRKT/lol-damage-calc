@@ -1,0 +1,134 @@
+{
+  "what": "Tryndamere ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "provenance": {
+    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "patch": "16.16.1",
+    "fetched": "2026-08-13",
+    "extractedOn": "2026-08-14",
+    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
+    "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
+  },
+  "abilities": [
+    {
+      "champion": "Tryndamere",
+      "slot": "P",
+      "abilityName": "Battle Fury",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 1,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Tryndamere/Battle Fury",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Tryndamere/Battle%20Fury",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4041166,
+      "icon": "Tryndamere_Passive.png"
+    },
+    {
+      "champion": "Tryndamere",
+      "slot": "Q",
+      "abilityName": "Bloodlust",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 5,
+      "components": [],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Tryndamere/Bloodlust",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Tryndamere/Bloodlust",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4019656,
+      "icon": "TryndamereQ.png"
+    },
+    {
+      "champion": "Tryndamere",
+      "slot": "W",
+      "abilityName": "Mocking Shout",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 5,
+      "components": [],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Tryndamere/Mocking Shout",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Tryndamere/Mocking%20Shout",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3983173,
+      "icon": "TryndamereW.png"
+    },
+    {
+      "champion": "Tryndamere",
+      "slot": "E",
+      "abilityName": "Spinning Slash",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "physical-damage",
+          "label": "Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 80,
+            "to": 240
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 100,
+              "to": 100
+            },
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 80,
+              "to": 80
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Tryndamere/Spinning Slash",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Tryndamere/Spinning%20Slash",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4007759,
+      "icon": "TryndamereE.png"
+    },
+    {
+      "champion": "Tryndamere",
+      "slot": "R",
+      "abilityName": "Undying Rage",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 3,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Tryndamere/Undying Rage",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Tryndamere/Undying%20Rage",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4018945,
+      "icon": "UndyingRage.png"
+    }
+  ],
+  "art": {
+    "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Tryndamere.json",
+    "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
+    "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
+    "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"
+  }
+}

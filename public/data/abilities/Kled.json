@@ -1,0 +1,529 @@
+{
+  "what": "Kled ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "provenance": {
+    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "patch": "16.16.1",
+    "fetched": "2026-08-13",
+    "extractedOn": "2026-08-14",
+    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
+    "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
+  },
+  "abilities": [
+    {
+      "champion": "Kled",
+      "slot": "P",
+      "abilityName": "Skaarl the Cowardly Lizard",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 1,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Kled/Skaarl the Cowardly Lizard",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kled/Skaarl%20the%20Cowardly%20Lizard",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4038398,
+      "icon": "Kled_P.png"
+    },
+    {
+      "champion": "Kled",
+      "slot": "P",
+      "abilityName": "Dismounted Skaarl the Cowardly Lizard",
+      "instanceType": "on-hit",
+      "damageType": "physical",
+      "maxRank": 1,
+      "components": [
+        {
+          "id": "physical-damage",
+          "label": "Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              0
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "byLevel",
+              "from": 85,
+              "to": 100,
+              "atLevels": [
+                1,
+                16
+              ],
+              "steps": 4
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Kled/Dismounted Skaarl the Cowardly Lizard",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kled/Dismounted%20Skaarl%20the%20Cowardly%20Lizard",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4038397,
+      "icon": "Kled_P.png"
+    },
+    {
+      "champion": "Kled",
+      "slot": "Q",
+      "abilityName": "Bear Trap on a Rope",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "physical-damage",
+          "label": "Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 30,
+            "to": 130
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 60,
+              "to": 60
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "physical-damage",
+          "label": "Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 60,
+            "to": 260
+          },
+          "ratios": [],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Kled/Bear Trap on a Rope",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kled/Bear%20Trap%20on%20a%20Rope",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4021917,
+      "icon": "KledQ.png"
+    },
+    {
+      "champion": "Kled",
+      "slot": "Q",
+      "abilityName": "Pocket Pistol",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "physical-damage",
+          "label": "Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 35,
+            "to": 95
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 65,
+              "to": 65
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "reduced-damage",
+          "label": "Reduced Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 7,
+            "to": 19
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "explicit",
+              "perRank": [
+                13,
+                13,
+                13,
+                13,
+                13
+              ]
+            }
+          ],
+          "relation": {
+            "kind": "alternativeTo",
+            "componentId": "physical-damage"
+          }
+        },
+        {
+          "id": "maximum-damage",
+          "label": "Maximum Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 63,
+            "to": 171
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "explicit",
+              "perRank": [
+                117,
+                117,
+                117,
+                117,
+                117
+              ]
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Kled/Pocket Pistol",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kled/Pocket%20Pistol",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4016171,
+      "icon": "KledQ.png"
+    },
+    {
+      "champion": "Kled",
+      "slot": "W",
+      "abilityName": "Violent Tendencies",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "additional-physical-damage",
+          "label": "Additional Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 20,
+            "to": 60
+          },
+          "ratios": [
+            {
+              "stat": "maxHP",
+              "owner": "target",
+              "multipliers": [
+                {
+                  "per": "bonusAD",
+                  "per100": {
+                    "scaling": "linear",
+                    "from": 2,
+                    "to": 2
+                  }
+                },
+                {
+                  "per": "bonusHP",
+                  "owner": "unresolved",
+                  "per100": {
+                    "scaling": "linear",
+                    "from": 0.4,
+                    "to": 0.4
+                  }
+                }
+              ],
+              "scaling": "linear",
+              "from": 4.5,
+              "to": 6.5
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "structure-additional-damage",
+          "label": "Structure Additional Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "byLevelExplicit",
+            "values": [
+              62,
+              63.26,
+              64.58125,
+              65.96375,
+              67.4075,
+              68.9125,
+              70.47875,
+              72.10625,
+              73.795,
+              75.545,
+              77.35625,
+              79.22875,
+              81.1625,
+              83.1575,
+              85.21375,
+              87.33125,
+              89.51,
+              91.75
+            ],
+            "atLevels": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18
+            ]
+          },
+          "ratios": [],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "structure-additional-damage-rank-term",
+          "label": "Structure Additional Damage (per-rank term)",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 0,
+            "to": 60
+          },
+          "ratios": [],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Kled/Violent Tendencies",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kled/Violent%20Tendencies",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4038399,
+      "unresolvable": [
+        {
+          "field": "components[0].ratios[0].multipliers[1].owner (bonusHP)",
+          "why": "the source names bonusHP and never says whose, and no other source states it"
+        }
+      ],
+      "icon": "KledW.png"
+    },
+    {
+      "champion": "Kled",
+      "slot": "E",
+      "abilityName": "Jousting",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "physical-damage",
+          "label": "Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 35,
+            "to": 135
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 55,
+              "to": 55
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Kled/Jousting",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kled/Jousting",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4015934,
+      "icon": "KledE.png"
+    },
+    {
+      "champion": "Kled",
+      "slot": "E",
+      "abilityName": "Dismounted Jousting",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 5,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Kled/Dismounted Jousting",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kled/Dismounted%20Jousting",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3942228,
+      "icon": "KledE.png"
+    },
+    {
+      "champion": "Kled",
+      "slot": "R",
+      "abilityName": "Chaaaaaaaarge!!!",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 3,
+      "components": [
+        {
+          "id": "minimum-magic-damage",
+          "label": "Minimum Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              0,
+              0,
+              0
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "maxHP",
+              "owner": "target",
+              "multipliers": [
+                {
+                  "per": "bonusAD",
+                  "per100": {
+                    "scaling": "linear",
+                    "from": 3,
+                    "to": 3
+                  }
+                }
+              ],
+              "scaling": "linear",
+              "from": 4,
+              "to": 8
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "maximum-magic-damage",
+          "label": "Maximum Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              0,
+              0,
+              0
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "maxHP",
+              "owner": "target",
+              "multipliers": [
+                {
+                  "per": "bonusAD",
+                  "per100": {
+                    "scaling": "explicit",
+                    "perRank": [
+                      9,
+                      9,
+                      9
+                    ]
+                  }
+                }
+              ],
+              "scaling": "linear",
+              "from": 12,
+              "to": 24
+            }
+          ],
+          "relation": {
+            "kind": "alternativeTo",
+            "componentId": "minimum-magic-damage"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Kled/Chaaaaaaaarge!!!",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kled/Chaaaaaaaarge!!!",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4016270,
+      "icon": "KledR.png"
+    },
+    {
+      "champion": "Kled",
+      "slot": "R",
+      "abilityName": "Dismounted Chaaaaaaaarge!!!",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 3,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Kled/Dismounted Chaaaaaaaarge!!!",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kled/Dismounted%20Chaaaaaaaarge!!!",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3942225,
+      "icon": "KledR.png"
+    }
+  ],
+  "art": {
+    "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Kled.json",
+    "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
+    "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
+    "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"
+  }
+}

@@ -1,0 +1,253 @@
+{
+  "what": "Yuumi ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "provenance": {
+    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "patch": "16.16.1",
+    "fetched": "2026-08-13",
+    "extractedOn": "2026-08-14",
+    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
+    "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
+  },
+  "abilities": [
+    {
+      "champion": "Yuumi",
+      "slot": "P",
+      "abilityName": "Feline Friendship",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 1,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Yuumi/Feline Friendship",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Yuumi/Feline%20Friendship",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4026485,
+      "icon": "YuumiP2.png"
+    },
+    {
+      "champion": "Yuumi",
+      "slot": "Q",
+      "abilityName": "Prowling Projectile",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 6,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 60,
+            "to": 235
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 20,
+              "to": 20
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "increased-damage",
+          "label": "Increased Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 80,
+            "to": 355
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 30,
+              "to": 30
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "minimum-bonus-magic-damage-on-hit",
+          "label": "Minimum Bonus Magic Damage On-Hit",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 10,
+            "to": 20
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 5,
+              "to": 5
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "maximum-bonus-magic-damage-on-hit",
+          "label": "Maximum Bonus Magic Damage On-Hit",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 17.5,
+            "to": 35
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "explicit",
+              "perRank": [
+                8.75,
+                8.75,
+                8.75,
+                8.75,
+                8.75,
+                8.75
+              ]
+            }
+          ],
+          "relation": {
+            "kind": "alternativeTo",
+            "componentId": "minimum-bonus-magic-damage-on-hit"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Yuumi/Prowling Projectile",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Yuumi/Prowling%20Projectile",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4008652,
+      "icon": "YuumiQ.png"
+    },
+    {
+      "champion": "Yuumi",
+      "slot": "W",
+      "abilityName": "You and Me!",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 5,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Yuumi/You and Me!",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Yuumi/You%20and%20Me!",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4011487,
+      "icon": "YuumiW.png"
+    },
+    {
+      "champion": "Yuumi",
+      "slot": "E",
+      "abilityName": "Zoomies",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 5,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Yuumi/Zoomies",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Yuumi/Zoomies",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4026487,
+      "icon": "YuumiE.png"
+    },
+    {
+      "champion": "Yuumi",
+      "slot": "R",
+      "abilityName": "Final Chapter",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 3,
+      "components": [
+        {
+          "id": "magic-damage-per-hit",
+          "label": "Magic Damage per Hit",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 75,
+            "to": 175
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 25,
+              "to": 25
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          },
+          "variableHits": {
+            "kind": "repeatsAtReducedRate",
+            "rate": 0.25,
+            "maxAdditional": 4,
+            "sourceSays": "Subsequent waves against enemies hit deal 25% damage."
+          }
+        },
+        {
+          "id": "reduced-damage-per-hit",
+          "label": "Reduced Damage per Hit",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 18.75,
+            "to": 43.75
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "explicit",
+              "perRank": [
+                6.25,
+                6.25,
+                6.25
+              ]
+            }
+          ],
+          "relation": {
+            "kind": "alternativeTo",
+            "componentId": "magic-damage-per-hit"
+          },
+          "hits": 1
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Yuumi/Final Chapter",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Yuumi/Final%20Chapter",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4047717,
+      "icon": "YuumiR.png"
+    }
+  ],
+  "art": {
+    "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Yuumi.json",
+    "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
+    "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
+    "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"
+  }
+}

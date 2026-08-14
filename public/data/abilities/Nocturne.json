@@ -1,5 +1,5 @@
 {
-  "what": "Lux ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "what": "Nocturne ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
@@ -10,167 +10,26 @@
   },
   "abilities": [
     {
-      "champion": "Lux",
+      "champion": "Nocturne",
       "slot": "P",
-      "abilityName": "Illumination",
+      "abilityName": "Umbra Blades",
       "instanceType": "on-hit",
-      "damageType": "magic",
+      "damageType": "physical",
       "maxRank": 1,
       "components": [
         {
-          "id": "bonus-magic-damage",
-          "label": "Bonus Magic Damage",
-          "damageType": "magic",
+          "id": "physical-damage",
+          "label": "Physical Damage",
+          "damageType": "physical",
           "base": {
-            "scaling": "byLevel",
-            "from": 30,
-            "to": 200,
-            "atLevels": [
-              1,
-              18
-            ],
-            "steps": 18
+            "scaling": "explicit",
+            "perRank": [
+              0
+            ]
           },
           "ratios": [
             {
-              "stat": "AP",
-              "scaling": "linear",
-              "from": 35,
-              "to": 35
-            }
-          ],
-          "relation": {
-            "kind": "adds"
-          }
-        }
-      ],
-      "verification": "derived",
-      "provenance": {
-        "source": "Template:Data Lux/Illumination",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Illumination",
-        "patch": "16.16.1",
-        "fetched": "2026-08-13"
-      },
-      "sourceRevision": 4038408,
-      "icon": "LuxIlluminatingFraulein.png"
-    },
-    {
-      "champion": "Lux",
-      "slot": "Q",
-      "abilityName": "Light Binding",
-      "instanceType": "damaging-ability",
-      "damageType": "magic",
-      "maxRank": 5,
-      "components": [
-        {
-          "id": "magic-damage",
-          "label": "Magic Damage",
-          "damageType": "magic",
-          "base": {
-            "scaling": "linear",
-            "from": 80,
-            "to": 240
-          },
-          "ratios": [
-            {
-              "stat": "AP",
-              "scaling": "linear",
-              "from": 75,
-              "to": 75
-            }
-          ],
-          "relation": {
-            "kind": "adds"
-          }
-        }
-      ],
-      "verification": "verified",
-      "provenance": {
-        "source": "Template:Data Lux/Light Binding",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Light%20Binding",
-        "patch": "16.16.1",
-        "fetched": "2026-08-13"
-      },
-      "sourceRevision": 4007675,
-      "icon": "LuxLightBinding.png"
-    },
-    {
-      "champion": "Lux",
-      "slot": "W",
-      "abilityName": "Prismatic Barrier",
-      "instanceType": "non-damaging-ability",
-      "maxRank": 5,
-      "components": [],
-      "verification": "no-damage",
-      "provenance": {
-        "source": "Template:Data Lux/Prismatic Barrier",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Prismatic%20Barrier",
-        "patch": "16.16.1",
-        "fetched": "2026-08-13"
-      },
-      "sourceRevision": 3992656,
-      "icon": "LuxPrismaticWave.png"
-    },
-    {
-      "champion": "Lux",
-      "slot": "E",
-      "abilityName": "Lucent Singularity",
-      "instanceType": "damaging-ability",
-      "damageType": "magic",
-      "maxRank": 5,
-      "components": [
-        {
-          "id": "magic-damage",
-          "label": "Magic Damage",
-          "damageType": "magic",
-          "base": {
-            "scaling": "linear",
-            "from": 65,
-            "to": 265
-          },
-          "ratios": [
-            {
-              "stat": "AP",
-              "scaling": "linear",
-              "from": 80,
-              "to": 80
-            }
-          ],
-          "relation": {
-            "kind": "adds"
-          }
-        }
-      ],
-      "verification": "derived",
-      "provenance": {
-        "source": "Template:Data Lux/Lucent Singularity",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Lucent%20Singularity",
-        "patch": "16.16.1",
-        "fetched": "2026-08-13"
-      },
-      "sourceRevision": 4007677,
-      "icon": "LuxLightStrikeKugel.png"
-    },
-    {
-      "champion": "Lux",
-      "slot": "R",
-      "abilityName": "Final Spark",
-      "instanceType": "damaging-ability",
-      "damageType": "magic",
-      "maxRank": 3,
-      "components": [
-        {
-          "id": "magic-damage",
-          "label": "Magic Damage",
-          "damageType": "magic",
-          "base": {
-            "scaling": "linear",
-            "from": 300,
-            "to": 500
-          },
-          "ratios": [
-            {
-              "stat": "AP",
+              "stat": "totalAD",
               "scaling": "linear",
               "from": 120,
               "to": 120
@@ -183,18 +42,178 @@
       ],
       "verification": "derived",
       "provenance": {
-        "source": "Template:Data Lux/Final Spark",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Final%20Spark",
+        "source": "Template:Data Nocturne/Umbra Blades",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Nocturne/Umbra%20Blades",
         "patch": "16.16.1",
         "fetched": "2026-08-13"
       },
-      "sourceRevision": 3919833,
-      "icon": "LuxR.png"
+      "sourceRevision": 4007794,
+      "icon": "Nocturne_UmbraBlades.png"
+    },
+    {
+      "champion": "Nocturne",
+      "slot": "Q",
+      "abilityName": "Duskbringer",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "physical-damage",
+          "label": "Physical damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 65,
+            "to": 225
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 85,
+              "to": 85
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "bonus-attack-damage",
+          "label": "Bonus Attack Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 15,
+            "to": 55
+          },
+          "ratios": [],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Nocturne/Duskbringer",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Nocturne/Duskbringer",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4026429,
+      "icon": "NocturneDuskbringer.png"
+    },
+    {
+      "champion": "Nocturne",
+      "slot": "W",
+      "abilityName": "Shroud of Darkness",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 5,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Nocturne/Shroud of Darkness",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Nocturne/Shroud%20of%20Darkness",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3948584,
+      "icon": "NocturneShroudofDarkness.png"
+    },
+    {
+      "champion": "Nocturne",
+      "slot": "E",
+      "abilityName": "Unspeakable Horror",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage-per-tick",
+          "label": "Magic Damage per Tick",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 20,
+            "to": 65
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "explicit",
+              "perRank": [
+                25,
+                25,
+                25,
+                25,
+                25
+              ]
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          },
+          "hits": 4
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Nocturne/Unspeakable Horror",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Nocturne/Unspeakable%20Horror",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4015219,
+      "icon": "NocturneUnspeakableHorror.png"
+    },
+    {
+      "champion": "Nocturne",
+      "slot": "R",
+      "abilityName": "Paranoia",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 3,
+      "components": [
+        {
+          "id": "physical-damage",
+          "label": "Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              150,
+              275,
+              400
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 120,
+              "to": 120
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Nocturne/Paranoia",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Nocturne/Paranoia",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4049972,
+      "icon": "NocturneParanoia.png"
     }
   ],
   "art": {
     "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
-    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Lux.json",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Nocturne.json",
     "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
     "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
     "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"

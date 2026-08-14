@@ -1,0 +1,272 @@
+{
+  "what": "Vladimir ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "provenance": {
+    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "patch": "16.16.1",
+    "fetched": "2026-08-13",
+    "extractedOn": "2026-08-14",
+    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
+    "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
+  },
+  "abilities": [
+    {
+      "champion": "Vladimir",
+      "slot": "P",
+      "abilityName": "Crimson Pact",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 1,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Vladimir/Crimson Pact",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Vladimir/Crimson%20Pact",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4010660,
+      "icon": "VladimirP.png"
+    },
+    {
+      "champion": "Vladimir",
+      "slot": "Q",
+      "abilityName": "Transfusion",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 80,
+            "to": 160
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 60,
+              "to": 60
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "increased-damage",
+          "label": "Increased Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 148,
+            "to": 296
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 111,
+              "to": 111
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Vladimir/Transfusion",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Vladimir/Transfusion",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3997094,
+      "icon": "VladimirQ.png"
+    },
+    {
+      "champion": "Vladimir",
+      "slot": "W",
+      "abilityName": "Sanguine Pool",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage-per-tick",
+          "label": "Magic Damage Per Tick",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 20,
+            "to": 75
+          },
+          "ratios": [
+            {
+              "stat": "bonusHP",
+              "owner": "unresolved",
+              "scaling": "linear",
+              "from": 3.75,
+              "to": 3.75
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          },
+          "hits": 4
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Vladimir/Sanguine Pool",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Vladimir/Sanguine%20Pool",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4034923,
+      "unresolvable": [
+        {
+          "field": "components[0].ratios[0].owner (bonusHP)",
+          "why": "the source names bonusHP and never says whose, and no other source states it"
+        }
+      ],
+      "icon": "VladimirSanguinePool.png"
+    },
+    {
+      "champion": "Vladimir",
+      "slot": "E",
+      "abilityName": "Tides of Blood",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "minimum-magic-damage",
+          "label": "Minimum Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 30,
+            "to": 90
+          },
+          "ratios": [
+            {
+              "stat": "maxHP",
+              "owner": "unresolved",
+              "scaling": "linear",
+              "from": 1.5,
+              "to": 1.5
+            },
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 35,
+              "to": 35
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "maximum-magic-damage",
+          "label": "Maximum Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 60,
+            "to": 180
+          },
+          "ratios": [
+            {
+              "stat": "maxHP",
+              "owner": "unresolved",
+              "scaling": "linear",
+              "from": 6,
+              "to": 6
+            },
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 80,
+              "to": 80
+            }
+          ],
+          "relation": {
+            "kind": "alternativeTo",
+            "componentId": "minimum-magic-damage"
+          }
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Vladimir/Tides of Blood",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Vladimir/Tides%20of%20Blood",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3853799,
+      "unresolvable": [
+        {
+          "field": "components[0].ratios[0].owner (maxHP)",
+          "why": "the source names maxHP and never says whose, and no other source states it"
+        },
+        {
+          "field": "components[1].ratios[0].owner (maxHP)",
+          "why": "the source names maxHP and never says whose, and no other source states it"
+        }
+      ],
+      "icon": "VladimirE.png"
+    },
+    {
+      "champion": "Vladimir",
+      "slot": "R",
+      "abilityName": "Hemoplague",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 3,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 150,
+            "to": 350
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 70,
+              "to": 70
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Vladimir/Hemoplague",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Vladimir/Hemoplague",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4039794,
+      "icon": "VladimirHemoplague.png"
+    }
+  ],
+  "art": {
+    "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Vladimir.json",
+    "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
+    "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
+    "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"
+  }
+}

@@ -1,5 +1,5 @@
 {
-  "what": "Lux ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "what": "Annie ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
@@ -10,54 +10,26 @@
   },
   "abilities": [
     {
-      "champion": "Lux",
+      "champion": "Annie",
       "slot": "P",
-      "abilityName": "Illumination",
-      "instanceType": "on-hit",
-      "damageType": "magic",
+      "abilityName": "Pyromania",
+      "instanceType": "non-damaging-ability",
       "maxRank": 1,
-      "components": [
-        {
-          "id": "bonus-magic-damage",
-          "label": "Bonus Magic Damage",
-          "damageType": "magic",
-          "base": {
-            "scaling": "byLevel",
-            "from": 30,
-            "to": 200,
-            "atLevels": [
-              1,
-              18
-            ],
-            "steps": 18
-          },
-          "ratios": [
-            {
-              "stat": "AP",
-              "scaling": "linear",
-              "from": 35,
-              "to": 35
-            }
-          ],
-          "relation": {
-            "kind": "adds"
-          }
-        }
-      ],
-      "verification": "derived",
+      "components": [],
+      "verification": "no-damage",
       "provenance": {
-        "source": "Template:Data Lux/Illumination",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Illumination",
+        "source": "Template:Data Annie/Pyromania",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Annie/Pyromania",
         "patch": "16.16.1",
         "fetched": "2026-08-13"
       },
-      "sourceRevision": 4038408,
-      "icon": "LuxIlluminatingFraulein.png"
+      "sourceRevision": 3932255,
+      "icon": "Annie_Passive.png"
     },
     {
-      "champion": "Lux",
+      "champion": "Annie",
       "slot": "Q",
-      "abilityName": "Light Binding",
+      "abilityName": "Disintegrate",
       "instanceType": "damaging-ability",
       "damageType": "magic",
       "maxRank": 5,
@@ -69,14 +41,14 @@
           "base": {
             "scaling": "linear",
             "from": 80,
-            "to": 240
+            "to": 260
           },
           "ratios": [
             {
               "stat": "AP",
               "scaling": "linear",
-              "from": 75,
-              "to": 75
+              "from": 80,
+              "to": 80
             }
           ],
           "relation": {
@@ -86,35 +58,18 @@
       ],
       "verification": "verified",
       "provenance": {
-        "source": "Template:Data Lux/Light Binding",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Light%20Binding",
+        "source": "Template:Data Annie/Disintegrate",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Annie/Disintegrate",
         "patch": "16.16.1",
         "fetched": "2026-08-13"
       },
-      "sourceRevision": 4007675,
-      "icon": "LuxLightBinding.png"
+      "sourceRevision": 3992633,
+      "icon": "AnnieQ.png"
     },
     {
-      "champion": "Lux",
+      "champion": "Annie",
       "slot": "W",
-      "abilityName": "Prismatic Barrier",
-      "instanceType": "non-damaging-ability",
-      "maxRank": 5,
-      "components": [],
-      "verification": "no-damage",
-      "provenance": {
-        "source": "Template:Data Lux/Prismatic Barrier",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Prismatic%20Barrier",
-        "patch": "16.16.1",
-        "fetched": "2026-08-13"
-      },
-      "sourceRevision": 3992656,
-      "icon": "LuxPrismaticWave.png"
-    },
-    {
-      "champion": "Lux",
-      "slot": "E",
-      "abilityName": "Lucent Singularity",
+      "abilityName": "Incinerate",
       "instanceType": "damaging-ability",
       "damageType": "magic",
       "maxRank": 5,
@@ -125,8 +80,8 @@
           "damageType": "magic",
           "base": {
             "scaling": "linear",
-            "from": 65,
-            "to": 265
+            "from": 70,
+            "to": 230
           },
           "ratios": [
             {
@@ -143,21 +98,21 @@
       ],
       "verification": "derived",
       "provenance": {
-        "source": "Template:Data Lux/Lucent Singularity",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Lucent%20Singularity",
+        "source": "Template:Data Annie/Incinerate",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Annie/Incinerate",
         "patch": "16.16.1",
         "fetched": "2026-08-13"
       },
-      "sourceRevision": 4007677,
-      "icon": "LuxLightStrikeKugel.png"
+      "sourceRevision": 3952555,
+      "icon": "AnnieW.png"
     },
     {
-      "champion": "Lux",
-      "slot": "R",
-      "abilityName": "Final Spark",
+      "champion": "Annie",
+      "slot": "E",
+      "abilityName": "Molten Shield",
       "instanceType": "damaging-ability",
       "damageType": "magic",
-      "maxRank": 3,
+      "maxRank": 5,
       "components": [
         {
           "id": "magic-damage",
@@ -165,15 +120,15 @@
           "damageType": "magic",
           "base": {
             "scaling": "linear",
-            "from": 300,
-            "to": 500
+            "from": 25,
+            "to": 65
           },
           "ratios": [
             {
               "stat": "AP",
               "scaling": "linear",
-              "from": 120,
-              "to": 120
+              "from": 40,
+              "to": 40
             }
           ],
           "relation": {
@@ -183,18 +138,58 @@
       ],
       "verification": "derived",
       "provenance": {
-        "source": "Template:Data Lux/Final Spark",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Final%20Spark",
+        "source": "Template:Data Annie/Molten Shield",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Annie/Molten%20Shield",
         "patch": "16.16.1",
         "fetched": "2026-08-13"
       },
-      "sourceRevision": 3919833,
-      "icon": "LuxR.png"
+      "sourceRevision": 4038214,
+      "icon": "AnnieE.png"
+    },
+    {
+      "champion": "Annie",
+      "slot": "R",
+      "abilityName": "Summon: Tibbers",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 3,
+      "components": [
+        {
+          "id": "initial-magic-damage",
+          "label": "Initial Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 150,
+            "to": 400
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 75,
+              "to": 75
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Annie/Summon: Tibbers",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Annie/Summon%3A%20Tibbers",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4012758,
+      "icon": "AnnieR.png"
     }
   ],
   "art": {
     "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
-    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Lux.json",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Annie.json",
     "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
     "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
     "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"

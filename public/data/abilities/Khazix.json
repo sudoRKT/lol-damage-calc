@@ -1,0 +1,272 @@
+{
+  "what": "Kha'Zix ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "provenance": {
+    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "patch": "16.16.1",
+    "fetched": "2026-08-13",
+    "extractedOn": "2026-08-14",
+    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
+    "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
+  },
+  "abilities": [
+    {
+      "champion": "Kha'Zix",
+      "slot": "P",
+      "abilityName": "Unseen Threat",
+      "instanceType": "on-hit",
+      "damageType": "magic",
+      "maxRank": 1,
+      "components": [],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Kha'Zix/Unseen Threat",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kha'Zix/Unseen%20Threat",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4038395,
+      "icon": "Khazix_P.png"
+    },
+    {
+      "champion": "Kha'Zix",
+      "slot": "Q",
+      "abilityName": "Taste Their Fear",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "physical-damage",
+          "label": "Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 80,
+            "to": 180
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 105,
+              "to": 105
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "isolated-target-physical-damage",
+          "label": "Isolated Target Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 168,
+            "to": 378
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "explicit",
+              "perRank": [
+                220.5,
+                220.5,
+                220.5,
+                220.5,
+                220.5
+              ]
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Kha'Zix/Taste Their Fear",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kha'Zix/Taste%20Their%20Fear",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4006997,
+      "icon": "KhazixQ.png"
+    },
+    {
+      "champion": "Kha'Zix",
+      "slot": "Q",
+      "abilityName": "Evolved Reaper Claws",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Kha'Zix/Evolved Reaper Claws",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kha'Zix/Evolved%20Reaper%20Claws",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3994647,
+      "icon": "KhazixQ.png"
+    },
+    {
+      "champion": "Kha'Zix",
+      "slot": "W",
+      "abilityName": "Void Spike",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "physical-damage",
+          "label": "Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 75,
+            "to": 195
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 100,
+              "to": 100
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Kha'Zix/Void Spike",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kha'Zix/Void%20Spike",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3971345,
+      "icon": "KhazixW.png"
+    },
+    {
+      "champion": "Kha'Zix",
+      "slot": "W",
+      "abilityName": "Evolved Spike Racks",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Kha'Zix/Evolved Spike Racks",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kha'Zix/Evolved%20Spike%20Racks",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4024927,
+      "icon": "KhazixW.png"
+    },
+    {
+      "champion": "Kha'Zix",
+      "slot": "E",
+      "abilityName": "Leap",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "physical-damage",
+          "label": "Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 65,
+            "to": 205
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 40,
+              "to": 40
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Kha'Zix/Leap",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kha'Zix/Leap",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4007747,
+      "icon": "KhazixE.png"
+    },
+    {
+      "champion": "Kha'Zix",
+      "slot": "E",
+      "abilityName": "Evolved Wings",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Kha'Zix/Evolved Wings",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kha'Zix/Evolved%20Wings",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4007748,
+      "icon": "KhazixE.png"
+    },
+    {
+      "champion": "Kha'Zix",
+      "slot": "R",
+      "abilityName": "Void Assault",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 3,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Kha'Zix/Void Assault",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kha'Zix/Void%20Assault",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3969560,
+      "icon": "KhazixR.png"
+    },
+    {
+      "champion": "Kha'Zix",
+      "slot": "R",
+      "abilityName": "Evolved Adaptive Cloaking",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 3,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Kha'Zix/Evolved Adaptive Cloaking",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kha'Zix/Evolved%20Adaptive%20Cloaking",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3906950,
+      "icon": "KhazixR.png"
+    }
+  ],
+  "art": {
+    "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Khazix.json",
+    "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
+    "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
+    "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"
+  }
+}

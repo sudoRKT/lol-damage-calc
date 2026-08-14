@@ -1,0 +1,217 @@
+{
+  "what": "Gangplank ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "provenance": {
+    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "patch": "16.16.1",
+    "fetched": "2026-08-13",
+    "extractedOn": "2026-08-14",
+    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
+    "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
+  },
+  "abilities": [
+    {
+      "champion": "Gangplank",
+      "slot": "P",
+      "abilityName": "Trial by Fire",
+      "instanceType": "on-hit",
+      "damageType": "true",
+      "maxRank": 1,
+      "components": [],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Gangplank/Trial by Fire",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Gangplank/Trial%20by%20Fire",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4038337,
+      "icon": "Gangplank_Passive.png"
+    },
+    {
+      "champion": "Gangplank",
+      "slot": "Q",
+      "abilityName": "Parrrley",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "physical-damage",
+          "label": "Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 10,
+            "to": 130
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "linear",
+              "from": 100,
+              "to": 100
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Gangplank/Parrrley",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Gangplank/Parrrley",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4015393,
+      "icon": "GangplankQWrapper.png"
+    },
+    {
+      "champion": "Gangplank",
+      "slot": "W",
+      "abilityName": "Remove Scurvy",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 5,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Gangplank/Remove Scurvy",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Gangplank/Remove%20Scurvy",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3906839,
+      "icon": "GangplankW.png"
+    },
+    {
+      "champion": "Gangplank",
+      "slot": "E",
+      "abilityName": "Powder Keg",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "bonus-champion-damage",
+          "label": "Bonus Champion Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 75,
+            "to": 155
+          },
+          "ratios": [],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Gangplank/Powder Keg",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Gangplank/Powder%20Keg",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4043675,
+      "icon": "GangplankE.png"
+    },
+    {
+      "champion": "Gangplank",
+      "slot": "R",
+      "abilityName": "Cannon Barrage",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 3,
+      "components": [
+        {
+          "id": "magic-damage-per-wave",
+          "label": "Magic Damage Per Wave",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 40,
+            "to": 100
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 10,
+              "to": 10
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          },
+          "hits": 12
+        },
+        {
+          "id": "magic-damage-per-cluster",
+          "label": "Magic Damage Per Cluster",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 120,
+            "to": 300
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "explicit",
+              "perRank": [
+                30,
+                30,
+                30
+              ]
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "true-damage-with",
+          "label": "True Damage with",
+          "damageType": "true",
+          "base": {
+            "scaling": "linear",
+            "from": 120,
+            "to": 300
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "explicit",
+              "perRank": [
+                30,
+                30,
+                30
+              ]
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Gangplank/Cannon Barrage",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Gangplank/Cannon%20Barrage",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4048098,
+      "icon": "GangplankR.png"
+    }
+  ],
+  "art": {
+    "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Gangplank.json",
+    "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
+    "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
+    "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"
+  }
+}

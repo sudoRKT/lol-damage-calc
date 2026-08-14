@@ -1,0 +1,129 @@
+{
+  "what": "Milio ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "provenance": {
+    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "patch": "16.16.1",
+    "fetched": "2026-08-13",
+    "extractedOn": "2026-08-14",
+    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
+    "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
+  },
+  "abilities": [
+    {
+      "champion": "Milio",
+      "slot": "P",
+      "abilityName": "Fired Up!",
+      "instanceType": "on-hit",
+      "damageType": "magic",
+      "maxRank": 1,
+      "components": [],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Milio/Fired Up!",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Milio/Fired%20Up!",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4046868,
+      "icon": "Milio_P.png"
+    },
+    {
+      "champion": "Milio",
+      "slot": "Q",
+      "abilityName": "Ultra Mega Fire Kick",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 80,
+            "to": 320
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 120,
+              "to": 120
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Milio/Ultra Mega Fire Kick",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Milio/Ultra%20Mega%20Fire%20Kick",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4007693,
+      "icon": "MilioQ.png"
+    },
+    {
+      "champion": "Milio",
+      "slot": "W",
+      "abilityName": "Cozy Campfire",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 5,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Milio/Cozy Campfire",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Milio/Cozy%20Campfire",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4007694,
+      "icon": "MilioW.png"
+    },
+    {
+      "champion": "Milio",
+      "slot": "E",
+      "abilityName": "Warm Hugs",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 5,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Milio/Warm Hugs",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Milio/Warm%20Hugs",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3908079,
+      "icon": "MilioE.png"
+    },
+    {
+      "champion": "Milio",
+      "slot": "R",
+      "abilityName": "Breath of Life",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 3,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Milio/Breath of Life",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Milio/Breath%20of%20Life",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3908080,
+      "icon": "MilioR.png"
+    }
+  ],
+  "art": {
+    "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Milio.json",
+    "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
+    "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
+    "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"
+  }
+}

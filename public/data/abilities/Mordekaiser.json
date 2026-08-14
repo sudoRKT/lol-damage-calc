@@ -1,5 +1,5 @@
 {
-  "what": "Lux ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "what": "Mordekaiser ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
@@ -10,9 +10,9 @@
   },
   "abilities": [
     {
-      "champion": "Lux",
+      "champion": "Mordekaiser",
       "slot": "P",
-      "abilityName": "Illumination",
+      "abilityName": "Darkness Rise",
       "instanceType": "on-hit",
       "damageType": "magic",
       "maxRank": 1,
@@ -22,21 +22,17 @@
           "label": "Bonus Magic Damage",
           "damageType": "magic",
           "base": {
-            "scaling": "byLevel",
-            "from": 30,
-            "to": 200,
-            "atLevels": [
-              1,
-              18
-            ],
-            "steps": 18
+            "scaling": "explicit",
+            "perRank": [
+              0
+            ]
           },
           "ratios": [
             {
               "stat": "AP",
               "scaling": "linear",
-              "from": 35,
-              "to": 35
+              "from": 40,
+              "to": 40
             }
           ],
           "relation": {
@@ -46,18 +42,18 @@
       ],
       "verification": "derived",
       "provenance": {
-        "source": "Template:Data Lux/Illumination",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Illumination",
+        "source": "Template:Data Mordekaiser/Darkness Rise",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Mordekaiser/Darkness%20Rise",
         "patch": "16.16.1",
         "fetched": "2026-08-13"
       },
-      "sourceRevision": 4038408,
-      "icon": "LuxIlluminatingFraulein.png"
+      "sourceRevision": 4047668,
+      "icon": "MordekaiserPassive.png"
     },
     {
-      "champion": "Lux",
+      "champion": "Mordekaiser",
       "slot": "Q",
-      "abilityName": "Light Binding",
+      "abilityName": "Obliterate",
       "instanceType": "damaging-ability",
       "damageType": "magic",
       "maxRank": 5,
@@ -67,54 +63,96 @@
           "label": "Magic Damage",
           "damageType": "magic",
           "base": {
-            "scaling": "linear",
-            "from": 80,
-            "to": 240
+            "scaling": "byLevelExplicit",
+            "values": [
+              0,
+              5,
+              10,
+              15,
+              20,
+              25,
+              30,
+              35,
+              40,
+              45
+            ],
+            "atLevels": [
+              1,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18
+            ]
           },
           "ratios": [
             {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 120,
+              "to": 120
+            },
+            {
               "stat": "AP",
               "scaling": "linear",
-              "from": 75,
-              "to": 75
+              "from": 70,
+              "to": 70
             }
           ],
           "relation": {
             "kind": "adds"
           }
+        },
+        {
+          "id": "magic-damage-rank-term",
+          "label": "Magic Damage (per-rank term)",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 80,
+            "to": 220
+          },
+          "ratios": [],
+          "relation": {
+            "kind": "adds"
+          }
         }
       ],
-      "verification": "verified",
+      "verification": "derived",
       "provenance": {
-        "source": "Template:Data Lux/Light Binding",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Light%20Binding",
+        "source": "Template:Data Mordekaiser/Obliterate",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Mordekaiser/Obliterate",
         "patch": "16.16.1",
         "fetched": "2026-08-13"
       },
-      "sourceRevision": 4007675,
-      "icon": "LuxLightBinding.png"
+      "sourceRevision": 4016684,
+      "icon": "MordekaiserQ.png"
     },
     {
-      "champion": "Lux",
+      "champion": "Mordekaiser",
       "slot": "W",
-      "abilityName": "Prismatic Barrier",
+      "abilityName": "Indestructible",
       "instanceType": "non-damaging-ability",
       "maxRank": 5,
       "components": [],
       "verification": "no-damage",
       "provenance": {
-        "source": "Template:Data Lux/Prismatic Barrier",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Prismatic%20Barrier",
+        "source": "Template:Data Mordekaiser/Indestructible",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Mordekaiser/Indestructible",
         "patch": "16.16.1",
         "fetched": "2026-08-13"
       },
-      "sourceRevision": 3992656,
-      "icon": "LuxPrismaticWave.png"
+      "sourceRevision": 4016354,
+      "icon": "MordekaiserW.png"
     },
     {
-      "champion": "Lux",
+      "champion": "Mordekaiser",
       "slot": "E",
-      "abilityName": "Lucent Singularity",
+      "abilityName": "Death's Grasp",
       "instanceType": "damaging-ability",
       "damageType": "magic",
       "maxRank": 5,
@@ -125,15 +163,15 @@
           "damageType": "magic",
           "base": {
             "scaling": "linear",
-            "from": 65,
-            "to": 265
+            "from": 60,
+            "to": 140
           },
           "ratios": [
             {
               "stat": "AP",
               "scaling": "linear",
-              "from": 80,
-              "to": 80
+              "from": 45,
+              "to": 45
             }
           ],
           "relation": {
@@ -143,58 +181,35 @@
       ],
       "verification": "derived",
       "provenance": {
-        "source": "Template:Data Lux/Lucent Singularity",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Lucent%20Singularity",
+        "source": "Template:Data Mordekaiser/Death's Grasp",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Mordekaiser/Death's%20Grasp",
         "patch": "16.16.1",
         "fetched": "2026-08-13"
       },
-      "sourceRevision": 4007677,
-      "icon": "LuxLightStrikeKugel.png"
+      "sourceRevision": 4046584,
+      "icon": "MordekaiserE.png"
     },
     {
-      "champion": "Lux",
+      "champion": "Mordekaiser",
       "slot": "R",
-      "abilityName": "Final Spark",
-      "instanceType": "damaging-ability",
-      "damageType": "magic",
+      "abilityName": "Realm of Death",
+      "instanceType": "non-damaging-ability",
       "maxRank": 3,
-      "components": [
-        {
-          "id": "magic-damage",
-          "label": "Magic Damage",
-          "damageType": "magic",
-          "base": {
-            "scaling": "linear",
-            "from": 300,
-            "to": 500
-          },
-          "ratios": [
-            {
-              "stat": "AP",
-              "scaling": "linear",
-              "from": 120,
-              "to": 120
-            }
-          ],
-          "relation": {
-            "kind": "adds"
-          }
-        }
-      ],
-      "verification": "derived",
+      "components": [],
+      "verification": "no-damage",
       "provenance": {
-        "source": "Template:Data Lux/Final Spark",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Final%20Spark",
+        "source": "Template:Data Mordekaiser/Realm of Death",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Mordekaiser/Realm%20of%20Death",
         "patch": "16.16.1",
         "fetched": "2026-08-13"
       },
-      "sourceRevision": 3919833,
-      "icon": "LuxR.png"
+      "sourceRevision": 4050532,
+      "icon": "MordekaiserR.png"
     }
   ],
   "art": {
     "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
-    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Lux.json",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Mordekaiser.json",
     "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
     "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
     "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"

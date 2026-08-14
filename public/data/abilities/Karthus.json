@@ -1,5 +1,5 @@
 {
-  "what": "Lux ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "what": "Karthus ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
@@ -10,26 +10,38 @@
   },
   "abilities": [
     {
-      "champion": "Lux",
+      "champion": "Karthus",
       "slot": "P",
-      "abilityName": "Illumination",
-      "instanceType": "on-hit",
-      "damageType": "magic",
+      "abilityName": "Death Defied",
+      "instanceType": "non-damaging-ability",
       "maxRank": 1,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Karthus/Death Defied",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Karthus/Death%20Defied",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3985387,
+      "icon": "Karthus_Passive.png"
+    },
+    {
+      "champion": "Karthus",
+      "slot": "Q",
+      "abilityName": "Lay Waste",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
       "components": [
         {
-          "id": "bonus-magic-damage",
-          "label": "Bonus Magic Damage",
+          "id": "magic-damage",
+          "label": "Magic Damage",
           "damageType": "magic",
           "base": {
-            "scaling": "byLevel",
-            "from": 30,
-            "to": 200,
-            "atLevels": [
-              1,
-              18
-            ],
-            "steps": 18
+            "scaling": "linear",
+            "from": 40,
+            "to": 116
           },
           "ratios": [
             {
@@ -42,119 +54,129 @@
           "relation": {
             "kind": "adds"
           }
-        }
-      ],
-      "verification": "derived",
-      "provenance": {
-        "source": "Template:Data Lux/Illumination",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Illumination",
-        "patch": "16.16.1",
-        "fetched": "2026-08-13"
-      },
-      "sourceRevision": 4038408,
-      "icon": "LuxIlluminatingFraulein.png"
-    },
-    {
-      "champion": "Lux",
-      "slot": "Q",
-      "abilityName": "Light Binding",
-      "instanceType": "damaging-ability",
-      "damageType": "magic",
-      "maxRank": 5,
-      "components": [
+        },
         {
-          "id": "magic-damage",
-          "label": "Magic Damage",
+          "id": "isolated-enhanced-damage",
+          "label": "Isolated Enhanced Damage",
           "damageType": "magic",
           "base": {
             "scaling": "linear",
             "from": 80,
-            "to": 240
+            "to": 232
           },
           "ratios": [
             {
               "stat": "AP",
-              "scaling": "linear",
-              "from": 75,
-              "to": 75
+              "scaling": "explicit",
+              "perRank": [
+                70,
+                70,
+                70,
+                70,
+                70
+              ]
             }
           ],
           "relation": {
-            "kind": "adds"
+            "kind": "alternativeTo",
+            "componentId": "magic-damage"
           }
         }
       ],
-      "verification": "verified",
+      "verification": "derived",
       "provenance": {
-        "source": "Template:Data Lux/Light Binding",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Light%20Binding",
+        "source": "Template:Data Karthus/Lay Waste",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Karthus/Lay%20Waste",
         "patch": "16.16.1",
         "fetched": "2026-08-13"
       },
-      "sourceRevision": 4007675,
-      "icon": "LuxLightBinding.png"
+      "sourceRevision": 4011136,
+      "icon": "KarthusLayWasteA1.png"
     },
     {
-      "champion": "Lux",
+      "champion": "Karthus",
       "slot": "W",
-      "abilityName": "Prismatic Barrier",
+      "abilityName": "Wall of Pain",
       "instanceType": "non-damaging-ability",
       "maxRank": 5,
       "components": [],
       "verification": "no-damage",
       "provenance": {
-        "source": "Template:Data Lux/Prismatic Barrier",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Prismatic%20Barrier",
+        "source": "Template:Data Karthus/Wall of Pain",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Karthus/Wall%20of%20Pain",
         "patch": "16.16.1",
         "fetched": "2026-08-13"
       },
-      "sourceRevision": 3992656,
-      "icon": "LuxPrismaticWave.png"
+      "sourceRevision": 3990033,
+      "icon": "KarthusWallOfPain.png"
     },
     {
-      "champion": "Lux",
+      "champion": "Karthus",
       "slot": "E",
-      "abilityName": "Lucent Singularity",
+      "abilityName": "Defile",
       "instanceType": "damaging-ability",
       "damageType": "magic",
       "maxRank": 5,
       "components": [
         {
-          "id": "magic-damage",
-          "label": "Magic Damage",
+          "id": "magic-damage-per-tick",
+          "label": "Magic Damage Per Tick",
           "damageType": "magic",
           "base": {
             "scaling": "linear",
-            "from": 65,
-            "to": 265
+            "from": 7.5,
+            "to": 27.5
           },
           "ratios": [
             {
               "stat": "AP",
               "scaling": "linear",
-              "from": 80,
-              "to": 80
+              "from": 5,
+              "to": 5
             }
           ],
           "relation": {
             "kind": "adds"
-          }
+          },
+          "hits": 1
+        },
+        {
+          "id": "damage-per-second",
+          "label": "Damage Per Second",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 30,
+            "to": 110
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 20,
+              "to": 20
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          },
+          "hits": 1
         }
       ],
-      "verification": "derived",
+      "verification": "incomplete",
       "provenance": {
-        "source": "Template:Data Lux/Lucent Singularity",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Lucent%20Singularity",
+        "source": "Template:Data Karthus/Defile",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Karthus/Defile",
         "patch": "16.16.1",
         "fetched": "2026-08-13"
       },
-      "sourceRevision": 4007677,
-      "icon": "LuxLightStrikeKugel.png"
+      "sourceRevision": 4006733,
+      "icon": "KarthusDefile.png"
     },
     {
-      "champion": "Lux",
+      "champion": "Karthus",
       "slot": "R",
-      "abilityName": "Final Spark",
+      "abilityName": "Requiem",
       "instanceType": "damaging-ability",
       "damageType": "magic",
       "maxRank": 3,
@@ -165,15 +187,15 @@
           "damageType": "magic",
           "base": {
             "scaling": "linear",
-            "from": 300,
+            "from": 200,
             "to": 500
           },
           "ratios": [
             {
               "stat": "AP",
               "scaling": "linear",
-              "from": 120,
-              "to": 120
+              "from": 70,
+              "to": 70
             }
           ],
           "relation": {
@@ -183,18 +205,18 @@
       ],
       "verification": "derived",
       "provenance": {
-        "source": "Template:Data Lux/Final Spark",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Final%20Spark",
+        "source": "Template:Data Karthus/Requiem",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Karthus/Requiem",
         "patch": "16.16.1",
         "fetched": "2026-08-13"
       },
-      "sourceRevision": 3919833,
-      "icon": "LuxR.png"
+      "sourceRevision": 4015394,
+      "icon": "KarthusFallenOne.png"
     }
   ],
   "art": {
     "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
-    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Lux.json",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Karthus.json",
     "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
     "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
     "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"

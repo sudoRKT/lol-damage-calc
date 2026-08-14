@@ -1,0 +1,317 @@
+{
+  "what": "Heimerdinger ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "provenance": {
+    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "patch": "16.16.1",
+    "fetched": "2026-08-13",
+    "extractedOn": "2026-08-14",
+    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
+    "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
+  },
+  "abilities": [
+    {
+      "champion": "Heimerdinger",
+      "slot": "P",
+      "abilityName": "Hextech Affinity",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 1,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Heimerdinger/Hextech Affinity",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Heimerdinger/Hextech%20Affinity",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3428651,
+      "icon": "Heimerdinger_Passive.png"
+    },
+    {
+      "champion": "Heimerdinger",
+      "slot": "Q",
+      "abilityName": "H-28G Evolution Turret",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Heimerdinger/H-28G Evolution Turret",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Heimerdinger/H-28G%20Evolution%20Turret",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4036534,
+      "icon": "HeimerdingerQ.png"
+    },
+    {
+      "champion": "Heimerdinger",
+      "slot": "Q",
+      "abilityName": "H-28Q Apex Turret",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Heimerdinger/H-28Q Apex Turret",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Heimerdinger/H-28Q%20Apex%20Turret",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4025020,
+      "icon": "HeimerdingerQ.png"
+    },
+    {
+      "champion": "Heimerdinger",
+      "slot": "W",
+      "abilityName": "Hextech Micro-Rockets",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "initial-rocket-magic-damage",
+          "label": "Initial Rocket Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 50,
+            "to": 150
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 55,
+              "to": 55
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "subsequent-rocket-magic-damage",
+          "label": "Subsequent Rocket Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 10,
+            "to": 30
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 12,
+              "to": 12
+            }
+          ],
+          "relation": {
+            "kind": "alternativeTo",
+            "componentId": "initial-rocket-magic-damage"
+          }
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Heimerdinger/Hextech Micro-Rockets",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Heimerdinger/Hextech%20Micro-Rockets",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3989864,
+      "icon": "HeimerdingerW.png"
+    },
+    {
+      "champion": "Heimerdinger",
+      "slot": "W",
+      "abilityName": "Hextech Rocket Swarm",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 3,
+      "components": [
+        {
+          "id": "initial-rocket-damage",
+          "label": "Initial Rocket Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 135,
+            "to": 225
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 45,
+              "to": 45
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "rockets-2-5-magic-damage",
+          "label": "Rockets 2–5 Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 32,
+            "to": 58
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 12,
+              "to": 12
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "rockets-6-20-magic-damage",
+          "label": "Rockets 6–20 Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 16,
+            "to": 29
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "explicit",
+              "perRank": [
+                6,
+                6,
+                6
+              ]
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Heimerdinger/Hextech Rocket Swarm",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Heimerdinger/Hextech%20Rocket%20Swarm",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3965590,
+      "icon": "HeimerdingerW.png"
+    },
+    {
+      "champion": "Heimerdinger",
+      "slot": "E",
+      "abilityName": "CH-2 Electron Storm Grenade",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 60,
+            "to": 220
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 60,
+              "to": 60
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Heimerdinger/CH-2 Electron Storm Grenade",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Heimerdinger/CH-2%20Electron%20Storm%20Grenade",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4022980,
+      "icon": "HeimerdingerE.png"
+    },
+    {
+      "champion": "Heimerdinger",
+      "slot": "E",
+      "abilityName": "CH-3X Lightning Grenade",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 3,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 100,
+            "to": 300
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 60,
+              "to": 60
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Heimerdinger/CH-3X Lightning Grenade",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Heimerdinger/CH-3X%20Lightning%20Grenade",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3965591,
+      "icon": "HeimerdingerE.png"
+    },
+    {
+      "champion": "Heimerdinger",
+      "slot": "R",
+      "abilityName": "UPGRADE!!!",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 3,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Heimerdinger/UPGRADE!!!",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Heimerdinger/UPGRADE!!!",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4006857,
+      "icon": "HeimerdingerR.png"
+    }
+  ],
+  "art": {
+    "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Heimerdinger.json",
+    "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
+    "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
+    "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"
+  }
+}

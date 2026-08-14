@@ -1,0 +1,599 @@
+{
+  "what": "Hwei ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "provenance": {
+    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "patch": "16.16.1",
+    "fetched": "2026-08-13",
+    "extractedOn": "2026-08-14",
+    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
+    "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
+  },
+  "abilities": [
+    {
+      "champion": "Hwei",
+      "slot": "P",
+      "abilityName": "Signature of the Visionary",
+      "instanceType": "on-hit",
+      "damageType": "magic",
+      "maxRank": 1,
+      "components": [
+        {
+          "id": "bonus-magic-damage",
+          "label": "Bonus Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "byLevel",
+            "from": 40,
+            "to": 285,
+            "atLevels": [
+              1,
+              18
+            ],
+            "steps": 18
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 35,
+              "to": 35
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Hwei/Signature of the Visionary",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Hwei/Signature%20of%20the%20Visionary",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4038347,
+      "icon": "HweiPassive.png"
+    },
+    {
+      "champion": "Hwei",
+      "slot": "Q",
+      "abilityName": "Subject: Disaster",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 5,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Hwei/Subject: Disaster",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Hwei/Subject%3A%20Disaster",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3970734,
+      "icon": "HweiQ.png"
+    },
+    {
+      "champion": "Hwei",
+      "slot": "Q",
+      "abilityName": "Devastating Fire",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 50,
+            "to": 170
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 80,
+              "to": 80
+            },
+            {
+              "stat": "maxHP",
+              "owner": "target",
+              "scaling": "linear",
+              "from": 3,
+              "to": 7
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Hwei/Devastating Fire",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Hwei/Devastating%20Fire",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4026403,
+      "icon": "HweiQ.png"
+    },
+    {
+      "champion": "Hwei",
+      "slot": "Q",
+      "abilityName": "Severing Bolt",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 60,
+            "to": 160
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 30,
+              "to": 30
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Hwei/Severing Bolt",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Hwei/Severing%20Bolt",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4026406,
+      "icon": "HweiQ.png"
+    },
+    {
+      "champion": "Hwei",
+      "slot": "Q",
+      "abilityName": "Molten Fissure",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 20,
+            "to": 80
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 30,
+              "to": 30
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "magic-damage-per-tick",
+          "label": "Magic Damage per Tick",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 5,
+            "to": 20
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "explicit",
+              "perRank": [
+                6,
+                6,
+                6,
+                6,
+                6
+              ]
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          },
+          "hits": 10
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Hwei/Molten Fissure",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Hwei/Molten%20Fissure",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4026407,
+      "icon": "HweiQ.png"
+    },
+    {
+      "champion": "Hwei",
+      "slot": "W",
+      "abilityName": "Subject: Serenity",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 5,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Hwei/Subject: Serenity",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Hwei/Subject%3A%20Serenity",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3970735,
+      "icon": "HweiW.png"
+    },
+    {
+      "champion": "Hwei",
+      "slot": "W",
+      "abilityName": "Fleeting Current",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 5,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Hwei/Fleeting Current",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Hwei/Fleeting%20Current",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3959274,
+      "icon": "HweiW.png"
+    },
+    {
+      "champion": "Hwei",
+      "slot": "W",
+      "abilityName": "Pool of Reflection",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 5,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Hwei/Pool of Reflection",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Hwei/Pool%20of%20Reflection",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3992645,
+      "icon": "HweiW.png"
+    },
+    {
+      "champion": "Hwei",
+      "slot": "W",
+      "abilityName": "Stirring Lights",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "bonus-magic-damage",
+          "label": "Bonus Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 20,
+            "to": 60
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 15,
+              "to": 15
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "maximum-magic-damage",
+          "label": "Maximum Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 60,
+            "to": 180
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "explicit",
+              "perRank": [
+                45,
+                45,
+                45,
+                45,
+                45
+              ]
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "reduced-bonus-damage",
+          "label": "Reduced Bonus Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 10,
+            "to": 30
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "explicit",
+              "perRank": [
+                7.5,
+                7.5,
+                7.5,
+                7.5,
+                7.5
+              ]
+            }
+          ],
+          "relation": {
+            "kind": "alternativeTo",
+            "componentId": "bonus-magic-damage"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Hwei/Stirring Lights",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Hwei/Stirring%20Lights",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3927605,
+      "icon": "HweiW.png"
+    },
+    {
+      "champion": "Hwei",
+      "slot": "E",
+      "abilityName": "Subject: Torment",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 5,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Hwei/Subject: Torment",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Hwei/Subject%3A%20Torment",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4026410,
+      "icon": "HweiE.png"
+    },
+    {
+      "champion": "Hwei",
+      "slot": "E",
+      "abilityName": "Grim Visage",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 70,
+            "to": 230
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 65,
+              "to": 65
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Hwei/Grim Visage",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Hwei/Grim%20Visage",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4021906,
+      "icon": "HweiE.png"
+    },
+    {
+      "champion": "Hwei",
+      "slot": "E",
+      "abilityName": "Gaze of the Abyss",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 70,
+            "to": 230
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 65,
+              "to": 65
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Hwei/Gaze of the Abyss",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Hwei/Gaze%20of%20the%20Abyss",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4010562,
+      "icon": "HweiE.png"
+    },
+    {
+      "champion": "Hwei",
+      "slot": "E",
+      "abilityName": "Crushing Maw",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 70,
+            "to": 230
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 65,
+              "to": 65
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Hwei/Crushing Maw",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Hwei/Crushing%20Maw",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4008532,
+      "icon": "HweiE.png"
+    },
+    {
+      "champion": "Hwei",
+      "slot": "R",
+      "abilityName": "Spiraling Despair",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 3,
+      "components": [
+        {
+          "id": "magic-damage-per-tick",
+          "label": "Magic Damage per Tick",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 2.5,
+            "to": 7.5
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "explicit",
+              "perRank": [
+                1.25,
+                1.25,
+                1.25
+              ]
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          },
+          "hits": 12
+        },
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 200,
+            "to": 450
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 80,
+              "to": 80
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Hwei/Spiraling Despair",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Hwei/Spiraling%20Despair",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4008531,
+      "icon": "HweiR.png"
+    },
+    {
+      "champion": "Hwei",
+      "slot": "R",
+      "abilityName": "Wash Brush",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 3,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Hwei/Wash Brush",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Hwei/Wash%20Brush",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3970738,
+      "icon": "HweiR.png"
+    }
+  ],
+  "art": {
+    "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Hwei.json",
+    "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
+    "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
+    "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"
+  }
+}

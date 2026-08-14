@@ -1,0 +1,252 @@
+{
+  "what": "Urgot ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "provenance": {
+    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "patch": "16.16.1",
+    "fetched": "2026-08-13",
+    "extractedOn": "2026-08-14",
+    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
+    "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
+  },
+  "abilities": [
+    {
+      "champion": "Urgot",
+      "slot": "P",
+      "abilityName": "Echoing Flames",
+      "instanceType": "on-hit",
+      "damageType": "physical",
+      "maxRank": 1,
+      "components": [
+        {
+          "id": "physical-damage",
+          "label": "Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              0
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "byLevelExplicit",
+              "values": [
+                40,
+                52,
+                64,
+                76,
+                88,
+                100
+              ],
+              "atLevels": [
+                1,
+                6,
+                9,
+                11,
+                13,
+                15
+              ]
+            },
+            {
+              "stat": "maxHP",
+              "owner": "target",
+              "scaling": "byLevel",
+              "from": 2,
+              "to": 6,
+              "atLevels": [
+                1,
+                13
+              ],
+              "steps": 5
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Urgot/Echoing Flames",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Urgot/Echoing%20Flames",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4051193,
+      "icon": "Urgot_Passive.png"
+    },
+    {
+      "champion": "Urgot",
+      "slot": "Q",
+      "abilityName": "Corrosive Charge",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "physical-damage",
+          "label": "Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 25,
+            "to": 205
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "linear",
+              "from": 70,
+              "to": 70
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Urgot/Corrosive Charge",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Urgot/Corrosive%20Charge",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3952903,
+      "icon": "UrgotQ.png"
+    },
+    {
+      "champion": "Urgot",
+      "slot": "W",
+      "abilityName": "Purge",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "modified-physical-damage",
+          "label": "Modified Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              12,
+              12,
+              12,
+              12,
+              12
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "linear",
+              "from": 20,
+              "to": 34
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Urgot/Purge",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Urgot/Purge",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4008209,
+      "icon": "UrgotW.png"
+    },
+    {
+      "champion": "Urgot",
+      "slot": "E",
+      "abilityName": "Disdain",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "physical-damage",
+          "label": "Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 90,
+            "to": 210
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 100,
+              "to": 100
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Urgot/Disdain",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Urgot/Disdain",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4008211,
+      "icon": "UrgotE.png"
+    },
+    {
+      "champion": "Urgot",
+      "slot": "R",
+      "abilityName": "Fear Beyond Death",
+      "instanceType": "damaging-ability",
+      "damageType": "true",
+      "maxRank": 3,
+      "components": [
+        {
+          "id": "physical-damage",
+          "label": "Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 100,
+            "to": 350
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 50,
+              "to": 50
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Urgot/Fear Beyond Death",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Urgot/Fear%20Beyond%20Death",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4015146,
+      "icon": "UrgotR.png"
+    }
+  ],
+  "art": {
+    "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Urgot.json",
+    "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
+    "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
+    "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"
+  }
+}

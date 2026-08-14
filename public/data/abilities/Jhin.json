@@ -1,0 +1,379 @@
+{
+  "what": "Jhin ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "provenance": {
+    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "patch": "16.16.1",
+    "fetched": "2026-08-13",
+    "extractedOn": "2026-08-14",
+    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
+    "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
+  },
+  "abilities": [
+    {
+      "champion": "Jhin",
+      "slot": "P",
+      "abilityName": "Whisper",
+      "instanceType": "on-hit",
+      "damageType": "physical",
+      "maxRank": 1,
+      "components": [],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Jhin/Whisper",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Jhin/Whisper",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3998238,
+      "icon": "Jhin_P.png"
+    },
+    {
+      "champion": "Jhin",
+      "slot": "Q",
+      "abilityName": "Dancing Grenade",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "physical-damage",
+          "label": "Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 44,
+            "to": 144
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "linear",
+              "from": 44,
+              "to": 74
+            },
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 60,
+              "to": 60
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "bonus-damage-per-target-death",
+          "label": "Bonus Damage per Target Death",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 15.399999999999999,
+            "to": 50.4
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "linear",
+              "from": 15.399999999999999,
+              "to": 25.9
+            },
+            {
+              "stat": "AP",
+              "scaling": "explicit",
+              "perRank": [
+                21,
+                21,
+                21,
+                21,
+                21
+              ]
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          },
+          "hits": 1
+        },
+        {
+          "id": "maximum-final-bounce-physical-damage",
+          "label": "Maximum Final Bounce Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 90.19999999999999,
+            "to": 295.2
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "linear",
+              "from": 90.19999999999999,
+              "to": 151.7
+            },
+            {
+              "stat": "AP",
+              "scaling": "explicit",
+              "perRank": [
+                122.99999999999999,
+                122.99999999999999,
+                122.99999999999999,
+                122.99999999999999,
+                122.99999999999999
+              ]
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Jhin/Dancing Grenade",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Jhin/Dancing%20Grenade",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4007611,
+      "icon": "JhinQ.png"
+    },
+    {
+      "champion": "Jhin",
+      "slot": "W",
+      "abilityName": "Deadly Flourish",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "physical-damage",
+          "label": "Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 70,
+            "to": 210
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "linear",
+              "from": 50,
+              "to": 50
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Jhin/Deadly Flourish",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Jhin/Deadly%20Flourish",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4021795,
+      "icon": "JhinW.png"
+    },
+    {
+      "champion": "Jhin",
+      "slot": "E",
+      "abilityName": "Captive Audience",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 20,
+            "to": 260
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "linear",
+              "from": 120,
+              "to": 120
+            },
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 100,
+              "to": 100
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "reduced-damage",
+          "label": "Reduced Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 13,
+            "to": 169
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "linear",
+              "from": 78,
+              "to": 78
+            },
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 65,
+              "to": 65
+            }
+          ],
+          "relation": {
+            "kind": "alternativeTo",
+            "componentId": "magic-damage"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Jhin/Captive Audience",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Jhin/Captive%20Audience",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4007613,
+      "icon": "JhinE.png"
+    },
+    {
+      "champion": "Jhin",
+      "slot": "R",
+      "abilityName": "Curtain Call",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 3,
+      "components": [
+        {
+          "id": "minimum-physical-damage-per-bullet",
+          "label": "Minimum Physical Damage per Bullet",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 64,
+            "to": 192
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "linear",
+              "from": 25,
+              "to": 25
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          },
+          "hits": 1
+        },
+        {
+          "id": "maximum-physical-damage-per-bullet",
+          "label": "Maximum Physical Damage per Bullet",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 256,
+            "to": 768
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "explicit",
+              "perRank": [
+                100,
+                100,
+                100
+              ]
+            }
+          ],
+          "relation": {
+            "kind": "alternativeTo",
+            "componentId": "minimum-physical-damage-per-bullet"
+          },
+          "hits": 1
+        },
+        {
+          "id": "minimum-fourth-shot-damage",
+          "label": "Minimum Fourth Shot Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 128,
+            "to": 384
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "explicit",
+              "perRank": [
+                50,
+                50,
+                50
+              ]
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "maximum-fourth-shot-damage",
+          "label": "Maximum Fourth Shot Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 512,
+            "to": 1536
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "explicit",
+              "perRank": [
+                200,
+                200,
+                200
+              ]
+            }
+          ],
+          "relation": {
+            "kind": "alternativeTo",
+            "componentId": "minimum-fourth-shot-damage"
+          }
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Jhin/Curtain Call",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Jhin/Curtain%20Call",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4007615,
+      "icon": "JhinR.png"
+    }
+  ],
+  "art": {
+    "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Jhin.json",
+    "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
+    "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
+    "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"
+  }
+}

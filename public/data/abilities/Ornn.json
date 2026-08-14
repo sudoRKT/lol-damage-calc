@@ -1,0 +1,260 @@
+{
+  "what": "Ornn ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "provenance": {
+    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "patch": "16.16.1",
+    "fetched": "2026-08-13",
+    "extractedOn": "2026-08-14",
+    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
+    "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
+  },
+  "abilities": [
+    {
+      "champion": "Ornn",
+      "slot": "P",
+      "abilityName": "Living Forge",
+      "instanceType": "on-hit",
+      "damageType": "magic",
+      "maxRank": 1,
+      "components": [
+        {
+          "id": "bonus-magic-damage",
+          "label": "Bonus Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              0
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "maxHP",
+              "owner": "target",
+              "scaling": "byLevel",
+              "from": 9,
+              "to": 17,
+              "atLevels": [
+                1,
+                18
+              ],
+              "steps": 18
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Ornn/Living Forge",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Ornn/Living%20Forge",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4025779,
+      "icon": "OrnnP.png"
+    },
+    {
+      "champion": "Ornn",
+      "slot": "Q",
+      "abilityName": "Volcanic Rupture",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "physical-damage",
+          "label": "Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 20,
+            "to": 120
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "linear",
+              "from": 110,
+              "to": 110
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Ornn/Volcanic Rupture",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Ornn/Volcanic%20Rupture",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3998234,
+      "icon": "OrnnQ.png"
+    },
+    {
+      "champion": "Ornn",
+      "slot": "W",
+      "abilityName": "Bellows Breath",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage-per-tick",
+          "label": "Magic Damage Per Tick",
+          "damageType": "magic",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "maxHP",
+              "owner": "target",
+              "scaling": "linear",
+              "from": 2.4,
+              "to": 3.2
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          },
+          "hits": 1
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Ornn/Bellows Breath",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Ornn/Bellows%20Breath",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4011962,
+      "icon": "OrnnW.png"
+    },
+    {
+      "champion": "Ornn",
+      "slot": "E",
+      "abilityName": "Searing Charge",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "physical-damage",
+          "label": "Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              80,
+              125,
+              170,
+              215,
+              260
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "bonusArmor",
+              "owner": "unresolved",
+              "scaling": "linear",
+              "from": 40,
+              "to": 40
+            },
+            {
+              "stat": "bonusMagicResist",
+              "owner": "unresolved",
+              "scaling": "linear",
+              "from": 40,
+              "to": 40
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Ornn/Searing Charge",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Ornn/Searing%20Charge",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4007982,
+      "unresolvable": [
+        {
+          "field": "components[0].ratios[0].owner (bonusArmor)",
+          "why": "the source names bonusArmor and never says whose, and no other source states it"
+        },
+        {
+          "field": "components[0].ratios[1].owner (bonusMagicResist)",
+          "why": "the source names bonusMagicResist and never says whose, and no other source states it"
+        }
+      ],
+      "icon": "OrnnE.png"
+    },
+    {
+      "champion": "Ornn",
+      "slot": "R",
+      "abilityName": "Call of the Forge God",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 3,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              125,
+              175,
+              225
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 20,
+              "to": 20
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Ornn/Call of the Forge God",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Ornn/Call%20of%20the%20Forge%20God",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4007985,
+      "icon": "OrnnR.png"
+    }
+  ],
+  "art": {
+    "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Ornn.json",
+    "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
+    "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
+    "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"
+  }
+}

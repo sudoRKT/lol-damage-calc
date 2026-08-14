@@ -1,0 +1,194 @@
+{
+  "what": "Sivir ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "provenance": {
+    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "patch": "16.16.1",
+    "fetched": "2026-08-13",
+    "extractedOn": "2026-08-14",
+    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
+    "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
+  },
+  "abilities": [
+    {
+      "champion": "Sivir",
+      "slot": "P",
+      "abilityName": "Fleet of Foot",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 1,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Sivir/Fleet of Foot",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Sivir/Fleet%20of%20Foot",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3985850,
+      "icon": "Sivir_Passive.png"
+    },
+    {
+      "champion": "Sivir",
+      "slot": "Q",
+      "abilityName": "Boomerang Blade",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "physical-damage",
+          "label": "Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 60,
+            "to": 160
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 70,
+              "to": 70
+            },
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 60,
+              "to": 60
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "minimum-damage",
+          "label": "Minimum Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 24,
+            "to": 64
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "explicit",
+              "perRank": [
+                28,
+                28,
+                28,
+                28,
+                28
+              ]
+            },
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 24,
+              "to": 24
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Sivir/Boomerang Blade",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Sivir/Boomerang%20Blade",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4016378,
+      "icon": "SivirQ.png"
+    },
+    {
+      "champion": "Sivir",
+      "slot": "W",
+      "abilityName": "Ricochet",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "bounce-damage",
+          "label": "Bounce Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "linear",
+              "from": 40,
+              "to": 50
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Sivir/Ricochet",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Sivir/Ricochet",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4008042,
+      "icon": "SivirW.png"
+    },
+    {
+      "champion": "Sivir",
+      "slot": "E",
+      "abilityName": "Spell Shield",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 5,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Sivir/Spell Shield",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Sivir/Spell%20Shield",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3788826,
+      "icon": "SivirE.png"
+    },
+    {
+      "champion": "Sivir",
+      "slot": "R",
+      "abilityName": "On the Hunt",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 3,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Sivir/On the Hunt",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Sivir/On%20the%20Hunt",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3936364,
+      "icon": "SivirR.png"
+    }
+  ],
+  "art": {
+    "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Sivir.json",
+    "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
+    "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
+    "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"
+  }
+}

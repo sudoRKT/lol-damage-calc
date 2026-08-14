@@ -1,0 +1,503 @@
+{
+  "what": "Varus ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "provenance": {
+    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "patch": "16.16.1",
+    "fetched": "2026-08-13",
+    "extractedOn": "2026-08-14",
+    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
+    "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
+  },
+  "abilities": [
+    {
+      "champion": "Varus",
+      "slot": "P",
+      "abilityName": "Living Vengeance",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 1,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Varus/Living Vengeance",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Varus/Living%20Vengeance",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4026465,
+      "icon": "VarusPassive.png"
+    },
+    {
+      "champion": "Varus",
+      "slot": "Q",
+      "abilityName": "Piercing Arrow",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "minimum-physical-damage",
+          "label": "Minimum Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 53.33,
+            "to": 240
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "explicit",
+              "perRank": [
+                80,
+                80,
+                80,
+                80,
+                80
+              ]
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "maximum-physical-damage",
+          "label": "Maximum Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 80,
+            "to": 360
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 120,
+              "to": 120
+            }
+          ],
+          "relation": {
+            "kind": "alternativeTo",
+            "componentId": "minimum-physical-damage"
+          }
+        },
+        {
+          "id": "minimum-reduced-damage",
+          "label": "Minimum Reduced Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 17.6,
+            "to": 79.2
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "explicit",
+              "perRank": [
+                26.4,
+                26.4,
+                26.4,
+                26.4,
+                26.4
+              ]
+            }
+          ],
+          "relation": {
+            "kind": "alternativeTo",
+            "componentId": "minimum-physical-damage"
+          }
+        },
+        {
+          "id": "maximum-reduced-damage",
+          "label": "Maximum Reduced Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 26.400000000000002,
+            "to": 118.80000000000001
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "explicit",
+              "perRank": [
+                39.6,
+                39.6,
+                39.6,
+                39.6,
+                39.6
+              ]
+            }
+          ],
+          "relation": {
+            "kind": "alternativeTo",
+            "componentId": "minimum-reduced-damage"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Varus/Piercing Arrow",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Varus/Piercing%20Arrow",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4026469,
+      "icon": "VarusQ.png"
+    },
+    {
+      "champion": "Varus",
+      "slot": "W",
+      "abilityName": "Blighted Quiver",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "bonus-magic-damage",
+          "label": "Bonus Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 4,
+            "to": 40
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 15,
+              "to": 15
+            },
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 25,
+              "to": 25
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "bonus-magic-damage-per-stack",
+          "label": "Bonus Magic Damage per Stack",
+          "damageType": "magic",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "maxHP",
+              "owner": "target",
+              "multipliers": [
+                {
+                  "per": "AP",
+                  "per100": {
+                    "scaling": "linear",
+                    "from": 1.3,
+                    "to": 1.3
+                  }
+                }
+              ],
+              "scaling": "linear",
+              "from": 3,
+              "to": 5
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          },
+          "hits": 1
+        },
+        {
+          "id": "bonus-magic-damage-at-max-stacks",
+          "label": "Bonus Magic Damage at Max Stacks",
+          "damageType": "magic",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "maxHP",
+              "owner": "target",
+              "multipliers": [
+                {
+                  "per": "AP",
+                  "per100": {
+                    "scaling": "explicit",
+                    "perRank": [
+                      3.9000000000000004,
+                      3.9000000000000004,
+                      3.9000000000000004,
+                      3.9000000000000004,
+                      3.9000000000000004
+                    ]
+                  }
+                }
+              ],
+              "scaling": "linear",
+              "from": 9,
+              "to": 15
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "maximum-bonus-magic-damage-per-stack",
+          "label": "Maximum Bonus Magic Damage per Stack",
+          "damageType": "magic",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "maxHP",
+              "owner": "target",
+              "multipliers": [
+                {
+                  "per": "AP",
+                  "per100": {
+                    "scaling": "explicit",
+                    "perRank": [
+                      1.9500000000000002,
+                      1.9500000000000002,
+                      1.9500000000000002,
+                      1.9500000000000002,
+                      1.9500000000000002
+                    ]
+                  }
+                }
+              ],
+              "scaling": "linear",
+              "from": 4.5,
+              "to": 7.5
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          },
+          "hits": 1
+        },
+        {
+          "id": "maximum-bonus-magic-damage-at-max-stacks",
+          "label": "Maximum Bonus Magic Damage at Max Stacks",
+          "damageType": "magic",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "maxHP",
+              "owner": "target",
+              "multipliers": [
+                {
+                  "per": "AP",
+                  "per100": {
+                    "scaling": "explicit",
+                    "perRank": [
+                      5.8500000000000005,
+                      5.8500000000000005,
+                      5.8500000000000005,
+                      5.8500000000000005,
+                      5.8500000000000005
+                    ]
+                  }
+                }
+              ],
+              "scaling": "linear",
+              "from": 13.5,
+              "to": 22.5
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "active-minimum-magic-damage",
+          "label": "Active Minimum Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "missingHP",
+              "owner": "target",
+              "scaling": "linear",
+              "from": 6,
+              "to": 14
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "active-maximum-magic-damage",
+          "label": "Active Maximum Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "missingHP",
+              "owner": "target",
+              "scaling": "linear",
+              "from": 9,
+              "to": 21
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Varus/Blighted Quiver",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Varus/Blighted%20Quiver",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4026472,
+      "icon": "VarusW.png"
+    },
+    {
+      "champion": "Varus",
+      "slot": "E",
+      "abilityName": "Hail of Arrows",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "physical-damage",
+          "label": "Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 60,
+            "to": 180
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 90,
+              "to": 90
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Varus/Hail of Arrows",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Varus/Hail%20of%20Arrows",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3969402,
+      "icon": "VarusE.png"
+    },
+    {
+      "champion": "Varus",
+      "slot": "R",
+      "abilityName": "Chain of Corruption",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 3,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 150,
+            "to": 350
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 100,
+              "to": 100
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Varus/Chain of Corruption",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Varus/Chain%20of%20Corruption",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4008213,
+      "icon": "VarusR.png"
+    }
+  ],
+  "art": {
+    "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Varus.json",
+    "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
+    "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
+    "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"
+  }
+}

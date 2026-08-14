@@ -1,0 +1,373 @@
+{
+  "what": "Pantheon ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "provenance": {
+    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "patch": "16.16.1",
+    "fetched": "2026-08-13",
+    "extractedOn": "2026-08-14",
+    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
+    "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
+  },
+  "abilities": [
+    {
+      "champion": "Pantheon",
+      "slot": "P",
+      "abilityName": "Mortal Will",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 1,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Pantheon/Mortal Will",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Pantheon/Mortal%20Will",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3963570,
+      "icon": "Pantheon_Passive.png"
+    },
+    {
+      "champion": "Pantheon",
+      "slot": "Q",
+      "abilityName": "Comet Spear",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "hurl-physical-damage",
+          "label": "Hurl Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 70,
+            "to": 190
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 115,
+              "to": 115
+            },
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 50,
+              "to": 50
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "increased-hurl-damage",
+          "label": "Increased Hurl Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 155,
+            "to": 455
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 230,
+              "to": 230
+            },
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 100,
+              "to": 100
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "hurl-secondary-physical-damage",
+          "label": "Hurl Secondary Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 35,
+            "to": 95
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "explicit",
+              "perRank": [
+                57.5,
+                57.5,
+                57.5,
+                57.5,
+                57.5
+              ]
+            },
+            {
+              "stat": "AP",
+              "scaling": "explicit",
+              "perRank": [
+                25,
+                25,
+                25,
+                25,
+                25
+              ]
+            }
+          ],
+          "relation": {
+            "kind": "alternativeTo",
+            "componentId": "hurl-physical-damage"
+          }
+        },
+        {
+          "id": "increased-hurl-secondary-damage",
+          "label": "Increased Hurl Secondary Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 77.5,
+            "to": 227.5
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "explicit",
+              "perRank": [
+                115,
+                115,
+                115,
+                115,
+                115
+              ]
+            },
+            {
+              "stat": "AP",
+              "scaling": "explicit",
+              "perRank": [
+                50,
+                50,
+                50,
+                50,
+                50
+              ]
+            }
+          ],
+          "relation": {
+            "kind": "alternativeTo",
+            "componentId": "hurl-physical-damage"
+          }
+        },
+        {
+          "id": "thrust-physical-damage",
+          "label": "Thrust Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 70,
+            "to": 190
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 115,
+              "to": 115
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "increased-thrust-damage",
+          "label": "Increased Thrust Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 155,
+            "to": 455
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 230,
+              "to": 230
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Pantheon/Comet Spear",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Pantheon/Comet%20Spear",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4016044,
+      "icon": "PantheonQ.png"
+    },
+    {
+      "champion": "Pantheon",
+      "slot": "W",
+      "abilityName": "Shield Vault",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "physical-damage",
+          "label": "Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "maxHP",
+              "owner": "target",
+              "scaling": "linear",
+              "from": 6,
+              "to": 8,
+              "multipliers": [
+                {
+                  "per": "AP",
+                  "per100": {
+                    "scaling": "linear",
+                    "from": 1.5,
+                    "to": 1.5
+                  }
+                },
+                {
+                  "per": "bonusHP",
+                  "owner": "caster",
+                  "per100": {
+                    "scaling": "linear",
+                    "from": 0.4,
+                    "to": 0.4
+                  }
+                }
+              ]
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Pantheon/Shield Vault",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Pantheon/Shield%20Vault",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4026707,
+      "icon": "PantheonW.png"
+    },
+    {
+      "champion": "Pantheon",
+      "slot": "E",
+      "abilityName": "Aegis Assault",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "physical-damage",
+          "label": "Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 55,
+            "to": 255
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 150,
+              "to": 150
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Pantheon/Aegis Assault",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Pantheon/Aegis%20Assault",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4049965,
+      "icon": "PantheonE.png"
+    },
+    {
+      "champion": "Pantheon",
+      "slot": "R",
+      "abilityName": "Grand Starfall",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 3,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 300,
+            "to": 700
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 100,
+              "to": 100
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Pantheon/Grand Starfall",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Pantheon/Grand%20Starfall",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4046502,
+      "icon": "PantheonR.png"
+    }
+  ],
+  "art": {
+    "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Pantheon.json",
+    "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
+    "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
+    "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"
+  }
+}

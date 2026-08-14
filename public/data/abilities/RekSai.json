@@ -1,0 +1,320 @@
+{
+  "what": "Rek'Sai ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "provenance": {
+    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "patch": "16.16.1",
+    "fetched": "2026-08-13",
+    "extractedOn": "2026-08-14",
+    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
+    "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
+  },
+  "abilities": [
+    {
+      "champion": "Rek'Sai",
+      "slot": "P",
+      "abilityName": "Fury of the Xer'Sai",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 1,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Rek'Sai/Fury of the Xer'Sai",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Rek'Sai/Fury%20of%20the%20Xer'Sai",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4007776,
+      "icon": "RekSai_Passive.png"
+    },
+    {
+      "champion": "Rek'Sai",
+      "slot": "Q",
+      "abilityName": "Queen's Wrath",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "bonus-physical-damage",
+          "label": "Bonus Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "linear",
+              "from": 30,
+              "to": 50
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Rek'Sai/Queen's Wrath",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Rek'Sai/Queen's%20Wrath",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3983369,
+      "icon": "RekSaiQ.png"
+    },
+    {
+      "champion": "Rek'Sai",
+      "slot": "Q",
+      "abilityName": "Prey Seeker",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 50,
+            "to": 170
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 25,
+              "to": 25
+            },
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 70,
+              "to": 70
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Rek'Sai/Prey Seeker",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Rek'Sai/Prey%20Seeker",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3961898,
+      "icon": "RekSaiQ.png"
+    },
+    {
+      "champion": "Rek'Sai",
+      "slot": "W",
+      "abilityName": "Burrow",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 5,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Rek'Sai/Burrow",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Rek'Sai/Burrow",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3980688,
+      "icon": "RekSaiW.png"
+    },
+    {
+      "champion": "Rek'Sai",
+      "slot": "W",
+      "abilityName": "Unburrow",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 30,
+            "to": 130
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 80,
+              "to": 80
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Rek'Sai/Unburrow",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Rek'Sai/Unburrow",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4008007,
+      "icon": "RekSaiW.png"
+    },
+    {
+      "champion": "Rek'Sai",
+      "slot": "E",
+      "abilityName": "Furious Bite",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "physical-damage",
+          "label": "Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 70,
+            "to": 170
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "explicit",
+              "perRank": [
+                60,
+                60,
+                60,
+                60,
+                60
+              ]
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "true-damage",
+          "label": "True Damage",
+          "damageType": "true",
+          "base": {
+            "scaling": "linear",
+            "from": 84,
+            "to": 204
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "explicit",
+              "perRank": [
+                72,
+                72,
+                72,
+                72,
+                72
+              ]
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Rek'Sai/Furious Bite",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Rek'Sai/Furious%20Bite",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4034704,
+      "icon": "RekSaiE.png"
+    },
+    {
+      "champion": "Rek'Sai",
+      "slot": "E",
+      "abilityName": "Tunnel",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 5,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Rek'Sai/Tunnel",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Rek'Sai/Tunnel",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4007778,
+      "icon": "RekSaiE.png"
+    },
+    {
+      "champion": "Rek'Sai",
+      "slot": "R",
+      "abilityName": "Void Rush",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 3,
+      "components": [
+        {
+          "id": "physical-damage",
+          "label": "Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 150,
+            "to": 350
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 100,
+              "to": 100
+            },
+            {
+              "stat": "maxHP",
+              "owner": "target",
+              "scaling": "linear",
+              "from": 15,
+              "to": 25
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Rek'Sai/Void Rush",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Rek'Sai/Void%20Rush",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4004938,
+      "icon": "RekSaiR.png"
+    }
+  ],
+  "art": {
+    "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/RekSai.json",
+    "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
+    "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
+    "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"
+  }
+}

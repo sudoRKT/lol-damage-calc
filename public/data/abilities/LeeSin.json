@@ -1,0 +1,303 @@
+{
+  "what": "Lee Sin ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "provenance": {
+    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "patch": "16.16.1",
+    "fetched": "2026-08-13",
+    "extractedOn": "2026-08-14",
+    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
+    "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
+  },
+  "abilities": [
+    {
+      "champion": "Lee Sin",
+      "slot": "P",
+      "abilityName": "Flurry",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 1,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Lee Sin/Flurry",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lee%20Sin/Flurry",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4015078,
+      "icon": "LeeSinPassive.png"
+    },
+    {
+      "champion": "Lee Sin",
+      "slot": "Q",
+      "abilityName": "Sonic Wave",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "physical-damage",
+          "label": "Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 60,
+            "to": 180
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 90,
+              "to": 90
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Lee Sin/Sonic Wave",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lee%20Sin/Sonic%20Wave",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4026427,
+      "icon": "LeeSinQOne.png"
+    },
+    {
+      "champion": "Lee Sin",
+      "slot": "Q",
+      "abilityName": "Resonating Strike",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "minimum-physical-damage",
+          "label": "Minimum Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 60,
+            "to": 180
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 90,
+              "to": 90
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "maximum-physical-damage",
+          "label": "Maximum Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 120,
+            "to": 360
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "explicit",
+              "perRank": [
+                180,
+                180,
+                180,
+                180,
+                180
+              ]
+            }
+          ],
+          "relation": {
+            "kind": "alternativeTo",
+            "componentId": "minimum-physical-damage"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Lee Sin/Resonating Strike",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lee%20Sin/Resonating%20Strike",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4026428,
+      "icon": "LeeSinQOne.png"
+    },
+    {
+      "champion": "Lee Sin",
+      "slot": "W",
+      "abilityName": "Safeguard",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 5,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Lee Sin/Safeguard",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lee%20Sin/Safeguard",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4024314,
+      "icon": "LeeSinWOne.png"
+    },
+    {
+      "champion": "Lee Sin",
+      "slot": "W",
+      "abilityName": "Iron Will",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 5,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Lee Sin/Iron Will",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lee%20Sin/Iron%20Will",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3992654,
+      "icon": "LeeSinWOne.png"
+    },
+    {
+      "champion": "Lee Sin",
+      "slot": "E",
+      "abilityName": "Tempest",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 35,
+            "to": 135
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "linear",
+              "from": 90,
+              "to": 90
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Lee Sin/Tempest",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lee%20Sin/Tempest",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4016969,
+      "icon": "LeeSinEOne.png"
+    },
+    {
+      "champion": "Lee Sin",
+      "slot": "E",
+      "abilityName": "Cripple",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 5,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Lee Sin/Cripple",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lee%20Sin/Cripple",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4007641,
+      "icon": "LeeSinEOne.png"
+    },
+    {
+      "champion": "Lee Sin",
+      "slot": "R",
+      "abilityName": "Dragon's Rage",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 3,
+      "components": [
+        {
+          "id": "physical-damage",
+          "label": "Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 175,
+            "to": 625
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 200,
+              "to": 200
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "collision-physical-damage",
+          "label": "Collision Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 175,
+            "to": 625
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 200,
+              "to": 200
+            },
+            {
+              "stat": "bonusHP",
+              "owner": "target",
+              "scaling": "linear",
+              "from": 12,
+              "to": 18
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Lee Sin/Dragon's Rage",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lee%20Sin/Dragon's%20Rage",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4032576,
+      "icon": "LeeSinR.png"
+    }
+  ],
+  "art": {
+    "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/LeeSin.json",
+    "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
+    "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
+    "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"
+  }
+}

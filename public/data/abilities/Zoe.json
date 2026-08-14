@@ -1,0 +1,324 @@
+{
+  "what": "Zoe ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "provenance": {
+    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "patch": "16.16.1",
+    "fetched": "2026-08-13",
+    "extractedOn": "2026-08-14",
+    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
+    "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
+  },
+  "abilities": [
+    {
+      "champion": "Zoe",
+      "slot": "P",
+      "abilityName": "More Sparkles!",
+      "instanceType": "on-hit",
+      "damageType": "magic",
+      "maxRank": 1,
+      "components": [],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Zoe/More Sparkles!",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Zoe/More%20Sparkles!",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3986875,
+      "icon": "Zoe_P.png"
+    },
+    {
+      "champion": "Zoe",
+      "slot": "Q",
+      "abilityName": "Paddle Star!",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "minimum-magic-damage",
+          "label": "Minimum Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "byLevelExplicit",
+            "values": [
+              2,
+              4,
+              6,
+              8,
+              10,
+              12,
+              14,
+              16,
+              18,
+              21,
+              24,
+              27,
+              30,
+              34,
+              38,
+              42,
+              46,
+              50
+            ],
+            "atLevels": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 60,
+              "to": 60
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "minimum-magic-damage-rank-term",
+          "label": "Minimum Magic Damage (per-rank term)",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 50,
+            "to": 170
+          },
+          "ratios": [],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "maximum-magic-damage",
+          "label": "Maximum Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "byLevelExplicit",
+            "values": [
+              5,
+              10,
+              15,
+              20,
+              25,
+              30,
+              35,
+              40,
+              45,
+              52.5,
+              60,
+              67.5,
+              75,
+              85,
+              95,
+              105,
+              115,
+              125
+            ],
+            "atLevels": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 150,
+              "to": 150
+            }
+          ],
+          "relation": {
+            "kind": "alternativeTo",
+            "componentId": "minimum-magic-damage"
+          }
+        },
+        {
+          "id": "maximum-magic-damage-rank-term",
+          "label": "Maximum Magic Damage (per-rank term)",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 125,
+            "to": 425
+          },
+          "ratios": [],
+          "relation": {
+            "kind": "alternativeTo",
+            "componentId": "minimum-magic-damage-rank-term"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Zoe/Paddle Star!",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Zoe/Paddle%20Star!",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4024422,
+      "icon": "ZoeQ.png"
+    },
+    {
+      "champion": "Zoe",
+      "slot": "W",
+      "abilityName": "Spell Thief",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage-per-bolt",
+          "label": "Magic Damage Per Bolt",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 15,
+            "to": 55
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 10,
+              "to": 10
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          },
+          "hits": 3
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Zoe/Spell Thief",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Zoe/Spell%20Thief",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4013273,
+      "icon": "ZoeW.png"
+    },
+    {
+      "champion": "Zoe",
+      "slot": "E",
+      "abilityName": "Sleepy Trouble Bubble",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 70,
+            "to": 230
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 45,
+              "to": 45
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "maximum-mixed-damage",
+          "label": "Maximum Mixed Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 140,
+            "to": 460
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 90,
+              "to": 90
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Zoe/Sleepy Trouble Bubble",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Zoe/Sleepy%20Trouble%20Bubble",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4013357,
+      "icon": "ZoeE.png"
+    },
+    {
+      "champion": "Zoe",
+      "slot": "R",
+      "abilityName": "Portal Jump",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 3,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Zoe/Portal Jump",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Zoe/Portal%20Jump",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4005248,
+      "icon": "ZoeR.png"
+    }
+  ],
+  "art": {
+    "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Zoe.json",
+    "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
+    "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
+    "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"
+  }
+}

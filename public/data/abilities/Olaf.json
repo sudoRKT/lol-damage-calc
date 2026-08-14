@@ -1,0 +1,151 @@
+{
+  "what": "Olaf ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "provenance": {
+    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "patch": "16.16.1",
+    "fetched": "2026-08-13",
+    "extractedOn": "2026-08-14",
+    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
+    "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
+  },
+  "abilities": [
+    {
+      "champion": "Olaf",
+      "slot": "P",
+      "abilityName": "Berserker Rage",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 1,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Olaf/Berserker Rage",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Olaf/Berserker%20Rage",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4046494,
+      "icon": "Olaf_Passive.png"
+    },
+    {
+      "champion": "Olaf",
+      "slot": "Q",
+      "abilityName": "Undertow",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "physical-damage",
+          "label": "Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 70,
+            "to": 270
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 100,
+              "to": 100
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Olaf/Undertow",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Olaf/Undertow",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4046495,
+      "icon": "OlafAxeThrowCast.png"
+    },
+    {
+      "champion": "Olaf",
+      "slot": "W",
+      "abilityName": "Tough It Out",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 5,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Olaf/Tough It Out",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Olaf/Tough%20It%20Out",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4033201,
+      "icon": "OlafFrenziedStrikes.png"
+    },
+    {
+      "champion": "Olaf",
+      "slot": "E",
+      "abilityName": "Reckless Swing",
+      "instanceType": "damaging-ability",
+      "damageType": "true",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "true-damage",
+          "label": "True Damage",
+          "damageType": "true",
+          "base": {
+            "scaling": "linear",
+            "from": 70,
+            "to": 250
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "linear",
+              "from": 50,
+              "to": 50
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Olaf/Reckless Swing",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Olaf/Reckless%20Swing",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4001134,
+      "icon": "OlafRecklessStrike.png"
+    },
+    {
+      "champion": "Olaf",
+      "slot": "R",
+      "abilityName": "Ragnarok",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 3,
+      "components": [],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Olaf/Ragnarok",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Olaf/Ragnarok",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3939795,
+      "icon": "OlafRagnarok.png"
+    }
+  ],
+  "art": {
+    "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Olaf.json",
+    "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
+    "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
+    "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"
+  }
+}

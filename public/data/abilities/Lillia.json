@@ -1,5 +1,5 @@
 {
-  "what": "Lux ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "what": "Lillia ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
@@ -10,26 +10,39 @@
   },
   "abilities": [
     {
-      "champion": "Lux",
+      "champion": "Lillia",
       "slot": "P",
-      "abilityName": "Illumination",
+      "abilityName": "Dream-Laden Bough",
       "instanceType": "on-hit",
       "damageType": "magic",
       "maxRank": 1,
+      "components": [],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Lillia/Dream-Laden Bough",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lillia/Dream-Laden%20Bough",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4038402,
+      "icon": "Lillia_Icon_Passive.png"
+    },
+    {
+      "champion": "Lillia",
+      "slot": "Q",
+      "abilityName": "Blooming Blows",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
       "components": [
         {
-          "id": "bonus-magic-damage",
-          "label": "Bonus Magic Damage",
+          "id": "magic-damage",
+          "label": "Magic Damage",
           "damageType": "magic",
           "base": {
-            "scaling": "byLevel",
-            "from": 30,
-            "to": 200,
-            "atLevels": [
-              1,
-              18
-            ],
-            "steps": 18
+            "scaling": "linear",
+            "from": 35,
+            "to": 75
           },
           "ratios": [
             {
@@ -44,20 +57,20 @@
           }
         }
       ],
-      "verification": "derived",
+      "verification": "incomplete",
       "provenance": {
-        "source": "Template:Data Lux/Illumination",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Illumination",
+        "source": "Template:Data Lillia/Blooming Blows",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lillia/Blooming%20Blows",
         "patch": "16.16.1",
         "fetched": "2026-08-13"
       },
-      "sourceRevision": 4038408,
-      "icon": "LuxIlluminatingFraulein.png"
+      "sourceRevision": 4007646,
+      "icon": "LilliaQ.png"
     },
     {
-      "champion": "Lux",
-      "slot": "Q",
-      "abilityName": "Light Binding",
+      "champion": "Lillia",
+      "slot": "W",
+      "abilityName": "Watch Out! Eep!",
       "instanceType": "damaging-ability",
       "damageType": "magic",
       "maxRank": 5,
@@ -69,14 +82,35 @@
           "base": {
             "scaling": "linear",
             "from": 80,
-            "to": 240
+            "to": 160
           },
           "ratios": [
             {
               "stat": "AP",
               "scaling": "linear",
-              "from": 75,
-              "to": 75
+              "from": 35,
+              "to": 35
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "increased-damage",
+          "label": "Increased Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 240,
+            "to": 480
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 105,
+              "to": 105
             }
           ],
           "relation": {
@@ -84,37 +118,20 @@
           }
         }
       ],
-      "verification": "verified",
+      "verification": "derived",
       "provenance": {
-        "source": "Template:Data Lux/Light Binding",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Light%20Binding",
+        "source": "Template:Data Lillia/Watch Out! Eep!",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lillia/Watch%20Out!%20Eep!",
         "patch": "16.16.1",
         "fetched": "2026-08-13"
       },
-      "sourceRevision": 4007675,
-      "icon": "LuxLightBinding.png"
+      "sourceRevision": 4007660,
+      "icon": "LilliaW.png"
     },
     {
-      "champion": "Lux",
-      "slot": "W",
-      "abilityName": "Prismatic Barrier",
-      "instanceType": "non-damaging-ability",
-      "maxRank": 5,
-      "components": [],
-      "verification": "no-damage",
-      "provenance": {
-        "source": "Template:Data Lux/Prismatic Barrier",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Prismatic%20Barrier",
-        "patch": "16.16.1",
-        "fetched": "2026-08-13"
-      },
-      "sourceRevision": 3992656,
-      "icon": "LuxPrismaticWave.png"
-    },
-    {
-      "champion": "Lux",
+      "champion": "Lillia",
       "slot": "E",
-      "abilityName": "Lucent Singularity",
+      "abilityName": "Swirlseed",
       "instanceType": "damaging-ability",
       "damageType": "magic",
       "maxRank": 5,
@@ -125,15 +142,15 @@
           "damageType": "magic",
           "base": {
             "scaling": "linear",
-            "from": 65,
-            "to": 265
+            "from": 60,
+            "to": 160
           },
           "ratios": [
             {
               "stat": "AP",
               "scaling": "linear",
-              "from": 80,
-              "to": 80
+              "from": 50,
+              "to": 50
             }
           ],
           "relation": {
@@ -143,18 +160,18 @@
       ],
       "verification": "derived",
       "provenance": {
-        "source": "Template:Data Lux/Lucent Singularity",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Lucent%20Singularity",
+        "source": "Template:Data Lillia/Swirlseed",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lillia/Swirlseed",
         "patch": "16.16.1",
         "fetched": "2026-08-13"
       },
-      "sourceRevision": 4007677,
-      "icon": "LuxLightStrikeKugel.png"
+      "sourceRevision": 4007662,
+      "icon": "LilliaE.png"
     },
     {
-      "champion": "Lux",
+      "champion": "Lillia",
       "slot": "R",
-      "abilityName": "Final Spark",
+      "abilityName": "Lilting Lullaby",
       "instanceType": "damaging-ability",
       "damageType": "magic",
       "maxRank": 3,
@@ -165,15 +182,15 @@
           "damageType": "magic",
           "base": {
             "scaling": "linear",
-            "from": 300,
-            "to": 500
+            "from": 100,
+            "to": 200
           },
           "ratios": [
             {
               "stat": "AP",
               "scaling": "linear",
-              "from": 120,
-              "to": 120
+              "from": 40,
+              "to": 40
             }
           ],
           "relation": {
@@ -183,18 +200,18 @@
       ],
       "verification": "derived",
       "provenance": {
-        "source": "Template:Data Lux/Final Spark",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Final%20Spark",
+        "source": "Template:Data Lillia/Lilting Lullaby",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lillia/Lilting%20Lullaby",
         "patch": "16.16.1",
         "fetched": "2026-08-13"
       },
-      "sourceRevision": 3919833,
-      "icon": "LuxR.png"
+      "sourceRevision": 3996458,
+      "icon": "LilliaR.png"
     }
   ],
   "art": {
     "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
-    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Lux.json",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Lillia.json",
     "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
     "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
     "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"

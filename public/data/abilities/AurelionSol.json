@@ -1,0 +1,348 @@
+{
+  "what": "Aurelion Sol ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "provenance": {
+    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "patch": "16.16.1",
+    "fetched": "2026-08-13",
+    "extractedOn": "2026-08-14",
+    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
+    "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
+  },
+  "abilities": [
+    {
+      "champion": "Aurelion Sol",
+      "slot": "P",
+      "abilityName": "Cosmic Creator",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 1,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Aurelion Sol/Cosmic Creator",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Aurelion%20Sol/Cosmic%20Creator",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3963005,
+      "icon": "AurelionSolP.png"
+    },
+    {
+      "champion": "Aurelion Sol",
+      "slot": "Q",
+      "abilityName": "Breath of Light",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage-per-tick",
+          "label": "Magic Damage per Tick",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 5.625,
+            "to": 13.125
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "explicit",
+              "perRank": [
+                6.875,
+                6.875,
+                6.875,
+                6.875,
+                6.875
+              ]
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          },
+          "hits": 1
+        },
+        {
+          "id": "magic-damage-per-second",
+          "label": "Magic Damage per Second",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 45,
+            "to": 105
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 55,
+              "to": 55
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          },
+          "hits": 1
+        },
+        {
+          "id": "secondary-target-damage-per-tick",
+          "label": "Secondary Target Damage per Tick",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 2.8125,
+            "to": 6.5625
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "explicit",
+              "perRank": [
+                3.4375,
+                3.4375,
+                3.4375,
+                3.4375,
+                3.4375
+              ]
+            }
+          ],
+          "relation": {
+            "kind": "alternativeTo",
+            "componentId": "magic-damage-per-tick"
+          },
+          "hits": 1
+        },
+        {
+          "id": "secondary-magic-damage-per-second",
+          "label": "Secondary Magic Damage per Second",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 22.5,
+            "to": 52.5
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "explicit",
+              "perRank": [
+                27.5,
+                27.5,
+                27.5,
+                27.5,
+                27.5
+              ]
+            }
+          ],
+          "relation": {
+            "kind": "alternativeTo",
+            "componentId": "magic-damage-per-tick"
+          },
+          "hits": 1
+        },
+        {
+          "id": "bonus-magic-damage",
+          "label": "Bonus Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 60,
+            "to": 100
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 30,
+              "to": 30
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Aurelion Sol/Breath of Light",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Aurelion%20Sol/Breath%20of%20Light",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4028021,
+      "icon": "AurelionSolQ.png"
+    },
+    {
+      "champion": "Aurelion Sol",
+      "slot": "W",
+      "abilityName": "Astral Flight",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 5,
+      "components": [],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Aurelion Sol/Astral Flight",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Aurelion%20Sol/Astral%20Flight",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4007567,
+      "icon": "AurelionSolW.png"
+    },
+    {
+      "champion": "Aurelion Sol",
+      "slot": "E",
+      "abilityName": "Singularity",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage-per-tick",
+          "label": "Magic Damage per Tick",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 2.5,
+            "to": 7.5
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 3,
+              "to": 3
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          },
+          "hits": 20
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Aurelion Sol/Singularity",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Aurelion%20Sol/Singularity",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4038217,
+      "icon": "AurelionSolE.png"
+    },
+    {
+      "champion": "Aurelion Sol",
+      "slot": "R",
+      "abilityName": "Falling Star",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 3,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 150,
+            "to": 350
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 75,
+              "to": 75
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Aurelion Sol/Falling Star",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Aurelion%20Sol/Falling%20Star",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3978297,
+      "icon": "AurelionSolR.png"
+    },
+    {
+      "champion": "Aurelion Sol",
+      "slot": "R",
+      "abilityName": "The Skies Descend",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 3,
+      "components": [
+        {
+          "id": "empowered-magic-damage",
+          "label": "Empowered Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 187.5,
+            "to": 437.5
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "explicit",
+              "perRank": [
+                93.75,
+                93.75,
+                93.75
+              ]
+            }
+          ],
+          "relation": {
+            "kind": "alternativeTo",
+            "componentId": "magic-damage"
+          }
+        },
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 135,
+            "to": 315
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "explicit",
+              "perRank": [
+                67.5,
+                67.5,
+                67.5
+              ]
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Aurelion Sol/The Skies Descend",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Aurelion%20Sol/The%20Skies%20Descend",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3936269,
+      "icon": "AurelionSolR.png"
+    }
+  ],
+  "art": {
+    "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/AurelionSol.json",
+    "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
+    "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
+    "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"
+  }
+}

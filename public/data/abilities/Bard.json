@@ -1,0 +1,130 @@
+{
+  "what": "Bard ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "provenance": {
+    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "patch": "16.16.1",
+    "fetched": "2026-08-13",
+    "extractedOn": "2026-08-14",
+    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
+    "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
+  },
+  "abilities": [
+    {
+      "champion": "Bard",
+      "slot": "P",
+      "abilityName": "Traveler's Call",
+      "instanceType": "on-hit",
+      "damageType": "magic",
+      "maxRank": 1,
+      "components": [],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Bard/Traveler's Call",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Bard/Traveler's%20Call",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4034690,
+      "icon": "Bard_Passive.png"
+    },
+    {
+      "champion": "Bard",
+      "slot": "Q",
+      "abilityName": "Cosmic Binding",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 80,
+            "to": 240
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 80,
+              "to": 80
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Bard/Cosmic Binding",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Bard/Cosmic%20Binding",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4037681,
+      "icon": "BardQ.png"
+    },
+    {
+      "champion": "Bard",
+      "slot": "W",
+      "abilityName": "Caretaker's Shrine",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 5,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Bard/Caretaker's Shrine",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Bard/Caretaker's%20Shrine",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3960421,
+      "icon": "BardW.png"
+    },
+    {
+      "champion": "Bard",
+      "slot": "E",
+      "abilityName": "Magical Journey",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 5,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Bard/Magical Journey",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Bard/Magical%20Journey",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4007574,
+      "icon": "BardE.png"
+    },
+    {
+      "champion": "Bard",
+      "slot": "R",
+      "abilityName": "Tempered Fate",
+      "instanceType": "damaging-ability",
+      "damageType": "true",
+      "maxRank": 3,
+      "components": [],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Bard/Tempered Fate",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Bard/Tempered%20Fate",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4008478,
+      "icon": "BardR.png"
+    }
+  ],
+  "art": {
+    "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Bard.json",
+    "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
+    "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
+    "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"
+  }
+}

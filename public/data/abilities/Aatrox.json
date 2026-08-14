@@ -1,0 +1,260 @@
+{
+  "what": "Aatrox ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "provenance": {
+    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "patch": "16.16.1",
+    "fetched": "2026-08-13",
+    "extractedOn": "2026-08-14",
+    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
+    "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
+  },
+  "abilities": [
+    {
+      "champion": "Aatrox",
+      "slot": "P",
+      "abilityName": "Deathbringer Stance",
+      "instanceType": "on-hit",
+      "damageType": "magic",
+      "maxRank": 1,
+      "components": [],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Aatrox/Deathbringer Stance",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Aatrox/Deathbringer%20Stance",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4038188,
+      "icon": "Aatrox_Passive.png"
+    },
+    {
+      "champion": "Aatrox",
+      "slot": "Q",
+      "abilityName": "The Darkin Blade",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "first-cast-damage",
+          "label": "First Cast Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 10,
+            "to": 70
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "linear",
+              "from": 60,
+              "to": 90
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "first-sweetspot-damage",
+          "label": "First Sweetspot Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 17.5,
+            "to": 122.5
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "linear",
+              "from": 105,
+              "to": 157.5
+            }
+          ],
+          "relation": {
+            "kind": "alternativeTo",
+            "componentId": "first-cast-damage"
+          }
+        },
+        {
+          "id": "second-cast-damage",
+          "label": "Second Cast Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 12.5,
+            "to": 87.5
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "linear",
+              "from": 75,
+              "to": 112.5
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "second-sweetspot-damage",
+          "label": "Second Sweetspot Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 21.875,
+            "to": 153.125
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "linear",
+              "from": 131.25,
+              "to": 196.875
+            }
+          ],
+          "relation": {
+            "kind": "alternativeTo",
+            "componentId": "first-cast-damage"
+          }
+        },
+        {
+          "id": "third-cast-damage",
+          "label": "Third Cast Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 15,
+            "to": 105
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "linear",
+              "from": 90,
+              "to": 135
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "third-sweetspot-damage",
+          "label": "Third Sweetspot Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 26.25,
+            "to": 183.75
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "linear",
+              "from": 157.5,
+              "to": 236.25
+            }
+          ],
+          "relation": {
+            "kind": "alternativeTo",
+            "componentId": "first-cast-damage"
+          }
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Aatrox/The Darkin Blade",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Aatrox/The%20Darkin%20Blade",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4027082,
+      "icon": "AatroxQ.png"
+    },
+    {
+      "champion": "Aatrox",
+      "slot": "W",
+      "abilityName": "Infernal Chains",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "physical-damage",
+          "label": "Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 30,
+            "to": 70
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "linear",
+              "from": 40,
+              "to": 40
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Aatrox/Infernal Chains",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Aatrox/Infernal%20Chains",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4009173,
+      "icon": "AatroxW.png"
+    },
+    {
+      "champion": "Aatrox",
+      "slot": "E",
+      "abilityName": "Umbral Dash",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 5,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Aatrox/Umbral Dash",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Aatrox/Umbral%20Dash",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4007771,
+      "icon": "AatroxE.png"
+    },
+    {
+      "champion": "Aatrox",
+      "slot": "R",
+      "abilityName": "World Ender",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 3,
+      "components": [],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Aatrox/World Ender",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Aatrox/World%20Ender",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3959270,
+      "icon": "AatroxR.png"
+    }
+  ],
+  "art": {
+    "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Aatrox.json",
+    "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
+    "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
+    "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"
+  }
+}

@@ -1,0 +1,153 @@
+{
+  "what": "Renata Glasc ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "provenance": {
+    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "patch": "16.16.1",
+    "fetched": "2026-08-13",
+    "extractedOn": "2026-08-14",
+    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
+    "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
+  },
+  "abilities": [
+    {
+      "champion": "Renata Glasc",
+      "slot": "P",
+      "abilityName": "Leverage",
+      "instanceType": "on-hit",
+      "damageType": "magic",
+      "maxRank": 1,
+      "components": [],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Renata Glasc/Leverage",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Renata%20Glasc/Leverage",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3997432,
+      "icon": "Renata_P.png"
+    },
+    {
+      "champion": "Renata Glasc",
+      "slot": "Q",
+      "abilityName": "Handshake",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 80,
+            "to": 260
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 80,
+              "to": 80
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Renata Glasc/Handshake",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Renata%20Glasc/Handshake",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4008011,
+      "icon": "RenataQ.png"
+    },
+    {
+      "champion": "Renata Glasc",
+      "slot": "W",
+      "abilityName": "Bailout",
+      "instanceType": "damaging-ability",
+      "damageType": "true",
+      "maxRank": 5,
+      "components": [],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Renata Glasc/Bailout",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Renata%20Glasc/Bailout",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3908415,
+      "icon": "RenataW.png"
+    },
+    {
+      "champion": "Renata Glasc",
+      "slot": "E",
+      "abilityName": "Loyalty Program",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 65,
+            "to": 185
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 55,
+              "to": 55
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Renata Glasc/Loyalty Program",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Renata%20Glasc/Loyalty%20Program",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4008012,
+      "icon": "RenataE.png"
+    },
+    {
+      "champion": "Renata Glasc",
+      "slot": "R",
+      "abilityName": "Hostile Takeover",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 3,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Renata Glasc/Hostile Takeover",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Renata%20Glasc/Hostile%20Takeover",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4050286,
+      "icon": "RenataR.png"
+    }
+  ],
+  "art": {
+    "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Renata.json",
+    "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
+    "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
+    "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"
+  }
+}

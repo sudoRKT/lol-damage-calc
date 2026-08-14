@@ -1,5 +1,5 @@
 {
-  "what": "Lux ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "what": "Teemo ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
@@ -10,54 +10,26 @@
   },
   "abilities": [
     {
-      "champion": "Lux",
+      "champion": "Teemo",
       "slot": "P",
-      "abilityName": "Illumination",
-      "instanceType": "on-hit",
-      "damageType": "magic",
+      "abilityName": "Guerrilla Warfare",
+      "instanceType": "non-damaging-ability",
       "maxRank": 1,
-      "components": [
-        {
-          "id": "bonus-magic-damage",
-          "label": "Bonus Magic Damage",
-          "damageType": "magic",
-          "base": {
-            "scaling": "byLevel",
-            "from": 30,
-            "to": 200,
-            "atLevels": [
-              1,
-              18
-            ],
-            "steps": 18
-          },
-          "ratios": [
-            {
-              "stat": "AP",
-              "scaling": "linear",
-              "from": 35,
-              "to": 35
-            }
-          ],
-          "relation": {
-            "kind": "adds"
-          }
-        }
-      ],
-      "verification": "derived",
+      "components": [],
+      "verification": "no-damage",
       "provenance": {
-        "source": "Template:Data Lux/Illumination",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Illumination",
+        "source": "Template:Data Teemo/Guerrilla Warfare",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Teemo/Guerrilla%20Warfare",
         "patch": "16.16.1",
         "fetched": "2026-08-13"
       },
-      "sourceRevision": 4038408,
-      "icon": "LuxIlluminatingFraulein.png"
+      "sourceRevision": 4010103,
+      "icon": "TeemoPassive.png"
     },
     {
-      "champion": "Lux",
+      "champion": "Teemo",
       "slot": "Q",
-      "abilityName": "Light Binding",
+      "abilityName": "Blinding Dart",
       "instanceType": "damaging-ability",
       "damageType": "magic",
       "maxRank": 5,
@@ -69,14 +41,14 @@
           "base": {
             "scaling": "linear",
             "from": 80,
-            "to": 240
+            "to": 260
           },
           "ratios": [
             {
               "stat": "AP",
               "scaling": "linear",
-              "from": 75,
-              "to": 75
+              "from": 70,
+              "to": 70
             }
           ],
           "relation": {
@@ -84,117 +56,155 @@
           }
         }
       ],
-      "verification": "verified",
+      "verification": "derived",
       "provenance": {
-        "source": "Template:Data Lux/Light Binding",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Light%20Binding",
+        "source": "Template:Data Teemo/Blinding Dart",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Teemo/Blinding%20Dart",
         "patch": "16.16.1",
         "fetched": "2026-08-13"
       },
-      "sourceRevision": 4007675,
-      "icon": "LuxLightBinding.png"
+      "sourceRevision": 3948425,
+      "icon": "TeemoQ.png"
     },
     {
-      "champion": "Lux",
+      "champion": "Teemo",
       "slot": "W",
-      "abilityName": "Prismatic Barrier",
+      "abilityName": "Move Quick",
       "instanceType": "non-damaging-ability",
       "maxRank": 5,
       "components": [],
       "verification": "no-damage",
       "provenance": {
-        "source": "Template:Data Lux/Prismatic Barrier",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Prismatic%20Barrier",
+        "source": "Template:Data Teemo/Move Quick",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Teemo/Move%20Quick",
         "patch": "16.16.1",
         "fetched": "2026-08-13"
       },
-      "sourceRevision": 3992656,
-      "icon": "LuxPrismaticWave.png"
+      "sourceRevision": 4010102,
+      "icon": "TeemoW.png"
     },
     {
-      "champion": "Lux",
+      "champion": "Teemo",
       "slot": "E",
-      "abilityName": "Lucent Singularity",
+      "abilityName": "Toxic Shot",
       "instanceType": "damaging-ability",
       "damageType": "magic",
       "maxRank": 5,
       "components": [
         {
-          "id": "magic-damage",
-          "label": "Magic Damage",
+          "id": "magic-damage-on-hit",
+          "label": "Magic Damage On-Hit",
           "damageType": "magic",
           "base": {
             "scaling": "linear",
-            "from": 65,
-            "to": 265
+            "from": 9,
+            "to": 65
           },
           "ratios": [
             {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 5,
+              "to": 5
+            },
+            {
               "stat": "AP",
               "scaling": "linear",
-              "from": 80,
-              "to": 80
+              "from": 30,
+              "to": 30
             }
           ],
           "relation": {
             "kind": "adds"
           }
+        },
+        {
+          "id": "magic-damage-per-tick",
+          "label": "Magic Damage per Tick",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 6,
+            "to": 30
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 2.5,
+              "to": 2.5
+            },
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 10,
+              "to": 10
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          },
+          "hits": 4
         }
       ],
       "verification": "derived",
       "provenance": {
-        "source": "Template:Data Lux/Lucent Singularity",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Lucent%20Singularity",
+        "source": "Template:Data Teemo/Toxic Shot",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Teemo/Toxic%20Shot",
         "patch": "16.16.1",
         "fetched": "2026-08-13"
       },
-      "sourceRevision": 4007677,
-      "icon": "LuxLightStrikeKugel.png"
+      "sourceRevision": 4022986,
+      "icon": "TeemoE.png"
     },
     {
-      "champion": "Lux",
+      "champion": "Teemo",
       "slot": "R",
-      "abilityName": "Final Spark",
+      "abilityName": "Noxious Trap",
       "instanceType": "damaging-ability",
       "damageType": "magic",
       "maxRank": 3,
       "components": [
         {
-          "id": "magic-damage",
-          "label": "Magic Damage",
+          "id": "magic-damage-per-tick",
+          "label": "Magic Damage per Tick",
           "damageType": "magic",
           "base": {
             "scaling": "linear",
-            "from": 300,
-            "to": 500
+            "from": 50,
+            "to": 112.5
           },
           "ratios": [
             {
               "stat": "AP",
-              "scaling": "linear",
-              "from": 120,
-              "to": 120
+              "scaling": "explicit",
+              "perRank": [
+                12.5,
+                12.5,
+                12.5
+              ]
             }
           ],
           "relation": {
             "kind": "adds"
-          }
+          },
+          "hits": 4
         }
       ],
-      "verification": "derived",
+      "verification": "incomplete",
       "provenance": {
-        "source": "Template:Data Lux/Final Spark",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Final%20Spark",
+        "source": "Template:Data Teemo/Noxious Trap",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Teemo/Noxious%20Trap",
         "patch": "16.16.1",
         "fetched": "2026-08-13"
       },
-      "sourceRevision": 3919833,
-      "icon": "LuxR.png"
+      "sourceRevision": 4015245,
+      "icon": "TeemoR.png"
     }
   ],
   "art": {
     "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
-    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Lux.json",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Teemo.json",
     "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
     "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
     "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"

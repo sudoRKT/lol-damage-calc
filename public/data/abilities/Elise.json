@@ -1,0 +1,248 @@
+{
+  "what": "Elise ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "provenance": {
+    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "patch": "16.16.1",
+    "fetched": "2026-08-13",
+    "extractedOn": "2026-08-14",
+    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
+    "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
+  },
+  "abilities": [
+    {
+      "champion": "Elise",
+      "slot": "P",
+      "abilityName": "Spider Queen",
+      "instanceType": "on-hit",
+      "damageType": "magic",
+      "maxRank": 1,
+      "components": [],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Elise/Spider Queen",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Elise/Spider%20Queen",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3996449,
+      "icon": "ElisePassive.png"
+    },
+    {
+      "champion": "Elise",
+      "slot": "Q",
+      "abilityName": "Neurotoxin",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 40,
+            "to": 160
+          },
+          "ratios": [
+            {
+              "stat": "currentHP",
+              "owner": "target",
+              "multipliers": [
+                {
+                  "per": "AP",
+                  "per100": {
+                    "scaling": "linear",
+                    "from": 3,
+                    "to": 3
+                  }
+                }
+              ],
+              "scaling": "linear",
+              "from": 4,
+              "to": 4
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Elise/Neurotoxin",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Elise/Neurotoxin",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3982568,
+      "icon": "EliseHumanQ.png"
+    },
+    {
+      "champion": "Elise",
+      "slot": "Q",
+      "abilityName": "Venomous Bite",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 50,
+            "to": 170
+          },
+          "ratios": [
+            {
+              "stat": "missingHP",
+              "owner": "target",
+              "multipliers": [
+                {
+                  "per": "AP",
+                  "per100": {
+                    "scaling": "linear",
+                    "from": 3,
+                    "to": 3
+                  }
+                }
+              ],
+              "scaling": "linear",
+              "from": 8,
+              "to": 8
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Elise/Venomous Bite",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Elise/Venomous%20Bite",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3982567,
+      "icon": "EliseHumanQ.png"
+    },
+    {
+      "champion": "Elise",
+      "slot": "W",
+      "abilityName": "Volatile Spiderling",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 60,
+            "to": 220
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 75,
+              "to": 75
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Elise/Volatile Spiderling",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Elise/Volatile%20Spiderling",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3906822,
+      "icon": "EliseHumanW.png"
+    },
+    {
+      "champion": "Elise",
+      "slot": "W",
+      "abilityName": "Skittering Frenzy",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 5,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Elise/Skittering Frenzy",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Elise/Skittering%20Frenzy",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3980350,
+      "icon": "EliseHumanW.png"
+    },
+    {
+      "champion": "Elise",
+      "slot": "E",
+      "abilityName": "Cocoon",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 5,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Elise/Cocoon",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Elise/Cocoon",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3906643,
+      "icon": "EliseHumanE.png"
+    },
+    {
+      "champion": "Elise",
+      "slot": "E",
+      "abilityName": "Rappel",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 5,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Elise/Rappel",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Elise/Rappel",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4007596,
+      "icon": "EliseHumanE.png"
+    },
+    {
+      "champion": "Elise",
+      "slot": "R",
+      "abilityName": "Spider Form",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 4,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Elise/Spider Form",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Elise/Spider%20Form",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3979322,
+      "icon": "EliseR.png"
+    }
+  ],
+  "art": {
+    "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Elise.json",
+    "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
+    "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
+    "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"
+  }
+}

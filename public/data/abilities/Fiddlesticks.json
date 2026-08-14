@@ -1,0 +1,280 @@
+{
+  "what": "Fiddlesticks ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "provenance": {
+    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "patch": "16.16.1",
+    "fetched": "2026-08-13",
+    "extractedOn": "2026-08-14",
+    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
+    "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
+  },
+  "abilities": [
+    {
+      "champion": "Fiddlesticks",
+      "slot": "P",
+      "abilityName": "A Harmless Scarecrow",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 1,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Fiddlesticks/A Harmless Scarecrow",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Fiddlesticks/A%20Harmless%20Scarecrow",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3990985,
+      "icon": "FiddlesticksP.png"
+    },
+    {
+      "champion": "Fiddlesticks",
+      "slot": "Q",
+      "abilityName": "Terrify",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "currentHP",
+              "owner": "target",
+              "multipliers": [
+                {
+                  "per": "AP",
+                  "per100": {
+                    "scaling": "linear",
+                    "from": 3,
+                    "to": 3
+                  }
+                }
+              ],
+              "scaling": "linear",
+              "from": 4,
+              "to": 6
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "minimum-damage",
+          "label": "Minimum Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 40,
+            "to": 120
+          },
+          "ratios": [],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "increased-magic-damage",
+          "label": "Increased Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "currentHP",
+              "owner": "target",
+              "multipliers": [
+                {
+                  "per": "AP",
+                  "per100": {
+                    "scaling": "explicit",
+                    "perRank": [
+                      6,
+                      6,
+                      6,
+                      6,
+                      6
+                    ]
+                  }
+                }
+              ],
+              "scaling": "linear",
+              "from": 8,
+              "to": 12
+            }
+          ],
+          "relation": {
+            "kind": "alternativeTo",
+            "componentId": "magic-damage"
+          }
+        },
+        {
+          "id": "increased-minimum-damage",
+          "label": "Increased Minimum Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 80,
+            "to": 240
+          },
+          "ratios": [],
+          "relation": {
+            "kind": "alternativeTo",
+            "componentId": "minimum-damage"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Fiddlesticks/Terrify",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Fiddlesticks/Terrify",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3922574,
+      "icon": "FiddleSticksQ.png"
+    },
+    {
+      "champion": "Fiddlesticks",
+      "slot": "W",
+      "abilityName": "Bountiful Harvest",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "damage-per-second",
+          "label": "Damage per second",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 60,
+            "to": 180
+          },
+          "ratios": [],
+          "relation": {
+            "kind": "adds"
+          },
+          "hits": 2
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Fiddlesticks/Bountiful Harvest",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Fiddlesticks/Bountiful%20Harvest",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3936351,
+      "icon": "FiddleSticksW.png"
+    },
+    {
+      "champion": "Fiddlesticks",
+      "slot": "E",
+      "abilityName": "Reap",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 70,
+            "to": 210
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 50,
+              "to": 50
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Fiddlesticks/Reap",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Fiddlesticks/Reap",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3906828,
+      "icon": "FiddleSticksE.png"
+    },
+    {
+      "champion": "Fiddlesticks",
+      "slot": "R",
+      "abilityName": "Crowstorm",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 3,
+      "components": [
+        {
+          "id": "magic-damage-per-tick",
+          "label": "Magic Damage per Tick",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 37.5,
+            "to": 87.5
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 12.5,
+              "to": 12.5
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          },
+          "hits": 20
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Fiddlesticks/Crowstorm",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Fiddlesticks/Crowstorm",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4004933,
+      "icon": "FiddleSticksR.png"
+    }
+  ],
+  "art": {
+    "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Fiddlesticks.json",
+    "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
+    "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
+    "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"
+  }
+}

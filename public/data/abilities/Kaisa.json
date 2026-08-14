@@ -1,0 +1,209 @@
+{
+  "what": "Kai'Sa ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "provenance": {
+    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "patch": "16.16.1",
+    "fetched": "2026-08-13",
+    "extractedOn": "2026-08-14",
+    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
+    "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
+  },
+  "abilities": [
+    {
+      "champion": "Kai'Sa",
+      "slot": "P",
+      "abilityName": "Second Skin",
+      "instanceType": "on-hit",
+      "damageType": "magic",
+      "maxRank": 1,
+      "components": [],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Kai'Sa/Second Skin",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kai'Sa/Second%20Skin",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4046579,
+      "icon": "Kaisa_Passive.png"
+    },
+    {
+      "champion": "Kai'Sa",
+      "slot": "Q",
+      "abilityName": "Icathian Rain",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "physical-damage-per-missile",
+          "label": "Physical Damage Per Missile",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 40,
+            "to": 100
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 55,
+              "to": 55
+            },
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 20,
+              "to": 20
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          },
+          "variableHits": {
+            "kind": "repeatsAtReducedRate",
+            "rate": 0.25,
+            "maxAdditional": 5,
+            "sourceSays": "Non-minions take {{ap|{{#var:mod}}*100}}% damage from missiles beyond their first."
+          }
+        },
+        {
+          "id": "reduced-damage-per-missile",
+          "label": "Reduced Damage Per Missile",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 10,
+            "to": 25
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "explicit",
+              "perRank": [
+                13.75,
+                13.75,
+                13.75,
+                13.75,
+                13.75
+              ]
+            },
+            {
+              "stat": "AP",
+              "scaling": "explicit",
+              "perRank": [
+                5,
+                5,
+                5,
+                5,
+                5
+              ]
+            }
+          ],
+          "relation": {
+            "kind": "alternativeTo",
+            "componentId": "physical-damage-per-missile"
+          },
+          "hits": 1
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Kai'Sa/Icathian Rain",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kai'Sa/Icathian%20Rain",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4038389,
+      "icon": "KaisaQ.png"
+    },
+    {
+      "champion": "Kai'Sa",
+      "slot": "W",
+      "abilityName": "Void Seeker",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 30,
+            "to": 130
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "linear",
+              "from": 130,
+              "to": 130
+            },
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 45,
+              "to": 45
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Kai'Sa/Void Seeker",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kai'Sa/Void%20Seeker",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4034696,
+      "icon": "KaisaW.png"
+    },
+    {
+      "champion": "Kai'Sa",
+      "slot": "E",
+      "abilityName": "Supercharge",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 5,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Kai'Sa/Supercharge",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kai'Sa/Supercharge",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4038391,
+      "icon": "KaisaE.png"
+    },
+    {
+      "champion": "Kai'Sa",
+      "slot": "R",
+      "abilityName": "Killer Instinct",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 3,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Kai'Sa/Killer Instinct",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kai'Sa/Killer%20Instinct",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4034697,
+      "icon": "KaisaR.png"
+    }
+  ],
+  "art": {
+    "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Kaisa.json",
+    "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
+    "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
+    "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"
+  }
+}

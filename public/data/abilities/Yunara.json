@@ -1,0 +1,266 @@
+{
+  "what": "Yunara ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "provenance": {
+    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "patch": "16.16.1",
+    "fetched": "2026-08-13",
+    "extractedOn": "2026-08-14",
+    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
+    "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
+  },
+  "abilities": [
+    {
+      "champion": "Yunara",
+      "slot": "P",
+      "abilityName": "Vow of the First Lands",
+      "instanceType": "on-hit",
+      "damageType": "magic",
+      "maxRank": 1,
+      "components": [],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Yunara/Vow of the First Lands",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Yunara/Vow%20of%20the%20First%20Lands",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4016849,
+      "icon": "Yunara_Passive.png"
+    },
+    {
+      "champion": "Yunara",
+      "slot": "Q",
+      "abilityName": "Cultivation of Spirit",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "passive-bonus-magic-damage",
+          "label": "Passive Bonus Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 5,
+            "to": 25
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 20,
+              "to": 20
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "active-bonus-magic-damage",
+          "label": "Active Bonus Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 5,
+            "to": 25
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 20,
+              "to": 20
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "combined-bonus-magic-damage",
+          "label": "Combined Bonus Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 10,
+            "to": 50
+          },
+          "ratios": [],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Yunara/Cultivation of Spirit",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Yunara/Cultivation%20of%20Spirit",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4050595,
+      "icon": "YunaraQ.png"
+    },
+    {
+      "champion": "Yunara",
+      "slot": "W",
+      "abilityName": "Arc of Judgment",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "initial-magic-damage",
+          "label": "Initial Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 55,
+            "to": 215
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 85,
+              "to": 85
+            },
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 50,
+              "to": 50
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "linger-magic-damage-per-tick",
+          "label": "Linger Magic Damage per Tick",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 8.25,
+            "to": 32.25
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "explicit",
+              "perRank": [
+                12.75,
+                12.75,
+                12.75,
+                12.75,
+                12.75
+              ]
+            },
+            {
+              "stat": "AP",
+              "scaling": "explicit",
+              "perRank": [
+                7.5,
+                7.5,
+                7.5,
+                7.5,
+                7.5
+              ]
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          },
+          "hits": 4
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Yunara/Arc of Judgment",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Yunara/Arc%20of%20Judgment",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4008650,
+      "icon": "YunaraW.png"
+    },
+    {
+      "champion": "Yunara",
+      "slot": "W",
+      "abilityName": "Arc of Ruin",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Yunara/Arc of Ruin",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Yunara/Arc%20of%20Ruin",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4039441,
+      "icon": "YunaraW.png"
+    },
+    {
+      "champion": "Yunara",
+      "slot": "E",
+      "abilityName": "Kanmei's Steps",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 5,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Yunara/Kanmei's Steps",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Yunara/Kanmei's%20Steps",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3960443,
+      "icon": "YunaraE.png"
+    },
+    {
+      "champion": "Yunara",
+      "slot": "E",
+      "abilityName": "Untouchable Shadow",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 5,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Yunara/Untouchable Shadow",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Yunara/Untouchable%20Shadow",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4010459,
+      "icon": "YunaraE.png"
+    },
+    {
+      "champion": "Yunara",
+      "slot": "R",
+      "abilityName": "Transcend One's Self",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 3,
+      "components": [],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Yunara/Transcend One's Self",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Yunara/Transcend%20One's%20Self",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4038856,
+      "icon": "YunaraR.png"
+    }
+  ],
+  "art": {
+    "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Yunara.json",
+    "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
+    "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
+    "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"
+  }
+}

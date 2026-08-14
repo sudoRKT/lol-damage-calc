@@ -1,0 +1,313 @@
+{
+  "what": "Kassadin ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "provenance": {
+    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "patch": "16.16.1",
+    "fetched": "2026-08-13",
+    "extractedOn": "2026-08-14",
+    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
+    "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
+  },
+  "abilities": [
+    {
+      "champion": "Kassadin",
+      "slot": "P",
+      "abilityName": "Void Stone",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 1,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Kassadin/Void Stone",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kassadin/Void%20Stone",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3913958,
+      "icon": "Kassadin_Passive.png"
+    },
+    {
+      "champion": "Kassadin",
+      "slot": "Q",
+      "abilityName": "Null Sphere",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 65,
+            "to": 185
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 70,
+              "to": 70
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Kassadin/Null Sphere",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kassadin/Null%20Sphere",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4022981,
+      "icon": "NullLance.png"
+    },
+    {
+      "champion": "Kassadin",
+      "slot": "W",
+      "abilityName": "Nether Blade",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "increased-bonus-magic-damage",
+          "label": "Increased Bonus Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 50,
+            "to": 150
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 80,
+              "to": 80
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Kassadin/Nether Blade",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kassadin/Nether%20Blade",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4022982,
+      "icon": "NetherBlade.png"
+    },
+    {
+      "champion": "Kassadin",
+      "slot": "E",
+      "abilityName": "Force Pulse",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 70,
+            "to": 190
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 70,
+              "to": 70
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Kassadin/Force Pulse",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kassadin/Force%20Pulse",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4007623,
+      "icon": "ForcePulse.png"
+    },
+    {
+      "champion": "Kassadin",
+      "slot": "R",
+      "abilityName": "Riftwalk",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 3,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 70,
+            "to": 110
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 50,
+              "to": 50
+            },
+            {
+              "stat": "maxMana",
+              "owner": "unresolved",
+              "scaling": "linear",
+              "from": 2,
+              "to": 2
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "bonus-damage-per-stack",
+          "label": "Bonus Damage Per Stack",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 35,
+            "to": 55
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 7,
+              "to": 7
+            },
+            {
+              "stat": "maxMana",
+              "owner": "unresolved",
+              "scaling": "linear",
+              "from": 1,
+              "to": 1
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          },
+          "hits": 1
+        },
+        {
+          "id": "maximum-bonus-damage",
+          "label": "Maximum Bonus Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 140,
+            "to": 220
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "explicit",
+              "perRank": [
+                28,
+                28,
+                28
+              ]
+            },
+            {
+              "stat": "maxMana",
+              "owner": "unresolved",
+              "scaling": "linear",
+              "from": 4,
+              "to": 4
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "maximum-magic-damage",
+          "label": "Maximum Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 210,
+            "to": 330
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "explicit",
+              "perRank": [
+                78,
+                78,
+                78
+              ]
+            },
+            {
+              "stat": "maxMana",
+              "owner": "unresolved",
+              "scaling": "linear",
+              "from": 6,
+              "to": 6
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Kassadin/Riftwalk",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kassadin/Riftwalk",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3996941,
+      "unresolvable": [
+        {
+          "field": "components[0].ratios[1].owner (maxMana)",
+          "why": "the source names maxMana and never says whose, and no other source states it"
+        },
+        {
+          "field": "components[1].ratios[1].owner (maxMana)",
+          "why": "the source names maxMana and never says whose, and no other source states it"
+        },
+        {
+          "field": "components[2].ratios[1].owner (maxMana)",
+          "why": "the source names maxMana and never says whose, and no other source states it"
+        },
+        {
+          "field": "components[3].ratios[1].owner (maxMana)",
+          "why": "the source names maxMana and never says whose, and no other source states it"
+        }
+      ],
+      "icon": "RiftWalk.png"
+    }
+  ],
+  "art": {
+    "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Kassadin.json",
+    "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
+    "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
+    "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"
+  }
+}

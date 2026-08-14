@@ -1,0 +1,350 @@
+{
+  "what": "K'Sante ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "provenance": {
+    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "patch": "16.16.1",
+    "fetched": "2026-08-13",
+    "extractedOn": "2026-08-14",
+    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
+    "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
+  },
+  "abilities": [
+    {
+      "champion": "K'Sante",
+      "slot": "P",
+      "abilityName": "Dauntless Instinct",
+      "instanceType": "on-hit",
+      "damageType": "physical",
+      "maxRank": 1,
+      "components": [
+        {
+          "id": "bonus-physical-damage",
+          "label": "Bonus Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              12
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "maxHP",
+              "owner": "target",
+              "scaling": "byLevel",
+              "from": 1,
+              "to": 2,
+              "atLevels": [
+                1,
+                18
+              ],
+              "steps": 18
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data K'Sante/Dauntless Instinct",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_K'Sante/Dauntless%20Instinct",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4038388,
+      "icon": "Icons_KSante_P.png"
+    },
+    {
+      "champion": "K'Sante",
+      "slot": "Q",
+      "abilityName": "Ntofo Strikes",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "physical-damage",
+          "label": "Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 70,
+            "to": 190
+          },
+          "ratios": [
+            {
+              "stat": "bonusArmor",
+              "owner": "unresolved",
+              "scaling": "linear",
+              "from": 40,
+              "to": 40
+            },
+            {
+              "stat": "bonusMagicResist",
+              "owner": "unresolved",
+              "scaling": "linear",
+              "from": 40,
+              "to": 40
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data K'Sante/Ntofo Strikes",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_K'Sante/Ntofo%20Strikes",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4007617,
+      "unresolvable": [
+        {
+          "field": "components[0].ratios[0].owner (bonusArmor)",
+          "why": "the source names bonusArmor and never says whose, and no other source states it"
+        },
+        {
+          "field": "components[0].ratios[1].owner (bonusMagicResist)",
+          "why": "the source names bonusMagicResist and never says whose, and no other source states it"
+        }
+      ],
+      "icon": "KSanteQ.png"
+    },
+    {
+      "champion": "K'Sante",
+      "slot": "W",
+      "abilityName": "Path Maker",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "physical-damage",
+          "label": "Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 45,
+            "to": 165
+          },
+          "ratios": [
+            {
+              "stat": "bonusArmor",
+              "owner": "unresolved",
+              "scaling": "linear",
+              "from": 2,
+              "to": 2
+            },
+            {
+              "stat": "bonusMagicResist",
+              "owner": "unresolved",
+              "scaling": "linear",
+              "from": 2,
+              "to": 2
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "minimum-bonus-true-damage",
+          "label": "Minimum Bonus True Damage",
+          "damageType": "true",
+          "base": {
+            "scaling": "linear",
+            "from": 4.5,
+            "to": 16.5
+          },
+          "ratios": [
+            {
+              "stat": "bonusArmor",
+              "owner": "unresolved",
+              "scaling": "explicit",
+              "perRank": [
+                0.2,
+                0.2,
+                0.2,
+                0.2,
+                0.2
+              ]
+            },
+            {
+              "stat": "bonusMagicResist",
+              "owner": "unresolved",
+              "scaling": "explicit",
+              "perRank": [
+                0.2,
+                0.2,
+                0.2,
+                0.2,
+                0.2
+              ]
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "maximum-bonus-true-damage",
+          "label": "Maximum Bonus True Damage",
+          "damageType": "true",
+          "base": {
+            "scaling": "linear",
+            "from": 36,
+            "to": 132
+          },
+          "ratios": [
+            {
+              "stat": "bonusArmor",
+              "owner": "unresolved",
+              "scaling": "explicit",
+              "perRank": [
+                1.6,
+                1.6,
+                1.6,
+                1.6,
+                1.6
+              ]
+            },
+            {
+              "stat": "bonusMagicResist",
+              "owner": "unresolved",
+              "scaling": "explicit",
+              "perRank": [
+                1.6,
+                1.6,
+                1.6,
+                1.6,
+                1.6
+              ]
+            }
+          ],
+          "relation": {
+            "kind": "alternativeTo",
+            "componentId": "minimum-bonus-true-damage"
+          }
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data K'Sante/Path Maker",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_K'Sante/Path%20Maker",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4007618,
+      "unresolvable": [
+        {
+          "field": "components[0].ratios[0].owner (bonusArmor)",
+          "why": "the source names bonusArmor and never says whose, and no other source states it"
+        },
+        {
+          "field": "components[0].ratios[1].owner (bonusMagicResist)",
+          "why": "the source names bonusMagicResist and never says whose, and no other source states it"
+        },
+        {
+          "field": "components[1].ratios[0].owner (bonusArmor)",
+          "why": "the source names bonusArmor and never says whose, and no other source states it"
+        },
+        {
+          "field": "components[1].ratios[1].owner (bonusMagicResist)",
+          "why": "the source names bonusMagicResist and never says whose, and no other source states it"
+        },
+        {
+          "field": "components[2].ratios[0].owner (bonusArmor)",
+          "why": "the source names bonusArmor and never says whose, and no other source states it"
+        },
+        {
+          "field": "components[2].ratios[1].owner (bonusMagicResist)",
+          "why": "the source names bonusMagicResist and never says whose, and no other source states it"
+        }
+      ],
+      "icon": "KSanteW.png"
+    },
+    {
+      "champion": "K'Sante",
+      "slot": "E",
+      "abilityName": "Footwork",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 5,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data K'Sante/Footwork",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_K'Sante/Footwork",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4034698,
+      "icon": "KSanteE.png"
+    },
+    {
+      "champion": "K'Sante",
+      "slot": "R",
+      "abilityName": "All Out",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 3,
+      "components": [
+        {
+          "id": "physical-damage",
+          "label": "Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 80,
+            "to": 150
+          },
+          "ratios": [],
+          "relation": {
+            "kind": "adds"
+          }
+        },
+        {
+          "id": "strike-physical-damage",
+          "label": "Strike Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 80,
+            "to": 150
+          },
+          "ratios": [
+            {
+              "stat": "bonusHP",
+              "owner": "caster",
+              "scaling": "linear",
+              "from": 5,
+              "to": 5
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data K'Sante/All Out",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_K'Sante/All%20Out",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4051537,
+      "icon": "KSanteR.png"
+    }
+  ],
+  "art": {
+    "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/KSante.json",
+    "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
+    "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
+    "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"
+  }
+}

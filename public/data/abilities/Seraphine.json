@@ -1,5 +1,5 @@
 {
-  "what": "Lux ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "what": "Seraphine ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
@@ -10,21 +10,21 @@
   },
   "abilities": [
     {
-      "champion": "Lux",
+      "champion": "Seraphine",
       "slot": "P",
-      "abilityName": "Illumination",
+      "abilityName": "Stage Presence",
       "instanceType": "on-hit",
       "damageType": "magic",
       "maxRank": 1,
       "components": [
         {
-          "id": "bonus-magic-damage",
-          "label": "Bonus Magic Damage",
+          "id": "magic-damage",
+          "label": "Magic Damage",
           "damageType": "magic",
           "base": {
             "scaling": "byLevel",
-            "from": 30,
-            "to": 200,
+            "from": 4,
+            "to": 25,
             "atLevels": [
               1,
               18
@@ -35,8 +35,8 @@
             {
               "stat": "AP",
               "scaling": "linear",
-              "from": 35,
-              "to": 35
+              "from": 4,
+              "to": 4
             }
           ],
           "relation": {
@@ -46,18 +46,18 @@
       ],
       "verification": "derived",
       "provenance": {
-        "source": "Template:Data Lux/Illumination",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Illumination",
+        "source": "Template:Data Seraphine/Stage Presence",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Seraphine/Stage%20Presence",
         "patch": "16.16.1",
         "fetched": "2026-08-13"
       },
-      "sourceRevision": 4038408,
-      "icon": "LuxIlluminatingFraulein.png"
+      "sourceRevision": 4019648,
+      "icon": "Seraphine_Passive.png"
     },
     {
-      "champion": "Lux",
+      "champion": "Seraphine",
       "slot": "Q",
-      "abilityName": "Light Binding",
+      "abilityName": "High Note",
       "instanceType": "damaging-ability",
       "damageType": "magic",
       "maxRank": 5,
@@ -68,53 +68,80 @@
           "damageType": "magic",
           "base": {
             "scaling": "linear",
-            "from": 80,
-            "to": 240
+            "from": 60,
+            "to": 160
           },
           "ratios": [
             {
               "stat": "AP",
               "scaling": "linear",
-              "from": 75,
-              "to": 75
+              "from": 40,
+              "to": 40
             }
           ],
           "relation": {
             "kind": "adds"
           }
+        },
+        {
+          "id": "maximum-enhanced-damage",
+          "label": "Maximum Enhanced Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 105,
+            "to": 280
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "explicit",
+              "perRank": [
+                70,
+                70,
+                70,
+                70,
+                70
+              ]
+            }
+          ],
+          "relation": {
+            "kind": "alternativeTo",
+            "componentId": "magic-damage"
+          }
         }
       ],
-      "verification": "verified",
+      "verification": "derived",
       "provenance": {
-        "source": "Template:Data Lux/Light Binding",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Light%20Binding",
+        "source": "Template:Data Seraphine/High Note",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Seraphine/High%20Note",
         "patch": "16.16.1",
         "fetched": "2026-08-13"
       },
-      "sourceRevision": 4007675,
-      "icon": "LuxLightBinding.png"
+      "sourceRevision": 4042889,
+      "icon": "SeraphineQ.png"
     },
     {
-      "champion": "Lux",
+      "champion": "Seraphine",
       "slot": "W",
-      "abilityName": "Prismatic Barrier",
+      "abilityName": "Surround Sound",
       "instanceType": "non-damaging-ability",
       "maxRank": 5,
       "components": [],
       "verification": "no-damage",
       "provenance": {
-        "source": "Template:Data Lux/Prismatic Barrier",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Prismatic%20Barrier",
+        "source": "Template:Data Seraphine/Surround Sound",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Seraphine/Surround%20Sound",
         "patch": "16.16.1",
         "fetched": "2026-08-13"
       },
-      "sourceRevision": 3992656,
-      "icon": "LuxPrismaticWave.png"
+      "sourceRevision": 3990364,
+      "icon": "SeraphineW.png"
     },
     {
-      "champion": "Lux",
+      "champion": "Seraphine",
       "slot": "E",
-      "abilityName": "Lucent Singularity",
+      "abilityName": "Beat Drop",
       "instanceType": "damaging-ability",
       "damageType": "magic",
       "maxRank": 5,
@@ -125,15 +152,15 @@
           "damageType": "magic",
           "base": {
             "scaling": "linear",
-            "from": 65,
-            "to": 265
+            "from": 70,
+            "to": 190
           },
           "ratios": [
             {
               "stat": "AP",
               "scaling": "linear",
-              "from": 80,
-              "to": 80
+              "from": 50,
+              "to": 50
             }
           ],
           "relation": {
@@ -143,18 +170,18 @@
       ],
       "verification": "derived",
       "provenance": {
-        "source": "Template:Data Lux/Lucent Singularity",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Lucent%20Singularity",
+        "source": "Template:Data Seraphine/Beat Drop",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Seraphine/Beat%20Drop",
         "patch": "16.16.1",
         "fetched": "2026-08-13"
       },
-      "sourceRevision": 4007677,
-      "icon": "LuxLightStrikeKugel.png"
+      "sourceRevision": 3990139,
+      "icon": "SeraphineE.png"
     },
     {
-      "champion": "Lux",
+      "champion": "Seraphine",
       "slot": "R",
-      "abilityName": "Final Spark",
+      "abilityName": "Encore",
       "instanceType": "damaging-ability",
       "damageType": "magic",
       "maxRank": 3,
@@ -165,15 +192,15 @@
           "damageType": "magic",
           "base": {
             "scaling": "linear",
-            "from": 300,
-            "to": 500
+            "from": 150,
+            "to": 250
           },
           "ratios": [
             {
               "stat": "AP",
               "scaling": "linear",
-              "from": 120,
-              "to": 120
+              "from": 40,
+              "to": 40
             }
           ],
           "relation": {
@@ -183,18 +210,18 @@
       ],
       "verification": "derived",
       "provenance": {
-        "source": "Template:Data Lux/Final Spark",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Final%20Spark",
+        "source": "Template:Data Seraphine/Encore",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Seraphine/Encore",
         "patch": "16.16.1",
         "fetched": "2026-08-13"
       },
-      "sourceRevision": 3919833,
-      "icon": "LuxR.png"
+      "sourceRevision": 4008035,
+      "icon": "SeraphineR.png"
     }
   ],
   "art": {
     "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
-    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Lux.json",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Seraphine.json",
     "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
     "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
     "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"

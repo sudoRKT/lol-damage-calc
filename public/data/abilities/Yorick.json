@@ -1,0 +1,175 @@
+{
+  "what": "Yorick ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "provenance": {
+    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "patch": "16.16.1",
+    "fetched": "2026-08-13",
+    "extractedOn": "2026-08-14",
+    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
+    "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
+  },
+  "abilities": [
+    {
+      "champion": "Yorick",
+      "slot": "P",
+      "abilityName": "Shepherd of Souls",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 1,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Yorick/Shepherd of Souls",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Yorick/Shepherd%20of%20Souls",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4008645,
+      "icon": "Yorick_P.png"
+    },
+    {
+      "champion": "Yorick",
+      "slot": "Q",
+      "abilityName": "Last Rites",
+      "instanceType": "damaging-ability",
+      "damageType": "physical",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "bonus-physical-damage",
+          "label": "Bonus Physical Damage",
+          "damageType": "physical",
+          "base": {
+            "scaling": "linear",
+            "from": 30,
+            "to": 110
+          },
+          "ratios": [
+            {
+              "stat": "totalAD",
+              "scaling": "linear",
+              "from": 50,
+              "to": 50
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Yorick/Last Rites",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Yorick/Last%20Rites",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4001491,
+      "icon": "YorickQ.png"
+    },
+    {
+      "champion": "Yorick",
+      "slot": "Q",
+      "abilityName": "Awakening",
+      "instanceType": "non-damaging-ability",
+      "maxRank": 5,
+      "components": [],
+      "verification": "no-damage",
+      "provenance": {
+        "source": "Template:Data Yorick/Awakening",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Yorick/Awakening",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3907373,
+      "icon": "YorickQ.png"
+    },
+    {
+      "champion": "Yorick",
+      "slot": "W",
+      "abilityName": "Dark Procession",
+      "instanceType": "damaging-ability",
+      "damageType": "true",
+      "maxRank": 5,
+      "components": [],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Yorick/Dark Procession",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Yorick/Dark%20Procession",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4016421,
+      "icon": "YorickW.png"
+    },
+    {
+      "champion": "Yorick",
+      "slot": "E",
+      "abilityName": "Mourning Mist",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 5,
+      "components": [
+        {
+          "id": "magic-damage",
+          "label": "Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 3,
+              "to": 3
+            }
+          ],
+          "relation": {
+            "kind": "adds"
+          }
+        }
+      ],
+      "verification": "incomplete",
+      "provenance": {
+        "source": "Template:Data Yorick/Mourning Mist",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Yorick/Mourning%20Mist",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 4046036,
+      "icon": "YorickE.png"
+    },
+    {
+      "champion": "Yorick",
+      "slot": "R",
+      "abilityName": "Eulogy of the Isles",
+      "instanceType": "damaging-ability",
+      "damageType": "magic",
+      "maxRank": 3,
+      "components": [],
+      "verification": "derived",
+      "provenance": {
+        "source": "Template:Data Yorick/Eulogy of the Isles",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Yorick/Eulogy%20of%20the%20Isles",
+        "patch": "16.16.1",
+        "fetched": "2026-08-13"
+      },
+      "sourceRevision": 3972823,
+      "icon": "YorickR.png"
+    }
+  ],
+  "art": {
+    "note": "Data Dragon icon filenames, fetched from the champion detail file so the page does not depend on a live data call at render time. The images themselves load from the Data Dragon CDN, which SPECIFICATION §15 permits.",
+    "source": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion/Yorick.json",
+    "spellIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/spell",
+    "passiveIconBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/passive",
+    "portraitBase": "https://ddragon.leagueoflegends.com/cdn/16.16.1/img/champion"
+  }
+}
