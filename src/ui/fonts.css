@@ -1,0 +1,53 @@
+/*
+ * THE THREE FACES DESIGN.md §3 CHOOSES, ACTUALLY LOADED.
+ *
+ * ═══ WHY THIS FILE EXISTS ═══
+ *
+ * They were never loaded. `tokens.css` declared each family with a system fallback and said the
+ * real faces "are wired in when the UI area is built" — which never happened, and nothing checked.
+ * Measured in a real browser on 2026-08-14: `document.fonts.size` was 0, and Saira and IBM Plex
+ * Sans rendered at IDENTICAL widths because both were falling through to `system-ui`. JetBrains
+ * Mono was generic monospace. The whole product, including a landing page whose job is to look
+ * credible, was rendering in two system faces.
+ *
+ * ═══ EXACTLY EIGHT WEIGHTS, AND NOT ONE MORE ═══
+ *
+ * DESIGN.md §3 lists the weights to load and says, in its own words, "keep to these — do not add
+ * weights", because a weight outside the set means loading another font file and is a change to
+ * that document rather than a local decision. `fonts.test.ts` reads this file and fails if the
+ * imports here stop matching the eight `--weight-*` tokens.
+ *
+ *   Saira            500 Medium, 600 SemiBold
+ *   IBM Plex Sans    400 Regular, 500 Medium, 600 SemiBold
+ *   JetBrains Mono   400 Regular, 500 Medium, 700 Bold
+ *
+ * ═══ WHY THE FULL WEIGHT FILE AND NOT THE latin- SUBSET ═══
+ *
+ * Each file below declares the same weight several times, once per unicode subset, each with a
+ * `unicode-range`. A browser downloads ONLY the subsets a page actually uses — so an English page
+ * fetches exactly the latin file and nothing else, and importing the full weight costs a reader
+ * nothing over importing `latin-500.css`. What it buys is that a champion or ability name with an
+ * accent in it renders in the right face instead of silently falling back mid-word.
+ *
+ * `font-display: swap` comes from Fontsource and is right here: text is readable in the fallback
+ * immediately and reflows once, rather than being invisible while the face downloads.
+ *
+ * Self-hosted, per §3 — no request leaves the reader's browser for a font, so first paint stays
+ * under local control (§13) and no third-party data flow appears for the consent surface (§15) to
+ * have to cover. All three are OFL 1.1.
+ */
+
+/* Saira — display. §3: "the instrument's nameplate voice". */
+@import '@fontsource/saira/500.css';
+@import '@fontsource/saira/600.css';
+
+/* IBM Plex Sans — body. §3 chose it over Inter to avoid the generic-SaaS fingerprint. */
+@import '@fontsource/ibm-plex-sans/400.css';
+@import '@fontsource/ibm-plex-sans/500.css';
+@import '@fontsource/ibm-plex-sans/600.css';
+
+/* JetBrains Mono — numbers. §3: "the numeric face is the most important type decision" in a tool
+   whose entire worth is a column of numbers being right and aligned. */
+@import '@fontsource/jetbrains-mono/400.css';
+@import '@fontsource/jetbrains-mono/500.css';
+@import '@fontsource/jetbrains-mono/700.css';

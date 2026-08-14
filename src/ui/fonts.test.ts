@@ -1,0 +1,113 @@
+// THE FACES ARE LOADED, AND EXACTLY THE WEIGHTS DESIGN.md §3 NAMES.
+//
+// ═══ WHY THIS CHECK EXISTS ═══
+//
+// The three typefaces were specified in DESIGN.md §3 from the beginning, `tokens.css` declared
+// all three families, every component asked for them by token — and none of them was ever
+// loaded. `tokens.css` carried a note saying the real faces "are wired in when the UI area is
+// built"; the UI area was built and they were not, and for months nothing said so.
+//
+// Nothing COULD have said so. The token audit checks that every `font-family` is a token, which
+// was true. The type scale was correct. Every test passed. The defect was one layer below all of
+// them: the token resolved to a family name the browser had never heard of, and fell through to
+// the fallback silently — which is what a fallback is for.
+//
+// Measured in a real browser, which is the only place it was visible: `document.fonts.size` was
+// 0, and Saira and IBM Plex Sans rendered at IDENTICAL widths because both were `system-ui`.
+//
+// So the check is: the imports exist, and they are the eight weights §3 names — no more, because
+// §3 says "do not add weights", and no fewer, because a missing weight falls back to a synthetic
+// bold or a wrong face without any visible error.
+
+import { describe, expect, it } from 'vitest';
+import { existsSync, readFileSync } from 'node:fs';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const UI = dirname(fileURLToPath(import.meta.url));
+const REPO = join(UI, '..', '..');
+const FONTS_CSS = readFileSync(join(UI, 'fonts.css'), 'utf8');
+const TOKENS = readFileSync(join(UI, 'tokens.css'), 'utf8');
+const PACKAGE = JSON.parse(readFileSync(join(REPO, 'package.json'), 'utf8')) as {
+  dependencies?: Record<string, string>;
+  devDependencies?: Record<string, string>;
+};
+
+/** DESIGN.md §3, "Weights to load (keep to these — do not add weights)". */
+const REQUIRED = [
+  ['saira', 500],
+  ['saira', 600],
+  ['ibm-plex-sans', 400],
+  ['ibm-plex-sans', 500],
+  ['ibm-plex-sans', 600],
+  ['jetbrains-mono', 400],
+  ['jetbrains-mono', 500],
+  ['jetbrains-mono', 700],
+] as const;
+
+const imported = [...FONTS_CSS.matchAll(/@import '@fontsource\/([a-z-]+)\/(\d{3})\.css';/g)].map(
+  (m) => [m[1]!, Number(m[2]!)] as const,
+);
+
+describe('fonts/the packages are real dependencies', () => {
+  it('all three ship with the product, not just with the build', () => {
+    // A font the site SERVES belongs in `dependencies`. In `devDependencies` it would still work
+    // locally and still build here, because Vite inlines what it can resolve — the failure would
+    // appear only in an install that skips dev dependencies, which is how a CDN builds.
+    for (const family of ['saira', 'ibm-plex-sans', 'jetbrains-mono']) {
+      expect(PACKAGE.dependencies ?? {}, family).toHaveProperty(`@fontsource/${family}`);
+      expect(PACKAGE.devDependencies ?? {}).not.toHaveProperty(`@fontsource/${family}`);
+    }
+  });
+
+  it('and the files they name are actually on disk', () => {
+    for (const [family, weight] of REQUIRED) {
+      const path = join(REPO, 'node_modules', '@fontsource', family, `${weight}.css`);
+      expect(existsSync(path), `@fontsource/${family}/${weight}.css`).toBe(true);
+    }
+  });
+});
+
+describe('fonts/exactly the weights DESIGN.md §3 names', () => {
+  it('imports all eight', () => {
+    for (const required of REQUIRED) {
+      expect(imported, `${required[0]} ${required[1]}`).toContainEqual(required);
+    }
+  });
+
+  it('AND NO NINTH — §3 says "do not add weights"', () => {
+    // A ninth weight is not a styling choice: it is another font file on every page load, and a
+    // change to DESIGN.md rather than a local decision.
+    expect(imported).toHaveLength(REQUIRED.length);
+  });
+
+  it('the imported weights are the same set the weight TOKENS declare', () => {
+    // The two lists are written in different files for different reasons — one loads files, one
+    // names values — and a weight in tokens.css with no file behind it renders as a synthetic
+    // bold, which looks like a design choice rather than a missing download.
+    const tokenWeights = new Set(
+      [...TOKENS.matchAll(/--weight-[a-z-]+:\s*(\d{3});/g)].map((m) => Number(m[1]!)),
+    );
+    const importedWeights = new Set(imported.map(([, w]) => w));
+    expect([...importedWeights].sort()).toEqual([...tokenWeights].sort());
+  });
+
+  it('loads no italic — the design file names none, and a synthetic italic is not one', () => {
+    expect(FONTS_CSS).not.toContain('italic');
+  });
+});
+
+describe('fonts/every page actually gets them', () => {
+  it('the shell imports the stylesheet, so all eight pages do', () => {
+    // Imported from PageShell rather than from each entry: every page renders the shell, so the
+    // ninth page cannot be built without them.
+    const shell = readFileSync(join(UI, 'shell', 'PageShell.tsx'), 'utf8');
+    expect(shell).toContain("import '../fonts.css'");
+  });
+
+  it('tokens.css still names all three families, so nothing bypasses the token', () => {
+    for (const family of ['Saira', 'IBM Plex Sans', 'JetBrains Mono']) {
+      expect(TOKENS).toContain(family);
+    }
+  });
+});

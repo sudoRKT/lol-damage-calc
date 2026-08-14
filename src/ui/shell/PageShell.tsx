@@ -15,6 +15,10 @@
 import type { ReactNode } from 'react';
 import { SiteFooter } from './SiteFooter';
 import { pageById } from './pages';
+// The three faces DESIGN.md §3 chooses. Imported HERE, not in each of the eight page entries:
+// every page renders this component, so one import puts the real faces on every page and cannot
+// be forgotten on the ninth.
+import '../fonts.css';
 import '../tokens.css';
 import './shell.css';
 
