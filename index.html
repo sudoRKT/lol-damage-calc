@@ -3,10 +3,18 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>LoL Damage Simulator — Bench Test</title>
+    <meta name="description" content="A League of Legends damage calculator whose numbers are checked against the source, and which shows you the ones it will not stand behind." />
+    <title>Bench Test — a League of Legends damage calculator that shows its working</title>
   </head>
   <body>
     <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+    <!--
+      A URL carrying a shared scenario belongs to the calculator, never here. This runs BEFORE the
+      landing page's own module (module scripts execute in document order), so the front page is
+      never painted for someone who asked for a matchup. The logic is a tested pure function in
+      src/url/entry.ts — three lines inside an HTML file are three lines no test ever runs.
+    -->
+    <script type="module" src="/src/entries/redirect.ts"></script>
+    <script type="module" src="/src/entries/landing.tsx"></script>
   </body>
 </html>

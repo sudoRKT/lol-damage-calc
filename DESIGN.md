@@ -254,6 +254,15 @@ comment saying it was raised rather than settled.
 | `--measure-popover-max-block` | 320px | `--space-8` × 5 | The height at which an open picker list starts to scroll (§5) |
 | `--measure-popover-max-inline` | 256px | `--space-8` × 4 | The width at which a popover stops growing and its text wraps — the burndown's resistance-math popover (§7) |
 | `--measure-list-column-min` | 256px | `--space-8` × 4 | The narrowest a column may be in a responsive list grid before the grid drops to fewer columns |
+| `--measure-reading-max` | 960px | `--space-8` × 15 | The widest a page of prose grows before it is centred — every page except the calculator, which wants the whole screen |
+| `--measure-prose-max` | 640px | `--space-8` × 10 | The widest a single PARAGRAPH grows: about 85 characters at `--type-body-l`, past which the eye loses the start of the next line |
+
+**The last two were added on 2026-08-14 with the site's static pages** — a landing page, an
+About page and a changelog are prose, and this file had never had to describe prose before. They
+are two measures rather than one on purpose: the COLUMN holds panels, tables and figures and can
+be wide; a PARAGRAPH inside it must be narrower or the reader loses their place between lines.
+Using one value for both is the most common way a text-heavy page ends up unreadable at desktop
+width.
 
 **A FOURTH WAS FOUND AFTER THE FIRST THREE WERE NAMED, and it is the reason the rule is worth
 stating rather than just applying.** `--measure-popover-max-inline` was still composed inline in

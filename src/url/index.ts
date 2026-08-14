@@ -15,6 +15,7 @@ import { V2, checkScenario, readV2Payload, writeV2Payload } from './v2';
 export { V1_STEP_KINDS } from './v1';
 export { V2_STEP_KINDS } from './v2';
 export * from './resolve';
+export * from './entry';
 
 /**
  * The version this build WRITES. Every version ever published stays READABLE (FORMAT.md §3),

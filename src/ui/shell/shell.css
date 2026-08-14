@@ -1,0 +1,228 @@
+/*
+ * The site frame — masthead, main column, footer. Every value traces to DESIGN.md;
+ * `../primitives/token-audit.test.ts` re-checks that across the whole area on every run, which
+ * is exactly why this file lives under src/ui/ rather than beside the page entries.
+ *
+ * NO HUE ANYWHERE IN THIS FILE, and this is the strongest case for that rule in the product: a
+ * landing page is where a designer reaches for an accent by reflex. DESIGN.md §1 reserves hue
+ * for the three damage types, so the site frame is graphite, steel and bone — which is what
+ * makes the calculator's coloured figures the only coloured thing a reader ever sees.
+ */
+
+@import '../tokens.css';
+
+.shell {
+  background: var(--bg-base);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: var(--type-body-l);
+  line-height: var(--lh-body-l);
+  min-block-size: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---- The skip link: the first focusable thing in the document ---- */
+
+/* Off-screen until focused, then it lands in the top-left corner as a real control. It is not
+   `display: none`, because a hidden link is not focusable and would protect nobody. */
+.shell__skip {
+  position: absolute;
+  /* Parked above the viewport by a spacing step rather than by a percentage of itself, so the
+     rule needs no allow-list entry: --space-8 is taller than the link, which is all it has to
+     be. The token audit refused `translateY(-200%)` and it was right to — a percentage of an
+     element's own height is a length nothing in DESIGN.md governs. */
+  inset-block-start: calc(var(--space-8) * -1);
+  inset-inline-start: var(--space-2);
+  z-index: 3;
+  background: var(--bg-panel);
+  color: var(--text-primary);
+  border: var(--border-active);
+  border-radius: var(--radius-control);
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--type-body-m);
+  line-height: var(--lh-body-m);
+  text-decoration: none;
+}
+
+.shell__skip:focus-visible {
+  inset-block-start: var(--space-2);
+}
+
+/* ---- Masthead ---- */
+
+.shell__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3) var(--space-5);
+  padding: var(--space-3) var(--space-5);
+  border-block-end: var(--border-steel);
+}
+
+.shell__wordmark {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-0);
+  text-decoration: none;
+  color: var(--text-primary);
+}
+
+.shell__wordmark-name {
+  font-family: var(--font-display);
+  font-weight: var(--weight-display);
+  font-size: var(--type-display-m);
+  line-height: var(--lh-display-m);
+}
+
+.shell__wordmark-sub {
+  font-family: var(--font-display);
+  font-weight: var(--weight-display-medium);
+  font-size: var(--type-eyebrow);
+  line-height: var(--lh-eyebrow);
+  letter-spacing: var(--ls-eyebrow);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.shell__wordmark:hover .shell__wordmark-name {
+  color: var(--text-primary);
+}
+
+.shell__wordmark:focus-visible {
+  outline: var(--border-active);
+  outline-offset: var(--space-0);
+}
+
+/* ---- Main column ---- */
+
+/* The reading measure is composed from the spacing scale, the way DESIGN.md §4a's layout
+   measures are — see the note in tokens.css. It is not a new kind of value: --space-8 x 15 is
+   960px, which holds roughly 90 characters at --type-body-l, the width prose stops being
+   comfortable past. The calculator overrides it, because an instrument wants the whole screen. */
+/* No `inline-size: 100%` here: `.shell` is a flex column, so this stretches to full width by
+   default, and `margin-inline: auto` then centres it once `max-inline-size` binds. The explicit
+   100% was redundant AND an un-tokened length — the audit caught it. */
+.shell__main {
+  flex: 1 1 auto;
+  max-inline-size: var(--measure-reading-max);
+  margin-inline: auto;
+  padding: var(--space-6) var(--space-5) var(--space-7);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.shell__main--wide {
+  max-inline-size: none;
+  padding-inline: 0;
+}
+
+.shell__masthead {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.shell__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: var(--weight-display);
+  font-size: var(--type-display-xl);
+  line-height: var(--lh-display-xl);
+}
+
+.shell__standfirst {
+  margin: 0;
+  max-inline-size: var(--measure-prose-max);
+  font-size: var(--type-body-l);
+  line-height: var(--lh-body-l);
+  color: var(--text-secondary);
+}
+
+/* ---- Links in running text ----
+   Underlined, never coloured. DESIGN.md §1 names a blue "link" colour as the exact thing the
+   reserved-hue law forbids, so the underline is the whole affordance. */
+.shell a,
+.foot a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: var(--space-0);
+}
+
+.shell a:hover,
+.foot a:hover {
+  color: var(--text-primary);
+  text-decoration-thickness: var(--art-chip-underline);
+}
+
+.shell a:focus-visible,
+.foot a:focus-visible {
+  outline: var(--border-active);
+  outline-offset: var(--space-0);
+}
+
+/* ---- Footer ---- */
+
+.foot {
+  border-block-start: var(--border-steel);
+  background: var(--bg-panel);
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.foot__links ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-4);
+}
+
+.foot__links a {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--type-body-m);
+  line-height: var(--lh-body-m);
+  color: var(--text-secondary);
+}
+
+.foot__eyebrow {
+  margin: 0 0 var(--space-2);
+  font-family: var(--font-display);
+  font-weight: var(--weight-display-medium);
+  font-size: var(--type-eyebrow);
+  line-height: var(--lh-eyebrow);
+  letter-spacing: var(--ls-eyebrow);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+/* The legal notices. Small and quiet, but never `--text-muted`: DESIGN.md §2 permits muted for
+   disabled and placeholder text only, and a notice §15 calls "readily visible" is neither. */
+.foot__legal {
+  border-block-start: var(--border-hair);
+  padding-block-start: var(--space-4);
+}
+
+.foot__notice {
+  margin: 0 0 var(--space-2);
+  max-inline-size: var(--measure-prose-max);
+  font-size: var(--type-body-s);
+  line-height: var(--lh-body-s);
+  font-weight: var(--weight-body-medium);
+  color: var(--text-secondary);
+}
+
+/* The GitHub mark. Sized from the art scale (§9's inline icon), and it takes its colour from
+   the text beside it, so it can never introduce a hue of its own. */
+.mark {
+  inline-size: var(--art-chip-inline);
+  block-size: var(--art-chip-inline);
+  flex: none;
+}

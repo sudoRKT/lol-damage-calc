@@ -154,3 +154,43 @@ patch because a pass is void once a value changes.
 that is not achievable at any budget. It promises that every number shown agrees with the source's
 own rendering, reconciles with the source's own stated total, and matches Riot's shipped data
 where that exists — and that everything which does not is absent rather than wrong.
+
+---
+
+## 6. The site around the calculator (2026-08-14)
+
+The product became a **site of eight pages**, not one. Five were proposed — landing, calculator,
+how the numbers are checked, about, report a wrong number. Three more are required by documents
+already in this repository rather than by preference, and were added after that was pointed out:
+
+| Page | Required by |
+|---|---|
+| Changelog | SPECIFICATION §8 — *"Every correction to a data value or engine behaviour is logged publicly with its patch number and what changed."* |
+| Privacy policy | SPECIFICATION §15 |
+| Cookie policy | SPECIFICATION §15 |
+
+### ADVERTISING CANNOT BE SWITCHED ON BEFORE THE PRIVACY AND COOKIE POLICIES EXIST
+
+**This is a gate, not a preference.** SPECIFICATION §16 makes advertising the product's sole
+revenue mechanism. §15 requires *"a privacy policy, cookie policy, and consent management
+interface … covering the personal data processing introduced by advertising"* — the processing
+§16 introduces is the reason §15 asks for them.
+
+**Shipping §16 without §15 puts the product out of compliance with its own specification**, and
+it does so at the exact moment money starts moving, which is the worst time to discover it. The
+two policy pages and the consent interface are therefore the LAST work before advertising and
+the FIRST work if advertising is ever brought forward.
+
+The pages exist as routes today and carry no prose yet. That is deliberate — the structure was
+built first so every link, every page and the shared-link redirect could be tested against a real
+site — and `tests/site-structure.test.ts` names exactly which pages are still waiting, so the
+placeholder cannot quietly become permanent.
+
+### What the structure decided, so it is not re-litigated
+
+- **Eight real HTML files, no router dependency.** The landing page therefore ships none of the
+  calculator's JavaScript, which is SPECIFICATION §13's low first-load time met by construction.
+  Removing this later involves removing nothing: there is no router to take out.
+- **A shared scenario link never lands on the landing page.** The scenario lives in the URL
+  fragment, which carries no path, so a link can arrive at the root; `index.html` loads a tested
+  redirect before its own module and moves it to the calculator with the fragment untouched.

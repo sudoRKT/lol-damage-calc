@@ -128,6 +128,19 @@ export interface AppProps {
   initialAttacker?: ChampionConfig;
   initialDefender?: ChampionConfig;
   initialCombo?: ComboStep[];
+  /**
+   * A sentence explaining why a shared link could not be opened.
+   *
+   * IT IS SHOWN, NEVER SWALLOWED. `src/url` refuses a damaged link rather than substituting a
+   * scenario, on the grounds that "a link that decodes into something subtly different from what
+   * was shared is the same class of failure as a wrong damage number". Opening the DEFAULT
+   * matchup without a word would be exactly that substitution, one step later: the reader would
+   * be looking at Lux against Garen believing it was the matchup they were sent.
+   *
+   * Absent when the URL carried no scenario at all, which is not a failure — it is somebody
+   * opening the page.
+   */
+  linkNotice?: string;
 }
 
 export function App({
@@ -135,6 +148,7 @@ export function App({
   initialAttacker,
   initialDefender,
   initialCombo,
+  linkNotice,
 }: AppProps = {}) {
   const [data, setData] = useState<LoadedData | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -248,6 +262,18 @@ export function App({
           entirely in this browser.
         </p>
       </header>
+
+      {/* A SHARED LINK THAT COULD NOT BE OPENED. First on the page, above everything, because
+          the reader arrived expecting a specific scenario and is looking at a different one. */}
+      {linkNotice ? (
+        <section className="app__notice" aria-label="This shared link could not be opened">
+          <h2 className="app__notice-title">This shared link could not be opened</h2>
+          <p>
+            {linkNotice} Nothing from the link has been applied — the configuration below is this
+            page’s starting point, not the scenario you were sent.
+          </p>
+        </section>
+      ) : null}
 
       {/* SPECIFICATION §8 — a result involving a champion whose base statistics Riot's own
           sources disagree about carries a visible note naming the field and both values. */}

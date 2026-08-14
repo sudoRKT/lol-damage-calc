@@ -1,0 +1,32 @@
+/*
+ * The prose pages. Every value traces to DESIGN.md; `../primitives/token-audit.test.ts` sweeps
+ * this file with the rest of the area. NO HUE — none of this is damage data (DESIGN.md §1).
+ */
+
+@import '../tokens.css';
+
+.notwritten {
+  background: var(--bg-panel);
+  border: var(--border-steel);
+  border-radius: var(--radius-panel);
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.notwritten__lead {
+  margin: 0;
+  max-inline-size: var(--measure-prose-max);
+  font-size: var(--type-body-l);
+  line-height: var(--lh-body-l);
+  color: var(--text-primary);
+}
+
+.notwritten__note {
+  margin: 0;
+  max-inline-size: var(--measure-prose-max);
+  font-size: var(--type-body-m);
+  line-height: var(--lh-body-m);
+  color: var(--text-secondary);
+}
