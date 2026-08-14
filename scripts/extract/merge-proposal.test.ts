@@ -30,6 +30,9 @@ import {
   sweepNonChampionOutsideAbilities,
   sweepSameLabelAdds,
   sweepStatusHonestyOutsideAbilities,
+  classifyOverTime,
+  withdrawalReason,
+  READ_AS_OVER_TIME,
   SCALING_ARMS_GATE1_ACCEPTS,
 } from './merge-proposal.ts';
 
@@ -89,6 +92,79 @@ const defensiveEffect = (over: Partial<CuratedDefensiveEffect> = {}): CuratedDef
 });
 
 const items: Item[] = [{ id: 3100 } as Item];
+
+// PER-TICK COMPONENTS. The split that decides whether a figure lands in the burst line or the
+// damage-over-time line, and the one place where being wrong hands a champion a number that is
+// plausible and false. It had no test of its own until 2026-08-14.
+describe('classifyOverTime — the per-tick split', () => {
+  const perTick = (over = {}) =>
+    component({ id: 'burn', label: 'Magic Damage Per Tick', hits: 10, ...over });
+
+  it('marks a per-tick component of an entry in the read population, quoting the source', () => {
+    const a = ability({ champion: 'Alistar', slot: 'E', abilityName: 'Trample', components: [perTick()] });
+    const out = classifyOverTime([a]);
+    expect(out.marked).toBe(1);
+    expect(out.refused).toEqual([]);
+    expect(a.components[0]!.overTime?.sourceSays).toContain('every 0.5 seconds over 5 seconds');
+    expect(a.verification).toBe('derived');
+  });
+
+  it('withdraws a per-tick component of an entry outside the read population', () => {
+    const a = ability({ champion: 'Nobody', slot: 'Q', abilityName: 'Untested', components: [perTick()] });
+    const out = classifyOverTime([a]);
+    expect(out.marked).toBe(0);
+    expect(out.refused).toEqual(['Nobody/Q/Untested']);
+    expect(a.verification).toBe('incomplete');
+    expect(a.components[0]!.overTime).toBeUndefined();
+  });
+
+  it('SPLITS PER COMPONENT: an on-hit figure beside a burn keeps its place in the burst line', () => {
+    const a = ability({
+      champion: 'Alistar',
+      slot: 'E',
+      abilityName: 'Trample',
+      components: [component({ id: 'on-hit', label: 'Bonus Magic Damage' }), perTick()],
+    });
+    classifyOverTime([a]);
+    expect(a.components[0]!.overTime).toBeUndefined();
+    expect(a.components[1]!.overTime).toBeDefined();
+  });
+
+  it('leaves an ability with no per-tick component completely alone', () => {
+    const a = ability({ verification: 'derived' });
+    expect(classifyOverTime([a])).toEqual({ marked: 0, refused: [] });
+    expect(a.verification).toBe('derived');
+  });
+
+  it('marks 23 entries in all — the 4 read in §58 and the 19 whose counts the source corroborates', () => {
+    expect(READ_AS_OVER_TIME.size).toBe(23);
+    for (const [, why] of READ_AS_OVER_TIME) expect(why.length).toBeGreaterThan(20);
+  });
+});
+
+describe('withdrawalReason — a withdrawn entry says what is actually missing', () => {
+  it('names the missing count for an entry whose source states one nobody captured', () => {
+    expect(withdrawalReason('Rumble/R/The Equalizer')).toContain('never captured');
+  });
+
+  it('says no count can exist for a toggle, rather than implying somebody could go and find one', () => {
+    expect(withdrawalReason('Karthus/E/Defile')).toContain('states no duration');
+  });
+
+  it('says the source contradicts itself where it does', () => {
+    expect(withdrawalReason('Nasus/E/Spirit Fire')).toContain('contradicts itself');
+  });
+
+  it('falls back to "nobody has read it" only for an entry nobody has read', () => {
+    expect(withdrawalReason('Nobody/Q/Untested')).toContain('Nobody has yet read');
+  });
+
+  it('never tells a reader an entry is unread when it was read', () => {
+    for (const key of ['Swain/R/Demonic Ascension', 'Viktor/R/Arcane Storm', 'Ornn/W/Bellows Breath']) {
+      expect(withdrawalReason(key)).not.toContain('Nobody has yet read');
+    }
+  });
+});
 
 // The header said "gate 1 never walks item effects" until 2026-08-14, when it started to. The
 // sweep is kept as a second reading of the same components; the claim about the gate is gone.

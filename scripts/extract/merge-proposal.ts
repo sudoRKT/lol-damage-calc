@@ -47,6 +47,7 @@ import {
   type Finding,
   type GateReport,
 } from '../../src/types/validate-curated.ts';
+import { PER_TICK_READS, markedOverTime } from './per-tick-read.ts';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, '..', '..');
@@ -375,15 +376,24 @@ export interface Refusal {
  * Arrow" are the same shape and mean opposite things — one recurs over time, the other lands all
  * at once. So:
  *
- *   - `READ_AS_OVER_TIME` lists the entries whose SOURCE SENTENCE was read on 2026-08-14 and
- *     which the source itself calls damage over time. Those components are MARKED, and the engine
- *     moves them to the DoT line.
+ *   - `READ_AS_OVER_TIME` lists the entries whose SOURCE SENTENCE was read and which the source
+ *     itself describes as recurring. Those components are MARKED, and the engine moves them to
+ *     the DoT line.
  *   - **Every other per-tick component makes its entry `incomplete`.** It is not marked as
  *     recurring — nobody has read it — and it does not go on publishing a burst figure that
  *     §3.8 says cannot be one. Refusing to choose is the rule; leaving the figure where it is
  *     would be choosing.
  *
  * ADDING A MEMBER MEANS READING ITS SENTENCE, not widening the list.
+ *
+ * THE OTHER 37 WERE READ ON 2026-08-14 and their reading is `per-tick-read.ts`, one row per
+ * entry, each carrying the sentence verbatim and checked against the cached source. **All 37 are
+ * recurring — not one is the `per Arrow` shape — but only 19 are marked here.** The other 18
+ * recur and cannot state HOW MANY TIMES: 10 have a count the source states and the harvester
+ * never stored, 5 are toggles or auras with no duration at all, and 3 have a source that
+ * contradicts itself about the count. Marking one of those would move a figure to the DoT line
+ * and state a fraction of it as the full-duration total, which is a plausible wrong number in a
+ * new place. They stay withdrawn, and `per-tick-read.ts` says why for each.
  */
 export const READ_AS_OVER_TIME: ReadonlyMap<string, string> = new Map([
   [
@@ -402,6 +412,9 @@ export const READ_AS_OVER_TIME: ReadonlyMap<string, string> = new Map([
     'Nilah/R/Apotheosis',
     'the page states the figure per tick across the channel and calls it damage over time',
   ],
+  // The 19 of the 37 whose sentence says it recurs AND whose stored tick count the source's own
+  // duration and interval corroborate. Every one carries its quote from per-tick-read.ts.
+  ...markedOverTime(),
 ]);
 
 /** True when a component's harvested label states a per-tick figure. */
@@ -409,8 +422,46 @@ export const PER_TICK_LABEL = /per\s*tick/i;
 
 /**
  * Mark the read population's per-tick components as recurring, and make every OTHER entry
- * carrying one `incomplete` so no unread full-duration total stays in the burst line.
+ * carrying one `incomplete` so no unconfirmed full-duration total stays in the burst line.
  */
+/**
+ * WHY THIS ENTRY IS WITHDRAWN, in the words a reader of the data file needs.
+ *
+ * Three of the four reasons come from the reading in `per-tick-read.ts` and are specific to the
+ * entry. The fourth is for an entry nobody has read at all — which today is none of them, and is
+ * kept because a future harvest can add one.
+ */
+export function withdrawalReason(key: string): string {
+  const read = PER_TICK_READS.find((r) => r.key === key);
+  if (!read) {
+    return (
+      'Nobody has yet read the source sentence to establish its full-duration shape.'
+    );
+  }
+  switch (read.countVerdict) {
+    case 'no-duration-stated':
+      return (
+        'The source was read: it recurs, but states no duration — so no number of ticks exists ' +
+        'to multiply, and a full-duration total cannot be stated at all.'
+      );
+    case 'count-not-stored':
+      return (
+        'The source was read: it recurs, and the source states how many times it lands, but that ' +
+        'count was never captured into the data — the entry holds one tick where it needs all of ' +
+        'them.'
+      );
+    case 'contested':
+      return (
+        "The source was read: it recurs, but the page contradicts itself about how many times — " +
+        'its description and its own leveling row give different tick counts, and neither is ' +
+        'taken silently.'
+      );
+    case 'corroborated':
+      // Unreachable while the mark rule holds; stated rather than assumed.
+      return 'The source was read and its tick count corroborated, yet the entry was not marked.';
+  }
+}
+
 export function classifyOverTime(abilities: CuratedAbility[]): {
   marked: number;
   refused: string[];
@@ -428,15 +479,20 @@ export function classifyOverTime(abilities: CuratedAbility[]): {
       }
       continue;
     }
-    // NOT READ. The figure is withdrawn rather than moved or left where it is.
+    // NOT MARKED. The figure is withdrawn rather than moved or left where it is.
+    //
+    // For the 37 of DATA-SOURCES §58 the reason is now specific and comes from `per-tick-read.ts`:
+    // the sentence WAS read, it does recur, and what is missing is the number of ticks. Saying
+    // "nobody has read it" of an entry somebody read would send the next person to do work that
+    // is already done and would not fix it.
     refused.push(abilityKey(a));
     a.verification = 'incomplete';
+    const reason = withdrawalReason(abilityKey(a));
     a.notes =
       a.notes ??
       `this ability states a per-tick figure, so its damage recurs over time — and damage over ` +
-        `time is never part of a burst total (SPECIFICATION §3.8). Nobody has yet read the ` +
-        `source sentence to establish its full-duration shape, so no figure is published rather ` +
-        `than one published in the wrong place.`;
+        `time is never part of a burst total (SPECIFICATION §3.8). ${reason} No figure is ` +
+        `published rather than one published in the wrong place.`;
   }
   return { marked, refused };
 }
@@ -1132,7 +1188,12 @@ async function main(): Promise<void> {
   console.log('\n=== MERGE PROPOSAL ===');
   console.log('--- per-tick components (SPECIFICATION §3.8) ---');
   console.log(`  marked as recurring, from the read population: ${overTime.marked}`);
-  console.log(`  withdrawn to incomplete, unread: ${overTime.refused.length}`);
+  // NOT "unread" — every one of these was read on 2026-08-14 and every one recurs. What they
+  // cannot state is HOW MANY TIMES, and a full-duration total needs that. per-tick-read.ts says
+  // which of the three reasons applies to each.
+  console.log(
+    `  withdrawn to incomplete, recurring but no full-duration count: ${overTime.refused.length}`,
+  );
   for (const k of overTime.refused) console.log(`    ${k}`);
   console.log('');
   console.log(
