@@ -237,31 +237,45 @@
  * left of the riser, in the empty space under that column's tread — so it can never overlap
  * the next column's label and never spills outside the plot. */
 /* ON A PHONE THIS LABEL IS WIDER THAN ITS OWN COLUMN, and no value in this rule fixes that.
-   MEASURED 2026-08-14 at a 375px viewport: the plot area is 187px, so four columns are 47px
-   each, while a riser label is 49-59px once the damage-type tag became a word. Two adjacent
-   labels therefore overlap, where the one-letter tag had cleared by 6px.
-   Narrowing this inset was tried and REJECTED because it makes it worse, not better: the inset
-   is what holds each label clear of the previous one, so shrinking it moves labels toward each
-   other. The arithmetic is in DESIGN-AUDIT.md §6.5, which now carries this as part of the
-   mobile item — the honest fix is a responsive treatment of the plot, which is a design
-   decision and not a value to tune here.
 
-   STILL OPEN AS OF 2026-08-14, AND HALF OF §6.5 IS NOT. The overflow half — the page itself
-   scrolling sideways, caused by the breakdown table — is fixed: every table in the area now sits
-   in `.u-scroll-x`, a keyboard-reachable, announced scroll region, and
-   `../responsive-overflow.test.tsx` sweeps for a table that does not. THIS half is untouched,
-   because every honest fix for it needs a value DESIGN.md does not define, and the design file
-   is the lead's. Two were costed and RAISED rather than picked:
-     (a) a minimum column width — the widest label measured is 59px and it sits --space-3 in from
-         its column's right edge, so a column must be at least 71px for two labels never to
-         touch. On §4a's rule that a layout measure is --space-8 × n, the smallest conforming
-         value is 128px. The plot then scrolls horizontally on a phone exactly as the table does,
-         with the y-axis rail left outside the scroller so it stays pinned. No breakpoint at all.
-     (b) all labels leave the plot for a row beneath it, in sequence order, each keeping its tag
-         and its hue — which is the resolution §7 already reached for the composition bar, and §8
-         states its general form: "when a mandatory cue will not fit, move the cue — never resize
-         the data to accommodate it." Needs a threshold, i.e. a phone breakpoint, which DESIGN.md
-         does not have.
+   ═══ THE DEFECT IS NOW MEASURED RATHER THAN ASSERTED (2026-08-14) ═══
+
+   `label-collision.test.ts` counts it over three stated populations at 375px and 320px, and
+   `label-geometry.ts` holds the arithmetic. The counts are pinned there so a change reports.
+   The headline, at 375px: the scenario the page opens on has ZERO collisions; the roster on a
+   six-step combo has 153 colliding pairs across 98 of 173 champions; and a build carrying five
+   basic-attack riders has 4,296 pairs across 173 of 173, because riders turn a six-step combo
+   into as many as SIXTEEN columns — 12.69px each, for labels that need 76.96px.
+
+   TWO CORRECTIONS TO WHAT THIS COMMENT USED TO SAY, both from that measurement:
+
+   1. THE INSET IS NEUTRAL, and narrowing it neither helps nor hurts. This comment said shrinking
+      --space-3 "makes it worse, not better". It cancels: label i's leading edge is
+      col_i.right − inset − width_i and label i−1's trailing edge is col_{i−1}.right − inset, so
+      the gap between two labels is columnWidth − width_i with no inset in it. The inset governs
+      clearance from the riser stroke and from the plot's trailing edge, and nothing else. Still
+      do not narrow it — but not for the reason given here before.
+   2. A COLLISION NEEDS BOTH AXES. This comment concluded "two adjacent labels therefore overlap"
+      from the horizontal figure alone. Every label is placed at its own riser's foot and the
+      trace descends, so most horizontally-overlapping pairs are a line-height apart and do not
+      touch. That is exactly why the default scenario is clean at 375px and collides at 320px.
+
+   STILL OPEN, AND STILL NOT A VALUE TO TUNE HERE. Both honest fixes need a length DESIGN.md does
+   not define, and the design file is the lead's. Re-costed against the measurement:
+     (a) a minimum column width, then scroll the plot as `.u-scroll-x` already scrolls the tables.
+         The measured requirement is 76.96px — the widest label in any population is 64.96px
+         ("1 240 mag") plus this 12px inset. On §4a's rule that a layout measure is --space-8 × n,
+         the smallest conforming value is 128px, which is the figure this comment already carried
+         by a different route. NEW COST, from the measurement: 203px of plot then shows ONE column
+         and part of a second, and a 16-column chart becomes 2,048px of scrolling. NEW HAZARD, not
+         previously noted: `overflow-x: auto` also clips the vertical, and the resistance-math
+         popover is drawn inside a column — a scroller would cut it off or add a second scrollbar.
+     (b) the labels leave the plot for a row beneath it, in sequence order, each keeping its tag
+         and its hue — §8's general form, "when a mandatory cue will not fit, move the cue — never
+         resize the data to accommodate it". Needs a threshold, i.e. a phone breakpoint, which
+         DESIGN.md does not have. The measurement ARGUES FOR THIS ONE: at 12.69px a column the
+         3px riser and its tread are still perfectly legible, so it is only the labels that have
+         run out of room, and only they need moving.
    DO NOT pick one of these locally, and do not narrow the inset. */
 .burn__label {
   position: absolute;
