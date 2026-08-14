@@ -38,7 +38,7 @@ const ROSTER = join(ROOT, 'public', 'data', 'champions.json');
 const BATCH = join(ROOT, 'build', 'proposed-curated', 'abilities', 'batch-01.json');
 
 const DDRAGON = 'https://ddragon.leagueoflegends.com/cdn';
-const USER_AGENT = 'lol-damage-calc/0.1 (https://github.com/; contact via repository)';
+const USER_AGENT = 'LimitTest/0.1 (League of Legends damage calculator; https://limittest.site)';
 
 /** Data Dragon's per-champion detail file — the only place the icon filenames live. */
 interface ChampionDetail {

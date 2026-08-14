@@ -252,7 +252,7 @@ export function App({
     <main className="app">
       <header className="app__head">
         <div className="app__nameplate">
-          <p className="app__eyebrow">Bench Test — League of Legends damage simulator</p>
+          <p className="app__eyebrow">Limit Test — League of Legends damage simulator</p>
           <h1 className="app__title">
             {attacker?.name ?? 'No attacker'} <span className="app__vs">vs</span>{' '}
             {defender?.name ?? 'No defender'}

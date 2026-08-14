@@ -32,7 +32,7 @@ export const SITE_PAGES: SitePage[] = [
   {
     id: 'landing',
     path: '/',
-    title: 'Bench Test — a League of Legends damage calculator that shows its working',
+    title: 'Limit Test — a League of Legends damage calculator that shows its working',
     navLabel: 'Home',
     blurb:
       'A League of Legends damage calculator whose numbers are checked against the source, and ' +
@@ -42,7 +42,7 @@ export const SITE_PAGES: SitePage[] = [
   {
     id: 'calculator',
     path: '/calculator/',
-    title: 'Calculator — Bench Test',
+    title: 'Calculator — Limit Test',
     navLabel: 'Calculator',
     blurb:
       'Two champions, an ordered combo, and an itemised damage breakdown with a survival verdict.',
@@ -51,7 +51,7 @@ export const SITE_PAGES: SitePage[] = [
   {
     id: 'checks',
     path: '/checks/',
-    title: 'How the numbers are checked — Bench Test',
+    title: 'How the numbers are checked — Limit Test',
     navLabel: 'How the numbers are checked',
     blurb:
       'What each verification status claims, what it does not claim, and the current count of ' +
@@ -61,7 +61,7 @@ export const SITE_PAGES: SitePage[] = [
   {
     id: 'changelog',
     path: '/changelog/',
-    title: 'Changelog — Bench Test',
+    title: 'Changelog — Limit Test',
     navLabel: 'Changelog',
     blurb: 'Every correction to a data value or to engine behaviour, with the patch it landed in.',
     inMainNav: true,
@@ -69,7 +69,7 @@ export const SITE_PAGES: SitePage[] = [
   {
     id: 'report',
     path: '/report/',
-    title: 'Report a wrong number — Bench Test',
+    title: 'Report a wrong number — Limit Test',
     navLabel: 'Report a wrong number',
     blurb: 'How to report a figure you believe is wrong, and what happens to the report.',
     inMainNav: true,
@@ -77,7 +77,7 @@ export const SITE_PAGES: SitePage[] = [
   {
     id: 'about',
     path: '/about/',
-    title: 'About — Bench Test',
+    title: 'About — Limit Test',
     navLabel: 'About',
     blurb: 'What this is, who built it, and why.',
     inMainNav: true,
@@ -85,7 +85,7 @@ export const SITE_PAGES: SitePage[] = [
   {
     id: 'privacy',
     path: '/privacy/',
-    title: 'Privacy policy — Bench Test',
+    title: 'Privacy policy — Limit Test',
     navLabel: 'Privacy',
     blurb: 'What personal data this site processes, and what it does not.',
     inMainNav: false,
@@ -93,7 +93,7 @@ export const SITE_PAGES: SitePage[] = [
   {
     id: 'cookies',
     path: '/cookies/',
-    title: 'Cookie policy — Bench Test',
+    title: 'Cookie policy — Limit Test',
     navLabel: 'Cookies',
     blurb: 'What cookies this site sets, and how to change your choice.',
     inMainNav: false,

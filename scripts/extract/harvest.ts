@@ -44,7 +44,7 @@ import { statedStepCount } from './progression.ts';
 import { deriveVariableHits, inReadPopulation, statesSameTargetRepeat } from './variable-hits.ts';
 
 export const WIKI_API = 'https://wiki.leagueoflegends.com/en-us/api.php';
-const UA = 'lol-damage-calc (curated-file build; contact rushi.lime49@gmail.com)';
+const UA = 'LimitTest/0.1 (League of Legends damage calculator; https://limittest.site)';
 
 /** Ability rank counts. R has 3, the rest have 5; a passive is a single unranked entry.
  *  Never inferred from the numbers — the same shorthand over 3 and 5 ranks differs. */

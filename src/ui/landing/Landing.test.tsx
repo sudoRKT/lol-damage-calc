@@ -103,6 +103,21 @@ describe('landing/the author’s note is not a legal notice', () => {
     expect(note.parentElement).not.toBe(legal.parentElement);
   });
 
+  it('THE RIOT DISCLAIMER IS QUOTED FROM THE SPECIFICATION, word for word', () => {
+    // The drift this closes: §15 carried the placeholder "[Product Name]" while the footer had
+    // been shipping a real name since the pages existed, so the specification and the notice a
+    // reader actually sees disagreed about what the product is called. Both now say Limit Test,
+    // and this asserts they keep saying the same thing.
+    //
+    // Normalised only for markdown's own noise — §15 sets the notice as a blockquote, so the
+    // file carries "> " on each line and hard-wraps mid-sentence.
+    const spec = readFileSync(
+      join(HERE, '..', '..', '..', 'SPECIFICATION.md'),
+      'utf8',
+    ).replace(/^>\s?/gm, '').replace(/\s+/g, ' ');
+    expect(spec).toContain(RIOT_DISCLAIMER.replace(/\s+/g, ' '));
+  });
+
   it('the Riot disclaimer is still on the page, in full and as real text', () => {
     // §15 requires it "readily visible". Keeping the note away from it must never become a
     // reason for it to go missing.

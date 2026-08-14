@@ -102,7 +102,7 @@ export function Landing() {
   return (
     <>
       <section className="lede" aria-label="What this is">
-        <p className="lede__eyebrow">Bench Test · patch {coverage.patch}</p>
+        <p className="lede__eyebrow">Limit Test · patch {coverage.patch}</p>
         <h1 className="lede__claim">
           A damage calculator that tells you which numbers it will not stand behind.
         </h1>

@@ -17,7 +17,7 @@ import type { AbilitySlot, Champion } from '../../src/types/data.ts';
 import { WIKI_API, wikiSlotAlias } from './harvest.ts';
 
 const SLOTS: AbilitySlot[] = ['P', 'Q', 'W', 'E', 'R'];
-const UA = 'lol-damage-calc (curated-file build; contact rushi.lime49@gmail.com)';
+const UA = 'LimitTest/0.1 (League of Legends damage calculator; https://limittest.site)';
 
 export const CACHE_DIR = 'build/proposed-curated';
 export const CACHE_FILE = join(CACHE_DIR, 'ability-wikitext.json');

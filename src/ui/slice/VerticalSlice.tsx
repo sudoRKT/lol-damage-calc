@@ -95,7 +95,7 @@ export function VerticalSlice() {
 
   return (
     <main className="slice">
-      <p className="slice__eyebrow">Bench Test · vertical slice</p>
+      <p className="slice__eyebrow">Limit Test · vertical slice</p>
       <div className="nameplate">
         <ChampionPortrait src={portrait('Lux')} name="Lux" size="nameplate" active />
         <div>

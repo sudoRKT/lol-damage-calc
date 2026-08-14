@@ -65,7 +65,7 @@ export function PageShell({
 
       <header className="shell__head">
         <a className="shell__wordmark" href="/">
-          <span className="shell__wordmark-name">Bench Test</span>
+          <span className="shell__wordmark-name">Limit Test</span>
           <span className="shell__wordmark-sub">League of Legends damage calculator</span>
         </a>
         <SiteNav current={current} inlineOverride={inlineNavOverride} />

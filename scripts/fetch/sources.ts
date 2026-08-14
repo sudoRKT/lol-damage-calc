@@ -68,7 +68,7 @@ export async function fetchJson<T>(url: string): Promise<T> {
   const response = await fetch(url, {
     headers: {
       // The wiki asks API clients to identify themselves.
-      'user-agent': 'lol-damage-calc data pipeline (static site, no accounts)',
+      'user-agent': 'LimitTest/0.1 (League of Legends damage calculator; https://limittest.site)',
       accept: 'application/json',
     },
   });

@@ -1,5 +1,5 @@
-# League of Legends Damage & Stats Simulator
-## Complete Product Specification
+# Limit Test
+## League of Legends damage simulator — complete product specification
 
 ---
 
@@ -595,7 +595,7 @@ Domain registration and DNS are managed through the same provider as the CDN.
 
 The following notice is displayed in a location readily visible to users:
 
-> [Product Name] is not endorsed by Riot Games and does not reflect the views or opinions of
+> Limit Test is not endorsed by Riot Games and does not reflect the views or opinions of
 > Riot Games or anyone officially involved in producing or managing Riot Games properties.
 > Riot Games and all associated properties are trademarks or registered trademarks of Riot
 > Games, Inc.

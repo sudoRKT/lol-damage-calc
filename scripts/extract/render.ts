@@ -238,7 +238,7 @@ async function renderAbilityHtml(
     method: 'POST',
     body,
     headers: {
-      'User-Agent': 'lol-damage-calc (curated-file build; contact rushi.lime49@gmail.com)',
+      'User-Agent': 'LimitTest/0.1 (League of Legends damage calculator; https://limittest.site)',
       'Content-Type': 'application/x-www-form-urlencoded',
     },
   });
@@ -279,7 +279,7 @@ export async function renderLevelBlocks(
     method: 'POST',
     body,
     headers: {
-      'User-Agent': 'lol-damage-calc (curated-file build; contact rushi.lime49@gmail.com)',
+      'User-Agent': 'LimitTest/0.1 (League of Legends damage calculator; https://limittest.site)',
       'Content-Type': 'application/x-www-form-urlencoded',
     },
   });
