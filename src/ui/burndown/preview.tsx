@@ -9,7 +9,7 @@
 import { createRoot } from 'react-dom/client';
 import { HpBurndown } from './HpBurndown';
 import { MOCK_RESULT } from '../../types';
-import { BURST_KILLS } from './mock-variants';
+import { BURST_KILLS, DEFENDER_HEALS } from './mock-variants';
 import './preview.css';
 
 function Preview() {
@@ -22,6 +22,15 @@ function Preview() {
       <div className="preview__case">
         <p className="preview__what">Variant — the burst survives, the DoT tail finishes it</p>
         <HpBurndown result={BURST_KILLS} title="HP burndown — burst kills (derived variant)" />
+      </div>
+      <div className="preview__case">
+        <p className="preview__what">
+          Variant — the defender heals 90 before the combo; the trace rises, then falls
+        </p>
+        <HpBurndown
+          result={DEFENDER_HEALS}
+          title="HP burndown — a defender who heals (derived variant)"
+        />
       </div>
     </div>
   );

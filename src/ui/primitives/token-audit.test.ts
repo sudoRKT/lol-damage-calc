@@ -164,6 +164,14 @@ const LENGTH_ALLOWLIST: Array<{ value: string; rule: string; reason: string }> =
   // focus-ring entry above — a value DESIGN.md itself writes down, with no token for it.
   { value: '2px', rule: '.burn__tread', reason: 'DESIGN.md §7 — "a 2px line in --hp-trace"' },
   { value: '3px', rule: '.burn__bar', reason: 'DESIGN.md §7 — "a 3px line dropping from Rᵢ"' },
+  {
+    value: '3px',
+    rule: '.burn__heal',
+    reason:
+      'DESIGN.md §7, the healing riser — "a 3px line rising from the post-damage height". Same ' +
+      'weight as the damage riser it sits beside on purpose: the two are the same kind of mark ' +
+      'and the DOTTED stroke, not a different thickness, is what tells them apart.',
+  },
 
   {
     value: '2px',
@@ -494,6 +502,68 @@ describe('token-audit/banned-looks', () => {
     for (const f of STYLESHEETS) {
       if (/\bserif\b/.test(stripCssComments(read(f)).replace(/sans-serif/g, ''))) {
         offenders.push(`${rel(f)}: declares a serif face`);
+      }
+    }
+    expect(offenders).toEqual([]);
+  });
+});
+
+// =========================================================================================
+// REDUCED MOTION IS A CONTRACT, AND IT IS SWEPT RATHER THAN SPOT-CHECKED.
+//
+// DESIGN.md §10: "The chart must be fully readable with all motion disabled." An animation whose
+// keyframes use `from { … }` with `animation-fill-mode: backwards` holds its FIRST frame until it
+// plays — so a selector that animates but is missing from the reduced-motion block does not
+// merely skip its animation, it STICKS at the start state. `burn-draw-riser` starts at
+// `scaleY(0)`, which means invisible, permanently, for exactly the users who asked for less
+// motion.
+//
+// FOUND IN A REAL BROWSER ON 2026-08-14, not by a test: the healing riser rendered at zero height
+// because `.burn__heal` had been given an animation and not added to the block. jsdom computes no
+// layout and runs no animations, so no existing test could have caught it. This sweep is the
+// mechanical form of that defect.
+// =========================================================================================
+
+describe('token-audit/reduced motion', () => {
+  it('every animated selector is switched off under prefers-reduced-motion', () => {
+    const offenders: string[] = [];
+    for (const file of STYLESHEETS) {
+      const css = readFileSync(file, 'utf8');
+      const reduced = /@media\s*\(prefers-reduced-motion:\s*reduce\)\s*\{([\s\S]*)\}\s*$/.exec(
+        css.replace(/\/\*[\s\S]*?\*\//g, ''),
+      );
+      // A stylesheet with no animations at all needs no block.
+      // The animation VALUE is captured and tested in code rather than excluded by a lookahead.
+      // A first version wrote `animation:\s*(?!none)` and flagged `.burn--settled`, whose rule is
+      // literally `animation: none` — `\s*` backtracked to zero characters and the lookahead then
+      // examined " none", which does not begin with "none". Clever, and wrong.
+      // COMMENTS ARE STRIPPED FIRST. Without it "DESIGN.md" inside a comment parsed as a class
+      // called `.md` — this file's comments cite DESIGN.md constantly.
+      const code = css.replace(/\/\*[\s\S]*?\*\//g, '');
+      const animated: string[] = [];
+      for (const rule of code.matchAll(/([^{}]+)\{([^}]*)\}/g)) {
+        const value = /\banimation:\s*([^;]+)/.exec(rule[2]!)?.[1]?.trim();
+        if (!value || value.startsWith('none')) continue;
+        // The LAST class in each comma-separated selector is the element that animates.
+        for (const selector of rule[1]!.split(',')) {
+          const classes = [...selector.matchAll(/\.([a-zA-Z0-9_-]+)/g)].map((m) => `.${m[1]}`);
+          const last = classes[classes.length - 1];
+          if (last) animated.push(last);
+        }
+      }
+      if (animated.length === 0) continue;
+      if (!reduced) {
+        offenders.push(`${rel(file)}: animates ${animated.join(', ')} with no reduced-motion block`);
+        continue;
+      }
+      const switchedOff = reduced[1]!;
+      for (const selector of new Set(animated)) {
+        if (!switchedOff.includes(selector)) {
+          offenders.push(
+            `${rel(file)}: ${selector} animates but is missing from the reduced-motion block — ` +
+              `with a \`backwards\` fill it will stick at its FIRST keyframe, not settle`,
+          );
+        }
       }
     }
     expect(offenders).toEqual([]);

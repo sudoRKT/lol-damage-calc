@@ -371,6 +371,55 @@ tag so the split is colourblind-safe.
 - If the burst never crosses zero, draw no rule; the final tread ends above zero and a
   chip reads `SURVIVES · {remaining} HP` with a `--border-steel` (neutral) border.
 
+### The healing riser — a trace that can also go up (added 2026-08-14)
+
+Everything above describes a staircase that only descends. **A defender who heals mid-combo makes
+it ascend**, and SPECIFICATION §5 requires the defender's own kit modelled — 121 defensive heals
+were measured across the roster. Without this the last tread ended at one number while the verdict
+printed beside it read another, which §7 of DATA-SOURCES §41.2 records as worse than drawing
+nothing at all.
+
+- **Healing riser (vertical, upward):** at the right of column *i*, after that column's damage
+  riser, a **3px line rising** from the post-damage height to the post-heal height. It is drawn in
+  **`--hp-trace`** — the neutral cool grey already used for the remaining-HP line, because a
+  change in health is exactly what it is.
+- **The non-colour cue is a DOTTED stroke.** `border-left: 3px dotted --hp-trace`, against the
+  damage risers' solid fill. **No new hue is introduced and none may be**: §1's reserved-hue law
+  admits no exception for healing, and green here would be the "success colour" that rule exists
+  to forbid.
+- **Label:** the value with a leading **`+`**, in `--type-num-l`, `--text-secondary`, placed at
+  the top of the healing riser. **It carries NO `P`/`M`/`T` tag** — a heal is not damage, and
+  tagging it would make it read as one. The `+` is the cue that survives greyscale, copy-paste
+  and a screen reader.
+- **Overhealing is stated, never silently clamped.** The riser stops at the axis top, because a
+  champion cannot exceed maximum health; the label then reads `+240 (120 wasted)`. That a bigger
+  heal would have bought nothing is information a theorycrafter wants.
+- **The recent-damage ghost (§7, `--flash-recent`) never fires on a heal.** It is "the chunk that
+  was just taken", and playing it while health is restored would show the opposite of what
+  happened.
+- **Screen readers** get the word and the direction, which is the whole cue without any visual
+  channel: *"Instance 3. Defender heals 90. Health 380 up to 470 of 1850."*
+
+**Where a heal sits.** A heal that a source attributes to an instance is drawn in that instance's
+column, after its damage. A heal that **no instance owns** — a defensive effect that is not a
+response to any hit — gets its own column labelled `heal`, **before instance 1**, because that is
+where the engine counts it: the reading most generous to the defender, and therefore the one that
+says "this kills" less often. **A heal that would land after the kill is not drawn at all**, for
+the same reason it is not counted. Dead is dead at the crossing.
+
+```
+  HP
+ 1850 ┼
+      │                    ╎ +240 (120 wasted)   ← dotted, grey, "+", capped at the axis top
+ 1000 ┼· · · ·   ╎ +90     ╎
+      │       ╲ 214 P     · · · ·
+  800 ┼· · ·   · · · · · ╲ 180 M
+      │                          · · ·
+    0 ┼──────────────────────────────────
+        heal   inst1   inst2   inst3
+              sequence — not elapsed time
+```
+
 ### The hatched DoT tail
 
 - Damage over time is never folded into burst (SPECIFICATION §3.8). After the last burst

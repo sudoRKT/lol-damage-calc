@@ -45,7 +45,16 @@ export interface DotSegment {
  * this file.
  */
 export interface BurndownColumn {
-  kind: 'burst' | 'dot';
+  /**
+   * `'heal'` is the UNPLACED-HEALING column, and it sits BEFORE instance 1.
+   *
+   * DEVIATION FROM THE APPROVED PROPOSAL, STATED RATHER THAN SLIPPED IN. The proposal put the
+   * unplaced column after the last burst column, beside `+DoT`. The engine counts unplaced
+   * healing as available from the START of the walk (`ComboPlan.unplacedSustain`), so drawing it
+   * last would have put the chart and the verdict back into disagreement — which is the whole
+   * defect this work exists to close. The chart follows the arithmetic.
+   */
+  kind: 'burst' | 'dot' | 'heal';
   /** 1-based position on the x axis, counting the `+DoT` column as the last one. */
   position: number;
   /** The x-axis label, e.g. `inst 1` or `+DoT`. */
@@ -72,6 +81,26 @@ export interface BurndownColumn {
   crit: boolean;
   /** The instance this column came from — burst columns only. */
   instance: InstanceResult | null;
+  /**
+   * HEALTH THE DEFENDER REGAINED IN THIS COLUMN, after its damage. Added 2026-08-14.
+   *
+   * Absent (0) on every column of a scenario with no healing, so the chart is unchanged for
+   * them. Where it is non-zero the column carries a SECOND riser that goes UP — see
+   * `healRiserTop` / `healRiserBottom`. DESIGN.md §7's trace only ever fell before this, so a
+   * healing defender's last tread ended at one number while the verdict beside it read another.
+   */
+  healing: number;
+  /**
+   * HEALING THAT DID NOT FIT. `healing` minus what the cap at maximum health allowed.
+   *
+   * Reported rather than hidden: overhealing is a fact a theorycrafter wants, and a silently
+   * clamped riser would show a smaller heal than the source states with nothing to say why.
+   */
+  healingWasted: number;
+  /** Fractions of the plot height the healing riser spans. `healRiserTop >= healRiserBottom`,
+   *  and both are 0 when nothing healed here. */
+  healRiserTop: number;
+  healRiserBottom: number;
 }
 
 export interface BurndownModel {
@@ -152,13 +181,61 @@ export function buildBurndownModel(result: Result): BurndownModel {
   // than reconciled by whichever code path ran last.
   const cumulativeByType: DamageByType[] = result.runningTotal.map((p) => ({ ...p.byType }));
 
+  // ═══ THE TRACE NOW WALKS HEALTH, NOT CUMULATIVE DAMAGE (2026-08-14) ═══
+  //
+  // It used to be `startHp - cumulativeDamage`, which can only fall. A defender who heals made
+  // the last tread end at one number while the verdict printed beside it read another — the
+  // §41.2 defect, in the signature element. The walk below applies damage then healing, in the
+  // instance's own position, capped at maximum health and STOPPING at death, which is exactly
+  // what the engine's verdict does. Neither is derived from the other; `auditResult` compares.
+  const healingAt = (instanceNumber: number | null): number =>
+    result.sustain.sources
+      .filter((x) => x.restoresTo === 'defender' && x.fromInstance === instanceNumber)
+      .reduce((n, x) => n + x.amount, 0);
+
+  let hp = startHp;
+
+  const unplacedHealing = healingAt(null);
+  if (unplacedHealing > 0) {
+    const applied = Math.min(unplacedHealing, Math.max(0, maxHp - hp));
+    columns.push({
+      kind: 'heal',
+      position: 0,
+      axisLabel: 'heal',
+      sourceLabel: 'Healing the sequence cannot place',
+      damage: 0,
+      hpBefore: hp,
+      hpAfter: hp + applied,
+      treadFraction: frac(hp),
+      riserTop: frac(hp),
+      riserBottom: frac(hp),
+      damageType: null,
+      segments: [],
+      verification: null,
+      crit: false,
+      instance: null,
+      healing: unplacedHealing,
+      healingWasted: unplacedHealing - applied,
+      healRiserTop: frac(hp + applied),
+      healRiserBottom: frac(hp),
+    });
+    hp += applied;
+  }
+
   result.perInstance.forEach((instance, i) => {
     const cumBefore = i === 0 ? 0 : (result.runningTotal[i - 1]?.total ?? 0);
     const cumAfter = result.runningTotal[i]?.total ?? cumBefore;
     const damage = cumAfter - cumBefore;
 
-    const hpBefore = Math.max(0, startHp - cumBefore);
-    const hpAfter = Math.max(0, startHp - cumAfter);
+    const hpBefore = hp;
+    const hpAfterDamage = Math.max(0, hpBefore - damage);
+
+    // A HEAL AFTER THE KILL IS NOT DRAWN, for the same reason it is not counted: dead is dead
+    // at the crossing (src/engine/combo.ts, `verdict`).
+    const wanted = hpAfterDamage <= 0 ? 0 : healingAt(i + 1);
+    const healed = Math.min(wanted, Math.max(0, maxHp - hpAfterDamage));
+    const hpAfter = hpAfterDamage + healed;
+    hp = hpAfter;
 
     columns.push({
       kind: 'burst',
@@ -170,7 +247,8 @@ export function buildBurndownModel(result: Result): BurndownModel {
       hpAfter,
       treadFraction: frac(hpBefore),
       riserTop: frac(hpBefore),
-      riserBottom: frac(hpAfter),
+      // The DAMAGE riser stops where the damage stopped, not where the healing left the trace.
+      riserBottom: frac(hpAfterDamage),
       // The riser's hue. Null for a mixed or no-damage instance: DESIGN.md §8 renders a
       // multi-type figure bone and untagged with a composition bar, and a no-damage instance has
       // no figure to colour.
@@ -183,10 +261,14 @@ export function buildBurndownModel(result: Result): BurndownModel {
       incompleteReason: instance.incompleteReason,
       crit: instance.crit,
       instance,
+      healing: wanted,
+      healingWasted: wanted - healed,
+      healRiserTop: frac(hpAfter),
+      healRiserBottom: frac(hpAfterDamage),
     });
   });
 
-  const burstColumnCount = columns.length;
+  const burstColumnCount = columns.filter((c) => c.kind === 'burst').length;
   const hasDot = result.dot.total > 0;
 
   if (hasDot) {
@@ -194,7 +276,9 @@ export function buildBurndownModel(result: Result): BurndownModel {
     // more than one type has no single hue, so it is drawn as one hatched segment per
     // non-zero type, stacked — the same construction as the composition bar, and each
     // segment keeps its own P/M/T tag. Raised as an open point; not invented silently.
-    const hpBefore = Math.max(0, startHp - result.burst.total);
+    // FROM THE WALKED HEALTH, not `startHp - burst.total`: with healing in the sequence those
+    // are different numbers, and the tail has to start where the trace actually ended.
+    const hpBefore = Math.max(0, hp);
     const hpAfter = Math.max(0, hpBefore - result.dot.total);
 
     const segments: DotSegment[] = [];
@@ -231,6 +315,12 @@ export function buildBurndownModel(result: Result): BurndownModel {
       incompleteReason: result.dot.sources.find((s) => s.incompleteReason)?.incompleteReason,
       crit: false,
       instance: null,
+      // NOTHING HEALS AFTER THE TRAILING LINE. §3.8 puts damage over time "following the combo",
+      // and there is no instance left to carry a heal — the same rule the engine's verdict uses.
+      healing: 0,
+      healingWasted: 0,
+      healRiserTop: 0,
+      healRiserBottom: 0,
     });
   }
 
@@ -509,19 +599,49 @@ export function auditResult(result: Result): ResultFinding[] {
           `plus ${v.healingApplied} healed`,
       });
     }
-    const remaining = Math.max(0, survivable - applied);
-    if (!near(v.remainingHp, remaining)) {
+    // The remaining figure cannot be recomputed from three numbers any more: healing resolves
+    // in sequence, capped per step and cut off at the kill, so it takes the whole walk. What
+    // CAN be checked without redoing the walk is that it is bounded correctly, and — below —
+    // that the chart's own walk lands on the same number.
+    if (v.lethal && v.remainingHp !== 0) {
       f.push({
         kind: 'verdict-remaining',
-        detail: `${scope} verdict says ${v.remainingHp} HP remains; ${remaining} does`,
+        detail: `${scope} verdict is lethal but leaves ${v.remainingHp} HP`,
       });
     }
-    if (!near(v.healingApplied, result.sustain.defenderHealing)) {
+    if (!v.lethal && v.remainingHp <= 0) {
+      f.push({
+        kind: 'verdict-remaining',
+        detail: `${scope} verdict is not lethal but leaves ${v.remainingHp} HP`,
+      });
+    }
+    if (v.remainingHp > survivable + 1e-6) {
+      f.push({
+        kind: 'verdict-remaining',
+        detail:
+          `${scope} verdict leaves ${v.remainingHp} HP, more than the ${survivable} the ` +
+          `defender entered with plus everything they healed`,
+      });
+    }
+    // NOT AN EQUALITY (changed 2026-08-14). `sustain.defenderHealing` is what the SOURCES state;
+    // `healingApplied` is what actually entered this verdict's arithmetic, and the two differ
+    // legitimately in two ways — healing beyond the kill did not happen, and healing past
+    // maximum health did not fit. What may never happen is the verdict claiming MORE healing
+    // than any source offered.
+    if (v.healingApplied > result.sustain.defenderHealing + 1e-6) {
       f.push({
         kind: 'verdict-healing',
         detail:
-          `${scope} verdict nets ${v.healingApplied} healing but sustain.defenderHealing is ` +
-          `${result.sustain.defenderHealing}`,
+          `${scope} verdict nets ${v.healingApplied} healing but the sustain sources only ` +
+          `offer ${result.sustain.defenderHealing}`,
+      });
+    }
+    if (v.remainingHp > result.defenderStats.maxHp + 1e-6) {
+      f.push({
+        kind: 'verdict-remaining-above-max',
+        detail:
+          `${scope} verdict leaves ${v.remainingHp} HP, above the defender's maximum of ` +
+          `${result.defenderStats.maxHp}`,
       });
     }
   };
@@ -541,6 +661,27 @@ export function auditResult(result: Result): ResultFinding[] {
         `verdict says the burst kills at instance ${String(result.verdict.burstOnly.lethalAtInstance)} ` +
         `but runningTotal first reaches ${survivableHp} HP at ${String(firstCrossing)}`,
     });
+  }
+
+  // ═══ THE CHART AND THE VERDICT MUST LAND ON THE SAME HEALTH ═══
+  //
+  // This is the check the whole healing change exists for. `buildBurndownModel` walks health
+  // independently of `verdict()` — neither reads the other — so if the two rules ever drift, the
+  // last tread and the words printed beside it say different things, which §41.2 records as
+  // worse than drawing nothing. Before 2026-08-14 they DID drift: the trace ended at 30 while
+  // the verdict read 120.
+  if (result.perInstance.length > 0 && !result.verdict.burstOnly.lethal) {
+    const model = buildBurndownModel(result);
+    const burstColumns = model.columns.filter((c) => c.kind !== 'dot');
+    const traceEndsAt = burstColumns[burstColumns.length - 1]?.hpAfter ?? result.defenderStats.hp;
+    if (Math.abs(traceEndsAt - result.verdict.burstOnly.remainingHp) > 1) {
+      f.push({
+        kind: 'trace-disagrees-with-verdict',
+        detail:
+          `the burndown trace ends at ${traceEndsAt} HP but the burst verdict says ` +
+          `${result.verdict.burstOnly.remainingHp} HP remains`,
+      });
+    }
   }
 
   // SUSTAIN'S TOTALS ARE THE SUM OF ITS SOURCES, PER SIDE. Two figures that can disagree will,

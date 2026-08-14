@@ -778,8 +778,16 @@ describe('runCombo — what the engine now says it does NOT model', () => {
     expect(result.excludedMechanics).not.toContain('Execute thresholds');
   });
 
-  it('still names lifesteal and healing, which the Result has no field for', () => {
-    expect(exclusions).toMatch(/lifesteal|life steal/i);
+  it('names the ONE assumption left inside the healing model, not healing itself', () => {
+    // CHANGED 2026-08-14, and the change is the point. Sustain used to be excluded outright —
+    // first because the Result had no field for it, then because no data stated one. It is now
+    // MODELLED: placed healing resolves at its own instance and healing after the kill does not
+    // resurrect. What remains disclosed is the single assumption inside the model — where a heal
+    // that NO instance owns sits — because there is no honest answer and the one chosen is the
+    // generous-to-the-defender reading. An exclusion is only ever narrowed when the mechanic
+    // behind it is actually modelled and tested.
+    expect(exclusions).toMatch(/cannot place/i);
+    expect(exclusions).toMatch(/does not resurrect/i);
   });
 
   it('still names mana ratios, which the stat block has no field for', () => {

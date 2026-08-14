@@ -61,16 +61,11 @@ export const BURST_KILLS: Result = {
  * defensive heals across the roster, so this state is real and will arrive. It is kept OUT of
  * the canonical mock and given its own fixture on purpose, because of what it exposes:
  *
- * **THE BURNDOWN DOES NOT DRAW HEALING, AND THIS FIXTURE IS WHERE THAT IS VISIBLE.** DESIGN.md
- * §7 specifies the trace as remaining HP falling — grey plateaus, coloured risers dropping — and
- * says nothing about a plateau that RISES. So `buildBurndownModel` walks the running total down
- * from entry health and ends this fixture's last tread at 30, while the verdict printed beside
- * the plot reads 120. Those are the same quantity said two ways, which §41.2 records as worse
- * than not drawing it at all.
- *
- * It is NOT fixed here. Where a heal sits between two instances is a design decision DESIGN.md
- * has not taken, and inventing one in the geometry would be this area deciding it. Raised, with
- * a fixture that makes the gap reproducible rather than theoretical.
+ * **IT USED TO BE THE FIXTURE THAT PROVED THE BURNDOWN COULD NOT DRAW HEALING** — the trace
+ * ended at 30 while the verdict beside it read 120. That is fixed (DESIGN.md §7, "a trace that
+ * can also go up"; DATA-SOURCES §45), and the same fixture is now what proves it: the trace
+ * RISES from 800 to 890 in a `heal` column before instance 1, then falls, and ends at 120 —
+ * the number the verdict states. `auditResult` compares the two on every Result.
  */
 export const DEFENDER_HEALS: Result = {
   ...MOCK_RESULT,

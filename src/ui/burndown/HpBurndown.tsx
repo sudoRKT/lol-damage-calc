@@ -183,14 +183,26 @@ export function riserName(column: BurndownColumn, maxHp: number, statusLabel: st
     parts.push('Damage over time, after the combo');
     parts.push(column.sourceLabel);
     parts.push(split || `${column.damage} damage over time`);
+  } else if (column.kind === 'heal') {
+    parts.push('Before the combo');
+    parts.push(column.sourceLabel);
+    parts.push(`Defender heals ${column.healing}`);
   } else {
     parts.push(`Instance ${column.position}`);
     parts.push(column.sourceLabel);
     const type = column.damageType ? SPOKEN_TYPE[column.damageType] : '';
     parts.push(`${column.damage} ${type} damage${column.crit ? ', critical strike' : ''}`);
+    // THE WORD AND THE DIRECTION CARRY THE HEAL, not a colour and not a stroke style. A screen
+    // reader gets "heals 90" and "up to", which is the whole cue.
+    if (column.healing > 0) parts.push(`Defender heals ${column.healing}`);
   }
 
-  parts.push(`Health ${column.hpBefore} down to ${column.hpAfter} of ${maxHp}`);
+  // "up to" / "down to" is the direction, spoken. `hpAfter` already includes any healing.
+  const direction = column.hpAfter > column.hpBefore ? 'up to' : 'down to';
+  parts.push(`Health ${column.hpBefore} ${direction} ${column.hpAfter} of ${maxHp}`);
+  // OVERHEALING IS INFORMATION, not noise: it is how a theorycrafter sees that a bigger heal
+  // would have bought nothing.
+  if (column.healingWasted > 0) parts.push(`${column.healingWasted} healing wasted`);
   if (statusLabel) parts.push(statusLabel);
   return parts.join('. ') + '.';
 }
@@ -429,7 +441,26 @@ function Column({ column, index, maxHp, open, onOpen, onClose }: ColumnProps) {
         style={{ bottom: pct(column.treadFraction), ...delay }}
       />
 
-      <div className="burn__ghost" aria-hidden="true" style={{ ...band, ...delay }} />
+      {/* THE RECENT-DAMAGE GHOST IS FOR DAMAGE ONLY. DESIGN.md §7 calls it "the chunk that was
+          just taken"; firing it on a heal would show health being removed as it is restored. */}
+      {column.damage > 0 ? (
+        <div className="burn__ghost" aria-hidden="true" style={{ ...band, ...delay }} />
+      ) : null}
+
+      {/* THE HEALING RISER. It goes UP, in the neutral HP grey — a change in health is exactly
+          what it is — and its non-colour cue is a DOTTED stroke, never a new hue (DESIGN.md §1).
+          Clamped at maximum health by the geometry; the waste rides in the label. */}
+      {column.healing > 0 ? (
+        <div
+          className="burn__heal"
+          aria-hidden="true"
+          style={{
+            bottom: pct(column.healRiserBottom),
+            height: pct(Math.max(0, column.healRiserTop - column.healRiserBottom)),
+            ...delay,
+          }}
+        />
+      ) : null}
 
       {column.kind === 'burst' && column.damageType ? (
         <div
@@ -475,6 +506,21 @@ function Column({ column, index, maxHp, open, onOpen, onClose }: ColumnProps) {
           <DamageValue value={column.damage} damageType={column.damageType} size="l" />
         ) : null}
       </span>
+
+      {/* THE HEAL'S FIGURE, and it carries NO P/M/T tag: a heal is not damage, and tagging it
+          would make it read as one. The `+` sign is the cue that survives greyscale and copy. */}
+      {column.healing > 0 ? (
+        <span
+          className="burn__heal-label"
+          aria-hidden="true"
+          style={{ bottom: pct(column.healRiserTop), ...delay }}
+        >
+          +{column.healing}
+          {column.healingWasted > 0 ? (
+            <span className="burn__heal-waste"> ({column.healingWasted} wasted)</span>
+          ) : null}
+        </span>
+      ) : null}
 
       <button
         type="button"

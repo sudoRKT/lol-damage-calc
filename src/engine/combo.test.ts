@@ -786,16 +786,12 @@ describe('runCombo — excluded mechanics', () => {
     expect(result.excludedMechanics).toContain('Zhonyas stasis');
   });
 
-  it('names sustain, which the Result has no field to report', () => {
-    // THIS ASSERTION USED TO NAME PRE-MITIGATION FLAT DAMAGE REDUCTION. That is now modelled
-    // (combo-modifiers.test.ts derives its numbers from the wiki's own pre/post-mitigation
-    // split), so the exclusion was removed — and an exclusion is only ever removed when the
-    // mechanic behind it is actually modelled and tested.
-    //
-    // Lifesteal, omnivamp, spell vamp and healing replace it, and are a different KIND of
-    // exclusion: not "not built yet" but "there is nowhere in the Result to put the answer".
+  it('names where an UNPLACEABLE heal sits, which is the only assumption left in the model', () => {
+    // This assertion has narrowed twice, each time because the mechanic behind it got modelled:
+    // pre-mitigation flat reduction, then sustain itself. What is left is not "not built yet"
+    // but "the source does not say, and the reading we chose is the generous one".
     const result = runCombo(plan({ instances: [hit('q', 100, 'magic')] }));
-    expect(result.excludedMechanics.join(' | ')).toMatch(/lifesteal/i);
+    expect(result.excludedMechanics.join(' | ')).toMatch(/available from the START/i);
   });
 });
 
@@ -945,13 +941,11 @@ describe('runCombo — a bonus-health ratio resolves, because the stat block now
 });
 
 describe('runCombo — the Result has a sustain line, and reports zero from ZERO sources', () => {
-  it('reports no sustain rather than omitting the line', () => {
-    // The blocker was the missing field, and it is gone. What is still absent is the DATA: no
-    // curated item effect, rune or defensive entry states a sustain value. An empty `sources`
-    // list is what distinguishes "nothing was computed" from "nothing was restored".
+  it('reports an EMPTY sustain line when the plan states none', () => {
+    // An empty `sources` list is what distinguishes "nothing was computed" from "we computed
+    // that nothing was restored".
     const result = runCombo(plan({ instances: [hit('q', 300, 'physical')] }));
     expect(result.sustain).toEqual({ attackerHealing: 0, defenderHealing: 0, sources: [] });
-    expect(result.excludedMechanics.join(' ')).toMatch(/zero from zero sources/);
   });
 
   it('nets defender healing into BOTH verdicts rather than adding a third', () => {
@@ -961,5 +955,205 @@ describe('runCombo — the Result has a sustain line, and reports zero from ZERO
     expect(result.verdict.burstOnly.healingApplied).toBe(0);
     expect(result.verdict.burstPlusDot.healingApplied).toBe(0);
     expect(Object.keys(result.verdict)).toEqual(['burstOnly', 'burstPlusDot']);
+  });
+});
+
+// =========================================================================================
+// HEALING IN THE SEQUENCE (2026-08-14; DATA-SOURCES §45)
+//
+// The rule that matters most here is negative: A HEAL THAT ARRIVES AFTER THE KILL CANNOT
+// RESURRECT. Healing used to be added in one lump before the first instance, which got exactly
+// that case wrong, and it is the case a user would never spot in a total.
+// =========================================================================================
+
+describe('runCombo — placed healing resolves at its own instance', () => {
+  const heal = (amount: number, restoresTo: 'attacker' | 'defender' = 'defender') => ({
+    label: `heal ${amount}`,
+    kind: 'heal' as const,
+    restoresTo,
+    amount,
+    verification: 'derived' as const,
+  });
+
+  it('nets a heal placed mid-combo into the verdict and reports it on the sustain line', () => {
+    // 1000 health, three 300s = 900 damage, and 200 healed after the first. 1000 - 900 + 200 = 300.
+    const result = runCombo(
+      plan({
+        defender: statBlock({ armor: 0, hp: 1000, maxHp: 2000 }),
+        instances: [
+          { ...hit('q', 300, 'physical'), sustain: [heal(200)] },
+          hit('w', 300, 'physical'),
+          hit('e', 300, 'physical'),
+        ],
+      }),
+    );
+    expect(result.verdict.burstOnly.lethal).toBe(false);
+    expect(result.verdict.burstOnly.remainingHp).toBe(300);
+    expect(result.verdict.burstOnly.healingApplied).toBe(200);
+    expect(result.sustain.defenderHealing).toBe(200);
+    expect(result.sustain.sources[0]!.fromInstance).toBe(1);
+  });
+
+  it('DOES NOT RESURRECT: a heal placed after the crossing is not counted at all', () => {
+    // The same 200 heal, moved to the LAST instance. The defender is dead at instance 3 and the
+    // heal never happens. Under the old lump-sum model this scenario "survived" on 300 health —
+    // a defender reported alive who died two instances earlier.
+    const result = runCombo(
+      plan({
+        defender: statBlock({ armor: 0, hp: 700, maxHp: 2000 }),
+        instances: [
+          hit('q', 300, 'physical'),
+          hit('w', 300, 'physical'),
+          hit('e', 300, 'physical'),
+          { ...hit('r', 300, 'physical'), sustain: [heal(200)] },
+        ],
+      }),
+    );
+    expect(result.verdict.burstOnly.lethal).toBe(true);
+    expect(result.verdict.burstOnly.lethalAtInstance).toBe(3);
+    expect(result.verdict.burstOnly.remainingHp).toBe(0);
+    // The healing is REPORTED on the sustain line, because the source states it — but none of it
+    // entered the verdict, because the defender was already dead when it would have landed.
+    expect(result.sustain.defenderHealing).toBe(200);
+    expect(result.verdict.burstOnly.healingApplied).toBe(0);
+  });
+
+  it('the same heal one instance EARLIER does buy an instance — the paired case', () => {
+    // Without this, the test above would pass for an engine that ignored healing entirely.
+    // 700 health, 250 healed after instance 2, four 300s:
+    //   inst1  700 - 300 = 400
+    //   inst2  400 - 300 = 100, then +250 = 350
+    //   inst3  350 - 300 =  50   (dead here without the heal)
+    //   inst4   50 - 300 = -250  LETHAL
+    const result = runCombo(
+      plan({
+        defender: statBlock({ armor: 0, hp: 700, maxHp: 2000 }),
+        instances: [
+          hit('q', 300, 'physical'),
+          { ...hit('w', 300, 'physical'), sustain: [heal(250)] },
+          hit('e', 300, 'physical'),
+          hit('r', 300, 'physical'),
+        ],
+      }),
+    );
+    expect(result.verdict.burstOnly.lethalAtInstance).toBe(4);
+    expect(result.verdict.burstOnly.healingApplied).toBe(250);
+  });
+
+  it('treats health reaching EXACTLY zero as lethal, healed or not', () => {
+    // The boundary, pinned because it is the one a heal is most likely to sit on. 700 + 200
+    // healed against 900 damage leaves exactly 0, and 0 health is dead — the same rule the
+    // unhealed walk has always used ("cumulative >= health"), applied to the healed pool.
+    const result = runCombo(
+      plan({
+        defender: statBlock({ armor: 0, hp: 700, maxHp: 2000 }),
+        instances: [
+          hit('q', 300, 'physical'),
+          { ...hit('w', 300, 'physical'), sustain: [heal(200)] },
+          hit('e', 300, 'physical'),
+        ],
+      }),
+    );
+    expect(result.verdict.burstOnly.lethalAtInstance).toBe(3);
+    expect(result.verdict.burstOnly.remainingHp).toBe(0);
+  });
+
+  it('caps a heal at maximum health, so overhealing never inflates the verdict', () => {
+    // 900 of 1000, healed for 400: only 100 fits. `healingApplied` states what counted.
+    const result = runCombo(
+      plan({
+        defender: statBlock({ armor: 0, hp: 900, maxHp: 1000 }),
+        instances: [{ ...hit('q', 100, 'physical'), sustain: [heal(400)] }],
+      }),
+    );
+    expect(result.verdict.burstOnly.remainingHp).toBe(1000);
+    expect(result.verdict.burstOnly.healingApplied).toBe(200);
+    // NEVER more health remaining than the champion can hold.
+    expect(result.verdict.burstOnly.remainingHp).toBeLessThanOrEqual(1000);
+    // The source still states its full figure; the waste is the difference, and the interface
+    // shows it rather than the engine hiding it.
+    expect(result.sustain.defenderHealing).toBe(400);
+  });
+
+  it('keeps ATTACKER sustain out of the verdict entirely', () => {
+    const result = runCombo(
+      plan({
+        defender: statBlock({ armor: 0, hp: 400, maxHp: 2000 }),
+        instances: [{ ...hit('q', 500, 'physical'), sustain: [heal(1000, 'attacker')] }],
+      }),
+    );
+    expect(result.sustain.attackerHealing).toBe(1000);
+    expect(result.verdict.burstOnly.healingApplied).toBe(0);
+    expect(result.verdict.burstOnly.lethal).toBe(true);
+  });
+
+  it('an INCOMPLETE sustain source restores nothing, exactly as incomplete damage deals none', () => {
+    const result = runCombo(
+      plan({
+        defender: statBlock({ armor: 0, hp: 400, maxHp: 2000 }),
+        instances: [
+          {
+            ...hit('q', 500, 'physical'),
+            sustain: [
+              {
+                ...heal(1000),
+                verification: 'incomplete' as const,
+                incompleteReason: { kind: 'pending' as const, note: 'a hand-authored probe' },
+              },
+            ],
+          },
+        ],
+      }),
+    );
+    expect(result.sustain.sources[0]!.amount).toBe(0);
+    expect(result.verdict.burstOnly.lethal).toBe(true);
+  });
+
+  it('treats UNPLACED healing as available from the start, and says so', () => {
+    // No instance owns it, so there is nowhere honest to put it. Available from the start is the
+    // reading most generous to the defender — it says "this kills" less often.
+    const result = runCombo(
+      plan({
+        defender: statBlock({ armor: 0, hp: 700, maxHp: 2000 }),
+        unplacedSustain: [heal(300)],
+        instances: [hit('q', 500, 'physical'), hit('w', 400, 'physical')],
+      }),
+    );
+    expect(result.verdict.burstOnly.lethal).toBe(false);
+    expect(result.verdict.burstOnly.remainingHp).toBe(100);
+    expect(result.sustain.sources[0]!.fromInstance).toBeNull();
+    expect(result.excludedMechanics.join(' ')).toMatch(/available from the START/i);
+  });
+
+  it('lets the DoT line kill a defender the burst left alive after healing', () => {
+    // Nothing heals after the trailing line: §3.8 puts DoT "following the combo", and there is
+    // no instance left to carry a heal.
+    const result = runCombo(
+      plan({
+        defender: statBlock({ armor: 0, magicResist: 0, hp: 500, maxHp: 2000 }),
+        instances: [
+          { ...hit('q', 400, 'physical'), sustain: [heal(200)] },
+          {
+            stepId: 'burn',
+            sourceLabel: 'burn',
+            instanceType: 'dot-application',
+            verification: 'derived',
+            dot: {
+              label: 'burn',
+              verification: 'derived',
+              damage: {
+                components: [component({ id: 'burn-c', damageType: 'magic', base: flat(400) })],
+                rank: 1,
+                maxRank: 5,
+              },
+            },
+          },
+        ],
+      }),
+    );
+    expect(result.verdict.burstOnly.lethal).toBe(false);
+    expect(result.verdict.burstOnly.remainingHp).toBe(300);
+    expect(result.verdict.burstPlusDot.lethal).toBe(true);
+    expect(result.verdict.burstPlusDot.lethalAtInstance).toBeNull();
   });
 });

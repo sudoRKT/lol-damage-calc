@@ -63,6 +63,7 @@ import type {
   Result,
   StatBlock,
   SurvivalVerdict,
+  SustainSource,
 } from '../types/result';
 import type { Scenario } from '../types/scenario';
 
@@ -177,6 +178,24 @@ export interface PlannedDamage {
   holder?: 'attacker' | 'defender';
 }
 
+/**
+ * HEALTH RESTORED, as the layer above states it (SPECIFICATION §3.7).
+ *
+ * `restoresTo` decides which side's total it lands in and whether it can touch the verdict at
+ * all: the ATTACKER's sustain changes whether the attacker lives, which this product does not
+ * ask about. Only the defender's healing enters the verdict.
+ */
+export interface PlannedSustain {
+  label: string;
+  icon?: string | null;
+  kind: 'lifesteal' | 'omnivamp' | 'spell-vamp' | 'heal';
+  restoresTo: 'attacker' | 'defender';
+  /** Health restored, unrounded. Rounded once at the totals, exactly as damage is (§41.1). */
+  amount: number;
+  verification: VerificationStatus;
+  incompleteReason?: IncompleteReason;
+}
+
 /** A damage-over-time source registered by an instance. Reported separately (§3.8). */
 export interface PlannedDot {
   label: string;
@@ -201,6 +220,12 @@ export interface PlannedInstance {
   damage?: PlannedDamage;
   /** A DoT this instance registers. */
   dot?: PlannedDot;
+  /**
+   * Health this instance restores, to either champion. PLACED healing: it resolves immediately
+   * after this instance's damage, in this instance's position, because that is the only place
+   * the source supports — the heal arose from this instance.
+   */
+  sustain?: PlannedSustain[];
   /** What this instance does to combat state, applied AFTER its own damage resolves. */
   effects?: StateEffect[];
   /**
@@ -238,6 +263,16 @@ export interface ComboPlan {
   defenderShields?: ShieldPool[];
   /** The combo, in order. */
   instances: PlannedInstance[];
+  /**
+   * Healing the sequence CANNOT PLACE — a defensive kit heal that is not a response to any hit,
+   * so no instance owns it and §3.2 gives the engine no axis on which to put it between two.
+   *
+   * IT IS TREATED AS AVAILABLE FROM THE START, which is the most generous reading for the
+   * defender and therefore the one that says "your combo kills" LESS often. That is the same
+   * safe direction §38.4 chose for variable hit counts, and it is a stated assumption rather
+   * than a fact: `ENGINE_EXCLUSIONS` discloses it on every result.
+   */
+  unplacedSustain?: PlannedSustain[];
   /** Instances delivered before this sequence begins (§5, a fight joined part-way). */
   instancesAlreadyResolved?: number;
   /** Of those, how many delivered damage. Defaults to `instancesAlreadyResolved`. */
@@ -280,12 +315,13 @@ export const ENGINE_EXCLUSIONS: readonly string[] = [
     'expires soonest, and this engine models sequence rather than elapsed time (§3.2), so it ' +
     'spends them in the order the scenario lists them',
 
-  // THE REASON CHANGED ON 2026-08-13 AND SO DID THE WORDING. `Result.sustain` exists now, so
-  // this is no longer "nowhere to put it" — it is "nothing to put there". The distinction
-  // matters to a reader deciding whether to wait for it.
-  'Lifesteal, omnivamp, spell vamp and healing — the Result reports these on a sustain line, ' +
-    'and no curated item effect, rune or defensive entry states a sustain value yet, so every ' +
-    'figure on that line is zero from zero sources rather than a computed nil',
+  // THE REASON CHANGED TWICE. First from "nowhere to put it" to "nothing to put there"; now the
+  // runner MODELS it and what is disclosed is the one assumption inside the model.
+  'Healing the sequence cannot place — a defensive effect that is not a response to any hit, so ' +
+    'no instance owns it. It is treated as available from the START of the combo, which is the ' +
+    'reading most generous to the defender and therefore says "this kills" less often than a ' +
+    'later placement would. Healing that IS owned by an instance resolves at that instance, and ' +
+    'healing after the kill does not resurrect',
 
   // SAME KIND OF CHANGE. `StatBlock` now carries `maxHpBase`/`maxHpBonus` and optional mana, so
   // a bonus-health ratio resolves. Mana waits on ONE fetched field, named here rather than
@@ -347,6 +383,28 @@ export function runCombo(plan: ComboPlan): Result {
   const statuses: VerificationStatus[] = [];
   /** Damage each instance ACTUALLY applied to health, unrounded, for the survival verdict. */
   const appliedPerInstance: number[] = [];
+  /** Health the DEFENDER regained AT each instance, unrounded, in the same positions. Placed
+   *  healing resolves after its own instance's damage, so index i pairs with index i above. */
+  const defenderHealedAtInstance: number[] = [];
+  const sustainSources: SustainSource[] = [];
+  // Healing no instance owns (`ComboPlan.unplacedSustain`). It is reported on the sustain line
+  // with `fromInstance: null` — the field exists precisely to say "this has no position" — and
+  // is available from the start of the verdict's walk.
+  let unplacedDefenderHealing = 0;
+  for (const source of plan.unplacedSustain ?? []) {
+    const amount = source.verification === 'incomplete' ? 0 : source.amount;
+    if (source.restoresTo === 'defender') unplacedDefenderHealing += amount;
+    sustainSources.push({
+      label: source.label,
+      icon: source.icon ?? null,
+      kind: source.kind,
+      restoresTo: source.restoresTo,
+      amount,
+      fromInstance: null,
+      verification: source.verification,
+      ...(source.incompleteReason ? { incompleteReason: source.incompleteReason } : {}),
+    });
+  }
 
   // The defender's shields, spent as the sequence runs. They are combat state in every sense,
   // and they live here rather than in `CombatState` because state.ts holds a deliberately small
@@ -474,6 +532,35 @@ export function runCombo(plan: ComboPlan): Result {
         ? damagingInstanceNumber
         : combat.damagingInstancesResolved,
     };
+    // PLACED HEALING RESOLVES HERE — after this instance's damage, in this instance's position.
+    // It is the only placement the source supports: the heal arose from this instance, so it
+    // cannot have been available before it.
+    let healedHere = 0;
+    for (const source of instance.sustain ?? []) {
+      // An incomplete sustain source restores NOTHING and says why, exactly as an incomplete
+      // damage instance deals nothing and says why (SPECIFICATION §8).
+      const amount = source.verification === 'incomplete' ? 0 : source.amount;
+      if (source.restoresTo === 'defender') healedHere += amount;
+      sustainSources.push({
+        label: source.label,
+        icon: source.icon ?? null,
+        kind: source.kind,
+        restoresTo: source.restoresTo,
+        amount,
+        fromInstance: instanceNumber,
+        verification: source.verification,
+        ...(source.incompleteReason ? { incompleteReason: source.incompleteReason } : {}),
+      });
+    }
+    // CAPPED AT MAXIMUM. A champion cannot exceed their maximum health, so healing past it is
+    // WASTED — a real quantity a theorycrafter wants, reported by the interface from the same
+    // two numbers rather than invented here. The cap also stops a missing-health ratio in a
+    // later instance going negative.
+    const roomToHeal = Math.max(0, plan.defender.maxHp - combat.defenderCurrentHp);
+    const effectiveHeal = Math.min(healedHere, roomToHeal);
+    defenderHealedAtInstance.push(effectiveHeal);
+    combat = { ...combat, defenderCurrentHp: combat.defenderCurrentHp + effectiveHeal };
+
     // THE POINT CARRIES ITS SPLIT (added 2026-08-13). `burstByType` has just been advanced by
     // this instance, so it is the cumulative split at exactly this point in the sequence.
     // Rounding follows the §41.1 rule everywhere: each figure is rounded ONCE from the running
@@ -546,7 +633,6 @@ export function runCombo(plan: ComboPlan): Result {
     statuses.push(resolved.status);
   }
 
-  const burstTotalUnrounded = burstByType.physical + burstByType.magic + burstByType.true;
   const dotTotalUnrounded = dotByType.physical + dotByType.magic + dotByType.true;
 
   return {
@@ -561,21 +647,34 @@ export function runCombo(plan: ComboPlan): Result {
       ...roundSplit(dotByType),
       sources: dotSources,
     },
-    // SUSTAIN (SPECIFICATION §3.7). The Result now HAS a place to report lifesteal, omnivamp,
-    // spell vamp and healing — that was the blocker, and it is gone. What is still absent is the
-    // DATA: no curated item effect, rune or defensive entry states a sustain value yet, so the
-    // engine reports zero from ZERO SOURCES. An empty `sources` list is what distinguishes "we
-    // computed nothing" from "we computed nothing was restored", and `ENGINE_EXCLUSIONS` says so
-    // in words on every result besides.
-    sustain: { attackerHealing: 0, defenderHealing: 0, sources: [] },
+    // SUSTAIN (SPECIFICATION §3.7). An empty `sources` list is what distinguishes "we computed
+    // nothing" from "we computed that nothing was restored".
+    sustain: {
+      attackerHealing: roundDamage(
+        sustainSources.filter((x) => x.restoresTo === 'attacker').reduce((n, x) => n + x.amount, 0),
+      ),
+      defenderHealing: roundDamage(
+        sustainSources.filter((x) => x.restoresTo === 'defender').reduce((n, x) => n + x.amount, 0),
+      ),
+      sources: sustainSources,
+    },
     // The verdict, twice (§3.8): burst alone, and burst plus full DoT resolution.
     verdict: {
-      burstOnly: verdict(plan.defender.hp, burstTotalUnrounded, appliedPerInstance, 0),
+      burstOnly: verdict(
+        plan.defender.hp,
+        plan.defender.maxHp,
+        appliedPerInstance,
+        defenderHealedAtInstance,
+        unplacedDefenderHealing,
+        0,
+      ),
       burstPlusDot: verdict(
         plan.defender.hp,
-        burstTotalUnrounded + dotTotalUnrounded,
+        plan.defender.maxHp,
         appliedPerInstance,
-        0,
+        defenderHealedAtInstance,
+        unplacedDefenderHealing,
+        dotTotalUnrounded,
       ),
     },
     excludedMechanics: [...ENGINE_EXCLUSIONS, ...(plan.excludedMechanics ?? [])],
@@ -1024,37 +1123,65 @@ function applyExecute(
  */
 function verdict(
   defenderHp: number,
-  damageUnrounded: number,
+  /** The defender's maximum. Healing is capped at it; a verdict may never report more health
+   *  remaining than the champion can hold. */
+  defenderMaxHp: number,
   /** What each instance ACTUALLY applied to health, in order, unrounded. A shield stands
    *  between the damage and the health, so this is not the same as `afterReductions`. */
   appliedPerInstance: number[],
-  /** Health the DEFENDER regained over the sequence, unrounded. 0 in every result this engine
-   *  produces today — nothing in the curated data heals the defender yet, which
-   *  `ENGINE_EXCLUSIONS` states rather than leaving the zero to read as a computed figure. */
-  healingUnrounded: number,
+  /** What the defender regained AT each instance, in the same positions, already capped at
+   *  maximum health. Index i resolves AFTER `appliedPerInstance[i]`. */
+  healedPerInstance: number[],
+  /** Healing no instance owns. Available from the start — see `ComboPlan.unplacedSustain`. */
+  unplacedHealing: number,
+  /** Damage delivered AFTER the whole sequence, with no healing behind it: the DoT line, or 0
+   *  for the burst-only verdict. */
+  trailingDamage: number,
 ): SurvivalVerdict {
-  // HEALTH THE DEFENDER ACTUALLY HAS TO LOSE. A defender who healed 400 and whose verdict was
-  // computed as though they had not is a WRONG number, not an incomplete one, so healing is a
-  // term inside both verdicts rather than a third verdict beside them — §3.8 fixes the count at
-  // two. With no healing this is `defenderHp` and every figure below is unchanged.
-  const survivable = defenderHp + healingUnrounded;
-
+  // THE WALK, AND WHY IT IS A WALK. Healing used to be added to the defender's health in one
+  // lump before the first instance, which is wrong in one direction that matters: A HEAL THAT
+  // ARRIVES AFTER THE KILL CANNOT RESURRECT. Dead is dead at the crossing, so the loop STOPS
+  // there and every later heal is simply not counted. Corrected 2026-08-14.
+  //
+  // Unplaced healing is the exception, and it is an exception on purpose: no instance owns it,
+  // so there is nowhere honest to put it, and treating it as available from the start is the
+  // reading most generous to the defender — the one that says "your combo kills" LESS often.
+  // Stated in ENGINE_EXCLUSIONS rather than assumed silently.
+  let pool = Math.min(defenderMaxHp, defenderHp + unplacedHealing);
+  let healingCounted = Math.min(defenderMaxHp - defenderHp, unplacedHealing);
   let lethalAtInstance: number | null = null;
-  let cumulative = 0;
+
   for (let index = 0; index < appliedPerInstance.length; index += 1) {
-    cumulative += appliedPerInstance[index];
-    if (cumulative >= survivable) {
+    pool -= appliedPerInstance[index]!;
+    if (pool <= 0) {
       lethalAtInstance = index + 1;
       break;
     }
+    // Only reached when the defender survived this instance, which is what makes a later heal
+    // unable to undo an earlier kill.
+    const healed = healedPerInstance[index] ?? 0;
+    const room = Math.max(0, defenderMaxHp - pool);
+    const effective = Math.min(healed, room);
+    pool += effective;
+    healingCounted += effective;
   }
+
+  // The trailing line lands on whatever survived the sequence. Nothing heals after it: §3.8 puts
+  // damage over time "following the combo", and there is no instance left to carry a heal.
+  if (lethalAtInstance === null && trailingDamage > 0) pool -= trailingDamage;
+
+  const lethal = lethalAtInstance !== null || pool <= 0;
+  const damageUnrounded = appliedPerInstance.reduce((n, d) => n + d, 0) + trailingDamage;
+
   return {
     defenderHp,
     damageApplied: roundDamage(damageUnrounded),
-    healingApplied: roundDamage(healingUnrounded),
-    lethal: damageUnrounded >= survivable,
+    // What actually entered THIS verdict's arithmetic, which is not always everything the
+    // sustain line reports: healing beyond the kill, and healing past maximum, did not happen.
+    healingApplied: roundDamage(healingCounted),
+    lethal,
     lethalAtInstance,
-    remainingHp: roundDamage(Math.max(0, survivable - damageUnrounded)),
+    remainingHp: lethal ? 0 : roundDamage(Math.max(0, pool)),
   };
 }
 

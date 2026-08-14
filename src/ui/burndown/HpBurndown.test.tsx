@@ -312,9 +312,19 @@ describe('burndown/visual-cues', () => {
     expect(rule.style.transform).toBe('translateX(-50%)');
   });
 
-  it('the recent-damage ghost exists per column and is invisible at rest', () => {
+  it('the recent-damage ghost appears only where health was actually removed', () => {
+    // NARROWED 2026-08-14, and the narrowing is the correct behaviour rather than a loss. The
+    // ghost is DESIGN.md §7's "chunk that was just taken", so a column that took nothing has no
+    // chunk to show. The mock has 6 columns — 5 instances plus the DoT tail — and instance 4 is
+    // the incomplete one, which contributes no damage (SPECIFICATION §8). It used to animate a
+    // ghost over a band of zero height.
+    //
+    // It also keeps the ghost off a HEALING column, which is the reason this was looked at: a
+    // gold "just lost" flash playing while health is restored shows the opposite of what happened.
     const { container } = render(<HpBurndown result={MOCK_RESULT} />);
-    expect(container.querySelectorAll('.burn__ghost').length).toBe(6);
+    expect(container.querySelectorAll('.burn__col').length).toBe(6);
+    expect(container.querySelectorAll('.burn__ghost').length).toBe(5);
+    expect(MOCK_RESULT.perInstance.filter((i) => i.final === 0)).toHaveLength(1);
   });
 
   it('every column is the same width — the x axis is sequence, never elapsed time', () => {
