@@ -16,3 +16,4 @@ export {
   summaryNote,
 } from './App';
 export type { AppProps } from './App';
+export { ResultNotices, buildReport, SCOPE_DISCLAIMER } from './ResultNotices';

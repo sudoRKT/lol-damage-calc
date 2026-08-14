@@ -1,0 +1,76 @@
+/*
+ * The two notices every result carries. Every value traces to DESIGN.md.
+ *
+ * NO HUE. A legal notice and a report control are not damage data (DESIGN.md §1), so both are
+ * neutral surfaces with a border and a label — there is no amber "caution" band here.
+ */
+
+@import '../tokens.css';
+
+.notices {
+  background: var(--bg-panel);
+  border: var(--border-steel);
+  border-radius: var(--radius-panel);
+  padding: var(--space-4);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3) var(--space-5);
+}
+
+/* SPECIFICATION §15's fixed sentence. Secondary, never muted: §2 permits --text-muted for
+   disabled and placeholder text only, and a required notice is neither. */
+.notices__scope {
+  margin: 0;
+  flex: 1 1 var(--measure-prose-max);
+  min-inline-size: 0;
+  font-size: var(--type-body-s);
+  line-height: var(--lh-body-s);
+  font-weight: var(--weight-body-medium);
+  color: var(--text-secondary);
+}
+
+.notices__report {
+  flex: 0 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.notices__go {
+  display: inline-flex;
+  align-items: center;
+  background: var(--bg-well);
+  border: var(--border-steel);
+  border-radius: var(--radius-control);
+  padding: var(--space-2) var(--space-3);
+  font-family: var(--font-body);
+  font-weight: var(--weight-body-strong);
+  font-size: var(--type-body-m);
+  line-height: var(--lh-body-m);
+  color: var(--text-primary);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.notices__go:hover {
+  background: var(--bg-panel-raised);
+  border: var(--border-strong);
+  text-decoration: none;
+}
+
+.notices__go:focus-visible {
+  outline: var(--border-active);
+  outline-offset: var(--space-0);
+}
+
+.notices__aside,
+.notices__blocked {
+  margin: 0;
+  max-inline-size: var(--measure-prose-max);
+  font-size: var(--type-body-s);
+  line-height: var(--lh-body-s);
+  font-weight: var(--weight-body-medium);
+  color: var(--text-secondary);
+}

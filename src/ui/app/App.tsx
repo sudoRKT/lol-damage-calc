@@ -55,6 +55,7 @@ import { StatBlockPanel } from '../stats';
 import { InstanceBreakdown } from '../breakdown';
 import { HpBurndown } from '../burndown';
 import { VerificationStatusMark } from '../primitives';
+import { ResultNotices } from './ResultNotices';
 import { loadRoster, portraitUrl } from '../data/roster';
 import {
   buildCatalogue,
@@ -408,6 +409,15 @@ export function App({
           </section>
 
           <HpBurndown result={simulation.result} />
+
+          {/* SPECIFICATION §15's scope disclaimer and §8's report control. Both belong to the
+              RESULT, so they sit in the result region and appear only when there is one. */}
+          <ResultNotices
+            scenario={scenario}
+            result={simulation.result}
+            attackerName={attacker?.name ?? attackerName}
+            defenderName={defender?.name ?? defenderConfig.apiname}
+          />
           </div>
 
           {/* ═══ REGION 3 — DETAIL: the itemised evidence ═══ */}
