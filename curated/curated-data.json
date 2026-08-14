@@ -1070,7 +1070,17 @@
     "patch": "16.16.1",
     "fetched": "2026-08-14"
    },
-   "sourceRevision": 4038211
+   "sourceRevision": 4038211,
+   "evidence": {
+    "roundTrip": {
+     "kind": "prose",
+     "rowsCompared": 1
+    },
+    "independentCheck": {
+     "ledger": "verification/gate5-passes.json",
+     "recordedOn": "2026-08-13"
+    }
+   }
   },
   {
    "champion": "Ambessa",
@@ -1462,7 +1472,17 @@
     "patch": "16.16.1",
     "fetched": "2026-08-14"
    },
-   "sourceRevision": 4007564
+   "sourceRevision": 4007564,
+   "evidence": {
+    "roundTrip": {
+     "kind": "template",
+     "rowsCompared": 1
+    },
+    "independentCheck": {
+     "ledger": "verification/gate5-passes.json",
+     "recordedOn": "2026-08-13"
+    }
+   }
   },
   {
    "champion": "Amumu",
@@ -1818,7 +1838,17 @@
     "patch": "16.16.1",
     "fetched": "2026-08-14"
    },
-   "sourceRevision": 3992633
+   "sourceRevision": 3992633,
+   "evidence": {
+    "roundTrip": {
+     "kind": "template",
+     "rowsCompared": 1
+    },
+    "independentCheck": {
+     "ledger": "verification/gate5-passes.json",
+     "recordedOn": "2026-08-13"
+    }
+   }
   },
   {
    "champion": "Annie",
@@ -2157,7 +2187,17 @@
     "patch": "16.16.1",
     "fetched": "2026-08-14"
    },
-   "sourceRevision": 3993664
+   "sourceRevision": 3993664,
+   "evidence": {
+    "roundTrip": {
+     "kind": "prose",
+     "rowsCompared": 1
+    },
+    "independentCheck": {
+     "ledger": "verification/gate5-passes.json",
+     "recordedOn": "2026-08-13"
+    }
+   }
   },
   {
    "champion": "Aphelios",
@@ -2514,7 +2554,17 @@
     "patch": "16.16.1",
     "fetched": "2026-08-14"
    },
-   "sourceRevision": 4007430
+   "sourceRevision": 4007430,
+   "evidence": {
+    "roundTrip": {
+     "kind": "template",
+     "rowsCompared": 1
+    },
+    "independentCheck": {
+     "ledger": "verification/gate5-passes.json",
+     "recordedOn": "2026-08-13"
+    }
+   }
   },
   {
    "champion": "Ashe",
@@ -3858,7 +3908,17 @@
     "patch": "16.16.1",
     "fetched": "2026-08-14"
    },
-   "sourceRevision": 4007576
+   "sourceRevision": 4007576,
+   "evidence": {
+    "roundTrip": {
+     "kind": "template",
+     "rowsCompared": 1
+    },
+    "independentCheck": {
+     "ledger": "verification/gate5-passes.json",
+     "recordedOn": "2026-08-13"
+    }
+   }
   },
   {
    "champion": "Brand",
@@ -4543,7 +4603,17 @@
     "patch": "16.16.1",
     "fetched": "2026-08-14"
    },
-   "sourceRevision": 4007583
+   "sourceRevision": 4007583,
+   "evidence": {
+    "roundTrip": {
+     "kind": "template",
+     "rowsCompared": 2
+    },
+    "independentCheck": {
+     "ledger": "verification/gate5-passes.json",
+     "recordedOn": "2026-08-13"
+    }
+   }
   },
   {
    "champion": "Caitlyn",
@@ -5566,7 +5636,17 @@
     "patch": "16.16.1",
     "fetched": "2026-08-14"
    },
-   "sourceRevision": 4007591
+   "sourceRevision": 4007591,
+   "evidence": {
+    "roundTrip": {
+     "kind": "template",
+     "rowsCompared": 2
+    },
+    "independentCheck": {
+     "ledger": "verification/gate5-passes.json",
+     "recordedOn": "2026-08-13"
+    }
+   }
   },
   {
    "champion": "Darius",
@@ -7009,7 +7089,17 @@
     "patch": "16.16.1",
     "fetched": "2026-08-14"
    },
-   "sourceRevision": 4013233
+   "sourceRevision": 4013233,
+   "evidence": {
+    "roundTrip": {
+     "kind": "template",
+     "rowsCompared": 1
+    },
+    "independentCheck": {
+     "ledger": "verification/gate5-passes.json",
+     "recordedOn": "2026-08-13"
+    }
+   }
   },
   {
    "champion": "Ezreal",
@@ -17833,7 +17923,17 @@
     "patch": "16.16.1",
     "fetched": "2026-08-14"
    },
-   "sourceRevision": 4007675
+   "sourceRevision": 4007675,
+   "evidence": {
+    "roundTrip": {
+     "kind": "template",
+     "rowsCompared": 1
+    },
+    "independentCheck": {
+     "ledger": "verification/gate5-passes.json",
+     "recordedOn": "2026-08-13"
+    }
+   }
   },
   {
    "champion": "Lux",
