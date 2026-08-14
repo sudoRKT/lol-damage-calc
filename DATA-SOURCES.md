@@ -4987,3 +4987,72 @@ were "a proposal … not merged into the curated file", which stopped being true
 now names what is genuinely not modelled: the 22 effects that are neither on-hit, Spellblade nor
 an active. The `on-hit` step-kind note changed too — an on-hit effect is not a step, so a step
 asking for one now says where to find it instead of claiming the data is missing.
+
+---
+
+## 56. What state damage over time is actually in (2026-08-14)
+
+Asked for before any of it is built. Every figure below is measured, not read off the code's own
+description of itself.
+
+### 56.1 Does anything populate the DoT field?
+
+**No.** `PlannedInstance.dot` exists and is fully shaped (`PlannedDot`: label, icon, verification,
+reason, and components stating the FULL-DURATION total). `runCombo` resolves it properly — against
+the state the sequence finished in, with shredded resistances, refusing a multi-type DoT rather
+than filing it under one type. All of that machinery is real and tested.
+
+**Nothing sets it.** `simulate` never writes `dot` on any instance. The only things that ever have
+are hand-authored plans in tests. So the field is populated by fixtures and by nothing else.
+
+### 56.2 The measurement
+
+**DEFINITION: all 173 champions in `public/data/champions.json`, each as attacker at level 18 with
+ranks 5/5/5/3, running P → Q → W → E → R → basic attack against Garen at level 18, no items on
+either side. 173 scenarios, all 173 simulated without refusal.**
+
+| | |
+|---|---:|
+| results carrying any DoT (`dot.total > 0` or any source listed) | **0** |
+| results whose two survival verdicts differ in any way | **0** |
+
+`MOCK_RESULT` carries `dot.total = 160` from one source. So **the hatched tail draws from the mock
+and from nothing else** — `hasDot` is `result.dot.total > 0`, which is false for every real
+scenario, so the `+DoT` column has never once appeared on the live site.
+
+### 56.3 The second verdict
+
+**It is real code, not a stub.** `verdict(...)` is called twice with the same arguments except the
+DoT total, and the second call receives the real figure. There is no branch that copies the first.
+
+**And it has been identical to the first for every real scenario ever computed**, because the
+figure it receives is always zero. SPECIFICATION §3.8's requirement that the verdict be given
+twice is satisfied in FORM and not in SUBSTANCE, exactly as suspected. The two lines a reader sees
+have never disagreed, and nothing on the page says why.
+
+This is not a defect in the verdict code. It is the absence of any DoT to distinguish them.
+
+### 56.4 What could populate it, and the ceiling on that
+
+**9 item effects are marked `overTime`** — the burn family, all `appliesAs: 'periodic'`: Bami's
+Cinder, Blackfire Torch, Fated Ashes, Hollow Radiance, Sunfire Aegis, Unending Despair, Liandry's
+Torment, Malignance, Zeke's Convergence. 7 `derived`, 2 `incomplete`.
+
+**Only 5 of the 9 state how many times they land.** Blackfire Torch 6, Fated Ashes 6, Liandry's
+Torment 6, Malignance 12, Zeke's Convergence 20. The other four — Bami's Cinder, Hollow Radiance,
+Sunfire Aegis, Unending Despair — record `totalInstances` as absent, which is a real state: the
+source does not say, and `CuratedItemEffect.overTime` is explicit that the engine may not invent a
+count.
+
+**So the ceiling on burns is 5 of 9, and it is a data ceiling rather than an engineering one.**
+A full-duration total needs a count of instances, four of these have none, and §3.2 forbids
+deriving one from a duration the engine cannot model. Those four can be NAMED as incomplete DoT
+sources — which is more honest than their current state of not appearing at all — but they cannot
+carry a figure.
+
+**No ability contributes a DoT either: 0 of the 919 stored entries carry `instanceType:
+'dot-application'`.** Whatever burns exist in champion kits have not been harvested as such. So
+the entire near-term DoT population is these 9 item effects, and its damage-bearing part is 5.
+
+**21 defensive entries are marked `overTime`** — healing over time. They are a separate question
+and are not part of this.
