@@ -3995,3 +3995,196 @@ Named rather than implied, so the next session does not have to rediscover them:
   yet, so there is no consumer to run over the producer.
 - **The item and rune effect values** are checked by their own gate, not against the engine's
   component evaluator, because nothing assembles them into a plan yet.
+
+---
+
+## 45. The healing trace, built (2026-08-14)
+
+Approved as proposed in §42.2's raised gap. Two halves — the engine's arithmetic and the chart —
+and they are built so that neither derives from the other and `auditResult` compares them.
+
+### 45.1 The engine: a walk, not a lump
+
+Healing used to be added to the defender's health **in one lump before the first instance**. That
+is wrong in one direction that matters: **a heal placed after the kill brought the defender back.**
+
+The verdict is now a walk. For each instance: apply its damage; if health has reached zero, STOP —
+`lethalAtInstance` is set and every later heal is simply not counted; otherwise apply the healing
+that instance owns, capped at maximum health.
+
+| Rule | Behaviour |
+|---|---|
+| A heal a source attributes to instance *n* | resolves after instance *n*'s damage |
+| A heal **no instance owns** | available from the START of the walk |
+| A heal that would land after the kill | **not counted, and not drawn** |
+| Healing past maximum health | capped; the excess is reported as waste, never silently dropped |
+| Health reaching exactly zero | lethal — the same rule the unhealed walk always used |
+
+**The unplaced case is the one assumption, and it is disclosed rather than assumed.** No instance
+owns it, so there is nowhere honest to put it; available-from-the-start is the reading most
+generous to the defender and therefore the one that says *"this kills"* **less** often. That is the
+same safe direction §38.4 chose for variable hit counts. `ENGINE_EXCLUSIONS` states it on every
+result, and the exclusion NARROWED rather than disappeared: what is disclosed now is the single
+assumption inside a model, not the absence of one.
+
+**`healingApplied` is what actually entered a verdict's arithmetic**, which is not always what the
+sources offered — healing beyond the kill and healing past maximum did not happen. The audit
+therefore checks it is never MORE than the sources offered, rather than equal to it, and separately
+that **no verdict leaves more health than the champion can hold** (the engine had no upper clamp).
+
+### 45.2 The chart: a trace that can also go up
+
+`buildBurndownModel` walked `startHp − cumulativeDamage`, which can only fall. It now walks health:
+damage, then healing, in the instance's own position, capped and stopping at death — **the same
+rules as the verdict, computed independently, and compared.**
+
+- **Healing riser:** 3px, rising, in `--hp-trace` — the neutral cool grey already used for the HP
+  line, because a change in health is exactly what it is. **The non-colour cue is a DOTTED
+  stroke.** No new hue, and none is permitted: §1's reserved-hue law admits no exception, and a
+  green "restored" colour is the success-colour that rule exists to forbid.
+- **Label:** `+90`, carrying **no `P`/`M`/`T` tag** — a heal is not damage, and tagging it would
+  make it read as one. Overhealing reads `+240 (120 wasted)`.
+- **The recent-damage ghost never fires on a heal**, and now fires only where health was actually
+  removed. It is "the chunk that was just taken".
+
+**ONE DEVIATION FROM THE APPROVED PROPOSAL, stated rather than slipped in.** The proposal put the
+unplaced-healing column after the last burst column, beside `+DoT`. It is drawn **before instance
+1** instead, because that is where the engine counts it. Drawing it last would have put the chart
+and the verdict back into disagreement — the defect this work exists to close.
+
+`auditResult` gained `trace-disagrees-with-verdict`: the chart's own walk must land on the number
+the verdict states. Before this change they differed by 90 on the healing fixture.
+
+### 45.3 Two defects a real browser caught and no test could have
+
+Both found by loading the preview page, not by the suite.
+
+1. **The riser rendered at zero height.** Two causes, and the second is the general one:
+   `inline-size: 0` left it with no content box, and — the real cause — **`.burn__heal` was
+   missing from the reduced-motion block.** `burn-draw-riser` starts at `scaleY(0)` with a
+   `backwards` fill, so a selector that animates and is not switched off does not merely skip its
+   animation, it **sticks at the first keyframe permanently** — for exactly the users who asked
+   for less motion. DESIGN.md §10 requires the chart fully readable with motion disabled.
+2. **The sweep that now covers the class.** `token-audit.test.ts` asserts that **every animated
+   selector in every stylesheet appears in that stylesheet's reduced-motion block.** Proved by
+   removing one and watching it fail. jsdom computes no layout and runs no animations, so neither
+   defect was reachable by any existing test.
+
+---
+
+## 46. Version 2 of the link format (2026-08-14)
+
+Closes the one drift §44.3 found. `ComboStep.hitCounts` reached the contract on 2026-08-13 and the
+encoder was never told, so **7 abilities could not be shared at all** — Kai'Sa Q, Lulu Q,
+Nautilus E, Taliyah Q, Yuumi R, Zac R, Ziggs E.
+
+**A new version, not an extended version 1.** The step is positional — `[id, kindIndex, ref]` or
+`[…, options]` — so adding a fifth slot in place would make any page a user already has open
+either misread slot 4 or reject the link as damaged. FORMAT.md §3 fixes the rule: **every version
+ever published stays readable forever, and a new version adds a second decoder beside the old one.**
+So `v1.ts` is untouched, `v2.ts` is new, and decoding dispatches on the version the link states.
+
+**A version 1 link reports `version: 1`**, because that is what it is; re-sharing it upgrades the
+format and loses nothing. A step with hit counts and no options writes `null` in slot 4 so slot 5
+keeps its place, and `null` reads back as ABSENT rather than as an empty options bag — different
+things this suite pins separately. **A count that is not a whole number of hits is refused rather
+than rounded**, and 0 is carried, because 0 means the ability missed entirely.
+
+**Version 2 shares version 1's champion encoding rather than copying it, and that is safe only
+because the promise is now mechanical:** three version 1 links are frozen as constants in
+`round-trip.test.ts`, never regenerated, each asserted to decode to the scenario it was made from.
+Any edit to shared code that changed version 1's behaviour fails there.
+
+### 46.1 Length, measured before and after
+
+| Figure | Before | After |
+|---|---:|---:|
+| every one of the 21 named scenarios | 163–870 | **163–870, unchanged to the character** |
+| `canonical-mock` | 575 | 575 |
+| `maximal` | 870 | 870 |
+| 5 steps, options only | 1,052 | 1,052 |
+| 5 steps, options **and** hit counts | *unshareable* | **1,113** |
+| **13 steps, options and hit counts — THE NEW MAXIMUM** | *unshareable* | **1,852** |
+
+**Not one existing link moved by a single character**, because no named scenario carries hit counts
+and the version digit is one character in both formats. A step that DOES carry them costs about
+**12 characters**.
+
+**Per-shape ceilings under the 2,000-character budget**, on the maximal build. DEFINITION: the
+largest combo length whose full URL stays at or under 2,000.
+
+| Shape | Steps that fit |
+|---|---:|
+| plain steps | **72** |
+| hit counts only | **35** |
+| options only | **16** |
+| options and hit counts | **14** |
+
+So version 2 costs **two steps** off the options-carrying ceiling and nothing off the others. All
+six figures are pinned in `length.test.ts`.
+
+---
+
+## 47. `simulate(scenario) -> Result` — the spine closed (2026-08-14)
+
+The last unwritten piece. Until now `runCombo` took a fully resolved `ComboPlan`, so everything ran
+on hand-authored plans and **nothing turned a user's configuration into a Result.**
+
+**It still reads no data file.** The engine's rule is that champion, item and rune values arrive as
+arguments; they now arrive as a `Catalogue` the caller builds from `public/data/`. This file opens
+nothing.
+
+**It refuses by NAME rather than returning a smaller number.** A champion not in the catalogue or
+an item id that does not exist refuses the whole scenario and says which. A single unmodellable
+STEP does not: it becomes an `incomplete` instance contributing no damage and naming its reason,
+which is SPECIFICATION §8 applied where a scenario is assembled.
+
+**Mana is populated only when `resource === 'Mana'`** (§43), so Shen's 400 energy and Yone's 500
+flow correctly produce no mana figure at all.
+
+**Item statistics: eight of twelve keys applied.** DEFINITION: the distinct `stats` keys present
+across the shipped 209-item pool. The four unapplied are named, not forgotten — two movement-speed
+keys and health regeneration change no damage figure because the engine models sequence rather than
+time; `PercentLifeStealMod` is real sustain and needs the per-instance damage figure it applies to,
+which this function does not have. **A key this map does not know is reported on the result**, so a
+patch adding one cannot drop a stat silently.
+
+`SIMULATION_EXCLUSIONS` states what is absent because the DATA is, not because the engine cannot:
+item passives and actives, every rune and stat shard, critical-strike damage above the base
+multiplier, and all penetration.
+
+### 47.1 What the end-to-end seam found on its first run
+
+**A check that had contradicted the project's own rounding rule for as long as it existed.**
+
+`auditResult` demanded that a running-total delta equal the instance's `final` exactly. Three of
+Lux's four instances failed: *"runningTotal delta 86 but final 87"*. **Neither figure is wrong.**
+§41.1 rounds every figure ONCE from an unrounded quantity, so the difference between two rounded
+cumulative totals need not equal a separately rounded instance — which is the rule the interface
+itself prints under the table. **It passed until now only because every fixture used whole numbers.
+Real champion data does not.**
+
+The tolerance is exactly what rounding can produce and not a point more: 1 for a delta, half a
+point per instance for a per-type sum. Proved still to catch a real disagreement by overstating
+every instance by 5 and watching it fail.
+
+### 47.2 RYZE Q IS STILL BLOCKED, AND NOT BY MANA
+
+Recorded because the expectation was reasonable and wrong. §43 said the mana field was "the whole
+of what Ryze Q was waiting on". **It was a blocker, and it was not the last one.**
+
+The stat block now carries mana and the engine resolves a mana ratio end to end. Ryze Q still
+contributes nothing, because the wiki states *"2% of maximum mana"* and **never says whose**, so
+the harvested ratio carries `owner: 'unresolved'` and the entry is PERMANENTLY incomplete (§16).
+Data Dragon cannot settle it either — it exposes no ability ratios at all (SPECIFICATION §7.3), so
+§42.7's attribution rule has nothing to work with.
+
+> **DEFINITION: mana ratios stored across the 937-entry batch: 8. Of those, with a stated owner:
+> 0.** No harvested ability exercises the mana path today.
+
+### 47.3 The sweep
+
+**All 173 champions**, each attacking Garen with a Q-W-E-R-plus-basic-attack combo — 173 scenarios,
+865 planned instances, every one through `simulate` and then through every assertion the interface
+makes about a Result. **Zero complaints, zero refusals.** One passing matchup would prove almost
+nothing; a champion whose kit produces an awkward shape is what a seam check is for.

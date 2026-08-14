@@ -492,11 +492,33 @@ export function auditResult(result: Result): ResultFinding[] {
     }
   });
 
+  // ═══ THESE TWO COMPARISONS CARRY A ONE-POINT TOLERANCE, AND IT IS THE DOCUMENTED RULE ═══
+  //
+  // WIDENED 2026-08-14, after the end-to-end seam check ran the interface's assertions over
+  // `simulate`'s output on real champion data for the first time. Three of Lux's four instances
+  // were flagged: "runningTotal delta 86 but final 87".
+  //
+  // Neither figure is wrong. §41.1 fixes the rounding rule: every figure is rounded ONCE from an
+  // unrounded quantity, never summed from figures already rounded. So `final` is that instance's
+  // damage rounded, and the running total is the CUMULATIVE damage rounded — and the difference
+  // between two consecutive rounded cumulative figures need not equal the separately rounded
+  // instance. **"The per-instance column may be off by a point or two from its own sum, and must
+  // never be presented as something to add up"** is the rule the interface itself prints under
+  // the table. This check was demanding the opposite.
+  //
+  // It passed for eight months of fixtures because every one of them used whole numbers. Real
+  // champion data does not.
+  //
+  // THE TOLERANCE IS EXACTLY WHAT ROUNDING CAN PRODUCE AND NOT A POINT MORE: two roundings can
+  // move a delta by at most 1, and a per-type sum by at most half a point per instance. Any real
+  // disagreement — a dropped instance, a double count, a mis-assigned type — is far larger and
+  // is still caught.
+  const ROUNDING_SLACK = 1;
   const byType = zeroByType();
   result.perInstance.forEach((inst, i) => {
     const delta =
       (result.runningTotal[i]?.total ?? 0) - (i === 0 ? 0 : (result.runningTotal[i - 1]?.total ?? 0));
-    if (!near(delta, inst.final)) {
+    if (Math.abs(delta - inst.final) > ROUNDING_SLACK + 1e-6) {
       f.push({
         kind: 'delta-disagrees-with-final',
         detail: `instance ${inst.index} (${inst.sourceLabel}): runningTotal delta ${delta} but final ${inst.final}`,
@@ -535,8 +557,11 @@ export function auditResult(result: Result): ResultFinding[] {
     });
   }
 
+  // Half a point per instance, for the reason given above: this sums figures that were each
+  // rounded once, against a figure rounded once from the unrounded whole.
+  const typeSlack = Math.max(ROUNDING_SLACK, result.perInstance.length * 0.5);
   for (const t of DAMAGE_TYPES) {
-    if (!near(byType[t], result.burst.byType[t])) {
+    if (Math.abs(byType[t] - result.burst.byType[t]) > typeSlack + 1e-6) {
       f.push({
         kind: 'burst-by-type',
         detail: `instances sum to ${byType[t]} ${t} but burst.byType.${t} is ${result.burst.byType[t]}`,

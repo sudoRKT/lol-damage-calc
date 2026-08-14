@@ -10,10 +10,10 @@
 //    state model it runs against. This is what makes the engine a simulator rather than a
 //    calculator: instances resolve in order against state the preceding ones produced.
 //
-// STILL NOT DEFINED HERE: `simulate(scenario) -> Result`, the public entry point that turns a
-// Scenario into a ComboPlan by looking up champions, items and runes. It reads data, and the
-// engine reads no data file by design — everything it needs arrives as an argument. That
-// interface is the lead's to set.
+// 3. THE PUBLIC ENTRY POINT — `simulate(scenario, catalogue) -> Result` (simulate.ts, added
+//    2026-08-14). It turns a Scenario into a ComboPlan by looking up champions, items and
+//    abilities. It STILL reads no data file: the data arrives as a `Catalogue` the caller
+//    builds, so the rule that the engine opens nothing is kept.
 //
 // What is NOT modelled, and why, is written up beside each item. The authoritative list is
 // ENGINE_EXCLUSIONS in combo.ts, which is attached to every Result (SPECIFICATION §11):
@@ -156,3 +156,14 @@ export {
   type PreMitigationReduction,
   type StaticPenetration,
 } from './combo';
+
+// The public entry point. A Scenario and a Catalogue in; a Result, or a refusal that names the
+// thing that is missing, out.
+export {
+  simulate,
+  buildStatBlock,
+  SIMULATION_EXCLUSIONS,
+  type Catalogue,
+  type SimulationRefusal,
+  type SimulationResult,
+} from './simulate';

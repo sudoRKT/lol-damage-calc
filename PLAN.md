@@ -88,8 +88,11 @@ not "write the curated file"; it is **triage against the checks that now exist**
 the four-step resistance order, shields, execute thresholds, amplification, multi-type instances and
 per-instance resistance steps.** Three exclusions it had raised are gone (DATA-SOURCES §42): the
 Result reports sustain, bonus-health ratios resolve, and mana ratios resolve as soon as a stat block
-carries mana. **Still outstanding:** `simulate(scenario) -> Result`, the public entry point that
-turns a Scenario into a ComboPlan by looking up champions, items and runes.
+carries mana. ~~**Still outstanding:** `simulate(scenario) -> Result`.~~ **BUILT 2026-08-14 (DATA-SOURCES §47).**
+All 173 champions run through it into every interface assertion with zero complaints. What it
+cannot yet model is DATA, not engine: item passives and actives, every rune and stat shard,
+critical-strike damage above the base multiplier, and all penetration — each named on every result
+it produces.
 
 *(The paragraph this replaces is kept below, because the sizing behind it is still the basis for
 Areas B, C and F.)* **The formula layer exists and is tested; the component model does not.** The engine must now

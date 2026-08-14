@@ -35,10 +35,10 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 
-import { runCombo } from '../src/engine';
+import { runCombo, simulate, type Catalogue } from '../src/engine';
 import { resolveBaseStats } from '../src/engine/champion-stats';
 import { evaluateComponent, unsupportedReasons } from '../src/engine/component';
-import type { Champion, CuratedFile } from '../src/types';
+import type { Champion, CuratedAbility, CuratedFile, Item, Scenario } from '../src/types';
 import { MOCK_RESULT, MOCK_SCENARIO } from '../src/types';
 import type { DamageByType, Result, StatBlock } from '../src/types/result';
 import { gateSchema, gateSumGuard } from '../src/types/validate-curated';
@@ -49,6 +49,10 @@ import { SEAM_PLANS } from './seam-fixtures';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const readJson = <T,>(rel: string): T => JSON.parse(readFileSync(join(ROOT, rel), 'utf8')) as T;
+
+/** The harvester's full-roster proposal. A DRAFT under `build/` — never `/curated/`, which no
+ *  test, script or tool writes (CLAUDE.md, the guards). */
+const HARVESTED_BATCH = ['build', 'proposed-curated', 'abilities', 'batch-01.json'].join('/');
 
 // ---------------------------------------------------------------------------------------
 // The consumer assertions, named once, so each seam runs the SAME set.
@@ -177,7 +181,7 @@ describe('seam: engine Result -> interface assertions', () => {
 // =========================================================================================
 
 describe('seam: harvester CuratedFile -> lead gates and engine evaluator', () => {
-  const BATCH = 'build/proposed-curated/abilities/batch-01.json';
+  const BATCH = HARVESTED_BATCH;
   let batch: CuratedFile | null = null;
   try {
     batch = readJson<CuratedFile>(BATCH);
@@ -633,4 +637,188 @@ describe('seam: runtime mirrors of contract types', () => {
       });
     },
   );
+});
+
+// =========================================================================================
+// SEAM 6 — A REAL SCENARIO, END TO END: shipped data -> simulate -> the interface.
+//
+// The seams above each check ONE join. This checks the whole spine at once, on the real files
+// in `public/data/` and the harvester's real 937-entry batch, with no hand-authored plan
+// anywhere: a Scenario a user could build goes in, and every assertion the interface makes
+// about a Result runs over what comes out.
+//
+// It is the check that could not exist before `simulate` did — everything ran on hand-authored
+// ComboPlans, so nothing had ever turned a configuration into a Result.
+// =========================================================================================
+
+describe('seam: scenario -> simulate -> interface, on the shipped data', () => {
+  const roster = readJson<Champion[]>('public/data/champions.json');
+  const itemPool = readJson<Item[]>('public/data/items.json');
+  const batch = readJson<CuratedFile>(HARVESTED_BATCH);
+
+  const byApiname = new Map(roster.map((c) => [c.apiname, c]));
+  const byItemId = new Map(itemPool.map((i) => [i.id, i]));
+  const byChampion = new Map<string, CuratedAbility[]>();
+  for (const ability of batch.abilities) {
+    const list = byChampion.get(ability.champion) ?? [];
+    list.push(ability);
+    byChampion.set(ability.champion, list);
+  }
+
+  const catalogue: Catalogue = {
+    champion: (apiname) => byApiname.get(apiname),
+    item: (id) => byItemId.get(id),
+    // The batch keys abilities by the champion's DISPLAY name; a scenario names the Data Dragon
+    // apiname. Joining through the roster is what makes "Nunu & Willump" reachable from "Nunu" —
+    // a mismatch that would otherwise silently supply zero abilities and look like a champion
+    // with no kit (DATA-SOURCES §10).
+    abilities: (apiname) => byChampion.get(byApiname.get(apiname)?.name ?? apiname) ?? [],
+  };
+
+  const scenarioFor = (attacker: string, defender: string, combo: Scenario['combo']): Scenario => ({
+    version: 2,
+    attacker: {
+      apiname: attacker,
+      level: 11,
+      abilityRanks: { Q: 5, W: 3, E: 3, R: 2 },
+      items: [3071, 3031, 3036],
+      runes: { keystone: 8010, primary: [], secondary: [], shards: [] },
+      persistent: {},
+      entryState: {},
+    },
+    defender: {
+      apiname: defender,
+      level: 11,
+      abilityRanks: { Q: 5, W: 3, E: 3, R: 2 },
+      items: [3047, 3143],
+      runes: { keystone: null, primary: [], secondary: [], shards: [] },
+      persistent: {},
+      entryState: {},
+    },
+    combo,
+  });
+
+  it('turns a real scenario into a Result the interface accepts without complaint', () => {
+    const outcome = simulate(
+      scenarioFor('Lux', 'Garen', [
+        { id: 'q1', kind: 'ability', ref: 'Q' },
+        { id: 'aa1', kind: 'basic-attack', ref: 'basic' },
+        { id: 'e1', kind: 'ability', ref: 'E' },
+        { id: 'r1', kind: 'ability', ref: 'R' },
+      ]),
+      catalogue,
+    );
+    expect(outcome.ok ? [] : outcome.refusals).toEqual([]);
+    if (!outcome.ok) return;
+
+    expect(interfaceComplaintsAbout(outcome.result)).toEqual([]);
+    expect(outcome.result.perInstance).toHaveLength(4);
+    expect(outcome.result.burst.total).toBeGreaterThan(0);
+  });
+
+  it('holds across a SWEEP of the roster, not one lucky matchup', () => {
+    // DEFINITION: every one of the 173 champions in the shipped roster, each attacking Garen
+    // with a Q-W-E-R-plus-basic-attack combo — 173 scenarios, 865 planned instances. One
+    // passing matchup proves almost nothing; a champion whose kit produces an awkward shape is
+    // exactly what a seam check is for.
+    const complaints: string[] = [];
+    let produced = 0;
+    for (const champion of roster) {
+      const outcome = simulate(
+        scenarioFor(champion.apiname, 'Garen', [
+          { id: 'q1', kind: 'ability', ref: 'Q' },
+          { id: 'w1', kind: 'ability', ref: 'W' },
+          { id: 'e1', kind: 'ability', ref: 'E' },
+          { id: 'r1', kind: 'ability', ref: 'R' },
+          { id: 'aa1', kind: 'basic-attack', ref: 'basic' },
+        ]),
+        catalogue,
+      );
+      if (!outcome.ok) {
+        complaints.push(`${champion.apiname}: refused — ${outcome.refusals[0]!.reason}`);
+        continue;
+      }
+      produced += 1;
+      for (const c of interfaceComplaintsAbout(outcome.result)) {
+        complaints.push(`${champion.apiname}: ${c}`);
+      }
+    }
+    expect(complaints).toEqual([]);
+    expect(produced).toBe(173);
+  });
+
+  it('refuses by NAME rather than returning a smaller number', () => {
+    const unknownChampion = simulate(scenarioFor('NotAChampion', 'Garen', []), catalogue);
+    expect(unknownChampion.ok).toBe(false);
+    if (!unknownChampion.ok) {
+      expect(unknownChampion.refusals[0]!.path).toBe('attacker.apiname');
+      expect(unknownChampion.refusals[0]!.reason).toContain('NotAChampion');
+    }
+
+    const base = scenarioFor('Lux', 'Garen', []);
+    const unknownItem = simulate(
+      { ...base, attacker: { ...base.attacker, items: [999999] } },
+      catalogue,
+    );
+    expect(unknownItem.ok).toBe(false);
+    if (!unknownItem.ok) expect(unknownItem.refusals[0]!.path).toContain('items[0]');
+  });
+
+  it('a step it cannot model contributes NOTHING and says why, rather than refusing everything', () => {
+    // SPECIFICATION §8 at the point a scenario is assembled: an item active has no curated data
+    // yet, so it is named and excluded — and the rest of the combo still produces a number.
+    const outcome = simulate(
+      scenarioFor('Lux', 'Garen', [
+        { id: 'q1', kind: 'ability', ref: 'Q' },
+        { id: 'i1', kind: 'item-active', ref: '3031' },
+      ]),
+      catalogue,
+    );
+    expect(outcome.ok).toBe(true);
+    if (!outcome.ok) return;
+    expect(outcome.result.perInstance[1]!.final).toBe(0);
+    expect(outcome.result.incompleteContributors).toHaveLength(1);
+    expect(outcome.result.incompleteContributors[0]!.reason.note).toMatch(/item actives/);
+  });
+
+  it('populates mana from the RESOURCE, and leaves it absent for every other resource', () => {
+    const mana = simulate(scenarioFor('Ryze', 'Garen', []), catalogue);
+    const none = simulate(scenarioFor('Garen', 'Garen', []), catalogue);
+    // Shen's pool is 400 ENERGY. Non-zero, and the mana figure must still be absent — this is
+    // the case that made `Champion.resource` necessary (DATA-SOURCES §43).
+    const energy = simulate(scenarioFor('Shen', 'Garen', []), catalogue);
+    expect([mana.ok, none.ok, energy.ok]).toEqual([true, true, true]);
+    if (!mana.ok || !none.ok || !energy.ok) return;
+    expect(mana.result.attackerStats.maxMana).toBeGreaterThan(0);
+    expect(none.result.attackerStats.maxMana).toBeUndefined();
+    expect(energy.result.attackerStats.maxMana).toBeUndefined();
+  });
+
+  it('RYZE Q IS STILL BLOCKED, AND NOT BY MANA — the finding, pinned', () => {
+    // The stat block now carries mana and the ENGINE resolves a mana ratio (proved end to end in
+    // combo.test.ts). Ryze Q still contributes nothing, and the reason is a different blocker:
+    // the wiki states "2% of maximum mana" and never says WHOSE, so the harvested ratio carries
+    // `owner: 'unresolved'` and the entry is PERMANENTLY incomplete (DATA-SOURCES §16). Data
+    // Dragon cannot settle it either — it exposes no ability ratios at all (SPECIFICATION §7.3),
+    // so the attribution rule of §42.7 has nothing to work with here.
+    //
+    // DEFINITION: mana ratios stored across the 937-entry batch: 8, of which 0 state an owner.
+    // Adding mana to the stat block removed a blocker that was real without being the last one.
+    const manaRatios = batch.abilities.flatMap((a) =>
+      a.components.flatMap((c) =>
+        c.ratios.filter((r) => r.stat === 'maxMana' || r.stat === 'currentMana'),
+      ),
+    );
+    expect(manaRatios).toHaveLength(8);
+    expect(manaRatios.filter((r) => r.owner !== 'unresolved')).toEqual([]);
+
+    const outcome = simulate(
+      scenarioFor('Ryze', 'Garen', [{ id: 'q1', kind: 'ability', ref: 'Q' }]),
+      catalogue,
+    );
+    expect(outcome.ok).toBe(true);
+    if (!outcome.ok) return;
+    expect(outcome.result.perInstance[0]!.final).toBe(0);
+    expect(outcome.result.incompleteContributors[0]!.reason.kind).toBe('permanent');
+  });
 });

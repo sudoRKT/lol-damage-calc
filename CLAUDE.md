@@ -318,6 +318,26 @@ that cannot be read in full is not stored in part.
 6. **The basic attack is named in words and marked `AA`.** No Data Dragon art is borrowed for it;
    borrowing would make one chip mean something other than what it depicts.
 
+**THE SPINE IS CLOSED (DATA-SOURCES §47).** `simulate(scenario, catalogue) -> Result` exists, so a
+user's configuration becomes a Result for the first time — everything used to run on hand-authored
+plans. It still reads no data file: the data arrives as a catalogue the caller builds. **All 173
+champions were run through it into every interface assertion, with zero complaints.** Its first run
+found a check that had contradicted this project's own rounding rule since it was written, passing
+only because every fixture used whole numbers. **Ryze Q is still blocked, and NOT by mana** (§47.2):
+the wiki never says whose maximum mana, so it is permanently incomplete. 8 mana ratios are stored
+across the roster and 0 state an owner.
+
+**Healing is modelled, and a heal cannot resurrect (§45).** Placed healing resolves at its own
+instance; the walk stops at the crossing. Unplaced healing keeps the generous reading and is
+disclosed. The burndown's trace now goes up as well as down, in neutral grey with a dotted stroke —
+no new hue. Two defects there were caught by a real browser and not by any test, and the second is
+now a sweep: every animated selector must appear in its reduced-motion block, or it sticks at its
+first keyframe forever for users who asked for less motion.
+
+**The link format is at version 2 (§46).** Seven abilities could not be shared at all. Version 1 is
+untouched and still decodes, pinned by frozen link constants. No existing link moved by a single
+character; the new maximum for a realistic scenario is 1,852 against a 2,000 budget.
+
 **THE CROSS-AREA SEAM IS NOW SWEPT AND WATCHED (DATA-SOURCES §44).** The seventh decision below
 exposed a defect class the PARTITION creates rather than one either area caused: an area's tests
 run over its own output, so two areas can hold opposite rules about one shape with both suites
