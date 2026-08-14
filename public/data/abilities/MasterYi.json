@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -45,7 +45,7 @@
         "source": "Template:Data Master Yi/Double Strike",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Master%20Yi/Double%20Strike",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3999525,
       "icon": "MasterYi_Passive1.png"
@@ -139,9 +139,10 @@
         "source": "Template:Data Master Yi/Alpha Strike",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Master%20Yi/Alpha%20Strike",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4032850,
+      "notes": "how many times this lands is not fixed by the ability (the source states repeats against the same target but the source states repeats but prints no whole-ability total, so the ceiling on how many can land is not stated anywhere and must not be invented); how many times this lands could not be read (\"Reduced Damage per hit\" lands more than once and nothing in the template states how many)",
       "icon": "AlphaStrike.png"
     },
     {
@@ -156,9 +157,10 @@
         "source": "Template:Data Master Yi/Meditate",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Master%20Yi/Meditate",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4039653,
+      "notes": "no source states what damage type this ability deals, and a figure without a type is a figure without a resistance",
       "icon": "Meditate.png"
     },
     {
@@ -196,7 +198,7 @@
         "source": "Template:Data Master Yi/Wuju Style",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Master%20Yi/Wuju%20Style",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3959670,
       "icon": "WujuStyle.png"
@@ -213,7 +215,7 @@
         "source": "Template:Data Master Yi/Highlander",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Master%20Yi/Highlander",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4001544,
       "icon": "Highlander.png"

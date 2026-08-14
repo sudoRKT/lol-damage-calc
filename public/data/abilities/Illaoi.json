@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -55,7 +55,7 @@
         "source": "Template:Data Illaoi/Prophet of an Elder God",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Illaoi/Prophet%20of%20an%20Elder%20God",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4050910,
       "icon": "Illaoi_P.png"
@@ -73,7 +73,7 @@
         "source": "Template:Data Illaoi/Tentacle Smash",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Illaoi/Tentacle%20Smash",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4016298,
       "icon": "IllaoiQ.png"
@@ -143,7 +143,7 @@
         "source": "Template:Data Illaoi/Harsh Lesson",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Illaoi/Harsh%20Lesson",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4049941,
       "icon": "IllaoiW.png"
@@ -183,9 +183,10 @@
         "source": "Template:Data Illaoi/Test of Spirit",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Illaoi/Test%20of%20Spirit",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4049942,
+      "notes": "the wiki's own rendering of this ability disagrees with what was read from it ([Damage Transmission] rank 5: wiki NaN, stored 45)",
       "icon": "IllaoiE.png"
     },
     {
@@ -223,7 +224,7 @@
         "source": "Template:Data Illaoi/Leap of Faith",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Illaoi/Leap%20of%20Faith",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4050880,
       "icon": "IllaoiR.png"

@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -22,9 +22,10 @@
         "source": "Template:Data Zeri/Living Battery",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Zeri/Living%20Battery",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4051663,
+      "notes": "the ability template and the wiki damage module both state that this ability deals damage, but its page carries no leveling row to read a figure from — the damage is stated in description prose that has not been read yet",
       "icon": "ZeriP.png"
     },
     {
@@ -63,9 +64,10 @@
         "source": "Template:Data Zeri/Burst Fire",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Zeri/Burst%20Fire",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4041832,
+      "notes": "{{ap|{{#var:ad1}}*({{#var:crit}}+{{#var:ie_mod}})/{{#var:rou — not a literal rank value: \"102*({{#expr:({{ccd\"; {{#var:b1}}*({{#var:crit}}+{{#var:ie_mod}})/{{#var:rounds}}  — not a literal rank value: \"22*({{#expr:({{ccd\"",
       "icon": "ZeriQ.png"
     },
     {
@@ -147,9 +149,10 @@
         "source": "Template:Data Zeri/Ultrashock Laser",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Zeri/Ultrashock%20Laser",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4013271,
+      "notes": "{{ap|120*({{#var:crit}}/100+{{#var:ie_dam}})}}% AD — not a literal rank value: \"120*(150/100+{{#expr:{{#invoke:ItemData\"; 30*({{#var:crit}}/100+{{#var:ie_dam}}) to 190*({{#var:crit}} — not a literal rank value: \"30*(150/100+{{#expr:{{#invoke:ItemData\"",
       "icon": "ZeriW.png"
     },
     {
@@ -187,7 +190,7 @@
         "source": "Template:Data Zeri/Spark Surge",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Zeri/Spark%20Surge",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4015351,
       "icon": "ZeriE.png"
@@ -233,9 +236,10 @@
         "source": "Template:Data Zeri/Lightning Crash",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Zeri/Lightning%20Crash",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4016978,
+      "notes": "how many times this lands is not fixed by the ability (the source states repeats against the same target but the source states repeats but prints no whole-ability total, so the ceiling on how many can land is not stated anywhere and must not be invented)",
       "icon": "ZeriR.png"
     }
   ],

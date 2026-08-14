@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -21,7 +21,7 @@
         "source": "Template:Data Rakan/Fey Feathers",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Rakan/Fey%20Feathers",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4016025,
       "icon": "Rakan_P.png"
@@ -61,7 +61,7 @@
         "source": "Template:Data Rakan/Gleaming Quill",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Rakan/Gleaming%20Quill",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3996425,
       "icon": "RakanQ.png"
@@ -101,7 +101,7 @@
         "source": "Template:Data Rakan/Grand Entrance",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Rakan/Grand%20Entrance",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4007760,
       "icon": "RakanW.png"
@@ -118,7 +118,7 @@
         "source": "Template:Data Rakan/Battle Dance",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Rakan/Battle%20Dance",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4008001,
       "icon": "RakanE.png"
@@ -158,7 +158,7 @@
         "source": "Template:Data Rakan/The Quickness",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Rakan/The%20Quickness",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3971183,
       "icon": "RakanR.png"

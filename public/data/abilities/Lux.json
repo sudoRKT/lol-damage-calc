@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -49,7 +49,7 @@
         "source": "Template:Data Lux/Illumination",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Illumination",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4038408,
       "icon": "LuxIlluminatingFraulein.png"
@@ -89,7 +89,7 @@
         "source": "Template:Data Lux/Light Binding",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Light%20Binding",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4007675,
       "icon": "LuxLightBinding.png"
@@ -106,7 +106,7 @@
         "source": "Template:Data Lux/Prismatic Barrier",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Prismatic%20Barrier",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3992656,
       "icon": "LuxPrismaticWave.png"
@@ -146,7 +146,7 @@
         "source": "Template:Data Lux/Lucent Singularity",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Lucent%20Singularity",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4007677,
       "icon": "LuxLightStrikeKugel.png"
@@ -186,7 +186,7 @@
         "source": "Template:Data Lux/Final Spark",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lux/Final%20Spark",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3919833,
       "icon": "LuxR.png"

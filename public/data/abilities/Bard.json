@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -22,9 +22,10 @@
         "source": "Template:Data Bard/Traveler's Call",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Bard/Traveler's%20Call",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4034690,
+      "notes": "the ability template and the wiki damage module both state that this ability deals damage, but its page carries no leveling row to read a figure from — the damage is stated in description prose that has not been read yet",
       "icon": "Bard_Passive.png"
     },
     {
@@ -62,7 +63,7 @@
         "source": "Template:Data Bard/Cosmic Binding",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Bard/Cosmic%20Binding",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4037681,
       "icon": "BardQ.png"
@@ -79,7 +80,7 @@
         "source": "Template:Data Bard/Caretaker's Shrine",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Bard/Caretaker's%20Shrine",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3960421,
       "icon": "BardW.png"
@@ -96,7 +97,7 @@
         "source": "Template:Data Bard/Magical Journey",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Bard/Magical%20Journey",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4007574,
       "icon": "BardE.png"
@@ -114,9 +115,10 @@
         "source": "Template:Data Bard/Tempered Fate",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Bard/Tempered%20Fate",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4008478,
+      "notes": "the wiki damage module states that this ability deals damage, but its page carries no leveling row to read a figure from — the damage is stated in description prose that has not been read yet",
       "icon": "BardR.png"
     }
   ],

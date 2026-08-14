@@ -64,6 +64,77 @@ export function wikiSlotAlias(slot: AbilitySlot): string {
   return slot === 'P' ? 'I' : slot;
 }
 
+/**
+ * Turn the recorded issues into ONE sentence a user can act on.
+ *
+ * Plain English, no identifiers, no counts of internal objects. The reader is a person deciding
+ * how far to trust the total on their screen (CLAUDE.md: "The project owner does not write code
+ * and cannot read it").
+ *
+ * IT NEVER INVENTS A REASON. Every phrase below is keyed to an issue the harvester actually
+ * recorded. An entry with no recorded issue gets NO note, and the interface says that in its own
+ * words rather than being handed a sentence that merely sounds like an explanation.
+ */
+/**
+ * Round every number inside a detail string to at most two decimals.
+ *
+ * THE REASONS ARE USER-FACING TEXT AND ARE HELD TO THE SAME RULE AS A FIGURE. The details were
+ * written for a report, so they carry raw arithmetic — "a total of 195.60000000000002", "0.800x
+ * the per-instance value". The moment `notes` began reaching the screen (2026-08-14) that became
+ * floating-point noise printed at the user, which is exactly the defect the interface had just
+ * swept out of its own figures. Caught by that sweep on the first run after this change, which
+ * is the check doing its job across an area boundary.
+ *
+ * Two decimals matches `WIKI_DISPLAY_DECIMALS` — the precision the wiki itself prints at, and
+ * the precision every other comparison in this project uses.
+ */
+export function tidyNumbers(detail: string): string {
+  return detail.replace(/\d+\.\d+/g, (n) => {
+    const rounded = Math.round(Number(n) * 100) / 100;
+    return String(rounded);
+  });
+}
+
+export function describeIssues(issues: ReadonlyArray<{ kind: string; detail: string }>): string {
+  // Most specific first, so an entry with several reasons leads with the one that most affects
+  // whether a figure could have been shown at all.
+  const ORDER = [
+    'schema-invalid',
+    'round-trip-disagreement',
+    'source-conflict',
+    'total-mismatch',
+    'unknown-damage-type',
+    'every-damage-row-dropped',
+    'damage-stated-but-no-leveling-row',
+    'variable-hit-count',
+    'unknown-hit-count',
+  ];
+  const seen = new Map<string, string>();
+  for (const issue of issues) if (!seen.has(issue.kind)) seen.set(issue.kind, issue.detail);
+
+  const ordered = [...seen.entries()].sort(
+    (a, b) => (ORDER.indexOf(a[0]) + 1 || 99) - (ORDER.indexOf(b[0]) + 1 || 99),
+  );
+  return ordered.map(([kind, detail]) => tidyNumbers(PHRASE[kind]?.(detail) ?? detail)).join('; ');
+}
+
+/** One phrase per recorded issue kind. A kind with no phrase falls back to its own detail. */
+const PHRASE: Record<string, (detail: string) => string> = {
+  'schema-invalid': (d) => `the entry is not structurally valid, so no figure from it is shown (${d})`,
+  'round-trip-disagreement': (d) =>
+    `the wiki's own rendering of this ability disagrees with what was read from it (${d})`,
+  'source-conflict': () =>
+    'two sources state different values for the same figure and nothing settles which is right',
+  'total-mismatch': (d) => `the parts do not add up to the total the source itself states (${d})`,
+  'unknown-damage-type': () =>
+    'no source states what damage type this ability deals, and a figure without a type is a ' +
+    'figure without a resistance',
+  'every-damage-row-dropped': (d) => d,
+  'damage-stated-but-no-leveling-row': (d) => d,
+  'variable-hit-count': (d) => `how many times this lands is not fixed by the ability (${d})`,
+  'unknown-hit-count': (d) => `how many times this lands could not be read (${d})`,
+};
+
 export function instanceTypeFor(slot: AbilitySlot, hasDamage: boolean): InstanceType {
   if (!hasDamage) return 'non-damaging-ability';
   if (slot === 'P') return 'on-hit';
@@ -521,6 +592,41 @@ export function draftFromTemplate(src: TemplateSource, patch: string, fetched: s
     withRelations.length === 0 &&
     (droppedEveryDamageRow || ((declaresDamage || statedByModule) && rows.length === 0));
 
+  // ═══ THE REASON IS RECORDED, NOT JUST THE VERDICT (2026-08-14) ═══
+  //
+  // `needsHandAuthoring` drove an entry to `incomplete` and pushed NO issue, so 224 of the 247
+  // incomplete entries reached the interface with nothing to say beyond "incomplete". A user
+  // told only "not yet modelled" cannot tell whether the total in front of them is missing a
+  // rounding error or half the combo, which is the whole purpose of showing the status
+  // (SPECIFICATION §8: "BOTH kinds name what is missing").
+  //
+  // The harvester ALREADY KNEW why in every case — the three causes below are the terms of the
+  // condition above. They were computed and thrown away.
+  if (needsHandAuthoring) {
+    if (droppedEveryDamageRow) {
+      issues.push({
+        kind: 'every-damage-row-dropped',
+        detail:
+          `the source states ${sourceDamageRows} damage row${sourceDamageRows === 1 ? '' : 's'} ` +
+          `for this ability and none of them could be read in full, so none was stored — a row ` +
+          `read in part is not stored at all`,
+      });
+    } else if (rows.length === 0) {
+      // Which source said it damages decides what a reader should expect to find.
+      const who = declaresDamage && statedByModule
+        ? 'the ability template and the wiki damage module both state'
+        : declaresDamage
+          ? 'the ability template states'
+          : 'the wiki damage module states';
+      issues.push({
+        kind: 'damage-stated-but-no-leveling-row',
+        detail:
+          `${who} that this ability deals damage, but its page carries no leveling row to read ` +
+          `a figure from — the damage is stated in description prose that has not been read yet`,
+      });
+    }
+  }
+
   // WHAT THE ABILITY IS, NOT WHAT WE MANAGED TO READ. `instanceType` was set from whether we
   // stored a component, so the 80 abilities whose damage we cannot extract were labelled
   // 'non-damaging-ability' — a claim about the game, made from a failure of ours. It is now set
@@ -593,6 +699,22 @@ export function draftFromTemplate(src: TemplateSource, patch: string, fetched: s
     for (const f of schema.findings) {
       issues.push({ kind: 'schema-invalid', detail: f.message.slice(0, 120) });
     }
+  }
+
+  // ═══ THE REASON REACHES THE ENTRY, AND THEREFORE THE SCREEN (2026-08-14) ═══
+  //
+  // `issues` was a report artefact: it drove the verdict and then stayed in the batch report, so
+  // the interface had nothing to print but "incomplete". SPECIFICATION §8 requires a PENDING
+  // entry to name what is missing, not merely that something is — the two incomplete states
+  // differ in what they say about the FUTURE, never in whether they say anything at all.
+  //
+  // `notes` is the field the contract already has, and `simulate` already prints it.
+  //
+  // A PERMANENT entry is deliberately NOT given a note. It carries `unresolvable`, which names
+  // the missing FIELD and why no source settles it — a fuller and more specific answer than any
+  // sentence this function could write, and the interface renders that instead.
+  if (entry.verification === 'incomplete' && issues.length > 0 && !entry.unresolvable) {
+    entry.notes = describeIssues(issues);
   }
 
   return {

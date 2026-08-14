@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -21,7 +21,7 @@
         "source": "Template:Data Renekton/Reign of Anger",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Renekton/Reign%20of%20Anger",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3961774,
       "icon": "Renekton_Passive.png"
@@ -83,7 +83,7 @@
         "source": "Template:Data Renekton/Cull the Meek",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Renekton/Cull%20the%20Meek",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4008014,
       "icon": "RenektonCleave.png"
@@ -124,7 +124,7 @@
         "source": "Template:Data Renekton/Ruthless Predator",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Renekton/Ruthless%20Predator",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4015473,
       "icon": "RenektonPreExecute.png"
@@ -186,9 +186,10 @@
         "source": "Template:Data Renekton/Slice and Dice",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Renekton/Slice%20and%20Dice",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3943397,
+      "notes": "the parts do not add up to the total the source itself states (the wiki states a total of 80 at rank 1 and our additive components sum to 40 — a term or a multiplicity is missing)",
       "icon": "RenektonSliceAndDice.png"
     },
     {
@@ -233,7 +234,7 @@
         "source": "Template:Data Renekton/Dominus",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Renekton/Dominus",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3963895,
       "icon": "RenektonReignOfTheTyrant.png"

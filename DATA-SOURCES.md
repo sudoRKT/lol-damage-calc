@@ -4312,3 +4312,125 @@ one they do.
 3. **`value` cannot carry a `RatioMultiplier`.** Galio W states "(+4% per 100 AP)" beside a flat
    percentage, so those terms land on `ratios` instead — which is what puts Trundle R's mismatch on
    gate D2.
+
+---
+
+## 49. Three decisions after the fan-out (2026-08-14)
+
+### 49.1 THE HONESTY SHORTFALL — every incomplete entry now names what is missing
+
+SPECIFICATION §8 requires a PENDING entry to say what is missing, not merely that something is.
+On screen, most of the roster said only *"this ability is recorded as incomplete"* — a sentence
+that restates the status as though it were the cause.
+
+**It was a data gap with a visible symptom, and the harvester already knew the answer in every
+case.** `issues` — a per-entry list of reason classes — drove the verdict and then stayed in the
+batch report. The entry never carried it, so the interface had nothing to print.
+
+Two causes were not even recorded. `needsHandAuthoring` set an entry to `incomplete` and pushed
+NO issue, though its own condition distinguishes two situations the reader would want told apart:
+every damage row dropped, versus the source stating damage while the page carries no leveling row
+at all. Both were computed and thrown away.
+
+| Incomplete entries, over the 937-page batch | Before | After |
+|---|---:|---:|
+| carrying a specific reason (`notes`) | **0** | **224** |
+| carrying named missing facts (`unresolvable`, permanent) | 23 | 23 |
+| **carrying NEITHER — the shortfall** | **224** | **0** |
+
+**DEFINITION: entries whose `verification` is `incomplete`, over the 937 distinct ability pages.**
+213 gained a reason from the harvester itself; the remaining 11 were the LATE demotions — gate 2's
+round-trip disagreements and one recorded source conflict — which are applied after the harvester
+has finished, so the note is now written again once every status change is final.
+
+**A PERMANENT entry is deliberately given no note.** It carries `unresolvable`, which names the
+missing FIELD and why no source settles it — a fuller answer than any sentence the describer could
+write. **And where the harvester recorded nothing, `simulate` says exactly that** rather than a
+sentence that merely sounds like an explanation: *"the data records no reason for this … which is
+itself a gap in the harvested data rather than a fact about the ability."*
+
+> **THE FIX OPENED A NEW CHANNEL FOR AN OLD DEFECT, AND THE INTERFACE'S OWN SWEEP CAUGHT IT ON THE
+> FIRST RUN.** The details were written for a report, so they carried raw arithmetic — *"a total of
+> 195.60000000000002"*, *"0.800x the per-instance value"*. The moment `notes` reached the screen
+> that was floating-point noise printed at the user, which is the exact defect the interface had
+> just swept out of its own figures. **A check written in one area caught a defect introduced in
+> another**, which is what §44's seam work exists for. Reasons are now held to the same two-decimal
+> precision as any figure.
+
+### 49.2 DESIGN.md §7 vs §8 — the bar keeps its proportions, the labels move
+
+§7 sizes composition-bar segments in proportion; §8 makes the `P`/`M`/`T` tag mandatory and never
+suppressed. On a short bar with a lopsided split both cannot hold, and a build had resolved it by
+**widening the narrow segment** — keeping every tag and making the bar overstate the smallest
+damage type, the number a reader is least able to check.
+
+**RESOLVED: a segment is never widened. When any segment is too narrow for its own tagged value,
+every label leaves the bar and sits in a row beneath it**, in the bar's order, each keeping its tag
+and its hue. Recorded in both sections, which now cross-reference each other. The general form is
+worth carrying: **when a mandatory cue will not fit, move the cue — never resize the data to
+accommodate it.**
+
+"Too narrow" is decided from the DATA, not from measured layout, because layout exists only in a
+real browser and a rule nothing can evaluate is a rule nothing checks. `MIN_SHARE_FOR_INLINE_LABEL`
+is 0.25, and it was derived rather than picked: the longest realistic label is seven characters,
+about 46px at `--type-num-s` in JetBrains Mono, against a narrowest-case bar of roughly 200px.
+
+**VERIFIED IN A REAL BROWSER on the exact split that failed.** Ahri with Rabadon's Deathcap
+produces 42 physical / 225 magic — the split that had rendered as the single illegible string
+`4222 5 M` with the `P` lost. The segments now measure **12px and 65px**, a ratio of 0.156 against
+the true 0.157; both labels sit below, both carry their tag, and they do not overlap. Under the
+withdrawn rule that 12px segment would have been stretched to about 35px, showing a 16% share as
+though it were 35%.
+
+### 49.3 Ally-only defensive effects are not the defender's
+
+The defender model is ONE champion. An effect that only ever protects an ALLY is not a defensive
+entry for its owner: storing it grants a defender protection they never receive — a plausible wrong
+number in the worst direction, because it makes a combo look survivable when it is not.
+
+> **A WORD SEARCH DOES NOT FIND THESE, AND THE PROOF IS THE CASE THAT PROMPTED THE RULE.** Sweeping
+> all 161 proposed entries for "ally" or "allied" found 12 — and **missed Shen R**, whose stored
+> condition reads only *"Active channel; scales with target's missing health"*. The word that
+> decides it is in the source's own sentence — *"granting the target allied champion a shield"* —
+> not in anything the entry carries. So the population is a READ LIST, each member quoting the
+> sentence it rests on, and adding one means reading its sentence rather than widening a pattern.
+
+**6 entries removed, from 161 to 155.** DEFINITION: proposed `CuratedDefensiveEffect` entries whose
+recipient is not the defender, over the 155 that remain plus the 6 dropped.
+
+| Removed | Kind | Why |
+|---|---|---|
+| **Shen R** ×2 (Minimum, Maximum) | shield | the shield is placed on the ally Shen channels toward; he only travels there afterwards |
+| **Kalista R** | immunity | Fate's Call makes the OATHSWORN untargetable; Kalista gains nothing |
+| **Tahm Kench R** | shield | *"If the target is an ally, they are granted a shield"* — granted to them |
+| **Taric W** | shield | the source splits the recipients in one sentence: the armor is Taric's and STAYS, the shield is the ally's and goes |
+| **Yuumi R** | heal | **not ally-only — NOT READ.** Kept in its own list, see below |
+
+**Where an effect protects both, only the self portion goes.** Taric W is the clearest: its
+`resistance-grant` remains and its `shield` does not, from one sentence. Kayle R (*"herself or a
+target allied champion"*), Milio E, Senna Q, K'Sante E and Braum W all protect the owner too and
+are untouched.
+
+**Milio W is the near miss worth recording.** Its heal reads *"Allied champions near the fuemigo"*,
+which looks ally-only until the page's own footnote settles it: ***"Milio counts as an allied
+champion."*** It is kept because a source says so, not because it looked likely.
+
+**Yuumi R is refused for a DIFFERENT reason and kept in a separate list.** Yuumi channels at the
+origin and launches the waves outward, and the source never says whether she is among the "allied
+champions hit". Milio's page answers the identical question explicitly and Yuumi's does not. **Not
+guessed in either direction**: storing it would grant protection that may never arrive, dropping it
+silently would remove protection that may be real. It is dropped WITH that reason, and it is
+revisitable — SPECIFICATION §8's PENDING, where ally-only is a decided fact.
+
+**One entry was missed by the first filter and the miss is instructive.** Kalista R is an
+immunity, which carries no value and is pushed from a different branch than the row loop the filter
+sat in. It surfaced because the removal is measured by **the entries that actually left**, not by
+the length of the read list — 4 read members produced 5 removals, and the discrepancy is what
+exposed the second code path.
+
+Gate 1 over the reduced set: **155 checked, 155 passed, 0 failed.**
+
+**A test's exemplar moved, and the rule did not.** `defensive-propose.test.ts` used Shen R as its
+example of alternating a Minimum/Maximum pair rather than summing it. Shen R is no longer in the
+population, so the example is now Ekko R, whose heal really does carry such a pair. The assertion
+is unchanged; moving an exemplar is not weakening a test.

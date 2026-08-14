@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -21,7 +21,7 @@
         "source": "Template:Data Evelynn/Demon Shade",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Evelynn/Demon%20Shade",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4038334,
       "icon": "Evelynn_Passive.png"
@@ -129,9 +129,10 @@
         "source": "Template:Data Evelynn/Hate Spike",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Evelynn/Hate%20Spike",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4012756,
+      "notes": "the entry is not structurally valid, so no figure from it is shown (duplicate component id 'magic-damage'); the parts do not add up to the total the source itself states (the wiki states a total of 45 at rank 1 and our additive components sum to 140 — something is counted twice)",
       "icon": "EvelynnQ.png"
     },
     {
@@ -169,7 +170,7 @@
         "source": "Template:Data Evelynn/Allure",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Evelynn/Allure",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3968322,
       "icon": "EvelynnW.png"
@@ -220,7 +221,7 @@
         "source": "Template:Data Evelynn/Whiplash",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Evelynn/Whiplash",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3909221,
       "icon": "EvelynnE.png"
@@ -268,7 +269,7 @@
         "source": "Template:Data Evelynn/Empowered Whiplash",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Evelynn/Empowered%20Whiplash",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3984296,
       "icon": "EvelynnE.png"
@@ -333,7 +334,7 @@
         "source": "Template:Data Evelynn/Last Caress",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Evelynn/Last%20Caress",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4006700,
       "icon": "EvelynnR.png"

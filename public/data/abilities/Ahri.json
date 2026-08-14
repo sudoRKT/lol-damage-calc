@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -21,7 +21,7 @@
         "source": "Template:Data Ahri/Essence Theft",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Ahri/Essence%20Theft",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4038191,
       "icon": "Ahri_SoulEater2.png"
@@ -38,9 +38,10 @@
         "source": "Template:Data Ahri/Orb of Deception",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Ahri/Orb%20of%20Deception",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4007396,
+      "notes": "no source states what damage type this ability deals, and a figure without a type is a figure without a resistance",
       "icon": "AhriQ.png"
     },
     {
@@ -105,7 +106,7 @@
         "source": "Template:Data Ahri/Fox-Fire",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Ahri/Fox-Fire",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4007399,
       "icon": "AhriW.png"
@@ -145,7 +146,7 @@
         "source": "Template:Data Ahri/Charm",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Ahri/Charm",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3909373,
       "icon": "AhriE.png"
@@ -185,7 +186,7 @@
         "source": "Template:Data Ahri/Spirit Rush",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Ahri/Spirit%20Rush",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4007764,
       "icon": "AhriR.png"

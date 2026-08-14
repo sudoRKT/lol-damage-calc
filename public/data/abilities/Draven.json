@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -21,7 +21,7 @@
         "source": "Template:Data Draven/League of Draven",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Draven/League%20of%20Draven",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4040578,
       "icon": "Draven_passive.png"
@@ -61,7 +61,7 @@
         "source": "Template:Data Draven/Spinning Axe",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Draven/Spinning%20Axe",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3997560,
       "icon": "DravenSpinning.png"
@@ -78,7 +78,7 @@
         "source": "Template:Data Draven/Blood Rush",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Draven/Blood%20Rush",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3982566,
       "icon": "DravenFury.png"
@@ -118,7 +118,7 @@
         "source": "Template:Data Draven/Stand Aside",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Draven/Stand%20Aside",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4034694,
       "icon": "DravenDoubleShot.png"
@@ -179,9 +179,10 @@
         "source": "Template:Data Draven/Whirling Death",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Draven/Whirling%20Death",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4040576,
+      "notes": "the parts do not add up to the total the source itself states (the wiki states a total of 400 at rank 1 and our additive components sum to 300 — a term or a multiplicity is missing)",
       "icon": "DravenRCast.png"
     }
   ],

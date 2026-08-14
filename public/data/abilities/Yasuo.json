@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -21,9 +21,9 @@
         "source": "Template:Data Yasuo/Way of the Wanderer",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Yasuo/Way%20of%20the%20Wanderer",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
-      "sourceRevision": 3986755,
+      "sourceRevision": 4051866,
       "icon": "Yasuo_Passive.png"
     },
     {
@@ -76,9 +76,10 @@
         "source": "Template:Data Yasuo/Steel Tempest",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Yasuo/Steel%20Tempest",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4049047,
+      "notes": "{{as|{{critical damage|{{ccd|Yasuo|crit_base}}*1.05|105|mod={{ccd|Yasuo|crit_mod",
       "icon": "YasuoQ1Wrapper.png"
     },
     {
@@ -93,7 +94,7 @@
         "source": "Template:Data Yasuo/Wind Wall",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Yasuo/Wind%20Wall",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4008635,
       "icon": "YasuoW.png"
@@ -204,7 +205,7 @@
         "source": "Template:Data Yasuo/Sweeping Blade",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Yasuo/Sweeping%20Blade",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4008638,
       "icon": "YasuoE.png"
@@ -247,7 +248,7 @@
         "source": "Template:Data Yasuo/Last Breath",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Yasuo/Last%20Breath",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4027670,
       "icon": "YasuoR.png"

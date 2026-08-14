@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -46,7 +46,7 @@
         "source": "Template:Data Jarvan IV/Martial Cadence",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Jarvan%20IV/Martial%20Cadence",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4003791,
       "icon": "JarvanIVP.png"
@@ -86,7 +86,7 @@
         "source": "Template:Data Jarvan IV/Dragon Strike",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Jarvan%20IV/Dragon%20Strike",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4042687,
       "icon": "JarvanIVDragonStrike.png"
@@ -103,7 +103,7 @@
         "source": "Template:Data Jarvan IV/Golden Aegis",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Jarvan%20IV/Golden%20Aegis",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3906940,
       "icon": "JarvanIVGoldenAegis.png"
@@ -143,7 +143,7 @@
         "source": "Template:Data Jarvan IV/Demacian Standard",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Jarvan%20IV/Demacian%20Standard",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4013709,
       "icon": "JarvanIVDemacianStandard.png"
@@ -183,7 +183,7 @@
         "source": "Template:Data Jarvan IV/Cataclysm",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Jarvan%20IV/Cataclysm",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4017869,
       "icon": "JarvanIVCataclysm.png"

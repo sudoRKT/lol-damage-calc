@@ -360,6 +360,33 @@ tag**). Directly under it, a thin **composition bar** shows the physical/magic/t
 of the total as three segments in the damage hues, each segment carrying its `P`/`M`/`T`
 tag so the split is colourblind-safe.
 
+#### When a segment is too narrow to carry its tag (resolved 2026-08-14)
+
+**THE BAR IS SIZED IN PROPORTION, ALWAYS. A segment is NEVER widened to fit its label.**
+
+This section and §8 appeared to conflict, and a build had already resolved it the wrong way.
+§7 says the segments are sized in proportion; §8 says the `P`/`M`/`T` tag is mandatory and
+never suppressed. On a short bar with a lopsided split — 42 physical against 225 magic — a
+segment can be narrower than the text it must carry, and the tags collided into the
+illegible string `4222 5 M`, losing the `P` entirely.
+
+**Neither rule bends. The labels move.** When any segment is too narrow for its own tagged
+value, **every** label leaves the bar and sits in a single row directly beneath it, in
+source order, each still carrying its own `P`/`M`/`T` tag and its own damage hue. The bar
+above becomes pure proportion; the row below carries the figures.
+
+- **All the labels move together, never just the cramped one.** A row where two figures sit
+  inside the bar and one sits below reads as three different kinds of thing.
+- **The order is the bar's order**, so a reader maps label to segment by position.
+- **The bar keeps its full width and its exact proportions.** That is the whole reason for
+  the rule: *the bar exists to show proportion, so a bar that has been stretched to fit a
+  word is a bar that lies about the data.* Widening the smallest segment overstates the
+  smallest damage type, which is the number a reader is least able to check.
+- Labels below the bar use `--type-num-m`; inside the bar they use `--type-num-s`. Both are
+  existing roles and the tag's 10px floor (§8) applies to each.
+
+See §8, which states the same resolution from the tag's side.
+
 ### The LETHAL rule (magenta) at the zero crossing
 
 - The first instance *i* whose cumulative damage ≥ the defender's current HP is the kill.
@@ -517,6 +544,17 @@ is the definitive channel; colour is the fast, redundant one.
   damage-versus-level curves. The only figure without a tag is a **multi-type aggregate
   total**, which is bone with no tag and is instead broken down by the tagged composition
   bar.
+
+  **"NEVER SUPPRESSED" DOES NOT LICENSE DISTORTING THE DATA TO KEEP IT (resolved
+  2026-08-14).** A composition-bar segment can be narrower than its own tagged value, and a
+  build resolved that by *widening the segment* — which kept every tag and made the bar
+  overstate the smallest damage type. That is the wrong trade: **a tag is a label, and the
+  bar is data.** Rather than bend either rule, the labels leave the bar and sit in a row
+  beneath it, all of them together, each keeping its tag and its hue while the bar keeps its
+  exact proportions. §7 specifies the layout; this is the rule it follows from.
+
+  The general form, worth carrying to any future cue: **when a mandatory cue will not fit,
+  move the cue — never resize the data to accommodate it.**
 - **Screen readers:** the tag is visual; expose the full word to assistive technology via
   an accessible label so `214 P` is announced as "214 physical damage." The letter is
   never the only machine-readable signal.

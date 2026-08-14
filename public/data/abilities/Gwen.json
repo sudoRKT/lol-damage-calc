@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -42,7 +42,7 @@
         "source": "Template:Data Gwen/A Thousand Cuts",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Gwen/A%20Thousand%20Cuts",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4051343,
       "icon": "Gwen_Passive.png"
@@ -59,9 +59,10 @@
         "source": "Template:Data Gwen/Snip Snip!",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Gwen/Snip%20Snip!",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4026398,
+      "notes": "no source states what damage type this ability deals, and a figure without a type is a figure without a resistance",
       "icon": "GwenQ.png"
     },
     {
@@ -76,7 +77,7 @@
         "source": "Template:Data Gwen/Hallowed Mist",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Gwen/Hallowed%20Mist",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3973613,
       "icon": "GwenW.png"
@@ -94,7 +95,7 @@
         "source": "Template:Data Gwen/Skip 'n Slash",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Gwen/Skip%20'n%20Slash",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4026400,
       "icon": "GwenE.png"
@@ -175,9 +176,10 @@
         "source": "Template:Data Gwen/Needlework",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Gwen/Needlework",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4007603,
+      "notes": "the parts do not add up to the total the source itself states (the wiki states a total of 270 at rank 1 and our additive components sum to 60 — a term or a multiplicity is missing); how many times this lands is not fixed by the ability (the source appears to state repeats against the same target (repeatsAtFullRate), but this ability is not in the population a person has read. NOT STORED — someone must read the sentence: \"Each subsequent cast refreshes the duration and increases the number of needles launched by 2.\")",
       "icon": "GwenR.png"
     }
   ],

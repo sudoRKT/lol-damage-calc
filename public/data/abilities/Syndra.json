@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -21,7 +21,7 @@
         "source": "Template:Data Syndra/Transcendent",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Syndra/Transcendent",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3986169,
       "icon": "SyndraPassive.png"
@@ -61,7 +61,7 @@
         "source": "Template:Data Syndra/Dark Sphere",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Syndra/Dark%20Sphere",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4026460,
       "icon": "SyndraQ.png"
@@ -128,9 +128,10 @@
         "source": "Template:Data Syndra/Force of Will",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Syndra/Force%20of%20Will",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4035699,
+      "notes": "the wiki's own rendering of this ability disagrees with what was read from it ([Bonus True Damage] rank 5: wiki NaN, stored 22.8)",
       "icon": "SyndraW.png"
     },
     {
@@ -168,7 +169,7 @@
         "source": "Template:Data Syndra/Scatter the Weak",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Syndra/Scatter%20the%20Weak",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4008068,
       "icon": "SyndraE.png"
@@ -257,7 +258,7 @@
         "source": "Template:Data Syndra/Unleashed Power",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Syndra/Unleashed%20Power",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4024661,
       "icon": "SyndraR.png"

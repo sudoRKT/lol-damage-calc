@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -22,9 +22,10 @@
         "source": "Template:Data Vex/Doom 'n Gloom",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Vex/Doom%20'n%20Gloom",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3986733,
+      "notes": "the ability template and the wiki damage module both state that this ability deals damage, but its page carries no leveling row to read a figure from — the damage is stated in description prose that has not been read yet",
       "icon": "Icons_Vex_Passive.png"
     },
     {
@@ -62,7 +63,7 @@
         "source": "Template:Data Vex/Mistral Bolt",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Vex/Mistral%20Bolt",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4008546,
       "icon": "VexQ.png"
@@ -102,7 +103,7 @@
         "source": "Template:Data Vex/Personal Space",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Vex/Personal%20Space",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4008547,
       "icon": "VexW.png"
@@ -142,7 +143,7 @@
         "source": "Template:Data Vex/Looming Darkness",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Vex/Looming%20Darkness",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4034711,
       "icon": "VexE.png"
@@ -203,9 +204,10 @@
         "source": "Template:Data Vex/Shadow Surge",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Vex/Shadow%20Surge",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4034712,
+      "notes": "the entry is not structurally valid, so no figure from it is shown (duplicate component id 'magic-damage')",
       "icon": "VexR.png"
     }
   ],

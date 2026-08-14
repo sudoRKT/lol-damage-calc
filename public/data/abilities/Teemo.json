@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -21,7 +21,7 @@
         "source": "Template:Data Teemo/Guerrilla Warfare",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Teemo/Guerrilla%20Warfare",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4010103,
       "icon": "TeemoPassive.png"
@@ -61,7 +61,7 @@
         "source": "Template:Data Teemo/Blinding Dart",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Teemo/Blinding%20Dart",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3948425,
       "icon": "TeemoQ.png"
@@ -78,7 +78,7 @@
         "source": "Template:Data Teemo/Move Quick",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Teemo/Move%20Quick",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4010102,
       "icon": "TeemoW.png"
@@ -152,7 +152,7 @@
         "source": "Template:Data Teemo/Toxic Shot",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Teemo/Toxic%20Shot",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4022986,
       "icon": "TeemoE.png"
@@ -196,9 +196,10 @@
         "source": "Template:Data Teemo/Noxious Trap",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Teemo/Noxious%20Trap",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4015245,
+      "notes": "how many times this lands is not fixed by the ability (the source appears to state repeats against the same target (repeatsAtFullRate), but this ability is not in the population a person has read. NOT STORED — someone must read the sentence: \"If the mushroom lands on one that has already been placed, it will bounce forward from the placed mushroom for its cast \")",
       "icon": "TeemoR.png"
     }
   ],

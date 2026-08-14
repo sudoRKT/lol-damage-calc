@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -21,7 +21,7 @@
         "source": "Template:Data Maokai/Sap Magic",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Maokai/Sap%20Magic",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4038409,
       "icon": "Maokai_Passive.png"
@@ -68,7 +68,7 @@
         "source": "Template:Data Maokai/Bramble Smash",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Maokai/Bramble%20Smash",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4046583,
       "icon": "MaokaiQ.png"
@@ -108,7 +108,7 @@
         "source": "Template:Data Maokai/Twisted Advance",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Maokai/Twisted%20Advance",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3946300,
       "icon": "MaokaiW.png"
@@ -198,7 +198,7 @@
         "source": "Template:Data Maokai/Sapling Toss",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Maokai/Sapling%20Toss",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4007687,
       "unresolvable": [
@@ -248,7 +248,7 @@
         "source": "Template:Data Maokai/Nature's Grasp",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Maokai/Nature's%20Grasp",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3681487,
       "icon": "MaokaiR.png"

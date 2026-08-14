@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -21,7 +21,7 @@
         "source": "Template:Data Nidalee/Prowl",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Nidalee/Prowl",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4007706,
       "icon": "Nidalee_Passive.png"
@@ -88,7 +88,7 @@
         "source": "Template:Data Nidalee/Javelin Toss",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Nidalee/Javelin%20Toss",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3971597,
       "icon": "JavelinToss.png"
@@ -234,7 +234,7 @@
         "source": "Template:Data Nidalee/Takedown",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Nidalee/Takedown",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3948934,
       "icon": "JavelinToss.png"
@@ -275,7 +275,7 @@
         "source": "Template:Data Nidalee/Bushwhack",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Nidalee/Bushwhack",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4015217,
       "icon": "Bushwhack.png"
@@ -321,7 +321,7 @@
         "source": "Template:Data Nidalee/Pounce",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Nidalee/Pounce",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4007707,
       "icon": "Bushwhack.png"
@@ -338,7 +338,7 @@
         "source": "Template:Data Nidalee/Primal Surge",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Nidalee/Primal%20Surge",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3907033,
       "icon": "PrimalSurge.png"
@@ -384,7 +384,7 @@
         "source": "Template:Data Nidalee/Swipe",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Nidalee/Swipe",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3959337,
       "icon": "PrimalSurge.png"
@@ -401,7 +401,7 @@
         "source": "Template:Data Nidalee/Aspect of the Cougar",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Nidalee/Aspect%20of%20the%20Cougar",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3547669,
       "icon": "AspectOfTheCougar.png"

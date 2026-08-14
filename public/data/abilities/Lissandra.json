@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -82,7 +82,7 @@
         "source": "Template:Data Lissandra/Iceborn Subjugation",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lissandra/Iceborn%20Subjugation",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4038403,
       "icon": "Lissandra_Passive.png"
@@ -122,7 +122,7 @@
         "source": "Template:Data Lissandra/Ice Shard",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lissandra/Ice%20Shard",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4007664,
       "icon": "LissandraQ.png"
@@ -162,7 +162,7 @@
         "source": "Template:Data Lissandra/Ring of Frost",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lissandra/Ring%20of%20Frost",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3936419,
       "icon": "LissandraW.png"
@@ -202,7 +202,7 @@
         "source": "Template:Data Lissandra/Glacial Path",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lissandra/Glacial%20Path",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4050877,
       "icon": "LissandraE.png"
@@ -242,7 +242,7 @@
         "source": "Template:Data Lissandra/Frozen Tomb",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lissandra/Frozen%20Tomb",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4017996,
       "icon": "LissandraR.png"

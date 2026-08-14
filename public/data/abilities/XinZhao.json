@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -61,7 +61,7 @@
         "source": "Template:Data Xin Zhao/Determination",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Xin%20Zhao/Determination",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4051470,
       "icon": "XinZhaoReworkP.png"
@@ -101,9 +101,10 @@
         "source": "Template:Data Xin Zhao/Three Talon Strike",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Xin%20Zhao/Three%20Talon%20Strike",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3986754,
+      "notes": "the parts do not add up to the total the source itself states (the wiki states a total of 45 at rank 1 and our additive components sum to 15 — a term or a multiplicity is missing)",
       "icon": "XinZhaoQ.png"
     },
     {
@@ -174,9 +175,10 @@
         "source": "Template:Data Xin Zhao/Wind Becomes Lightning",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Xin%20Zhao/Wind%20Becomes%20Lightning",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4026481,
+      "notes": "the parts do not add up to the total the source itself states (the wiki states a total of 80 at rank 1 and our additive components sum to 57.5 — a term or a multiplicity is missing); how many times this lands could not be read (\"Physical Damage per Slash\" lands more than once and the source does not state how many times; the dropped total row does not divide by it evenly, so the count is not derivable)",
       "icon": "XinZhaoW.png"
     },
     {
@@ -214,7 +216,7 @@
         "source": "Template:Data Xin Zhao/Audacious Charge",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Xin%20Zhao/Audacious%20Charge",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4026484,
       "icon": "XinZhaoE.png"
@@ -267,7 +269,7 @@
         "source": "Template:Data Xin Zhao/Crescent Guard",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Xin%20Zhao/Crescent%20Guard",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4008632,
       "icon": "XinZhaoR.png"

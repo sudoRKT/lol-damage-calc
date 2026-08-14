@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -21,7 +21,7 @@
         "source": "Template:Data Lee Sin/Flurry",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lee%20Sin/Flurry",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4015078,
       "icon": "LeeSinPassive.png"
@@ -61,7 +61,7 @@
         "source": "Template:Data Lee Sin/Sonic Wave",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lee%20Sin/Sonic%20Wave",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4026427,
       "icon": "LeeSinQOne.png"
@@ -128,7 +128,7 @@
         "source": "Template:Data Lee Sin/Resonating Strike",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lee%20Sin/Resonating%20Strike",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4026428,
       "icon": "LeeSinQOne.png"
@@ -145,7 +145,7 @@
         "source": "Template:Data Lee Sin/Safeguard",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lee%20Sin/Safeguard",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4024314,
       "icon": "LeeSinWOne.png"
@@ -162,7 +162,7 @@
         "source": "Template:Data Lee Sin/Iron Will",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lee%20Sin/Iron%20Will",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3992654,
       "icon": "LeeSinWOne.png"
@@ -202,7 +202,7 @@
         "source": "Template:Data Lee Sin/Tempest",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lee%20Sin/Tempest",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4016969,
       "icon": "LeeSinEOne.png"
@@ -219,7 +219,7 @@
         "source": "Template:Data Lee Sin/Cripple",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lee%20Sin/Cripple",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4007641,
       "icon": "LeeSinEOne.png"
@@ -287,7 +287,7 @@
         "source": "Template:Data Lee Sin/Dragon's Rage",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lee%20Sin/Dragon's%20Rage",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4032576,
       "icon": "LeeSinR.png"

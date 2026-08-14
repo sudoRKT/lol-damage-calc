@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -21,7 +21,7 @@
         "source": "Template:Data Kassadin/Void Stone",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kassadin/Void%20Stone",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3913958,
       "icon": "Kassadin_Passive.png"
@@ -61,7 +61,7 @@
         "source": "Template:Data Kassadin/Null Sphere",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kassadin/Null%20Sphere",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4022981,
       "icon": "NullLance.png"
@@ -101,7 +101,7 @@
         "source": "Template:Data Kassadin/Nether Blade",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kassadin/Nether%20Blade",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4022982,
       "icon": "NetherBlade.png"
@@ -141,7 +141,7 @@
         "source": "Template:Data Kassadin/Force Pulse",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kassadin/Force%20Pulse",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4007623,
       "icon": "ForcePulse.png"
@@ -279,7 +279,7 @@
         "source": "Template:Data Kassadin/Riftwalk",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kassadin/Riftwalk",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3996941,
       "unresolvable": [

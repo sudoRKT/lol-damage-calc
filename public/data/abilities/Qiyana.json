@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -22,9 +22,10 @@
         "source": "Template:Data Qiyana/Royal Privilege",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Qiyana/Royal%20Privilege",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3985639,
+      "notes": "the ability template and the wiki damage module both state that this ability deals damage, but its page carries no leveling row to read a figure from — the damage is stated in description prose that has not been read yet",
       "icon": "Qiyana_Passive.png"
     },
     {
@@ -89,7 +90,7 @@
         "source": "Template:Data Qiyana/Edge of Ixtal",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Qiyana/Edge%20of%20Ixtal",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4034702,
       "icon": "QiyanaQ.png"
@@ -209,7 +210,7 @@
         "source": "Template:Data Qiyana/Elemental Wrath",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Qiyana/Elemental%20Wrath",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4034703,
       "icon": "QiyanaQ.png"
@@ -255,7 +256,7 @@
         "source": "Template:Data Qiyana/Terrashape",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Qiyana/Terrashape",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4007752,
       "icon": "QiyanaW.png"
@@ -295,7 +296,7 @@
         "source": "Template:Data Qiyana/Audacity",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Qiyana/Audacity",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3907289,
       "icon": "QiyanaE.png"
@@ -342,7 +343,7 @@
         "source": "Template:Data Qiyana/Supreme Display of Talent",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Qiyana/Supreme%20Display%20of%20Talent",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4007999,
       "icon": "QiyanaR.png"

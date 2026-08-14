@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -45,7 +45,7 @@
         "source": "Template:Data Mordekaiser/Darkness Rise",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Mordekaiser/Darkness%20Rise",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4047668,
       "icon": "MordekaiserPassive.png"
@@ -127,7 +127,7 @@
         "source": "Template:Data Mordekaiser/Obliterate",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Mordekaiser/Obliterate",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4016684,
       "icon": "MordekaiserQ.png"
@@ -144,7 +144,7 @@
         "source": "Template:Data Mordekaiser/Indestructible",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Mordekaiser/Indestructible",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4016354,
       "icon": "MordekaiserW.png"
@@ -184,7 +184,7 @@
         "source": "Template:Data Mordekaiser/Death's Grasp",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Mordekaiser/Death's%20Grasp",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4046584,
       "icon": "MordekaiserE.png"
@@ -201,7 +201,7 @@
         "source": "Template:Data Mordekaiser/Realm of Death",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Mordekaiser/Realm%20of%20Death",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4050532,
       "icon": "MordekaiserR.png"

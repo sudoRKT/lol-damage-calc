@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -21,7 +21,7 @@
         "source": "Template:Data Karma/Gathering Fire",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Karma/Gathering%20Fire",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3985386,
       "icon": "Karma_Passive.png"
@@ -61,7 +61,7 @@
         "source": "Template:Data Karma/Inner Flame",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Karma/Inner%20Flame",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3875842,
       "icon": "KarmaQ.png"
@@ -122,7 +122,7 @@
         "source": "Template:Data Karma/Soulflare",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Karma/Soulflare",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3875841,
       "icon": "KarmaQ.png"
@@ -162,9 +162,10 @@
         "source": "Template:Data Karma/Focused Resolve",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Karma/Focused%20Resolve",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3968365,
+      "notes": "the parts do not add up to the total the source itself states (the wiki states a total of 80 at rank 1 and our additive components sum to 40 — a term or a multiplicity is missing)",
       "icon": "KarmaSpiritBind.png"
     },
     {
@@ -180,7 +181,7 @@
         "source": "Template:Data Karma/Renewal",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Karma/Renewal",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4013452,
       "icon": "KarmaSpiritBind.png"
@@ -197,7 +198,7 @@
         "source": "Template:Data Karma/Inspire",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Karma/Inspire",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4008449,
       "icon": "KarmaSolKimShield.png"
@@ -214,7 +215,7 @@
         "source": "Template:Data Karma/Defiance",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Karma/Defiance",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4004072,
       "icon": "KarmaSolKimShield.png"
@@ -231,7 +232,7 @@
         "source": "Template:Data Karma/Mantra",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Karma/Mantra",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4005102,
       "icon": "KarmaMantra.png"

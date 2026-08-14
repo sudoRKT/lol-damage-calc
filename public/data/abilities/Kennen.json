@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -21,7 +21,7 @@
         "source": "Template:Data Kennen/Mark of the Storm",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kennen/Mark%20of%20the%20Storm",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3932481,
       "icon": "Kennen_Passive.png"
@@ -61,7 +61,7 @@
         "source": "Template:Data Kennen/Thundering Shuriken",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kennen/Thundering%20Shuriken",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3936401,
       "icon": "KennenShurikenHurlMissile1.png"
@@ -128,7 +128,7 @@
         "source": "Template:Data Kennen/Electrical Surge",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kennen/Electrical%20Surge",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4015581,
       "icon": "KennenBringTheLight.png"
@@ -168,7 +168,7 @@
         "source": "Template:Data Kennen/Lightning Rush",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kennen/Lightning%20Rush",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4015350,
       "icon": "KennenLightningRush.png"
@@ -209,9 +209,10 @@
         "source": "Template:Data Kennen/Slicing Maelstrom",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kennen/Slicing%20Maelstrom",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4051345,
+      "notes": "how many times this lands is not fixed by the ability (the source states repeats against the same target but the source says the repeats deal MORE than the first instance, which neither shape can express — a rate above 1 is not a reduction, and treating them as equal understates it); how many times this lands could not be read (\"Magic Damage Per Bolt\" lands more than once and the source does not state how many times; the dropped total row does not divide by it evenly, so the count is not derivable)",
       "icon": "KennenShurikenStorm.png"
     }
   ],

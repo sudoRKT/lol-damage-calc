@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -49,7 +49,7 @@
         "source": "Template:Data Irelia/Ionian Fervor",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Irelia/Ionian%20Fervor",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4045313,
       "icon": "Irelia_Passive.png"
@@ -89,7 +89,7 @@
         "source": "Template:Data Irelia/Bladesurge",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Irelia/Bladesurge",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4038353,
       "icon": "IreliaQ.png"
@@ -163,7 +163,7 @@
         "source": "Template:Data Irelia/Defiant Dance",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Irelia/Defiant%20Dance",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4007605,
       "icon": "IreliaW.png"
@@ -203,7 +203,7 @@
         "source": "Template:Data Irelia/Flawless Duet",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Irelia/Flawless%20Duet",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4021834,
       "icon": "IreliaE.png"
@@ -243,7 +243,7 @@
         "source": "Template:Data Irelia/Vanguard's Edge",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Irelia/Vanguard's%20Edge",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4044346,
       "icon": "IreliaR.png"

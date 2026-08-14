@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -72,7 +72,7 @@
         "source": "Template:Data Lucian/Lightslinger",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lucian/Lightslinger",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4041164,
       "icon": "Lucian_Passive.png"
@@ -112,7 +112,7 @@
         "source": "Template:Data Lucian/Piercing Light",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lucian/Piercing%20Light",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3982579,
       "icon": "LucianQ.png"
@@ -152,7 +152,7 @@
         "source": "Template:Data Lucian/Ardent Blaze",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lucian/Ardent%20Blaze",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3594941,
       "icon": "LucianW.png"
@@ -169,7 +169,7 @@
         "source": "Template:Data Lucian/Relentless Pursuit",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lucian/Relentless%20Pursuit",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4008455,
       "icon": "LucianE.png"
@@ -216,9 +216,10 @@
         "source": "Template:Data Lucian/The Culling",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lucian/The%20Culling",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4007670,
+      "notes": "how many times this lands could not be read (\"Physical Damage Per Shot\" lands more than once and nothing in the template states how many)",
       "icon": "LucianR.png"
     }
   ],

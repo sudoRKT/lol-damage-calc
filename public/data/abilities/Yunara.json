@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -22,9 +22,10 @@
         "source": "Template:Data Yunara/Vow of the First Lands",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Yunara/Vow%20of%20the%20First%20Lands",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4016849,
+      "notes": "the ability template states that this ability deals damage, but its page carries no leveling row to read a figure from — the damage is stated in description prose that has not been read yet",
       "icon": "Yunara_Passive.png"
     },
     {
@@ -97,9 +98,10 @@
         "source": "Template:Data Yunara/Cultivation of Spirit",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Yunara/Cultivation%20of%20Spirit",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
-      "sourceRevision": 4050595,
+      "sourceRevision": 4051868,
+      "notes": "no source states what damage type this ability deals, and a figure without a type is a figure without a resistance; {{#expr:{{#var:aap}}+{{#var:pap}}}}% AP",
       "icon": "YunaraQ.png"
     },
     {
@@ -181,7 +183,7 @@
         "source": "Template:Data Yunara/Arc of Judgment",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Yunara/Arc%20of%20Judgment",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4008650,
       "icon": "YunaraW.png"
@@ -199,9 +201,10 @@
         "source": "Template:Data Yunara/Arc of Ruin",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Yunara/Arc%20of%20Ruin",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4039441,
+      "notes": "the ability template states that this ability deals damage, but its page carries no leveling row to read a figure from — the damage is stated in description prose that has not been read yet",
       "icon": "YunaraW.png"
     },
     {
@@ -216,7 +219,7 @@
         "source": "Template:Data Yunara/Kanmei's Steps",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Yunara/Kanmei's%20Steps",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3960443,
       "icon": "YunaraE.png"
@@ -233,7 +236,7 @@
         "source": "Template:Data Yunara/Untouchable Shadow",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Yunara/Untouchable%20Shadow",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4010459,
       "icon": "YunaraE.png"
@@ -250,9 +253,10 @@
         "source": "Template:Data Yunara/Transcend One's Self",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Yunara/Transcend%20One's%20Self",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4038856,
+      "notes": "no source states what damage type this ability deals, and a figure without a type is a figure without a resistance",
       "icon": "YunaraR.png"
     }
   ],

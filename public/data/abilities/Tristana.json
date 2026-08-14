@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -21,7 +21,7 @@
         "source": "Template:Data Tristana/Draw a Bead",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Tristana/Draw%20a%20Bead",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3986179,
       "icon": "Tristana_Passive.png"
@@ -38,7 +38,7 @@
         "source": "Template:Data Tristana/Rapid Fire",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Tristana/Rapid%20Fire",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4026462,
       "icon": "TristanaQ.png"
@@ -84,7 +84,7 @@
         "source": "Template:Data Tristana/Rocket Jump",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Tristana/Rocket%20Jump",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4007758,
       "icon": "TristanaW.png"
@@ -263,9 +263,10 @@
         "source": "Template:Data Tristana/Explosive Charge",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Tristana/Explosive%20Charge",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4008204,
+      "notes": "how many times this lands could not be read (\"Bonus Damage Per Stack\" lands more than once and nothing in the template states how many)",
       "icon": "TristanaE.png"
     },
     {
@@ -309,7 +310,7 @@
         "source": "Template:Data Tristana/Buster Shot",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Tristana/Buster%20Shot",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4008205,
       "icon": "TristanaR.png"

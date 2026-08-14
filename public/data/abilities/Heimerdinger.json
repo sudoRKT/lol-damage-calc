@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -21,7 +21,7 @@
         "source": "Template:Data Heimerdinger/Hextech Affinity",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Heimerdinger/Hextech%20Affinity",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3428651,
       "icon": "Heimerdinger_Passive.png"
@@ -39,9 +39,10 @@
         "source": "Template:Data Heimerdinger/H-28G Evolution Turret",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Heimerdinger/H-28G%20Evolution%20Turret",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4036534,
+      "notes": "the ability template and the wiki damage module both state that this ability deals damage, but its page carries no leveling row to read a figure from — the damage is stated in description prose that has not been read yet",
       "icon": "HeimerdingerQ.png"
     },
     {
@@ -57,9 +58,10 @@
         "source": "Template:Data Heimerdinger/H-28Q Apex Turret",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Heimerdinger/H-28Q%20Apex%20Turret",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4025020,
+      "notes": "the ability template and the wiki damage module both state that this ability deals damage, but its page carries no leveling row to read a figure from — the damage is stated in description prose that has not been read yet",
       "icon": "HeimerdingerQ.png"
     },
     {
@@ -119,9 +121,10 @@
         "source": "Template:Data Heimerdinger/Hextech Micro-Rockets",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Heimerdinger/Hextech%20Micro-Rockets",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3989864,
+      "notes": "how many times this lands is not fixed by the ability (the source states repeats against the same target but the stated total is 0.8x the per-instance value, which is not a whole number of instances)",
       "icon": "HeimerdingerW.png"
     },
     {
@@ -204,9 +207,10 @@
         "source": "Template:Data Heimerdinger/Hextech Rocket Swarm",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Heimerdinger/Hextech%20Rocket%20Swarm",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3965590,
+      "notes": "how many times this lands is not fixed by the ability (the source states repeats against the same target but the stated total is 3.73x the per-instance value, which is not a whole number of instances)",
       "icon": "HeimerdingerW.png"
     },
     {
@@ -244,7 +248,7 @@
         "source": "Template:Data Heimerdinger/CH-2 Electron Storm Grenade",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Heimerdinger/CH-2%20Electron%20Storm%20Grenade",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4022980,
       "icon": "HeimerdingerE.png"
@@ -284,7 +288,7 @@
         "source": "Template:Data Heimerdinger/CH-3X Lightning Grenade",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Heimerdinger/CH-3X%20Lightning%20Grenade",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3965591,
       "icon": "HeimerdingerE.png"
@@ -301,7 +305,7 @@
         "source": "Template:Data Heimerdinger/UPGRADE!!!",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Heimerdinger/UPGRADE!!!",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4006857,
       "icon": "HeimerdingerR.png"

@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -21,7 +21,7 @@
         "source": "Template:Data Jinx/Get Excited!",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Jinx/Get%20Excited!",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3973632,
       "icon": "Jinx_Passive.png"
@@ -66,7 +66,7 @@
         "source": "Template:Data Jinx/Switcheroo!",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Jinx/Switcheroo!",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3992483,
       "icon": "JinxQ.png"
@@ -106,7 +106,7 @@
         "source": "Template:Data Jinx/Zap!",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Jinx/Zap!",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3907092,
       "icon": "JinxW.png"
@@ -146,7 +146,7 @@
         "source": "Template:Data Jinx/Flame Chompers!",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Jinx/Flame%20Chompers!",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3993368,
       "icon": "JinxE.png"
@@ -289,7 +289,7 @@
         "source": "Template:Data Jinx/Super Mega Death Rocket!",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Jinx/Super%20Mega%20Death%20Rocket!",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4007616,
       "icon": "JinxR.png"

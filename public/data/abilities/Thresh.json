@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -21,7 +21,7 @@
         "source": "Template:Data Thresh/Damnation",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Thresh/Damnation",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4025498,
       "icon": "Thresh_Passive.png"
@@ -61,7 +61,7 @@
         "source": "Template:Data Thresh/Death Sentence",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Thresh/Death%20Sentence",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4008201,
       "icon": "ThreshQ.png"
@@ -78,7 +78,7 @@
         "source": "Template:Data Thresh/Dark Passage",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Thresh/Dark%20Passage",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4017821,
       "icon": "ThreshW.png"
@@ -171,7 +171,7 @@
         "source": "Template:Data Thresh/Flay",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Thresh/Flay",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4008203,
       "icon": "ThreshE.png"
@@ -211,7 +211,7 @@
         "source": "Template:Data Thresh/The Box",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Thresh/The%20Box",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4024674,
       "icon": "ThreshRPenta.png"

@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -21,7 +21,7 @@
         "source": "Template:Data Yorick/Shepherd of Souls",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Yorick/Shepherd%20of%20Souls",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4008645,
       "icon": "Yorick_P.png"
@@ -61,7 +61,7 @@
         "source": "Template:Data Yorick/Last Rites",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Yorick/Last%20Rites",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4001491,
       "icon": "YorickQ.png"
@@ -78,7 +78,7 @@
         "source": "Template:Data Yorick/Awakening",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Yorick/Awakening",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3907373,
       "icon": "YorickQ.png"
@@ -96,9 +96,9 @@
         "source": "Template:Data Yorick/Dark Procession",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Yorick/Dark%20Procession",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
-      "sourceRevision": 4016421,
+      "sourceRevision": 4051828,
       "icon": "YorickW.png"
     },
     {
@@ -141,9 +141,10 @@
         "source": "Template:Data Yorick/Mourning Mist",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Yorick/Mourning%20Mist",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4046036,
+      "notes": "a health payload whose percentage is itself scaled (\"per 100 …\"), and the multiplier could not be read, so what is stored is not the whole ability: {{as|{{ap|6 to 8}}%|hp}} {{as|(+ 3% per 100 AP)}} {{as|of target's '''maximum''' health}}",
       "icon": "YorickE.png"
     },
     {
@@ -159,7 +160,7 @@
         "source": "Template:Data Yorick/Eulogy of the Isles",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Yorick/Eulogy%20of%20the%20Isles",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3972823,
       "icon": "YorickR.png"

@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -22,9 +22,10 @@
         "source": "Template:Data Milio/Fired Up!",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Milio/Fired%20Up!",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4046868,
+      "notes": "the ability template states that this ability deals damage, but its page carries no leveling row to read a figure from — the damage is stated in description prose that has not been read yet",
       "icon": "Milio_P.png"
     },
     {
@@ -62,7 +63,7 @@
         "source": "Template:Data Milio/Ultra Mega Fire Kick",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Milio/Ultra%20Mega%20Fire%20Kick",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4007693,
       "icon": "MilioQ.png"
@@ -79,7 +80,7 @@
         "source": "Template:Data Milio/Cozy Campfire",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Milio/Cozy%20Campfire",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4007694,
       "icon": "MilioW.png"
@@ -96,7 +97,7 @@
         "source": "Template:Data Milio/Warm Hugs",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Milio/Warm%20Hugs",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3908079,
       "icon": "MilioE.png"
@@ -113,7 +114,7 @@
         "source": "Template:Data Milio/Breath of Life",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Milio/Breath%20of%20Life",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3908080,
       "icon": "MilioR.png"

@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -21,7 +21,7 @@
         "source": "Template:Data Nami/Surging Tides",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Nami/Surging%20Tides",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3985614,
       "icon": "NamiPassive.png"
@@ -61,7 +61,7 @@
         "source": "Template:Data Nami/Aqua Prison",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Nami/Aqua%20Prison",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4007696,
       "icon": "NamiQ.png"
@@ -127,7 +127,7 @@
         "source": "Template:Data Nami/Ebb and Flow",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Nami/Ebb%20and%20Flow",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4007697,
       "icon": "NamiW.png"
@@ -168,7 +168,7 @@
         "source": "Template:Data Nami/Tidecaller's Blessing",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Nami/Tidecaller's%20Blessing",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4042884,
       "icon": "NamiE.png"
@@ -211,7 +211,7 @@
         "source": "Template:Data Nami/Tidal Wave",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Nami/Tidal%20Wave",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3712330,
       "icon": "NamiR.png"

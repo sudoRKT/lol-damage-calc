@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -21,7 +21,7 @@
         "source": "Template:Data Xerath/Mana Surge",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Xerath/Mana%20Surge",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3986753,
       "icon": "Xerath_Passive1.png"
@@ -61,7 +61,7 @@
         "source": "Template:Data Xerath/Arcanopulse",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Xerath/Arcanopulse",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3959840,
       "icon": "XerathArcanopulseChargeUp.png"
@@ -127,7 +127,7 @@
         "source": "Template:Data Xerath/Eye of Destruction",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Xerath/Eye%20of%20Destruction",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4008622,
       "icon": "XerathArcaneBarrage2.png"
@@ -167,7 +167,7 @@
         "source": "Template:Data Xerath/Shocking Orb",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Xerath/Shocking%20Orb",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3881560,
       "icon": "XerathMageSpear.png"
@@ -229,9 +229,10 @@
         "source": "Template:Data Xerath/Rite of the Arcane",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Xerath/Rite%20of%20the%20Arcane",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4002918,
+      "notes": "the parts do not add up to the total the source itself states (the wiki states a total of 680 at rank 1 and our additive components sum to 190 — a term or a multiplicity is missing); how many times this lands could not be read (\"Increased Damage per Stack\" lands more than once and the source does not state how many times; the dropped total row does not divide by it evenly, so the count is not derivable)",
       "icon": "XerathLocusOfPower2.png"
     }
   ],

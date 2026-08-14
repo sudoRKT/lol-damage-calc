@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -22,9 +22,10 @@
         "source": "Template:Data Rammus/Spiked Shell",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Rammus/Spiked%20Shell",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3910990,
+      "notes": "the wiki damage module states that this ability deals damage, but its page carries no leveling row to read a figure from — the damage is stated in description prose that has not been read yet",
       "icon": "Armordillo_ScavengeArmor.png"
     },
     {
@@ -62,7 +63,7 @@
         "source": "Template:Data Rammus/Powerball",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Rammus/Powerball",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3988570,
       "icon": "PowerBall.png"
@@ -80,7 +81,7 @@
         "source": "Template:Data Rammus/Defensive Ball Curl",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Rammus/Defensive%20Ball%20Curl",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3982827,
       "icon": "DefensiveBallCurl.png"
@@ -97,9 +98,10 @@
         "source": "Template:Data Rammus/Frenzying Taunt",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Rammus/Frenzying%20Taunt",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3910038,
+      "notes": "the source states 1 damage row for this ability and none of them could be read in full, so none was stored — a row read in part is not stored at all",
       "icon": "PuncturingTaunt.png"
     },
     {
@@ -137,7 +139,7 @@
         "source": "Template:Data Rammus/Soaring Slam",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Rammus/Soaring%20Slam",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4008005,
       "icon": "Tremors2.png"

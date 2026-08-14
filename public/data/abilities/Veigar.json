@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -21,7 +21,7 @@
         "source": "Template:Data Veigar/Phenomenal Evil Power",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Veigar/Phenomenal%20Evil%20Power",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3932550,
       "icon": "VeigarEntropy.png"
@@ -61,7 +61,7 @@
         "source": "Template:Data Veigar/Baleful Strike",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Veigar/Baleful%20Strike",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4050924,
       "icon": "VeigarBalefulStrike.png"
@@ -101,7 +101,7 @@
         "source": "Template:Data Veigar/Dark Matter",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Veigar/Dark%20Matter",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3991312,
       "icon": "VeigarDarkMatter.png"
@@ -118,7 +118,7 @@
         "source": "Template:Data Veigar/Event Horizon",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Veigar/Event%20Horizon",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4016714,
       "icon": "VeigarEventHorizon.png"
@@ -180,7 +180,7 @@
         "source": "Template:Data Veigar/Primordial Burst",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Veigar/Primordial%20Burst",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4004085,
       "icon": "VeigarR.png"

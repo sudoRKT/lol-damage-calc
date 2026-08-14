@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -22,9 +22,10 @@
         "source": "Template:Data Skarner/Threads of Vibration",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Skarner/Threads%20of%20Vibration",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4050105,
+      "notes": "the ability template states that this ability deals damage, but its page carries no leveling row to read a figure from — the damage is stated in description prose that has not been read yet",
       "icon": "Skarner_Passive.png"
     },
     {
@@ -70,7 +71,7 @@
         "source": "Template:Data Skarner/Shattered Earth",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Skarner/Shattered%20Earth",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4051324,
       "icon": "SkarnerQ.png"
@@ -124,7 +125,7 @@
         "source": "Template:Data Skarner/Upheaval",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Skarner/Upheaval",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4008045,
       "icon": "SkarnerQ.png"
@@ -164,7 +165,7 @@
         "source": "Template:Data Skarner/Seismic Bastion",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Skarner/Seismic%20Bastion",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4008046,
       "icon": "SkarnerW.png"
@@ -211,7 +212,7 @@
         "source": "Template:Data Skarner/Ixtal's Impact",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Skarner/Ixtal's%20Impact",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4000401,
       "icon": "SkarnerE.png"
@@ -251,7 +252,7 @@
         "source": "Template:Data Skarner/Impale",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Skarner/Impale",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4008047,
       "icon": "SkarnerR.png"

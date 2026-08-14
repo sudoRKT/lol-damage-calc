@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -21,7 +21,7 @@
         "source": "Template:Data Cho'Gath/Carnivore",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Cho'Gath/Carnivore",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4038297,
       "icon": "GreenTerror_TailSpike.png"
@@ -61,7 +61,7 @@
         "source": "Template:Data Cho'Gath/Rupture",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Cho'Gath/Rupture",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3906815,
       "icon": "Rupture.png"
@@ -101,7 +101,7 @@
         "source": "Template:Data Cho'Gath/Feral Scream",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Cho'Gath/Feral%20Scream",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3906605,
       "icon": "FeralScream.png"
@@ -148,9 +148,10 @@
         "source": "Template:Data Cho'Gath/Vorpal Spikes",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Cho'Gath/Vorpal%20Spikes",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3971127,
+      "notes": "the parts do not add up to the total the source itself states (the wiki states a total of 60 at rank 1 and our additive components sum to 20 — a term or a multiplicity is missing)",
       "icon": "VorpalSpikes.png"
     },
     {
@@ -198,7 +199,7 @@
         "source": "Template:Data Cho'Gath/Feast",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Cho'Gath/Feast",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3932267,
       "unresolvable": [

@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -22,9 +22,10 @@
         "source": "Template:Data Amumu/Cursed Touch",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Amumu/Cursed%20Touch",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4046475,
+      "notes": "the ability template and the wiki damage module both state that this ability deals damage, but its page carries no leveling row to read a figure from — the damage is stated in description prose that has not been read yet",
       "icon": "Amumu_Passive.png"
     },
     {
@@ -62,7 +63,7 @@
         "source": "Template:Data Amumu/Bandage Toss",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Amumu/Bandage%20Toss",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4007564,
       "icon": "BandageToss.png"
@@ -119,9 +120,10 @@
         "source": "Template:Data Amumu/Despair",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Amumu/Despair",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4006735,
+      "notes": "how many times this lands could not be read (\"Magic Damage Per Tick\" lands more than once and nothing in the template states how many)",
       "icon": "AuraofDespair.png"
     },
     {
@@ -159,7 +161,7 @@
         "source": "Template:Data Amumu/Tantrum",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Amumu/Tantrum",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3996197,
       "icon": "Tantrum.png"
@@ -199,7 +201,7 @@
         "source": "Template:Data Amumu/Curse of the Sad Mummy",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Amumu/Curse%20of%20the%20Sad%20Mummy",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3953818,
       "icon": "CurseoftheSadMummy.png"

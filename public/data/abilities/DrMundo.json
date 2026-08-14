@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -21,7 +21,7 @@
         "source": "Template:Data Dr. Mundo/Goes Where He Pleases",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Dr.%20Mundo/Goes%20Where%20He%20Pleases",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4038331,
       "icon": "DrMundo_P.png"
@@ -81,7 +81,7 @@
         "source": "Template:Data Dr. Mundo/Infected Bonesaw",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Dr.%20Mundo/Infected%20Bonesaw",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4008441,
       "icon": "DrMundoQ.png"
@@ -137,7 +137,7 @@
         "source": "Template:Data Dr. Mundo/Heart Zapper",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Dr.%20Mundo/Heart%20Zapper",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4038332,
       "unresolvable": [
@@ -239,7 +239,7 @@
         "source": "Template:Data Dr. Mundo/Blunt Force Trauma",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Dr.%20Mundo/Blunt%20Force%20Trauma",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4051473,
       "unresolvable": [
@@ -270,7 +270,7 @@
         "source": "Template:Data Dr. Mundo/Maximum Dosage",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Dr.%20Mundo/Maximum%20Dosage",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4037515,
       "icon": "DrMundoR.png"

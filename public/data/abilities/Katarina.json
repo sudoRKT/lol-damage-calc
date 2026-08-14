@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -56,7 +56,7 @@
         "source": "Template:Data Katarina/Voracity",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Katarina/Voracity",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4038392,
       "icon": "Katarina_Passive.png"
@@ -96,7 +96,7 @@
         "source": "Template:Data Katarina/Bouncing Blade",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Katarina/Bouncing%20Blade",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4015158,
       "icon": "KatarinaQ.png"
@@ -113,7 +113,7 @@
         "source": "Template:Data Katarina/Preparation",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Katarina/Preparation",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3845920,
       "icon": "KatarinaW.png"
@@ -159,7 +159,7 @@
         "source": "Template:Data Katarina/Shunpo",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Katarina/Shunpo",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4007625,
       "icon": "KatarinaEWrapper.png"
@@ -261,9 +261,10 @@
         "source": "Template:Data Katarina/Death Lotus",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Katarina/Death%20Lotus",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4044343,
+      "notes": "how many times this lands could not be read (\"Magic Damage Per Dagger\" lands more than once and nothing in the template states how many); per-100 group: (+ 50% per 100% '''bonus''' attack speed); (empty)",
       "icon": "KatarinaR.png"
     }
   ],

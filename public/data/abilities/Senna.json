@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -22,9 +22,10 @@
         "source": "Template:Data Senna/Absolution",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Senna/Absolution",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4034707,
+      "notes": "the wiki damage module states that this ability deals damage, but its page carries no leveling row to read a figure from — the damage is stated in description prose that has not been read yet",
       "icon": "Senna_Passive.png"
     },
     {
@@ -62,7 +63,7 @@
         "source": "Template:Data Senna/Piercing Darkness",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Senna/Piercing%20Darkness",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4042887,
       "icon": "SennaQ.png"
@@ -102,7 +103,7 @@
         "source": "Template:Data Senna/Last Embrace",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Senna/Last%20Embrace",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4009139,
       "icon": "SennaW.png"
@@ -119,7 +120,7 @@
         "source": "Template:Data Senna/Curse of the Black Mist",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Senna/Curse%20of%20the%20Black%20Mist",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3994514,
       "icon": "SennaE.png"
@@ -165,7 +166,7 @@
         "source": "Template:Data Senna/Dawning Shadow",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Senna/Dawning%20Shadow",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4008033,
       "icon": "SennaR.png"

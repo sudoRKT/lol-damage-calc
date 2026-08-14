@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -22,9 +22,10 @@
         "source": "Template:Data Azir/Shurima's Legacy",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Azir/Shurima's%20Legacy",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3962342,
+      "notes": "the ability template and the wiki damage module both state that this ability deals damage, but its page carries no leveling row to read a figure from — the damage is stated in description prose that has not been read yet",
       "icon": "Azir_Passive.png"
     },
     {
@@ -62,9 +63,10 @@
         "source": "Template:Data Azir/Conquering Sands",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Azir/Conquering%20Sands",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4051339,
+      "notes": "how many times this lands is not fixed by the ability (the source states repeats against the same target but the source says the repeats deal MORE than the first instance, which neither shape can express — a rate above 1 is not a reduction, and treating them as equal understates it)",
       "icon": "AzirQWrapper.png"
     },
     {
@@ -121,7 +123,7 @@
         "source": "Template:Data Azir/Arise!",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Azir/Arise!",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4044339,
       "icon": "AzirW.png"
@@ -161,7 +163,7 @@
         "source": "Template:Data Azir/Shifting Sands",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Azir/Shifting%20Sands",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4022609,
       "icon": "AzirEWrapper.png"
@@ -201,7 +203,7 @@
         "source": "Template:Data Azir/Emperor's Divide",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Azir/Emperor's%20Divide",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4042859,
       "icon": "AzirR.png"

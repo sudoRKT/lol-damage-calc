@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -45,7 +45,7 @@
         "source": "Template:Data Samira/Daredevil Impulse",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Samira/Daredevil%20Impulse",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4050599,
       "icon": "SamiraP.png"
@@ -90,7 +90,7 @@
         "source": "Template:Data Samira/Flair",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Samira/Flair",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4008027,
       "icon": "SamiraQ.png"
@@ -131,7 +131,7 @@
         "source": "Template:Data Samira/Blade Whirl",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Samira/Blade%20Whirl",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3936240,
       "icon": "SamiraW.png"
@@ -171,7 +171,7 @@
         "source": "Template:Data Samira/Wild Rush",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Samira/Wild%20Rush",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4008028,
       "icon": "SamiraE.png"
@@ -212,7 +212,7 @@
         "source": "Template:Data Samira/Inferno Trigger",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Samira/Inferno%20Trigger",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3992663,
       "icon": "SamiraR.png"

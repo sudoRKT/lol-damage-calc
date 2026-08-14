@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -21,7 +21,7 @@
         "source": "Template:Data Udyr/Bridge Between",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Udyr/Bridge%20Between",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3983420,
       "icon": "Udyr_P.png"
@@ -106,7 +106,7 @@
         "source": "Template:Data Udyr/Wilding Claw",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Udyr/Wilding%20Claw",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4049976,
       "unresolvable": [
@@ -129,7 +129,7 @@
         "source": "Template:Data Udyr/Iron Mantle",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Udyr/Iron%20Mantle",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4013279,
       "icon": "UdyrW.png"
@@ -146,7 +146,7 @@
         "source": "Template:Data Udyr/Blazing Stampede",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Udyr/Blazing%20Stampede",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4013348,
       "icon": "UdyrE.png"
@@ -187,7 +187,7 @@
         "source": "Template:Data Udyr/Wingborne Storm",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Udyr/Wingborne%20Storm",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4008208,
       "icon": "UdyrR.png"

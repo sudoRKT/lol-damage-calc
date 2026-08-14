@@ -417,20 +417,25 @@ describe('proposing an entry', () => {
   });
 
   it('alternates a Minimum/Maximum pair instead of summing it', () => {
-    // Shen R, quoted. Summing these hands the defender a shield of both, which is the exact
-    // failure `relation` exists to prevent.
+    // Ekko R, whose heal really does carry a Minimum/Maximum pair. Summing these hands the
+    // defender both figures, which is the exact failure `relation` exists to prevent.
+    //
+    // THE EXEMPLAR MOVED ON 2026-08-14, and the rule did not. This was Shen R until Shen R was
+    // removed from the defender model altogether — it shields only an ALLY, so it is not Shen's
+    // defensive entry at all (ally-only.ts). A rule needs an example that is still in the
+    // population; the assertion below is unchanged.
     const shen = page(
-      'Shen',
+      'Ekko',
       'R',
-      'Stand United',
-      '{{Ability data\n|leveling = {{st|Minimum Shield Strength|{{ap|120 to 320}}}}' +
-        '{{st|Maximum Shield Strength|{{ap|120*1.6 to 320*1.6}}}}\n}}',
+      'Chronobreak',
+      '{{Ability data\n|leveling = {{st|Minimum Heal|{{ap|120 to 320}}}}' +
+        '{{st|Maximum Heal|{{ap|120*1.6 to 320*1.6}}}}\n}}',
     );
     const run = proposeForPage(
       shen,
       {
-        key: 'Shen/R/Stand United',
-        kinds: ['shield'],
+        key: 'Ekko/R/Chronobreak',
+        kinds: ['heal'],
         activation: 'conditional',
         activationEvidence: 'Active channel',
       },

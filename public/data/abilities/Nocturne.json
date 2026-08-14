@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -45,7 +45,7 @@
         "source": "Template:Data Nocturne/Umbra Blades",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Nocturne/Umbra%20Blades",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4007794,
       "icon": "Nocturne_UmbraBlades.png"
@@ -99,7 +99,7 @@
         "source": "Template:Data Nocturne/Duskbringer",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Nocturne/Duskbringer",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4026429,
       "icon": "NocturneDuskbringer.png"
@@ -116,7 +116,7 @@
         "source": "Template:Data Nocturne/Shroud of Darkness",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Nocturne/Shroud%20of%20Darkness",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3948584,
       "icon": "NocturneShroudofDarkness.png"
@@ -162,7 +162,7 @@
         "source": "Template:Data Nocturne/Unspeakable Horror",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Nocturne/Unspeakable%20Horror",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4015219,
       "icon": "NocturneUnspeakableHorror.png"
@@ -205,7 +205,7 @@
         "source": "Template:Data Nocturne/Paranoia",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Nocturne/Paranoia",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4049972,
       "icon": "NocturneParanoia.png"

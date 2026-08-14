@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -22,9 +22,10 @@
         "source": "Template:Data Aurora/Spirit Abjuration",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Aurora/Spirit%20Abjuration",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4038218,
+      "notes": "the ability template states that this ability deals damage, but its page carries no leveling row to read a figure from — the damage is stated in description prose that has not been read yet",
       "icon": "AuroraPassive.png"
     },
     {
@@ -164,9 +165,10 @@
         "source": "Template:Data Aurora/Twofold Hex",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Aurora/Twofold%20Hex",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4021922,
+      "notes": "how many times this lands is not fixed by the ability (the source states repeats against the same target but the source states repeats but prints no whole-ability total, so the ceiling on how many can land is not stated anywhere and must not be invented)",
       "icon": "AuroraQ.png"
     },
     {
@@ -181,7 +183,7 @@
         "source": "Template:Data Aurora/Across the Veil",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Aurora/Across%20the%20Veil",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4007570,
       "icon": "AuroraW.png"
@@ -221,7 +223,7 @@
         "source": "Template:Data Aurora/The Weirding",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Aurora/The%20Weirding",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3936382,
       "icon": "AuroraE.png"
@@ -261,7 +263,7 @@
         "source": "Template:Data Aurora/Between Worlds",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Aurora/Between%20Worlds",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4007571,
       "icon": "AuroraR.png"

@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -49,7 +49,7 @@
         "source": "Template:Data Hwei/Signature of the Visionary",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Hwei/Signature%20of%20the%20Visionary",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4038347,
       "icon": "HweiPassive.png"
@@ -66,7 +66,7 @@
         "source": "Template:Data Hwei/Subject: Disaster",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Hwei/Subject%3A%20Disaster",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3970734,
       "icon": "HweiQ.png"
@@ -113,7 +113,7 @@
         "source": "Template:Data Hwei/Devastating Fire",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Hwei/Devastating%20Fire",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4026403,
       "icon": "HweiQ.png"
@@ -153,9 +153,10 @@
         "source": "Template:Data Hwei/Severing Bolt",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Hwei/Severing%20Bolt",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4026406,
+      "notes": "<!--\n-->{{#var:qw_b1}}*{{#var:qw_mod1}}|({{#var:qw_b1}}+({{# — not a literal rank value: \"<!--\n-->60*2.0\"",
       "icon": "HweiQ.png"
     },
     {
@@ -220,7 +221,7 @@
         "source": "Template:Data Hwei/Molten Fissure",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Hwei/Molten%20Fissure",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4026407,
       "icon": "HweiQ.png"
@@ -237,7 +238,7 @@
         "source": "Template:Data Hwei/Subject: Serenity",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Hwei/Subject%3A%20Serenity",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3970735,
       "icon": "HweiW.png"
@@ -254,7 +255,7 @@
         "source": "Template:Data Hwei/Fleeting Current",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Hwei/Fleeting%20Current",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3959274,
       "icon": "HweiW.png"
@@ -271,7 +272,7 @@
         "source": "Template:Data Hwei/Pool of Reflection",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Hwei/Pool%20of%20Reflection",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3992645,
       "icon": "HweiW.png"
@@ -364,7 +365,7 @@
         "source": "Template:Data Hwei/Stirring Lights",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Hwei/Stirring%20Lights",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3927605,
       "icon": "HweiW.png"
@@ -381,7 +382,7 @@
         "source": "Template:Data Hwei/Subject: Torment",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Hwei/Subject%3A%20Torment",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4026410,
       "icon": "HweiE.png"
@@ -421,7 +422,7 @@
         "source": "Template:Data Hwei/Grim Visage",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Hwei/Grim%20Visage",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4021906,
       "icon": "HweiE.png"
@@ -461,7 +462,7 @@
         "source": "Template:Data Hwei/Gaze of the Abyss",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Hwei/Gaze%20of%20the%20Abyss",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4010562,
       "icon": "HweiE.png"
@@ -501,7 +502,7 @@
         "source": "Template:Data Hwei/Crushing Maw",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Hwei/Crushing%20Maw",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4008532,
       "icon": "HweiE.png"
@@ -566,9 +567,10 @@
         "source": "Template:Data Hwei/Spiraling Despair",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Hwei/Spiraling%20Despair",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4008531,
+      "notes": "the parts do not add up to the total the source itself states (the wiki states a total of 30 at rank 1 and our additive components sum to 230 — something is counted twice)",
       "icon": "HweiR.png"
     },
     {
@@ -583,7 +585,7 @@
         "source": "Template:Data Hwei/Wash Brush",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Hwei/Wash%20Brush",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3970738,
       "icon": "HweiR.png"

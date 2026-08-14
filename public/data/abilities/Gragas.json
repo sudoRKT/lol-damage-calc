@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -21,7 +21,7 @@
         "source": "Template:Data Gragas/Happy Hour",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Gragas/Happy%20Hour",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3985369,
       "icon": "GragasPassiveHeal.png"
@@ -83,7 +83,7 @@
         "source": "Template:Data Gragas/Barrel Roll",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Gragas/Barrel%20Roll",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3907002,
       "icon": "GragasQ.png"
@@ -130,7 +130,7 @@
         "source": "Template:Data Gragas/Drunken Rage",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Gragas/Drunken%20Rage",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4013236,
       "icon": "GragasW.png"
@@ -170,7 +170,7 @@
         "source": "Template:Data Gragas/Body Slam",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Gragas/Body%20Slam",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4007602,
       "icon": "GragasE.png"
@@ -210,7 +210,7 @@
         "source": "Template:Data Gragas/Explosive Cask",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Gragas/Explosive%20Cask",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3906845,
       "icon": "GragasR.png"

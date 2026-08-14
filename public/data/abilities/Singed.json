@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -21,7 +21,7 @@
         "source": "Template:Data Singed/Noxious Slipstream",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Singed/Noxious%20Slipstream",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3985843,
       "icon": "Singed_Passive.png"
@@ -115,9 +115,10 @@
         "source": "Template:Data Singed/Poison Trail",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Singed/Poison%20Trail",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4006737,
+      "notes": "how many times this lands could not be read (2 repeating components; a total row cannot be attributed to one of them)",
       "icon": "PoisonTrail.png"
     },
     {
@@ -132,7 +133,7 @@
         "source": "Template:Data Singed/Mega Adhesive",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Singed/Mega%20Adhesive",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4001677,
       "icon": "MegaAdhesive.png"
@@ -179,7 +180,7 @@
         "source": "Template:Data Singed/Fling",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Singed/Fling",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4026605,
       "icon": "Fling.png"
@@ -196,7 +197,7 @@
         "source": "Template:Data Singed/Insanity Potion",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Singed/Insanity%20Potion",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4005000,
       "icon": "InsanityPotion.png"

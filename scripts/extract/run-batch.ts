@@ -27,6 +27,7 @@ import {
   type ProseRoundTripResult,
 } from './harvest.ts';
 import { fetchDamageData } from './damage-data.ts';
+import { describeIssues } from './harvest.ts';
 import { classifyGate7, summariseGate7Classes } from './gate7-classes.ts';
 import { renderAbilityDetail, renderLevelBlocks } from './render.ts';
 
@@ -271,6 +272,25 @@ async function main(): Promise<void> {
   // cannot catch a source we read wrongly in the same way twice. Gate 5 is a second party
   // re-deriving from scratch. An entry needs both, plus a recorded sourceRevision so staleness
   // stays traceable.
+  // ═══ THE LATE DEMOTIONS GET THEIR REASON TOO (2026-08-14) ═══
+  //
+  // `harvest.ts` writes `entry.notes` from the issues it knows about, which is everything EXCEPT
+  // the demotions applied here: gate 2's round-trip disagreements and a recorded source conflict
+  // are pushed after that point. 11 entries therefore reached the interface saying only
+  // "incomplete" while their reason sat in the report — the same defect this pass exists to
+  // close, one layer further out.
+  //
+  // Rewritten rather than appended, so an entry demoted here leads with the disagreement that
+  // demoted it (describeIssues orders by specificity, and a round-trip disagreement outranks
+  // whatever the harvester had already noted).
+  const noteLateIssues = () => {
+    for (const d of drafts) {
+      if (d.entry.verification !== 'incomplete') continue;
+      if (d.entry.unresolvable) continue; // permanent: `unresolvable` is the fuller answer
+      if (d.issues.length > 0) d.entry.notes = describeIssues(d.issues);
+    }
+  };
+
   const gate5 = await readGate5Ledger();
   const conflicts = new Set<string>();
   try {
@@ -329,6 +349,9 @@ async function main(): Promise<void> {
   };
 
   await mkdir(OUT_DIR, { recursive: true });
+  // Every status change is now final, so the reasons can be written once, from all of them.
+  noteLateIssues();
+
   await writeFile(join(OUT_DIR, 'batch-01.json'), `${JSON.stringify(file, null, 2)}\n`);
   await writeFile(
     join(OUT_DIR, 'batch-01.report.json'),

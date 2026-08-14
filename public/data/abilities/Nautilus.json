@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -42,7 +42,7 @@
         "source": "Template:Data Nautilus/Staggering Blow",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Nautilus/Staggering%20Blow",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3985615,
       "icon": "Nautilus_StaggeringBlow.png"
@@ -82,7 +82,7 @@
         "source": "Template:Data Nautilus/Dredge Line",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Nautilus/Dredge%20Line",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4007700,
       "icon": "NautilusAnchorDrag.png"
@@ -127,9 +127,10 @@
         "source": "Template:Data Nautilus/Titan's Wrath",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Nautilus/Titan's%20Wrath",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3981480,
+      "notes": "the parts do not add up to the total the source itself states (the wiki states a total of 30 at rank 1 and our additive components sum to 15 — a term or a multiplicity is missing)",
       "icon": "NautilusPiercingGaze.png"
     },
     {
@@ -200,7 +201,7 @@
         "source": "Template:Data Nautilus/Riptide",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Nautilus/Riptide",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4007701,
       "icon": "NautilusSplashZone.png"
@@ -261,7 +262,7 @@
         "source": "Template:Data Nautilus/Depth Charge",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Nautilus/Depth%20Charge",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4007702,
       "icon": "NautilusGrandLine.png"

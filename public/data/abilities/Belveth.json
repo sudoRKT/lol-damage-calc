@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -21,7 +21,7 @@
         "source": "Template:Data Bel'Veth/Death in Lavender",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Bel'Veth/Death%20in%20Lavender",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4050294,
       "icon": "Belveth_Passive.png"
@@ -61,7 +61,7 @@
         "source": "Template:Data Bel'Veth/Void Surge",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Bel'Veth/Void%20Surge",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4050295,
       "icon": "BelvethQ.png"
@@ -101,7 +101,7 @@
         "source": "Template:Data Bel'Veth/Above and Below",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Bel'Veth/Above%20and%20Below",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4046855,
       "icon": "BelvethW.png"
@@ -170,9 +170,10 @@
         "source": "Template:Data Bel'Veth/Royal Maelstrom",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Bel'Veth/Royal%20Maelstrom",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4046605,
+      "notes": "how many times this lands could not be read (2 repeating components; a total row cannot be attributed to one of them)",
       "icon": "BelvethE.png"
     },
     {
@@ -238,9 +239,10 @@
         "source": "Template:Data Bel'Veth/Endless Banquet",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Bel'Veth/Endless%20Banquet",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4051340,
+      "notes": "how many times this lands is not fixed by the ability (the source states repeats against the same target but the source says the repeats deal MORE than the first instance, which neither shape can express — a rate above 1 is not a reduction, and treating them as equal understates it)",
       "icon": "BelvethR.png"
     }
   ],

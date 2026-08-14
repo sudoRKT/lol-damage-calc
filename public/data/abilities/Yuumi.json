@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -21,7 +21,7 @@
         "source": "Template:Data Yuumi/Feline Friendship",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Yuumi/Feline%20Friendship",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4026485,
       "icon": "YuumiP2.png"
@@ -131,7 +131,7 @@
         "source": "Template:Data Yuumi/Prowling Projectile",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Yuumi/Prowling%20Projectile",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4008652,
       "icon": "YuumiQ.png"
@@ -148,7 +148,7 @@
         "source": "Template:Data Yuumi/You and Me!",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Yuumi/You%20and%20Me!",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4011487,
       "icon": "YuumiW.png"
@@ -165,7 +165,7 @@
         "source": "Template:Data Yuumi/Zoomies",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Yuumi/Zoomies",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4026487,
       "icon": "YuumiE.png"
@@ -237,9 +237,10 @@
         "source": "Template:Data Yuumi/Final Chapter",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Yuumi/Final%20Chapter",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4047717,
+      "notes": "how many times this lands could not be read (2 repeating components; a total row cannot be attributed to one of them)",
       "icon": "YuumiR.png"
     }
   ],

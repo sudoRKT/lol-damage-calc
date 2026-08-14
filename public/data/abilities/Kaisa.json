@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -22,9 +22,10 @@
         "source": "Template:Data Kai'Sa/Second Skin",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kai'Sa/Second%20Skin",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4046579,
+      "notes": "the ability template and the wiki damage module both state that this ability deals damage, but its page carries no leveling row to read a figure from — the damage is stated in description prose that has not been read yet",
       "icon": "Kaisa_Passive.png"
     },
     {
@@ -113,9 +114,10 @@
         "source": "Template:Data Kai'Sa/Icathian Rain",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kai'Sa/Icathian%20Rain",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4038389,
+      "notes": "how many times this lands could not be read (2 repeating components; a total row cannot be attributed to one of them)",
       "icon": "KaisaQ.png"
     },
     {
@@ -159,7 +161,7 @@
         "source": "Template:Data Kai'Sa/Void Seeker",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kai'Sa/Void%20Seeker",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4034696,
       "icon": "KaisaW.png"
@@ -176,7 +178,7 @@
         "source": "Template:Data Kai'Sa/Supercharge",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kai'Sa/Supercharge",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4038391,
       "icon": "KaisaE.png"
@@ -193,7 +195,7 @@
         "source": "Template:Data Kai'Sa/Killer Instinct",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kai'Sa/Killer%20Instinct",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4034697,
       "icon": "KaisaR.png"

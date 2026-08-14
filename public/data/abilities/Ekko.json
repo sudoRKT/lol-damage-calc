@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -22,9 +22,10 @@
         "source": "Template:Data Ekko/Z-Drive Resonance",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Ekko/Z-Drive%20Resonance",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4022978,
+      "notes": "the ability template and the wiki damage module both state that this ability deals damage, but its page carries no leveling row to read a figure from — the damage is stated in description prose that has not been read yet",
       "icon": "Ekko_P.png"
     },
     {
@@ -83,7 +84,7 @@
         "source": "Template:Data Ekko/Timewinder",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Ekko/Timewinder",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4007479,
       "icon": "EkkoQ.png"
@@ -101,7 +102,7 @@
         "source": "Template:Data Ekko/Parallel Convergence",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Ekko/Parallel%20Convergence",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3956502,
       "icon": "EkkoW.png"
@@ -141,7 +142,7 @@
         "source": "Template:Data Ekko/Phase Dive",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Ekko/Phase%20Dive",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4025604,
       "icon": "EkkoE.png"
@@ -181,7 +182,7 @@
         "source": "Template:Data Ekko/Chronobreak",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Ekko/Chronobreak",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4012189,
       "icon": "EkkoR.png"

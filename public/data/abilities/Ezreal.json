@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -21,7 +21,7 @@
         "source": "Template:Data Ezreal/Rising Spell Force",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Ezreal/Rising%20Spell%20Force",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3932280,
       "icon": "Ezreal_RisingSpellForce.png"
@@ -67,7 +67,7 @@
         "source": "Template:Data Ezreal/Mystic Shot",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Ezreal/Mystic%20Shot",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4013233,
       "icon": "EzrealQ.png"
@@ -113,7 +113,7 @@
         "source": "Template:Data Ezreal/Essence Flux",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Ezreal/Essence%20Flux",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4013234,
       "icon": "EzrealW.png"
@@ -159,7 +159,7 @@
         "source": "Template:Data Ezreal/Arcane Shift",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Ezreal/Arcane%20Shift",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3989862,
       "icon": "EzrealE.png"
@@ -232,7 +232,7 @@
         "source": "Template:Data Ezreal/Trueshot Barrage",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Ezreal/Trueshot%20Barrage",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4013235,
       "icon": "EzrealR.png"

@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -21,7 +21,7 @@
         "source": "Template:Data Neeko/Inherent Glamour",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Neeko/Inherent%20Glamour",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4049951,
       "icon": "Neeko_P.png"
@@ -83,7 +83,7 @@
         "source": "Template:Data Neeko/Blooming Burst",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Neeko/Blooming%20Burst",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3961205,
       "icon": "NeekoQ.png"
@@ -123,7 +123,7 @@
         "source": "Template:Data Neeko/Shapesplitter",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Neeko/Shapesplitter",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4022848,
       "icon": "NeekoW.png"
@@ -163,7 +163,7 @@
         "source": "Template:Data Neeko/Tangle-Barbs",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Neeko/Tangle-Barbs",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4007703,
       "icon": "NeekoE.png"
@@ -203,7 +203,7 @@
         "source": "Template:Data Neeko/Pop Blossom",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Neeko/Pop%20Blossom",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4022847,
       "icon": "NeekoR.png"

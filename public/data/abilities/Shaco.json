@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -49,7 +49,7 @@
         "source": "Template:Data Shaco/Backstab",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Shaco/Backstab",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3985836,
       "icon": "Jester_CarefulStrikes.png"
@@ -89,7 +89,7 @@
         "source": "Template:Data Shaco/Deceive",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Shaco/Deceive",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4023266,
       "icon": "Deceive.png"
@@ -150,7 +150,7 @@
         "source": "Template:Data Shaco/Jack in the Box",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Shaco/Jack%20in%20the%20Box",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3990300,
       "icon": "JackInTheBox.png"
@@ -233,7 +233,7 @@
         "source": "Template:Data Shaco/Two-Shiv Poison",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Shaco/Two-Shiv%20Poison",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3985833,
       "icon": "TwoShivPoison.png"
@@ -315,7 +315,7 @@
         "source": "Template:Data Shaco/Hallucinate",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Shaco/Hallucinate",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4013796,
       "icon": "HallucinateFull.png"

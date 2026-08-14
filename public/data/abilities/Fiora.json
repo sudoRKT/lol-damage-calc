@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -22,9 +22,10 @@
         "source": "Template:Data Fiora/Duelist's Dance",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Fiora/Duelist's%20Dance",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4038335,
+      "notes": "the ability template and the wiki damage module both state that this ability deals damage, but its page carries no leveling row to read a figure from — the damage is stated in description prose that has not been read yet",
       "icon": "Fiora_P.png"
     },
     {
@@ -62,7 +63,7 @@
         "source": "Template:Data Fiora/Lunge",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Fiora/Lunge",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4007770,
       "icon": "FioraQ.png"
@@ -102,7 +103,7 @@
         "source": "Template:Data Fiora/Riposte",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Fiora/Riposte",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4007365,
       "icon": "FioraW.png"
@@ -120,7 +121,7 @@
         "source": "Template:Data Fiora/Bladework",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Fiora/Bladework",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3906658,
       "icon": "FioraE.png"
@@ -138,7 +139,7 @@
         "source": "Template:Data Fiora/Grand Challenge",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Fiora/Grand%20Challenge",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4007516,
       "icon": "FioraR.png"

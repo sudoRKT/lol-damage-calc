@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -22,9 +22,10 @@
         "source": "Template:Data Sejuani/Fury of the North",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Sejuani/Fury%20of%20the%20North",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3985822,
+      "notes": "the ability template and the wiki damage module both state that this ability deals damage, but its page carries no leveling row to read a figure from — the damage is stated in description prose that has not been read yet",
       "icon": "Sejuani_passive.png"
     },
     {
@@ -62,7 +63,7 @@
         "source": "Template:Data Sejuani/Arctic Assault",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Sejuani/Arctic%20Assault",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4007753,
       "icon": "SejuaniQ.png"
@@ -137,9 +138,10 @@
         "source": "Template:Data Sejuani/Winter's Wrath",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Sejuani/Winter's%20Wrath",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3971350,
+      "notes": "the entry is not structurally valid, so no figure from it is shown (duplicate component id 'physical-damage')",
       "icon": "SejuaniW.png"
     },
     {
@@ -177,7 +179,7 @@
         "source": "Template:Data Sejuani/Permafrost",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Sejuani/Permafrost",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3979909,
       "icon": "SejuaniE.png"
@@ -238,7 +240,7 @@
         "source": "Template:Data Sejuani/Glacial Prison",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Sejuani/Glacial%20Prison",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4008031,
       "icon": "SejuaniR.png"

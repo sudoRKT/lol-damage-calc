@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -21,9 +21,10 @@
         "source": "Template:Data Corki/Hextech Munitions",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Corki/Hextech%20Munitions",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4050625,
+      "notes": "the wiki damage module states that this ability deals damage, but its page carries no leveling row to read a figure from — the damage is stated in description prose that has not been read yet",
       "icon": "Corki_RapidReload.png"
     },
     {
@@ -67,7 +68,7 @@
         "source": "Template:Data Corki/Phosphorus Bomb",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Corki/Phosphorus%20Bomb",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4007588,
       "icon": "PhosphorusBomb.png"
@@ -114,7 +115,7 @@
         "source": "Template:Data Corki/Valkyrie",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Corki/Valkyrie",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4007589,
       "icon": "CarpetBomb.png"
@@ -160,7 +161,7 @@
         "source": "Template:Data Corki/Gatling Gun",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Corki/Gatling%20Gun",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3948411,
       "icon": "GGun.png"
@@ -224,7 +225,7 @@
         "source": "Template:Data Corki/Missile Barrage",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Corki/Missile%20Barrage",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4042863,
       "icon": "MissileBarrage.png"

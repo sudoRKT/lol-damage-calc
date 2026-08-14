@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -22,9 +22,10 @@
         "source": "Template:Data Elise/Spider Queen",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Elise/Spider%20Queen",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3996449,
+      "notes": "the ability template and the wiki damage module both state that this ability deals damage, but its page carries no leveling row to read a figure from — the damage is stated in description prose that has not been read yet",
       "icon": "ElisePassive.png"
     },
     {
@@ -73,7 +74,7 @@
         "source": "Template:Data Elise/Neurotoxin",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Elise/Neurotoxin",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3982568,
       "icon": "EliseHumanQ.png"
@@ -124,7 +125,7 @@
         "source": "Template:Data Elise/Venomous Bite",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Elise/Venomous%20Bite",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3982567,
       "icon": "EliseHumanQ.png"
@@ -164,7 +165,7 @@
         "source": "Template:Data Elise/Volatile Spiderling",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Elise/Volatile%20Spiderling",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3906822,
       "icon": "EliseHumanW.png"
@@ -181,7 +182,7 @@
         "source": "Template:Data Elise/Skittering Frenzy",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Elise/Skittering%20Frenzy",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3980350,
       "icon": "EliseHumanW.png"
@@ -198,7 +199,7 @@
         "source": "Template:Data Elise/Cocoon",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Elise/Cocoon",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3906643,
       "icon": "EliseHumanE.png"
@@ -215,7 +216,7 @@
         "source": "Template:Data Elise/Rappel",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Elise/Rappel",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4007596,
       "icon": "EliseHumanE.png"
@@ -232,7 +233,7 @@
         "source": "Template:Data Elise/Spider Form",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Elise/Spider%20Form",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3979322,
       "icon": "EliseR.png"

@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -22,9 +22,10 @@
         "source": "Template:Data Kayle/Divine Ascent",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kayle/Divine%20Ascent",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4051190,
+      "notes": "the ability template and the wiki damage module both state that this ability deals damage, but its page carries no leveling row to read a figure from — the damage is stated in description prose that has not been read yet",
       "icon": "Kayle_P.png"
     },
     {
@@ -68,7 +69,7 @@
         "source": "Template:Data Kayle/Radiant Blast",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kayle/Radiant%20Blast",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4005105,
       "icon": "KayleQ.png"
@@ -85,7 +86,7 @@
         "source": "Template:Data Kayle/Celestial Blessing",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kayle/Celestial%20Blessing",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3997873,
       "icon": "KayleW.png"
@@ -168,7 +169,7 @@
         "source": "Template:Data Kayle/Starfire Spellblade",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kayle/Starfire%20Spellblade",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3982990,
       "icon": "KayleE.png"
@@ -214,7 +215,7 @@
         "source": "Template:Data Kayle/Divine Judgment",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kayle/Divine%20Judgment",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3962015,
       "icon": "KayleR.png"

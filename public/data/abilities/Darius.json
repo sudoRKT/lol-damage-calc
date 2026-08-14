@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -22,9 +22,10 @@
         "source": "Template:Data Darius/Hemorrhage",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Darius/Hemorrhage",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4043706,
+      "notes": "the ability template and the wiki damage module both state that this ability deals damage, but its page carries no leveling row to read a figure from — the damage is stated in description prose that has not been read yet",
       "icon": "Darius_Icon_Hemorrhage.png"
     },
     {
@@ -84,7 +85,7 @@
         "source": "Template:Data Darius/Decimate",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Darius/Decimate",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4007591,
       "icon": "DariusCleave.png"
@@ -129,9 +130,10 @@
         "source": "Template:Data Darius/Crippling Strike",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Darius/Crippling%20Strike",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4013692,
+      "notes": "the wiki's own rendering of this ability disagrees with what was read from it ([Bonus Physical Damage] rank 1: wiki 40, stored 0; rank 2: wiki 45, stored 0; rank 3: wiki 50, stored 0; rank 4: wiki 55, stored 0; rank 5: wiki NaN, stored 0)",
       "icon": "DariusNoxianTacticsONH.png"
     },
     {
@@ -146,7 +148,7 @@
         "source": "Template:Data Darius/Apprehend",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Darius/Apprehend",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3906616,
       "icon": "DariusAxeGrabCone.png"
@@ -229,9 +231,10 @@
         "source": "Template:Data Darius/Noxian Guillotine",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Darius/Noxian%20Guillotine",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4004898,
+      "notes": "how many times this lands could not be read (\"Bonus Damage Per Stack\" lands more than once and nothing in the template states how many)",
       "icon": "DariusExecute.png"
     }
   ],

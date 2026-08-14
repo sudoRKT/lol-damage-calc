@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -82,7 +82,7 @@
         "source": "Template:Data Volibear/The Relentless Storm",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Volibear/The%20Relentless%20Storm",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4046481,
       "icon": "Volibear_Icon_P.png"
@@ -122,7 +122,7 @@
         "source": "Template:Data Volibear/Thundering Smash",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Volibear/Thundering%20Smash",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4046590,
       "icon": "VolibearQ.png"
@@ -169,7 +169,7 @@
         "source": "Template:Data Volibear/Frenzied Maul",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Volibear/Frenzied%20Maul",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4008612,
       "icon": "VolibearW.png"
@@ -216,7 +216,7 @@
         "source": "Template:Data Volibear/Sky Splitter",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Volibear/Sky%20Splitter",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4008614,
       "icon": "VolibearE.png"
@@ -262,7 +262,7 @@
         "source": "Template:Data Volibear/Stormbringer",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Volibear/Stormbringer",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4007765,
       "icon": "VolibearR.png"

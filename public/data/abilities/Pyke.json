@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -21,7 +21,7 @@
         "source": "Template:Data Pyke/Gift of the Drowned Ones",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Pyke/Gift%20of%20the%20Drowned%20Ones",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4007005,
       "icon": "PykePassive.png"
@@ -61,7 +61,7 @@
         "source": "Template:Data Pyke/Bone Skewer",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Pyke/Bone%20Skewer",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4007993,
       "icon": "PykeQ.png"
@@ -78,7 +78,7 @@
         "source": "Template:Data Pyke/Ghostwater Dive",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Pyke/Ghostwater%20Dive",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4050339,
       "icon": "PykeW.png"
@@ -118,7 +118,7 @@
         "source": "Template:Data Pyke/Phantom Undertow",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Pyke/Phantom%20Undertow",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4044071,
       "icon": "PykeE.png"
@@ -135,9 +135,10 @@
         "source": "Template:Data Pyke/Death from Below",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Pyke/Death%20from%20Below",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4007995,
+      "notes": "the wiki damage module states that this ability deals damage, but its page carries no leveling row to read a figure from — the damage is stated in description prose that has not been read yet",
       "icon": "PykeR.png"
     }
   ],

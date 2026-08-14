@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -22,9 +22,10 @@
         "source": "Template:Data Twitch/Deadly Venom",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Twitch/Deadly%20Venom",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4013286,
+      "notes": "the ability template and the wiki damage module both state that this ability deals damage, but its page carries no leveling row to read a figure from — the damage is stated in description prose that has not been read yet",
       "icon": "Twitch_Passive.png"
     },
     {
@@ -39,7 +40,7 @@
         "source": "Template:Data Twitch/Ambush",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Twitch/Ambush",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3982645,
       "icon": "TwitchHideInShadows.png"
@@ -56,7 +57,7 @@
         "source": "Template:Data Twitch/Venom Cask",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Twitch/Venom%20Cask",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4012250,
       "icon": "TwitchVenomCask.png"
@@ -171,9 +172,10 @@
         "source": "Template:Data Twitch/Contaminate",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Twitch/Contaminate",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3907215,
+      "notes": "how many times this lands could not be read (\"Physical Damage Per Stack\" lands more than once and nothing in the template states how many)",
       "icon": "TwitchExpunge.png"
     },
     {
@@ -204,7 +206,7 @@
         "source": "Template:Data Twitch/Spray and Pray",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Twitch/Spray%20and%20Pray",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3993607,
       "icon": "TwitchFullAutomatic.png"

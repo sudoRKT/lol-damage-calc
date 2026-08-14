@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -21,7 +21,7 @@
         "source": "Template:Data Vi/Blast Shield",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Vi/Blast%20Shield",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3986701,
       "icon": "ViPassive.png"
@@ -88,7 +88,7 @@
         "source": "Template:Data Vi/Vault Breaker",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Vi/Vault%20Breaker",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3921391,
       "icon": "ViQ.png"
@@ -144,7 +144,7 @@
         "source": "Template:Data Vi/Denting Blows",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Vi/Denting%20Blows",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3932548,
       "icon": "ViW.png"
@@ -184,9 +184,10 @@
         "source": "Template:Data Vi/Relentless Force",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Vi/Relentless%20Force",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3986710,
+      "notes": "{{#expr:{{#var:e_ad}}*100}}% AD",
       "icon": "ViE.png"
     },
     {
@@ -224,7 +225,7 @@
         "source": "Template:Data Vi/Cease and Desist",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Vi/Cease%20and%20Desist",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4004943,
       "icon": "ViR.png"

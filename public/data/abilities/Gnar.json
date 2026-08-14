@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -21,7 +21,7 @@
         "source": "Template:Data Gnar/Rage Gene",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Gnar/Rage%20Gene",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3999602,
       "icon": "Gnar_Passive.png"
@@ -88,7 +88,7 @@
         "source": "Template:Data Gnar/Boomerang Throw",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Gnar/Boomerang%20Throw",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4007601,
       "icon": "GnarQ.png"
@@ -128,7 +128,7 @@
         "source": "Template:Data Gnar/Boulder Toss",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Gnar/Boulder%20Toss",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3589588,
       "icon": "GnarQ.png"
@@ -175,7 +175,7 @@
         "source": "Template:Data Gnar/Hyper",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Gnar/Hyper",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3932657,
       "icon": "GnarW.png"
@@ -215,7 +215,7 @@
         "source": "Template:Data Gnar/Wallop",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Gnar/Wallop",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4022698,
       "icon": "GnarW.png"
@@ -256,7 +256,7 @@
         "source": "Template:Data Gnar/Hop",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Gnar/Hop",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4007742,
       "unresolvable": [
@@ -303,7 +303,7 @@
         "source": "Template:Data Gnar/Crunch",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Gnar/Crunch",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4007743,
       "icon": "GnarE.png"
@@ -376,7 +376,7 @@
         "source": "Template:Data Gnar/GNAR!",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Gnar/GNAR!",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3936277,
       "icon": "GnarR.png"

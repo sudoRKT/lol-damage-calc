@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -21,7 +21,7 @@
         "source": "Template:Data Kled/Skaarl the Cowardly Lizard",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kled/Skaarl%20the%20Cowardly%20Lizard",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4038398,
       "icon": "Kled_P.png"
@@ -67,7 +67,7 @@
         "source": "Template:Data Kled/Dismounted Skaarl the Cowardly Lizard",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kled/Dismounted%20Skaarl%20the%20Cowardly%20Lizard",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4038397,
       "icon": "Kled_P.png"
@@ -121,9 +121,10 @@
         "source": "Template:Data Kled/Bear Trap on a Rope",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kled/Bear%20Trap%20on%20a%20Rope",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4021917,
+      "notes": "the entry is not structurally valid, so no figure from it is shown (duplicate component id 'physical-damage'); {{#expr:{{#var:mq_ad}}*2}}% '''bonus''' AD",
       "icon": "KledQ.png"
     },
     {
@@ -214,7 +215,7 @@
         "source": "Template:Data Kled/Pocket Pistol",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kled/Pocket%20Pistol",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4016171,
       "icon": "KledQ.png"
@@ -340,7 +341,7 @@
         "source": "Template:Data Kled/Violent Tendencies",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kled/Violent%20Tendencies",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4038399,
       "unresolvable": [
@@ -386,9 +387,10 @@
         "source": "Template:Data Kled/Jousting",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kled/Jousting",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4015934,
+      "notes": "the parts do not add up to the total the source itself states (the wiki states a total of 70 at rank 1 and our additive components sum to 35 — a term or a multiplicity is missing)",
       "icon": "KledE.png"
     },
     {
@@ -403,7 +405,7 @@
         "source": "Template:Data Kled/Dismounted Jousting",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kled/Dismounted%20Jousting",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3942228,
       "icon": "KledE.png"
@@ -496,9 +498,9 @@
         "source": "Template:Data Kled/Chaaaaaaaarge!!!",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kled/Chaaaaaaaarge!!!",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
-      "sourceRevision": 4016270,
+      "sourceRevision": 4051917,
       "icon": "KledR.png"
     },
     {
@@ -513,7 +515,7 @@
         "source": "Template:Data Kled/Dismounted Chaaaaaaaarge!!!",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kled/Dismounted%20Chaaaaaaaarge!!!",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3942225,
       "icon": "KledR.png"

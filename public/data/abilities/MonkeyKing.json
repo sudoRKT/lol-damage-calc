@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -21,7 +21,7 @@
         "source": "Template:Data Wukong/Stone Skin",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Wukong/Stone%20Skin",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3986748,
       "icon": "MonkeyKingStoneSkin.png"
@@ -61,7 +61,7 @@
         "source": "Template:Data Wukong/Crushing Blow",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Wukong/Crushing%20Blow",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4051479,
       "icon": "MonkeyKingDoubleAttack.png"
@@ -79,7 +79,7 @@
         "source": "Template:Data Wukong/Warrior Trickster",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Wukong/Warrior%20Trickster",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4016976,
       "icon": "MonkeyKingDecoy.png"
@@ -119,7 +119,7 @@
         "source": "Template:Data Wukong/Nimbus Strike",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Wukong/Nimbus%20Strike",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4021858,
       "icon": "MonkeyKingNimbus.png"
@@ -173,9 +173,10 @@
         "source": "Template:Data Wukong/Cyclone",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Wukong/Cyclone",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4021867,
+      "notes": "how many times this lands could not be read (\"Physical Damage Per Tick\" lands more than once and the source does not state how many times; the dropped total row does not divide by it evenly, so the count is not derivable)",
       "icon": "MonkeyKingSpinToWin.png"
     }
   ],

@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -22,9 +22,10 @@
         "source": "Template:Data Poppy/Iron Ambassador",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Poppy/Iron%20Ambassador",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3994225,
+      "notes": "the ability template and the wiki damage module both state that this ability deals damage, but its page carries no leveling row to read a figure from — the damage is stated in description prose that has not been read yet",
       "icon": "Poppy_Passive.png"
     },
     {
@@ -69,9 +70,10 @@
         "source": "Template:Data Poppy/Hammer Shock",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Poppy/Hammer%20Shock",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4051348,
+      "notes": "the parts do not add up to the total the source itself states (the wiki states a total of 60 at rank 1 and our additive components sum to 30 — a term or a multiplicity is missing)",
       "icon": "PoppyQ.png"
     },
     {
@@ -109,7 +111,7 @@
         "source": "Template:Data Poppy/Steadfast Presence",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Poppy/Steadfast%20Presence",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4051176,
       "icon": "PoppyW.png"
@@ -149,9 +151,10 @@
         "source": "Template:Data Poppy/Heroic Charge",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Poppy/Heroic%20Charge",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3946254,
+      "notes": "the parts do not add up to the total the source itself states (the wiki states a total of 80 at rank 1 and our additive components sum to 40 — a term or a multiplicity is missing)",
       "icon": "PoppyE.png"
     },
     {
@@ -210,7 +213,7 @@
         "source": "Template:Data Poppy/Keeper's Verdict",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Poppy/Keeper's%20Verdict",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4007992,
       "icon": "PoppyR.png"

@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -22,9 +22,10 @@
         "source": "Template:Data Gangplank/Trial by Fire",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Gangplank/Trial%20by%20Fire",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4038337,
+      "notes": "the ability template and the wiki damage module both state that this ability deals damage, but its page carries no leveling row to read a figure from — the damage is stated in description prose that has not been read yet",
       "icon": "Gangplank_Passive.png"
     },
     {
@@ -62,9 +63,9 @@
         "source": "Template:Data Gangplank/Parrrley",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Gangplank/Parrrley",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
-      "sourceRevision": 4015393,
+      "sourceRevision": 4051880,
       "icon": "GangplankQWrapper.png"
     },
     {
@@ -79,7 +80,7 @@
         "source": "Template:Data Gangplank/Remove Scurvy",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Gangplank/Remove%20Scurvy",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3906839,
       "icon": "GangplankW.png"
@@ -112,7 +113,7 @@
         "source": "Template:Data Gangplank/Powder Keg",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Gangplank/Powder%20Keg",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4043675,
       "icon": "GangplankE.png"
@@ -201,9 +202,10 @@
         "source": "Template:Data Gangplank/Cannon Barrage",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Gangplank/Cannon%20Barrage",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4048098,
+      "notes": "the parts do not add up to the total the source itself states (the wiki states a total of 480 at rank 1 and our additive components sum to 720 — something is counted twice)",
       "icon": "GangplankR.png"
     }
   ],

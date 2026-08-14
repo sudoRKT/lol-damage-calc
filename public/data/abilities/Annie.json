@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -21,7 +21,7 @@
         "source": "Template:Data Annie/Pyromania",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Annie/Pyromania",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3932255,
       "icon": "Annie_Passive.png"
@@ -61,7 +61,7 @@
         "source": "Template:Data Annie/Disintegrate",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Annie/Disintegrate",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3992633,
       "icon": "AnnieQ.png"
@@ -101,7 +101,7 @@
         "source": "Template:Data Annie/Incinerate",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Annie/Incinerate",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3952555,
       "icon": "AnnieW.png"
@@ -141,7 +141,7 @@
         "source": "Template:Data Annie/Molten Shield",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Annie/Molten%20Shield",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4038214,
       "icon": "AnnieE.png"
@@ -181,7 +181,7 @@
         "source": "Template:Data Annie/Summon: Tibbers",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Annie/Summon%3A%20Tibbers",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4012758,
       "icon": "AnnieR.png"

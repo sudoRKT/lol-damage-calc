@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -42,7 +42,7 @@
         "source": "Template:Data Leona/Sunlight",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Leona/Sunlight",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4038401,
       "icon": "LeonaSunlight.png"
@@ -82,7 +82,7 @@
         "source": "Template:Data Leona/Shield of Daybreak",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Leona/Shield%20of%20Daybreak",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4001219,
       "icon": "LeonaShieldOfDaybreak.png"
@@ -122,7 +122,7 @@
         "source": "Template:Data Leona/Eclipse",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Leona/Eclipse",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4042253,
       "icon": "LeonaSolarBarrier.png"
@@ -162,7 +162,7 @@
         "source": "Template:Data Leona/Zenith Blade",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Leona/Zenith%20Blade",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4007645,
       "icon": "LeonaZenithBlade.png"
@@ -202,7 +202,7 @@
         "source": "Template:Data Leona/Solar Flare",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Leona/Solar%20Flare",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4007649,
       "icon": "LeonaSolarFlare.png"

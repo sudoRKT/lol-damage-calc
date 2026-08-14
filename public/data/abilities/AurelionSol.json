@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -21,7 +21,7 @@
         "source": "Template:Data Aurelion Sol/Cosmic Creator",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Aurelion%20Sol/Cosmic%20Creator",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3963005,
       "icon": "AurelionSolP.png"
@@ -166,9 +166,10 @@
         "source": "Template:Data Aurelion Sol/Breath of Light",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Aurelion%20Sol/Breath%20of%20Light",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4028021,
+      "notes": "how many times this lands could not be read (4 repeating components; a total row cannot be attributed to one of them); ; one expression is split across several {{as}} blocks (unbalanced parentheses), so the stat and its percentage were read separately and what is stored is not the ability: {{ap|60 to 100}} {{as|(+ 30% AP)}} {{ai|Cosmic Creator|Aurelion Sol|{{as|(+|hp}} {{as|({{fd|3.1}}% Stardust)}}",
       "icon": "AurelionSolQ.png"
     },
     {
@@ -183,9 +184,10 @@
         "source": "Template:Data Aurelion Sol/Astral Flight",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Aurelion%20Sol/Astral%20Flight",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4007567,
+      "notes": "no source states what damage type this ability deals, and a figure without a type is a figure without a resistance",
       "icon": "AurelionSolW.png"
     },
     {
@@ -224,7 +226,7 @@
         "source": "Template:Data Aurelion Sol/Singularity",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Aurelion%20Sol/Singularity",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4038217,
       "icon": "AurelionSolE.png"
@@ -264,7 +266,7 @@
         "source": "Template:Data Aurelion Sol/Falling Star",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Aurelion%20Sol/Falling%20Star",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3978297,
       "icon": "AurelionSolR.png"
@@ -332,7 +334,7 @@
         "source": "Template:Data Aurelion Sol/The Skies Descend",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Aurelion%20Sol/The%20Skies%20Descend",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3936269,
       "icon": "AurelionSolR.png"

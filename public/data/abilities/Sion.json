@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -22,9 +22,10 @@
         "source": "Template:Data Sion/Glory in Death",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Sion/Glory%20in%20Death",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4016182,
+      "notes": "the ability template and the wiki damage module both state that this ability deals damage, but its page carries no leveling row to read a figure from — the damage is stated in description prose that has not been read yet",
       "icon": "Sion_Passive1.png"
     },
     {
@@ -39,7 +40,7 @@
         "source": "Template:Data Sion/Death Surge",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Sion/Death%20Surge",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3968660,
       "icon": "Sion_Passive1.png"
@@ -101,7 +102,7 @@
         "source": "Template:Data Sion/Decimating Smash",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Sion/Decimating%20Smash",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4034709,
       "icon": "SionQ.png"
@@ -148,7 +149,7 @@
         "source": "Template:Data Sion/Soul Furnace",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Sion/Soul%20Furnace",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4034710,
       "icon": "SionW.png"
@@ -188,7 +189,7 @@
         "source": "Template:Data Sion/Roar of the Slayer",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Sion/Roar%20of%20the%20Slayer",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4008040,
       "icon": "SionE.png"
@@ -250,7 +251,7 @@
         "source": "Template:Data Sion/Unstoppable Onslaught",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Sion/Unstoppable%20Onslaught",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4004940,
       "icon": "SionR.png"

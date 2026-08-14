@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -21,7 +21,7 @@
         "source": "Template:Data Morgana/Soul Siphon",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Morgana/Soul%20Siphon",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3985603,
       "icon": "FallenAngel_Empathize.png"
@@ -66,7 +66,7 @@
         "source": "Template:Data Morgana/Dark Binding",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Morgana/Dark%20Binding",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3936353,
       "icon": "MorganaQ.png"
@@ -135,9 +135,10 @@
         "source": "Template:Data Morgana/Tormented Shadow",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Morgana/Tormented%20Shadow",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3949929,
+      "notes": "the parts do not add up to the total the source itself states (the wiki states a total of 90 at rank 1 and our additive components sum to 9 — a term or a multiplicity is missing); how many times this lands could not be read (2 repeating components; a total row cannot be attributed to one of them)",
       "icon": "MorganaW.png"
     },
     {
@@ -152,7 +153,7 @@
         "source": "Template:Data Morgana/Black Shield",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Morgana/Black%20Shield",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4050925,
       "icon": "MorganaE.png"
@@ -192,9 +193,10 @@
         "source": "Template:Data Morgana/Soul Shackles",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Morgana/Soul%20Shackles",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4020315,
+      "notes": "the parts do not add up to the total the source itself states (the wiki states a total of 400 at rank 1 and our additive components sum to 200 — a term or a multiplicity is missing)",
       "icon": "MorganaR.png"
     }
   ],

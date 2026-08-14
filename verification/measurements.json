@@ -1,7 +1,7 @@
 {
   "what": "Roster-wide measurements from a full-roster harvest. Written ONLY by a full-roster run. tests/document-claims.test.ts compares the project documents against these figures; a document that disagrees fails the suite. Every figure states what it counts.",
   "patch": "16.16.1",
-  "generatedOn": "2026-08-13",
+  "generatedOn": "2026-08-14",
   "coverage": {
     "championsRequested": 173,
     "championsMeasured": 173,

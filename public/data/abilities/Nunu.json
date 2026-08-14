@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -45,7 +45,7 @@
         "source": "Template:Data Nunu & Willump/Call of the Freljord",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Nunu%20%26%20Willump/Call%20of%20the%20Freljord",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4013400,
       "icon": "NunuPassive.png"
@@ -92,7 +92,7 @@
         "source": "Template:Data Nunu & Willump/Consume",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Nunu%20%26%20Willump/Consume",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3985877,
       "unresolvable": [
@@ -165,7 +165,7 @@
         "source": "Template:Data Nunu & Willump/Biggest Snowball Ever!",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Nunu%20%26%20Willump/Biggest%20Snowball%20Ever!",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4007735,
       "icon": "NunuW.png"
@@ -227,9 +227,10 @@
         "source": "Template:Data Nunu & Willump/Snowball Barrage",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Nunu%20%26%20Willump/Snowball%20Barrage",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4013466,
+      "notes": "the parts do not add up to the total the source itself states (the wiki states a total of 45 at rank 1 and our additive components sum to 65 — something is counted twice)",
       "icon": "NunuE.png"
     },
     {
@@ -267,9 +268,10 @@
         "source": "Template:Data Nunu & Willump/Absolute Zero",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Nunu%20%26%20Willump/Absolute%20Zero",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4010574,
+      "notes": "two sources state different values for the same figure and nothing settles which is right",
       "icon": "NunuR.png"
     }
   ],

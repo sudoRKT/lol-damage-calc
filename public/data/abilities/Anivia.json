@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -21,7 +21,7 @@
         "source": "Template:Data Anivia/Rebirth",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Anivia/Rebirth",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3906517,
       "icon": "Anivia_P.png"
@@ -82,9 +82,10 @@
         "source": "Template:Data Anivia/Flash Frost",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Anivia/Flash%20Frost",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4026612,
+      "notes": "the entry is not structurally valid, so no figure from it is shown (duplicate component id 'magic-damage')",
       "icon": "FlashFrost.png"
     },
     {
@@ -100,7 +101,7 @@
         "source": "Template:Data Anivia/Crystallize",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Anivia/Crystallize",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4007565,
       "icon": "Crystallize.png"
@@ -167,7 +168,7 @@
         "source": "Template:Data Anivia/Frostbite",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Anivia/Frostbite",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3958096,
       "icon": "Frostbite.png"
@@ -234,9 +235,10 @@
         "source": "Template:Data Anivia/Glacial Storm",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Anivia/Glacial%20Storm",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4006729,
+      "notes": "how many times this lands could not be read (2 repeating components; a total row cannot be attributed to one of them)",
       "icon": "GlacialStorm.png"
     }
   ],

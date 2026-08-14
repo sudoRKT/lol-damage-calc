@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -21,7 +21,7 @@
         "source": "Template:Data LeBlanc/Mirror Image 2",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_LeBlanc/Mirror%20Image%202",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4035723,
       "icon": "LeblancP.png"
@@ -61,9 +61,10 @@
         "source": "Template:Data LeBlanc/Sigil of Malice",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_LeBlanc/Sigil%20of%20Malice",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3985524,
+      "notes": "the parts do not add up to the total the source itself states (the wiki states a total of 130 at rank 1 and our additive components sum to 65 — a term or a multiplicity is missing)",
       "icon": "LeblancQ.png"
     },
     {
@@ -101,7 +102,7 @@
         "source": "Template:Data LeBlanc/Distortion",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_LeBlanc/Distortion",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4007638,
       "icon": "LeblancW.png"
@@ -162,7 +163,7 @@
         "source": "Template:Data LeBlanc/Ethereal Chains",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_LeBlanc/Ethereal%20Chains",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3954748,
       "icon": "LeblancE.png"
@@ -286,9 +287,10 @@
         "source": "Template:Data LeBlanc/Mimic",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_LeBlanc/Mimic",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4034699,
+      "notes": "the parts do not add up to the total the source itself states (the wiki states a total of 210 at rank 1 and our additive components sum to 570 — something is counted twice)",
       "icon": "LeblancR.png"
     }
   ],

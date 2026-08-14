@@ -359,7 +359,18 @@ function planStep(
               kind: (ability.unresolvable?.length ?? 0) > 0 ? 'permanent' : 'pending',
               ...((ability.unresolvable?.length ?? 0) > 0
                 ? { missingFacts: ability.unresolvable }
-                : { note: ability.notes ?? 'this ability is recorded as incomplete' }),
+                : {
+                  // NEVER INVENT A REASON. Where the harvester recorded one it is printed; where
+                  // it recorded none, the interface says exactly that rather than a sentence that
+                  // merely sounds like an explanation. "Recorded as incomplete" was the old
+                  // wording and it is worse than useless: it restates the status as though it
+                  // were the cause (SPECIFICATION §8).
+                  note:
+                    ability.notes ??
+                    'the data records no reason for this — the ability is marked incomplete and ' +
+                      'nothing states why, which is itself a gap in the harvested data rather ' +
+                      'than a fact about the ability',
+                }),
             } as IncompleteReason,
           }),
     };

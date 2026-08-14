@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -82,7 +82,7 @@
         "source": "Template:Data Ziggs/Short Fuse",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Ziggs/Short%20Fuse",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4005222,
       "icon": "ZiggsPassiveReady.png"
@@ -122,7 +122,7 @@
         "source": "Template:Data Ziggs/Bouncing Bomb",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Ziggs/Bouncing%20Bomb",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4008669,
       "icon": "ZiggsQ.png"
@@ -162,7 +162,7 @@
         "source": "Template:Data Ziggs/Satchel Charge",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Ziggs/Satchel%20Charge",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4008672,
       "icon": "ZiggsW.png"
@@ -230,7 +230,7 @@
         "source": "Template:Data Ziggs/Hexplosive Minefield",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Ziggs/Hexplosive%20Minefield",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4008673,
       "icon": "ZiggsE.png"
@@ -295,7 +295,7 @@
         "source": "Template:Data Ziggs/Mega Inferno Bomb",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Ziggs/Mega%20Inferno%20Bomb",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4008677,
       "icon": "ZiggsR.png"

@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -21,7 +21,7 @@
         "source": "Template:Data Rek'Sai/Fury of the Xer'Sai",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Rek'Sai/Fury%20of%20the%20Xer'Sai",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4007776,
       "icon": "RekSai_Passive.png"
@@ -66,9 +66,10 @@
         "source": "Template:Data Rek'Sai/Queen's Wrath",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Rek'Sai/Queen's%20Wrath",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3983369,
+      "notes": "the wiki's own rendering of this ability disagrees with what was read from it ([Bonus Physical Damage] rank 1: wiki 30, stored 0; rank 2: wiki 35, stored 0; rank 3: wiki 40, stored 0; rank 4: wiki 45, stored 0; rank 5: wiki NaN, stored 0)",
       "icon": "RekSaiQ.png"
     },
     {
@@ -112,7 +113,7 @@
         "source": "Template:Data Rek'Sai/Prey Seeker",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Rek'Sai/Prey%20Seeker",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3961898,
       "icon": "RekSaiQ.png"
@@ -129,7 +130,7 @@
         "source": "Template:Data Rek'Sai/Burrow",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Rek'Sai/Burrow",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3980688,
       "icon": "RekSaiW.png"
@@ -169,7 +170,7 @@
         "source": "Template:Data Rek'Sai/Unburrow",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Rek'Sai/Unburrow",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4008007,
       "icon": "RekSaiW.png"
@@ -240,7 +241,7 @@
         "source": "Template:Data Rek'Sai/Furious Bite",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Rek'Sai/Furious%20Bite",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4034704,
       "icon": "RekSaiE.png"
@@ -257,7 +258,7 @@
         "source": "Template:Data Rek'Sai/Tunnel",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Rek'Sai/Tunnel",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4007778,
       "icon": "RekSaiE.png"
@@ -304,7 +305,7 @@
         "source": "Template:Data Rek'Sai/Void Rush",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Rek'Sai/Void%20Rush",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4004938,
       "icon": "RekSaiR.png"

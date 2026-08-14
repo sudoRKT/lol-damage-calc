@@ -243,6 +243,16 @@ export interface RowIssue {
     | 'unknown-hit-count'
     /** Two sources state different values for the same figure and nothing settles it (§32). */
     | 'source-conflict'
+    /**
+     * THE TWO KINDS THAT CARRY THE HAND-AUTHORING CAUSES (added 2026-08-14).
+     *
+     * `needsHandAuthoring` drove an entry to `incomplete` and recorded NOTHING, so 224 of 247
+     * incomplete entries reached the screen with nothing to say beyond "incomplete" —
+     * SPECIFICATION §8 requires a pending entry to name what is missing. The harvester already
+     * knew which of the two causes applied; it computed them and threw them away.
+     */
+    | 'every-damage-row-dropped'
+    | 'damage-stated-but-no-leveling-row'
     /** Our stored components do not sum to the total the wiki itself prints (gate 7). */
     | 'total-mismatch'
     // The source states repeats against the same target but the rate or the ceiling could not

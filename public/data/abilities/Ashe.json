@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -22,9 +22,10 @@
         "source": "Template:Data Ashe/Frost Shot",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Ashe/Frost%20Shot",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4038216,
+      "notes": "the ability template states that this ability deals damage, but its page carries no leveling row to read a figure from — the damage is stated in description prose that has not been read yet",
       "icon": "Ashe_P.png"
     },
     {
@@ -68,9 +69,10 @@
         "source": "Template:Data Ashe/Ranger's Focus",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Ashe/Ranger's%20Focus",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4050582,
+      "notes": "how many times this lands could not be read (\"Physical Damage Per Arrow\" lands more than once and the source does not state how many times; the dropped total row does not divide by it evenly, so the count is not derivable)",
       "icon": "AsheQ.png"
     },
     {
@@ -108,7 +110,7 @@
         "source": "Template:Data Ashe/Volley",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Ashe/Volley",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4007430,
       "icon": "Volley.png"
@@ -125,7 +127,7 @@
         "source": "Template:Data Ashe/Hawkshot",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Ashe/Hawkshot",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3936951,
       "icon": "AsheSpiritOfTheHawk.png"
@@ -165,7 +167,7 @@
         "source": "Template:Data Ashe/Enchanted Crystal Arrow",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Ashe/Enchanted%20Crystal%20Arrow",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4026934,
       "icon": "EnchantedCrystalArrow.png"

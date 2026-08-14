@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -21,7 +21,7 @@
         "source": "Template:Data Hecarim/Warpath",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Hecarim/Warpath",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3985372,
       "icon": "Hecarim_Passive.png"
@@ -61,7 +61,7 @@
         "source": "Template:Data Hecarim/Rampage",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Hecarim/Rampage",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3989863,
       "icon": "HecarimRapidSlash.png"
@@ -102,7 +102,7 @@
         "source": "Template:Data Hecarim/Spirit of Dread",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Hecarim/Spirit%20of%20Dread",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3725548,
       "icon": "HecarimW.png"
@@ -169,7 +169,7 @@
         "source": "Template:Data Hecarim/Devastating Charge",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Hecarim/Devastating%20Charge",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3959924,
       "icon": "HecarimRamp.png"
@@ -209,7 +209,7 @@
         "source": "Template:Data Hecarim/Onslaught of Shadows",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Hecarim/Onslaught%20of%20Shadows",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4007604,
       "icon": "HecarimUlt.png"

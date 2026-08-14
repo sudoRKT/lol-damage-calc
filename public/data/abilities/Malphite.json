@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -21,7 +21,7 @@
         "source": "Template:Data Malphite/Granite Shield",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Malphite/Granite%20Shield",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3973718,
       "icon": "Malphite_GraniteShield.png"
@@ -61,7 +61,7 @@
         "source": "Template:Data Malphite/Seismic Shard",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Malphite/Seismic%20Shard",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4003493,
       "icon": "SeismicShard.png"
@@ -136,7 +136,7 @@
         "source": "Template:Data Malphite/Thunderclap",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Malphite/Thunderclap",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4013417,
       "unresolvable": [
@@ -193,7 +193,7 @@
         "source": "Template:Data Malphite/Ground Slam",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Malphite/Ground%20Slam",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3985874,
       "unresolvable": [
@@ -239,7 +239,7 @@
         "source": "Template:Data Malphite/Unstoppable Force",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Malphite/Unstoppable%20Force",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4007750,
       "icon": "UFSlash.png"

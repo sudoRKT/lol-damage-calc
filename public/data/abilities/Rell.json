@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -22,9 +22,10 @@
         "source": "Template:Data Rell/Break the Mold",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Rell/Break%20the%20Mold",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4050368,
+      "notes": "the ability template and the wiki damage module both state that this ability deals damage, but its page carries no leveling row to read a figure from — the damage is stated in description prose that has not been read yet",
       "icon": "RellP.png"
     },
     {
@@ -62,7 +63,7 @@
         "source": "Template:Data Rell/Shattering Strike",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Rell/Shattering%20Strike",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4008008,
       "icon": "RellQ.png"
@@ -102,7 +103,7 @@
         "source": "Template:Data Rell/Ferromancy: Crash Down",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Rell/Ferromancy%3A%20Crash%20Down",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4007762,
       "icon": "RellW_Dismount.png"
@@ -142,7 +143,7 @@
         "source": "Template:Data Rell/Ferromancy: Mount Up",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Rell/Ferromancy%3A%20Mount%20Up",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3976244,
       "icon": "RellW_Dismount.png"
@@ -198,7 +199,7 @@
         "source": "Template:Data Rell/Full Tilt",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Rell/Full%20Tilt",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4008009,
       "icon": "RellE.png"
@@ -242,7 +243,7 @@
         "source": "Template:Data Rell/Magnet Storm",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Rell/Magnet%20Storm",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4008010,
       "icon": "RellR.png"

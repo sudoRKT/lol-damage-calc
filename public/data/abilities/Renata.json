@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -22,9 +22,10 @@
         "source": "Template:Data Renata Glasc/Leverage",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Renata%20Glasc/Leverage",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3997432,
+      "notes": "the ability template and the wiki damage module both state that this ability deals damage, but its page carries no leveling row to read a figure from — the damage is stated in description prose that has not been read yet",
       "icon": "Renata_P.png"
     },
     {
@@ -62,7 +63,7 @@
         "source": "Template:Data Renata Glasc/Handshake",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Renata%20Glasc/Handshake",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4008011,
       "icon": "RenataQ.png"
@@ -80,7 +81,7 @@
         "source": "Template:Data Renata Glasc/Bailout",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Renata%20Glasc/Bailout",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3908415,
       "icon": "RenataW.png"
@@ -120,7 +121,7 @@
         "source": "Template:Data Renata Glasc/Loyalty Program",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Renata%20Glasc/Loyalty%20Program",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4008012,
       "icon": "RenataE.png"
@@ -137,7 +138,7 @@
         "source": "Template:Data Renata Glasc/Hostile Takeover",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Renata%20Glasc/Hostile%20Takeover",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4050286,
       "icon": "RenataR.png"

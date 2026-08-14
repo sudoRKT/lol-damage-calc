@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -21,7 +21,7 @@
         "source": "Template:Data Trundle/King's Tribute",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Trundle/King's%20Tribute",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3986655,
       "icon": "Trundle_Passive.png"
@@ -75,7 +75,7 @@
         "source": "Template:Data Trundle/Chomp",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Trundle/Chomp",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3949665,
       "icon": "TrundleTrollSmash.png"
@@ -92,7 +92,7 @@
         "source": "Template:Data Trundle/Frozen Domain",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Trundle/Frozen%20Domain",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3945305,
       "icon": "trundledesecrate.png"
@@ -110,7 +110,7 @@
         "source": "Template:Data Trundle/Pillar of Ice",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Trundle/Pillar%20of%20Ice",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4008207,
       "icon": "TrundleCircle.png"
@@ -200,9 +200,10 @@
         "source": "Template:Data Trundle/Subjugate",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Trundle/Subjugate",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4015247,
+      "notes": "how many times this lands could not be read (\"Magic Damage Per Second\" lands more than once and the source does not state how many times; the dropped total row does not divide by it evenly, so the count is not derivable)",
       "icon": "TrundlePain.png"
     }
   ],

@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -21,7 +21,7 @@
         "source": "Template:Data Tryndamere/Battle Fury",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Tryndamere/Battle%20Fury",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4041166,
       "icon": "Tryndamere_Passive.png"
@@ -38,9 +38,10 @@
         "source": "Template:Data Tryndamere/Bloodlust",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Tryndamere/Bloodlust",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4019656,
+      "notes": "no source states what damage type this ability deals, and a figure without a type is a figure without a resistance",
       "icon": "TryndamereQ.png"
     },
     {
@@ -55,9 +56,10 @@
         "source": "Template:Data Tryndamere/Mocking Shout",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Tryndamere/Mocking%20Shout",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3983173,
+      "notes": "no source states what damage type this ability deals, and a figure without a type is a figure without a resistance",
       "icon": "TryndamereW.png"
     },
     {
@@ -101,7 +103,7 @@
         "source": "Template:Data Tryndamere/Spinning Slash",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Tryndamere/Spinning%20Slash",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4007759,
       "icon": "TryndamereE.png"
@@ -118,7 +120,7 @@
         "source": "Template:Data Tryndamere/Undying Rage",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Tryndamere/Undying%20Rage",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4018945,
       "icon": "UndyingRage.png"

@@ -55,6 +55,7 @@ import {
   slugify,
 } from './classify.ts';
 import { CONFIRMED, type ConfirmedEffect } from './defensive-confirmed.ts';
+import { ALLY_ONLY, RECIPIENT_NOT_READ, recipientRefusal } from './ally-only.ts';
 import {
   READ_REFUSAL_CLASSES,
   REFUSED_ON_READING,
@@ -464,6 +465,17 @@ export interface ProposalRun {
    * a drop nobody can see is a silent decision.
    */
   otherRecipientRowsDropped: Array<{ key: string; kind: Kind; label: string }>;
+  /** Entries NOT stored because they protect somebody who is not the defender, each with the
+   *  source sentence that establishes it. Two reasons, kept apart: `ally-only` is a decided
+   *  fact, `recipient-not-read` is revisitable (SPECIFICATION §8's permanent vs pending). */
+  recipientDropped: Array<{
+    key: string;
+    kind: Kind;
+    label: string;
+    reason: 'ally-only' | 'recipient-not-read';
+    sourceSays: string;
+    why: string;
+  }>;
 }
 
 export interface ProposeOptions {
@@ -505,6 +517,7 @@ export function proposeForPage(
     refusals: [],
     nonChampionRowsDropped: [],
     otherRecipientRowsDropped: [],
+  recipientDropped: [],
   };
   const scan = scanPage(page);
   const fields = parseFields(page.wikitext);
@@ -536,6 +549,23 @@ export function proposeForPage(
     // means by "absent for the 17 with none". Nothing is invented; the condition carries the whole
     // meaning, and the person who read the sentence wrote it.
     if (kind === 'immunity' || kind === 'spell-shield') {
+      // THE SAME RECIPIENT RULE APPLIES TO A VALUE-FREE EFFECT. Kalista R makes the OATHSWORN
+      // invulnerable and Kalista nothing; an immunity granted to somebody else is no more the
+      // defender's than a shield is. Missed on the first pass because this branch pushes before
+      // the row loop the other filter sits in — which is why the removal is measured by the
+      // ENTRIES that left, not by the length of the read list.
+      const notOursHere = recipientRefusal(page.champion, page.slot, kind);
+      if (notOursHere) {
+        run.recipientDropped.push({
+          key,
+          kind: censusKind,
+          label: '',
+          reason: notOursHere.reason,
+          sourceSays: notOursHere.detail.sourceSays,
+          why: notOursHere.detail.why,
+        });
+        continue;
+      }
       run.proposals.push({
         champion: page.champion,
         slot: page.slot,
@@ -751,6 +781,24 @@ export function proposeForPage(
           fetched: opts.fetched,
         },
       };
+      // ═══ AN EFFECT THAT ONLY EVER PROTECTS AN ALLY IS NOT THE DEFENDER'S ═══
+      //
+      // The defender model is ONE champion, so storing an ally-only effect grants a defender
+      // protection they never receive — a plausible wrong number in the worst direction, because
+      // it makes a combo look survivable when it is not. Decided 2026-08-14; see ally-only.ts
+      // for the read list and the sentence each member rests on.
+      const notOurs = recipientRefusal(page.champion, page.slot, kind);
+      if (notOurs) {
+        run.recipientDropped.push({
+          key,
+          kind: censusKind,
+          label: row.label,
+          reason: notOurs.reason,
+          sourceSays: notOurs.detail.sourceSays,
+          why: notOurs.detail.why,
+        });
+        continue;
+      }
       run.proposals.push(effect);
       run.sources.push({ key, kind, label: row.label, raw: row.value, maxRank });
     }
@@ -818,6 +866,7 @@ export function proposeAll(
     proposals: [],
     sources: [],
     refusals: [],
+    recipientDropped: [],
     nonChampionRowsDropped: [],
     otherRecipientRowsDropped: [],
   };
@@ -830,6 +879,7 @@ export function proposeAll(
     out.refusals.push(...r.refusals);
     out.nonChampionRowsDropped.push(...r.nonChampionRowsDropped);
     out.otherRecipientRowsDropped.push(...r.otherRecipientRowsDropped);
+    out.recipientDropped.push(...r.recipientDropped);
   }
   return out;
 }
@@ -1474,6 +1524,17 @@ if (process.argv[1]?.endsWith('defensive-propose.ts')) {
     refusals: run.refusals,
     nonChampionRowsDropped: run.nonChampionRowsDropped,
     otherRecipientRowsDropped: run.otherRecipientRowsDropped,
+    recipientDropped: {
+      what:
+        'Entries NOT stored because they protect somebody who is not the defender. The defender ' +
+        'model is ONE champion, so an ally-only effect would grant a defender protection they ' +
+        'never receive. A WORD SEARCH DOES NOT FIND THESE: sweeping all 161 entries for "ally" ' +
+        'found 12 and MISSED Shen R, whose stored condition never mentions one. Each member was ' +
+        'read on its own page and quotes the sentence it rests on (scripts/extract/ally-only.ts).',
+      allyOnlyRead: ALLY_ONLY.length,
+      recipientNotReadYet: RECIPIENT_NOT_READ.length,
+      dropped: run.recipientDropped,
+    },
     defensiveEffects: run.proposals,
   };
 

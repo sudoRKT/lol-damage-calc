@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -21,7 +21,7 @@
         "source": "Template:Data Taliyah/Rock Surfing",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Taliyah/Rock%20Surfing",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3986175,
       "icon": "Taliyah_Passive.png"
@@ -143,7 +143,7 @@
         "source": "Template:Data Taliyah/Threaded Volley",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Taliyah/Threaded%20Volley",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4013247,
       "icon": "TaliyahQ.png"
@@ -161,9 +161,10 @@
         "source": "Template:Data Taliyah/Seismic Shove",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Taliyah/Seismic%20Shove",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4028078,
+      "notes": "the ability template states that this ability deals damage, but its page carries no leveling row to read a figure from — the damage is stated in description prose that has not been read yet",
       "icon": "TaliyahWVC.png"
     },
     {
@@ -222,7 +223,7 @@
         "source": "Template:Data Taliyah/Unraveled Earth",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Taliyah/Unraveled%20Earth",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3985881,
       "icon": "TaliyahE.png"
@@ -239,7 +240,7 @@
         "source": "Template:Data Taliyah/Weaver's Wall",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Taliyah/Weaver's%20Wall",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4008075,
       "icon": "TaliyahR.png"

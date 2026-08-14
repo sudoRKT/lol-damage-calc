@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -21,7 +21,7 @@
         "source": "Template:Data Fizz/Nimble Fighter",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Fizz/Nimble%20Fighter",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4042251,
       "icon": "Fizz_P.png"
@@ -61,7 +61,7 @@
         "source": "Template:Data Fizz/Urchin Strike",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Fizz/Urchin%20Strike",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3948968,
       "icon": "FizzQ.png"
@@ -149,7 +149,7 @@
         "source": "Template:Data Fizz/Seastone Trident",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Fizz/Seastone%20Trident",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4015181,
       "icon": "FizzW.png"
@@ -189,7 +189,7 @@
         "source": "Template:Data Fizz/Playful",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Fizz/Playful",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4008451,
       "icon": "FizzE.png"
@@ -229,7 +229,7 @@
         "source": "Template:Data Fizz/Trickster",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Fizz/Trickster",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4007741,
       "icon": "FizzE.png"
@@ -317,7 +317,7 @@
         "source": "Template:Data Fizz/Chum the Waters",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Fizz/Chum%20the%20Waters",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4010638,
       "icon": "FizzR.png"

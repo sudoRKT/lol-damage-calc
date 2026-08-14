@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -21,9 +21,10 @@
         "source": "Template:Data Aphelios/The Hitman and the Seer",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Aphelios/The%20Hitman%20and%20the%20Seer",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4022691,
+      "notes": "no source states what damage type this ability deals, and a figure without a type is a figure without a resistance",
       "icon": "ApheliosP.png"
     },
     {
@@ -62,7 +63,7 @@
         "source": "Template:Data Aphelios/Calibrum",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Aphelios/Calibrum",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4034686,
       "icon": "ApheliosP.png"
@@ -80,9 +81,10 @@
         "source": "Template:Data Aphelios/Severum",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Aphelios/Severum",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4023347,
+      "notes": "the ability template states that this ability deals damage, but its page carries no leveling row to read a figure from — the damage is stated in description prose that has not been read yet",
       "icon": "ApheliosP.png"
     },
     {
@@ -98,9 +100,10 @@
         "source": "Template:Data Aphelios/Gravitum",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Aphelios/Gravitum",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3999163,
+      "notes": "the ability template states that this ability deals damage, but its page carries no leveling row to read a figure from — the damage is stated in description prose that has not been read yet",
       "icon": "ApheliosP.png"
     },
     {
@@ -139,7 +142,7 @@
         "source": "Template:Data Aphelios/Infernum",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Aphelios/Infernum",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4046493,
       "icon": "ApheliosP.png"
@@ -157,9 +160,10 @@
         "source": "Template:Data Aphelios/Crescendum",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Aphelios/Crescendum",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4022137,
+      "notes": "the ability template and the wiki damage module both state that this ability deals damage, but its page carries no leveling row to read a figure from — the damage is stated in description prose that has not been read yet",
       "icon": "ApheliosP.png"
     },
     {
@@ -174,7 +178,7 @@
         "source": "Template:Data Aphelios/Weapons of the Faithful",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Aphelios/Weapons%20of%20the%20Faithful",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3963883,
       "icon": "ApheliosQ_ClientTooltipWrapper.png"
@@ -230,7 +234,7 @@
         "source": "Template:Data Aphelios/Moonshot",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Aphelios/Moonshot",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3993664,
       "icon": "ApheliosQ_ClientTooltipWrapper.png"
@@ -281,7 +285,7 @@
         "source": "Template:Data Aphelios/Onslaught",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Aphelios/Onslaught",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4034687,
       "icon": "ApheliosQ_ClientTooltipWrapper.png"
@@ -337,7 +341,7 @@
         "source": "Template:Data Aphelios/Binding Eclipse",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Aphelios/Binding%20Eclipse",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3983351,
       "icon": "ApheliosQ_ClientTooltipWrapper.png"
@@ -355,9 +359,10 @@
         "source": "Template:Data Aphelios/Duskwave",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Aphelios/Duskwave",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4034688,
+      "notes": "the ability template and the wiki damage module both state that this ability deals damage, but its page carries no leveling row to read a figure from — the damage is stated in description prose that has not been read yet",
       "icon": "ApheliosQ_ClientTooltipWrapper.png"
     },
     {
@@ -411,7 +416,7 @@
         "source": "Template:Data Aphelios/Sentry",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Aphelios/Sentry",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4034689,
       "icon": "ApheliosQ_ClientTooltipWrapper.png"
@@ -428,7 +433,7 @@
         "source": "Template:Data Aphelios/Phase",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Aphelios/Phase",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3970739,
       "icon": "ApheliosW.png"
@@ -445,7 +450,7 @@
         "source": "Template:Data Aphelios/Weapon Queue System",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Aphelios/Weapon%20Queue%20System",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3998993,
       "icon": "ApheliosE_ClientTooltipWrapper.png"
@@ -490,7 +495,7 @@
         "source": "Template:Data Aphelios/Moonlight Vigil",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Aphelios/Moonlight%20Vigil",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3996444,
       "icon": "ApheliosR.png"

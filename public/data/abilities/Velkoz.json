@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -42,7 +42,7 @@
         "source": "Template:Data Vel'Koz/Organic Deconstruction",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Vel'Koz/Organic%20Deconstruction",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3986690,
       "icon": "VelKoz_Passive.png"
@@ -82,7 +82,7 @@
         "source": "Template:Data Vel'Koz/Plasma Fission",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Vel'Koz/Plasma%20Fission",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4008544,
       "icon": "VelkozQ.png"
@@ -143,9 +143,10 @@
         "source": "Template:Data Vel'Koz/Void Rift",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Vel'Koz/Void%20Rift",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4008545,
+      "notes": "the entry is not structurally valid, so no figure from it is shown (duplicate component id 'magic-damage')",
       "icon": "VelkozW.png"
     },
     {
@@ -183,7 +184,7 @@
         "source": "Template:Data Vel'Koz/Tectonic Disruption",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Vel'Koz/Tectonic%20Disruption",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3952590,
       "icon": "VelkozE.png"
@@ -200,9 +201,10 @@
         "source": "Template:Data Vel'Koz/Life Form Disintegration Ray",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Vel'Koz/Life%20Form%20Disintegration%20Ray",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4012050,
+      "notes": "no source states what damage type this ability deals, and a figure without a type is a figure without a resistance",
       "icon": "VelkozR.png"
     }
   ],

@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -22,9 +22,10 @@
         "source": "Template:Data Galio/Colossal Smash",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Galio/Colossal%20Smash",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4038336,
+      "notes": "the ability template and the wiki damage module both state that this ability deals damage, but its page carries no leveling row to read a figure from — the damage is stated in description prose that has not been read yet",
       "icon": "Galio_Passive.png"
     },
     {
@@ -62,7 +63,7 @@
         "source": "Template:Data Galio/Winds of War",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Galio/Winds%20of%20War",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4016962,
       "icon": "GalioQ.png"
@@ -124,7 +125,7 @@
         "source": "Template:Data Galio/Shield of Durand",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Galio/Shield%20of%20Durand",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3990299,
       "icon": "GalioW.png"
@@ -164,7 +165,7 @@
         "source": "Template:Data Galio/Justice Punch",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Galio/Justice%20Punch",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4016963,
       "icon": "GalioE.png"
@@ -211,7 +212,7 @@
         "source": "Template:Data Galio/Hero's Entrance",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Galio/Hero's%20Entrance",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4017997,
       "unresolvable": [

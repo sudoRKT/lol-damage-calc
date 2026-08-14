@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -22,9 +22,10 @@
         "source": "Template:Data Sylas/Petricite Burst",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Sylas/Petricite%20Burst",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4031820,
+      "notes": "the ability template and the wiki damage module both state that this ability deals damage, but its page carries no leveling row to read a figure from — the damage is stated in description prose that has not been read yet",
       "icon": "SylasP.png"
     },
     {
@@ -83,9 +84,10 @@
         "source": "Template:Data Sylas/Chain Lash",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Sylas/Chain%20Lash",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4046589,
+      "notes": "the entry is not structurally valid, so no figure from it is shown (duplicate component id 'magic-damage')",
       "icon": "SylasQ.png"
     },
     {
@@ -123,7 +125,7 @@
         "source": "Template:Data Sylas/Kingslayer",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Sylas/Kingslayer",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4026459,
       "icon": "SylasW.png"
@@ -140,7 +142,7 @@
         "source": "Template:Data Sylas/Abscond",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Sylas/Abscond",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4007757,
       "icon": "SylasE.png"
@@ -180,7 +182,7 @@
         "source": "Template:Data Sylas/Abduct",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Sylas/Abduct",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4008064,
       "icon": "SylasE.png"
@@ -197,7 +199,7 @@
         "source": "Template:Data Sylas/Hijack",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Sylas/Hijack",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4050139,
       "icon": "SylasR.png"

@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -21,7 +21,7 @@
         "source": "Template:Data Twisted Fate/Loaded Dice",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Twisted%20Fate/Loaded%20Dice",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4005221,
       "icon": "Cardmaster_SealFate.png"
@@ -67,7 +67,7 @@
         "source": "Template:Data Twisted Fate/Wild Cards",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Twisted%20Fate/Wild%20Cards",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3950864,
       "icon": "WildCards.png"
@@ -167,9 +167,10 @@
         "source": "Template:Data Twisted Fate/Pick a Card",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Twisted%20Fate/Pick%20a%20Card",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4004668,
+      "notes": "the entry is not structurally valid, so no figure from it is shown (duplicate component id 'magic-damage')",
       "icon": "PickACard.png"
     },
     {
@@ -213,7 +214,7 @@
         "source": "Template:Data Twisted Fate/Stacked Deck",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Twisted%20Fate/Stacked%20Deck",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3963571,
       "icon": "CardmasterStack.png"
@@ -230,7 +231,7 @@
         "source": "Template:Data Twisted Fate/Destiny",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Twisted%20Fate/Destiny",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4017975,
       "icon": "Destiny.png"

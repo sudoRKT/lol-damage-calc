@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -22,9 +22,10 @@
         "source": "Template:Data Kha'Zix/Unseen Threat",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kha'Zix/Unseen%20Threat",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4038395,
+      "notes": "the ability template and the wiki damage module both state that this ability deals damage, but its page carries no leveling row to read a figure from — the damage is stated in description prose that has not been read yet",
       "icon": "Khazix_P.png"
     },
     {
@@ -88,7 +89,7 @@
         "source": "Template:Data Kha'Zix/Taste Their Fear",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kha'Zix/Taste%20Their%20Fear",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4006997,
       "icon": "KhazixQ.png"
@@ -106,9 +107,10 @@
         "source": "Template:Data Kha'Zix/Evolved Reaper Claws",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kha'Zix/Evolved%20Reaper%20Claws",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3994647,
+      "notes": "the ability template and the wiki damage module both state that this ability deals damage, but its page carries no leveling row to read a figure from — the damage is stated in description prose that has not been read yet",
       "icon": "KhazixQ.png"
     },
     {
@@ -146,7 +148,7 @@
         "source": "Template:Data Kha'Zix/Void Spike",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kha'Zix/Void%20Spike",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3971345,
       "icon": "KhazixW.png"
@@ -164,9 +166,10 @@
         "source": "Template:Data Kha'Zix/Evolved Spike Racks",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kha'Zix/Evolved%20Spike%20Racks",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4024927,
+      "notes": "the ability template and the wiki damage module both state that this ability deals damage, but its page carries no leveling row to read a figure from — the damage is stated in description prose that has not been read yet",
       "icon": "KhazixW.png"
     },
     {
@@ -204,7 +207,7 @@
         "source": "Template:Data Kha'Zix/Leap",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kha'Zix/Leap",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4007747,
       "icon": "KhazixE.png"
@@ -222,9 +225,10 @@
         "source": "Template:Data Kha'Zix/Evolved Wings",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kha'Zix/Evolved%20Wings",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4007748,
+      "notes": "the ability template and the wiki damage module both state that this ability deals damage, but its page carries no leveling row to read a figure from — the damage is stated in description prose that has not been read yet",
       "icon": "KhazixE.png"
     },
     {
@@ -239,7 +243,7 @@
         "source": "Template:Data Kha'Zix/Void Assault",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kha'Zix/Void%20Assault",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3969560,
       "icon": "KhazixR.png"
@@ -256,7 +260,7 @@
         "source": "Template:Data Kha'Zix/Evolved Adaptive Cloaking",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kha'Zix/Evolved%20Adaptive%20Cloaking",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3906950,
       "icon": "KhazixR.png"

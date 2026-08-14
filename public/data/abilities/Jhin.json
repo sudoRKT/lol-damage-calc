@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -22,9 +22,10 @@
         "source": "Template:Data Jhin/Whisper",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Jhin/Whisper",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3998238,
+      "notes": "the ability template and the wiki damage module both state that this ability deals damage, but its page carries no leveling row to read a figure from — the damage is stated in description prose that has not been read yet",
       "icon": "Jhin_P.png"
     },
     {
@@ -133,9 +134,10 @@
         "source": "Template:Data Jhin/Dancing Grenade",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Jhin/Dancing%20Grenade",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4007611,
+      "notes": "how many times this lands could not be read (\"Bonus Damage per Target Death\" lands more than once and nothing in the template states how many)",
       "icon": "JhinQ.png"
     },
     {
@@ -173,7 +175,7 @@
         "source": "Template:Data Jhin/Deadly Flourish",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Jhin/Deadly%20Flourish",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4021795,
       "icon": "JhinW.png"
@@ -247,7 +249,7 @@
         "source": "Template:Data Jhin/Captive Audience",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Jhin/Captive%20Audience",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4007613,
       "icon": "JhinE.png"
@@ -363,9 +365,10 @@
         "source": "Template:Data Jhin/Curtain Call",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Jhin/Curtain%20Call",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4007615,
+      "notes": "how many times this lands could not be read (2 repeating components; a total row cannot be attributed to one of them)",
       "icon": "JhinR.png"
     }
   ],

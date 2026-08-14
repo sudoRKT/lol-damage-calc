@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -54,7 +54,7 @@
         "source": "Template:Data Zed/Contempt for the Weak",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Zed/Contempt%20for%20the%20Weak",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4016888,
       "icon": "ZedP.png"
@@ -121,7 +121,7 @@
         "source": "Template:Data Zed/Razor Shuriken",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Zed/Razor%20Shuriken",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4006897,
       "icon": "ZedQ.png"
@@ -139,7 +139,7 @@
         "source": "Template:Data Zed/Living Shadow",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Zed/Living%20Shadow",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4008656,
       "icon": "ZedW.png"
@@ -179,7 +179,7 @@
         "source": "Template:Data Zed/Shadow Slash",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Zed/Shadow%20Slash",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4016889,
       "icon": "ZedE.png"
@@ -222,9 +222,10 @@
         "source": "Template:Data Zed/Death Mark",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Zed/Death%20Mark",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4050166,
+      "notes": "the wiki's own rendering of this ability disagrees with what was read from it ([Physical Damage] ratio 0 (totalAD): rank 1: wiki 25, stored 100; rank 2: wiki 40, stored 100; rank 3: wiki 55, stored 100)",
       "icon": "ZedR.png"
     }
   ],

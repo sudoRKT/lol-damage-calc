@@ -130,7 +130,15 @@
 }
 
 /* The composition bar — three segments in the damage hues, each carrying its tag. */
+/* The composition bar is now a COLUMN: the proportional track, and — only when a segment is too
+   narrow for its own label — a row of labels beneath it (DESIGN.md §7, resolved 2026-08-14). */
 .comp {
+  display: flex;
+  flex-direction: column;
+}
+
+/* The track itself: one flex row of segments, sized purely in proportion. */
+.comp__track {
   display: flex;
   gap: var(--space-0);
   align-items: flex-start;
@@ -140,28 +148,15 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-0);
-  /* MIN-WIDTH: MAX-CONTENT — A SEGMENT IS NEVER NARROWER THAN ITS OWN TAGGED VALUE.
-     Changed from `0` on 2026-08-14, after loading the composed page in a real browser. With
-     `min-width: 0` a narrow segment's label overflowed its box and collided with its
-     neighbour's: a 42 physical / 225 magic split rendered as the single illegible string
-     "4222 5 M", and the physical segment's `P` tag was lost entirely. jsdom computes no layout,
-     so no test in this area could see it and none did.
-     THIS IS A TENSION BETWEEN TWO CLAUSES OF DESIGN.md AND IT IS RAISED, NOT SETTLED HERE: §7
-     specifies the segments are sized in proportion, and §8 says the P/M/T tag is "mandatory and
-     never suppressed" and is the DEFINITIVE channel while colour is the fast, redundant one. In
-     a narrow bar with a lopsided split the two cannot both hold. This takes §8's side, because
-     an illegible tag breaks a hard rule while a very narrow segment being widened to fit its own
-     label is a small, visible distortion of a redundant channel. It introduces NO new design
-     value — only a layout keyword. If the lead prefers a different resolution (a legend beside
-     the bar, or wrapping the labels onto their own row), it belongs in DESIGN.md §7. */
-  min-width: max-content;
-  /* FLEX-BASIS 0 IS WHAT MAKES THE BAR PROPORTIONAL, and its absence was a real defect.
-     `flex-grow` is set inline from the split, but grow only distributes FREE space — with the
-     default `flex-basis: auto` each segment starts at its own tag's width, which is about the
-     same for P, M and T, so a 570/200/120 split rendered as three near-identical segments. The
-     values and the tags were right and the bar lengths said something else, which is worse than
-     no bar: DESIGN.md §7 has the bar carry the split visually and the tags carry it definitively.
-     Found by the burndown work, 2026-08-13. */
+  /* THE SEGMENT IS NEVER WIDENED TO FIT ITS LABEL. Resolved in DESIGN.md §7 and §8 on
+     2026-08-14, reversing `min-width: max-content`, which had been added to stop a narrow
+     segment's label colliding with its neighbour's ("4222 5 M", with the P tag lost).
+     That kept every tag and made the BAR OVERSTATE THE SMALLEST DAMAGE TYPE — the number a
+     reader is least able to check. §8's rule is that a mandatory cue is never suppressed; it is
+     not a licence to distort the data to keep it. So the labels move instead (see
+     `.comp--labels-below`) and the bar keeps its exact proportions. `min-width: 0` is what lets
+     a segment be as narrow as its share really is. */
+  min-width: 0;
   flex-basis: 0;
 }
 
@@ -178,6 +173,18 @@
 }
 .comp__bar--true {
   background: var(--dmg-true);
+}
+
+/* THE LABEL ROW, when any segment is too narrow to carry its own tagged value (DESIGN.md §7).
+   `.comp--labels-below` is set on the wrapper as a state marker; it needs no declarations of its
+   own, because a column flex item already stretches to the full width.
+   All the labels move together — a row with two figures inside the bar and one beneath reads as
+   three different kinds of thing — and they sit in the bar's own order so a reader maps label to
+   segment by position. */
+.comp__labels {
+  display: flex;
+  gap: var(--space-3);
+  margin-block-start: var(--space-0);
 }
 
 /* ---------------------------------------------------------------------------

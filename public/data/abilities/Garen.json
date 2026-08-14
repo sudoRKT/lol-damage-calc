@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -21,7 +21,7 @@
         "source": "Template:Data Garen/Perseverance",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Garen/Perseverance",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4038338,
       "icon": "Garen_Passive.png"
@@ -61,7 +61,7 @@
         "source": "Template:Data Garen/Decisive Strike",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Garen/Decisive%20Strike",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4004895,
       "icon": "GarenQ.png"
@@ -78,9 +78,10 @@
         "source": "Template:Data Garen/Courage",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Garen/Courage",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3932284,
+      "notes": "no source states what damage type this ability deals, and a figure without a type is a figure without a resistance",
       "icon": "GarenW.png"
     },
     {
@@ -187,9 +188,10 @@
         "source": "Template:Data Garen/Judgment",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Garen/Judgment",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4009435,
+      "notes": "how many times this lands could not be read (4 repeating components; a total row cannot be attributed to one of them); {{ap|{{#var:ad1}}*(1+{{#var:ie_mod}}+{{#var:crit}}) to {{#va — not a literal rank value: \"40*(1+{{#expr:{{#invoke:ItemData\"; 4*(1+{{#var:ie_mod}}+{{#var:crit}}) to 16*(1+{{#var:ie_mod}} — not a literal rank value: \"4*(1+{{#expr:{{#invoke:ItemData\"",
       "icon": "GarenE.png"
     },
     {
@@ -228,7 +230,7 @@
         "source": "Template:Data Garen/Demacian Justice",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Garen/Demacian%20Justice",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4042864,
       "icon": "GarenR.png"

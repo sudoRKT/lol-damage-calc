@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -55,9 +55,9 @@
         "source": "Template:Data Warwick/Eternal Hunger",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Warwick/Eternal%20Hunger",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
-      "sourceRevision": 4022413,
+      "sourceRevision": 4051829,
       "icon": "WarwickP.png"
     },
     {
@@ -113,7 +113,7 @@
         "source": "Template:Data Warwick/Jaws of the Beast",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Warwick/Jaws%20of%20the%20Beast",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4007380,
       "icon": "WarwickQ.png"
@@ -130,7 +130,7 @@
         "source": "Template:Data Warwick/Blood Hunt",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Warwick/Blood%20Hunt",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3980738,
       "icon": "WarwickW.png"
@@ -147,9 +147,10 @@
         "source": "Template:Data Warwick/Primal Howl",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Warwick/Primal%20Howl",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4047663,
+      "notes": "no source states what damage type this ability deals, and a figure without a type is a figure without a resistance",
       "icon": "WarwickE.png"
     },
     {
@@ -165,9 +166,10 @@
         "source": "Template:Data Warwick/Infinite Duress",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Warwick/Infinite%20Duress",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4015471,
+      "notes": "the source states 1 damage row for this ability and none of them could be read in full, so none was stored — a row read in part is not stored at all",
       "icon": "WarwickR.png"
     }
   ],

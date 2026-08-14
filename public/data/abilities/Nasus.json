@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -21,7 +21,7 @@
         "source": "Template:Data Nasus/Soul Eater",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Nasus/Soul%20Eater",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3948837,
       "icon": "Nasus_Passive.png"
@@ -61,9 +61,10 @@
         "source": "Template:Data Nasus/Siphoning Strike",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Nasus/Siphoning%20Strike",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
-      "sourceRevision": 4051347,
+      "sourceRevision": 4051777,
+      "notes": "the entry is not structurally valid, so no figure from it is shown (components[0].ratios[0]: stat 'stacks' requires a 'counter' key)",
       "icon": "NasusQ.png"
     },
     {
@@ -78,7 +79,7 @@
         "source": "Template:Data Nasus/Wither",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Nasus/Wither",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 3993736,
       "icon": "NasusW.png"
@@ -140,9 +141,10 @@
         "source": "Template:Data Nasus/Spirit Fire",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Nasus/Spirit%20Fire",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4035787,
+      "notes": "the parts do not add up to the total the source itself states (the wiki states a total of 100 at rank 1 and our additive components sum to 150 — something is counted twice)",
       "icon": "NasusE.png"
     },
     {
@@ -195,9 +197,10 @@
         "source": "Template:Data Nasus/Fury of the Sands",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Nasus/Fury%20of%20the%20Sands",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4007699,
+      "notes": "how many times this lands could not be read (\"Magic Damage Per Tick\" lands more than once and the source does not state how many times; the dropped total row does not divide by it evenly, so the count is not derivable)",
       "icon": "NasusR.png"
     }
   ],

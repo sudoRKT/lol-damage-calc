@@ -3,7 +3,7 @@
   "provenance": {
     "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
     "patch": "16.16.1",
-    "fetched": "2026-08-13",
+    "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
     "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
@@ -22,9 +22,10 @@
         "source": "Template:Data Viego/Sovereign's Domination",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Viego/Sovereign's%20Domination",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4050183,
+      "notes": "the wiki damage module states that this ability deals damage, but its page carries no leveling row to read a figure from — the damage is stated in description prose that has not been read yet",
       "icon": "Viego_Passive.png"
     },
     {
@@ -103,7 +104,7 @@
         "source": "Template:Data Viego/Blade of the Ruined King",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Viego/Blade%20of%20the%20Ruined%20King",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4009446,
       "icon": "ViegoQ.png"
@@ -143,7 +144,7 @@
         "source": "Template:Data Viego/Spectral Maw",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Viego/Spectral%20Maw",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4008551,
       "icon": "ViegoW.png"
@@ -160,7 +161,7 @@
         "source": "Template:Data Viego/Harrowed Path",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Viego/Harrowed%20Path",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4045890,
       "icon": "ViegoE.png"
@@ -214,7 +215,7 @@
         "source": "Template:Data Viego/Heartbreaker",
         "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Viego/Heartbreaker",
         "patch": "16.16.1",
-        "fetched": "2026-08-13"
+        "fetched": "2026-08-14"
       },
       "sourceRevision": 4001566,
       "icon": "ViegoR.png"
