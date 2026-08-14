@@ -20,7 +20,7 @@
 // WHAT IT DOES NOT MODEL, and the engine says so on every result rather than this panel guessing:
 // item PASSIVES and ACTIVES. Only an item's structured statistics reach the calculation.
 
-import { useMemo, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import type { Item } from '../../types';
 import { ItemChip } from '../art/ItemChip';
 import { filterItems } from './filter';
@@ -39,6 +39,38 @@ export const ITEM_SLOTS = 6;
  * and the number of matches on screen so nothing is hidden silently.
  */
 export const VISIBLE_MATCHES = 8;
+
+/**
+ * THE POOL IS NOT DRAWN AT REST. It appears on focus or on typing, and collapses to one line.
+ *
+ * WHY. At rest the pool drew the first eight items of the pool alphabetically — Abyssal Mask,
+ * Aegis of the Legion, and so on. That is not information; it is an accident of sorting, and it
+ * cost 213px of the first screen, which DESIGN-AUDIT.md measured as the largest single block
+ * standing between a reader and the HP burndown.
+ *
+ * NOTHING IS HIDDEN, AND THE COLLAPSED LINE SAYS SO. It reads "209 items — search to add",
+ * naming the size of the pool it is standing in for, so the reader knows what is one keystroke
+ * away rather than being left to guess that a search field has anything behind it. Browsing is
+ * one interaction away, not thinned: the cap is still eight and it is still stated on screen.
+ *
+ * A FULL BUILD OVERRIDES IT. When six slots are used there is nothing to add, so the collapsed
+ * line says that instead — the state a user needs is why they cannot add, not how many items
+ * exist.
+ */
+export function statusLine(state: {
+  full: boolean;
+  showPool: boolean;
+  matched: number;
+  total: number;
+}): string {
+  if (state.full) return `All ${ITEM_SLOTS} slots are full. Remove an item to add another.`;
+  if (!state.showPool) return `${state.total} items — search to add`;
+  const capped =
+    state.matched > VISIBLE_MATCHES
+      ? ` Showing the first ${VISIBLE_MATCHES} — keep typing to narrow.`
+      : '';
+  return `${state.matched} of ${state.total} items match.${capped}`;
+}
 
 export interface ItemPickerProps {
   /** "attacker" or "defender" — spoken inside every control's name. */
@@ -63,6 +95,8 @@ export function removeItemName(item: Item, role: string, position: number, of: n
 export function ItemPicker({ role, items, selected, onChange }: ItemPickerProps) {
   const [query, setQuery] = useState('');
   const [announcement, setAnnouncement] = useState('');
+  const [focused, setFocused] = useState(false);
+  const searchRef = useRef<HTMLInputElement>(null);
 
   const byId = useMemo(() => new Map(items.map((i) => [i.id, i])), [items]);
   const matches = useMemo(() => filterItems(items, query), [items, query]);
@@ -71,10 +105,20 @@ export function ItemPicker({ role, items, selected, onChange }: ItemPickerProps)
   const build = selected.map((id) => ({ id, item: byId.get(id) }));
   const full = selected.length >= ITEM_SLOTS;
 
+  /** Whether the pool is drawn. See `POOL_AT_REST` below for why this is not always true. */
+  const showPool = focused || query.trim() !== '';
+
   const add = (item: Item) => {
     if (full || selected.includes(item.id)) return;
     onChange([...selected, item.id]);
     setAnnouncement(`${item.name} added. ${selected.length + 1} of ${ITEM_SLOTS} slots used.`);
+    // FOCUS RETURNS TO THE SEARCH FIELD, and this is load-bearing rather than a nicety. The
+    // control just clicked becomes `disabled` (the item is now in the build), and a disabled
+    // element cannot hold focus — so the browser drops focus to the document body, the pool
+    // sees focus leave, and it would close under the user the instant they used it. Sending
+    // focus back to the field keeps the pool open AND puts the caret where the next search is
+    // typed, which is where a user adding a second item is going anyway.
+    searchRef.current?.focus();
   };
 
   const remove = (item: Item, index: number) => {
@@ -127,50 +171,68 @@ export function ItemPicker({ role, items, selected, onChange }: ItemPickerProps)
         </ul>
       )}
 
-      {/* ---- The pool ---- */}
-      {/* The search label sits BESIDE its field rather than above it. It is still the field's
-          own <label>, so the accessible name is unchanged; it is one line instead of two. */}
-      <label className="items__search">
-        <span className="items__search-label">{`Search ${role} items`}</span>
-        <input
-          type="search"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          autoComplete="off"
-        />
-      </label>
+      {/* ═══ THE POOL, AND WHY IT IS NOT DRAWN AT REST ═══
+          See `POOL_AT_REST` below. The whole find-an-item area is one focus scope: focus
+          anywhere inside it — the field or any result — opens the pool, and it closes only
+          when focus lands on something outside it. That is what lets a keyboard user tab from
+          the field into the results without the results disappearing under them. */}
+      <div
+        className="items__find"
+        onFocus={() => setFocused(true)}
+        onBlur={(e) => {
+          // `relatedTarget` is what is GAINING focus. When it is null the focus went nowhere —
+          // a disabled control, a click on dead space — and closing then would be closing for
+          // no reason the user can see, so the pool stays open until focus lands somewhere.
+          if (e.relatedTarget && !e.currentTarget.contains(e.relatedTarget)) setFocused(false);
+        }}
+      >
+        {/* The search label sits BESIDE its field rather than above it. It is still the field's
+            own <label>, so the accessible name is unchanged; it is one line instead of two. */}
+        <label className="items__search">
+          <span className="items__search-label">{`Search ${role} items`}</span>
+          <input
+            ref={searchRef}
+            type="search"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            autoComplete="off"
+          />
+        </label>
 
-      <p className="items__status">
-        {full
-          ? `All ${ITEM_SLOTS} slots are full. Remove an item to add another.`
-          : `${matches.length} of ${items.length} items match. ${
-              matches.length > VISIBLE_MATCHES
-                ? `Showing the first ${VISIBLE_MATCHES} — keep typing to narrow.`
-                : ''
-            }`}
-      </p>
+        {/* A LIVE REGION, so the pool opening is not a visual-only event. A sighted user sees
+            the results appear on focus; without this a screen reader user would be told only
+            that a search field has focus. It is polite, so it never interrupts, and it carries
+            the sentence the reader actually needs — how many matched and how many are drawn. */}
+        <p className="items__status" role="status" aria-live="polite">
+          {statusLine({ full, showPool, matched: matches.length, total: items.length })}
+        </p>
 
-      <ul className="items__pool">
-        {drawn.map((item) => {
-          const already = selected.includes(item.id);
-          return (
-            <li key={item.id}>
-              <button
-                type="button"
-                className="items__add"
-                aria-label={addItemName(item, role)}
-                disabled={full || already}
-                onClick={() => add(item)}
-              >
-                <ItemChip src={item.icon} itemName={item.name} size="table" decorative />
-                <span className="items__name">{item.name}</span>
-                <span className="items__grants">{itemGrantsText(item.stats)}</span>
-                <span className="items__gold">{already ? 'in build' : `${item.gold.total}g`}</span>
-              </button>
-            </li>
-          );
-        })}
-      </ul>
+        {showPool ? (
+          <ul className="items__pool">
+            {drawn.map((item) => {
+              const already = selected.includes(item.id);
+              return (
+                <li key={item.id}>
+                  <button
+                    type="button"
+                    className="items__add"
+                    aria-label={addItemName(item, role)}
+                    disabled={full || already}
+                    onClick={() => add(item)}
+                  >
+                    <ItemChip src={item.icon} itemName={item.name} size="table" decorative />
+                    <span className="items__name">{item.name}</span>
+                    <span className="items__grants">{itemGrantsText(item.stats)}</span>
+                    <span className="items__gold">
+                      {already ? 'in build' : `${item.gold.total}g`}
+                    </span>
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+        ) : null}
+      </div>
 
       <span className="u-visually-hidden" role="status" aria-live="polite">
         {announcement}

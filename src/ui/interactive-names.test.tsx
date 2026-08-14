@@ -128,7 +128,7 @@ const FIXTURES: Fixture[] = [
     node: <NumberInput label="Champion level" value={11} onChange={() => {}} min={1} max={18} />,
   },
   {
-    id: 'ItemPicker (209 items, one in the build)',
+    id: 'ItemPicker (209 items, one in the build, pool open)',
     node: (
       <ItemPicker
         role="attacker"
@@ -137,6 +137,12 @@ const FIXTURES: Fixture[] = [
         onChange={() => {}}
       />
     ),
+    // THE POOL MUST BE OPENED OR THIS SWEEP SILENTLY STOPS COVERING EIGHT CONTROLS. As of
+    // 2026-08-14 the pool is collapsed until the search field is focused, exactly as the
+    // champion picker's list is — so this fixture opens it for the same reason that one does.
+    // Without this line the sweep would still pass, over a smaller surface, which is the
+    // failure mode this whole file exists to prevent.
+    after: () => fireEvent.focus(screen.getByRole('searchbox', { name: 'Search attacker items' })),
   },
 ];
 

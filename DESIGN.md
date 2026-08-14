@@ -203,6 +203,69 @@ panels and reserve the larger steps for separating major regions.
 Defaults an agent can rely on: panel padding `--space-4`; table cell padding
 `--space-2` vertical / `--space-3` horizontal; grid and rail gutters `--space-5`.
 
+### The page's own rhythm, and the one place it is not symmetrical (added 2026-08-14)
+
+The table above says what each step is *for*. It did not say how the page as a whole is
+divided, and the result was that every gap on the built page was `--space-5` — configuration,
+combo, burndown, breakdown and stat blocks all separated identically, so **nothing grouped**.
+DESIGN-AUDIT.md measured it as the second largest cause of the interface reading as a form.
+
+The page is divided into three **regions** and the rhythm is graded across them:
+
+| Where | Step | Value |
+|---|---|---|
+| Between regions — setup / result / detail | `--space-6` | 32px |
+| Between panels **inside** one region | `--space-4` | 16px |
+| Side-by-side gutter between two panels in a row | `--space-5` | 24px |
+| Page **bottom** | `--space-7` | 48px |
+| Page **top** | `--space-5` | **24px — see below** |
+
+**THE PAGE TOP IS 24px, NOT 48px, AND THAT IS A DECISION RATHER THAN A DRIFT.** The row above
+this paragraph reads "Top/bottom page regions — `--space-7`", and a literal reading puts 48px
+at the top of the page. It is 24px, for a stated reason:
+
+> §7 makes the HP burndown the product's remembered object, and the built page put it 309px
+> **below** the fold at a 1440×1100 viewport. Every pixel above it is spent on getting there.
+> 48px of empty canvas above the page title buys nothing a reader can use and costs a further
+> 24px of the one element the whole design is organised around. The bottom of the page keeps
+> the literal 48px, because nothing competes with it there.
+
+This is recorded here rather than as a comment in a stylesheet **because an implementation that
+differs from this document is exactly the drift the token audit exists to catch.** If the fold
+problem is ever solved another way, this asymmetry should be revisited and this paragraph
+deleted — it is a trade, not a principle.
+
+---
+
+## 4a. Layout measures — lengths that are not spacing (added 2026-08-14)
+
+Three lengths in this product are neither a spacing step nor a type size: how tall the burndown's
+plot area is, how tall an open picker list may grow before it scrolls, and how narrow a column in
+a responsive list grid may become before the grid drops a column. This file defined none of them,
+so each was **composed inline from the spacing scale** — `calc(var(--space-8) * 5)` and the like —
+by whichever component needed it, each with a comment saying it was raised rather than settled.
+
+**Three occurrences of the same construction is a token.** They are named here.
+
+| Token | Value | Derivation | Used for |
+|---|---:|---|---|
+| `--measure-plot-block` | 320px | `--space-8` × 5 | The height of the burndown's plot area (§7) |
+| `--measure-popover-max-block` | 320px | `--space-8` × 5 | The height at which an open picker list starts to scroll (§5) |
+| `--measure-list-column-min` | 256px | `--space-8` × 4 | The narrowest a column may be in a responsive list grid before the grid drops to fewer columns |
+
+Two rules about them, both binding:
+
+- **They are derived from the spacing scale and stay on it.** A new layout measure is
+  `--space-8 × n`, never an arbitrary number. That is what keeps them in the same system as
+  everything else rather than becoming a second, unrelated scale.
+- **A layout measure is not a spacing step and never substitutes for one.** Do not use
+  `--measure-plot-block` as a margin, and do not use `--space-8` as a plot height now that a
+  name for it exists.
+
+`--measure-list-column-min` is what makes a list grid responsive without a breakpoint: the item
+pool is two columns at a 1440px desktop, four when its panel goes full width, and one on a phone,
+from the single declaration `repeat(auto-fit, minmax(var(--measure-list-column-min), 1fr))`.
+
 **The gap between a damage number and its tag is NOT a spacing token.** This table used to list
 "tag offset from its number" against `--space-0`, while §8 specified a thin space — two
 instructions for one gap, and a component could satisfy either. **§8 governs, and this is the

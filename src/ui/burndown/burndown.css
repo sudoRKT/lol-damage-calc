@@ -137,13 +137,14 @@
   white-space: nowrap;
 }
 
-/* The plot area. Its height is composed from the spacing scale for the same reason as the
- * axis width — DESIGN.md fixes no plot height. RAISED as an open point rather than invented
- * quietly: if a plot-size token is wanted, it belongs in DESIGN.md, not here. */
+/* The plot area's height. This was composed inline as `calc(var(--space-8) * 5)` with a note
+ * saying it was RAISED rather than settled quietly, because DESIGN.md fixed no plot height.
+ * It has now been settled: DESIGN.md §4a names it `--measure-plot-block`, at the same value
+ * and derived the same way. The open point is closed — the token is the answer to it. */
 .burn__area {
   position: relative;
   flex: 1;
-  block-size: calc(var(--space-8) * 5);
+  block-size: var(--measure-plot-block);
   min-inline-size: 0;
 }
 

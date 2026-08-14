@@ -75,10 +75,10 @@
   border: var(--border-steel);
   border-radius: var(--radius-panel);
   box-shadow: var(--elev-2);
-  /* DESIGN.md fixes no popup height. Composed from the spacing scale rather than invented as
-     a new number — the same approach, and the same open point, as the burndown's plot height.
-     RAISED rather than settled quietly. */
-  max-block-size: calc(var(--space-8) * 5);
+  /* This was composed inline as `calc(var(--space-8) * 5)` and raised as an open point, in the
+     same terms as the burndown's plot height. DESIGN.md §4a settled both on 2026-08-14: the
+     value and its derivation are unchanged, and it now has a name. */
+  max-block-size: var(--measure-popover-max-block);
   overflow-y: auto;
   animation: picker-open 140ms ease-out; /* DESIGN.md §10 — picker open-close, 140ms */
 }

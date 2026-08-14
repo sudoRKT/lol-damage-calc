@@ -122,24 +122,94 @@
   padding: 0 var(--space-1);
 }
 
-/* ═══ THE STATE COLUMN IS WHY THIS TABLE IS TWICE THE DENSITY DESIGN.md ASKS FOR, AND THE
-   CAUSE IS NOT PADDING. MEASURED 2026-08-14, NOT ARGUED. ═══
-   A body row renders 63px. Its cells contribute: index 18px, source 19px, damage 25px,
-   running total 25px, evidence 16px — and STATE 46px, three wrapped lines in an 868px column.
-   Take 16px of --space-2 padding off 63 and 46 of the remaining 47 is this one cell.
-   Both of the obvious layout levers were already spent before this pass: the vertical padding
-   is already §4's --space-2, and this rule is already §3's smallest text role. The cell prints
-   THIRTEEN state phrases as running prose, eight of which read zero on a default scenario, and
-   no type size or column width gets thirteen phrases into a 32px row.
-   SO THE REMAINDER IS NOT A LAYOUT PROBLEM. Shortening the list is a decision about what the
-   table ASSERTS — SPECIFICATION §11 requires the state that applied at that point to be shown
-   — and that is raised, not taken here. */
+/* ═══ THE STATE COLUMN, AND WHY THE ROWS ARE NOW HALF THE HEIGHT ═══
+   MEASURED 2026-08-14 at 1440x1100 on the default scenario, not argued.
+
+   BEFORE. Every body row was 63px. Per-cell contributions were index 18px, source 19px,
+   damage 25px, running total 25px, evidence 16px — and STATE 46px, three wrapped lines. Take
+   16px of --space-2 padding off 63 and 46 of the remaining 47 was this one cell. Both obvious
+   layout levers were already spent: the vertical padding was already §4's --space-2 and this
+   rule was already §3's smallest text role. The cell printed TWELVE state phrases as running
+   prose, six of which read zero on EVERY row (the four resistance reductions, shield
+   remaining, shield absorbed) and a seventh — "instances resolved before" — zero on row one.
+   Printing a reduction of 0 on every row is printing the ABSENCE of state, verbosely, and
+   §11 asks for the state that APPLIED.
+   (Counted, then re-counted. An earlier pass of this work said thirteen phrases and eight
+   zeros, from reading the sentence rather than counting it.)
+
+   AFTER. The cell carries only what differs from the entry state, the entry state is printed
+   once below the table, and each row has an expand holding its full snapshot. Rows measure
+   39px, 40px, 63px, 63px. The state cell drives none of them.
+
+   THE TWO 63px ROWS ARE NOT THIS COLUMN AND ARE NOT WASTE. From instance 3 the running total
+   spans two damage types, so its cell becomes an untagged aggregate — and DESIGN.md §8 allows
+   that only alongside a tagged composition bar. Figure 18px plus bar and labels 22px is 44px
+   of required construction. Shrinking those rows means changing what §8 mandates, not what
+   this file lays out. */
 .breakdown__state {
   font-family: var(--font-body);
   font-size: var(--type-body-s);
   line-height: var(--lh-body-s);
   font-weight: var(--weight-body-medium);
   color: var(--text-secondary);
+}
+
+/* THE CELL ITSELF STAYS A TABLE CELL. `display: flex` on a `<td>` takes it out of the table
+   box tree, and the browser then wraps it — together with any adjacent non-cell — in ONE
+   anonymous cell. Doing that here put the Source and State columns in the same column,
+   stacked, both 921px wide. Caught in a real browser by measuring the row, not by a test:
+   jsdom computes no layout, so nothing in the suite could have seen it. The contents are
+   plain inline flow instead, which is what a table cell is good at. */
+.breakdown__state-changed {
+  margin-inline-end: var(--space-2);
+}
+
+/* The disclosure. Neutral — it is a control, not damage data (DESIGN.md §1), so it is a
+   border and a label like every other control in this product. */
+.breakdown__state-toggle {
+  vertical-align: baseline;
+  background: var(--bg-panel);
+  border: var(--border-steel);
+  border-radius: var(--radius-control);
+  padding: 0 var(--space-1);
+  cursor: pointer;
+  font-family: var(--font-display);
+  font-weight: var(--weight-display-medium);
+  font-size: var(--type-eyebrow);
+  line-height: var(--lh-eyebrow);
+  letter-spacing: var(--ls-eyebrow);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.breakdown__state-toggle:hover {
+  background: var(--bg-panel-raised);
+  border: var(--border-strong);
+}
+
+.breakdown__state-toggle:focus-visible {
+  outline: var(--border-active);
+  outline-offset: var(--space-0);
+}
+
+/* The opened full snapshot. A well, so it reads as something opened out of the row above
+   rather than as another instance. */
+.breakdown__staterow td {
+  background: var(--bg-well);
+  border-block-end: var(--border-steel);
+}
+
+.breakdown__state-full {
+  font-family: var(--font-body);
+  font-size: var(--type-body-s);
+  line-height: var(--lh-body-s);
+  font-weight: var(--weight-body-medium);
+  color: var(--text-secondary);
+}
+
+.breakdown-panel__entry {
+  margin-block-start: var(--space-3);
 }
 
 /* Ranked by what the reader is looking for: the figures and the evidence take exactly the

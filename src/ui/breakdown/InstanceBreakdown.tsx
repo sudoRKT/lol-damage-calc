@@ -38,6 +38,7 @@
 // throws if the two disagree. Single-type rows fall back to an ordinary tagged value, because
 // §8's exception is for a total that spans types and a one-type total is not one.
 
+import { useState } from 'react';
 import type {
   DamageTotals,
   DamageType,
@@ -89,6 +90,52 @@ export function formatState(snapshot: Record<string, number | boolean>): string[
   );
 }
 
+/**
+ * The state that CHANGED, against the state the combo began in.
+ *
+ * ═══ WHY THE COLUMN IS FILTERED, AND WHY THIS IS NOT HIDING ANYTHING ═══
+ *
+ * SPECIFICATION §11 requires the breakdown to show "the state that applied at that point".
+ * A defender armor flat reduction of 0 did not apply — printing it on every row is printing
+ * the ABSENCE of state, verbosely. On the default scenario the cell carried TWELVE phrases, of
+ * which six read zero on every row — the four resistance reductions, shield remaining and
+ * shield absorbed — which wrapped to three lines and made every table row 63px, against the
+ * ~32px DESIGN.md §0's frame-data density asks for.
+ *
+ * WHAT MAKES IT SAFE, and all three are required together:
+ *   1. The BASELINE IS PRINTED, once, above the table. A row that says "what changed" against
+ *      an invisible reference is worse than one that repeats everything.
+ *   2. EVERY ROW CARRIES AN EXPAND holding its own full snapshot, unfiltered. Nothing is one
+ *      interaction further away than that, and the control says what it opens.
+ *   3. A row where nothing moved SAYS SO rather than rendering an empty cell, because an empty
+ *      cell is indistinguishable from a cell that failed to render.
+ *
+ * AND THE ONE THING THIS DELIBERATELY DOES NOT DO: it never decides whether a zero is
+ * genuinely zero or zero because nothing modelled it. That distinction is real and it belongs
+ * to `Result.excludedMechanics`, which already names every form of penetration, every rune and
+ * every item passive as unmodelled. A filter that tried to make that call in the interface
+ * would be guessing at the engine's coverage from the outside.
+ *
+ * THE BASELINE IS THE FIRST INSTANCE'S OWN SNAPSHOT — the state as the combo begins, taken
+ * from the engine rather than reconstructed here. Instance 1 therefore compares against itself
+ * and shows no change, which is correct: nothing has happened yet.
+ */
+export function changedState(
+  snapshot: Record<string, number | boolean>,
+  baseline: Record<string, number | boolean>,
+): Record<string, number | boolean> {
+  const out: Record<string, number | boolean> = {};
+  for (const [key, value] of Object.entries(snapshot)) {
+    if (baseline[key] !== value) out[key] = value;
+  }
+  return out;
+}
+
+/** The whole spoken sentence for a row's state-expand control. */
+export function fullStateName(index: number, expanded: boolean): string {
+  return `${expanded ? 'Hide' : 'Show'} the full state at instance ${index}`;
+}
+
 /** The whole spoken sentence for the running-total cell. One text node (see ../primitives). */
 export function runningTotalName(index: number, running: number): string {
   return `Running total after instance ${index}: ${running} damage, cumulative across damage types`;
@@ -102,6 +149,9 @@ export interface InstanceBreakdownProps {
 
 export function InstanceBreakdown({ result, patch }: InstanceBreakdownProps) {
   const artPatch = patch ?? result.patch;
+  // The state the combo begins in. Every row's inline state is stated against this, so it is
+  // printed on screen rather than left implicit — see `changedState`.
+  const entryState = result.perInstance[0]?.stateSnapshot ?? {};
 
   return (
     <section className="breakdown-panel" aria-label="Per-instance breakdown">
@@ -115,15 +165,17 @@ export function InstanceBreakdown({ result, patch }: InstanceBreakdownProps) {
       <table className="breakdown">
         <caption className="u-visually-hidden">
           Each instance of the combo in order, with the state that applied at that point, the
-          damage it dealt, and the running total. The per-instance column is rounded for
-          display and is not meant to be added up; the running total is the authoritative
-          figure.
+          damage it dealt, and the running total. The state column lists only what has changed
+          since the combo began; the entry state it is measured against is printed above the
+          table, and every row carries a control that opens its full state. The per-instance
+          column is rounded for display and is not meant to be added up; the running total is
+          the authoritative figure.
         </caption>
         <thead>
           <tr>
             <th scope="col">#</th>
             <th scope="col">Source</th>
-            <th scope="col">State at this point</th>
+            <th scope="col">Changed since the combo began</th>
             <th scope="col">Damage</th>
             <th scope="col">Running total</th>
             <th scope="col">Evidence</th>
@@ -136,10 +188,21 @@ export function InstanceBreakdown({ result, patch }: InstanceBreakdownProps) {
               instance={instance}
               running={result.runningTotal[i]}
               patch={artPatch}
+              entryState={entryState}
             />
           ))}
         </tbody>
       </table>
+
+      {/* THE BASELINE, PRINTED. The state column says what CHANGED, and a reader cannot use
+          that without seeing what it changed from. This is the reference, in full, once —
+          rather than repeated on every row, which is what it used to be. */}
+      <section className="breakdown-panel__entry" aria-label="The state the combo begins in">
+        <h3 className="breakdown-panel__eyebrow">The state the combo begins in</h3>
+        <p className="breakdown-panel__note">
+          {formatState(entryState).join(' · ') || 'No state recorded at the start of the combo.'}
+        </p>
+      </section>
 
       {/* THE ROUNDING NOTE. Visible, in plain English, next to the column it is about. */}
       <p className="breakdown-panel__note">
@@ -197,15 +260,21 @@ function InstanceRow({
   instance,
   running,
   patch,
+  entryState,
 }: {
   instance: InstanceResult;
   running: DamageTotals | undefined;
   patch: string;
+  entryState: Record<string, number | boolean>;
 }) {
   const type = singleDamageType(instance.damageType);
-  const state = formatState(instance.stateSnapshot);
+  const changed = formatState(changedState(instance.stateSnapshot, entryState));
+  const everything = formatState(instance.stateSnapshot);
+  const [expanded, setExpanded] = useState(false);
+  const detailId = `${instance.stepId}-full-state`;
 
   return (
+    <>
     <tr>
       <th scope="row" className="breakdown__index">
         {instance.index}
@@ -235,11 +304,21 @@ function InstanceRow({
       </td>
 
       <td className="breakdown__state">
-        {state.length === 0 ? (
-          <span className="u-visually-hidden">no state recorded</span>
-        ) : (
-          state.join(' · ')
-        )}
+        {/* A ROW WHERE NOTHING MOVED SAYS SO. An empty cell cannot be told apart from a cell
+            that failed to render, and instance 1 is always such a row — it is the baseline. */}
+        <span className="breakdown__state-changed">
+          {changed.length === 0 ? 'No change from the entry state' : changed.join(' · ')}
+        </span>
+        <button
+          type="button"
+          className="breakdown__state-toggle"
+          aria-expanded={expanded}
+          aria-controls={detailId}
+          aria-label={fullStateName(instance.index, expanded)}
+          onClick={() => setExpanded((open) => !open)}
+        >
+          <span aria-hidden="true">{expanded ? 'Full state ▴' : 'Full state ▾'}</span>
+        </button>
       </td>
 
       <td className="breakdown__damage">
@@ -272,6 +351,20 @@ function InstanceRow({
         />
       </td>
     </tr>
+
+    {/* THE FULL SNAPSHOT, UNFILTERED. It is a row of its own rather than a popover so that it
+        cannot escape the table's own reading order, and so it prints, copies and reads to a
+        screen reader in the same place the row it belongs to does. */}
+    {expanded ? (
+      <tr className="breakdown__staterow" id={detailId}>
+        <td colSpan={6}>
+          <span className="breakdown__state-full">
+            {everything.length === 0 ? 'No state recorded' : everything.join(' · ')}
+          </span>
+        </td>
+      </tr>
+    ) : null}
+    </>
   );
 }
 

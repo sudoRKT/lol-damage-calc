@@ -8,10 +8,17 @@
 // reason.
 
 import { describe, expect, it, afterEach } from 'vitest';
-import { cleanup, render, screen } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen, within } from '@testing-library/react';
 import { MOCK_RESULT } from '../../types';
 import type { Result } from '../../types';
-import { InstanceBreakdown, formatState, humanizeKey, splitSourceLabel } from './InstanceBreakdown';
+import {
+  InstanceBreakdown,
+  changedState,
+  formatState,
+  fullStateName,
+  humanizeKey,
+  splitSourceLabel,
+} from './InstanceBreakdown';
 
 afterEach(cleanup);
 
@@ -36,12 +43,84 @@ describe('breakdown/every instance, in order', () => {
 
   it('shows the state that applied at that point in the sequence (§11)', () => {
     mount();
-    expect(screen.getByRole('row', { name: /Conqueror stacks 4/ })).toBeTruthy();
+    // The mock's Conqueror stacks are 4 at instance 1 and 6 at instance 2. Instance 2's row
+    // carries the CHANGE; instance 1's value is the baseline and is printed above the table.
+    expect(screen.getByRole('row', { name: /Conqueror stacks 6/ })).toBeTruthy();
+    const entry = screen.getByRole('region', { name: 'The state the combo begins in' });
+    expect(entry.textContent).toContain('Conqueror stacks 4');
     expect(humanizeKey('blackCleaverStacks')).toBe('Black cleaver stacks');
     expect(formatState({ bonePlating: true, conquerorStacks: 2 })).toEqual([
       'Bone plating on',
       'Conqueror stacks 2',
     ]);
+  });
+
+  // =======================================================================================
+  // THE STATE COLUMN SHOWS WHAT CHANGED, AND NOTHING IS HIDDEN. Added 2026-08-14.
+  //
+  // The column used to print the whole snapshot on every row — twelve phrases on the default
+  // scenario, six of them reading zero on every row, which is printing the ABSENCE of state.
+  // §11 requires the state that applied, and a reduction of 0 did not apply.
+  //
+  // These tests hold the three things that make the filter safe rather than lossy: the
+  // baseline is on screen, the full snapshot is one control away, and a row where nothing
+  // moved says so instead of rendering an empty cell.
+  // =======================================================================================
+
+  it('filters against the baseline by VALUE, and keeps a key that moved back and forth', () => {
+    // The pure function, so the rule is pinned independently of any layout.
+    expect(changedState({ a: 1, b: 0 }, { a: 1, b: 0 })).toEqual({});
+    expect(changedState({ a: 2, b: 0 }, { a: 1, b: 0 })).toEqual({ a: 2 });
+    // A key that RETURNED to its starting value is not a change, and must not be reported as
+    // one — the column's claim is "different from the entry state", not "was touched".
+    expect(changedState({ a: 1 }, { a: 1 })).toEqual({});
+    // false and 0 are values, not absences: a toggle switched off IS a change.
+    expect(changedState({ shield: false }, { shield: true })).toEqual({ shield: false });
+    // A key the baseline never carried is a change, not a silent drop.
+    expect(changedState({ fresh: 3 }, {})).toEqual({ fresh: 3 });
+  });
+
+  it('prints the entry state once, above the table, rather than on every row', () => {
+    mount();
+    const entry = screen.getByRole('region', { name: 'The state the combo begins in' });
+    for (const phrase of formatState(MOCK_RESULT.perInstance[0]!.stateSnapshot)) {
+      expect(entry.textContent).toContain(phrase);
+    }
+  });
+
+  it('the first row says nothing moved rather than rendering an empty cell', () => {
+    // Instance 1 IS the baseline, so it always compares against itself. An empty cell there
+    // cannot be told apart from a cell that failed to render.
+    mount();
+    expect(screen.getByRole('row', { name: /No change from the entry state/ })).toBeTruthy();
+  });
+
+  it('every row carries a control that opens its own FULL snapshot, unfiltered', () => {
+    mount();
+    const toggles = screen.getAllByRole('button', { name: /the full state at instance/ });
+    expect(toggles).toHaveLength(MOCK_RESULT.perInstance.length);
+    for (const toggle of toggles) expect(toggle.getAttribute('aria-expanded')).toBe('false');
+  });
+
+  it('opening a row reveals the whole snapshot, including what the filter removed', () => {
+    mount();
+    const first = screen.getByRole('button', { name: fullStateName(1, false) });
+    fireEvent.click(first);
+    expect(first.getAttribute('aria-expanded')).toBe('true');
+    // Every phrase of instance 1's snapshot — the ones the inline cell filtered out — is now
+    // on screen, in the table, in its own row.
+    const opened = document.getElementById('s1-full-state')!;
+    for (const phrase of formatState(MOCK_RESULT.perInstance[0]!.stateSnapshot)) {
+      expect(within(opened).getByText(new RegExp(escapeForRegExp(phrase)))).toBeTruthy();
+    }
+    fireEvent.click(screen.getByRole('button', { name: fullStateName(1, true) }));
+    expect(document.getElementById('s1-full-state')).toBeNull();
+  });
+
+  it('the expand control is named in words, never by a bare arrow', () => {
+    // `../interactive-names.test.tsx` sweeps for this across the area; this pins the sentence.
+    expect(fullStateName(3, false)).toBe('Show the full state at instance 3');
+    expect(fullStateName(3, true)).toBe('Hide the full state at instance 3');
   });
 
   it('marks a critical strike in words, not by a colour', () => {
@@ -162,3 +241,8 @@ describe('breakdown/what the result excludes is stated visibly (§11)', () => {
     expect(screen.getByText(/Burst total: 770 total damage — 570 physical, 200 magic/)).toBeTruthy();
   });
 });
+
+/** Escape a state phrase for use inside a RegExp — values carry dots. */
+function escapeForRegExp(text: string): string {
+  return text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}

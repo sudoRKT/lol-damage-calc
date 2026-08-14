@@ -67,12 +67,11 @@
    that height and hide nothing: the count and the cap are still printed above it. */
 .items__pool {
   display: grid;
-  /* The column COUNT is not fixed; the minimum column WIDTH is, and it is composed from the
-     spacing scale rather than invented — the same construction, and the same open point, as
-     the plot's height in ../burndown/burndown.css and the picker's maximum height. Two columns
-     at a 1440px desktop, four when the panel goes full width, one on a phone. RAISED rather
-     than settled quietly: if a minimum-column-width token is wanted, it belongs in DESIGN.md. */
-  grid-template-columns: repeat(auto-fit, minmax(calc(var(--space-8) * 4), 1fr));
+  /* The column COUNT is not fixed; the minimum column WIDTH is, and DESIGN.md §4a names it.
+     Two columns at a 1440px desktop, four when the panel goes full width, one on a phone —
+     responsive with no breakpoint at all, which is the whole reason the measure is a width
+     rather than a media query. */
+  grid-template-columns: repeat(auto-fit, minmax(var(--measure-list-column-min), 1fr));
   gap: var(--space-1);
   border: var(--border-hair);
   border-radius: var(--radius-control);
@@ -153,6 +152,13 @@
 .items__remove:hover {
   background: var(--bg-panel-raised);
   border: var(--border-strong);
+}
+
+/* One focus scope: the search field and the results it opens. */
+.items__find {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
 }
 
 /* The label sits beside the field, not above it. Still the field's own <label>. */
