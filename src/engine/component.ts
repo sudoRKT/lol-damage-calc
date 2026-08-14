@@ -129,6 +129,13 @@ export interface ComponentContext {
    * "the user has none" and "nobody wired this up" are different claims.
    */
   stacks?: Record<string, number>;
+  /**
+   * THE HOLDER'S RANGE TYPE, for a `byRangeType` value. Added 2026-08-14.
+   *
+   * Absent is a real state and is NOT a default: `valueAt` refuses a range-split value without
+   * one rather than picking an arm, because either arm is wrong for half the roster.
+   */
+  rangeType?: 'Melee' | 'Ranged';
 }
 
 /** One ratio's contribution, kept itemised so a breakdown can show its working. */
@@ -510,7 +517,12 @@ export function evaluateComponent(
   const reasons = unsupportedReasons(component, context);
   if (reasons.length > 0) throw new ComponentEvaluationError(component.id, reasons);
 
-  const at = { rank: context.rank, maxRank: context.maxRank, level: context.level };
+  const at = {
+    rank: context.rank,
+    maxRank: context.maxRank,
+    level: context.level,
+    ...(context.rangeType ? { rangeType: context.rangeType } : {}),
+  };
 
   // The base, at this rank (linear/explicit) or at this champion level (byLevel/
   // byLevelExplicit). `valueAt` picks the axis; this file does not duplicate that choice.

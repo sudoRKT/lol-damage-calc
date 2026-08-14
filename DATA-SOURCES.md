@@ -4882,3 +4882,108 @@ presentation question the burndown could answer by grouping rows visually withou
 merging the instances — which is the third option and is not sized here.
 
 **Nothing about riders is built.** Only the 7 actives are (§52.2), and they stand alone already.
+
+---
+
+## 54. Grouping riders in the burndown without merging them (2026-08-14)
+
+### 54.1 What the third option is for
+
+Riders get their own row and their own instance — decided 2026-08-14, on the two measurements in
+§53.3. The one real argument for folding them into their carrier survives that decision: **a
+reader watching a health bar sees one drop, not four.** A basic attack carrying three on-hit
+effects is one moment in the game and four columns in the burndown.
+
+Grouping answers that in the drawing rather than in the arithmetic. The engine keeps four
+instances — four resistance breakdowns, four correct crit decisions — and the chart shows them as
+one bracketed group under a single axis label.
+
+**This is a sizing. None of it is built.**
+
+### 54.2 What it costs, part by part
+
+**1. One additive contract field.** `InstanceResult` gains something like `carriedBy?: string` —
+the `stepId` of the instance this one rode on. Absent for every instance that stands alone, which
+is every instance that exists today, so nothing existing changes shape. It carries no number and
+no arithmetic reads it. Lead change, because it is the frozen contract.
+
+**2. The engine sets it.** Wherever a rider instance is planned, it names its carrier. Small, and
+it is the same place the rider is created.
+
+**3. `geometry.ts` groups adjacent columns.** The burndown draws one column per instance from
+`model.columns`. Grouping means: adjacent burst columns sharing a `carriedBy` become one group;
+the group gets one axis label; the columns keep their individual treads and risers. The staircase
+is unchanged — what changes is the labelling and a bracket beneath it.
+
+**4. `HpBurndown.tsx` draws the bracket.** One element per group.
+
+**5. NO NEW TOKEN, AND NO `DESIGN.md` UNLOCK.** This is the part that could have been expensive
+and is not. The reserved-hue law forbids a colour for a grouping bracket — it is not damage data —
+and the precedent is already set by the healing trace, which uses `--hp-trace`, the neutral cool
+grey of the remaining-health line, with a DOTTED stroke as its non-colour cue. A bracket can use
+the same token the same way. Checked against `tokens.css`; nothing new is required.
+
+**6. The reduced-motion sweep applies.** `token-audit.test.ts` refuses any selector that animates
+without appearing in a `prefers-reduced-motion` block — a rule that exists because an animated
+element missing from that block sticks at its first keyframe forever for readers who asked for
+less motion. A bracket that animates in must be listed there.
+
+**7. The accessible name is ONE function.** `riserName` builds each riser's spoken name as a
+single text node in one place, so "riding on the basic attack" is added once rather than at every
+call site.
+
+**8. Tests.** The burndown carries 30. Grouping needs its own: that a group's columns still sum to
+what they summed to before, that a lone instance is not bracketed, and that the group label names
+the carrier.
+
+### 54.3 The honest summary
+
+**One optional contract field, one grouping pass in the geometry, one element in the chart, one
+sentence in the accessible name — and no new design token.** The expensive-looking parts are the
+ones already solved: the hue question has a precedent, and the accessible name has one call site.
+
+**It is strictly additive.** Nothing about it changes a damage figure, a resistance step, a crit
+decision, or the survival verdict; if the grouping were deleted the numbers would be identical.
+That is exactly the property folding does not have, and it is why this is the right shape for the
+concern folding was raised to answer.
+
+---
+
+## 55. The riders, built (2026-08-14)
+
+**21 of the 43 stored item effects ride on another instance: 15 on-hit, 6 spellblade.** 18 are
+`derived`; 3 are `incomplete` (Hullbreaker, Titanic Hydra twice). Each is now its own instance.
+
+**When each fires.** On-hit fires on every basic attack. Spellblade fires on the first basic
+attack AFTER an ability, and is consumed by it. The source's 10-second window and 1.5-second
+cooldown cannot be represented — this engine models sequence and not elapsed time (§3.2) — so the
+sequence rule is applied and the omission is DISCLOSED in `SIMULATION_EXCLUSIONS` rather than
+approximated with an invented interval.
+
+**A rider never crits.** `crit` is not passed to it. That is the correctness the separate row
+buys, and it is asserted directly: forcing a crit raises the attack's figure and leaves the
+rider's identical.
+
+**One thing had to be threaded through, and it was a real dependency.** `ComponentContext` and
+`PlannedDamage` gained an optional `rangeType`. Blade of the Ruined King's on-hit is stored as
+`byRangeType` — 9% of the target's current health for melee holders, 6% for ranged — and `valueAt`
+REFUSES such a value without a range type rather than picking an arm. Without threading it, one of
+the most common items in the game would have been refused for a fact the roster already states.
+Absent stays a real state: nothing states it, and the value is refused rather than guessed.
+
+**A rider does not attach to an attack the engine could not model.** An instance the engine
+refused is not a hit that landed.
+
+**Two things deliberately NOT done.** An effect whose delivery the source never states is not
+guessed onto a carrier (6 of the 43). A periodic burn is not attached to an attack — it belongs to
+the damage-over-time line, which §3.8 keeps out of the burst total entirely (7 of the 43).
+
+**14 tests. 9 go red with the rider pass removed.** The 5 that do not are the "does not fire"
+cases, which pass trivially when no rider exists at all; each is paired with a positive test in
+the same file, and it is the pair that discriminates rather than either half alone.
+
+`SIMULATION_EXCLUSIONS` was rewritten where it had gone stale. It said item passives and actives
+were "a proposal … not merged into the curated file", which stopped being true at the merge. It
+now names what is genuinely not modelled: the 22 effects that are neither on-hit, Spellblade nor
+an active. The `on-hit` step-kind note changed too — an on-hit effect is not a step, so a step
+asking for one now says where to find it instead of claiming the data is missing.

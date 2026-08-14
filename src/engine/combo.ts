@@ -176,6 +176,18 @@ export interface PlannedDamage {
    * ratio is then refused rather than assumed to be the attacker's.
    */
   holder?: 'attacker' | 'defender';
+  /**
+   * THE HOLDER'S RANGE TYPE, for a value stated as two numbers chosen by who holds it. Added
+   * 2026-08-14 with the on-hit riders.
+   *
+   * `byRangeType` says "12 for melee holders, 8 for ranged" and `valueAt` REFUSES it unless a
+   * range type is supplied — it never picks one, because either choice is wrong for half the
+   * roster (DATA-SOURCES §39). Blade of the Ruined King's on-hit is the live case.
+   *
+   * Absent is a real state: nothing states it, and a range-split value is then refused rather
+   * than resolved to a guess.
+   */
+  rangeType?: 'Melee' | 'Ranged';
 }
 
 /**
@@ -885,6 +897,7 @@ function componentContext(
     caster: statsView(plan.attacker, plan.attacker.hp),
     target: statsView(plan.defender, combat.defenderCurrentHp),
     ...(damage.holder ? { holderIs: holderIsDefender ? ('target' as const) : ('caster' as const) } : {}),
+    ...(damage.rangeType ? { rangeType: damage.rangeType } : {}),
     // A stack counter belongs to whoever the effect is on: the caster for an ability, and the
     // holder for an item or rune reached through the defender's build.
     stacks: holderIsDefender ? persistent.defender : persistent.attacker,

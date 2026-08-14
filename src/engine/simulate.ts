@@ -314,9 +314,12 @@ const NOT_MODELLED: Record<string, string> = {
   // 'item-active' was here until 2026-08-14. It is modelled now — see planItemActive. Its note
   // said the values "have not been merged into the curated file", which stopped being true when
   // they were, and a note describing a state the product has left is worse than no note.
+  // An on-hit effect is a RIDER, not a step: it attaches to the basic attack that carried it
+  // (see withRiders). A step explicitly asking for one is therefore asking for something the
+  // combo does not express, and it says so rather than silently doing nothing.
   'on-hit':
-    'on-hit effects are not modelled yet: they ride on item and rune effects, which are not ' +
-    'merged into the curated file',
+    'an on-hit effect is not a step of its own — it rides on the basic attack that triggers it. ' +
+    'Add a basic attack and every on-hit effect on the attacker’s items fires with it.',
   'empowered-attack':
     'empowered basic attacks are not modelled yet: their stack behaviour is recorded per ' +
     'ability in the curated data (SPECIFICATION §3.4) and has not been harvested',
@@ -487,6 +490,142 @@ function planItemActive(
   };
 }
 
+/**
+ * RIDERS — item effects that reach the target ON ANOTHER INSTANCE. Built 2026-08-14.
+ *
+ * **21 of the 43 stored item effects are riders**: 15 on-hit and 6 spellblade. They are not steps
+ * the user places; they fire because a basic attack landed.
+ *
+ * ═══ EACH GETS ITS OWN ROW, AND THAT WAS A DECISION ═══
+ *
+ * The alternative was folding a rider's damage into the instance that carried it, which is
+ * fewer rows and is wrong twice over (DATA-SOURCES §53.3):
+ *
+ *   1. **10 of the 21 riders deal MAGIC damage** and a basic attack deals physical. An instance
+ *      dealing two types is given NO `resistanceSteps` at all, because the contract carries one
+ *      four-step breakdown and a mixed instance meets two. Folding would delete the resistance
+ *      working from the most common instance in the game.
+ *   2. **Crit multiplies a WHOLE instance** (combo.ts) and no component carries its own crit
+ *      eligibility. A basic attack crits; an on-hit effect does not. Folding a rider into a
+ *      critting attack would silently multiply the rider too — arithmetic that is internally
+ *      consistent, so no test would catch it.
+ *
+ * So a rider is its own instance, and NO RIDER EVER CRITS: `crit` is not passed on, which is the
+ * whole point of keeping them separate.
+ *
+ * ═══ WHEN EACH FIRES ═══
+ *
+ * **On-hit** fires on every basic attack. **Spellblade** is the Sheen family: it fires on the
+ * first basic attack AFTER an ability. This engine models sequence and not elapsed time
+ * (SPECIFICATION §3.2), so the source's "within 10 seconds" and its 1.5-second cooldown cannot be
+ * represented — the sequence rule is applied and the omission is disclosed in ENGINE_EXCLUSIONS
+ * rather than approximated with a made-up interval.
+ *
+ * ═══ WHAT IS DELIBERATELY NOT DONE ═══
+ *
+ * An effect whose `appliesAs` the source does not state is NOT guessed onto a carrier. It stays
+ * unmodelled and says so, which is 6 of the 43 (§52.2).
+ */
+function withRiders(
+  planned: PlannedInstance[],
+  combo: readonly ComboStep[],
+  config: ChampionConfig,
+  catalogue: Catalogue,
+  rangeType: 'Melee' | 'Ranged',
+): PlannedInstance[] {
+  const riders = config.items
+    .flatMap((id) => {
+      const item = catalogue.item(id);
+      return catalogue
+        .itemEffects(id)
+        .filter((e) => e.appliesAs === 'on-hit' || e.appliesAs === 'spellblade')
+        .map((effect) => ({ effect, itemName: item?.name ?? `item ${id}` }));
+    })
+    // Stable order: the build order the user stated. Nothing here depends on the order, but two
+    // runs of the same scenario must produce the same rows in the same places.
+    .map((r, i) => ({ ...r, ordinal: i }));
+
+  if (riders.length === 0) return planned;
+
+  const out: PlannedInstance[] = [];
+  let anAbilityHasBeenCast = false;
+
+  planned.forEach((instance, i) => {
+    out.push(instance);
+    const step = combo[i]!;
+    if (step.kind === 'ability') anAbilityHasBeenCast = true;
+    if (step.kind !== 'basic-attack') return;
+
+    // A basic attack that itself contributed nothing carries nothing with it. An instance the
+    // engine refused is not a hit that landed.
+    if (instance.verification === 'incomplete') return;
+
+    for (const { effect, itemName, ordinal } of riders) {
+      if (effect.appliesAs === 'spellblade' && !anAbilityHasBeenCast) continue;
+      out.push(riderInstance(effect, itemName, step, ordinal, rangeType));
+    }
+    // Spellblade is consumed by the attack that used it.
+    anAbilityHasBeenCast = false;
+  });
+
+  return out;
+}
+
+/** One rider, as its own instance. Never crits, and carries the holder's range type. */
+function riderInstance(
+  effect: CuratedItemEffect,
+  itemName: string,
+  carrier: ComboStep,
+  ordinal: number,
+  rangeType: 'Melee' | 'Ranged',
+): PlannedInstance {
+  const stepId = `${carrier.id}-rider-${ordinal}`;
+  const label = `${itemName} — ${effect.name}`;
+  const components = effect.components ?? [];
+
+  if (effect.verification === 'incomplete' || components.length === 0) {
+    return {
+      stepId,
+      sourceLabel: label,
+      instanceType: 'on-hit',
+      verification: effect.verification === 'no-damage' ? 'no-damage' : 'incomplete',
+      ...(effect.verification === 'no-damage'
+        ? {}
+        : {
+            incompleteReason: {
+              kind: (effect.unresolvable?.length ?? 0) > 0 ? 'permanent' : 'pending',
+              ...((effect.unresolvable?.length ?? 0) > 0
+                ? { missingFacts: effect.unresolvable }
+                : {
+                    note:
+                      effect.notes ??
+                      'the data records no reason for this — the effect is marked incomplete ' +
+                        'and nothing states why, which is itself a gap in the harvested data ' +
+                        'rather than a fact about the item',
+                  }),
+            } as IncompleteReason,
+          }),
+    };
+  }
+
+  return {
+    stepId,
+    sourceLabel: label,
+    instanceType: 'on-hit',
+    verification: effect.verification,
+    damage: {
+      components,
+      // No rank axis, exactly as an item active has none.
+      rank: 1,
+      maxRank: 1,
+      // The effect is on the ATTACKER's build, so a `holder` ratio reads the attacker.
+      holder: 'attacker',
+      rangeType,
+      // DELIBERATELY NO `crit`. See the header — this is the correctness the separate row buys.
+    },
+  };
+}
+
 function planStep(
   step: ComboStep,
   config: ChampionConfig,
@@ -623,8 +762,11 @@ function planStep(
  * "the data does not exist yet" rather than "the engine cannot": each is a merge away.
  */
 export const SIMULATION_EXCLUSIONS: readonly string[] = [
-  'Item passives and actives — the extracted values are a proposal in effect-values.json and ' +
-    'have not been merged into the curated file, so only an item’s STRUCTURED statistics apply',
+  'Item passives that are neither on-hit, Spellblade nor an active — 22 of the 43 stored ' +
+    'effects, chiefly the burn family, which recurs over time and needs its own damage-over-time ' +
+    'line, and 6 whose delivery the source never states',
+  'Spellblade’s cooldown and its 10-second window — the engine models sequence and not elapsed ' +
+    'time, so it fires on the first basic attack after an ability and no interval is applied',
   'Every rune, including keystones and stat shards — no rune value is in the curated file, and ' +
     'stat shards appear in no fetched source at all',
   'Critical-strike damage above the base multiplier, and every form of penetration — both come ' +
@@ -697,8 +839,15 @@ export function planScenario(
   if (refusals.length > 0) return { ok: false, refusals };
 
   const abilities = catalogue.abilities(scenario.attacker.apiname);
-  const instances = scenario.combo.map((step) =>
+  const planned = scenario.combo.map((step) =>
     planStep(step, scenario.attacker, abilities, attacker.block, catalogue),
+  );
+  const instances = withRiders(
+    planned,
+    scenario.combo,
+    scenario.attacker,
+    catalogue,
+    attackerChampion.stats.rangetype === 'Ranged' ? 'Ranged' : 'Melee',
   );
 
   const unknownStats = [...attacker.unknownItemStats, ...defender.unknownItemStats];
