@@ -125,12 +125,23 @@ export function scalingKinds(value: unknown, into: Map<string, number> = new Map
  * THE SCALING ARMS GATE 1's OWN SHAPE CHECKER KNOWS.
  *
  * `checkScalingShape` in src/types/validate-curated.ts switches on the arm and reports every
- * other one as "unknown scaling kind". `byRangeType` is a legal arm of `Scaling` in the frozen
- * contract (src/types/data.ts) and is NOT in that switch, so contract-valid data is reported as
- * malformed. This list is what the checker actually accepts today; the sweep measures the gap
- * rather than asserting it.
+ * other one as "unknown scaling kind". This list is what the checker actually accepts today; the
+ * sweep measures the gap rather than asserting it.
+ *
+ * **`byRangeType` joined it on 2026-08-14.** It had always been a legal arm of `Scaling` in the
+ * frozen contract (src/types/data.ts) and had no case in the switch, so contract-valid data was
+ * reported as malformed. **6 item effects were refused for that reason alone and no other** —
+ * Hullbreaker, Titanic Hydra (twice), Voltaic Cyclosword, Blade of the Ruined King and Eclipse —
+ * taking the merged item-effect count from 37 to 43. The case now exists and recurses into both
+ * arms, so the refusal below finds nothing to refuse.
  */
-export const SCALING_ARMS_GATE1_ACCEPTS = new Set(['linear', 'explicit', 'byLevel', 'byLevelExplicit']);
+export const SCALING_ARMS_GATE1_ACCEPTS = new Set([
+  'linear',
+  'explicit',
+  'byLevel',
+  'byLevelExplicit',
+  'byRangeType',
+]);
 
 /**
  * Non-champion damage rows. This MIRRORS the pattern gate 4 uses (validate-curated.ts), because
@@ -144,7 +155,15 @@ export const NON_CHAMPION =
 // The sweeps. Each answers one question over the whole merged file and states its population.
 // ---------------------------------------------------------------------------------------
 
-/** S1 — gate 1 never walks item effects or runes, so run its component checker over them here. */
+/**
+ * S1 — the components of item effects and runes, checked.
+ *
+ * **Gate 1 now walks both itself (2026-08-14).** This sweep existed because it did not: it
+ * iterated `abilities` and `defensiveEffects` and nothing else, so every item effect and every
+ * rune passed a gate that never looked at them, and this called the validator's component
+ * checker by hand to cover the hole. It is kept as a second reading rather than deleted —
+ * `gateSchema` is the gate and this agrees with it or the disagreement is worth seeing.
+ */
 export function sweepGate1Coverage(
   itemEffects: CuratedItemEffect[],
   runes: CuratedRune[],

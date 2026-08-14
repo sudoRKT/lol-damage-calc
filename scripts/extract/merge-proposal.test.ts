@@ -16,7 +16,9 @@ import type {
   CuratedDefensiveEffect,
   CuratedItemEffect,
   Item,
+  Scaling,
 } from '../../src/types/data.ts';
+import { checkScalingShape } from '../../src/types/validate-curated.ts';
 import {
   refuseSchemaInvalidAbilities,
   refuseUnknownScalingArms,
@@ -88,7 +90,9 @@ const defensiveEffect = (over: Partial<CuratedDefensiveEffect> = {}): CuratedDef
 
 const items: Item[] = [{ id: 3100 } as Item];
 
-describe('S1 — gate 1 never walks item effects, so the sweep runs its component checker by hand', () => {
+// The header said "gate 1 never walks item effects" until 2026-08-14, when it started to. The
+// sweep is kept as a second reading of the same components; the claim about the gate is gone.
+describe('S1 — the components of item effects and runes, read a second time', () => {
   it('is silent on a well-formed item effect', () => {
     expect(sweepGate1Coverage([itemEffect()], [])).toHaveLength(0);
   });
@@ -284,7 +288,29 @@ describe('the two refusal rules', () => {
     expect(refusals[0]!.costsAVisibleNumber).toBe(true);
   });
 
-  it('refuses a range-split item effect and says the checker is what is short, not the data', () => {
+  // UNTIL 2026-08-14 THIS TEST USED A RANGE SPLIT, and required it to be refused. That was the
+  // right assertion while gate 1's shape checker had no `byRangeType` case: the data was well
+  // formed and the checker was short of a case, so merging would have left the override file
+  // permanently reporting a finding nobody could act on. The case now exists, a range split is
+  // accepted, and requiring the old refusal would be pinning a closed gap open. The refusal
+  // itself is NOT dead — it is what stops a SIXTH arm reaching the file ahead of its case — so it
+  // is exercised here with an arm nobody has written a case for.
+  it('refuses an item effect on an arm gate 1 has no case for, and says the checker is what is short', () => {
+    const unknownArm = itemEffect({
+      components: [
+        component({
+          base: { scaling: 'byResourceType' } as unknown as Scaling,
+        }),
+      ],
+      verification: 'incomplete',
+    });
+    const { kept, refusals } = refuseUnknownScalingArms([itemEffect(), unknownArm]);
+    expect(kept).toHaveLength(1);
+    expect(refusals[0]!.refusalClass).toBe('validator-has-no-arm-for-this-scaling');
+    expect(refusals[0]!.wouldUnblock).toContain('checkScalingShape');
+  });
+
+  it('keeps a range-split item effect now that gate 1 has a case for it', () => {
     const rangeSplit = itemEffect({
       components: [
         component({
@@ -303,9 +329,8 @@ describe('the two refusal rules', () => {
       unresolvable: [{ field: 'ratios[0].owner', why: 'no source says whose maximum health' }],
     });
     const { kept, refusals } = refuseUnknownScalingArms([itemEffect(), rangeSplit]);
-    expect(kept).toHaveLength(1);
-    expect(refusals[0]!.refusalClass).toBe('validator-has-no-arm-for-this-scaling');
-    expect(refusals[0]!.wouldUnblock).toContain('checkScalingShape');
+    expect(kept).toHaveLength(2);
+    expect(refusals).toHaveLength(0);
   });
 });
 
@@ -328,12 +353,37 @@ describe('scalingKinds — the helper the arm sweep rests on', () => {
     expect(kinds.get('linear')).toBe(1);
   });
 
-  it('lists exactly the four arms gate 1 has a case for, so a fifth cannot be added silently', () => {
-    expect([...SCALING_ARMS_GATE1_ACCEPTS].sort()).toEqual([
-      'byLevel',
-      'byLevelExplicit',
-      'explicit',
-      'linear',
-    ]);
+  // THIS TEST USED TO RESTATE THE LIST AS FOUR LITERALS, which is how it came to be wrong: the
+  // list and the checker are two records of one fact, and on 2026-08-14 the checker gained a case
+  // the list did not. It now ASKS the checker instead, so the two cannot drift apart again.
+  it('names exactly the arms gate 1 has a case for — asked of the checker, not restated', () => {
+    const sample: Record<string, Scaling> = {
+      linear: { scaling: 'linear', from: 1, to: 2 },
+      explicit: { scaling: 'explicit', perRank: [1] },
+      byLevel: { scaling: 'byLevel', from: 1, to: 2, atLevels: [1, 18], steps: 2 },
+      byLevelExplicit: { scaling: 'byLevelExplicit', values: [1], atLevels: [1] },
+      byRangeType: {
+        scaling: 'byRangeType',
+        melee: { scaling: 'linear', from: 1, to: 1 },
+        ranged: { scaling: 'linear', from: 2, to: 2 },
+      },
+    };
+    // Every arm in the list is one the checker really accepts...
+    for (const arm of SCALING_ARMS_GATE1_ACCEPTS) {
+      expect(sample[arm], `no sample written for arm '${arm}'`).toBeDefined();
+      expect(checkScalingShape(sample[arm]!, arm)).toEqual([]);
+    }
+    // ...and every arm the checker accepts is in the list. An arm added to the checker without
+    // being added here would leave the merge refusing data gate 1 would now pass.
+    for (const [arm, value] of Object.entries(sample)) {
+      if (checkScalingShape(value, arm).length === 0) {
+        expect(SCALING_ARMS_GATE1_ACCEPTS.has(arm)).toBe(true);
+      }
+    }
+    // And an arm nobody has written a case for is refused by both.
+    expect(SCALING_ARMS_GATE1_ACCEPTS.has('byResourceType')).toBe(false);
+    expect(
+      checkScalingShape({ scaling: 'byResourceType' } as unknown as Scaling, 'v').join(' '),
+    ).toMatch(/unknown scaling kind/);
   });
 });
