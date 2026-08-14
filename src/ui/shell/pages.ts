@@ -45,7 +45,8 @@ export const SITE_PAGES: SitePage[] = [
     title: 'Calculator — Limit Test',
     navLabel: 'Calculator',
     blurb:
-      'Two champions, an ordered combo, and an itemised damage breakdown with a survival verdict.',
+      'Two champions, an ordered combo, and an itemised damage breakdown — with the survival ' +
+      'verdict given twice: against the burst alone, and including damage over time.',
     inMainNav: true,
   },
   {
@@ -54,8 +55,9 @@ export const SITE_PAGES: SitePage[] = [
     title: 'How the numbers are checked — Limit Test',
     navLabel: 'How the numbers are checked',
     blurb:
-      'What each verification status claims, what it does not claim, and the current count of ' +
-      'each across every ability in the game.',
+      'What each verification status claims, what it does not claim, the current count of each ' +
+      'across every ability in the game, what reaches a result besides ability damage, and why ' +
+      'the two survival verdicts can disagree.',
     inMainNav: true,
   },
   {

@@ -6,9 +6,12 @@
 // which is why nobody believes any of them and everybody uses whichever one loads fastest.
 //
 // This product can say something none of them can, and it is not "our numbers are right" — it is
-// **"here is what we will not show you, and why"**. 247 abilities in the game are refused rather
-// than estimated, and every one of them states what is missing. That is a claim a reader can
-// falsify in ten minutes by downloading the same files, which is the only kind worth making.
+// **"here is what we will not show you, and why"**. Every ability the calculator refuses is
+// refused rather than estimated, and every one of them states what is missing. That is a claim a
+// reader can falsify in ten minutes by downloading the same files, which is the only kind worth
+// making. (This comment used to quote the figure — "247 abilities" — and it went stale on
+// 2026-08-14 when entries carrying a per-tick figure were withdrawn. A number in a comment is a
+// number nothing re-derives, so the count now lives only where `coverage.json` puts it.)
 //
 // So the page is built around a COUNT, not a promise. Every figure comes from `coverage.json`,
 // generated from `public/data/` and re-derived by `coverage.test.ts` on every run. Nothing on
@@ -28,7 +31,7 @@
 import type { IncompleteReason } from '../../types/result';
 import { VerificationStatusMark } from '../primitives';
 import { GitHubMark, SOURCE_URL, pageById } from '../shell';
-import { COVERAGE as coverage } from '../coverage';
+import { CAPABILITY as capability, COVERAGE as coverage } from '../coverage';
 import '../pages/pages.css';
 import './landing.css';
 
@@ -37,10 +40,10 @@ import './landing.css';
  *
  * SPECIFICATION §8 has four statuses, but `incomplete` splits into two states that say opposite
  * things about the future, and DESIGN.md §6 gives each its own glyph and label. Printing all
- * `incomplete` entries under "not yet modelled" would tell a reader that 23 abilities are
- * awaiting work when no amount of work will ever complete them: no source records the fact they
- * need. On the page whose whole claim is that this product does not overstate what it knows,
- * that would be the page overstating what it knows.
+ * `incomplete` entries under "not yet modelled" would tell a reader that the permanently
+ * unanswerable ones are awaiting work when no amount of work will ever complete them: no source
+ * records the fact they need. On the page whose whole claim is that this product does not
+ * overstate what it knows, that would be the page overstating what it knows.
  *
  * Both figures are arithmetic on generated counts. Neither is typed.
  */
@@ -168,16 +171,45 @@ export function Landing() {
         </p>
       </section>
 
+      {/* ═══ WHAT IT WILL NOT DO ═══
+          Two of these are gaps in coverage rather than deliberate limits, and they are here
+          BECAUSE a landing page that lists only the elegant refusals is advertising. A reader who
+          is told nothing about runes will assume they are modelled, because every other calculator
+          models them — and a total missing a keystone is exactly the plausible wrong number this
+          product exists to prevent. Both figures are generated, so neither can go quietly stale. */}
       <section className="plain" aria-label="What it does not do">
         <h2 className="plain__title">What it will not do</h2>
         <ul className="plain__list">
           <li>
             It will not guess. An ability it cannot model contributes nothing and is named in the
-            result, rather than being folded in at a value that looks reasonable.
+            result, rather than being folded in at a value that looks reasonable. The same rule
+            covers your items: an item effect the source describes incompletely is named on the
+            result with what is missing, never quietly attached to whichever attack looks likely.
           </li>
           <li>
             It does not model elapsed time. A combo is an ordered sequence, so nothing decays
             between instances and attack speed does not decide how many attacks fit in a window.
+            Damage that recurs is still counted — from a number of ticks the source states, never
+            from a duration — and it is kept out of the burst total, which is why the survival
+            verdict is given twice.
+          </li>
+          <li>
+            <strong>
+              No rune changes a number: {capability.runesModelled} of {capability.runesPublished}{' '}
+              have a modelled effect.
+            </strong>{' '}
+            The whole rune pool is published here, and none of it is applied yet. A keystone can be
+            a large share of a real combo, so read a total as a total without runes.
+          </li>
+          <li>
+            <strong>
+              The defender’s own kit is applied in part: {capability.defensiveApplied} of{' '}
+              {capability.defensiveStored} defensive effects.
+            </strong>{' '}
+            Their shields, heals and damage reductions are read and stored, and every one of them
+            is conditional — it depends on whether it was up when the combo landed. You state
+            that, and nothing is assumed: a defence you have not switched on is treated as down,
+            because assuming otherwise would credit you with a defence you never chose.
           </li>
           <li>
             The defender does not fight back. Results are damage dealt to a stationary target, and
@@ -186,7 +218,8 @@ export function Landing() {
           <li>
             It has no account system and no database. A scenario lives entirely in its own link,
             so sharing one is copying a URL. <a href={checks.path}>{checks.navLabel}</a> explains
-            the evidence behind every status above.
+            the evidence behind every status above, what reaches a result besides ability damage,
+            and why the two survival verdicts can disagree.
           </li>
         </ul>
       </section>

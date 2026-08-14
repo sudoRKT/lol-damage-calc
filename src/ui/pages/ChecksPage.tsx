@@ -7,15 +7,44 @@
 // The status names, glyphs and labels come from `VerificationStatusMark`, the same component the
 // calculator uses on every row. A page explaining a mark should show the mark, not a picture of
 // one that can drift away from it.
+//
+// ═══ WHAT THIS PAGE HAD TO LEARN TO SAY, 2026-08-14 ═══
+//
+// Until that day the page explained ability statuses and nothing else, which was survivable while
+// abilities were the only thing that reached a result. Three things changed at once and each one
+// made the silence a false claim rather than a gap:
+//
+//   • ITEM EFFECTS WENT LIVE. Actives, on-hit and Spellblade riders now appear in a breakdown.
+//     A page listing only ability evidence implies the rest of a build does nothing.
+//   • DAMAGE OVER TIME BEGAN TO EXIST. SPECIFICATION §3.8 requires the survival verdict twice, and
+//     until now the second one received a zero in every real scenario — satisfied in form, not in
+//     substance. A reader shown two verdicts must be told what makes them disagree.
+//   • DERIVED FELL AND INCOMPLETE ROSE, because entries carrying a per-tick figure were withdrawn.
+//     A count that only ever grows is a score; this one is evidence, so it has to be able to fall,
+//     and the page has to say why or the fall reads as a regression.
+//
+// The rule the new sections follow is the old one: NO COUNT WITHOUT ITS DEFINITION BESIDE IT. A
+// bare "N item effects" can mean four different populations — stored, complete, firing, or
+// reaching a result — and a reader has no way to tell which one they are being shown.
 
 import type { IncompleteReason } from '../../types/result';
 import { VerificationStatusMark } from '../primitives';
-import { COVERAGE } from '../coverage';
+import { CAPABILITY, COVERAGE } from '../coverage';
 import { SOURCE_URL, pageById } from '../shell';
 import { GitHubMark } from '../shell/SiteFooter';
 import './pages.css';
 
 const PERMANENT: IncompleteReason = { kind: 'permanent', missingFacts: [] };
+
+/**
+ * Effects that are stored, named on screen, and apply to nothing — because the source withholds
+ * the one fact each needs. Arithmetic on generated counts, never typed, and the four item-effect
+ * rows sum to the whole stored population, which `pages.test.tsx` asserts.
+ */
+const ITEM_EFFECTS_NAMED_NEVER_APPLIED =
+  CAPABILITY.itemBurnsWithNoTickCount +
+  CAPABILITY.itemBurnsWithNoStatedTrigger +
+  CAPABILITY.itemEffectsWithNoStatedDelivery;
 
 export function ChecksPage() {
   return (
@@ -52,6 +81,42 @@ export function ChecksPage() {
         </p>
       </section>
 
+      {/* ═══ THE COUNT THAT FELL ═══
+          Placed before the ledger, because it explains the ledger's own numbers. Without it a
+          reader who checks back after a patch sees "derived" smaller than last time and has no
+          way to tell an improvement from a regression. */}
+      <section className="prose" aria-label="Why derived can fall">
+        <h2 className="prose__title">Derived is not a number that only goes up</h2>
+        <p className="prose__p">
+          The count of abilities we will show is not a score, and it moves in both directions. When
+          a stored figure turns out to possibly mean something other than what it was being used
+          for, the entry is <strong>withdrawn</strong>: it stops contributing damage, it becomes
+          incomplete, and it says why. <em>Derived</em> falls and <em>incomplete</em> rises. That is
+          evidence arriving, not a regression — a plausible wrong number is worse than no number.
+        </p>
+        <p className="prose__p">
+          The live example is a figure stated <strong>per tick</strong>.{' '}
+          {CAPABILITY.perTickComponents} parts of an ability, across{' '}
+          {CAPABILITY.perTickAbilities} entries, carry a label saying so — that is the wiki’s own
+          name for the row, not our reading of a sentence. A per-tick figure and a per-arrow figure
+          are the same field with opposite meanings: arrows all land at once and belong in the
+          burst, ticks arrive over time and do not. Stored one way and reported the other, the
+          number on screen is wrong and nothing says so.
+        </p>
+        <p className="prose__p">
+          So the sentence has to be read, one ability at a time.{' '}
+          <strong>{CAPABILITY.abilityComponentsOverTime}</strong> have been, across{' '}
+          {CAPABILITY.abilitiesWithOverTime} abilities, and those now go to the damage-over-time
+          line instead of the burst. The rest are held back:{' '}
+          <strong>
+            {CAPABILITY.perTickAbilitiesHeldBack} of the {CAPABILITY.perTickAbilities}
+          </strong>{' '}
+          entries are incomplete today and contribute nothing to any total. Several of them are
+          well-known damage — a good part of the game’s burn roster — and they are absent rather
+          than approximated.
+        </p>
+      </section>
+
       <section className="ledger" aria-label="Every status, and how many abilities hold it">
         <header className="ledger__head">
           <h2 className="ledger__title">Every status, and how many abilities hold it</h2>
@@ -66,7 +131,7 @@ export function ChecksPage() {
             count={COVERAGE.verified}
             status="verified"
             of="shown"
-            body="Everything derived claims, and in addition an independent re-derivation by a party that did not use this product’s code or share its assumptions, recorded with its evidence. It is deliberately a small set. It is not a target to be maximised, and a number without it is not doubtful — expecting this everywhere would mean re-deriving 937 abilities on every patch, which is not a promise anyone can keep."
+            body={`Everything derived claims, and in addition an independent re-derivation by a party that did not use this product’s code or share its assumptions, recorded with its evidence. It is deliberately a small set. It is not a target to be maximised, and a number without it is not doubtful — expecting this everywhere would mean re-deriving ${COVERAGE.abilities} abilities on every patch, which is not a promise anyone can keep.`}
           />
           <StatusRow
             count={COVERAGE.derived}
@@ -103,6 +168,131 @@ export function ChecksPage() {
         </p>
       </section>
 
+      {/* ═══ DAMAGE OVER TIME AND THE TWO VERDICTS ═══
+          A reader shown two survival verdicts needs to know what makes them disagree. Until
+          2026-08-14 nothing did: the second verdict was real code receiving a zero, so the two
+          lines were identical in every real scenario and the page said nothing about why. */}
+      <section className="prose" aria-label="Damage over time and the second verdict">
+        <h2 className="prose__title">Damage over time, and why the two verdicts can differ</h2>
+        <p className="prose__p">
+          A result gives the survival verdict <strong>twice</strong>: once against the burst —
+          everything that lands while the combo is being executed — and once including damage that
+          keeps arriving afterwards. Damage over time is never folded into the burst total. It is
+          its own line, stating the total across the effect’s full duration, and the burst figure
+          is what it says it is.
+        </p>
+        <p className="prose__p">
+          Two things can put a figure into that second line, and if your scenario contains neither
+          then the two verdicts agree — which is a real answer, not a placeholder:
+        </p>
+        <ol className="prose__ol">
+          <li>
+            <strong>{CAPABILITY.abilityComponentsOverTime} ability components</strong>, across{' '}
+            {CAPABILITY.abilitiesWithOverTime} abilities. Parts of a champion ability whose source
+            sentence a person read and confirmed states a recurring figure. The split is per
+            component, not per ability: an ability that hits once <em>and</em> burns has the hit in
+            the burst and the burn over time.
+          </li>
+          <li>
+            <strong>
+              {CAPABILITY.itemBurnsThatFire} of the {CAPABILITY.itemBurns} item burns
+            </strong>{' '}
+            — item effects the source describes as recurring at an interval. One produces a figure
+            only when three things hold together: the entry is complete, the source states how many
+            times it lands, and the source states what sets it off.
+          </li>
+        </ol>
+        <p className="prose__p">
+          <strong>The count of ticks is never invented.</strong> This calculator models an ordered
+          sequence and has no clock in it, so “every half-second for three seconds” cannot be turned
+          into a number of hits — the count has to be stated. {CAPABILITY.itemBurnsWithNoTickCount}{' '}
+          burns say how hard they burn and never how many times, and{' '}
+          {CAPABILITY.itemBurnsWithNoStatedTrigger} say both and never what starts them. All{' '}
+          {CAPABILITY.itemBurnsWithNoTickCount + CAPABILITY.itemBurnsWithNoStatedTrigger} are named
+          on the result as incomplete, with that reason, rather than left off it. An item missing
+          from a breakdown reads as an item that does nothing, which is false.
+        </p>
+      </section>
+
+      {/* ═══ WHAT ELSE REACHES A RESULT ═══
+          Item effects went live on 2026-08-14 and this page had never mentioned them. Silence
+          about a mechanic is read as absence, and absence was the wrong answer in both
+          directions: items now fire, runes still do nothing. */}
+      <section className="ledger" aria-label="Item effects, and which of them fire">
+        <header className="ledger__head">
+          <h2 className="ledger__title">Item effects, and which of them reach a result</h2>
+          <p className="ledger__defn">
+            <strong>{CAPABILITY.itemEffectsStored} item effects</strong> are stored and published on
+            patch {CAPABILITY.patch} — every passive and active in the item pool whose damage the
+            source states structurally. Each carries its own verification status, shown the same way
+            an ability’s is. The four rows below account for all of them.
+          </p>
+        </header>
+        <ul className="ledger__rows">
+          <CapabilityRow
+            count={CAPABILITY.itemRiders}
+            of="on an attack"
+            body={`On-hit (${CAPABILITY.itemOnHit}) and Spellblade (${CAPABILITY.itemSpellblade}). Each gets its own row in the breakdown rather than being folded into the attack that carried it, so its damage type and its resistance step are its own — and a rider never crits, which folding would get wrong. On-hit fires on every basic attack; Spellblade fires on the first attack after an ability and is consumed.`}
+          />
+          <CapabilityRow
+            count={CAPABILITY.itemActives}
+            of="in the combo"
+            body="Item actives. You order them among the abilities like any other step, and they resolve as an instance with no rank axis."
+          />
+          <CapabilityRow
+            count={CAPABILITY.itemBurnsThatFire}
+            of="over time"
+            body={`Of ${CAPABILITY.itemBurns} effects the source describes as recurring, these three state a tick count and a trigger, so a full-duration total exists. They go to the damage-over-time line and never into the burst.`}
+          />
+          <CapabilityRow
+            count={ITEM_EFFECTS_NAMED_NEVER_APPLIED}
+            of="named only"
+            body={`A fact each one needs is absent from the source: ${CAPABILITY.itemBurnsWithNoTickCount} burns state no number of ticks, ${CAPABILITY.itemBurnsWithNoStatedTrigger} state no trigger, and ${CAPABILITY.itemEffectsWithNoStatedDelivery} never say how the effect reaches the target at all. None is guessed onto a carrier. Every one is named on the result with its reason.`}
+          />
+        </ul>
+        <p className="ledger__headline">
+          The timing rules these effects carry in game — a Spellblade cooldown, a burn’s duration —
+          are <strong>not modelled and are listed on the result</strong>. This engine has no clock,
+          so the sequence rule is applied and the omission is stated rather than approximated with
+          an invented interval.
+        </p>
+      </section>
+
+      <section className="prose" aria-label="Runes and the defender's own kit">
+        <h2 className="prose__title">What is not applied yet, and how much of it there is</h2>
+        <p className="prose__p">
+          <strong>
+            Runes: {CAPABILITY.runesModelled} of {CAPABILITY.runesPublished}.
+          </strong>{' '}
+          All {CAPABILITY.runesPublished} runes in the game are published to this site — that is the
+          full pool, names and icons — and not one has a modelled effect. There is no rune page to
+          configure yet, and no rune changes a number in any result. A keystone is often a large
+          share of a real combo, so a total here is a total <em>without</em> runes and should be
+          read that way.
+        </p>
+        <p className="prose__p">
+          <strong>
+            The defender’s own kit: {CAPABILITY.defensiveApplied} of {CAPABILITY.defensiveStored}.
+          </strong>{' '}
+          {CAPABILITY.defensiveStored} defensive effects — shields, heals and damage reductions in
+          champions’ own abilities — have been read from the source and stored.{' '}
+          {CAPABILITY.defensiveReadyToApply} of them state a number, are complete, and name
+          something this engine already has a step for — and{' '}
+          <strong>{CAPABILITY.defensiveApplied} actually change a figure</strong>, measured by
+          switching each on alone against a level-11 defender. The gap between those two counts is
+          entries refused for a reason the shape alone could not show: the defence recurs over a
+          duration, or a ratio the source attributes to nobody. Every one is conditional — it
+          depends on whether the defender had it up when the combo landed, and you state that.
+          A defence you have not switched on is treated as down: assuming otherwise would credit
+          a build with a defence nobody chose.
+        </p>
+        <p className="prose__p">
+          Both figures are counted from the same published files as everything else on this page,
+          and both are stated here rather than left to be inferred from a result that looks
+          complete.
+        </p>
+      </section>
+
       <section className="prose" aria-label="Contested base statistics">
         <h2 className="prose__title">When Riot’s own sources disagree</h2>
         <p className="prose__p">
@@ -132,6 +322,23 @@ export function ChecksPage() {
         </p>
       </section>
     </>
+  );
+}
+
+/**
+ * A ledger row with no verification mark — the figure is a count of effects, not a claim about
+ * evidence, and borrowing the status glyph would say something about trust that is not meant.
+ * Same three-column grid, so the figures still share an edge with the ones above.
+ */
+function CapabilityRow({ count, of, body }: { count: number; of: string; body: string }) {
+  return (
+    <li className="ledger__row">
+      <span className="ledger__count">{count}</span>
+      <span className="ledger__mark">
+        <span className="ledger__of">{of}</span>
+      </span>
+      <span className="ledger__meaning">{body}</span>
+    </li>
   );
 }
 

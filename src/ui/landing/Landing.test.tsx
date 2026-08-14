@@ -22,7 +22,7 @@ import { fileURLToPath } from 'node:url';
 import { Landing } from './Landing';
 import { PageShell } from '../shell';
 import { RIOT_DISCLAIMER } from '../shell/SiteFooter';
-import { COVERAGE as coverage } from '../coverage';
+import { CAPABILITY as capability, COVERAGE as coverage } from '../coverage';
 
 afterEach(cleanup);
 
@@ -71,6 +71,44 @@ describe('landing/every figure is generated, never typed', () => {
     expect(
       within(lede).getByText(new RegExp(`${coverage.incomplete} abilities are not shown at all`)),
     ).toBeTruthy();
+  });
+});
+
+describe('landing/it names the gaps a reader would otherwise assume away', () => {
+  // Every other calculator models runes, so a page silent about them is read as modelling them —
+  // and a total missing a keystone is exactly the plausible wrong number this product exists to
+  // prevent. Same for the defender's own shields and heals. Both figures are generated.
+  it('states the rune coverage as a fraction, not as a silence', () => {
+    mountPage();
+    const gaps = screen.getByRole('region', { name: 'What it does not do' });
+    expect(gaps.textContent).toContain(
+      `No rune changes a number: ${capability.runesModelled} of ${capability.runesPublished}`,
+    );
+  });
+
+  it('states that none of the defender’s own defensive effects is applied', () => {
+    mountPage();
+    const gaps = screen.getByRole('region', { name: 'What it does not do' });
+    expect(gaps.textContent).toContain(
+      `${capability.defensiveApplied} of ${capability.defensiveStored} defensive effects`,
+    );
+  });
+
+  it('says recurring damage is counted but kept out of the burst, and the verdict given twice', () => {
+    mountPage();
+    const gaps = screen.getByRole('region', { name: 'What it does not do' });
+    expect(gaps.textContent).toContain('kept out of the burst total');
+    expect(gaps.textContent).toContain('survival verdict is given twice');
+  });
+
+  it('and these are not zeroes typed in — they come from the generated file', () => {
+    // If either ever becomes non-zero, the sentences above become false and must be rewritten.
+    // This is the tripwire for that day.
+    expect(capability.runesModelled).toBe(0);
+    // WAS 0 UNTIL THE WIRING LANDED, hours after this test was written, and it was placed as a
+    // tripwire for exactly that. 77 of 155 now change a figure — the engine's own measurement,
+    // not the 90 that merely LOOK ready.
+    expect(capability.defensiveApplied).toBe(77);
   });
 });
 

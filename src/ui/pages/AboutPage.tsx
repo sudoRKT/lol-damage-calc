@@ -6,7 +6,7 @@
 // Riot's legal team one day, and a personal line adjacent to "not endorsed by Riot Games" invites
 // a reader to connect the two. `AboutPage.test.tsx` asserts the separation.
 
-import { COVERAGE } from '../coverage';
+import { CAPABILITY, COVERAGE } from '../coverage';
 import { SOURCE_URL, pageById } from '../shell';
 import { GitHubMark } from '../shell/SiteFooter';
 import './pages.css';
@@ -19,7 +19,17 @@ export function AboutPage() {
         <p className="prose__p">
           A damage calculator for League of Legends. You configure two champions — level, ability
           ranks, items — order a combo, and get an itemised breakdown of what each instance did,
-          a running total, and whether the defender survives it.
+          a running total, and whether the defender survives it. The verdict is given twice: once
+          against the burst alone, and once including damage that keeps arriving afterwards.
+        </p>
+        <p className="prose__p">
+          Item effects are part of a result — actives you place in the combo, and{' '}
+          {CAPABILITY.itemRiders} on-hit and Spellblade effects that ride on the attack carrying
+          them, each as its own row. <strong>Runes are not:</strong>{' '}
+          {CAPABILITY.runesModelled} of {CAPABILITY.runesPublished} have a modelled effect. Nor are
+          the {CAPABILITY.defensiveStored} defensive effects read from champions’ own kits — the
+          shields, heals and damage reductions a defender uses against you. Both gaps are stated
+          here rather than left to be inferred from a result that looks finished.
         </p>
         <p className="prose__p">
           It runs entirely in your browser. There is no account, no database and no server holding

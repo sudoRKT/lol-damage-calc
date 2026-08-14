@@ -1,0 +1,23 @@
+{
+  "patch": "16.16.1",
+  "itemEffectsStored": 43,
+  "itemActives": 7,
+  "itemOnHit": 15,
+  "itemSpellblade": 6,
+  "itemRiders": 21,
+  "itemBurns": 9,
+  "itemBurnsThatFire": 3,
+  "itemBurnsWithNoTickCount": 4,
+  "itemBurnsWithNoStatedTrigger": 2,
+  "itemEffectsWithNoStatedDelivery": 6,
+  "runesPublished": 62,
+  "runesModelled": 0,
+  "defensiveStored": 155,
+  "defensiveReadyToApply": 90,
+  "defensiveApplied": 77,
+  "abilityComponentsOverTime": 4,
+  "abilitiesWithOverTime": 4,
+  "perTickComponents": 43,
+  "perTickAbilities": 39,
+  "perTickAbilitiesHeldBack": 37
+}
