@@ -12,6 +12,9 @@
 
 import { describe, expect, it } from 'vitest';
 import { render, screen } from '@testing-library/react';
+import { readFileSync } from 'node:fs';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 import type { InstanceResult, Result } from '../../types/result';
 import { MOCK_RESULT } from '../../types';
@@ -125,6 +128,26 @@ describe('the chart draws it, and a screen reader hears it', () => {
     const brackets = container.querySelectorAll('.burn__bracket');
     expect(brackets).toHaveLength(1);
     expect((brackets[0] as HTMLElement).style.getPropertyValue('--burn-group-span')).toBe('3');
+  });
+
+  it('anchors the bracket at the group’s LEADING EDGE, not the carrier’s centre', () => {
+    // THIS TEST EXISTS BECAUSE THE COUNT-BASED ONES COULD NOT CATCH THE DEFECT. The first version
+    // anchored at 50% and, measured in a real browser, ran from the middle of the group's first
+    // column to the middle of the column AFTER it — bracketing one column that was not in the
+    // group. Every assertion about `--burn-group-span` still passed, because the span was right
+    // and the ORIGIN was wrong. jsdom computes no layout, so the check is on the declaration.
+    const { container } = render(<HpBurndown result={withRiders()} />);
+    const bracket = container.querySelector('.burn__bracket') as HTMLElement;
+    const label = bracket.closest('.burn__xlabel') as HTMLElement;
+    // The bracket is positioned against the label of the group's FIRST column...
+    expect(label.textContent?.trim()).toBe('inst 1');
+    expect(label.className).toContain('burn__xlabel--grouped');
+    // ...and the stylesheet must start it at that label's edge. A non-zero inline start would
+    // shift the whole bracket by a fraction of a column.
+    const css = readFileSync(join(dirname(fileURLToPath(import.meta.url)), 'burndown.css'), 'utf8');
+    const rule = css.slice(css.indexOf('.burn__bracket {'));
+    const start = /inset-inline-start:\s*([^;]+);/.exec(rule.slice(0, rule.indexOf('}')))?.[1];
+    expect(start?.trim()).toBe('0');
   });
 
   it('draws no bracket at all when nothing is grouped', () => {

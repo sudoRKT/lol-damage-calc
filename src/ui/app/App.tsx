@@ -42,6 +42,7 @@ import type {
   Champion,
   ChampionConfig,
   ComboStep,
+  CuratedItemEffect,
   Item,
   Scenario,
   VerificationStatus,
@@ -63,6 +64,8 @@ import {
   contestedFor,
   loadAbilities,
   loadItems,
+  loadItemEffects,
+  itemEffectsById,
   loadOverrides,
   rosterPatch,
   type AbilitiesFile,
@@ -108,6 +111,8 @@ interface LoadedData {
   roster: Champion[];
   items: Item[];
   overrides: StatOverrideRecord[];
+  /** The curated actives and riders. An empty list is a real answer — see `loadItemEffects`. */
+  itemEffects: CuratedItemEffect[];
   patch: string;
 }
 
@@ -168,10 +173,17 @@ export function App({
 
   useEffect(() => {
     let live = true;
-    Promise.all([loadRoster(fetchImpl), loadItems(fetchImpl), loadOverrides(fetchImpl)])
-      .then(([roster, items, overrides]) => {
+    Promise.all([
+      loadRoster(fetchImpl),
+      loadItems(fetchImpl),
+      loadOverrides(fetchImpl),
+      // Soft-failing on purpose: an absent item-effects file costs the effect rows and nothing
+      // else, and the engine already names every effect it cannot reach (see loadItemEffects).
+      loadItemEffects(fetchImpl),
+    ])
+      .then(([roster, items, overrides, itemEffects]) => {
         if (!live) return;
-        setData({ roster, items, overrides, patch: rosterPatch(roster) });
+        setData({ roster, items, overrides, itemEffects, patch: rosterPatch(roster) });
       })
       .catch((e: unknown) => {
         if (live) setError(e instanceof Error ? e.message : String(e));
@@ -208,7 +220,15 @@ export function App({
     for (const [apiname, file] of Object.entries(abilityFiles)) {
       if (file) abilities.set(apiname, file.abilities);
     }
-    return buildCatalogue({ champions: data.roster, items: data.items, abilities });
+    return buildCatalogue({
+      champions: data.roster,
+      items: data.items,
+      abilities,
+      // WITHOUT THIS EVERY ITEM LOOKUP ANSWERS EMPTY, and every active and rider silently does
+      // nothing. It was missing until 2026-08-14, which is why none of that work reached a
+      // visitor (DATA-SOURCES §57).
+      itemEffects: itemEffectsById(data.itemEffects),
+    });
   }, [data, abilityFiles]);
 
   const scenario: Scenario = useMemo(

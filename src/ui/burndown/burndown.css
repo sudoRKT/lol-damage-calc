@@ -458,8 +458,14 @@
  * SHAPE: a rule with two turned-up ends, which nothing else in this chart has.
  *
  * The width comes from --burn-group-span, the number of columns in the group, set inline by the
- * component. Each column is `flex: 1 1 0` of the same axis, so N columns is N times this
- * column's own width; the 100% accounts for this label's own box and the gap between them.
+ * component. Each label is `flex: 1 1 0` of the same axis and the axis has NO gap, so N columns
+ * is exactly N times this label's own width — and the bracket starts at this label's LEADING
+ * EDGE, not its centre.
+ *
+ * A first version anchored at 50% and was measured in a real browser at 754px starting from the
+ * centre of the carrier: it reached from the middle of the group's first column to the middle of
+ * the column AFTER the group, bracketing one column that was not in it. No test caught that,
+ * because every test asserted the span COUNT and none could assert where the line actually fell.
  * -------------------------------------------------------------------------- */
 
 .burn__xlabel--grouped {
@@ -469,7 +475,12 @@
 .burn__bracket {
   position: absolute;
   inset-block-start: 100%;
-  inset-inline-start: 50%;
+  inset-inline-start: 0;
+  /* BORDER-BOX, or the two side borders are ADDED to the computed width and the bracket runs
+   * past the group it describes. Measured in a real browser: 754px against a 751.8px group, a
+   * 2.2px overhang onto the next column. The same class of defect as the page column that
+   * ignored its viewport (DESIGN-AUDIT §6.5) — a border widening a box that was already sized. */
+  box-sizing: border-box;
   inline-size: calc(var(--burn-group-span, 1) * 100%);
   block-size: var(--space-2);
   margin-block-start: var(--space-1);

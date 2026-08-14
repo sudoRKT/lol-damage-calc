@@ -47,6 +47,9 @@ export const ITEMS_URL = '/data/items.json';
 /** Where the pipeline publishes the base-statistic overrides, contested ones among them. */
 export const OVERRIDES_URL = '/data/overrides.json';
 
+/** Where the curated item effects are published (`scripts/build-item-effects.ts`). */
+export const ITEM_EFFECTS_URL = '/data/item-effects.json';
+
 /** One champion's harvested abilities. `{Champion}` is the Data Dragon apiname, e.g. `Lux`. */
 export function abilitiesUrl(apiname: string): string {
   return `/data/abilities/${apiname}.json`;
@@ -115,6 +118,45 @@ export async function loadOverrides(
   const rows = await fetchJson<StatOverrideRecord[]>(fetchImpl, url, 'Base-stat overrides');
   if (!Array.isArray(rows)) throw new Error(`Base-stat overrides: ${url} was not a list`);
   return rows;
+}
+
+/**
+ * Fetch the curated item effects — the actives and the on-hit and Spellblade riders.
+ *
+ * **AN ABSENT FILE IS AN EMPTY LIST, NOT AN ERROR, AND THAT IS DELIBERATE.** It is the one fetch
+ * here that may fail softly. Every item's STRUCTURED statistics come from `items.json` and are
+ * unaffected; what is lost is the effects, and the engine already reports each unreachable effect
+ * as an instance contributing nothing and saying why. A hard failure would take the whole
+ * calculator down over a file that only ever adds rows.
+ *
+ * A malformed file is still an error: a payload without an `itemEffects` list is a broken build
+ * step, not a build that published nothing.
+ */
+export async function loadItemEffects(
+  fetchImpl: typeof fetch = fetch,
+  url: string = ITEM_EFFECTS_URL,
+): Promise<CuratedItemEffect[]> {
+  const response = await fetchImpl(url);
+  if (response.status === 404) return [];
+  if (!response.ok) throw new Error(`Item effects: ${url} returned ${response.status}`);
+  const file = (await response.json()) as { itemEffects?: CuratedItemEffect[] };
+  if (!Array.isArray(file?.itemEffects)) {
+    throw new Error(`Item effects: ${url} carried no itemEffects list`);
+  }
+  return file.itemEffects;
+}
+
+/** Group published effects by item id, ready for `CatalogueSources.itemEffects`. */
+export function itemEffectsById(
+  effects: readonly CuratedItemEffect[],
+): ReadonlyMap<number, readonly CuratedItemEffect[]> {
+  const byId = new Map<number, CuratedItemEffect[]>();
+  for (const e of effects) {
+    const list = byId.get(e.itemId) ?? [];
+    list.push(e);
+    byId.set(e.itemId, list);
+  }
+  return byId;
 }
 
 /**

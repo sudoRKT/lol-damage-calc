@@ -174,13 +174,7 @@ const LENGTH_ALLOWLIST: Array<{ value: string; rule: string; reason: string }> =
       'axis — so 100% is ONE SIBLING’S OWN WIDTH, multiplied by --burn-group-span. A fraction ' +
       'of the parent, not a design length. Same standing as .chip__img.',
   },
-  {
-    value: '50%',
-    rule: '.burn__bracket',
-    reason:
-      'the bracket starts at the centre of the column it is anchored to, so it spans from that ' +
-      'column outward across the group. A fraction of the parent, not a design length.',
-  },
+
   {
     value: '100%',
     rule: '.statblock__table',
