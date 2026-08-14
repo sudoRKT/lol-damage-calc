@@ -46,6 +46,16 @@ inside the ~2,000-character limit that the most conservative browsers and chat c
 but it is long enough that some chat clients will wrap or visually truncate it. Measured
 figures for real scenarios are in §9.
 
+**Version 2 cost nothing for a scenario that does not use its new field.** Measured 2026-08-14
+over all 21 named scenarios: **not one link moved by a single character**, because none carries
+hit counts and the version digit is one character in both formats. For a step that DOES carry
+them the cost is about **12 characters per step**. **The new maximum for a realistic scenario is
+1,852 characters** — the maximal build with a 13-step combo where every step carries both an
+options bag and a hit count. The per-shape ceilings under the 2,000 budget, on the maximal build:
+**72** plain steps, **35** with hit counts only, **16** with options only, **14** with both. So
+version 2 costs two steps off the options-carrying ceiling. All six figures are pinned in
+`length.test.ts`.
+
 ---
 
 ## 3. The version, and what an old client does with a new link
@@ -56,7 +66,11 @@ understanding anything else in the link.** If the version were inside the payloa
 would have to successfully parse a format it does not know in order to discover that it does
 not know it.
 
-The current version is **1**.
+The current version is **2**. Version 1 remains readable and always will (see below); the only
+difference between them is that a version 2 combo step can carry `hitCounts` — the count a user
+states for an ability whose hit count is a property of the situation rather than of the ability
+(DATA-SOURCES §38, §46). Version 1's step-key list predates that field, so a scenario using one
+of the 7 abilities that store `variableHits` could not be shared at all under version 1.
 
 **The envelope is fixed across all versions; only the payload is versioned.** Three fields,
 `~` between them, the same checksum function. This is what makes the promise above real: the
@@ -304,6 +318,24 @@ conservative limit in common use.
 So a realistic shared scenario is **roughly 600–900 characters**. That is longer than a
 shortened link and shorter than anything that gets truncated. It is comfortably inside what
 Discord, Twitch chat, YouTube descriptions and email clients carry intact.
+
+**RE-MEASURED ON 2026-08-14, AFTER VERSION 2. Every figure in the table above is UNCHANGED — not
+one link moved by a single character.** None of the named scenarios carries `hitCounts`, and the
+version digit is one character in both formats, so the new slot costs a scenario that does not
+use it precisely nothing. What it costs a scenario that DOES:
+
+| Shape, on the maximal build | v1 | v2 |
+|---|---:|---:|
+| 5 steps, options only | 1,052 | 1,052 |
+| 5 steps, options **and** hit counts | *unshareable* | **1,113** |
+| 13 steps, options only | 1,692 | 1,692 |
+| **13 steps, options and hit counts — the new maximum** | *unshareable* | **1,852** |
+
+About **12 characters per step** that carries a one-key hit-count bag. Under the 2,000 budget the
+per-shape ceilings are **72** plain steps, **35** with hit counts only, **16** with options only,
+and **14** with both — so version 2 costs **two steps** off the options-carrying ceiling and
+nothing off the others. "Unshareable" is literal: version 1 threw rather than dropping the field,
+which is the right failure and still a failure (DATA-SOURCES §44.3).
 
 ### Where the budget actually runs out
 

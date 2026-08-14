@@ -36,6 +36,7 @@
 import { describe, it, expect } from 'vitest';
 import type { ChampionConfig, ComboStep, ComboStepKind, Scenario } from '../types/scenario';
 import { encodeScenario, decodeScenario, V1_STEP_KINDS } from './index';
+import { V2 } from './v2';
 
 const POPULATION_SIZE = 4000;
 
@@ -114,7 +115,7 @@ function build(random: () => number): Scenario {
   };
 
   return {
-    version: 1,
+    version: V2,
     attacker: champion(),
     defender: champion(),
     combo: Array.from({ length: int(12) }, (_, i) => step(i)),

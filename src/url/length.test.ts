@@ -93,3 +93,74 @@ describe('link length', () => {
     expect(last).toBeLessThanOrEqual(20);
   });
 });
+
+// =========================================================================================
+// WHAT VERSION 2 COST (2026-08-14)
+//
+// Version 2 added a fifth positional slot so a combo step can carry `hitCounts`. Every figure
+// below was measured, before and after, against the same fixtures.
+// =========================================================================================
+
+describe('link length after the version 2 slot', () => {
+  it('costs NOTHING for a scenario that does not use it — every named link is unchanged', () => {
+    // DEFINITION: the full URL length for each of the 21 scenarios in NAMED_SCENARIOS, against
+    // the same base. None of them carries hit counts, and the version digit is one character in
+    // both formats, so not one link moved by a single character.
+    const lengths = Object.fromEntries(
+      NAMED_SCENARIOS.map((s) => [s.name, scenarioToUrl(BASE, s.scenario).length]),
+    );
+    expect(lengths.minimal).toBe(163);
+    expect(lengths['canonical-mock']).toBe(575);
+    expect(lengths.maximal).toBe(870);
+    expect(lengths['long-combo-twenty-steps']).toBe(768);
+  });
+
+  it('costs about 12 characters per step that DOES use it', () => {
+    // Maximal build, five steps, each with a three-key options bag: 1,052 without hit counts and
+    // 1,113 with a one-key bag on every step. 61 characters over 5 steps.
+    const withOptions = withCombo(5, true);
+    const withBoth: Scenario = {
+      ...withOptions,
+      combo: withOptions.combo.map((step, i) => ({ ...step, hitCounts: { [`c${i}`]: i % 5 } })),
+    };
+    const before = scenarioToUrl(BASE, withOptions).length;
+    const after = scenarioToUrl(BASE, withBoth).length;
+    expect(before).toBe(1052);
+    expect(after).toBe(1113);
+    expect((after - before) / 5).toBeLessThan(13);
+  });
+
+  it('THE NEW MAXIMUM: the worst realistic scenario is 1,852 characters, inside the budget', () => {
+    // DEFINITION of "worst realistic": the maximal build — two champions, six items each, full
+    // rune pages, entry state on both sides — with a 13-step combo in which EVERY step carries
+    // both a three-key options bag and a hit count. Nothing in the product produces a longer
+    // link that a user could plausibly build.
+    const worst = withCombo(13, true);
+    const withHits: Scenario = {
+      ...worst,
+      combo: worst.combo.map((step, i) => ({ ...step, hitCounts: { [`c${i}`]: i % 5 } })),
+    };
+    expect(scenarioToUrl(BASE, withHits).length).toBe(1852);
+    expect(scenarioToUrl(BASE, withHits).length).toBeLessThan(URL_BUDGET);
+  });
+
+  it('states how many steps fit, per shape, so the cost is a number and not a feeling', () => {
+    // DEFINITION: the largest combo length whose full URL stays at or under 2,000 characters,
+    // on the maximal build. Version 2 costs TWO STEPS off the options-carrying ceiling.
+    const ceiling = (options: boolean, hits: boolean): number => {
+      let n = 0;
+      for (;;) {
+        const base = withCombo(n + 1, options);
+        const scenario: Scenario = hits
+          ? { ...base, combo: base.combo.map((s, i) => ({ ...s, hitCounts: { [`c${i}`]: i % 5 } })) }
+          : base;
+        if (scenarioToUrl(BASE, scenario).length > URL_BUDGET) return n;
+        n += 1;
+      }
+    };
+    expect(ceiling(false, false)).toBe(72); // plain steps
+    expect(ceiling(false, true)).toBe(35); // hit counts only
+    expect(ceiling(true, false)).toBe(16); // options only — the version 1 ceiling
+    expect(ceiling(true, true)).toBe(14); // both — the version 2 ceiling
+  });
+});

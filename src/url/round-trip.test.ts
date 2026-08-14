@@ -96,7 +96,7 @@ describe('a broken link fails visibly and never decodes into a different scenari
   });
 
   it('a version this build does not know reports "unknown-version" and names both numbers', () => {
-    const future = link.replace(/^1~/, '4~');
+    const future = link.replace(/^\d+~/, '4~');
     const result = decodeScenario(future);
     expect(result).toMatchObject({ ok: false, error: { code: 'unknown-version', foundVersion: 4 } });
     if (!result.ok) {
@@ -106,15 +106,16 @@ describe('a broken link fails visibly and never decodes into a different scenari
   });
 
   it('a newer-version link is reported as newer even when its payload makes no sense to this build', () => {
-    // A hypothetical version 2 could write its payload and checksum differently. This build
+    // A hypothetical version 3 could write its payload and checksum differently. This build
     // must still say "newer version", not "damaged" — the user can act on the first sentence
-    // and cannot act on the second.
-    const result = decodeScenario('2~SGVsbG8gZnJvbSB2Mg~notachecksum');
-    expect(result).toMatchObject({ ok: false, error: { code: 'unknown-version', foundVersion: 2 } });
+    // and cannot act on the second. (This said version 2 until 2026-08-14, when version 2
+    // stopped being hypothetical.)
+    const result = decodeScenario('3~SGVsbG8gZnJvbSB2Mw~notachecksum');
+    expect(result).toMatchObject({ ok: false, error: { code: 'unknown-version', foundVersion: 3 } });
   });
 
   it('a non-numeric version reports "malformed", not a guess', () => {
-    expect(decodeScenario(link.replace(/^1~/, 'v1~'))).toMatchObject({
+    expect(decodeScenario(link.replace(/^\d+~/, 'v1~'))).toMatchObject({
       ok: false,
       error: { code: 'malformed' },
     });
@@ -271,3 +272,116 @@ function encodeRawForTest(payload: unknown): string {
   }
   return `1~${b64}~${h.toString(36)}`;
 }
+
+// =========================================================================================
+// FROZEN VERSION 1 LINKS — the compatibility promise, made mechanical.
+//
+// FORMAT.md §3: "every version ever published stays readable forever. A link shared in a
+// YouTube video two years ago must still open." That was a promise in prose until 2026-08-14,
+// when version 2 arrived and version 1's decoder stopped being the one in daily use.
+//
+// The links below were produced by version 1's encoder and are pasted here as CONSTANTS. They
+// are never regenerated — regenerating them would test the current code against itself, which
+// is the one thing they must not do. Each is asserted to decode to the scenario it was made
+// from, and to report `version: 1`, because a scenario that came out of a version 1 link IS a
+// version 1 scenario and saying otherwise is a claim about provenance that is not true.
+//
+// v2.ts shares v1.ts's champion encoding rather than copying it. THESE VECTORS ARE WHAT MAKES
+// THAT SAFE: any edit to the shared helpers that changed version 1's behaviour fails here.
+// =========================================================================================
+
+describe('frozen version 1 links still open', () => {
+  const FROZEN_V1: ReadonlyArray<{ name: string; link: string }> = [
+    { name: 'minimal', link: '1~W1siQW5uaWUiLDEsWzAsMCwwLDBdLFtdLFtudWxsLFtdLFtdLFtdXSx7fSx7fV0sWyJBbm5pZSIsMSxbMCwwLDAsMF0sW10sW251bGwsW10sW10sW11dLHt9LHt9XSxbXV0~7ek510' },
+    { name: 'canonical-mock', link: '1~W1siQWF0cm94IiwxMSxbNSwzLDMsMl0sWzMwNzEsNjYzMCwzMDUzXSxbODAxMCxbOTExMSw5MTA0LDgwMTRdLFs4NDQ2LDgyNDJdLFsiYWRhcHRpdmUiLCJhZGFwdGl2ZSIsImFybW9yIl1dLHt9LHsiY29ucXVlcm9yU3RhY2tzIjoyLCJibGFja0NsZWF2ZXJTdGFja3MiOjB9XSxbIkdhcmVuIiwxMSxbNSwzLDUsMl0sWzMwNDcsMzE0MywzMDY4XSxbODQzNyxbODQ0Niw4NDI5LDg0NTFdLFs1MDA4LDUwMDJdLFsiYWRhcHRpdmUiLCJhcm1vciIsImhlYWx0aCJdXSx7fSx7ImJvbmVQbGF0aW5nIjp0cnVlfV0sW1siczEiLDEsIlEiLHsiY2FzdCI6MX1dLFsiczIiLDAsImJhc2ljIix7ImZvcmNlQ3JpdCI6dHJ1ZX1dLFsiczMiLDEsIlciXSxbInM0Iiw0LCJtb2NrLXRydWUtcHJvYyJdLFsiczUiLDAsImJhc2ljIl1dXQ~1pu8yin' },
+    { name: 'maximal', link: '1~W1siVmVpZ2FyIiwxOCxbNSw1LDUsM10sWzMxNTcsMzA4OSw0NjQ1LDMxMzUsMzAyMCwzMTE2XSxbODExMixbODEyNiw4MTM4LDgxMDZdLFs4MjI2LDgyMTBdLFsiYWRhcHRpdmUiLCJhZGFwdGl2ZSIsImhlYWx0aCJdXSx7InZlaWdhclN0YWNrcyI6MzQwLCJkYXJrSGFydmVzdFN0YWNrcyI6MjcsImdhdGhlcmluZ1N0b3JtIjo0fSx7ImVsZWN0cm9jdXRlUmVhZHkiOnRydWUsIm1hbmFmbG93U3RhY2tzIjoxMCwiY2hlYXBTaG90VXNlZCI6ZmFsc2V9XSxbIk9ybm4iLDE4LFs1LDUsNSwzXSxbMzA2OCwzMTQzLDMxMTAsMzA3NSwzMTkzLDMwNDddLFs4NDM3LFs4NDQ2LDg0MjksODQ1MV0sWzUwMDgsNTAwMl0sWyJhcm1vciIsImhlYWx0aCIsImhlYWx0aCJdXSx7ImNob2dhdGhGZWFzdFN0YWNrcyI6Nn0seyJib25lUGxhdGluZyI6dHJ1ZSwiaGVtb3JyaGFnZVN0YWNrcyI6Miwic2Vjb25kV2luZFJlYWR5IjpmYWxzZX1dLFtbInMxIiwxLCJRIix7ImNhc3QiOjF9XSxbInMyIiwwLCJiYXNpYyIseyJmb3JjZUNyaXQiOnRydWV9XSxbInMzIiwyLCJXIix7InN3ZWV0c3BvdCI6dHJ1ZX1dLFsiczQiLDMsIjMxNTMiLHsiY2hhcmdlZCI6ZmFsc2V9XSxbInM1Iiw0LCJsaWNoLWJhbmUiLHsic3RhY2tzIjozfV1dXQ~usprtg' },
+  ];
+
+  it.each(FROZEN_V1.map((v) => [v.name, v] as const))(
+    'a version 1 link made before version 2 existed still decodes: %s',
+    (_name, vector) => {
+      const decoded = decodeScenario(vector.link);
+      expect({ name: vector.name, ok: decoded.ok }).toEqual({ name: vector.name, ok: true });
+      if (!decoded.ok) return;
+      const expected = NAMED_SCENARIOS.find((s) => s.name === vector.name)!.scenario;
+      // Everything but the version is identical; the version is 1, because that is the link's.
+      expect(decoded.scenario).toEqual({ ...expected, version: 1 });
+    },
+  );
+
+  it('re-sharing an old link upgrades it to the current format, losing nothing', () => {
+    const decoded = decodeScenario(FROZEN_V1[1]!.link);
+    expect(decoded.ok).toBe(true);
+    if (!decoded.ok) return;
+    const reshared = decodeScenario(encodeScenario(decoded.scenario));
+    expect(reshared.ok).toBe(true);
+    if (!reshared.ok) return;
+    expect(reshared.scenario).toEqual({ ...decoded.scenario, version: CURRENT_URL_VERSION });
+  });
+
+  it('the vectors really are version 1 links, not current ones relabelled', () => {
+    // Without this the suite would pass if someone regenerated them with today's encoder.
+    for (const v of FROZEN_V1) expect(v.link.startsWith('1~')).toBe(true);
+    expect(CURRENT_URL_VERSION).toBeGreaterThan(1);
+  });
+});
+
+// =========================================================================================
+// hitCounts — THE FIELD VERSION 2 EXISTS FOR (DATA-SOURCES §44.3, §46)
+// =========================================================================================
+
+describe('a variable hit count survives the link', () => {
+  const withHitCounts = (hitCounts: Record<string, number>) => ({
+    ...NAMED_SCENARIOS.find((s) => s.name === 'canonical-mock')!.scenario,
+    combo: [{ id: 'z1', kind: 'ability' as const, ref: 'E', hitCounts }],
+  });
+
+  it('carries the count a user stated, which version 1 refused outright', () => {
+    // Ziggs E: the user says five mines were contacted. Before version 2 this scenario could not
+    // be shared at all — `encodeScenario` threw "hitCounts is not part of the scenario contract".
+    // Silently dropping it would have been worse: the link would reproduce the MINIMUM count
+    // (DATA-SOURCES §38.4) and a fivefold-smaller number, with nothing on screen to say so.
+    const scenario = withHitCounts({ 'ziggs-e-mine': 5 });
+    const decoded = decodedOrThrow(encodeScenario(scenario));
+    expect(decoded).toEqual(scenario);
+  });
+
+  it('keeps hit counts and options apart when a step carries only hit counts', () => {
+    // The positional slot 4 is `null` in that case, and `null` must read back as ABSENT rather
+    // than as an empty options bag — the two are different things elsewhere in this suite.
+    const decoded = decodedOrThrow(encodeScenario(withHitCounts({ a: 2 })));
+    expect('options' in decoded.combo[0]!).toBe(false);
+    expect(decoded.combo[0]!.hitCounts).toEqual({ a: 2 });
+  });
+
+  it('carries both when a step has options AND hit counts', () => {
+    const scenario = {
+      ...withHitCounts({ 'ziggs-e-mine': 3 }),
+      combo: [
+        {
+          id: 'z1',
+          kind: 'ability' as const,
+          ref: 'E',
+          options: { sweetspot: true },
+          hitCounts: { 'ziggs-e-mine': 3 },
+        },
+      ],
+    };
+    expect(decodedOrThrow(encodeScenario(scenario))).toEqual(scenario);
+  });
+
+  it('a count of ZERO is carried, because it means the ability missed entirely', () => {
+    // `ComboStep.hitCounts` documents 0 for `repeatsAtFullRate` as "the ability missed", which
+    // is a legitimate scenario and must not be confused with an absent key.
+    const decoded = decodedOrThrow(encodeScenario(withHitCounts({ 'xayah-q-feather': 0 })));
+    expect(decoded.combo[0]!.hitCounts).toEqual({ 'xayah-q-feather': 0 });
+  });
+
+  it('REFUSES a count that is not a whole number of hits', () => {
+    // A link is the only copy of a scenario, so a count that would resolve to a different damage
+    // figure than the sharer saw is refused rather than rounded.
+    for (const bad of [{ a: 1.5 }, { a: -1 }, { a: Number.NaN }]) {
+      expect(() => encodeScenario(withHitCounts(bad))).toThrow(/whole number of hits/);
+    }
+  });
+});

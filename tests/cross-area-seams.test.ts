@@ -458,7 +458,7 @@ const RUNE_TREE = membersOf<import('../src/types').RuneTree>()({
 // Object KEYS, not union members — the encoder must carry every field of these shapes or a
 // shared link silently loses one.
 const SCENARIO_KEY = membersOf<keyof import('../src/types').Scenario>()({
-  version: 1,
+  version: 2,
   attacker: 1,
   defender: 1,
   combo: 1,
@@ -519,11 +519,22 @@ const MIRRORS: Mirror[] = [
   { file: 'src/types/validate-curated.ts', constant: 'DEFENSIVE_KINDS', canonical: DEFENSIVE_KIND, relation: 'exhaustive', why: 'gate 1 rejects a defensive kind it does not list' },
   { file: 'src/types/validate-curated.ts', constant: 'DEFENSIVE_ACTIVATIONS', canonical: DEFENSIVE_ACTIVATION, relation: 'exhaustive', why: 'gate 1 rejects an activation it does not list' },
   { file: 'src/types/validate-curated.ts', constant: 'DEFENSIVE_UNITS', canonical: DEFENSIVE_UNIT, relation: 'exhaustive', why: 'gate 1 rejects a unit it does not list' },
-  { file: 'src/url/v1.ts', constant: 'V1_STEP_KINDS', canonical: COMBO_STEP_KIND, relation: 'exhaustive', why: 'THE INDEX IS THE WIRE VALUE. A kind missing here cannot be encoded at all' },
   { file: 'src/url/v1.ts', constant: 'SCENARIO_KEYS', canonical: SCENARIO_KEY, relation: 'exhaustive', why: 'a scenario field missing here is dropped from every shared link' },
   { file: 'src/url/v1.ts', constant: 'CHAMPION_KEYS', canonical: CHAMPION_CONFIG_KEY, relation: 'exhaustive', why: 'a champion field missing here is dropped from every shared link' },
   { file: 'src/url/v1.ts', constant: 'RUNE_KEYS', canonical: RUNE_PAGE_KEY, relation: 'exhaustive', why: 'a rune-page field missing here is dropped from every shared link' },
-  { file: 'src/url/v1.ts', constant: 'STEP_ALL_KEYS', canonical: COMBO_STEP_KEY, relation: 'exhaustive', why: 'a combo-step field missing here makes the whole scenario unshareable (SPECIFICATION §12)' },
+  // ═══ A FROZEN FORMAT VERSION IS A SUBSET BY DESIGN, NOT A DRIFT ═══
+  //
+  // Version 1's key lists are a HISTORICAL RECORD of what version 1 could carry, and FORMAT.md
+  // §3 forbids editing them: every version ever published stays readable, and a link written in
+  // 2026 must decode the same way in 2028. So they may LACK a contract field — that is what
+  // "frozen" means — and may never gain one. Only the CURRENT version has to stay in step.
+  //
+  // The `subset` relation still catches the failure that matters: a version 1 list gaining a key
+  // the contract does not have, which would be someone editing a frozen format.
+  { file: 'src/url/v1.ts', constant: 'V1_STEP_KINDS', canonical: COMBO_STEP_KIND, relation: 'subset', why: 'FROZEN at version 1. The index is the wire value; reordering or removing an entry breaks every published link' },
+  { file: 'src/url/v1.ts', constant: 'STEP_ALL_KEYS', canonical: COMBO_STEP_KEY, relation: 'subset', why: 'FROZEN at version 1, which predates ComboStep.hitCounts. Version 2 carries it (src/url/v2.ts)' },
+  { file: 'src/url/v2.ts', constant: 'STEP_ALL_KEYS', canonical: COMBO_STEP_KEY, relation: 'exhaustive', why: 'THE CURRENT VERSION. A combo-step field missing here makes a scenario using it unshareable (SPECIFICATION §12) — the drift found on 2026-08-14 and closed by version 2' },
+  { file: 'src/url/v2.ts', constant: 'SCENARIO_KEYS', canonical: SCENARIO_KEY, relation: 'exhaustive', why: 'a scenario field missing here is dropped from every shared link' },
   { file: 'src/engine/combo.ts', constant: 'DAMAGE_TYPES', canonical: DAMAGE_TYPE, relation: 'exhaustive', why: 'the runner walks each type once; a missing one is damage that never resolves' },
   { file: 'src/engine/rounding.ts', constant: 'SPLIT_ORDER', canonical: DAMAGE_BY_TYPE_KEY, relation: 'exhaustive', why: 'apportionment must cover every key of the split, or the parts stop summing to the whole' },
   { file: 'src/ui/primitives/DamageValue.tsx', constant: 'DAMAGE_TYPES', canonical: DAMAGE_TYPE, relation: 'exhaustive', why: 'a type missing here renders no composition-bar segment for it' },
@@ -561,29 +572,23 @@ function mirrorMembers(file: string, constant: string): string[] {
  * change in it is what reports.
  */
 const KNOWN_DRIFT: Array<{ file: string; constant: string; missing: string[]; note: string }> = [
-  {
-    file: 'src/url/v1.ts',
-    constant: 'STEP_ALL_KEYS',
-    missing: ['hitCounts'],
-    note:
-      'FOUND BY THIS CHECK, 2026-08-14. `ComboStep.hitCounts` was added to the contract on ' +
-      '2026-08-13 for variable hit counts (DATA-SOURCES §38) and the URL encoder was never told. ' +
-      'The failure is LOUD rather than silent — `encodeScenario` throws "combo[0].hitCounts is ' +
-      'not part of the scenario contract", which is itself untrue — but SPECIFICATION §12 says ' +
-      'any scenario is shareable as a link that reproduces it exactly, and a scenario using any ' +
-      'of the 7 abilities that carry `variableHits` in the proposed batch (Kai\'Sa Q, Lulu Q, ' +
-      'Nautilus E, Taliyah Q, Yuumi R, Zac R, Ziggs E) cannot be shared at all. ' +
-      'DEFINITION of the 7: ability entries with at least one component carrying `variableHits`, ' +
-      'over the 937 in build/proposed-curated/abilities/batch-01.json. ' +
-      'Closing it is a WIRE-FORMAT change and therefore a decision, not a mechanical fix: the ' +
-      'step is encoded positionally as [id, kindIndex, ref] or [id, kindIndex, ref, options], ' +
-      'and hitCounts needs a fifth slot. Raised, not made.',
-  },
+  // ═══ EMPTY, AND THAT IS THE POINT ═══
+  //
+  // It held one entry from 2026-08-14: `src/url/v1.ts` `STEP_ALL_KEYS` was missing
+  // `ComboStep.hitCounts`, so a scenario using any of the 7 abilities that store `variableHits`
+  // could not be shared at all (SPECIFICATION §12). It was STRUCK on the same day, when version 2
+  // of the link format added a fifth positional slot for it — see `src/url/v2.ts` and
+  // DATA-SOURCES §46. Version 1 is not edited and is still decoded; frozen version 1 links are
+  // pinned in `round-trip.test.ts`.
+  //
+  // The list stays here rather than being deleted with the entry, because it is the device that
+  // keeps a FUTURE drift from being left unrecorded: a red suite blocks every merge, so a
+  // found-but-unfixed seam needs somewhere honest to sit.
 ];
 
 describe('seam: runtime mirrors of contract types', () => {
   it('finds every mirror it claims to check — the sweep cannot pass by reading nothing', () => {
-    expect(MIRRORS.length).toBeGreaterThanOrEqual(26);
+    expect(MIRRORS.length).toBeGreaterThanOrEqual(28);
     for (const m of MIRRORS) expect(mirrorMembers(m.file, m.constant).length).toBeGreaterThan(0);
   });
 
@@ -599,8 +604,10 @@ describe('seam: runtime mirrors of contract types', () => {
     }
   });
 
-  it('records exactly one known drift, so a second one cannot hide behind the first', () => {
-    expect(KNOWN_DRIFT).toHaveLength(1);
+  it('records no known drift — every mirror is in step with the contract', () => {
+    // Was 1 until 2026-08-14. A drift is recorded here ONLY while it is unfixed; leaving a fixed
+    // one behind would forgive the next drift on the same constant.
+    expect(KNOWN_DRIFT).toEqual([]);
   });
 
   it.each(MIRRORS.map((m) => [`${m.file} ${m.constant}`, m] as const))(

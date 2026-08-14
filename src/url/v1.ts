@@ -55,7 +55,7 @@ export interface Complaint {
   reason: string;
 }
 
-function isPlainObject(value: unknown): value is Record<string, unknown> {
+export function isPlainObject(value: unknown): value is Record<string, unknown> {
   if (typeof value !== 'object' || value === null || Array.isArray(value)) return false;
   const proto = Object.getPrototypeOf(value);
   return proto === Object.prototype || proto === null;
@@ -70,7 +70,7 @@ function isSafeInt(value: unknown): value is number {
   return typeof value === 'number' && Number.isSafeInteger(value) && !Object.is(value, -0);
 }
 
-function checkExactKeys(value: Record<string, unknown>, allowed: readonly string[], path: string): Complaint | null {
+export function checkExactKeys(value: Record<string, unknown>, allowed: readonly string[], path: string): Complaint | null {
   for (const key of allowed) {
     if (!(key in value)) return { path: `${path}.${key}`, reason: 'is missing' };
   }
@@ -83,7 +83,7 @@ function checkExactKeys(value: Record<string, unknown>, allowed: readonly string
 }
 
 /** Recursively confirms a step-options value is something JSON can carry losslessly. */
-function checkJsonCarriable(value: unknown, path: string): Complaint | null {
+export function checkJsonCarriable(value: unknown, path: string): Complaint | null {
   if (value === null || typeof value === 'boolean' || typeof value === 'string') return null;
   if (typeof value === 'number') {
     return isCarriableNumber(value)
@@ -139,7 +139,7 @@ function checkRunes(value: unknown, path: string): Complaint | null {
   );
 }
 
-function checkChampion(value: unknown, path: string): Complaint | null {
+export function checkChampion(value: unknown, path: string): Complaint | null {
   if (!isPlainObject(value)) return { path, reason: 'must be a champion configuration' };
   const keys = checkExactKeys(value, CHAMPION_KEYS, path);
   if (keys) return keys;
@@ -241,7 +241,7 @@ export function checkScenario(value: unknown): Complaint | null {
 // Encoding
 // ---------------------------------------------------------------------------
 
-function championToArray(champion: ChampionConfig): unknown[] {
+export function championToArray(champion: ChampionConfig): unknown[] {
   return [
     champion.apiname,
     champion.level,
@@ -304,7 +304,7 @@ export function readV1Payload(payload: unknown): { ok: true; scenario: Scenario 
   return { ok: true, scenario };
 }
 
-function readChampion(raw: unknown, path: string): { value: ChampionConfig } | { complaint: Complaint } {
+export function readChampion(raw: unknown, path: string): { value: ChampionConfig } | { complaint: Complaint } {
   if (!Array.isArray(raw) || raw.length !== CHAMPION_KEYS.length) {
     return { complaint: { path, reason: 'must be a champion configuration' } };
   }

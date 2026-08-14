@@ -9,13 +9,29 @@
 
 import type { Scenario } from '../types/scenario';
 import { openPayload, sealEnvelope, splitEnvelope } from './envelope';
-import { V1, checkScenario, readV1Payload, writeV1Payload } from './v1';
+import { V1, readV1Payload } from './v1';
+import { V2, checkScenario, readV2Payload, writeV2Payload } from './v2';
 
 export { V1_STEP_KINDS } from './v1';
+export { V2_STEP_KINDS } from './v2';
 export * from './resolve';
 
-/** The version this build writes. Every version ever published stays readable (FORMAT.md §3). */
-export const CURRENT_URL_VERSION = V1;
+/**
+ * The version this build WRITES. Every version ever published stays READABLE (FORMAT.md §3),
+ * which is why `DECODERS` below still holds version 1 and always will.
+ *
+ * Bumped to 2 on 2026-08-14 so the combo step can carry `hitCounts` — see v2.ts.
+ */
+export const CURRENT_URL_VERSION = V2;
+
+/**
+ * Every version this build can READ, newest first. A version is added here and never removed:
+ * a link shared in a video two years ago must still open (FORMAT.md §3).
+ */
+const DECODERS: Record<number, (payload: unknown) => ReturnType<typeof readV2Payload>> = {
+  [V2]: readV2Payload,
+  [V1]: readV1Payload,
+};
 
 /** The fragment parameter the scenario lives in: `https://site/#s=...`. */
 export const FRAGMENT_KEY = 's';
@@ -63,7 +79,7 @@ const DAMAGED =
 export function encodeScenario(scenario: Scenario): string {
   const complaint = checkScenario(scenario);
   if (complaint) throw new ScenarioEncodeError(complaint.path, complaint.reason);
-  return sealEnvelope(V1, writeV1Payload(scenario));
+  return sealEnvelope(CURRENT_URL_VERSION, writeV2Payload(scenario));
 }
 
 /**
@@ -84,7 +100,8 @@ export function decodeScenario(link: string): DecodeResult {
   // newer even if a future version also changed how the payload itself is written — telling
   // someone their link is damaged when it is merely new sends them to ask for a re-send that
   // cannot possibly help.
-  if (version !== V1) {
+  const decode = DECODERS[version];
+  if (!decode) {
     return {
       ok: false,
       error: {
@@ -109,7 +126,7 @@ export function decodeScenario(link: string): DecodeResult {
     return { ok: false, error: { code: 'not-json', message: DAMAGED, foundVersion: version } };
   }
 
-  const read = readV1Payload(parsed);
+  const read = decode(parsed);
   if (!read.ok) {
     return {
       ok: false,

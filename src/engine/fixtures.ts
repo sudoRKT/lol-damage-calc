@@ -159,7 +159,10 @@ export function comboStep(id: string, opts: Partial<ComboStep> = {}): ComboStep 
 /** A minimal Scenario. The runner echoes it into the Result and reads only the two configs. */
 export function scenario(opts: Partial<Scenario> = {}): Scenario {
   return {
-    version: opts.version ?? 1,
+    // The URL SCHEMA version (SPECIFICATION §12), currently 2 — the engine reads nothing from
+    // it, but a fixture that names a stale one makes every round-trip check fail on a field
+    // nobody meant to test.
+    version: opts.version ?? 2,
     attacker: opts.attacker ?? championConfig(),
     defender: opts.defender ?? championConfig(),
     combo: opts.combo ?? [],

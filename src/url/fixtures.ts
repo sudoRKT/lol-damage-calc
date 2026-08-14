@@ -8,6 +8,7 @@
 
 import type { Scenario, ChampionConfig, ComboStep } from '../types/scenario';
 import { MOCK_SCENARIO } from '../types/mock-result';
+import { V2 } from './v2';
 
 /** A champion config with everything at its emptiest legal value. */
 function bareChampion(apiname: string): ChampionConfig {
@@ -42,7 +43,7 @@ export const NAMED_SCENARIOS: NamedScenario[] = [
     name: 'minimal',
     proves: 'the emptiest legal scenario — no items, no runes, no state, no combo at all',
     scenario: {
-      version: 1,
+      version: V2,
       attacker: bareChampion('Annie'),
       defender: bareChampion('Annie'),
       combo: [],
@@ -59,7 +60,7 @@ export const NAMED_SCENARIOS: NamedScenario[] = [
     name: 'maximal',
     proves: 'every optional field populated at once: six items, full rune page, both kinds of entry state, options on every combo step',
     scenario: {
-      version: 1,
+      version: V2,
       attacker: {
         apiname: 'Veigar',
         level: 18,
@@ -96,7 +97,7 @@ export const NAMED_SCENARIOS: NamedScenario[] = [
     name: 'persistent-only-attacker',
     proves: 'persistent accumulations (SPEC §3.3, folded in before the sequence) survive on the attacker with combat state empty',
     scenario: {
-      version: 1,
+      version: V2,
       attacker: { ...bareChampion('Nasus'), persistent: { nasusQStacks: 812 } },
       defender: bareChampion('Malphite'),
       combo: [{ id: 'a', kind: 'ability', ref: 'Q' }],
@@ -107,7 +108,7 @@ export const NAMED_SCENARIOS: NamedScenario[] = [
     name: 'combat-state-only-defender',
     proves: 'combat state (SPEC §3.3, seeded then mutated) survives on the defender with persistent empty — the Darius/Hemorrhage case named in the spec',
     scenario: {
-      version: 1,
+      version: V2,
       attacker: bareChampion('Darius'),
       defender: { ...bareChampion('Sett'), entryState: { hemorrhageStacks: 2 } },
       combo: [{ id: 'a', kind: 'ability', ref: 'R' }],
@@ -118,7 +119,7 @@ export const NAMED_SCENARIOS: NamedScenario[] = [
     name: 'both-entry-state-kinds-both-champions',
     proves: 'persistent and combat state are carried as two separate things on BOTH champions and never merged into one',
     scenario: {
-      version: 1,
+      version: V2,
       attacker: {
         ...bareChampion('Senna'),
         persistent: { sennaSouls: 92 },
@@ -137,7 +138,7 @@ export const NAMED_SCENARIOS: NamedScenario[] = [
     name: 'combo-order-q-then-auto',
     proves: 'an ordered combo, half of an order-matters pair',
     scenario: {
-      version: 1,
+      version: V2,
       attacker: bareChampion('Riven'),
       defender: bareChampion('Riven'),
       combo: [
@@ -151,7 +152,7 @@ export const NAMED_SCENARIOS: NamedScenario[] = [
     name: 'combo-order-auto-then-q',
     proves: 'the same two steps in the other order — must round-trip AND must not share a link with its pair',
     scenario: {
-      version: 1,
+      version: V2,
       attacker: bareChampion('Riven'),
       defender: bareChampion('Riven'),
       combo: [
@@ -165,7 +166,7 @@ export const NAMED_SCENARIOS: NamedScenario[] = [
     name: 'options-absent-vs-empty',
     proves: 'a step that carried no options does not come back carrying an empty bag, and one that carried an empty bag keeps it',
     scenario: {
-      version: 1,
+      version: V2,
       attacker: bareChampion('Zed'),
       defender: bareChampion('Zed'),
       combo: [
@@ -179,7 +180,7 @@ export const NAMED_SCENARIOS: NamedScenario[] = [
     name: 'keystone-null',
     proves: 'no keystone chosen is carried as "none"',
     scenario: {
-      version: 1,
+      version: V2,
       attacker: { ...bareChampion('Yuumi'), runes: { keystone: null, primary: [1], secondary: [2], shards: ['a', 'b', 'c'] } },
       defender: bareChampion('Yuumi'),
       combo: [],
@@ -190,7 +191,7 @@ export const NAMED_SCENARIOS: NamedScenario[] = [
     name: 'keystone-zero',
     proves: 'a keystone id of 0 is a different thing from no keystone and must not collapse into null',
     scenario: {
-      version: 1,
+      version: V2,
       attacker: { ...bareChampion('Yuumi'), runes: { keystone: 0, primary: [1], secondary: [2], shards: ['a', 'b', 'c'] } },
       defender: bareChampion('Yuumi'),
       combo: [],
@@ -201,7 +202,7 @@ export const NAMED_SCENARIOS: NamedScenario[] = [
     name: 'boolean-false-entry-state',
     proves: 'a combat-state toggle explicitly set to false survives as false and is not dropped for being falsy',
     scenario: {
-      version: 1,
+      version: V2,
       attacker: bareChampion('Rell'),
       defender: { ...bareChampion('Rell'), entryState: { bonePlating: false, secondWind: false, stacks: 0 } },
       combo: [],
@@ -212,7 +213,7 @@ export const NAMED_SCENARIOS: NamedScenario[] = [
     name: 'fractional-and-negative-state',
     proves: 'non-integer and negative accumulations survive exactly (armour shred is negative, some stacks are fractional)',
     scenario: {
-      version: 1,
+      version: V2,
       attacker: { ...bareChampion('Kayle'), persistent: { gatheringStorm: 2.5, oddity: -17.25 } },
       defender: { ...bareChampion('Kayle'), entryState: { armorShred: -24, ratio: 0.3333333333333333 } },
       combo: [],
@@ -223,7 +224,7 @@ export const NAMED_SCENARIOS: NamedScenario[] = [
     name: 'unicode-and-awkward-keys',
     proves: 'state keys and champion names with non-ASCII characters survive base64 and UTF-8 without mangling',
     scenario: {
-      version: 1,
+      version: V2,
       attacker: { ...bareChampion('Kaisa'), persistent: { 'plasma·stacks': 4, 'ünïcode': 1 } },
       defender: { ...bareChampion('Chogath'), entryState: { 'ключ': true, '日本語': 3 } },
       combo: [{ id: 'ステップ', kind: 'ability', ref: 'Q', options: { note: 'sweet~spot=yes&no#hash' } }],
@@ -234,7 +235,7 @@ export const NAMED_SCENARIOS: NamedScenario[] = [
     name: 'duplicate-and-ordered-items',
     proves: 'the item list keeps duplicates and keeps its order — it is a list, not a set',
     scenario: {
-      version: 1,
+      version: V2,
       attacker: { ...bareChampion('Sion'), items: [3071, 3071, 3053, 1001, 3053] },
       defender: bareChampion('Sion'),
       combo: [],
@@ -245,7 +246,7 @@ export const NAMED_SCENARIOS: NamedScenario[] = [
     name: 'all-five-step-kinds',
     proves: 'every one of the five ComboStepKind values encodes and comes back as itself',
     scenario: {
-      version: 1,
+      version: V2,
       attacker: bareChampion('Jhin'),
       defender: bareChampion('Jhin'),
       combo: fullCombo,
@@ -256,7 +257,7 @@ export const NAMED_SCENARIOS: NamedScenario[] = [
     name: 'nested-options',
     proves: 'a step-options bag holding nested objects, arrays, nulls and booleans survives structurally',
     scenario: {
-      version: 1,
+      version: V2,
       attacker: bareChampion('Aphelios'),
       defender: bareChampion('Aphelios'),
       combo: [
@@ -280,7 +281,7 @@ export const NAMED_SCENARIOS: NamedScenario[] = [
     name: 'long-combo-twenty-steps',
     proves: 'a long ordered combo survives with every step in place — length and order together',
     scenario: {
-      version: 1,
+      version: V2,
       attacker: bareChampion('Katarina'),
       defender: bareChampion('Katarina'),
       combo: Array.from({ length: 20 }, (_, i): ComboStep => ({
@@ -296,7 +297,7 @@ export const NAMED_SCENARIOS: NamedScenario[] = [
     name: 'max-level-max-ranks',
     proves: 'the top of the documented level range and full ability ranks survive',
     scenario: {
-      version: 1,
+      version: V2,
       attacker: { ...bareChampion('Jax'), level: 18, abilityRanks: { Q: 5, W: 5, E: 5, R: 3 } },
       defender: { ...bareChampion('Jax'), level: 18, abilityRanks: { Q: 5, W: 5, E: 5, R: 3 } },
       combo: [],
@@ -307,7 +308,7 @@ export const NAMED_SCENARIOS: NamedScenario[] = [
     name: 'empty-strings-everywhere',
     proves: 'empty-string ids and refs are carried as empty strings rather than becoming missing fields',
     scenario: {
-      version: 1,
+      version: V2,
       attacker: { ...bareChampion('Ryze'), runes: { keystone: null, primary: [], secondary: [], shards: ['', '', ''] } },
       defender: bareChampion('Ryze'),
       combo: [{ id: '', kind: 'on-hit', ref: '' }],
@@ -318,7 +319,7 @@ export const NAMED_SCENARIOS: NamedScenario[] = [
     name: 'asymmetric-champions',
     proves: 'attacker and defender are carried independently and are never swapped or shared',
     scenario: {
-      version: 1,
+      version: V2,
       attacker: {
         apiname: 'Attacker',
         level: 3,

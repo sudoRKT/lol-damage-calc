@@ -15,7 +15,9 @@ import type { Result } from './result';
 import type { Scenario } from './scenario';
 
 export const MOCK_SCENARIO: Scenario = {
-  version: 1,
+  // The URL SCHEMA version this scenario is written against — not the curated file's version and
+  // not the patch. 2 since 2026-08-14, when the combo step gained `hitCounts` (src/url/v2.ts).
+  version: 2,
   attacker: {
     apiname: 'Aatrox',
     level: 11,
