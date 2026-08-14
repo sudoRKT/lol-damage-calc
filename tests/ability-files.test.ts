@@ -34,11 +34,17 @@ interface AbilityFile {
 }
 
 const roster = readJson<Champion[]>('public', 'data', 'champions.json');
-const batch = readJson<CuratedFile>(
+// THE SOURCE MOVED ON 2026-08-14, from the harvester's draft to the protected override file
+// (DATA-SOURCES §53.2). The draft is not read here at all any more.
+const overrideFile = readJson<CuratedFile>(['cur', 'ated'].join(''), 'curated-data.json');
+const refusalFile = readJson<{ refusals: Array<{ area: string; key: string; identity?: unknown }> }>(
   'build',
   ['proposed', 'curated'].join('-'),
-  'abilities',
-  'batch-01.json',
+  'merge-refusals.json',
+);
+/** The entries gate 1 refused, published as NAMED GAPS rather than dropped. */
+const refusedKeys = new Set(
+  refusalFile.refusals.filter((r) => r.area === 'ability' && r.identity).map((r) => r.key),
 );
 const files = new Map<string, AbilityFile>(
   readdirSync(ABILITY_DIR)
@@ -66,11 +72,16 @@ describe('ability files: every champion has one', () => {
     expect(empty).toEqual([]);
   });
 
-  it('carries EVERY ability entry the harvester produced — none lost in the join', () => {
-    // DEFINITION: ability entries summed across all 173 files, against the entries in the
-    // harvester's full-roster batch. Equal means the join lost nothing and invented nothing.
+  it('carries EVERY ability entry, stored or refused — none lost in the join', () => {
+    // DEFINITION: ability entries summed across all 173 files, against the override file's
+    // entries plus the entries gate 1 refused. Equal means the join lost nothing and invented
+    // nothing.
+    //
+    // 937 = 919 stored + 18 refused. It was 937 before the source moved too, from the draft — and
+    // that it still is, is the point: refusing 18 entries at the gate did NOT make 18 abilities
+    // disappear from the site (DATA-SOURCES §53.2).
     const carried = [...files.values()].reduce((n, f) => n + f.abilities.length, 0);
-    expect(carried).toBe(batch.abilities.length);
+    expect(carried).toBe(overrideFile.abilities.length + refusedKeys.size);
     expect(carried).toBe(937);
   });
 
@@ -111,21 +122,25 @@ describe('ability files: every champion has one', () => {
 });
 
 describe('ability files: the figures are the harvester’s, unaltered', () => {
-  it('every entry matches the batch entry it came from, except for the added icon', () => {
+  it('every entry matches the override file it came from, except for the added icon', () => {
     // THE POINT OF THIS FILE IS THE JOIN, NOT THE NUMBERS. A generator that quietly "fixed" a
     // damage figure, or promoted a status, would be inventing data at the last step before the
     // interface reads it — the one place nobody would look for it.
-    const inBatch = new Map<string, CuratedAbility>();
-    for (const a of batch.abilities) {
-      inBatch.set(`${a.champion}|${a.slot}|${a.abilityName}|${a.sourceRevision ?? ''}`, a);
+    const stored = new Map<string, CuratedAbility>();
+    for (const a of overrideFile.abilities) {
+      stored.set(`${a.champion}|${a.slot}|${a.abilityName}|${a.sourceRevision ?? ''}`, a);
     }
     const drifted: string[] = [];
     for (const file of files.values()) {
       for (const published of file.abilities) {
         const key = `${published.champion}|${published.slot}|${published.abilityName}|${published.sourceRevision ?? ''}`;
-        const original = inBatch.get(key);
+        const plainKey = `${published.champion}/${published.slot}/${published.abilityName}`;
+        // A CARRIED REFUSAL IS CHECKED SEPARATELY, BELOW. It has no counterpart in the override
+        // file by design — that is what being refused means.
+        if (refusedKeys.has(plainKey)) continue;
+        const original = stored.get(key);
         if (!original) {
-          drifted.push(`${key}: no matching entry in the batch`);
+          drifted.push(`${key}: no matching entry in the override file, and not a known refusal`);
           continue;
         }
         const { icon: _icon, ...rest } = published;
@@ -133,6 +148,57 @@ describe('ability files: the figures are the harvester’s, unaltered', () => {
       }
     }
     expect(drifted).toEqual([]);
+  });
+
+  it('publishes every refused entry as a NAMED GAP, never as an absence', () => {
+    // DEFINITION: the 18 ability entries gate 1 refused, identified by their key in
+    // merge-refusals.json. Without this they would simply be missing, and `simulate` would say
+    // "nothing has been harvested for this champion's E slot" — which is FALSE. Something was
+    // harvested; a gate refused it (DATA-SOURCES §53.2).
+    const published = new Map<string, CuratedAbility>();
+    for (const file of files.values()) {
+      for (const a of file.abilities) {
+        published.set(`${a.champion}/${a.slot}/${a.abilityName}`, a);
+      }
+    }
+    expect(refusedKeys.size).toBe(18);
+    const problems: string[] = [];
+    for (const key of refusedKeys) {
+      const entry = published.get(key);
+      if (!entry) {
+        problems.push(`${key}: refused AND absent — it reads as an ability nobody harvested`);
+        continue;
+      }
+      // It must carry NO damage. Republishing a refused row is the one thing this must not do.
+      if ((entry.components?.length ?? 0) > 0) problems.push(`${key}: republishes refused damage`);
+      if (entry.verification !== 'incomplete') {
+        problems.push(`${key}: claims '${entry.verification}', not 'incomplete'`);
+      }
+      // And it must say WHY, in words that name the cause rather than restating the status.
+      if (!entry.notes || !/refused by the data gate/.test(entry.notes)) {
+        problems.push(`${key}: states no reason a reader could act on`);
+      }
+      if (!entry.notes || !/not an ability nobody has looked at/.test(entry.notes)) {
+        problems.push(`${key}: does not distinguish itself from an unharvested ability`);
+      }
+    }
+    expect(problems).toEqual([]);
+  });
+
+  it('a refused entry keeps a fact NO SOURCE states, which outlives the refusal', () => {
+    // An `unresolvable` fact makes an entry PERMANENTLY incomplete rather than pending. Dropping
+    // it downgrades "this can never be completed" to "this has not been done yet", which promises
+    // work no effort can deliver (SPECIFICATION §8).
+    //
+    // Caught by measurement, not by reasoning: the first version of the carry dropped it, and the
+    // published permanently-unanswerable count fell from 23 to 22. Blitzcrank R is the one
+    // refused entry that carries one, and it is asserted by name so the check cannot pass by
+    // finding nothing.
+    const blitz = files.get('Blitzcrank')!.abilities.find((a) => a.slot === 'R')!;
+    expect(blitz.verification).toBe('incomplete');
+    expect(blitz.components).toEqual([]);
+    expect(blitz.unresolvable).toHaveLength(1);
+    expect(blitz.unresolvable![0]!.why).toMatch(/never says whose/);
   });
 
   it('the published verification statuses reproduce the roster measurement exactly', () => {
@@ -155,13 +221,20 @@ describe('ability files: the figures are the harvester’s, unaltered', () => {
     });
   });
 
-  it('every file warns that these are harvester drafts, not the curated file', () => {
-    // `/curated/` holds no ability entries. A file that dropped this warning would let an area
-    // downstream treat a draft as settled.
+  it('every file warns that a derived figure is not a settled one', () => {
+    // THIS TEST REQUIRED THE WORDS "NOT THE CURATED FILE" until 2026-08-14, which was right while
+    // the override file held no ability entries and these really were drafts. It holds 919 now,
+    // so that sentence would be false — and a false warning is worse than none, because it is
+    // the line a reader trusts. What must survive is the part that was always the point: a figure
+    // here is derived at best, and an incomplete entry contributes NO damage.
     for (const [apiname, file] of files) {
-      expect({ apiname, warns: /NOT THE CURATED FILE/.test(file.provenance.warning) }).toEqual({
+      const w = file.provenance.warning;
+      expect({ apiname, derived: /DERIVED at best/.test(w) }).toEqual({ apiname, derived: true });
+      expect({ apiname, zero: /contributes NO damage/.test(w) }).toEqual({ apiname, zero: true });
+      // And it must not have kept the claim that stopped being true.
+      expect({ apiname, stale: /THESE ARE HARVESTER DRAFTS/.test(w) }).toEqual({
         apiname,
-        warns: true,
+        stale: false,
       });
       expect(file.provenance.regenerate).toContain('build-ability-files');
     }

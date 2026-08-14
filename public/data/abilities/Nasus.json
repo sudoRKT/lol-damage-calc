@@ -1,11 +1,11 @@
 {
-  "what": "Nasus ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "what": "Nasus ability entries, joined from the protected override file with Data Dragon icon filenames. Entries the data gate refused are present too, named and marked incomplete, so a known gap never reads as an ability nobody harvested.",
   "provenance": {
-    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "source": "curated/curated-data.json (the protected override file), plus the gate-1 refusals from build/proposed-curated/merge-refusals.json carried as named gaps",
     "patch": "16.16.1",
     "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
-    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
+    "warning": "These come from the protected override file, which is where this project keeps its hand-authored numbers. Every figure is DERIVED at best unless its entry says otherwise, and each entry states its own verification status — the interface shows that status on screen and must never present a derived figure as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8). Until 2026-08-14 this warning said these files were harvester drafts; the input moved to the override file and that sentence is deleted rather than softened, because it would now be false.",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
   },
   "abilities": [
@@ -25,47 +25,6 @@
       },
       "sourceRevision": 3948837,
       "icon": "Nasus_Passive.png"
-    },
-    {
-      "champion": "Nasus",
-      "slot": "Q",
-      "abilityName": "Siphoning Strike",
-      "instanceType": "damaging-ability",
-      "damageType": "physical",
-      "maxRank": 5,
-      "components": [
-        {
-          "id": "bonus-physical-damage",
-          "label": "Bonus Physical Damage",
-          "damageType": "physical",
-          "base": {
-            "scaling": "linear",
-            "from": 40,
-            "to": 120
-          },
-          "ratios": [
-            {
-              "stat": "stacks",
-              "scaling": "linear",
-              "from": 100,
-              "to": 100
-            }
-          ],
-          "relation": {
-            "kind": "adds"
-          }
-        }
-      ],
-      "verification": "incomplete",
-      "provenance": {
-        "source": "Template:Data Nasus/Siphoning Strike",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Nasus/Siphoning%20Strike",
-        "patch": "16.16.1",
-        "fetched": "2026-08-14"
-      },
-      "sourceRevision": 4051777,
-      "notes": "the entry is not structurally valid, so no figure from it is shown (components[0].ratios[0]: stat 'stacks' requires a 'counter' key)",
-      "icon": "NasusQ.png"
     },
     {
       "champion": "Nasus",
@@ -202,6 +161,23 @@
       "sourceRevision": 4007699,
       "notes": "how many times this lands could not be read (\"Magic Damage Per Tick\" lands more than once and the source does not state how many times; the dropped total row does not divide by it evenly, so the count is not derivable)",
       "icon": "NasusR.png"
+    },
+    {
+      "champion": "Nasus",
+      "slot": "Q",
+      "abilityName": "Siphoning Strike",
+      "instanceType": "damaging-ability",
+      "maxRank": 5,
+      "components": [],
+      "verification": "incomplete",
+      "notes": "this ability was harvested but refused by the data gate, so its damage is not published: gate 1 rejects this entry: components[0].ratios[0]: stat 'stacks' requires a 'counter' key It is a known gap with a known cause, not an ability nobody has looked at.",
+      "provenance": {
+        "source": "build/proposed-curated/merge-refusals.json (gate 1 refusal)",
+        "url": "https://wiki.leagueoflegends.com/en-us/",
+        "patch": "see the file-level provenance",
+        "fetched": "see the file-level provenance"
+      },
+      "icon": "NasusQ.png"
     }
   ],
   "art": {

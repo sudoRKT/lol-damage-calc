@@ -1,11 +1,11 @@
 {
-  "what": "Akali ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "what": "Akali ability entries, joined from the protected override file with Data Dragon icon filenames. Entries the data gate refused are present too, named and marked incomplete, so a known gap never reads as an ability nobody harvested.",
   "provenance": {
-    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "source": "curated/curated-data.json (the protected override file), plus the gate-1 refusals from build/proposed-curated/merge-refusals.json carried as named gaps",
     "patch": "16.16.1",
     "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
-    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
+    "warning": "These come from the protected override file, which is where this project keeps its hand-authored numbers. Every figure is DERIVED at best unless its entry says otherwise, and each entry states its own verification status — the interface shows that status on screen and must never present a derived figure as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8). Until 2026-08-14 this warning said these files were harvester drafts; the input moved to the override file and that sentence is deleted rather than softened, because it would now be false.",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
   },
   "abilities": [
@@ -90,100 +90,6 @@
       },
       "sourceRevision": 4007406,
       "icon": "AkaliW.png"
-    },
-    {
-      "champion": "Akali",
-      "slot": "E",
-      "abilityName": "Shuriken Flip",
-      "instanceType": "damaging-ability",
-      "damageType": "magic",
-      "maxRank": 5,
-      "components": [
-        {
-          "id": "magic-damage",
-          "label": "Magic Damage",
-          "damageType": "magic",
-          "base": {
-            "scaling": "linear",
-            "from": 21,
-            "to": 105
-          },
-          "ratios": [
-            {
-              "stat": "totalAD",
-              "scaling": "explicit",
-              "perRank": [
-                30,
-                30,
-                30,
-                30,
-                30
-              ]
-            },
-            {
-              "stat": "AP",
-              "scaling": "explicit",
-              "perRank": [
-                33,
-                33,
-                33,
-                33,
-                33
-              ]
-            }
-          ],
-          "relation": {
-            "kind": "adds"
-          }
-        },
-        {
-          "id": "magic-damage",
-          "label": "Magic Damage",
-          "damageType": "magic",
-          "base": {
-            "scaling": "linear",
-            "from": 49,
-            "to": 244.99999999999997
-          },
-          "ratios": [
-            {
-              "stat": "totalAD",
-              "scaling": "explicit",
-              "perRank": [
-                70,
-                70,
-                70,
-                70,
-                70
-              ]
-            },
-            {
-              "stat": "AP",
-              "scaling": "explicit",
-              "perRank": [
-                77,
-                77,
-                77,
-                77,
-                77
-              ]
-            }
-          ],
-          "relation": {
-            "kind": "adds"
-          }
-        }
-      ],
-      "verification": "incomplete",
-      "provenance": {
-        "source": "Template:Data Akali/Shuriken Flip",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Akali/Shuriken%20Flip",
-        "patch": "16.16.1",
-        "fetched": "2026-08-14"
-      },
-      "sourceRevision": 4007568,
-      "notes": "the entry is not structurally valid, so no figure from it is shown (duplicate component id 'magic-damage')",
-      "icon": "AkaliE.png"
     },
     {
       "champion": "Akali",
@@ -276,6 +182,23 @@
       },
       "sourceRevision": 4011498,
       "icon": "AkaliR.png"
+    },
+    {
+      "champion": "Akali",
+      "slot": "E",
+      "abilityName": "Shuriken Flip",
+      "instanceType": "damaging-ability",
+      "maxRank": 5,
+      "components": [],
+      "verification": "incomplete",
+      "notes": "this ability was harvested but refused by the data gate, so its damage is not published: two of this ability's 2 damage rows are stored under the same component id, so a relation pointing at that id names two rows at once. Gate 1 rejects the entry, and one rejected entry makes the whole curated file fail gate 1. It is a known gap with a known cause, not an ability nobody has looked at.",
+      "provenance": {
+        "source": "build/proposed-curated/merge-refusals.json (gate 1 refusal)",
+        "url": "https://wiki.leagueoflegends.com/en-us/",
+        "patch": "see the file-level provenance",
+        "fetched": "see the file-level provenance"
+      },
+      "icon": "AkaliE.png"
     }
   ],
   "art": {

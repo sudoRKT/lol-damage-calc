@@ -331,6 +331,32 @@ export interface Refusal {
   /** Whether refusing it removes a number a user can currently see. */
   costsAVisibleNumber: boolean;
   evidence?: string[];
+  /**
+   * THE ENTRY'S IDENTITY, WITHOUT ITS DAMAGE. Added 2026-08-14.
+   *
+   * A refused entry must not read as an unharvested one (DATA-SOURCES §53.2). Something WAS
+   * harvested for these abilities; a gate refused it. So the per-champion files served to the
+   * site carry the refused entries too — named, marked incomplete, and stating the real reason —
+   * and this is what lets them be rebuilt without touching the refused data itself.
+   *
+   * STRUCTURAL FACTS ONLY. No component, no ratio, no figure. An entry rebuilt from this cannot
+   * carry a damage number, which is exactly the property that makes it safe to publish.
+   *
+   * `unresolvable` IS CARRIED, and it is not damage. A fact no source states makes an entry
+   * PERMANENTLY incomplete rather than pending, and dropping it silently downgrades "this can
+   * never be completed" to "this has not been done yet" — a promise of work no effort can
+   * deliver (SPECIFICATION §8). Blitzcrank R is the one refused entry that carries one, and
+   * losing it moved the published permanently-unanswerable count from 23 to 22.
+   */
+  identity?: {
+    champion: string;
+    slot: string;
+    abilityName: string;
+    instanceType: string;
+    maxRank: number;
+    form?: string;
+    unresolvable?: Array<{ field: string; why: string }>;
+  };
 }
 
 /**
@@ -378,6 +404,16 @@ export function refuseSchemaInvalidAbilities(
         : 'the missing fact being supplied by the source, or the row being refused at harvest',
       costsAVisibleNumber: a.verification === 'derived' || a.verification === 'verified',
       evidence: msgs,
+      // Identity only — never a component. See the field's comment on Refusal.
+      identity: {
+        champion: a.champion,
+        slot: a.slot,
+        abilityName: a.abilityName,
+        instanceType: a.instanceType,
+        maxRank: a.maxRank,
+        ...(a.form ? { form: a.form } : {}),
+        ...((a.unresolvable?.length ?? 0) > 0 ? { unresolvable: a.unresolvable } : {}),
+      },
     });
     return false;
   });

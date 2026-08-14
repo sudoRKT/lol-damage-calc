@@ -1,11 +1,11 @@
 {
-  "what": "Malzahar ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "what": "Malzahar ability entries, joined from the protected override file with Data Dragon icon filenames. Entries the data gate refused are present too, named and marked incomplete, so a known gap never reads as an ability nobody harvested.",
   "provenance": {
-    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "source": "curated/curated-data.json (the protected override file), plus the gate-1 refusals from build/proposed-curated/merge-refusals.json carried as named gaps",
     "patch": "16.16.1",
     "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
-    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
+    "warning": "These come from the protected override file, which is where this project keeps its hand-authored numbers. Every figure is DERIVED at best unless its entry says otherwise, and each entry states its own verification status — the interface shows that status on screen and must never present a derived figure as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8). Until 2026-08-14 this warning said these files were harvester drafts; the input moved to the override file and that sentence is deleted rather than softened, because it would now be false.",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
   },
   "abilities": [
@@ -215,77 +215,16 @@
       "slot": "R",
       "abilityName": "Nether Grasp",
       "instanceType": "damaging-ability",
-      "damageType": "magic",
       "maxRank": 3,
-      "components": [
-        {
-          "id": "magic-damage-per-tick",
-          "label": "Magic Damage Per Tick",
-          "damageType": "magic",
-          "base": {
-            "scaling": "linear",
-            "from": 12.5,
-            "to": 27.5
-          },
-          "ratios": [
-            {
-              "stat": "AP",
-              "scaling": "linear",
-              "from": 8,
-              "to": 8
-            }
-          ],
-          "relation": {
-            "kind": "adds"
-          },
-          "hits": 1
-        },
-        {
-          "id": "magic-damage-per-tick",
-          "label": "Magic Damage Per Tick",
-          "damageType": "magic",
-          "base": {
-            "scaling": "explicit",
-            "perRank": [
-              0,
-              0,
-              0
-            ]
-          },
-          "ratios": [
-            {
-              "stat": "maxHP",
-              "owner": "target",
-              "multipliers": [
-                {
-                  "per": "AP",
-                  "per100": {
-                    "scaling": "linear",
-                    "from": 0.25,
-                    "to": 0.25
-                  }
-                }
-              ],
-              "scaling": "linear",
-              "from": 1,
-              "to": 2
-            }
-          ],
-          "relation": {
-            "kind": "adds"
-          },
-          "hits": 1
-        }
-      ],
+      "components": [],
       "verification": "incomplete",
+      "notes": "this ability was harvested but refused by the data gate, so its damage is not published: two of this ability's 2 damage rows are stored under the same component id, so a relation pointing at that id names two rows at once. Gate 1 rejects the entry, and one rejected entry makes the whole curated file fail gate 1. It is a known gap with a known cause, not an ability nobody has looked at.",
       "provenance": {
-        "source": "Template:Data Malzahar/Nether Grasp",
-        "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Malzahar/Nether%20Grasp",
-        "patch": "16.16.1",
-        "fetched": "2026-08-14"
+        "source": "build/proposed-curated/merge-refusals.json (gate 1 refusal)",
+        "url": "https://wiki.leagueoflegends.com/en-us/",
+        "patch": "see the file-level provenance",
+        "fetched": "see the file-level provenance"
       },
-      "sourceRevision": 4015186,
-      "notes": "the entry is not structurally valid, so no figure from it is shown (duplicate component id 'magic-damage-per-tick'); the parts do not add up to the total the source itself states (the wiki states a total of 125 at rank 1 and our additive components sum to 12.5 — a term or a multiplicity is missing); how many times this lands could not be read (2 repeating components; a total row cannot be attributed to one of them)",
       "icon": "MalzaharR.png"
     }
   ],

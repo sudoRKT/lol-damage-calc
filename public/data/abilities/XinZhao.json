@@ -1,11 +1,11 @@
 {
-  "what": "Xin Zhao ability entries, joined from the harvester's full-roster batch with Data Dragon icon filenames.",
+  "what": "Xin Zhao ability entries, joined from the protected override file with Data Dragon icon filenames. Entries the data gate refused are present too, named and marked incomplete, so a known gap never reads as an ability nobody harvested.",
   "provenance": {
-    "source": "build/proposed-curated/abilities/batch-01.json, produced by scripts/extract/run-batch.ts",
+    "source": "curated/curated-data.json (the protected override file), plus the gate-1 refusals from build/proposed-curated/merge-refusals.json carried as named gaps",
     "patch": "16.16.1",
     "fetched": "2026-08-14",
     "extractedOn": "2026-08-14",
-    "warning": "THESE ARE HARVESTER DRAFTS, NOT THE CURATED FILE. /curated/ holds no ability entries yet. Every figure here is derived at best, and each entry states its own verification status — the interface shows that status on screen and must never present these as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8).",
+    "warning": "These come from the protected override file, which is where this project keeps its hand-authored numbers. Every figure is DERIVED at best unless its entry says otherwise, and each entry states its own verification status — the interface shows that status on screen and must never present a derived figure as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8). Until 2026-08-14 this warning said these files were harvester drafts; the input moved to the override file and that sentence is deleted rather than softened, because it would now be false.",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
   },
   "abilities": [
