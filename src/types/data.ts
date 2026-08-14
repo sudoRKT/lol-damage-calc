@@ -624,6 +624,51 @@ export interface CuratedAbility {
   /** The wiki revision id the numbers were read from. Makes a stale entry identifiable
    *  after a patch rather than merely suspected (DATA-SOURCES §15). */
   sourceRevision?: number;
+  /**
+   * THE EVIDENCE BEHIND THIS ENTRY'S STATUS, CARRIED BY THE ENTRY. Added 2026-08-14.
+   *
+   * A claim that cannot travel with the thing it is about will get separated from it. Until this
+   * field existed, an entry marked `verified` said so on its own authority and the evidence lived
+   * in `verification/gate5-passes.json` and a batch report — so validating the override file
+   * ALONE failed every verified entry it contained, on a file with nothing wrong with it. That is
+   * a validator that punishes the honest state, and it would have taught whoever met it to skip
+   * gate 6.
+   *
+   * The ledger remains the thing that WRITES this. It is no longer the thing that PROVES it.
+   *
+   * This is not self-certification. Hand-editing this field is hand-editing the override file,
+   * which is the same trust boundary the damage figures themselves sit behind — guarded by the
+   * read-only directory and its hook, not by the validator.
+   */
+  evidence?: VerificationEvidence;
+}
+
+/**
+ * What was actually checked about an entry, and by which gate.
+ *
+ * Gate 6 (`gateStatusHonesty`) accepts either this or the external sets it has always taken. An
+ * entry carrying its own record needs no ledger; one without it falls back to the ledger exactly
+ * as before, so no existing caller changes.
+ */
+export interface VerificationEvidence {
+  /**
+   * GATE 2 — the round-trip. The stored scaling was re-rendered and compared against the source's
+   * own expansion, value by value at the precision the wiki prints.
+   *
+   * `kind` names WHICH round-trip agreed, because the three reach different entries: `template`
+   * re-renders the ability box's leveling row, `prose` re-reads a damage sentence, `level`
+   * re-renders a level-scaled progression. `rowsCompared` is how many values were actually
+   * compared — a round-trip that compared zero rows is not a pass, and recording the count is
+   * what makes that visible rather than assumed.
+   */
+  roundTrip?: { kind: 'template' | 'prose' | 'level'; rowsCompared: number };
+  /**
+   * GATE 5 — independent re-derivation by a reader who did not see the stored value.
+   *
+   * `ledger` names the file the pass was recorded in, so the claim stays traceable to the run
+   * that made it. `recordedOn` is the date of that run, not of this file.
+   */
+  independentCheck?: { ledger: string; recordedOn: string };
 }
 
 /** A curated item passive or active. Data Dragon carries the flat stats; the VALUES inside a

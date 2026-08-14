@@ -520,6 +520,8 @@ const EFFECT_APPLIES_AS = new Set([
   'unstated',
 ]);
 
+const ROUND_TRIP_KINDS = new Set(['template', 'prose', 'level']);
+
 const RUNE_TREES = new Set(['Domination', 'Inspiration', 'Precision', 'Resolve', 'Sorcery']);
 
 /**
@@ -617,6 +619,25 @@ export function gateSchema(file: CuratedFile): GateReport {
       if (!u.field || !u.why) {
         push(`unresolvable[${i}] must name the missing field and say why no source settles it`);
       }
+    }
+    // THE EVIDENCE RECORD'S SHAPE (added 2026-08-14). Gate 6 reads this to decide whether a
+    // 'verified' claim stands, so a malformed record is a claim resting on nothing.
+    if (a.evidence?.roundTrip !== undefined) {
+      const rt = a.evidence.roundTrip;
+      if (!ROUND_TRIP_KINDS.has(rt.kind)) push(`evidence.roundTrip: bad kind '${rt.kind}'`);
+      if (!Number.isInteger(rt.rowsCompared) || rt.rowsCompared < 0) {
+        push(`evidence.roundTrip: rowsCompared must be an integer >= 0`);
+      }
+    }
+    if (a.evidence?.independentCheck !== undefined) {
+      const ic = a.evidence.independentCheck;
+      if (!ic.ledger) push('evidence.independentCheck: must name the ledger the pass came from');
+      if (!ic.recordedOn) push('evidence.independentCheck: must state when the pass was recorded');
+    }
+    // Evidence on an entry that claims nothing is not wrong, but evidence on an entry claiming
+    // 'no-damage' is: there is no figure for a round-trip to have compared.
+    if (a.evidence !== undefined && a.verification === 'no-damage') {
+      push("carries a verification evidence record but is marked 'no-damage', which claims there is nothing to check");
     }
     const ids = new Set<string>();
     a.components.forEach((c, i) => {
@@ -911,19 +932,49 @@ export function gateStatusHonesty(
     }
 
     if (a.verification !== 'verified') continue;
-    if (!evidence.roundTripPassed.has(key)) {
-      findings.push({
-        gate: 'status-honesty',
-        entry: key,
-        message: "marked 'verified' but gate 2 (round-trip) has no pass recorded for it",
-      });
-    }
-    if (!evidence.independentlyChecked.has(key)) {
+
+    // THE ENTRY'S OWN RECORD COUNTS, AND SO DOES THE LEDGER (added 2026-08-14).
+    //
+    // Until this date the evidence for a `verified` claim lived only in the caller's two sets,
+    // built from `verification/gate5-passes.json` and a batch report. Validating the override
+    // file on its own therefore failed EVERY verified entry in it — 10 failures on a file with
+    // nothing wrong with it. A claim that cannot travel with the thing it is about gets
+    // separated from it, and a gate that fails the honest state teaches people to skip the gate.
+    //
+    // A round-trip that compared ZERO rows is not a pass. The count is recorded precisely so
+    // that can be checked rather than assumed — it is the same rule the batch runner applies
+    // when it builds the ledger (`checkedRows > 0`).
+    const ownRoundTrip = (a.evidence?.roundTrip?.rowsCompared ?? 0) > 0;
+    const ownIndependent = a.evidence?.independentCheck !== undefined;
+
+    if (!ownRoundTrip && !evidence.roundTripPassed.has(key)) {
       findings.push({
         gate: 'status-honesty',
         entry: key,
         message:
-          "marked 'verified' but gate 5 (independent re-derivation) has no pass recorded for it",
+          "marked 'verified' but gate 2 (round-trip) has no pass recorded for it — neither on " +
+          'the entry nor in the ledger handed to this gate',
+      });
+    }
+    if (!ownIndependent && !evidence.independentlyChecked.has(key)) {
+      findings.push({
+        gate: 'status-honesty',
+        entry: key,
+        message:
+          "marked 'verified' but gate 5 (independent re-derivation) has no pass recorded for it " +
+          '— neither on the entry nor in the ledger handed to this gate',
+      });
+    }
+    // An entry may carry an EMPTY round-trip record, which is a different failure from carrying
+    // none: it says a check ran and compared nothing. Named separately so it cannot hide behind
+    // the ledger.
+    if (a.evidence?.roundTrip !== undefined && a.evidence.roundTrip.rowsCompared <= 0) {
+      findings.push({
+        gate: 'status-honesty',
+        entry: key,
+        message:
+          `records a '${a.evidence.roundTrip.kind}' round-trip that compared ` +
+          `${a.evidence.roundTrip.rowsCompared} rows. A comparison of nothing is not a pass.`,
       });
     }
     if (a.sourceRevision === undefined) {

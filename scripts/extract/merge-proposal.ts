@@ -66,6 +66,16 @@ export const SOURCES = {
   gate5: 'verification/gate5-passes.json',
 } as const;
 
+/**
+ * WHEN THE GATE-5 LEDGER'S PASSES WERE RECORDED. Stamped onto each verified entry's evidence
+ * record so the claim stays traceable to the run that made it.
+ *
+ * It is a CONSTANT rather than the file's own modification time, because a modification time
+ * changes when a file is copied and would silently restamp evidence nobody re-checked. Update it
+ * when the ledger is genuinely regenerated.
+ */
+export const GATE5_RECORDED_ON = '2026-08-13';
+
 interface AbilityReport {
   roundTrips: Array<{
     entry: string;
@@ -463,14 +473,55 @@ async function main(): Promise<void> {
   );
   const independentlyChecked = new Set(gate5.map((r) => r.entry));
 
+  // -------------------------------------------------------------------------------------
+  // ATTACH THE EVIDENCE TO THE ENTRY (2026-08-14). The ledger WRITES the claim; it no longer
+  // has to be present to PROVE it.
+  //
+  // A `verified` entry used to say so on its own authority while its evidence sat in
+  // `verification/gate5-passes.json` and the batch report, so validating the override file alone
+  // failed all 10 verified entries on a file with nothing wrong with it. Every entry now carries
+  // what was checked about it.
+  //
+  // WHICH ROUND-TRIP AGREED IS RECORDED, NOT FLATTENED. The three reach different entries, and
+  // Aphelios Q and Ambessa P were once refused promotion precisely because only the prose
+  // round-trip had run and nobody had wired it in (DATA-SOURCES §36.2). A record saying merely
+  // "a round-trip passed" would have hidden that.
+  //
+  // The row count travels with it. A round-trip that compared zero rows is not a pass, and gate 6
+  // now refuses one that says it is.
+  const templateRT = new Map(report.roundTrips.map((r) => [r.entry, r]));
+  const proseRT = new Map(report.proseRoundTrips.map((p) => [p.entry, p]));
+  const levelRT = new Map((report.levelRoundTrips ?? []).map((l) => [l.entry, l]));
+  for (const a of merged.abilities) {
+    if (a.verification !== 'verified') continue;
+    const key = abilityKey(a);
+    const evidence: NonNullable<CuratedAbility['evidence']> = {};
+
+    const t = templateRT.get(key);
+    const p = proseRT.get(key);
+    const l = levelRT.get(key);
+    if (t && t.mismatches.length === 0 && t.checkedRows > 0) {
+      evidence.roundTrip = { kind: 'template', rowsCompared: t.checkedRows };
+    } else if (p && p.mismatches.length === 0 && p.matched > 0) {
+      evidence.roundTrip = { kind: 'prose', rowsCompared: p.matched };
+    } else if (l && l.mismatches.length === 0 && l.matched > 0) {
+      evidence.roundTrip = { kind: 'level', rowsCompared: l.matched };
+    }
+    if (independentlyChecked.has(key)) {
+      evidence.independentCheck = { ledger: SOURCES.gate5, recordedOn: GATE5_RECORDED_ON };
+    }
+    if (evidence.roundTrip || evidence.independentCheck) a.evidence = evidence;
+  }
+
   const gates: Array<GateReport & { number: number; what: string; population: string }> = [
     {
       ...gateSchema(merged),
       number: 1,
       what: 'schema — every field the contract requires is present and well-formed',
       population:
-        'every ability entry plus every defensive entry in the merged file. It does NOT walk ' +
-        'itemEffects or runes; sweep S1 measures that gap.',
+        'every ability entry, every defensive entry, every item effect and every rune in the ' +
+        'merged file. It walked only abilities and defensive entries until 2026-08-14 ' +
+        '(DATA-SOURCES §51); sweep S1 is now a second reading rather than the only one.',
     },
     {
       ...gateSumGuard(merged),
@@ -487,7 +538,9 @@ async function main(): Promise<void> {
     {
       ...gateStatusHonesty(merged, { roundTripPassed, independentlyChecked }),
       number: 6,
-      what: "status honesty — nothing claims better than its evidence, and 'verified' needs a ledger record",
+      what:
+        "status honesty — nothing claims better than its evidence, and 'verified' needs a " +
+        'round-trip and an independent re-derivation, recorded on the entry or handed in',
       population: 'every ability entry in the merged file. Abilities only.',
     },
   ];
