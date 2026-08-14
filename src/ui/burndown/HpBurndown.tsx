@@ -27,6 +27,7 @@ import type { DamageByType, DamageType, ReportedDamageType, Result } from '../..
 import {
   AggregateTotal,
   DamageValue,
+  ExcludedAbility,
   TableScroller,
   VerificationStatusMark,
   formatReadout,
@@ -406,10 +407,10 @@ export function HpBurndown({ result, title = 'HP burndown' }: HpBurndownProps) {
         <ul className="burn__excluded">
           {result.incompleteContributors.map((c) => (
             <li key={c.sourceLabel}>
-              <VerificationStatusMark
-                status="incomplete"
+              <ExcludedAbility
+                sourceLabel={c.sourceLabel}
                 reason={c.reason}
-                spokenSubject={`${c.sourceLabel}, excluded from these totals`}
+                spokenContext="excluded from these totals"
               />
             </li>
           ))}

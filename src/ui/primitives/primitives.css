@@ -244,3 +244,46 @@
  * none — and ⊘ carries its own strike as part of the character. Nothing here decorates it,
  * so it survives greyscale, 11px, and any font substitution, and no state can be given a
  * visual weight the others do not have. */
+
+/* ---------------------------------------------------------------------------
+ * An excluded ability, named and explained ON SCREEN (SPECIFICATION §8).
+ *
+ * Before 2026-08-14 these lists rendered a bare status mark, whose name and reason live in a
+ * screen-reader-only span — so a sighted reader saw a column of identical `○ Not yet modelled`
+ * with no way to tell which ability was excluded or why. See ExcludedAbility.tsx.
+ *
+ * NO HUE. An exclusion is not damage data (DESIGN.md §1), so it is neutral throughout: the mark
+ * carries the meaning and the reason is secondary text.
+ * --------------------------------------------------------------------------- */
+.excluded {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-0);
+}
+
+.excluded__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-2) var(--space-3);
+}
+
+/* The ability's own name, at the weight the breakdown's source column uses, so the same ability
+   reads the same way wherever it appears. */
+.excluded__label {
+  font-family: var(--font-body);
+  font-size: var(--type-body-m);
+  line-height: var(--lh-body-m);
+  font-weight: var(--weight-body-strong);
+  color: var(--text-primary);
+}
+
+/* The reason. Indented under the mark so the eye reads name-then-why rather than a wall. */
+.excluded__why {
+  max-inline-size: var(--measure-prose-max);
+  font-family: var(--font-body);
+  font-size: var(--type-body-s);
+  line-height: var(--lh-body-s);
+  font-weight: var(--weight-body-medium);
+  color: var(--text-secondary);
+}

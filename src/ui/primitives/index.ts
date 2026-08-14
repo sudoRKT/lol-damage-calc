@@ -34,6 +34,10 @@ export { READOUT_DECIMALS, formatReadout, roundReadout } from './readout';
 export { TableScroller, SCROLL_REGION_SUFFIX } from './TableScroller';
 export type { TableScrollerProps } from './TableScroller';
 
+/** An excluded ability, named and explained ON SCREEN (SPECIFICATION §8). */
+export { ExcludedAbility } from './ExcludedAbility';
+export type { ExcludedAbilityProps } from './ExcludedAbility';
+
 export {
   VerificationStatusMark,
   STATE_STYLE,

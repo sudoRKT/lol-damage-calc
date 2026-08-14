@@ -127,8 +127,18 @@ describe('app/an unmodellable ability is named, never quietly dropped', () => {
       ],
     });
     const excluded = await screen.findByRole('region', { name: /Excluded from these totals/i });
-    expect(within(excluded).getByText(/Orb of Deception/)).toBeTruthy();
-    // The status mark carries the REASON in its accessible name, not a generic caution.
+    // TWO matches since 2026-08-14, and that is the change rather than a looser assertion: the
+    // ability is now named in VISIBLE text as well as inside the mark's spoken sentence. It used
+    // to be spoken only, so a sighted reader saw a column of identical "Not yet modelled" marks
+    // with no way to tell which ability had been excluded. See primitives/ExcludedAbility.tsx.
+    expect(within(excluded).getAllByText(/Orb of Deception/).length).toBe(2);
+    // The VISIBLE one specifically — the half that was missing.
+    expect(within(excluded).getByText('Q — Orb of Deception').className).toContain(
+      'excluded__label',
+    );
+    // And the reason is on screen too, not only announced.
+    expect(excluded.querySelector('.excluded__why')?.textContent?.length ?? 0).toBeGreaterThan(0);
+    // The status mark still carries the REASON in its accessible name, not a generic caution.
     const marks = within(excluded).getAllByText(/Not yet modelled|Cannot be completed/);
     expect(marks.length).toBeGreaterThan(0);
   });

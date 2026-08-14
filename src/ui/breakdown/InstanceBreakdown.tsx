@@ -49,6 +49,7 @@ import type {
 import {
   AggregateTotal,
   DamageValue,
+  ExcludedAbility,
   TableScroller,
   VerificationStatusMark,
   formatReadout,
@@ -243,10 +244,10 @@ export function InstanceBreakdown({ result, patch }: InstanceBreakdownProps) {
           <ul className="breakdown-panel__list">
             {result.incompleteContributors.map((c) => (
               <li key={c.sourceLabel}>
-                <VerificationStatusMark
-                  status="incomplete"
+                <ExcludedAbility
+                  sourceLabel={c.sourceLabel}
                   reason={c.reason}
-                  spokenSubject={`${c.sourceLabel}, contributes no damage`}
+                  spokenContext="contributes no damage"
                 />
               </li>
             ))}
