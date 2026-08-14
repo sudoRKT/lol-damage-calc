@@ -107,6 +107,17 @@
   --measure-list-column-min: 256px; /* --space-8 x 4 — narrowest column in a responsive list */
   --measure-reading-max: 960px; /* --space-8 x 15 — widest a page of prose grows, then centres */
   --measure-prose-max: 640px; /* --space-8 x 10 — widest a single paragraph grows (~85 chars) */
+
+  /* THE ONE BREAKPOINT (DESIGN.md §4b). `@media (max-width: 30rem)` is the only width query this
+   * product may write, and it governs exactly one thing: the burndown's riser labels leave the
+   * plot and stack beneath it. A label needs 76.96px of column and the worst case leaves 12.69px,
+   * so there is no width at which it fits where it is — which is the only case a breakpoint is
+   * for. A second use needs its own entry in §4b and its own measurement.
+   *
+   * A CUSTOM PROPERTY CANNOT BE USED IN A MEDIA QUERY — CSS does not resolve var() there. It is
+   * declared here so the value has one home and one comment; the query itself repeats the
+   * literal, and `token-audit.test.ts` allows that single occurrence by name. */
+  --break-phone: 30rem;
   /* Two pairs above share a value. They are NOT merged: a popover's maximum width and a grid
    * column's minimum width are different facts that agree today, and one must be able to move
    * without dragging the other with it. DESIGN.md §4a states this as a rule. */

@@ -257,6 +257,65 @@ comment saying it was raised rather than settled.
 | `--measure-reading-max` | 960px | `--space-8` × 15 | The widest a page of prose grows before it is centred — every page except the calculator, which wants the whole screen |
 | `--measure-prose-max` | 640px | `--space-8` × 10 | The widest a single PARAGRAPH grows: about 85 characters at `--type-body-l`, past which the eye loses the start of the next line |
 
+## 4b. THE ONE BREAKPOINT (added 2026-08-14)
+
+`--break-phone: 30rem` (480px). **`@media (max-width: 30rem)` is the only width query this
+product may write, and this is the whole list of what it governs.**
+
+### Why there is one at all, when §4a's whole argument is that there should be none
+
+`--measure-list-column-min` makes a grid responsive *without* a breakpoint, and that is the right
+tool whenever the thing reflowing is a REPEAT of one shape. A breakpoint is for the case that
+cannot reflow: **a label that must move somewhere else entirely, because there is no width at
+which it fits where it is.**
+
+That case was measured on 2026-08-14 and is the reason this section exists.
+
+**THE MEASUREMENT.** The burndown draws one riser label per damage instance, inside the plot, at
+its own riser's foot. DEFINITION: pairs of labels whose boxes overlap on BOTH axes, counted over
+three populations at patch 16.16.1 — the scenario the page opens on; all 173 champions at level 18
+with maximum ranks running P→Q→W→E→R→basic attack; and the same roster holding the five items
+whose effects ride on a basic attack, running Q→W→E→R→AA→AA, which is the worst case a reader can
+build.
+
+| at 375px | scenarios with a collision | colliding pairs | worst overlap |
+|---|---:|---:|---:|
+| the default scenario | 0 of 1 | 0 | — |
+| the roster, full kit | 98 of 173 | 153 | 15.45px |
+| the roster, rider build | 173 of 173 | **4,296** | **22.09px** |
+
+**22.09px is a full line box: one damage figure printed directly on another.** A label needs
+76.96px of column and the worst case leaves 12.69px. There is no type size, inset or column rule
+that closes a gap of that size — and shrinking type below §3's scale to make text fit is
+forbidden here for the same reason it is everywhere else.
+
+### What the breakpoint does, and the two things it must not do
+
+**Below 30rem the riser labels leave the plot and stack in a row beneath it**, in instance order,
+each naming its instance. The risers, the treads and the trace are untouched: at 12.69px a column
+the chart itself is still legible, and it was only ever the labels that ran out of room.
+
+- **It must not shorten what a screen reader hears.** The riser's accessible name is unchanged at
+  every width. Moving a label is a visual answer to a visual problem.
+- **It must not become a general phone stylesheet.** One query, one job. A second use of this
+  token needs its own entry in the list below and its own measurement — otherwise it becomes the
+  breakpoint everything hides behind, and §4a's argument is lost by a thousand cuts.
+
+**What it governs, exhaustively:** the burndown's riser labels (§7). Nothing else.
+
+### Why 30rem and not 24rem or 48rem
+
+30rem sits between the two measured facts. The default scenario is clean at 375px (23.4rem) and
+collides at 320px (20rem) — so a threshold at 24rem would leave the default scenario broken on
+the narrowest phones this product supports. The roster cases collide at every width tested, so no
+threshold rescues them in place; the labels have to move. 48rem would move labels out of the plot
+on a tablet that has room for them.
+
+It is expressed in `rem` rather than `px` so a reader who has raised their browser's text size
+crosses it sooner, which is when they need it.
+
+---
+
 **The last two were added on 2026-08-14 with the site's static pages** — a landing page, an
 About page and a changelog are prose, and this file had never had to describe prose before. They
 are two measures rather than one on purpose: the COLUMN holds panels, tables and figures and can
