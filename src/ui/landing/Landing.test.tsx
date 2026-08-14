@@ -22,7 +22,7 @@ import { fileURLToPath } from 'node:url';
 import { Landing } from './Landing';
 import { PageShell } from '../shell';
 import { RIOT_DISCLAIMER } from '../shell/SiteFooter';
-import coverage from './coverage.json';
+import { COVERAGE as coverage } from '../coverage';
 
 afterEach(cleanup);
 

@@ -46,6 +46,8 @@ export interface ReportDraft {
   body: string;
   /** The GitHub issue URL, pre-filled. Null when the scenario could not be encoded. */
   href: string | null;
+  /** The /report/ page, carrying the scenario so it can rebuild this report in full. */
+  fallbackHref: string;
   /** Present when the scenario could not be encoded — shown instead of a link. */
   problem: string | null;
 }
@@ -101,7 +103,12 @@ export function buildReport(
       ? null
       : `${SOURCE_URL}/issues/new?${new URLSearchParams({ title, body, labels: 'wrong-number' }).toString()}`;
 
-  return { title, body, href, problem };
+  // The fallback keeps the scenario in the fragment. `/report/` does not load the landing
+  // page's redirect (only index.html does, and src/url/entry.test.ts holds that), so a scenario
+  // fragment on that page belongs to that page.
+  const fallbackHref = link === null ? '/report/' : `/report/#${FRAGMENT_KEY}=${encodeScenario(scenario)}`;
+
+  return { title, body, href, fallbackHref, problem };
 }
 
 export interface ResultNoticesProps {
@@ -138,7 +145,11 @@ export function ResultNotices({
         )}
         <p className="notices__aside">
           It opens a pre-filled report carrying this exact scenario. No account?{' '}
-          <a href="/report/">Send it another way</a>.
+          {/* THE FALLBACK CARRIES THE SCENARIO TOO, in the same fragment a shared link uses, so
+              /report/ can rebuild the identical text as something to copy. Without it the
+              fallback would ask a reader to describe a scenario from memory, and the report
+              would arrive missing the one thing that makes it actionable. */}
+          <a href={report.fallbackHref}>Send it another way</a>.
         </p>
       </div>
     </section>

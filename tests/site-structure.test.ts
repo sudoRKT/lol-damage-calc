@@ -113,14 +113,23 @@ describe('site-structure/the calculator is one click away, and never behind the 
   });
 });
 
-describe('site-structure/pages still waiting to be written are counted, not forgotten', () => {
-  it('names exactly which pages have no prose yet', () => {
-    // A placeholder that nobody counts becomes permanent. This fails when the number changes in
-    // EITHER direction, so writing a page means updating this line and seeing the count fall.
+describe('site-structure/no page is a placeholder any more', () => {
+  it('every page renders its own component', () => {
+    // This list held six ids while the pages were being built, and fell to none as each was
+    // written. It fails in EITHER direction: a new placeholder shows up here, and so does a page
+    // that quietly went back to being one.
     const waiting = SITE_PAGES.filter((p) => {
       const entry = read(`src/entries/${p.id}.tsx`);
       return entry.includes('PageNotWritten');
     }).map((p) => p.id);
-    expect(waiting).toEqual(['checks', 'changelog', 'report', 'about', 'privacy', 'cookies']);
+    expect(waiting).toEqual([]);
+  });
+
+  it('and the placeholder component is GONE, not just unused', () => {
+    // It said in its own header that it would be deleted as each page was written. An unused
+    // component is an invitation to use it again.
+    expect(existsSync(join(REPO, 'src/ui/pages/PageNotWritten.tsx'))).toBe(false);
+    const index = read('src/ui/pages/index.ts');
+    expect(index).not.toContain('PageNotWritten');
   });
 });

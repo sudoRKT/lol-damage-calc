@@ -118,11 +118,25 @@ describe('notices/report a wrong number (§8)', () => {
     expect(report.body).toContain('could not be encoded');
   });
 
-  it('offers a route for somebody with no GitHub account', () => {
-    // The honest limit of "one action": it needs an account. The fallback carries the identical
-    // body, so a report sent by any route reproduces the scenario the same way.
+  it('offers a route for somebody with no GitHub account, CARRYING THE SCENARIO', () => {
+    // The honest limit of "one action": it needs an account. The fallback must not degrade into
+    // "describe your scenario from memory" — it carries the same fragment a shared link does, so
+    // /report/ rebuilds the identical report as copyable text.
     mount();
-    expect(screen.getByRole('link', { name: 'Send it another way' }).getAttribute('href')).toBe(
+    const fallback = screen.getByRole('link', { name: 'Send it another way' });
+    const href = fallback.getAttribute('href')!;
+    expect(href.startsWith('/report/#s=')).toBe(true);
+    const decoded = scenarioFromUrl(`https://limittest.example${href}`);
+    expect(decoded.ok).toBe(true);
+    if (decoded.ok) expect(decoded.scenario).toEqual(SCENARIO);
+  });
+
+  it('and falls back to the bare page when the scenario cannot be encoded', () => {
+    const unencodable = {
+      ...SCENARIO,
+      combo: [{ id: 'x', kind: 'not-a-real-kind', ref: 'Q' }],
+    } as unknown as Scenario;
+    expect(buildReport(unencodable, MOCK_RESULT, 'https://x', 'Lux', 'Garen').fallbackHref).toBe(
       '/report/',
     );
   });

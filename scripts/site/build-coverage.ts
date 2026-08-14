@@ -13,11 +13,11 @@
 import { readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { summariseCoverage, coverageAddsUp, type CoverageEntry } from '../../src/ui/landing/coverage.ts';
+import { summariseCoverage, coverageAddsUp, type CoverageEntry } from '../../src/ui/coverage/coverage.ts';
 
 const REPO = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const ABILITY_DIR = join(REPO, 'public', 'data', 'abilities');
-const OUT = join(REPO, 'src', 'ui', 'landing', 'coverage.json');
+const OUT = join(REPO, 'src', 'ui', 'coverage', 'coverage.json');
 
 export function readPublishedCoverage() {
   const files = readdirSync(ABILITY_DIR).filter((f) => f.endsWith('.json')).sort();
@@ -40,5 +40,5 @@ if (!coverageAddsUp(coverage)) {
 }
 writeFileSync(OUT, `${JSON.stringify(coverage, null, 2)}\n`, 'utf8');
 console.log(
-  `build-coverage: ${coverage.abilities} abilities across ${coverage.champions} champions, patch ${coverage.patch} -> src/ui/landing/coverage.json`,
+  `build-coverage: ${coverage.abilities} abilities across ${coverage.champions} champions, patch ${coverage.patch} -> src/ui/coverage/coverage.json`,
 );

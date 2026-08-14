@@ -28,7 +28,8 @@
 import type { IncompleteReason } from '../../types/result';
 import { VerificationStatusMark } from '../primitives';
 import { GitHubMark, SOURCE_URL, pageById } from '../shell';
-import coverage from './coverage.json';
+import { COVERAGE as coverage } from '../coverage';
+import '../pages/pages.css';
 import './landing.css';
 
 /**

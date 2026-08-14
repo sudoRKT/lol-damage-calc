@@ -162,3 +162,16 @@ describe('entry/it also fires when only the fragment changes', () => {
     expect(w.calls[1]).toContain('second');
   });
 });
+
+describe('entry/ONLY the landing page redirects', () => {
+  it('no other page loads it — a scenario fragment elsewhere belongs to that page', () => {
+    // /report/ is opened WITH a scenario in its fragment, so that it can rebuild the full report
+    // as copyable text. If that page loaded the redirect it would bounce straight to the
+    // calculator and the fallback route would not exist at all.
+    const others = ['calculator', 'checks', 'changelog', 'report', 'about', 'privacy', 'cookies'];
+    for (const id of others) {
+      const html = readFileSync(join(REPO, id, 'index.html'), 'utf8');
+      expect(html, `${id}/index.html`).not.toContain('redirect.ts');
+    }
+  });
+});
