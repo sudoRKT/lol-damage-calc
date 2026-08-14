@@ -1,0 +1,28 @@
+<!doctype html>
+<!--
+  DEV-ONLY. Opens the COMPOSED PAGE — champion pickers, configuration, items, combo builder,
+  burndown, breakdown and stat blocks, driven by the real engine — on the Vite dev server at
+  http://localhost:5173/src/ui/app-preview.html
+  so it can be loaded in a real browser before it has a home. `vite build` builds index.html
+  only, so this is never shipped.
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Bench Test — page preview</title>
+    <style>
+      /* The page canvas only, and it is the TOKEN rather than a hex value — tokens.css is
+         imported by the preview module, so `--bg-base` is defined by the time this paints. */
+      html,
+      body {
+        margin: 0;
+        background: var(--bg-base);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app-preview-root"></div>
+    <script type="module" src="./app/preview.tsx"></script>
+  </body>
+</html>

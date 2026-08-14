@@ -22,7 +22,7 @@
 import { useState } from 'react';
 import type { ComboStep } from '../../types';
 import { AbilityChip } from '../art/AbilityChip';
-import { spellIconUrl } from '../data/roster';
+import { abilityIconUrl } from '../data/roster';
 import {
   BASIC_ATTACK_REF,
   appendStep,
@@ -90,7 +90,7 @@ export function ComboBuilder({
               }
             >
               <AbilityChip
-                src={spellIconUrl(patch, ability.icon)}
+                src={abilityIconUrl(patch, ability.slot, ability.icon)}
                 slot={ability.slot}
                 abilityName={ability.abilityName}
                 damageType={ability.damageType ?? null}
@@ -142,7 +142,7 @@ export function ComboBuilder({
 
               {view.ability ? (
                 <AbilityChip
-                  src={spellIconUrl(patch, view.ability.icon)}
+                  src={abilityIconUrl(patch, view.ability.slot, view.ability.icon)}
                   slot={view.ability.slot}
                   abilityName={view.ability.abilityName}
                   damageType={view.ability.damageType ?? null}

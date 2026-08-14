@@ -40,6 +40,26 @@ export function passiveIconUrl(patch: string, icon: string): string {
   return `${DDRAGON_ROOT}/${patch}/img/passive/${icon}`;
 }
 
+/**
+ * The right URL for an ABILITY icon, given the slot it belongs to.
+ *
+ * **A REAL DEFECT, FOUND BY LOADING THE PAGE IN A BROWSER ON 2026-08-14.** The combo builder built
+ * every chip's URL with `spellIconUrl`, including the passive's — and Data Dragon does not serve a
+ * passive from `/img/spell/`. It answers **403**. Measured: `/img/passive/LuxIlluminatingFraulein.png`
+ * returns 200 and `/img/spell/LuxIlluminatingFraulein.png` returns 403. So every champion's passive
+ * chip was a broken image, on the shelf and in the sequence, for all 173 champions.
+ *
+ * It could not be seen in a test, because jsdom does not fetch images: an `<img>` with a dead `src`
+ * renders exactly like one with a live `src`, and every accessible name was correct throughout —
+ * the chip announces the ability, not the file.
+ *
+ * The decision lives HERE rather than at each call site so there is one place that knows it, which
+ * is the same rule the art sweep already enforces about building CDN paths at all.
+ */
+export function abilityIconUrl(patch: string, slot: string, icon: string): string {
+  return slot === 'P' ? passiveIconUrl(patch, icon) : spellIconUrl(patch, icon);
+}
+
 /** An item icon. Data Dragon names these by item id, e.g. `3068.png` (Sunfire Aegis). */
 export function itemIconUrl(patch: string, icon: string): string {
   return `${DDRAGON_ROOT}/${patch}/img/item/${icon}`;
@@ -60,7 +80,11 @@ export function itemIconUrl(patch: string, icon: string): string {
  * RAISED: this would not be needed if the result carried the icon's kind alongside its
  * filename. That is a change to the frozen contract and is the lead's to make.
  */
-export function iconUrl(patch: string, icon: string): string {
+export function iconUrl(patch: string, icon: string, slot?: string): string {
+  // A PASSIVE IS SERVED FROM ITS OWN DIRECTORY and 403s from /img/spell/ (see
+  // `abilityIconUrl`). Where the caller knows the slot — the per-instance table does, from the
+  // source label — it is passed, because a rule that can be told the answer should not guess it.
+  if (slot === 'P') return passiveIconUrl(patch, icon);
   return /^\d+\.(png|jpg|webp)$/i.test(icon)
     ? itemIconUrl(patch, icon)
     : spellIconUrl(patch, icon);

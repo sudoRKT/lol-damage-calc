@@ -1,0 +1,146 @@
+/*
+ * The page. DESIGN.md §7a's locked layout: the two configuration panels across the top row, the
+ * HP burndown full width beneath them, and single-column below the breakpoint where the §16 ad
+ * rails would otherwise compress the calculator.
+ *
+ * NO HUE ANYWHERE IN THIS FILE. A notice, a refusal and a heading are not damage data (§1), so
+ * every one of them is a neutral surface with a border and a label — there is no red error panel
+ * and no green success panel in this product, and there never will be.
+ */
+
+@import '../tokens.css';
+
+.app {
+  background: var(--bg-base);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: var(--type-body-l);
+  line-height: var(--lh-body-l);
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+/* ---- Header ---- */
+
+.app__eyebrow {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: var(--weight-display-medium);
+  font-size: var(--type-eyebrow);
+  line-height: var(--lh-eyebrow);
+  letter-spacing: var(--ls-eyebrow);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.app__title {
+  margin: var(--space-1) 0 0;
+  font-family: var(--font-display);
+  font-weight: var(--weight-display);
+  font-size: var(--type-display-xl);
+  line-height: var(--lh-display-xl);
+}
+
+.app__vs {
+  color: var(--text-secondary);
+}
+
+.app__sub,
+.app__loading,
+.app__error,
+.app__resultnote {
+  margin: var(--space-1) 0 0;
+  font-size: var(--type-body-m);
+  line-height: var(--lh-body-m);
+  color: var(--text-secondary);
+}
+
+/* ---- Two-column top row; single column below the §7a breakpoint ---- */
+
+.app__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-5); /* DESIGN.md §4 — grid gutter */
+  align-items: start;
+}
+
+.app__col {
+  display: flex;
+  flex-direction: column;
+}
+
+/* 80rem = 1280px, the width DESIGN.md §7a states verbatim: "Below ~1280px the rails hide … and
+   the layout goes single-column." The number is quoted from the design file, not chosen here. */
+@media (max-width: 80rem) {
+  .app__row {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---- Notices and refusals: neutral surfaces, never a coloured alert ---- */
+
+.app__notice,
+.app__refusal,
+.app__resulthead {
+  background: var(--bg-panel);
+  border: var(--border-steel);
+  border-radius: var(--radius-panel);
+  padding: var(--space-4);
+}
+
+/* A refusal is the one thing on this page that must not be skimmed past, so it takes the
+   strongest NEUTRAL border in the palette — brightness and weight, never a hue (§1, §6). */
+.app__refusal {
+  border: var(--border-strong);
+}
+
+.app__notice-title,
+.app__refusal-title {
+  margin: 0 0 var(--space-2);
+  font-family: var(--font-display);
+  font-weight: var(--weight-display);
+  font-size: var(--type-display-l);
+  line-height: var(--lh-display-l);
+}
+
+.app__notice p,
+.app__refusal p,
+.app__notice li,
+.app__refusal li {
+  font-size: var(--type-body-m);
+  line-height: var(--lh-body-m);
+  color: var(--text-secondary);
+}
+
+.app__notice ul,
+.app__refusal ul {
+  margin: var(--space-2) 0 0;
+  padding-inline-start: var(--space-4);
+}
+
+.app__notice strong,
+.app__refusal strong {
+  font-weight: var(--weight-body-strong);
+  color: var(--text-primary);
+}
+
+/* ---- The line that says what the result describes ---- */
+
+.app__resulthead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-3);
+}
+
+/* SPECIFICATION §8 — the patch, adjacent to the result. */
+.app__patch {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-weight: var(--weight-num-medium);
+  font-size: var(--type-num-m);
+  line-height: var(--lh-num-m);
+  color: var(--text-secondary);
+}

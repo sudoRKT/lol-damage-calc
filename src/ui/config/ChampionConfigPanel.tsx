@@ -43,6 +43,15 @@ export interface ChampionConfigPanelProps {
   config: ChampionConfig;
   onChange: (config: ChampionConfig, champion: Champion) => void;
   patch: string;
+  /**
+   * What this panel does NOT configure, printed on screen. Defaults to `NOT_YET_CONFIGURED`.
+   *
+   * IT IS A PROP BECAUSE THE LIST STOPPED BEING FIXED. The page composed in `../app/App.tsx`
+   * configures items in a panel of its own, so leaving "Items" in the default list would print a
+   * sentence that is no longer true — and a panel that misstates what was modelled is worse than
+   * one that lists nothing, because a user calibrates their trust against it.
+   */
+  notConfigured?: readonly string[];
 }
 
 export function ChampionConfigPanel({
@@ -52,6 +61,7 @@ export function ChampionConfigPanel({
   config,
   onChange,
   patch,
+  notConfigured = NOT_YET_CONFIGURED,
 }: ChampionConfigPanelProps) {
   const update = (next: Partial<ChampionConfig>) => {
     if (!champion) return;
@@ -121,7 +131,7 @@ export function ChampionConfigPanel({
 
       <p className="config__eyebrow">Not configured in this panel yet</p>
       <ul className="config__missing">
-        {NOT_YET_CONFIGURED.map((item) => (
+        {notConfigured.map((item) => (
           <li key={item}>{item}</li>
         ))}
       </ul>

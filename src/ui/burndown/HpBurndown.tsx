@@ -24,7 +24,7 @@
 import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { CSSProperties } from 'react';
 import type { DamageByType, DamageType, ReportedDamageType, Result } from '../../types';
-import { AggregateTotal, DamageValue, VerificationStatusMark } from '../primitives';
+import { AggregateTotal, DamageValue, VerificationStatusMark, formatReadout } from '../primitives';
 import {
   buildBurndownModel,
   odometerAt,
@@ -199,7 +199,10 @@ export function riserName(column: BurndownColumn, maxHp: number, statusLabel: st
 
   // "up to" / "down to" is the direction, spoken. `hpAfter` already includes any healing.
   const direction = column.hpAfter > column.hpBefore ? 'up to' : 'down to';
-  parts.push(`Health ${column.hpBefore} ${direction} ${column.hpAfter} of ${maxHp}`);
+  parts.push(
+    `Health ${formatReadout(column.hpBefore)} ${direction} ${formatReadout(column.hpAfter)} ` +
+      `of ${formatReadout(maxHp)}`,
+  );
   // OVERHEALING IS INFORMATION, not noise: it is how a theorycrafter sees that a bigger heal
   // would have bought nothing.
   if (column.healingWasted > 0) parts.push(`${column.healingWasted} healing wasted`);

@@ -1,0 +1,151 @@
+/*
+ * Item selection. Every value traces to DESIGN.md; `../primitives/token-audit.test.ts`
+ * re-checks that across the whole area on every run.
+ *
+ * NO HUE — an item control is not damage data (DESIGN.md §1). Selection, hover and the
+ * "already in build" state are brightness, border and label only.
+ */
+
+@import '../tokens.css';
+
+.items {
+  margin-block-start: var(--space-5);
+  font-family: var(--font-body);
+  color: var(--text-primary);
+}
+
+.items__title {
+  margin: 0 0 var(--space-2);
+  font-family: var(--font-display);
+  font-weight: var(--weight-display-medium);
+  font-size: var(--type-display-m);
+  line-height: var(--lh-display-m);
+}
+
+.items__count,
+.items__status,
+.items__empty {
+  margin: 0 0 var(--space-2);
+  font-size: var(--type-body-m);
+  line-height: var(--lh-body-m);
+  color: var(--text-secondary);
+}
+
+.items__build,
+.items__pool {
+  list-style: none;
+  margin: 0 0 var(--space-3);
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+/* The drawn pool is short by DESIGN rather than scrolled: DESIGN.md defines no height for a
+   scrolling list region, and inventing one is forbidden (§0). `VISIBLE_MATCHES` in
+   ItemPicker.tsx caps the list instead, and the panel says so on screen. */
+.items__pool {
+  border: var(--border-hair);
+  border-radius: var(--radius-control);
+  padding: var(--space-1);
+}
+
+.items__slot,
+.items__add {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-2);
+  background: var(--bg-well);
+  border: var(--border-steel);
+  border-radius: var(--radius-control);
+  text-align: start;
+  font-family: var(--font-body);
+  font-size: var(--type-body-m);
+  line-height: var(--lh-body-m);
+  color: var(--text-primary);
+}
+
+.items__add:hover:enabled {
+  background: var(--bg-panel-raised);
+  border: var(--border-strong);
+}
+
+.items__add:disabled {
+  color: var(--text-muted);
+  opacity: 0.5;
+}
+
+.items__name {
+  font-weight: var(--weight-body-medium);
+}
+
+.items__grants,
+.items__gold,
+.items__unknown {
+  font-size: var(--type-body-s);
+  line-height: var(--lh-body-s);
+  color: var(--text-secondary);
+}
+
+.items__gold {
+  margin-inline-start: auto;
+  font-family: var(--font-mono);
+  font-weight: var(--weight-num);
+  font-size: var(--type-num-s);
+  line-height: var(--lh-num-s);
+}
+
+.items__remove {
+  margin-inline-start: auto;
+  background: var(--bg-panel);
+  border: var(--border-steel);
+  border-radius: var(--radius-control);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: var(--type-body-m);
+  line-height: var(--lh-body-m);
+  padding: 0 var(--space-2);
+}
+
+.items__remove:hover {
+  background: var(--bg-panel-raised);
+  border: var(--border-strong);
+}
+
+.items__search {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin-block-end: var(--space-2);
+}
+
+.items__search-label {
+  font-family: var(--font-display);
+  font-weight: var(--weight-display-medium);
+  font-size: var(--type-eyebrow);
+  line-height: var(--lh-eyebrow);
+  letter-spacing: var(--ls-eyebrow);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.items__search input {
+  background: var(--bg-well);
+  border: var(--border-steel);
+  border-radius: var(--radius-control);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: var(--type-body-l);
+  line-height: var(--lh-body-l);
+  padding: var(--space-2) var(--space-3);
+}
+
+/* DESIGN.md §6 states the focus ring verbatim: a 2px bone outline offset 2px. Written as the
+   two tokens that already carry those values, so no literal appears here. */
+.items__search input:focus-visible,
+.items__add:focus-visible,
+.items__remove:focus-visible {
+  outline: var(--border-active);
+  outline-offset: var(--space-0);
+}

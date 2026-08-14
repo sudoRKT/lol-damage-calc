@@ -19,20 +19,34 @@
 // not used in this file; the one place a tag belongs in a stat block is nowhere.
 
 import type { StatBlock } from '../../types';
-import { formatDamage } from '../primitives';
+import { formatDamage, formatReadout, roundReadout } from '../primitives';
 import { ChampionPortrait } from '../art/ChampionPortrait';
 import './stats.css';
 
 /**
- * Group thousands the way every other number in the product does.
+ * A stat is a READOUT, so it is printed to `READOUT_DECIMALS` places — see ../primitives/readout.ts
+ * for the defect this exists to prevent and why the rule lives in one place rather than here.
+ */
+
+/**
+ * Group thousands the way every other number in the product does, to `STAT_DECIMALS` places.
  *
- * This delegates to the primitive rather than reimplementing the rule — two implementations of
- * thousands grouping are two chances for the same number to be printed two ways. It never
- * rounds, for the same reason the primitive never rounds: rounding happens once, in the engine.
+ * Grouping delegates to the primitive rather than reimplementing it — two implementations of
+ * thousands grouping are two chances for the same number to be printed two ways.
  */
 function formatStat(value: number): string {
-  return formatDamage(value);
+  return formatDamage(roundReadout(value));
 }
+
+/**
+ * The spoken form of a stat.
+ *
+ * **THE SPOKEN STRING IS A SECOND PLACE THE SAME DEFECT LIVED, AND NO AMOUNT OF LOOKING AT THE
+ * PAGE WOULD HAVE FOUND IT.** Rounding only the visible value left every hidden accessible name
+ * reading "129.98874999999998, 49.988749999999996 base plus 80 bonus" — fourteen digits for a
+ * screen reader user where a sighted user got four, from the same row.
+ */
+const spokenStat = formatReadout;
 
 /** A 0..1 fraction as a percentage, e.g. 0.5 → "50%", 0.125 → "12.5%". */
 export function formatPercent(fraction: number): string {
@@ -118,8 +132,8 @@ export function statRows(stats: StatBlock): Row[] {
         `${formatStat(stats.hp)} / ${formatStat(stats.maxHp)} ` +
         `(${formatStat(stats.maxHpBase)} + ${formatStat(stats.maxHpBonus)})`,
       spoken:
-        `${stats.hp} of ${stats.maxHp} maximum, ` +
-        `${stats.maxHpBase} base plus ${stats.maxHpBonus} bonus`,
+        `${spokenStat(stats.hp)} of ${spokenStat(stats.maxHp)} maximum, ` +
+        `${spokenStat(stats.maxHpBase)} base plus ${spokenStat(stats.maxHpBonus)} bonus`,
     },
     // MANA IS PRINTED ONLY FOR A CHAMPION WHOSE RESOURCE IS MANA. Absent is not zero: 11 of the
     // roster have no resource pool and 19 module entries state a NON-MANA one with a non-zero
@@ -131,24 +145,24 @@ export function statRows(stats: StatBlock): Row[] {
           {
             label: 'Mana',
             value: `${formatStat(stats.mana ?? 0)} / ${formatStat(stats.maxMana)}`,
-            spoken: `${stats.mana ?? 0} of ${stats.maxMana} maximum`,
+            spoken: `${spokenStat(stats.mana ?? 0)} of ${spokenStat(stats.maxMana)} maximum`,
           },
         ]
       : []),
     {
       label: 'Armor',
       value: `${formatStat(stats.armor)} (${formatStat(stats.armorBase)} + ${formatStat(stats.armorBonus)})`,
-      spoken: `${stats.armor}, ${stats.armorBase} base plus ${stats.armorBonus} bonus`,
+      spoken: `${spokenStat(stats.armor)}, ${spokenStat(stats.armorBase)} base plus ${spokenStat(stats.armorBonus)} bonus`,
     },
     {
       label: 'Magic resist',
       value: `${formatStat(stats.magicResist)} (${formatStat(stats.magicResistBase)} + ${formatStat(stats.magicResistBonus)})`,
-      spoken: `${stats.magicResist}, ${stats.magicResistBase} base plus ${stats.magicResistBonus} bonus`,
+      spoken: `${spokenStat(stats.magicResist)}, ${spokenStat(stats.magicResistBase)} base plus ${spokenStat(stats.magicResistBonus)} bonus`,
     },
     {
       label: 'Attack damage',
       value: `${formatStat(stats.attackDamage.total)} (${formatStat(stats.attackDamage.base)} + ${formatStat(stats.attackDamage.bonus)})`,
-      spoken: `${stats.attackDamage.total}, ${stats.attackDamage.base} base plus ${stats.attackDamage.bonus} bonus`,
+      spoken: `${spokenStat(stats.attackDamage.total)}, ${spokenStat(stats.attackDamage.base)} base plus ${spokenStat(stats.attackDamage.bonus)} bonus`,
     },
     { label: 'Ability power', value: formatStat(stats.abilityPower) },
     { label: 'Critical strike chance', value: formatPercent(stats.critChance) },

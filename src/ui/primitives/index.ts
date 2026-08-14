@@ -24,6 +24,8 @@ export type {
   DamageNumberSize,
 } from './DamageValue';
 
+export { READOUT_DECIMALS, formatReadout, roundReadout } from './readout';
+
 export {
   VerificationStatusMark,
   STATE_STYLE,

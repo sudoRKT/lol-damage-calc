@@ -45,7 +45,7 @@ import type {
   ReportedDamageType,
   Result,
 } from '../../types';
-import { AggregateTotal, DamageValue, VerificationStatusMark } from '../primitives';
+import { AggregateTotal, DamageValue, VerificationStatusMark, formatReadout } from '../primitives';
 import { AbilityChip } from '../art/AbilityChip';
 import { iconUrl } from '../data/roster';
 import './breakdown.css';
@@ -85,7 +85,7 @@ export function formatState(snapshot: Record<string, number | boolean>): string[
   return Object.entries(snapshot).map(([key, value]) =>
     typeof value === 'boolean'
       ? `${humanizeKey(key)} ${value ? 'on' : 'off'}`
-      : `${humanizeKey(key)} ${value}`,
+      : `${humanizeKey(key)} ${formatReadout(value)}`,
   );
 }
 
@@ -214,7 +214,7 @@ function InstanceRow({
       <td className="breakdown__source">
         {instance.icon ? (
           <AbilityChip
-            src={iconUrl(patch, instance.icon)}
+            src={iconUrl(patch, instance.icon, splitSourceLabel(instance.sourceLabel).slot)}
             slot={splitSourceLabel(instance.sourceLabel).slot}
             abilityName={splitSourceLabel(instance.sourceLabel).name}
             damageType={type}
@@ -350,7 +350,7 @@ function DotSection({ result, patch }: { result: Result; patch: string }) {
               <th scope="row" className="breakdown__source">
                 {source.icon ? (
                   <AbilityChip
-                    src={iconUrl(patch, source.icon)}
+                    src={iconUrl(patch, source.icon, splitSourceLabel(source.label).slot)}
                     slot={splitSourceLabel(source.label).slot}
                     abilityName={splitSourceLabel(source.label).name}
                     damageType={source.damageType}

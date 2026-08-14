@@ -60,11 +60,22 @@ describe('art-sweep/only art/ renders an image', () => {
     expect(offenders).toEqual([]);
   });
 
-  it('the two art components are the ones that do', () => {
+  it('the three art components are the ones that do', () => {
     // The guard is not pointing at a stub: the components it protects really render the images.
+    //
+    // `ItemChip` joined the list on 2026-08-14, when item selection reached the page and
+    // SPECIFICATION §10.1's "official game art in place of text labels" started applying to item
+    // icons as well as ability icons. This assertion is a ROLL CALL, not a cap: it exists so the
+    // sweep above cannot pass by pointing at components that render nothing. Adding a name to it
+    // is a deliberate act — it says a new component now owns image rendering and is therefore
+    // bound by §9's sizes, borders and no-recolour rule.
     const art = walk(ART_DIR).filter((f) => f.endsWith('.tsx') && !/\.test\./.test(f));
     const rendering = art.filter((f) => /<img\b/.test(readFileSync(f, 'utf8'))).map(rel);
-    expect(rendering.sort()).toEqual(['art/AbilityChip.tsx', 'art/ChampionPortrait.tsx']);
+    expect(rendering.sort()).toEqual([
+      'art/AbilityChip.tsx',
+      'art/ChampionPortrait.tsx',
+      'art/ItemChip.tsx',
+    ]);
   });
 });
 

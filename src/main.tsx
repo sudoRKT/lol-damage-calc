@@ -1,22 +1,23 @@
 // The composition root.
 //
-// It mounts the HP BURNDOWN (src/ui/burndown) — DESIGN.md §7's signature element and the
-// product's remembered object — against the one canonical mock Result.
+// It mounts the real interface: two champion pickers, per-champion configuration, an item set
+// from the full pool, a combo builder over each champion's own ability icons, and the result —
+// the HP burndown (DESIGN.md §7's signature element), the per-instance breakdown, both survival
+// verdicts and both resolved stat blocks.
 //
-// THE VERTICAL SLICE IS GONE FROM HERE, deliberately. It was a throwaway proof that the plumbing
-// connects: stored data, through the engine, to a number on screen. It did that and it is kept at
-// `src/ui/slice/` as a reference for what the plumbing does, not as a design. Nothing new is built
-// on it.
+// THE NUMBER IS REAL. `App` builds a `Scenario`, loads a `Catalogue` from the published data
+// files, and runs `simulate` (src/engine/simulate.ts). Nothing on the page comes from the
+// canonical mock any more. What the engine cannot model, it names on screen and excludes from
+// the total, rather than quietly folding a smaller figure into it (SPECIFICATION §8, §11).
 //
-// What this page is NOT yet: the real interface. There are no champion pickers, no combo builder,
-// no stat blocks and no result table — those are being built now. Until they exist this renders
-// the burndown alone, from the mock, so the signature element can be judged on its own terms.
+// WHY THIS FILE IS THREE LINES. `src/main.tsx` sits in no agent's area, which by the partition
+// makes it the lead's (CLAUDE.md). `App` takes no props and fetches its own data precisely so
+// that the mount is a mount and not a place where a fifth writer accumulates logic.
 
 import { createRoot } from 'react-dom/client';
 import './ui/tokens.css';
-import { HpBurndown } from './ui/burndown';
-import { MOCK_RESULT } from './types';
+import { App } from './ui/app';
 
 const rootEl = document.getElementById('root');
 if (!rootEl) throw new Error('#root not found');
-createRoot(rootEl).render(<HpBurndown result={MOCK_RESULT} />);
+createRoot(rootEl).render(<App />);

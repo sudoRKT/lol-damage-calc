@@ -19,10 +19,13 @@
 //      already recorded in primitives/accessible-names.test.tsx, swept here over whole screens
 //      rather than over single primitives).
 //
-// POPULATION, STATED: six fixtures — the picker (open, over all 173 champions), the combo
+// POPULATION, STATED: seven fixtures — the picker (open, over all 173 champions), the combo
 // builder (Lux's real abilities, a three-step combo), the stat block, the per-instance
-// breakdown, the HP burndown, and a bare NumberInput. Between them they render every
-// interactive control this area owns today.
+// breakdown, the HP burndown, a bare NumberInput, and the item picker over the real 209-item
+// pool with one item already in the build. Between them they render every interactive control
+// this area owns today. **The item picker was added on 2026-08-14 when item selection reached
+// the page; the sentence above is a claim about coverage, so a new control-bearing component
+// means a new fixture rather than a note that one exists elsewhere.**
 
 import { describe, expect, it, afterEach } from 'vitest';
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
@@ -39,6 +42,8 @@ import { StatBlockPanel } from './stats';
 import { InstanceBreakdown } from './breakdown';
 import { HpBurndown } from './burndown';
 import { NumberInput } from './inputs';
+import { ItemPicker } from './items';
+import type { Item } from '../types';
 
 afterEach(cleanup);
 
@@ -51,6 +56,8 @@ const LUX = (
     abilities: ShelfAbility[];
   }
 ).abilities;
+
+const ITEMS = JSON.parse(readFileSync(join(REPO, 'public/data/items.json'), 'utf8')) as Item[];
 
 const COMBO: ComboStep[] = [
   { id: 'e1', kind: 'ability', ref: 'E' },
@@ -120,6 +127,17 @@ const FIXTURES: Fixture[] = [
     id: 'NumberInput (bare)',
     node: <NumberInput label="Champion level" value={11} onChange={() => {}} min={1} max={18} />,
   },
+  {
+    id: 'ItemPicker (209 items, one in the build)',
+    node: (
+      <ItemPicker
+        role="attacker"
+        items={ITEMS}
+        selected={[ITEMS[0]!.id]}
+        onChange={() => {}}
+      />
+    ),
+  },
 ];
 
 function mount(fixture: Fixture) {
@@ -128,8 +146,8 @@ function mount(fixture: Fixture) {
 }
 
 describe('interactive-names/population', () => {
-  it('mounts six fixtures covering every control the area owns', () => {
-    expect(FIXTURES).toHaveLength(6);
+  it('mounts seven fixtures covering every control the area owns', () => {
+    expect(FIXTURES).toHaveLength(7);
   });
 
   it('the fixtures really do render controls — the sweep cannot pass by finding nothing', () => {
