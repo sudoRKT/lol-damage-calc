@@ -318,6 +318,18 @@ that cannot be read in full is not stored in part.
 6. **The basic attack is named in words and marked `AA`.** No Data Dragon art is borrowed for it;
    borrowing would make one chip mean something other than what it depicts.
 
+**THE CROSS-AREA SEAM IS NOW SWEPT AND WATCHED (DATA-SOURCES §44).** The seventh decision below
+exposed a defect class the PARTITION creates rather than one either area caused: an area's tests
+run over its own output, so two areas can hold opposite rules about one shape with both suites
+green. `tests/cross-area-seams.test.ts` runs each consumer's own assertions over each producer's
+real output — `tests/` belongs to no area, which is the only place a file may import from five
+areas at once. **Five seams checked, one defect found:** `ComboStep.hitCounts` was added to the
+contract and the URL encoder was never told, so a scenario using any of the 7 abilities that store
+`variableHits` cannot be shared at all (SPECIFICATION §12). It fails loudly rather than silently
+and is pinned in `KNOWN_DRIFT`; closing it is a wire-format decision, raised not made. **The check
+was proved to fail rather than assumed to work** — reintroducing the original defect turns it red
+and names all three places the figure appears.
+
 **A SEVENTH, forced by the fourth and worth knowing about: a per-type split now ALWAYS sums to its
 own total.** The engine and the interface had encoded opposite rules for one figure and both suites
 passed, because neither check had run over the other's output. §42.4a records which argument lost

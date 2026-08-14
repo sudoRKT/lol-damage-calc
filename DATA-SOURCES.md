@@ -3877,3 +3877,121 @@ naming neither field returns nothing. `defender-toggles.json`, `effect-census.js
 - **Re-run:** none outstanding. The fetch has been run and diffed.
 - **Tests:** 7 in `champions.test.ts`, including the roster-wide 145 / 17 / 0 measurement, the
   named-failure assertion, and the one that keeps the wrong-wiki guard able to speak.
+
+---
+
+## 44. The cross-area seam, swept (2026-08-14)
+
+§42.4a found the engine and the interface holding **opposite rules about one figure**, with both
+suites green. This applies CLAUDE.md's standing instruction to it: the defect becomes a mechanical
+check run over the whole population, and the population is measured.
+
+### 44.1 The defect class, stated so it is recognisable next time
+
+**DEFINITION — A SEAM: a (shape, producer area, consumer area) triple where one area writes a
+value of a shape declared in `src/types/` and a DIFFERENT area reads it and asserts something
+about it.**
+
+A seam defect is not a bug in either area. Each is internally consistent, each has its reasoning
+written down, and each has a passing suite — because **an area's tests run over its own output,
+and the partition means no one person reviews both sides**. The engine tested Results against
+hand-authored expectations; the interface tested its assertions against `MOCK_RESULT`; nothing ran
+`auditResult` over `runCombo`, so the two rules never met.
+
+**This is a cost of the partition, not an accident, and it will recur every time an area is added
+or a shape gains a field.** The check lives in `tests/cross-area-seams.test.ts` — `tests/` belongs
+to no area, which is the only place a file may import from `src/engine/`, `src/ui/`, `src/url/`,
+`scripts/extract/` and `scripts/fetch/` at once.
+
+### 44.2 The population: five seams, checked; one defect found
+
+| # | Shape | Producer | Consumer's assertions run over it | Coverage | Result |
+|---|---|---|---|---|---|
+| 1 | `Result` | engine `runCombo` | `auditResult`, `buildBurndownModel`, `AggregateTotal`'s invariant, the `StatBlock` invariants | **9 hand-authored plans** + the 3 interface fixtures | **clean** |
+| 2 | `CuratedFile` | harvester | gate 1, gate 3, and the engine's component evaluator | **937 entries, 946 components** | **clean**; 18 gate-1 failures pinned |
+| 3 | `Champion` | data pipeline | `resolveBaseStats`, and the resource rule any stat-block builder must follow | **173 champions × 3 levels** | **clean** |
+| 4 | `Scenario` | url encoder | the engine runs a decoded scenario | **10 scenarios** | **clean** |
+| 5 | runtime mirrors of contract types | every area | the contract's own member list | **26 mirrors** | **1 DRIFT** |
+
+**DEFINITION of the 9 plans:** hand-authored `ComboPlan`s, each chosen because it produces a shape
+some consumer treats specially — a multi-type aggregate, a fractional split, a zero, an empty
+list, a lethal crossing, an incomplete instance, a DoT tail. No data file is read to build them,
+so a failure is two areas disagreeing rather than the data moving. A coverage test asserts the
+battery really reaches each shape, so it cannot pass by running nothing.
+
+**THE CHECK WAS PROVED TO FAIL, TWICE, RATHER THAN ASSUMED TO WORK.** Reintroducing the original
+defect — `roundSplit` rounding each type independently of its total — turns seam 1 red and names
+all three places it surfaces (`burst`, `runningTotal[0]`, `instance 1 byType`). Dropping `holder`
+from `RATIO_OWNERS` turns seam 5 red. Both were run and both were reverted.
+
+### 44.3 The one defect: a contract field the URL encoder was never told about
+
+**`ComboStep.hitCounts` is missing from `STEP_ALL_KEYS` in `src/url/v1.ts`.**
+
+It was added to the contract on 2026-08-13 for variable hit counts (§38). The encoder was not, and
+its own suite passes because it tests the fields it knows about.
+
+**The failure is LOUD, which is the good direction:** `encodeScenario` throws *"combo[0].hitCounts
+is not part of the scenario contract"* — a message that is itself untrue, since it is part of the
+contract. Nothing is shared wrongly. But SPECIFICATION §12 says any scenario is shareable as a link
+that reproduces it exactly, and **a scenario using any ability that carries `variableHits` cannot
+be shared at all.**
+
+> **DEFINITION of the affected population: ability entries with at least one component carrying
+> `variableHits`, over the 937 in `build/proposed-curated/abilities/batch-01.json`. The count is
+> 7:** Kai'Sa Q · Lulu Q · Nautilus E · Taliyah Q · Yuumi R · Zac R · Ziggs E. It is 7 and not the
+> 17 or 13 of §38 because those count abilities a person READ, and storage is gated on a narrower
+> set than reading (CLAUDE.md).
+
+**NOT FIXED HERE, and the reason is that it is a decision rather than a repair.** The step is
+encoded positionally — `[id, kindIndex, ref]` or `[id, kindIndex, ref, options]` — so carrying
+`hitCounts` needs a fifth slot and a `FORMAT.md` change. Raised, not made.
+
+It is recorded in `KNOWN_DRIFT` in the seam test, asserted EXACTLY: a second drift fails the check,
+and so does fixing this one without striking its entry. A red suite blocks every merge (§14), so a
+found-but-unfixed seam is pinned rather than left failing — the same device gate 1's `failed === 18`
+uses.
+
+### 44.4 Four more classes, searched by hand and found clean
+
+The automated check covers what a machine can compare. These were read:
+
+- **`ReportedDamageType` has five arms and `DamageByType` has three keys.** A consumer indexing the
+  split by the reported type would land on `physical` for `'none'` and for `'mixed'`. Every site
+  that does so guards first — `geometry.ts` narrows the union rather than casting, which its own
+  comment says is deliberate so a new arm fails the typecheck instead of landing silently.
+- **The absent-reason fallback.** SPECIFICATION §8: an incomplete entry with no reason falls back
+  to PENDING, never permanent. The engine defaults it when planning; the interface's
+  `VerificationStatusMark` reads `reason?.kind === 'permanent' ? … : pending`. **The two agree, and
+  they agree in the safe direction** — neither can promote an unexplained gap to "cannot be
+  completed".
+- **`RatioOwner: 'holder'`** is resolved by the engine at evaluation time from `holderIs`, and
+  refused by name when the caller does not supply it. It is not silently mapped to `caster`, which
+  would invert every defender-side item.
+- **`AbilityComponent.variableHits`** is consumed by the runner, and gate 1's refusal of `hits`
+  beside `variableHits` matches the runner's own guard on the same pair.
+
+### 44.5 A watched item, not a defect: there are two damage pipelines
+
+`src/ui/slice/compute.ts` computes damage itself — base, ratios, `applyResistance`, `roundDamage` —
+rather than calling `runCombo`. It reuses the engine's PRIMITIVES, so it cannot disagree about a
+formula, but it does not run the engine's PIPELINE: no four-step resistance order, no shields, no
+crit, no reductions, no sequence state. **For a scenario involving any of those it would show a
+different number than the engine, for the same inputs.**
+
+It is not a defect today for one measured reason: **it does not ship.** `src/main.tsx` renders the
+burndown alone, and the slice exists only on the dev-only preview page. It is recorded here so
+that wiring it to a real route without deleting it would be a deliberate act rather than an
+oversight. The right end state is that it goes when `simulate(scenario) -> Result` lands (§43.4).
+
+### 44.6 What would extend this check
+
+Named rather than implied, so the next session does not have to rediscover them:
+
+- **The defensive proposals** (`build/proposed-curated/defensive-proposals.json`) are not yet run
+  through gate 1 by the seam check, because the six shape fields landed after they were generated
+  (§42.5). Re-running the proposer is what unblocks it.
+- **`CuratedItemEffect` and `CuratedRune`** reach the engine through a layer that does not exist
+  yet, so there is no consumer to run over the producer.
+- **The item and rune effect values** are checked by their own gate, not against the engine's
+  component evaluator, because nothing assembles them into a plan yet.
