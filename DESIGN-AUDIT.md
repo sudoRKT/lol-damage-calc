@@ -464,6 +464,39 @@ work below rather than something to bolt on.
 
 ---
 
+## 6.6 EVERY FIGURE IN THIS DOCUMENT WAS MEASURED UNDER AN 8px BODY MARGIN
+
+**Found 2026-08-14, while measuring the landing page at 375px. It is recorded here rather than
+only in a commit because the measurements ABOVE were taken under it.**
+
+**There is no CSS reset in this project.** The browser's default `body { margin: 8px }` was
+therefore in force on every page from the first commit to the last. Its consequences:
+
+- **Every layout sat 8px off centre** and **16px narrower than the viewport it was measured in.**
+- The page reported 2px of horizontal overflow at a 375px viewport with nothing actually too
+  wide — the content fitted; the margin did not.
+- It is why the calculator's `.app` measured 1,361px inside a 1,440px viewport rather than the
+  1,392px its own 24px padding implies. 1440 − 48 padding − 16 margin − 15 scrollbar = 1,361.
+
+**What this does and does not invalidate.** Every figure in §0 and §6 is a real measurement of
+what was really on screen, so the comparisons hold — before and after were measured under the
+same margin. What is now 16px wider is the AVAILABLE width, so any figure describing how much
+room a region had is 16px pessimistic. **No conclusion in this document changes**: the burndown
+was below the fold by 309px, not by 293px, and the fold is a vertical measure the margin never
+touched.
+
+**Only the margin was reset.** `box-sizing` is deliberately left at the browser default: changing
+it globally alters how padding resolves in every panel measured in this file, and that deserves
+its own before-and-after rather than arriving as a side effect of fixing a margin. **That is
+outstanding work, not a decision to leave it forever.**
+
+> **The general lesson, which is the reason this is in the audit and not just in a commit
+> message.** Every measurement in this document was taken in a real browser, which is the right
+> instrument — and a real browser applies defaults nobody wrote down. A measured figure is
+> evidence about the whole stack, including the parts of it nobody chose.
+
+---
+
 ## 5. How to re-measure this
 
 Every figure above came from the live page. To reproduce: `npm run dev`, open the app root at a

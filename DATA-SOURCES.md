@@ -4533,3 +4533,48 @@ untestable without a real browser, and saying so is better than implying it is c
 
 **And `readout.ts` had its scope sentence deleted rather than softened**, because the fix made it
 false. A header that is merely *narrowed* after the fact still misleads anyone who read it before.
+
+### 50.5 The same defect a second time, in a different area (2026-08-14)
+
+**A check passed because it was run from the wrong starting point.** This is §50.2's failure
+exactly — a check whose population did not include the failing case — and it happened again
+within hours, in an unrelated area, which is why it is recorded beside it rather than on its own.
+
+**The case.** `/index.html` loads a redirect so that a URL carrying a shared scenario lands on the
+calculator rather than the landing page (SPECIFICATION §12). It was verified in a real browser
+and it passed: navigate to `/#s=…`, arrive at `/calculator/` with the right matchup. Committed,
+pushed.
+
+**It only ever worked on a cold load.** A module runs once per DOCUMENT load. Changing only the
+fragment of the current URL is a SAME-DOCUMENT navigation — the browser fires `hashchange` and
+loads nothing. So a reader already sitting on the landing page who pasted a shared link into the
+address bar changed the fragment and stayed exactly where they were: on the front page, holding a
+scenario, with the redirect module long since finished.
+
+**Why the verification missed it.** It navigated from `/calculator/` to `/#s=…` — a DIFFERENT
+document, so a full load, so the module ran. The one starting point that reproduces the defect is
+the landing page itself, and that is the one the check did not start from.
+
+| | §50.2, the popover | §50.5, the redirect |
+|---|---|---|
+| The check | renders the result surface | navigates to a shared link |
+| What it never did | open a riser | start from the landing page |
+| Why it looked complete | the component WAS rendered | the navigation DID happen |
+| What was actually untested | every state behind an interaction | the only path that does not reload |
+
+**THE COMMON SHAPE, STATED ONCE FOR BOTH.** A check exercises a *starting state* as much as an
+action, and the starting state is the half nobody writes down. "Render the component" is not
+"see the component's states"; "navigate to the URL" is not "arrive at the URL from everywhere a
+reader can". **When a check has a starting point, the starting point is part of its population and
+belongs in its stated definition.**
+
+**The fix, and what made it testable.** `installScenarioRedirect` moved out of the entry module
+into `src/url/entry.ts` and now takes the narrow slice of `window` it needs. That was not
+tidying: the entry module had a top-level side effect, so importing it in a test threw `window is
+not defined` and the behaviour **could not be tested at all**. Three tests now hand it a fake and
+watch — including that the `hashchange` listener is registered before the first check and
+unconditionally, because a reader who arrived with one scenario and pasted another would
+otherwise be stranded on the second.
+
+Verified on the path that failed: load the landing page, then change only the fragment. Lands on
+`/calculator/` with the shared matchup, and the landing page never renders.
