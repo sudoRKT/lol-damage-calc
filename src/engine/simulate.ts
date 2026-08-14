@@ -428,6 +428,33 @@ export function simulate(
   catalogue: Catalogue,
   options: { patch?: string } = {},
 ): SimulationResult {
+  const planned = planScenario(scenario, catalogue, options);
+  if (!planned.ok) return { ok: false, refusals: planned.refusals };
+  return { ok: true, result: runCombo(planned.plan) };
+}
+
+/** A plan, or the same named refusals `simulate` would have given. */
+export type ScenarioPlan =
+  | { ok: true; plan: ComboPlan }
+  | { ok: false; refusals: SimulationRefusal[] };
+
+/**
+ * EVERYTHING `simulate` DOES EXCEPT RUNNING THE COMBO — split out 2026-08-14 for the sweeps.
+ *
+ * SPECIFICATION §11's damage-versus-armor curve moves a figure that is NOT a field of a
+ * Scenario: a defender's armor is their base armor at their level plus what their items give,
+ * so "the same scenario against 150 armor" cannot be expressed as a Scenario at all. The sweep
+ * therefore builds the plan once and re-runs `runCombo` against a defender stat block whose
+ * resistance has been overridden — which needs the plan, not the Result.
+ *
+ * It is exported so there is ONE lookup-and-assembly path rather than a second copy of it in the
+ * sweep, and `simulate` above is now a two-line call into it. Behaviour is unchanged.
+ */
+export function planScenario(
+  scenario: Scenario,
+  catalogue: Catalogue,
+  options: { patch?: string } = {},
+): ScenarioPlan {
   const refusals: SimulationRefusal[] = [];
 
   const attackerChampion = catalogue.champion(scenario.attacker.apiname);
@@ -476,5 +503,5 @@ export function simulate(
     ],
   };
 
-  return { ok: true, result: runCombo(plan) };
+  return { ok: true, plan };
 }

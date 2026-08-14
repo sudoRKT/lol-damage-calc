@@ -12,10 +12,18 @@
 //
 // This file is deliberately NOT named *.test.ts, so vitest does not collect it as a suite.
 
-import type { AbilityComponent, Ratio, Scaling } from '../types';
+import type {
+  AbilityComponent,
+  Champion,
+  CuratedAbility,
+  Item,
+  Ratio,
+  Scaling,
+} from '../types';
 import type { StatBlock } from '../types/result';
 import type { ChampionConfig, ComboStep, Scenario } from '../types/scenario';
 import type { CasterStats } from './component';
+import type { Catalogue } from './simulate';
 
 /**
  * A caster's attack damage and ability power, built by hand.
@@ -153,6 +161,146 @@ export function comboStep(id: string, opts: Partial<ComboStep> = {}): ComboStep 
     kind: opts.kind ?? 'ability',
     ref: opts.ref ?? 'Q',
     ...opts,
+  };
+}
+
+// ---------------------------------------------------------------------------------------
+// Fixtures for the PUBLIC ENTRY POINT (`simulate`) and the sweeps built on it.
+//
+// THE SAME RULE, ONCE MORE, BECAUSE THESE LOOK MOST LIKE REAL DATA OF ANYTHING IN THIS FILE:
+// no champion, item or ability below is a real one. `fixtureChampion` invents round base and
+// growth figures so that a per-level statistic can be worked out on paper with the wiki's growth
+// formula (champion-stats.ts), and `fixtureAbility` states damage as an EXPLICIT per-rank list
+// so a test's expected value is a number a reader can see rather than one an interpolation
+// produced.
+// ---------------------------------------------------------------------------------------
+
+/** Provenance for a fixture. `patch` is a made-up string; nothing reads it but the Result echo. */
+function fixtureProvenance() {
+  return { source: 'hand-authored engine fixture', patch: 'fixture' };
+}
+
+/**
+ * A champion built from round numbers.
+ *
+ * Defaults: no growth on anything (`*_lvl` of 0), so a fixture's stats are level-independent
+ * unless a test asks for growth. That is deliberate — a level sweep test states the growth it
+ * intends to exercise, and every other test is then unaffected by the level axis.
+ */
+export function fixtureChampion(opts: {
+  apiname: string;
+  hpBase?: number;
+  hpPerLevel?: number;
+  armorBase?: number;
+  armorPerLevel?: number;
+  magicResistBase?: number;
+  magicResistPerLevel?: number;
+  adBase?: number;
+  adPerLevel?: number;
+  resource?: string;
+  manaBase?: number;
+  manaPerLevel?: number;
+}): Champion {
+  return {
+    apiname: opts.apiname,
+    name: opts.apiname,
+    id: 0,
+    stats: {
+      hp_base: opts.hpBase ?? 1000,
+      hp_lvl: opts.hpPerLevel ?? 0,
+      ...(opts.manaBase !== undefined ? { mp_base: opts.manaBase } : {}),
+      ...(opts.manaPerLevel !== undefined ? { mp_lvl: opts.manaPerLevel } : {}),
+      arm_base: opts.armorBase ?? 0,
+      arm_lvl: opts.armorPerLevel ?? 0,
+      mr_base: opts.magicResistBase ?? 0,
+      mr_lvl: opts.magicResistPerLevel ?? 0,
+      ad_base: opts.adBase ?? 0,
+      ad_lvl: opts.adPerLevel ?? 0,
+      as_base: 0.625,
+      as_lvl: 0,
+      as_ratio: 0.625,
+      range: 125,
+      rangetype: 'Melee',
+      adaptivetype: 'Physical',
+    },
+    ...(opts.resource !== undefined ? { resource: opts.resource } : {}),
+    abilityNames: {},
+    abilityMaxRanks: {},
+    icon: 'fixture.png',
+    provenance: fixtureProvenance(),
+  };
+}
+
+/** An item carrying whatever Data Dragon stat keys a test names, e.g. `{ FlatPhysicalDamageMod: 50 }`. */
+export function fixtureItem(id: number, name: string, stats: Record<string, number>): Item {
+  return {
+    id,
+    name,
+    gold: { total: 0, purchasable: true },
+    stats,
+    icon: 'fixture-item.png',
+    provenance: fixtureProvenance(),
+  };
+}
+
+/** A curated ability whose damage is an explicit per-rank list, so no interpolation is involved. */
+export function fixtureAbility(opts: {
+  champion: string;
+  slot: CuratedAbility['slot'];
+  abilityName?: string;
+  damageType?: AbilityComponent['damageType'];
+  perRank?: number[];
+  /** Extra components beyond the first, for a mixed-damage ability. */
+  extraComponents?: AbilityComponent[];
+  maxRank?: number;
+  verification?: CuratedAbility['verification'];
+  notes?: string;
+  instanceType?: CuratedAbility['instanceType'];
+}): CuratedAbility {
+  const values = opts.perRank ?? [100, 100, 100, 100, 100];
+  const components: AbilityComponent[] =
+    opts.verification === 'incomplete'
+      ? []
+      : [
+          {
+            id: `${opts.champion}-${opts.slot}-1`,
+            damageType: opts.damageType ?? 'physical',
+            base: { scaling: 'explicit', perRank: values },
+            ratios: [],
+          },
+          ...(opts.extraComponents ?? []),
+        ];
+  return {
+    champion: opts.champion,
+    slot: opts.slot,
+    abilityName: opts.abilityName ?? `${opts.champion} ${opts.slot}`,
+    instanceType: opts.instanceType ?? 'damaging-ability',
+    maxRank: opts.maxRank ?? values.length,
+    components,
+    verification: opts.verification ?? 'derived',
+    ...(opts.notes !== undefined ? { notes: opts.notes } : {}),
+    provenance: fixtureProvenance(),
+  };
+}
+
+/**
+ * A `Catalogue` over hand-authored lists.
+ *
+ * It answers `undefined` for anything it was not given, which is what makes a "champion not in
+ * the catalogue" refusal testable without touching a data file.
+ */
+export function fixtureCatalogue(opts: {
+  champions?: Champion[];
+  items?: Item[];
+  abilities?: CuratedAbility[];
+}): Catalogue {
+  const champions = opts.champions ?? [];
+  const items = opts.items ?? [];
+  const abilities = opts.abilities ?? [];
+  return {
+    champion: (apiname) => champions.find((c) => c.apiname === apiname),
+    item: (id) => items.find((i) => i.id === id),
+    abilities: (apiname) => abilities.filter((a) => a.champion === apiname),
   };
 }
 

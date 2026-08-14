@@ -158,12 +158,99 @@ export {
 } from './combo';
 
 // The public entry point. A Scenario and a Catalogue in; a Result, or a refusal that names the
-// thing that is missing, out.
+// thing that is missing, out. `planScenario` is the same lookup-and-assembly step stopping one
+// move earlier, at the ComboPlan, which is what the sweeps below need.
 export {
   simulate,
+  planScenario,
   buildStatBlock,
   SIMULATION_EXCLUSIONS,
   type Catalogue,
+  type ScenarioPlan,
   type SimulationRefusal,
   type SimulationResult,
 } from './simulate';
+
+// ---------------------------------------------------------------------------------------
+// The comparative layer (SPECIFICATION §11's three views beyond a single result)
+// ---------------------------------------------------------------------------------------
+//
+// Each of the three produces DATA, never a drawing: the interface is another area. The shapes
+// they return are defined here in `src/engine/`, NOT in the frozen `src/types/` contract, which
+// only the lead may change. If any of them should be promoted into that contract — the case is
+// arguable for `PointSummary`, which the interface will hold in state — that is a decision to
+// raise, and it is raised in the report rather than made here.
+
+// The shared shapes. `contiguousSegments` is the only route from a series to something drawable,
+// and it exists so a refused point cannot be drawn through by accident.
+export {
+  buildSeries,
+  contiguousSegments,
+  summarise,
+  type ComputedSweepPoint,
+  type PointSummary,
+  type RefusedSweepPoint,
+  type SweepPoint,
+  type SweepSeries,
+  type VerdictSummary,
+} from './sweep';
+
+// Damage against a range of target resistances. `axis` is required: §11 calls this view
+// "damage-versus-armor" in its title and "a range of target resistances" in its description, and
+// picking one silently is not this project's way of resolving an ambiguity.
+export {
+  damageVsResistance,
+  damageVsResistanceFromPlan,
+  resistanceValues,
+  type AppliedResistance,
+  type AppliedResistances,
+  type ResistanceAxis,
+  type ResistanceSweepOptions,
+  type ResistanceSweepOutcome,
+  type ResistanceSweepSeries,
+} from './resistance-sweep';
+
+// Damage across levels 1–18, with the levelling rules a build has to obey to exist at all.
+export {
+  ALL_LEVELS,
+  DEFAULT_RANK_SCHEDULE,
+  allocateRanks,
+  damageVsLevel,
+  maxRankAtLevel,
+  rankProblems,
+  skillPointsAtLevel,
+  unlearnedCasts,
+  type AppliedLevel,
+  type LevelRankPolicy,
+  type LevelSweepOptions,
+  type LevelSweepOutcome,
+  type LevelSweepSeries,
+  type RankSchedule,
+  type Ranks,
+  type RankableSlot,
+} from './level-sweep';
+
+// Two attacker configurations against one defender. Refuses two different defenders by name.
+export {
+  compareBuilds,
+  type BuildComparison,
+  type BuildComparisonOptions,
+  type BuildDelta,
+  type ComparisonSide,
+} from './build-comparison';
+
+// The detectors that run over a sweep. They PROPOSE; a person confirms (CLAUDE.md). `auditSweeps`
+// takes a Catalogue as an argument, so the same checks a fixture grid runs against can be run
+// over the published roster by a caller that is allowed to open it — the engine is not.
+export {
+  APPORTIONMENT_TOLERANCE,
+  auditLevelSeries,
+  auditResistanceSeries,
+  auditSweeps,
+  type AuditFinding,
+  type SweepAuditCase,
+  type SweepAuditOptions,
+  type SweepAuditReport,
+  type SweepFinding,
+  type SweepFindingKind,
+} from './sweep-audit';
