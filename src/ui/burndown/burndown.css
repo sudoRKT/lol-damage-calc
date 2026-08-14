@@ -491,6 +491,21 @@
   pointer-events: none;
 }
 
+/* --------------------------------------------------------------------------
+ * WHY THE SECOND VERDICT SAYS WHAT IT SAYS (added 2026-08-14).
+ *
+ * Quieter than the verdict it explains, and on its own line so the verdict word still reads
+ * first. NO HUE: this is a note about data, not damage data.
+ * -------------------------------------------------------------------------- */
+
+.burn__verdict-note {
+  display: block;
+  font-size: var(--type-body-s);
+  line-height: var(--lh-body-s);
+  font-weight: var(--weight-body);
+  color: var(--text-secondary);
+}
+
 /* SPECIFICATION §3.2, quoted verbatim by DESIGN.md §7 as the axis caption. */
 .burn__caption {
   margin: var(--space-2) 0 0;

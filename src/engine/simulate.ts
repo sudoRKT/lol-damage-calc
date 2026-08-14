@@ -571,6 +571,170 @@ function withRiders(
   return out;
 }
 
+/**
+ * WHAT TRIGGERS EACH BURN, READ FROM THE SOURCE'S OWN SENTENCE — one entry per item, by id.
+ *
+ * **This is a READ POPULATION, not a pattern** (CLAUDE.md; the precedent is `READ_POPULATION` in
+ * scripts/extract/variable-hits.ts). All 9 stored `periodic` effects were read sentence by
+ * sentence on 2026-08-14 and classified here by hand. A regular expression over `sourceSays`
+ * would have to tell "Dealing ability damage burns enemies" from "60/4 magic damage every 0.25
+ * seconds" — two sentences that mean entirely different things about WHEN the burn happens — and
+ * getting that wrong hands a build damage it never earned.
+ *
+ * **AN ITEM NOT IN THIS MAP IS REPORTED, NEVER GUESSED.** Adding a member means reading its
+ * sentence, not widening anything.
+ *
+ * `'ability-damage'` — the sentence states the trigger in sequence terms this engine can honour:
+ * the burn happens because an ability dealt damage. Three say exactly that.
+ *
+ * `'not-stated'` — the sentence states how much and how often and NOT what starts it. Malignance
+ * and Zeke's Convergence are the live cases: both carry a tick figure and a tick count, and
+ * neither stored sentence says what sets them off. They are named as incomplete rather than fired
+ * unconditionally, because firing them would assert they always happen.
+ */
+export const BURN_TRIGGERS: ReadonlyMap<number, 'ability-damage' | 'not-stated'> = new Map([
+  [2503, 'ability-damage'], // Blackfire Torch — "Dealing ability damage burns enemies"
+  [2508, 'ability-damage'], // Fated Ashes — "Dealing ability damage burns enemies"
+  [6653, 'ability-damage'], // Liandry's Torment — the burn its ability damage applies
+  [3118, 'not-stated'], // Malignance — tick and count stated, trigger not
+  [3050, 'not-stated'], // Zeke's Convergence — tick and count stated, trigger not
+]);
+
+/**
+ * THE BURN FAMILY, AS DAMAGE OVER TIME. Built 2026-08-14.
+ *
+ * **9 of the 43 stored item effects recur** (`appliesAs: 'periodic'`). SPECIFICATION §3.8 fixes
+ * what happens to them: a DoT is NEVER folded into the burst total, it is reported as its own
+ * line stating the total across the effect's full duration, and the survival verdict is given
+ * twice. Until now nothing produced one, so the second verdict had been identical to the first
+ * for every real scenario ever computed (DATA-SOURCES §56).
+ *
+ * ═══ THE FULL-DURATION TOTAL IS ARITHMETIC ON STORED DATA, NEVER AN INVENTED DURATION ═══
+ *
+ * The component holds ONE TICK and `overTime.totalInstances` holds how many times it lands, both
+ * stated by the source. The total is one times the other, expressed through `AbilityComponent.hits`
+ * — the field that already means "a fixed count the source states", evaluated as `perHit × hits`.
+ * Checked against the source's own arithmetic: Blackfire Torch is 10 a tick over 6 ticks and its
+ * sentence says "for a total of 60"; Fated Ashes is 2.5 over 6 and says "a total of 15".
+ *
+ * **NO INTERVAL IS READ AND NO DURATION IS DERIVED.** §3.2 gives this engine no time axis. "Every
+ * 0.5 seconds over 3 seconds" is not converted to anything here — the count comes from the stored
+ * count, and where there is no stored count there is no total.
+ *
+ * ═══ FOUR OF THE NINE CAN NEVER CARRY A FIGURE, AND SAY SO ═══
+ *
+ * Bami's Cinder, Hollow Radiance, Sunfire Aegis and Unending Despair burn for as long as an enemy
+ * stays near, and the source states no number of ticks. They are named as INCOMPLETE DoT sources
+ * with that reason rather than left absent — absent reads as "this item does nothing", which is
+ * false and is the exact failure this project exists to prevent.
+ */
+function withBurns(
+  planned: PlannedInstance[],
+  combo: readonly ComboStep[],
+  config: ChampionConfig,
+  catalogue: Catalogue,
+  rangeType: 'Melee' | 'Ranged',
+): PlannedInstance[] {
+  const burns = config.items.flatMap((id) => {
+    const item = catalogue.item(id);
+    return catalogue
+      .itemEffects(id)
+      .filter((e) => e.appliesAs === 'periodic')
+      .map((effect) => ({ effect, itemName: item?.name ?? `item ${id}`, itemId: id }));
+  });
+  if (burns.length === 0) return planned;
+
+  // Did an ability actually deal damage? A burn that the source says is applied BY ability damage
+  // has not been applied if no ability landed. `verification === 'incomplete'` is the engine's
+  // own statement that an instance contributed nothing.
+  const anAbilityDealtDamage = planned.some(
+    (instance, i) =>
+      combo[i]?.kind === 'ability' && instance.damage !== undefined && instance.verification !== 'incomplete',
+  );
+
+  const out = [...planned];
+  burns.forEach(({ effect, itemName, itemId }, ordinal) => {
+    const label = `${itemName} — ${effect.name}`;
+    const stepId = `burn-${ordinal}`;
+    const components = effect.components ?? [];
+    const ticks = effect.overTime?.totalInstances;
+    const trigger = BURN_TRIGGERS.get(itemId);
+
+    const incomplete = (note: string): PlannedInstance => ({
+      stepId,
+      sourceLabel: label,
+      instanceType: 'dot-application',
+      verification: 'incomplete',
+      dot: {
+        label,
+        verification: 'incomplete',
+        incompleteReason: { kind: 'pending', note },
+        damage: { components: [], rank: 1, maxRank: 1 },
+      },
+    });
+
+    if (effect.verification === 'incomplete' || components.length === 0) {
+      out.push(
+        incomplete(
+          effect.notes ??
+            `${itemName} burns over time and its entry is incomplete, so no total is published.`,
+        ),
+      );
+      return;
+    }
+    if (ticks === undefined) {
+      out.push(
+        incomplete(
+          `${itemName} burns for as long as its condition holds, and the source states no ` +
+            `number of ticks — so no full-duration total exists to report. This engine models ` +
+            `sequence rather than elapsed time, so a duration cannot be turned into a count.`,
+        ),
+      );
+      return;
+    }
+    if (trigger === undefined || trigger === 'not-stated') {
+      out.push(
+        incomplete(
+          `${itemName} states how much it burns for and how many times, but the source does ` +
+            `not say what sets it off — so whether it fires in this combo cannot be decided ` +
+            `without guessing.`,
+        ),
+      );
+      return;
+    }
+    if (trigger === 'ability-damage' && !anAbilityDealtDamage) {
+      out.push(
+        incomplete(
+          `${itemName} burns enemies hit by ability damage, and no ability in this combo dealt ` +
+            `any. That is your combo rather than a gap in our data.`,
+        ),
+      );
+      return;
+    }
+
+    // THE FULL-DURATION TOTAL. `hits` is the stored tick count, and nothing else here scales it.
+    out.push({
+      stepId,
+      sourceLabel: label,
+      instanceType: 'dot-application',
+      verification: effect.verification,
+      dot: {
+        label,
+        verification: effect.verification,
+        damage: {
+          components: components.map((c) => ({ ...c, hits: ticks })),
+          rank: 1,
+          maxRank: 1,
+          holder: 'attacker',
+          rangeType,
+        },
+      },
+    });
+  });
+
+  return out;
+}
+
 /** One rider, as its own instance. Never crits, and carries the holder's range type. */
 function riderInstance(
   effect: CuratedItemEffect,
@@ -847,13 +1011,9 @@ export function planScenario(
   const planned = scenario.combo.map((step) =>
     planStep(step, scenario.attacker, abilities, attacker.block, catalogue),
   );
-  const instances = withRiders(
-    planned,
-    scenario.combo,
-    scenario.attacker,
-    catalogue,
-    attackerChampion.stats.rangetype === 'Ranged' ? 'Ranged' : 'Melee',
-  );
+  const rangeType = attackerChampion.stats.rangetype === 'Ranged' ? 'Ranged' : 'Melee';
+  const withRiderRows = withRiders(planned, scenario.combo, scenario.attacker, catalogue, rangeType);
+  const instances = withBurns(withRiderRows, scenario.combo, scenario.attacker, catalogue, rangeType);
 
   const unknownStats = [...attacker.unknownItemStats, ...defender.unknownItemStats];
   const plan: ComboPlan = {

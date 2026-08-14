@@ -170,6 +170,48 @@ describe('the chart draws it, and a screen reader hears it', () => {
   });
 });
 
+describe('the second verdict says why it agrees with the first', () => {
+  // A reader seeing the same sentence twice learns nothing and may reasonably think it is a bug.
+  // Nothing produced a DoT until 2026-08-14, so these two lines were identical for every real
+  // scenario ever computed — §3.8 satisfied in form and not in substance (DATA-SOURCES §56).
+  it('says nothing in the scenario deals damage over time, when nothing does', () => {
+    const noDot: Result = { ...MOCK_RESULT, dot: { total: 0, byType: { physical: 0, magic: 0, true: 0 }, sources: [] } };
+    const { container } = render(<HpBurndown result={noDot} />);
+    const note = container.querySelector('.burn__verdict-note');
+    expect(note?.textContent).toMatch(/nothing in this scenario deals damage over time/);
+  });
+
+  it('distinguishes "there is none" from "there is some with no published total"', () => {
+    const unpublished: Result = {
+      ...MOCK_RESULT,
+      dot: {
+        total: 0,
+        byType: { physical: 0, magic: 0, true: 0 },
+        sources: [
+          {
+            label: "Bami's Cinder — Immolate",
+            icon: null,
+            damageType: 'magic',
+            total: 0,
+            verification: 'incomplete',
+            incompleteReason: { kind: 'pending', note: 'the source states no number of ticks' },
+          },
+        ],
+      },
+    };
+    const { container } = render(<HpBurndown result={unpublished} />);
+    expect(container.querySelector('.burn__verdict-note')?.textContent).toMatch(
+      /has no published total/,
+    );
+  });
+
+  it('says NOTHING extra when the two verdicts genuinely differ', () => {
+    // MOCK_RESULT carries a real DoT, so the note would be noise.
+    const { container } = render(<HpBurndown result={MOCK_RESULT} />);
+    expect(container.querySelector('.burn__verdict-note')).toBeNull();
+  });
+});
+
 describe('grouping is STRICTLY ADDITIVE — it moves no number', () => {
   it('every figure in the model is identical with and without the grouping', () => {
     // The whole argument for grouping over folding rests on this. If it fails, grouping has

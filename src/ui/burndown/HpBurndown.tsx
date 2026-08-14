@@ -251,6 +251,15 @@ export function HpBurndown({ result, title = 'HP burndown' }: HpBurndownProps) {
 
   const close = useCallback(() => setOpen(null), []);
 
+  // WHY THE SECOND VERDICT READS AS IT DOES. Three states, and only the first is the one this
+  // product spent its whole life in.
+  const dotNote =
+    result.dot.total > 0
+      ? null
+      : result.dot.sources.length === 0
+        ? 'same as burst — nothing in this scenario deals damage over time'
+        : 'same as burst — the damage over time here has no published total, see below';
+
   return (
     <section className={`burn${settled ? ' burn--settled' : ''}`} aria-label={title}>
       {/* ONE BAND, NOT TWO STACKED BLOCKS. The title, the rolling total, the patch and the
@@ -424,7 +433,16 @@ export function HpBurndown({ result, title = 'HP burndown' }: HpBurndownProps) {
           </tr>
           <tr>
             <th scope="row">Burst + DoT</th>
-            <td>{verdictWords(result.verdict.burstPlusDot)}</td>
+            <td>
+              {verdictWords(result.verdict.burstPlusDot)}
+              {/* A READER SEEING THE SAME SENTENCE TWICE LEARNS NOTHING, and may reasonably
+                  think it is a bug. Until 2026-08-14 nothing in this product produced any
+                  damage over time, so these two lines were IDENTICAL for every real scenario
+                  ever computed — SPECIFICATION §3.8's "given twice" satisfied in form and not
+                  in substance (DATA-SOURCES §56). Where there is genuinely no DoT, the second
+                  line now says so instead of repeating the first. */}
+              {dotNote ? <span className="burn__verdict-note">{dotNote}</span> : null}
+            </td>
           </tr>
         </tbody>
       </table>

@@ -426,7 +426,20 @@ export function runCombo(plan: ComboPlan): Result {
   let shields: ShieldPool[] = (plan.defenderShields ?? []).map((s) => ({ ...s }));
 
   // Every instance, in order. Nothing here looks ahead.
-  plan.instances.forEach((instance, position) => {
+  // A DOT APPLICATION IS NOT A BURST INSTANCE (added 2026-08-14).
+  //
+  // An item burn registers damage over time and lands no burst damage of its own. It must not
+  // occupy a numbered position in the sequence, because that would put a zero-damage row in the
+  // breakdown and a zero-height column in the burndown for something that never hit at that
+  // moment — and §3.8 keeps the DoT out of the burst total entirely.
+  //
+  // The DoT loop below reads `plan.instances` directly, so these are still resolved in full.
+  // A NON-DAMAGING ABILITY IS NOT AFFECTED: it has no dot, still occupies its position (§3.4).
+  const burstInstances = plan.instances.filter(
+    (i) => !(i.instanceType === 'dot-application' && i.damage === undefined),
+  );
+
+  burstInstances.forEach((instance, position) => {
     const instanceNumber = combat.instancesResolved + 1;
     const damagingInstanceNumber = combat.damagingInstancesResolved + 1;
     const healthBefore = combat.defenderCurrentHp;
