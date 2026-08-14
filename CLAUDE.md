@@ -127,6 +127,26 @@ The site's look is a defined deliverable, not something that emerges from the bu
 - Concentrate animation on the combo resolving against the target's health. Keep motion
   restrained everywhere else.
 
+## The interface has been audited against its own design file
+
+`DESIGN-AUDIT.md` at the project root records the state of the built interface against DESIGN.md,
+section by section, measured on the live page rather than judged. **Start there rather than
+re-deriving it.** The headline: the configuration row occupies the whole first screen and the
+burndown — the signature element — begins 309px below the fold, at 16.7% of a page 3.4 screens
+tall. The interface is correct and characterless.
+
+It also carries the damage-type tag finding and its reframing, which is the part most easily lost:
+**SPECIFICATION §10.1 requires only that damage type is never conveyed by colour alone. The letter,
+and its placement on the ability chip, are DESIGN.md's additions** — so both can change without
+touching the colour-alone rule. A player reads a chip marked `M` as an ability slot, not as magic
+damage.
+
+Three SPECIFICATION requirements are absent from the page and are layout-affecting, so they belong
+in a layout pass rather than being bolted on: the Riot disclaimer and the scope disclaimer (§15),
+and the report-a-wrong-number control (§8).
+
+**Nothing in that audit has been started.** It ends with a proposed order of work.
+
 ## The guards
 
 Four mechanical guards run on this project. A safety system nobody has written down is one
