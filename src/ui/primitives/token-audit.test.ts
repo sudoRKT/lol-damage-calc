@@ -161,6 +161,14 @@ const LENGTH_ALLOWLIST: Array<{ value: string; rule: string; reason: string }> =
       'the open picker list hangs off the bottom edge of its field: 100% is the ANCHOR’S OWN ' +
       'height, a fraction of the parent, not a design length. Same standing as .chip__img.',
   },
+  {
+    value: '100%',
+    rule: '.nav__panel',
+    reason:
+      'the open menu hangs off the bottom edge of the toggle — 100% is the ANCHOR’S OWN ' +
+      'height, exactly as .picker__list above. Both are popovers anchored to the control that ' +
+      'opens them, and neither number is a design length.',
+  },
   // DESIGN.md §7 states four stroke widths verbatim for the burndown. They are quoted, not
   // chosen: "a 2px line in --hp-trace", "a 3px line dropping from Rᵢ", "a 2px solid --lethal
   // vertical rule", and a callout chip "with a 2px --lethal border". Same standing as the

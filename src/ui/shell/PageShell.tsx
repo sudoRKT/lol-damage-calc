@@ -9,11 +9,12 @@
 // page's own heading. A skip link is the first focusable thing in the document, because on the
 // calculator the navigation sits in front of a page with several hundred controls.
 //
-// THE NAVIGATION IS NOT HERE YET. It lands in its own commit. `current` is already threaded
-// through so the nav can mark the page a reader is on without this file changing again.
+// THE NAVIGATION sits in the header and reads `current` to mark the page a reader is on. It is
+// inline links from 1280px up and a hamburger below — see `SiteNav`.
 
 import type { ReactNode } from 'react';
 import { SiteFooter } from './SiteFooter';
+import { SiteNav } from './SiteNav';
 import { pageById } from './pages';
 // The three faces DESIGN.md §3 chooses. Imported HERE, not in each of the eight page entries:
 // every page renders this component, so one import puts the real faces on every page and cannot
@@ -40,6 +41,8 @@ export interface PageShellProps {
   wide?: boolean;
   /** Hide the masthead entirely — the calculator prints its own matchup header. */
   bareMasthead?: boolean;
+  /** Passed to the navigation. Tests only — see `SiteNav`. */
+  inlineNavOverride?: boolean;
   children: ReactNode;
 }
 
@@ -49,6 +52,7 @@ export function PageShell({
   standfirst,
   wide = false,
   bareMasthead = false,
+  inlineNavOverride,
   children,
 }: PageShellProps) {
   const page = pageById(current);
@@ -64,6 +68,7 @@ export function PageShell({
           <span className="shell__wordmark-name">Bench Test</span>
           <span className="shell__wordmark-sub">League of Legends damage calculator</span>
         </a>
+        <SiteNav current={current} inlineOverride={inlineNavOverride} />
       </header>
 
       <main className={wide ? 'shell__main shell__main--wide' : 'shell__main'} id="main">

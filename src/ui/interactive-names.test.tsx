@@ -19,11 +19,12 @@
 //      already recorded in primitives/accessible-names.test.tsx, swept here over whole screens
 //      rather than over single primitives).
 //
-// POPULATION, STATED: seven fixtures — the picker (open, over all 173 champions), the combo
+// POPULATION, STATED: nine fixtures — the picker (open, over all 173 champions), the combo
 // builder (Lux's real abilities, a three-step combo), the stat block, the per-instance
 // breakdown, the HP burndown, a bare NumberInput, and the item picker over the real 209-item
-// pool with one item already in the build. Between them they render every interactive control
-// this area owns today. **The item picker was added on 2026-08-14 when item selection reached
+// pool with one item already in the build, and the site navigation in BOTH of its layouts —
+// the hamburger, opened, and the inline links a desktop gets. Between them they render every
+// interactive control this area owns today. **The item picker was added on 2026-08-14 when item selection reached
 // the page; the sentence above is a claim about coverage, so a new control-bearing component
 // means a new fixture rather than a note that one exists elsewhere.**
 //
@@ -41,7 +42,7 @@
 // popover, and the popover printed floating-point noise at users for as long as it existed.
 //
 // Checked on 2026-08-14, and true today: no control in this area is revealed by any interaction
-// other than the two opened here. The breakdown's full-state expansion contains no control, and
+// other than the three opened here (the champion picker, the item pool, the navigation menu). The breakdown's full-state expansion contains no control, and
 // the burndown's popover contains no control — both are read-only panels. **If either ever gains
 // one, this sweep needs a third `after` hook, not a footnote.**
 
@@ -61,6 +62,7 @@ import { InstanceBreakdown } from './breakdown';
 import { HpBurndown } from './burndown';
 import { NumberInput } from './inputs';
 import { ItemPicker } from './items';
+import { SiteNav } from './shell';
 import type { Item } from '../types';
 
 afterEach(cleanup);
@@ -162,6 +164,20 @@ const FIXTURES: Fixture[] = [
     // failure mode this whole file exists to prevent.
     after: () => fireEvent.focus(screen.getByRole('searchbox', { name: 'Search attacker items' })),
   },
+  {
+    id: 'SiteNav (hamburger, opened)',
+    node: <SiteNav current="calculator" inlineOverride={false} />,
+    // OPENED, or this sweep covers one button and none of the six links behind it — the same
+    // omission recorded in DATA-SOURCES §50.3 for the item pool.
+    after: () => fireEvent.click(screen.getByRole('button', { name: 'Menu' })),
+  },
+  {
+    id: 'SiteNav (inline links, 1280px and up)',
+    // BOTH LAYOUTS ARE FIXTURES. jsdom reports every media query as false, so without an
+    // explicit override the desktop navigation would never be rendered by any test while
+    // appearing to be covered by this one.
+    node: <SiteNav current="calculator" inlineOverride />,
+  },
 ];
 
 function mount(fixture: Fixture) {
@@ -170,8 +186,8 @@ function mount(fixture: Fixture) {
 }
 
 describe('interactive-names/population', () => {
-  it('mounts seven fixtures covering every control the area owns', () => {
-    expect(FIXTURES).toHaveLength(7);
+  it('mounts nine fixtures covering every control the area owns', () => {
+    expect(FIXTURES).toHaveLength(9);
   });
 
   it('the fixtures really do render controls — the sweep cannot pass by finding nothing', () => {

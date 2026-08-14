@@ -1,0 +1,171 @@
+/*
+ * The navigation. Every value traces to DESIGN.md; `../primitives/token-audit.test.ts` sweeps
+ * this file with the rest of the area.
+ *
+ * NO HUE. A navigation link is not damage data (DESIGN.md §1), so the current page is marked
+ * with a bone border — §6's "selected / active" — and never with a colour.
+ */
+
+@import '../tokens.css';
+
+.nav {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* --------------------------------------------------------------------------
+ * The toggle. Rendered only below the breakpoint — see SiteNav.tsx for why it is absent
+ * rather than hidden on a desktop.
+ * -------------------------------------------------------------------------- */
+
+.nav__toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: var(--bg-panel);
+  border: var(--border-steel);
+  border-radius: var(--radius-control);
+  padding: var(--space-2) var(--space-3);
+  cursor: pointer;
+  font-family: var(--font-display);
+  font-weight: var(--weight-display-medium);
+  font-size: var(--type-body-m);
+  line-height: var(--lh-body-m);
+  color: var(--text-primary);
+}
+
+.nav__toggle:hover {
+  background: var(--bg-panel-raised);
+  border: var(--border-strong);
+}
+
+.nav__toggle:focus-visible {
+  outline: var(--border-active);
+  outline-offset: var(--space-0);
+}
+
+/* The three bars. Decorative — the button's words are its name. Each bar is a --space-0 rule,
+   which is the hairline inset step, and they are spaced by --space-1. */
+.nav__bars {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--space-1);
+  inline-size: var(--space-4);
+}
+
+.nav__bars span {
+  display: block;
+  block-size: var(--space-0);
+  background: var(--text-primary);
+  border-radius: var(--radius-cell);
+}
+
+/* --------------------------------------------------------------------------
+ * The panel
+ * -------------------------------------------------------------------------- */
+
+/* Below the breakpoint it is an overlay anchored to the toggle. FIXED-POSITION OVERLAY, NOT A
+   DRAWER THAT PUSHES CONTENT: SPECIFICATION §13 asks for no cumulative layout shift, and a panel
+   that displaces the page moves the §16 ad containers every time it opens. */
+.nav__panel {
+  position: absolute;
+  inset-block-start: 100%;
+  inset-inline-end: 0;
+  z-index: 2;
+  margin-block-start: var(--space-2);
+  min-inline-size: var(--measure-list-column-min);
+  background: var(--bg-panel-raised);
+  border: var(--border-steel);
+  border-radius: var(--radius-panel);
+  /* DESIGN.md §5 gives --elev-2 to "popovers, dropdown pickers, menus" and to nothing else. */
+  box-shadow: var(--elev-2);
+  animation: nav-open 140ms ease-out; /* §10 — popover / menu open-close is 140ms ease-out */
+}
+
+.nav__list {
+  list-style: none;
+  margin: 0;
+  padding: var(--space-2);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-0);
+}
+
+.nav__link {
+  display: block;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-control);
+  border-inline-start: var(--border-steel);
+  font-size: var(--type-body-m);
+  line-height: var(--lh-body-m);
+  color: var(--text-secondary);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.nav__link:hover {
+  background: var(--bg-panel);
+  color: var(--text-primary);
+  text-decoration: none;
+}
+
+.nav__link:focus-visible {
+  outline: var(--border-active);
+  outline-offset: var(--space-0);
+}
+
+/* The page the reader is on. A bone border is DESIGN.md §6's "selected / active" — brightness
+   and border, never a hue. */
+.nav__link[aria-current='page'] {
+  border-inline-start: var(--border-active);
+  color: var(--text-primary);
+  font-weight: var(--weight-body-strong);
+}
+
+/* --------------------------------------------------------------------------
+ * From 1280px up: the same list, laid out as a row. DESIGN.md §7a's breakpoint, quoted.
+ * -------------------------------------------------------------------------- */
+
+.nav--inline .nav__panel {
+  position: static;
+  margin-block-start: 0;
+  background: transparent;
+  border: 0;
+  box-shadow: var(--elev-0);
+  animation: none;
+}
+
+.nav--inline .nav__list {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 0;
+}
+
+.nav--inline .nav__link {
+  border-inline-start: 0;
+  border-block-end: var(--border-steel);
+}
+
+.nav--inline .nav__link[aria-current='page'] {
+  border-inline-start: 0;
+  border-block-end: var(--border-active);
+}
+
+@keyframes nav-open {
+  from {
+    opacity: 0;
+  }
+}
+
+/* DESIGN.md §10: the chart must be readable with all motion disabled, and everywhere else keeps
+   only opacity fades of ≤100ms. Here that means no animation at all — and the selector must
+   appear in this block or the token audit's reduced-motion sweep fails the build. */
+@media (prefers-reduced-motion: reduce) {
+  .nav__panel {
+    animation: none;
+  }
+}
