@@ -1,0 +1,2600 @@
+{
+  "provenance": {
+    "source": "Riot Data Dragon item.json + runesReforged.json (which items and runes exist); wiki Module:ItemData/data (item effect prose and values)",
+    "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+    "patch": "16.16.1",
+    "fetched": "2026-08-14T15:04:56.831Z",
+    "urls": {
+      "patch": "https://ddragon.leagueoflegends.com/api/versions.json",
+      "items": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+      "itemEffects": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+      "runes": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/runesReforged.json"
+    }
+  },
+  "whatThisIs": "A CENSUS OF REFUSALS over the whole in-scope item and rune effect population, not over the structural subset DATA-SOURCES §39 measured. Every in-scope effect is either stored or carries at least one named class, every class carries a definition, and every class sits in one bucket saying whose problem it is. Nothing here is curated data.",
+  "definitions": {
+    "effectEntry": "One keyed entry in Module:ItemData/data or one rune — pass / pass2 / pass3 / act / consume. `description2` is a rider clause on the same effect, not a second effect.",
+    "inScope": "Deals damage, or modifies a stat that can change a damage number or the survival verdict. Movement speed, attack speed, ability haste, cooldowns and tenacity are NOT damage-relevant, because the engine models sequence and not elapsed time (SPECIFICATION §3.2).",
+    "damagingStructural": "The source wraps a damage type and a number together in one {{as}} run. 63 effects.",
+    "damagingProse": "The source says damage is dealt and does not state the value structurally. The census calls these `candidate`; the hand audit in effect-census-audit.ts confirms 18 of the 40 candidates deal damage. NO VALUE EXTRACTION HAS EVER BEEN ATTEMPTED ON THESE.",
+    "statModifier": "In scope, and deals no damage: it moves a stat that changes a damage number.",
+    "stored": "The wikitext parser and a recorded hand reading independently produced the same damage type, the same flat base, the same ratios in the same order, the same owner for every ratio, and the same recurrence. Any other outcome is a refusal.",
+    "blockedAlone": "The count of effects for which a class is the ONLY blocker. Adding a shape releases that number, not the larger \"mentions it\" number — DATA-SOURCES §41.3 predicted 19 releases from a count of reasons and got 10, because 8 of the 18 carried a second blocker and 2 of the reasons landed on one effect.",
+    "buckets": {
+      "contract": "The source states the fact plainly and the frozen contract in src/types/ has no shape that can hold it. Adding the shape would release the effects blocked by that shape ALONE — DATA-SOURCES §41.3 overstated a release by 90% by counting reasons instead of effects, so every population here is counted as effects with NO other blocker as well as in total.",
+      "source-silent": "No source states the fact. Nobody can supply it and it is not a worklist (SPECIFICATION §8). This is the bucket §39 found only two members of.",
+      "out-of-champion-scope": "The source states the effect in full and it cannot reach the defender in a two-champion fight (SPECIFICATION §1) — it damages minions, wards or turrets, or enemies OTHER than the one attacked, or an ally, or it needs a third unit to exist. Storing it would be storing damage this product can never deal.",
+      "not-actually-in-scope": "The in-scope test fired and a reading of the sentence says the effect cannot change a damage number or the survival verdict after all. REPORTED AS A PROPOSED CORRECTION TO THE IN-SCOPE FIGURE, never silently removed from the denominator — a count that shrinks because someone quietly redefined it is not comparable to anything.",
+      "not-yet-read": "Nobody has read the sentence. This is the only bucket that is WORK, and it is this pipeline's work. An effect here is reported, never stored (CLAUDE.md).",
+      "parser": "This pipeline's own limitation, not the contract's and not the source's. The shape exists and the words are there; the parser in scripts/fetch/ does not read them yet."
+    }
+  },
+  "counts": {
+    "effectEntries": 291,
+    "inScope": 168,
+    "damaging": 81,
+    "damagingStructural": 63,
+    "damagingProse": 18,
+    "statModifiers": 87,
+    "stored": 43,
+    "storedByPass": {
+      "structural": 38,
+      "secondReach": 5
+    },
+    "notStored": 125,
+    "byClass": {
+      "stat-grant-is-conditional": {
+        "total": 60,
+        "alone": 29,
+        "effects": [
+          "Actualizer [act]",
+          "Archangel's Staff [pass2]",
+          "Armored Advance [pass2]",
+          "Black Cleaver [pass]",
+          "Blackfire Torch [pass2]",
+          "Bloodletter's Curse [pass]",
+          "Bloodthirster [pass]",
+          "Chainlaced Crushers [pass]",
+          "Dark Seal [pass]",
+          "Death's Dance [pass2]",
+          "Doran's Ring [pass]",
+          "Doran's Shield [pass]",
+          "Elixir of Iron [consume]",
+          "Endless Hunger [pass2]",
+          "Force of Nature [pass]",
+          "Gluttonous Greaves [pass]",
+          "Haunting Guise [pass]",
+          "Hexdrinker [pass]",
+          "Hubris [pass]",
+          "Immortal Path [pass2]",
+          "Immortal Shieldbow [pass]",
+          "Jak'Sho, The Protean [pass]",
+          "Kaenic Rookern [pass]",
+          "Liandry's Torment [pass2]",
+          "Lord Dominik's Regards [pass]",
+          "Manamune [pass2]",
+          "Maw of Malmortius [pass]",
+          "Mejai's Soulstealer [pass]",
+          "Moonstone Renewer [pass]",
+          "Protoplasm Harness [pass]",
+          "Riftmaker [pass]",
+          "Rod of Ages [pass]",
+          "Solstice Sleigh [pass]",
+          "Spear of Shojin [pass2]",
+          "Staff of Flowing Water [pass]",
+          "Sterak's Gage [pass2]",
+          "Stormsurge [pass]",
+          "Tear of the Goddess [pass]",
+          "Terminus [pass2]",
+          "Whispering Circlet [pass2]",
+          "Winter's Approach [pass2]",
+          "World Atlas [pass2]",
+          "Yun Tal Wildarrows [pass]",
+          "Taste of Blood [rune]",
+          "Glacial Augment [rune]",
+          "Time Warp Tonic [rune]",
+          "Biscuit Delivery [rune]",
+          "Jack Of All Trades [rune]",
+          "Fleet Footwork [rune]",
+          "Conqueror [rune]",
+          "Legend: Bloodline [rune]",
+          "Last Stand [rune]",
+          "Guardian [rune]",
+          "Conditioning [rune]",
+          "Overgrowth [rune]",
+          "Unflinching [rune]",
+          "Stormraider's Surge [rune]",
+          "Axiom Arcanist [rune]",
+          "Manaflow Band [rune]",
+          "Absolute Focus [rune]"
+        ]
+      },
+      "stat-grant-is-a-share-of-another-stat": {
+        "total": 26,
+        "alone": 12,
+        "effects": [
+          "Actualizer [act]",
+          "Archangel's Staff [pass]",
+          "Dark Seal [pass]",
+          "Dawncore [pass]",
+          "Doran's Shield [pass]",
+          "Kaenic Rookern [pass]",
+          "Lord Dominik's Regards [pass]",
+          "Manamune [pass]",
+          "Mejai's Soulstealer [pass]",
+          "Overlord's Bloodmail [pass]",
+          "Overlord's Bloodmail [pass2]",
+          "Riftmaker [pass2]",
+          "Sterak's Gage [pass]",
+          "Sterak's Gage [pass2]",
+          "Stormsurge [pass]",
+          "Swiftmarch [pass2]",
+          "Warmog's Armor [pass3]",
+          "Whispering Circlet [pass]",
+          "Winter's Approach [pass]",
+          "Taste of Blood [rune]",
+          "Glacial Augment [rune]",
+          "Biscuit Delivery [rune]",
+          "Legend: Bloodline [rune]",
+          "Overgrowth [rune]",
+          "Absolute Focus [rune]",
+          "Waterwalking [rune]"
+        ]
+      },
+      "the-stat-is-a-threshold-not-a-grant": {
+        "total": 5,
+        "alone": 5,
+        "effects": [
+          "Archangel's Staff [pass3]",
+          "Manamune [pass3]",
+          "Warmog's Armor [pass]",
+          "Whispering Circlet [pass3]",
+          "Winter's Approach [pass3]"
+        ]
+      },
+      "grants-a-shield": {
+        "total": 9,
+        "alone": 0,
+        "effects": [
+          "Armored Advance [pass2]",
+          "Bloodthirster [pass]",
+          "Chainlaced Crushers [pass]",
+          "Hexdrinker [pass]",
+          "Immortal Shieldbow [pass]",
+          "Kaenic Rookern [pass]",
+          "Maw of Malmortius [pass]",
+          "Sterak's Gage [pass2]",
+          "Guardian [rune]"
+        ]
+      },
+      "scales-on-lethality": {
+        "total": 3,
+        "alone": 2,
+        "effects": [
+          "Bastionbreaker [pass]",
+          "Bastionbreaker [pass2]",
+          "Umbral Glaive [pass3]"
+        ]
+      },
+      "non-champion-target-only": {
+        "total": 6,
+        "alone": 5,
+        "effects": [
+          "Bastionbreaker [pass2]",
+          "Doran's Helm [pass]",
+          "Doran's Ring [pass2]",
+          "Doran's Shield [pass2]",
+          "Tear of the Goddess [pass2]",
+          "Umbral Glaive [pass2]"
+        ]
+      },
+      "stat-grant-multiplies-a-stat": {
+        "total": 5,
+        "alone": 2,
+        "effects": [
+          "Blackfire Torch [pass2]",
+          "Jak'Sho, The Protean [pass]",
+          "Rabadon's Deathcap [pass]",
+          "Spirit Visage [pass]",
+          "Conditioning [rune]"
+        ]
+      },
+      "retaliation": {
+        "total": 2,
+        "alone": 2,
+        "effects": [
+          "Bramble Vest [pass]",
+          "Thornmail [pass]"
+        ]
+      },
+      "scales-on-stacks": {
+        "total": 2,
+        "alone": 1,
+        "effects": [
+          "Dead Man's Plate [pass]",
+          "Dark Harvest [rune]"
+        ]
+      },
+      "ally-only": {
+        "total": 1,
+        "alone": 1,
+        "effects": [
+          "Dream Maker [pass]"
+        ]
+      },
+      "flat-stat-grant-nothing-blocks": {
+        "total": 1,
+        "alone": 1,
+        "effects": [
+          "Elixir of Wrath [consume]"
+        ]
+      },
+      "the-damage-relevant-stat-is-an-input-not-an-output": {
+        "total": 1,
+        "alone": 1,
+        "effects": [
+          "Endless Hunger [pass]"
+        ]
+      },
+      "scales-on-crit-chance": {
+        "total": 1,
+        "alone": 1,
+        "effects": [
+          "Essence Reaver [pass]"
+        ]
+      },
+      "critical-strike-modifier": {
+        "total": 2,
+        "alone": 1,
+        "effects": [
+          "Fiendhunter Bolts [pass2]",
+          "Sundered Sky [pass]"
+        ]
+      },
+      "conditional-additional-damage": {
+        "total": 3,
+        "alone": 1,
+        "effects": [
+          "Fiendhunter Bolts [pass2]",
+          "Kraken Slayer [pass]",
+          "Luden's Echo [pass]"
+        ]
+      },
+      "regeneration-is-not-modelled": {
+        "total": 1,
+        "alone": 1,
+        "effects": [
+          "Guardian's Orb [pass]"
+        ]
+      },
+      "amplifies-damage-or-reduces-it": {
+        "total": 8,
+        "alone": 0,
+        "effects": [
+          "Haunting Guise [pass]",
+          "Immortal Path [pass2]",
+          "Liandry's Torment [pass2]",
+          "Lord Dominik's Regards [pass]",
+          "Riftmaker [pass]",
+          "Spear of Shojin [pass2]",
+          "Last Stand [rune]",
+          "Axiom Arcanist [rune]"
+        ]
+      },
+      "trigger-needs-a-third-unit": {
+        "total": 1,
+        "alone": 0,
+        "effects": [
+          "Hollow Radiance [pass2]"
+        ]
+      },
+      "value-stated-only-by-reference": {
+        "total": 1,
+        "alone": 0,
+        "effects": [
+          "Hollow Radiance [pass2]"
+        ]
+      },
+      "the-stat-belongs-to-a-ward-or-a-minion": {
+        "total": 2,
+        "alone": 2,
+        "effects": [
+          "Hullbreaker [pass2]",
+          "Deep Ward [rune]"
+        ]
+      },
+      "range-split-has-named-arguments": {
+        "total": 1,
+        "alone": 0,
+        "effects": [
+          "Kraken Slayer [pass]"
+        ]
+      },
+      "other-enemies-only": {
+        "total": 5,
+        "alone": 5,
+        "effects": [
+          "Profane Hydra [pass]",
+          "Ravenous Hydra [pass]",
+          "Runaan's Hurricane [pass]",
+          "Stridebreaker [pass]",
+          "Tiamat [pass]"
+        ]
+      },
+      "adaptive-damage-type": {
+        "total": 3,
+        "alone": 1,
+        "effects": [
+          "Electrocute [rune]",
+          "Dark Harvest [rune]",
+          "Arcane Comet [rune]"
+        ]
+      },
+      "range-with-unstated-axis": {
+        "total": 3,
+        "alone": 2,
+        "effects": [
+          "Electrocute [rune]",
+          "Hail of Blades [rune]",
+          "Aftershock [rune]"
+        ]
+      },
+      "rune-prose-has-no-structure-to-confirm-a-reading": {
+        "total": 10,
+        "alone": 10,
+        "effects": [
+          "Cheap Shot [rune]",
+          "Sudden Impact [rune]",
+          "Press the Attack [rune]",
+          "Lethal Tempo [rune]",
+          "Grasp of the Undying [rune]",
+          "Demolish [rune]",
+          "Shield Bash [rune]",
+          "Summon Aery [rune]",
+          "Deathfire Touch [rune]",
+          "Scorch [rune]"
+        ]
+      },
+      "grants-healing-not-a-stat": {
+        "total": 2,
+        "alone": 2,
+        "effects": [
+          "Triumph [rune]",
+          "Revitalize [rune]"
+        ]
+      },
+      "scales-on-elapsed-time": {
+        "total": 1,
+        "alone": 1,
+        "effects": [
+          "Gathering Storm [rune]"
+        ]
+      }
+    },
+    "byBucket": {
+      "contract": 91,
+      "not-actually-in-scope": 10,
+      "out-of-champion-scope": 13,
+      "not-yet-read": 11,
+      "parser": 1,
+      "source-silent": 3
+    },
+    "carryingNothingButThisBucket": {
+      "contract": 87,
+      "not-actually-in-scope": 10,
+      "out-of-champion-scope": 11,
+      "not-yet-read": 11,
+      "source-silent": 2
+    },
+    "contractShapeReleases": [
+      {
+        "name": "stat-grant-is-conditional",
+        "shapeNeeded": "`CuratedItemEffect` gains `activation: 'always-active' | 'conditional' | 'not-stated'` and `condition`, exactly as `CuratedDefensiveEffect` carries them.",
+        "blocked": 60,
+        "alone": 29,
+        "aloneEffects": [
+          "Archangel's Staff [pass2]",
+          "Black Cleaver [pass]",
+          "Bloodletter's Curse [pass]",
+          "Death's Dance [pass2]",
+          "Doran's Ring [pass]",
+          "Elixir of Iron [consume]",
+          "Endless Hunger [pass2]",
+          "Force of Nature [pass]",
+          "Gluttonous Greaves [pass]",
+          "Hubris [pass]",
+          "Manamune [pass2]",
+          "Moonstone Renewer [pass]",
+          "Protoplasm Harness [pass]",
+          "Rod of Ages [pass]",
+          "Solstice Sleigh [pass]",
+          "Staff of Flowing Water [pass]",
+          "Tear of the Goddess [pass]",
+          "Terminus [pass2]",
+          "Whispering Circlet [pass2]",
+          "Winter's Approach [pass2]",
+          "World Atlas [pass2]",
+          "Yun Tal Wildarrows [pass]",
+          "Time Warp Tonic [rune]",
+          "Jack Of All Trades [rune]",
+          "Fleet Footwork [rune]",
+          "Conqueror [rune]",
+          "Unflinching [rune]",
+          "Stormraider's Surge [rune]",
+          "Manaflow Band [rune]"
+        ]
+      },
+      {
+        "name": "stat-grant-is-a-share-of-another-stat",
+        "shapeNeeded": "`CuratedItemEffect.grants` becomes a list of { stat, value?: Scaling, ratios?: Ratio[] } rather than a flat number map — the same shape ability damage already uses.",
+        "blocked": 26,
+        "alone": 12,
+        "aloneEffects": [
+          "Archangel's Staff [pass]",
+          "Dawncore [pass]",
+          "Manamune [pass]",
+          "Overlord's Bloodmail [pass]",
+          "Overlord's Bloodmail [pass2]",
+          "Riftmaker [pass2]",
+          "Sterak's Gage [pass]",
+          "Swiftmarch [pass2]",
+          "Warmog's Armor [pass3]",
+          "Whispering Circlet [pass]",
+          "Winter's Approach [pass]",
+          "Waterwalking [rune]"
+        ]
+      },
+      {
+        "name": "stat-grant-multiplies-a-stat",
+        "shapeNeeded": "A unit on a granted stat, mirroring `CuratedDefensiveEffect.unit`.",
+        "blocked": 5,
+        "alone": 2,
+        "aloneEffects": [
+          "Rabadon's Deathcap [pass]",
+          "Spirit Visage [pass]"
+        ]
+      },
+      {
+        "name": "scales-on-lethality",
+        "shapeNeeded": "`RatioStat` gains 'lethality', and `StatBlock` carries it.",
+        "blocked": 3,
+        "alone": 2,
+        "aloneEffects": [
+          "Bastionbreaker [pass]",
+          "Umbral Glaive [pass3]"
+        ]
+      },
+      {
+        "name": "retaliation",
+        "shapeNeeded": "A direction on an item effect — damage dealt BY the holder TO whoever attacked them, reported separately from the combo (it changes no survival verdict this product gives).",
+        "blocked": 2,
+        "alone": 2,
+        "aloneEffects": [
+          "Bramble Vest [pass]",
+          "Thornmail [pass]"
+        ]
+      },
+      {
+        "name": "grants-healing-not-a-stat",
+        "shapeNeeded": "A healing field on `CuratedItemEffect` and `CuratedRune`, feeding `Result.sustain`.",
+        "blocked": 2,
+        "alone": 2,
+        "aloneEffects": [
+          "Triumph [rune]",
+          "Revitalize [rune]"
+        ]
+      },
+      {
+        "name": "adaptive-damage-type",
+        "shapeNeeded": "`DamageType` gains 'adaptive', resolved by the engine from the holder's stat block. `Champion.stats.adaptivetype` is already fetched and already carries the tie-break.",
+        "blocked": 3,
+        "alone": 1,
+        "aloneEffects": [
+          "Arcane Comet [rune]"
+        ]
+      },
+      {
+        "name": "conditional-additional-damage",
+        "shapeNeeded": "A multiplier on a whole `AbilityComponent`, with the quantity that drives it.",
+        "blocked": 3,
+        "alone": 1,
+        "aloneEffects": [
+          "Luden's Echo [pass]"
+        ]
+      },
+      {
+        "name": "critical-strike-modifier",
+        "shapeNeeded": "A field on `CuratedItemEffect` that modifies the critical multiplier rather than adding a component.",
+        "blocked": 2,
+        "alone": 1,
+        "aloneEffects": [
+          "Sundered Sky [pass]"
+        ]
+      },
+      {
+        "name": "scales-on-stacks",
+        "shapeNeeded": "A `Scaling` arm that walks a named counter, mirroring `Ratio`'s 'stacks'.",
+        "blocked": 2,
+        "alone": 1,
+        "aloneEffects": [
+          "Dead Man's Plate [pass]"
+        ]
+      },
+      {
+        "name": "scales-on-crit-chance",
+        "shapeNeeded": "`RatioStat` gains 'critChance'.",
+        "blocked": 1,
+        "alone": 1,
+        "aloneEffects": [
+          "Essence Reaver [pass]"
+        ]
+      },
+      {
+        "name": "grants-a-shield",
+        "shapeNeeded": "`CuratedItemEffect` gains the defensive fields, or `CuratedDefensiveEffect` is allowed to be sourced from an item.",
+        "blocked": 9,
+        "alone": 0,
+        "aloneEffects": []
+      },
+      {
+        "name": "amplifies-damage-or-reduces-it",
+        "shapeNeeded": "A damage amplifier and a damage taken multiplier on `CuratedItemEffect`, applied at a stated point in the four-step resistance order (SPECIFICATION §3.6).",
+        "blocked": 8,
+        "alone": 0,
+        "aloneEffects": []
+      },
+      {
+        "name": "value-stated-only-by-reference",
+        "shapeNeeded": "`CuratedDefensiveEffect.valueByReference` exists for exactly this; `CuratedItemEffect` has no equivalent.",
+        "blocked": 1,
+        "alone": 0,
+        "aloneEffects": []
+      }
+    ]
+  },
+  "hiddenDamageFigureSweep": {
+    "whatThisIs": "`findBlocks` reports templates at the OUTERMOST nesting level only, so an {{as}} block inside another template is invisible to the census, the parser and the gate at once. This is that class, measured over every item effect.",
+    "itemEffectsAffected": [
+      "Doran's Ring [pass]",
+      "Essence Reaver [pass]",
+      "Fiendhunter Bolts [pass2]",
+      "Heartsteel [pass]",
+      "Hollow Radiance [pass2]",
+      "Liandry's Torment [pass]",
+      "Luden's Echo [pass]",
+      "Malignance [pass2]",
+      "Sundered Sky [pass]",
+      "Warmog's Armor [pass2]",
+      "Zeke's Convergence [pass2]"
+    ],
+    "wrappers": [
+      "ft",
+      "sti"
+    ],
+    "alreadyStoredByTheMainPath": [
+      "Heartsteel [pass]",
+      "Liandry's Torment [pass]",
+      "Malignance [pass2]",
+      "Zeke's Convergence [pass2]"
+    ],
+    "secondReachPopulation": [
+      {
+        "effect": "Blade of The Ruined King [pass]",
+        "shape": "bridged-equal-to"
+      },
+      {
+        "effect": "Doran's Ring [pass]",
+        "shape": "footnote"
+      },
+      {
+        "effect": "Eclipse [pass]",
+        "shape": "bridged-equal-to"
+      },
+      {
+        "effect": "Fiendhunter Bolts [pass2]",
+        "shape": "footnote"
+      },
+      {
+        "effect": "Hollow Radiance [pass2]",
+        "shape": "footnote"
+      },
+      {
+        "effect": "Liandry's Torment [pass]",
+        "shape": "footnote"
+      },
+      {
+        "effect": "Malignance [pass2]",
+        "shape": "footnote"
+      },
+      {
+        "effect": "Sundered Sky [pass]",
+        "shape": "footnote"
+      },
+      {
+        "effect": "Warmog's Armor [pass2]",
+        "shape": "footnote"
+      },
+      {
+        "effect": "Zeke's Convergence [pass2]",
+        "shape": "footnote"
+      }
+    ],
+    "released": [
+      "Blade of The Ruined King [pass]",
+      "Eclipse [pass]",
+      "Liandry's Torment [pass]",
+      "Malignance [pass2]",
+      "Zeke's Convergence [pass2]"
+    ],
+    "storedEntriesUnderstatingThemselves": []
+  },
+  "readPopulations": {
+    "structural": 63,
+    "secondReach": 10
+  },
+  "classes": {
+    "non-champion-target-only": {
+      "bucket": "out-of-champion-scope",
+      "definition": "The source restricts this damage to minions, monsters, wards or turrets. Doran's Helm reads \"against minions\" in so many words."
+    },
+    "other-enemies-only": {
+      "bucket": "out-of-champion-scope",
+      "definition": "The damage reaches enemies OTHER than the one attacked — the cleave family. A two-champion scenario has no other enemy, so it can never touch the defender."
+    },
+    "ally-only": {
+      "bucket": "out-of-champion-scope",
+      "definition": "The damage is granted to an allied champion. A two-champion scenario has no ally."
+    },
+    "trigger-needs-a-third-unit": {
+      "bucket": "out-of-champion-scope",
+      "definition": "The effect fires only on killing or taking down a unit the scenario does not contain. Where that unit IS the defender, it fires after the survival verdict is already settled."
+    },
+    "retaliation": {
+      "bucket": "contract",
+      "definition": "The holder does not deal this damage; it is dealt back at whoever struck the holder. Thornmail and Bramble Vest. Every damage shape in the contract flows from the champion executing the combo to the other one, and there is no way to say \"and this much comes back\".",
+      "shapeNeeded": "A direction on an item effect — damage dealt BY the holder TO whoever attacked them, reported separately from the combo (it changes no survival verdict this product gives)."
+    },
+    "scales-on-lethality": {
+      "bucket": "contract",
+      "definition": "The value is a share of the holder's lethality. `RatioStat` has no lethality arm.",
+      "shapeNeeded": "`RatioStat` gains 'lethality', and `StatBlock` carries it."
+    },
+    "scales-on-crit-chance": {
+      "bucket": "contract",
+      "definition": "The value is a share of the holder's critical strike chance. `RatioStat` has no arm for it.",
+      "shapeNeeded": "`RatioStat` gains 'critChance'."
+    },
+    "critical-strike-modifier": {
+      "bucket": "contract",
+      "definition": "The number is a critical-strike DAMAGE PERCENTAGE, not an amount of damage — it changes what a critical strike multiplies by. Putting it in `base` would hand the holder that many points of flat damage.",
+      "shapeNeeded": "A field on `CuratedItemEffect` that modifies the critical multiplier rather than adding a component."
+    },
+    "scales-on-stacks": {
+      "bucket": "contract",
+      "definition": "The BASE walks a stack counter the effect itself accumulates. `Scaling` walks ability rank or champion level and neither is a stack count. NARROWER THAN IT WAS: a stack counter as the axis of a RATIO has been expressible since §42.1 fixed the unit, so an effect refused only for a stack-scaled ratio is no longer refused for this.",
+      "shapeNeeded": "A `Scaling` arm that walks a named counter, mirroring `Ratio`'s 'stacks'."
+    },
+    "adaptive-damage-type": {
+      "bucket": "contract",
+      "definition": "The source calls the damage \"adaptive\": physical or magic, decided at evaluation time from the holder's own bonus attack damage and ability power. `DamageType` is physical | magic | true.",
+      "shapeNeeded": "`DamageType` gains 'adaptive', resolved by the engine from the holder's stat block. `Champion.stats.adaptivetype` is already fetched and already carries the tie-break."
+    },
+    "range-with-unstated-axis": {
+      "bucket": "source-silent",
+      "definition": "The source states a range (\"70 - 240\") and never says what varies across it. All three are runes, whose only fetched source is Data Dragon `longDesc`."
+    },
+    "conditional-additional-damage": {
+      "bucket": "contract",
+      "definition": "The effect multiplies its OWN damage by a quantity the scenario knows — Kraken Slayer by the target's missing health, Luden's Echo by how many stacks found no second target. Neither is a ratio: a ratio adds to a base, and these scale the whole component.",
+      "shapeNeeded": "A multiplier on a whole `AbilityComponent`, with the quantity that drives it."
+    },
+    "value-stated-only-by-reference": {
+      "bucket": "contract",
+      "definition": "The value is a multiple of ANOTHER effect's figure — \"200% of Immolate's damage\". The number exists one indirection away, and nothing in the contract can point at it.",
+      "shapeNeeded": "`CuratedDefensiveEffect.valueByReference` exists for exactly this; `CuratedItemEffect` has no equivalent."
+    },
+    "range-split-has-named-arguments": {
+      "bucket": "parser",
+      "definition": "The melee and ranged arms are each a LEVEL PROGRESSION written as a formula. The contract already holds it — every arm of `byRangeType` is itself a `Scaling` — and this parser does not read the formula."
+    },
+    "no-structural-damage-run": {
+      "bucket": "not-yet-read",
+      "definition": "The parser found no run naming a damage type and carrying a value."
+    },
+    "dot-total-disagrees-with-tick": {
+      "bucket": "parser",
+      "definition": "The source states a per-instance figure and a total, and they do not reconcile. One of the numbers is being misread and none may be trusted until someone looks."
+    },
+    "parser-disagrees-with-reading": {
+      "bucket": "parser",
+      "definition": "The parser and the recorded hand reading both produced a value and the values differ. The loudest outcome the gate has: one of the two is wrong."
+    },
+    "not-in-read-population": {
+      "bucket": "not-yet-read",
+      "definition": "Nobody has read this sentence. Reported for reading, never stored."
+    },
+    "unparsed-token": {
+      "bucket": "parser",
+      "definition": "A token inside the damage run this parser does not recognise. Always quoted."
+    },
+    "ambiguous-damage-type": {
+      "bucket": "parser",
+      "definition": "The run names two damage types and nothing says which value carries which."
+    },
+    "melee-ranged-split": {
+      "bucket": "contract",
+      "definition": "HISTORICAL. `Scaling.byRangeType` closed this on 2026-08-13 and the parser no longer emits it; it survives only as a co-reason on five recorded readings."
+    },
+    "damage-over-time": {
+      "bucket": "contract",
+      "definition": "HISTORICAL. `CuratedItemEffect.overTime` closed this on 2026-08-13 and the parser no longer emits it; it survives only as a co-reason on one recorded reading."
+    },
+    "range-split-arms-differ-in-shape": {
+      "bucket": "parser",
+      "definition": "The melee arm and the ranged arm read to different shapes. Merging them would invent a value for whichever half came up short."
+    },
+    "damage-in-prose-nobody-has-read": {
+      "bucket": "not-yet-read",
+      "definition": "THE EFFECT DEALS DAMAGE AND ITS VALUE IS NOT STATED STRUCTURALLY. The census classifies it a `candidate` and the hand audit in effect-census-audit.ts confirms it deals damage, but no value extraction has been attempted and no reading of the numbers is recorded. The 63-effect structural population never contained these."
+    },
+    "rune-prose-has-no-structure-to-confirm-a-reading": {
+      "bucket": "not-yet-read",
+      "definition": "A RUNE whose damage is stated only in Data Dragon prose, with no labelled \"Damage:\" line for the census to find. Nobody has read these sentences, AND the second reading a store requires has nowhere to come from yet: there is no wiki rune data module (confirmed by enumerating all 683 Module: pages, DATA-SOURCES §6), so the parser that would confirm a hand reading would have to read the same prose the person read. A reading alone never stores a value. Several of the ten carry a second, known blocker as well — three deal \"adaptive\" damage and Demolish damages turrets only."
+    },
+    "grants-healing-not-a-stat": {
+      "bucket": "contract",
+      "definition": "The effect restores health, or amplifies healing, rather than moving a damage stat. `Result.sustain` exists for this (§42.2); `CuratedRune` and `CuratedItemEffect` carry only `grants`, a map of stat names to numbers, and health restored is not a stat.",
+      "shapeNeeded": "A healing field on `CuratedItemEffect` and `CuratedRune`, feeding `Result.sustain`."
+    },
+    "flat-stat-grant-nothing-blocks": {
+      "bucket": "not-yet-read",
+      "definition": "AN ALWAYS-ACTIVE, FLAT GRANT OF A DAMAGE-RELEVANT STAT — the one shape `grants: Record<string, number>` already holds. No extraction has been attempted, so it is reported, not stored."
+    },
+    "the-damage-relevant-stat-is-an-input-not-an-output": {
+      "bucket": "not-actually-in-scope",
+      "definition": "The damage-relevant stat drives the effect; what the effect GRANTS is not damage-relevant. Endless Hunger grants ABILITY HASTE scaled by bonus AD, and ability haste is filtered out of \"damage-relevant\" because the engine models sequence and not elapsed time (SPECIFICATION §3.2). The in-scope test sees the bonus AD and calls it in scope."
+    },
+    "regeneration-is-not-modelled": {
+      "bucket": "not-actually-in-scope",
+      "definition": "The stat is health or mana REGENERATION — a rate per second. The engine models sequence, not elapsed time, so there is no number of seconds for a rate to act over."
+    },
+    "scales-on-elapsed-time": {
+      "bucket": "not-actually-in-scope",
+      "definition": "The value is a function of how long the game has been running — Gathering Storm grants adaptive force every ten minutes. The engine has no clock (SPECIFICATION §3.2)."
+    },
+    "stat-grant-is-conditional": {
+      "bucket": "contract",
+      "definition": "The stat only applies while something is true — in combat, above a health threshold, after a takedown. `CuratedItemEffect` carries `grants: Record<string, number>` and NO activation or condition field, so anything written into it applies always. `CuratedDefensiveEffect` has both `activation` and `condition`; the item shape does not.",
+      "shapeNeeded": "`CuratedItemEffect` gains `activation: 'always-active' | 'conditional' | 'not-stated'` and `condition`, exactly as `CuratedDefensiveEffect` carries them."
+    },
+    "stat-grant-is-a-share-of-another-stat": {
+      "bucket": "contract",
+      "definition": "\"Grants ability power equal to 1% bonus mana\", \"bonus attack damage equal to 50% base AD\". `grants` is a map to a plain number and cannot express a share of anything. This is the single largest shape among the stat modifiers.",
+      "shapeNeeded": "`CuratedItemEffect.grants` becomes a list of { stat, value?: Scaling, ratios?: Ratio[] } rather than a flat number map — the same shape ability damage already uses."
+    },
+    "stat-grant-multiplies-a-stat": {
+      "bucket": "contract",
+      "definition": "Rabadon's Deathcap increases ability power BY 30%, and Spirit Visage increases healing received by 25%. A flat map cannot say \"multiply\", and 30 in a field an engine reads as points is a different number rather than an imprecise one.",
+      "shapeNeeded": "A unit on a granted stat, mirroring `CuratedDefensiveEffect.unit`."
+    },
+    "grants-a-shield": {
+      "bucket": "contract",
+      "definition": "An ITEM that grants a shield. `CuratedDefensiveEffect` holds a shield, and it is keyed by champion, slot and ability name — an item has none of those, so an item shield has nowhere at all to go.",
+      "shapeNeeded": "`CuratedItemEffect` gains the defensive fields, or `CuratedDefensiveEffect` is allowed to be sourced from an item."
+    },
+    "amplifies-damage-or-reduces-it": {
+      "bucket": "contract",
+      "definition": "\"Deal 4% increased damage\", \"take 8% reduced damage\". It multiplies a figure computed elsewhere in the combo rather than contributing one of its own.",
+      "shapeNeeded": "A damage amplifier and a damage taken multiplier on `CuratedItemEffect`, applied at a stated point in the four-step resistance order (SPECIFICATION §3.6)."
+    },
+    "the-stat-is-a-threshold-not-a-grant": {
+      "bucket": "not-actually-in-scope",
+      "definition": "The damage-relevant stat is a CONDITION the effect tests, not something it changes — \"Transforms into Muramana at 360 bonus mana\". Nothing about the damage number moves. MEASURED AS A FALSE POSITIVE OF THE IN-SCOPE TEST, and reported rather than silently removed from the denominator."
+    },
+    "the-stat-belongs-to-a-ward-or-a-minion": {
+      "bucket": "not-actually-in-scope",
+      "definition": "The health or resistance word belongs to a ward, a minion or a structure, not to either champion — Deep Ward's \"+1 extra Health\", Hullbreaker's armor for allied siege minions. Same family as §37.4 defect 7, where the pronoun \"its\" was read as the holder."
+    },
+    "out-of-scope-before-anything-else": {
+      "bucket": "out-of-champion-scope",
+      "definition": "The effect is not damage-relevant at all and is in this census only because a shape test found it. Recorded so the population is what the tests find, not what someone thought they should find."
+    }
+  },
+  "findings": [],
+  "rows": [
+    {
+      "id": 2522,
+      "key": "act",
+      "ownerName": "Actualizer",
+      "source": "item",
+      "population": "stat-modifier",
+      "classes": [
+        "stat-grant-is-conditional",
+        "stat-grant-is-a-share-of-another-stat"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "an {{as}} run names the stat and carries its value"
+    },
+    {
+      "id": 3003,
+      "key": "pass",
+      "ownerName": "Archangel's Staff",
+      "source": "item",
+      "population": "stat-modifier",
+      "classes": [
+        "stat-grant-is-a-share-of-another-stat"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "an {{as}} run names the stat and carries its value"
+    },
+    {
+      "id": 3003,
+      "key": "pass2",
+      "ownerName": "Archangel's Staff",
+      "source": "item",
+      "population": "stat-modifier",
+      "classes": [
+        "stat-grant-is-conditional"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "an {{as}} run names the stat and carries its value"
+    },
+    {
+      "id": 3003,
+      "key": "pass3",
+      "ownerName": "Archangel's Staff",
+      "source": "item",
+      "population": "stat-modifier",
+      "classes": [
+        "the-stat-is-a-threshold-not-a-grant"
+      ],
+      "buckets": [
+        "not-actually-in-scope"
+      ],
+      "detail": "an {{as}} run names the stat and carries its value"
+    },
+    {
+      "id": 3174,
+      "key": "pass2",
+      "ownerName": "Armored Advance",
+      "source": "item",
+      "population": "stat-modifier",
+      "classes": [
+        "stat-grant-is-conditional",
+        "grants-a-shield"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "an {{as}} run names the stat and carries its value"
+    },
+    {
+      "id": 2520,
+      "key": "pass",
+      "ownerName": "Bastionbreaker",
+      "source": "item",
+      "population": "damaging-structural",
+      "classes": [
+        "scales-on-lethality"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "the recorded reading refuses this effect: scales-on-lethality"
+    },
+    {
+      "id": 2520,
+      "key": "pass2",
+      "ownerName": "Bastionbreaker",
+      "source": "item",
+      "population": "damaging-structural",
+      "classes": [
+        "non-champion-target-only",
+        "scales-on-lethality"
+      ],
+      "buckets": [
+        "out-of-champion-scope",
+        "contract"
+      ],
+      "detail": "the recorded reading refuses this effect: non-champion-target-only | the recorded reading refuses this effect: scales-on-lethality"
+    },
+    {
+      "id": 3071,
+      "key": "pass",
+      "ownerName": "Black Cleaver",
+      "source": "item",
+      "population": "stat-modifier",
+      "classes": [
+        "stat-grant-is-conditional"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "the source says damage is dealt and states no value for it in this text"
+    },
+    {
+      "id": 2503,
+      "key": "pass2",
+      "ownerName": "Blackfire Torch",
+      "source": "item",
+      "population": "stat-modifier",
+      "classes": [
+        "stat-grant-is-conditional",
+        "stat-grant-multiplies-a-stat"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "the stat is named and a number is present, but nothing structural joins them"
+    },
+    {
+      "id": 8010,
+      "key": "pass",
+      "ownerName": "Bloodletter's Curse",
+      "source": "item",
+      "population": "stat-modifier",
+      "classes": [
+        "stat-grant-is-conditional"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "an {{as}} run names the stat and carries its value"
+    },
+    {
+      "id": 3072,
+      "key": "pass",
+      "ownerName": "Bloodthirster",
+      "source": "item",
+      "population": "stat-modifier",
+      "classes": [
+        "stat-grant-is-conditional",
+        "grants-a-shield"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "the stat is named and a number is present, but nothing structural joins them"
+    },
+    {
+      "id": 3076,
+      "key": "pass",
+      "ownerName": "Bramble Vest",
+      "source": "item",
+      "population": "damaging-structural",
+      "classes": [
+        "retaliation"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "the recorded reading refuses this effect: retaliation"
+    },
+    {
+      "id": 3173,
+      "key": "pass",
+      "ownerName": "Chainlaced Crushers",
+      "source": "item",
+      "population": "stat-modifier",
+      "classes": [
+        "stat-grant-is-conditional",
+        "grants-a-shield"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "an {{as}} run names the stat and carries its value"
+    },
+    {
+      "id": 1082,
+      "key": "pass",
+      "ownerName": "Dark Seal",
+      "source": "item",
+      "population": "stat-modifier",
+      "classes": [
+        "stat-grant-is-conditional",
+        "stat-grant-is-a-share-of-another-stat"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "an {{as}} run names the stat and carries its value"
+    },
+    {
+      "id": 6621,
+      "key": "pass",
+      "ownerName": "Dawncore",
+      "source": "item",
+      "population": "stat-modifier",
+      "classes": [
+        "stat-grant-is-a-share-of-another-stat"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "an {{as}} run names the stat and carries its value"
+    },
+    {
+      "id": 3742,
+      "key": "pass",
+      "ownerName": "Dead Man's Plate",
+      "source": "item",
+      "population": "damaging-structural",
+      "classes": [
+        "scales-on-stacks"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "the recorded reading refuses this effect: scales-on-stacks"
+    },
+    {
+      "id": 6333,
+      "key": "pass2",
+      "ownerName": "Death's Dance",
+      "source": "item",
+      "population": "stat-modifier",
+      "classes": [
+        "stat-grant-is-conditional"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "damage and a number sit in one sentence with nothing structural joining them — a person must read it"
+    },
+    {
+      "id": 1120,
+      "key": "pass",
+      "ownerName": "Doran's Helm",
+      "source": "item",
+      "population": "damaging-structural",
+      "classes": [
+        "non-champion-target-only"
+      ],
+      "buckets": [
+        "out-of-champion-scope"
+      ],
+      "detail": "the recorded reading refuses this effect: non-champion-target-only"
+    },
+    {
+      "id": 1056,
+      "key": "pass",
+      "ownerName": "Doran's Ring",
+      "source": "item",
+      "population": "stat-modifier",
+      "classes": [
+        "stat-grant-is-conditional"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "an {{as}} run names the stat and carries its value"
+    },
+    {
+      "id": 1056,
+      "key": "pass2",
+      "ownerName": "Doran's Ring",
+      "source": "item",
+      "population": "damaging-structural",
+      "classes": [
+        "non-champion-target-only"
+      ],
+      "buckets": [
+        "out-of-champion-scope"
+      ],
+      "detail": "the recorded reading refuses this effect: non-champion-target-only"
+    },
+    {
+      "id": 1054,
+      "key": "pass",
+      "ownerName": "Doran's Shield",
+      "source": "item",
+      "population": "stat-modifier",
+      "classes": [
+        "stat-grant-is-conditional",
+        "stat-grant-is-a-share-of-another-stat"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "an {{as}} run names the stat and carries its value"
+    },
+    {
+      "id": 1054,
+      "key": "pass2",
+      "ownerName": "Doran's Shield",
+      "source": "item",
+      "population": "damaging-structural",
+      "classes": [
+        "non-champion-target-only"
+      ],
+      "buckets": [
+        "out-of-champion-scope"
+      ],
+      "detail": "the recorded reading refuses this effect: non-champion-target-only"
+    },
+    {
+      "id": 3870,
+      "key": "pass",
+      "ownerName": "Dream Maker",
+      "source": "item",
+      "population": "damaging-structural",
+      "classes": [
+        "ally-only"
+      ],
+      "buckets": [
+        "out-of-champion-scope"
+      ],
+      "detail": "the recorded reading refuses this effect: ally-only"
+    },
+    {
+      "id": 2138,
+      "key": "consume",
+      "ownerName": "Elixir of Iron",
+      "source": "item",
+      "population": "stat-modifier",
+      "classes": [
+        "stat-grant-is-conditional"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "an {{as}} run names the stat and carries its value"
+    },
+    {
+      "id": 2140,
+      "key": "consume",
+      "ownerName": "Elixir of Wrath",
+      "source": "item",
+      "population": "stat-modifier",
+      "classes": [
+        "flat-stat-grant-nothing-blocks"
+      ],
+      "buckets": [
+        "not-yet-read"
+      ],
+      "detail": "damage and a number sit in one sentence with nothing structural joining them — a person must read it"
+    },
+    {
+      "id": 2517,
+      "key": "pass",
+      "ownerName": "Endless Hunger",
+      "source": "item",
+      "population": "stat-modifier",
+      "classes": [
+        "the-damage-relevant-stat-is-an-input-not-an-output"
+      ],
+      "buckets": [
+        "not-actually-in-scope"
+      ],
+      "detail": "an {{as}} run names the stat and carries its value"
+    },
+    {
+      "id": 2517,
+      "key": "pass2",
+      "ownerName": "Endless Hunger",
+      "source": "item",
+      "population": "stat-modifier",
+      "classes": [
+        "stat-grant-is-conditional"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "an {{as}} run names the stat and carries its value"
+    },
+    {
+      "id": 3508,
+      "key": "pass",
+      "ownerName": "Essence Reaver",
+      "source": "item",
+      "population": "damaging-structural",
+      "classes": [
+        "scales-on-crit-chance"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "the recorded reading refuses this effect: scales-on-crit-chance"
+    },
+    {
+      "id": 2512,
+      "key": "pass2",
+      "ownerName": "Fiendhunter Bolts",
+      "source": "item",
+      "population": "damaging-prose",
+      "classes": [
+        "critical-strike-modifier",
+        "conditional-additional-damage"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "the recorded reading refuses this effect: critical-strike-modifier | the recorded reading refuses this effect: conditional-additional-damage"
+    },
+    {
+      "id": 4401,
+      "key": "pass",
+      "ownerName": "Force of Nature",
+      "source": "item",
+      "population": "stat-modifier",
+      "classes": [
+        "stat-grant-is-conditional"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "damage and a number sit in one sentence with nothing structural joining them — a person must read it"
+    },
+    {
+      "id": 3008,
+      "key": "pass",
+      "ownerName": "Gluttonous Greaves",
+      "source": "item",
+      "population": "stat-modifier",
+      "classes": [
+        "stat-grant-is-conditional"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "an {{as}} run names the stat and carries its value"
+    },
+    {
+      "id": 3112,
+      "key": "pass",
+      "ownerName": "Guardian's Orb",
+      "source": "item",
+      "population": "stat-modifier",
+      "classes": [
+        "regeneration-is-not-modelled"
+      ],
+      "buckets": [
+        "not-actually-in-scope"
+      ],
+      "detail": "an {{as}} run names the stat and carries its value"
+    },
+    {
+      "id": 3147,
+      "key": "pass",
+      "ownerName": "Haunting Guise",
+      "source": "item",
+      "population": "stat-modifier",
+      "classes": [
+        "stat-grant-is-conditional",
+        "amplifies-damage-or-reduces-it"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "the stat is named and a number is present, but nothing structural joins them"
+    },
+    {
+      "id": 3155,
+      "key": "pass",
+      "ownerName": "Hexdrinker",
+      "source": "item",
+      "population": "stat-modifier",
+      "classes": [
+        "stat-grant-is-conditional",
+        "grants-a-shield"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "an {{as}} run names the stat and carries its value"
+    },
+    {
+      "id": 6664,
+      "key": "pass2",
+      "ownerName": "Hollow Radiance",
+      "source": "item",
+      "population": "damaging-prose",
+      "classes": [
+        "trigger-needs-a-third-unit",
+        "value-stated-only-by-reference"
+      ],
+      "buckets": [
+        "out-of-champion-scope",
+        "contract"
+      ],
+      "detail": "the recorded reading refuses this effect: trigger-needs-a-third-unit | the recorded reading refuses this effect: value-stated-only-by-reference"
+    },
+    {
+      "id": 6697,
+      "key": "pass",
+      "ownerName": "Hubris",
+      "source": "item",
+      "population": "stat-modifier",
+      "classes": [
+        "stat-grant-is-conditional"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "damage and a number sit in one sentence with nothing structural joining them — a person must read it"
+    },
+    {
+      "id": 3181,
+      "key": "pass2",
+      "ownerName": "Hullbreaker",
+      "source": "item",
+      "population": "stat-modifier",
+      "classes": [
+        "the-stat-belongs-to-a-ward-or-a-minion"
+      ],
+      "buckets": [
+        "not-actually-in-scope"
+      ],
+      "detail": "the stat is named and a number is present, but nothing structural joins them"
+    },
+    {
+      "id": 3168,
+      "key": "pass2",
+      "ownerName": "Immortal Path",
+      "source": "item",
+      "population": "stat-modifier",
+      "classes": [
+        "stat-grant-is-conditional",
+        "amplifies-damage-or-reduces-it"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "an {{as}} run names the stat and carries its value"
+    },
+    {
+      "id": 6673,
+      "key": "pass",
+      "ownerName": "Immortal Shieldbow",
+      "source": "item",
+      "population": "stat-modifier",
+      "classes": [
+        "stat-grant-is-conditional",
+        "grants-a-shield"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "an {{as}} run names the stat and carries its value"
+    },
+    {
+      "id": 6665,
+      "key": "pass",
+      "ownerName": "Jak'Sho, The Protean",
+      "source": "item",
+      "population": "stat-modifier",
+      "classes": [
+        "stat-grant-is-conditional",
+        "stat-grant-multiplies-a-stat"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "the stat is named and a number is present, but nothing structural joins them"
+    },
+    {
+      "id": 2504,
+      "key": "pass",
+      "ownerName": "Kaenic Rookern",
+      "source": "item",
+      "population": "stat-modifier",
+      "classes": [
+        "stat-grant-is-conditional",
+        "stat-grant-is-a-share-of-another-stat",
+        "grants-a-shield"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "an {{as}} run names the stat and carries its value"
+    },
+    {
+      "id": 6672,
+      "key": "pass",
+      "ownerName": "Kraken Slayer",
+      "source": "item",
+      "population": "damaging-structural",
+      "classes": [
+        "conditional-additional-damage",
+        "range-split-has-named-arguments"
+      ],
+      "buckets": [
+        "contract",
+        "parser"
+      ],
+      "detail": "the recorded reading refuses this effect: conditional-additional-damage | the recorded reading refuses this effect: range-split-has-named-arguments"
+    },
+    {
+      "id": 6653,
+      "key": "pass2",
+      "ownerName": "Liandry's Torment",
+      "source": "item",
+      "population": "stat-modifier",
+      "classes": [
+        "stat-grant-is-conditional",
+        "amplifies-damage-or-reduces-it"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "the stat is named and a number is present, but nothing structural joins them"
+    },
+    {
+      "id": 3036,
+      "key": "pass",
+      "ownerName": "Lord Dominik's Regards",
+      "source": "item",
+      "population": "stat-modifier",
+      "classes": [
+        "stat-grant-is-conditional",
+        "stat-grant-is-a-share-of-another-stat",
+        "amplifies-damage-or-reduces-it"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "the stat is named and a number is present, but nothing structural joins them"
+    },
+    {
+      "id": 6655,
+      "key": "pass",
+      "ownerName": "Luden's Echo",
+      "source": "item",
+      "population": "damaging-structural",
+      "classes": [
+        "conditional-additional-damage"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "the recorded reading refuses this effect: conditional-additional-damage"
+    },
+    {
+      "id": 3004,
+      "key": "pass",
+      "ownerName": "Manamune",
+      "source": "item",
+      "population": "stat-modifier",
+      "classes": [
+        "stat-grant-is-a-share-of-another-stat"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "an {{as}} run names the stat and carries its value"
+    },
+    {
+      "id": 3004,
+      "key": "pass2",
+      "ownerName": "Manamune",
+      "source": "item",
+      "population": "stat-modifier",
+      "classes": [
+        "stat-grant-is-conditional"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "an {{as}} run names the stat and carries its value"
+    },
+    {
+      "id": 3004,
+      "key": "pass3",
+      "ownerName": "Manamune",
+      "source": "item",
+      "population": "stat-modifier",
+      "classes": [
+        "the-stat-is-a-threshold-not-a-grant"
+      ],
+      "buckets": [
+        "not-actually-in-scope"
+      ],
+      "detail": "an {{as}} run names the stat and carries its value"
+    },
+    {
+      "id": 3156,
+      "key": "pass",
+      "ownerName": "Maw of Malmortius",
+      "source": "item",
+      "population": "stat-modifier",
+      "classes": [
+        "stat-grant-is-conditional",
+        "grants-a-shield"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "an {{as}} run names the stat and carries its value"
+    },
+    {
+      "id": 3041,
+      "key": "pass",
+      "ownerName": "Mejai's Soulstealer",
+      "source": "item",
+      "population": "stat-modifier",
+      "classes": [
+        "stat-grant-is-conditional",
+        "stat-grant-is-a-share-of-another-stat"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "an {{as}} run names the stat and carries its value"
+    },
+    {
+      "id": 6617,
+      "key": "pass",
+      "ownerName": "Moonstone Renewer",
+      "source": "item",
+      "population": "stat-modifier",
+      "classes": [
+        "stat-grant-is-conditional"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "the stat is named and a number is present, but nothing structural joins them"
+    },
+    {
+      "id": 2501,
+      "key": "pass",
+      "ownerName": "Overlord's Bloodmail",
+      "source": "item",
+      "population": "stat-modifier",
+      "classes": [
+        "stat-grant-is-a-share-of-another-stat"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "an {{as}} run names the stat and carries its value"
+    },
+    {
+      "id": 2501,
+      "key": "pass2",
+      "ownerName": "Overlord's Bloodmail",
+      "source": "item",
+      "population": "stat-modifier",
+      "classes": [
+        "stat-grant-is-a-share-of-another-stat"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "the stat is named and a number is present, but nothing structural joins them"
+    },
+    {
+      "id": 6698,
+      "key": "pass",
+      "ownerName": "Profane Hydra",
+      "source": "item",
+      "population": "damaging-structural",
+      "classes": [
+        "other-enemies-only"
+      ],
+      "buckets": [
+        "out-of-champion-scope"
+      ],
+      "detail": "the recorded reading refuses this effect: other-enemies-only"
+    },
+    {
+      "id": 2525,
+      "key": "pass",
+      "ownerName": "Protoplasm Harness",
+      "source": "item",
+      "population": "stat-modifier",
+      "classes": [
+        "stat-grant-is-conditional"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "an {{as}} run names the stat and carries its value"
+    },
+    {
+      "id": 3089,
+      "key": "pass",
+      "ownerName": "Rabadon's Deathcap",
+      "source": "item",
+      "population": "stat-modifier",
+      "classes": [
+        "stat-grant-multiplies-a-stat"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "the stat is named and a number is present, but nothing structural joins them"
+    },
+    {
+      "id": 3074,
+      "key": "pass",
+      "ownerName": "Ravenous Hydra",
+      "source": "item",
+      "population": "damaging-structural",
+      "classes": [
+        "other-enemies-only"
+      ],
+      "buckets": [
+        "out-of-champion-scope"
+      ],
+      "detail": "the recorded reading refuses this effect: other-enemies-only"
+    },
+    {
+      "id": 4633,
+      "key": "pass",
+      "ownerName": "Riftmaker",
+      "source": "item",
+      "population": "stat-modifier",
+      "classes": [
+        "stat-grant-is-conditional",
+        "amplifies-damage-or-reduces-it"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "an {{as}} run names the stat and carries its value"
+    },
+    {
+      "id": 4633,
+      "key": "pass2",
+      "ownerName": "Riftmaker",
+      "source": "item",
+      "population": "stat-modifier",
+      "classes": [
+        "stat-grant-is-a-share-of-another-stat"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "an {{as}} run names the stat and carries its value"
+    },
+    {
+      "id": 6657,
+      "key": "pass",
+      "ownerName": "Rod of Ages",
+      "source": "item",
+      "population": "stat-modifier",
+      "classes": [
+        "stat-grant-is-conditional"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "an {{as}} run names the stat and carries its value"
+    },
+    {
+      "id": 3085,
+      "key": "pass",
+      "ownerName": "Runaan's Hurricane",
+      "source": "item",
+      "population": "damaging-structural",
+      "classes": [
+        "other-enemies-only"
+      ],
+      "buckets": [
+        "out-of-champion-scope"
+      ],
+      "detail": "the recorded reading refuses this effect: other-enemies-only"
+    },
+    {
+      "id": 3876,
+      "key": "pass",
+      "ownerName": "Solstice Sleigh",
+      "source": "item",
+      "population": "stat-modifier",
+      "classes": [
+        "stat-grant-is-conditional"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "an {{as}} run names the stat and carries its value"
+    },
+    {
+      "id": 3161,
+      "key": "pass2",
+      "ownerName": "Spear of Shojin",
+      "source": "item",
+      "population": "stat-modifier",
+      "classes": [
+        "stat-grant-is-conditional",
+        "amplifies-damage-or-reduces-it"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "the stat is named and a number is present, but nothing structural joins them"
+    },
+    {
+      "id": 3065,
+      "key": "pass",
+      "ownerName": "Spirit Visage",
+      "source": "item",
+      "population": "stat-modifier",
+      "classes": [
+        "stat-grant-multiplies-a-stat"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "the stat is named and a number is present, but nothing structural joins them"
+    },
+    {
+      "id": 6616,
+      "key": "pass",
+      "ownerName": "Staff of Flowing Water",
+      "source": "item",
+      "population": "stat-modifier",
+      "classes": [
+        "stat-grant-is-conditional"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "an {{as}} run names the stat and carries its value"
+    },
+    {
+      "id": 3053,
+      "key": "pass",
+      "ownerName": "Sterak's Gage",
+      "source": "item",
+      "population": "stat-modifier",
+      "classes": [
+        "stat-grant-is-a-share-of-another-stat"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "an {{as}} run names the stat and carries its value"
+    },
+    {
+      "id": 3053,
+      "key": "pass2",
+      "ownerName": "Sterak's Gage",
+      "source": "item",
+      "population": "stat-modifier",
+      "classes": [
+        "stat-grant-is-conditional",
+        "stat-grant-is-a-share-of-another-stat",
+        "grants-a-shield"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "an {{as}} run names the stat and carries its value"
+    },
+    {
+      "id": 4646,
+      "key": "pass",
+      "ownerName": "Stormsurge",
+      "source": "item",
+      "population": "stat-modifier",
+      "classes": [
+        "stat-grant-is-conditional",
+        "stat-grant-is-a-share-of-another-stat"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "damage and a number sit in one sentence with nothing structural joining them — a person must read it"
+    },
+    {
+      "id": 6631,
+      "key": "pass",
+      "ownerName": "Stridebreaker",
+      "source": "item",
+      "population": "damaging-structural",
+      "classes": [
+        "other-enemies-only"
+      ],
+      "buckets": [
+        "out-of-champion-scope"
+      ],
+      "detail": "the recorded reading refuses this effect: other-enemies-only"
+    },
+    {
+      "id": 6610,
+      "key": "pass",
+      "ownerName": "Sundered Sky",
+      "source": "item",
+      "population": "damaging-prose",
+      "classes": [
+        "critical-strike-modifier"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "the recorded reading refuses this effect: critical-strike-modifier"
+    },
+    {
+      "id": 3170,
+      "key": "pass2",
+      "ownerName": "Swiftmarch",
+      "source": "item",
+      "population": "stat-modifier",
+      "classes": [
+        "stat-grant-is-a-share-of-another-stat"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "an {{as}} run names the stat and carries its value"
+    },
+    {
+      "id": 3070,
+      "key": "pass",
+      "ownerName": "Tear of the Goddess",
+      "source": "item",
+      "population": "stat-modifier",
+      "classes": [
+        "stat-grant-is-conditional"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "an {{as}} run names the stat and carries its value"
+    },
+    {
+      "id": 3070,
+      "key": "pass2",
+      "ownerName": "Tear of the Goddess",
+      "source": "item",
+      "population": "damaging-structural",
+      "classes": [
+        "non-champion-target-only"
+      ],
+      "buckets": [
+        "out-of-champion-scope"
+      ],
+      "detail": "the recorded reading refuses this effect: non-champion-target-only"
+    },
+    {
+      "id": 3302,
+      "key": "pass2",
+      "ownerName": "Terminus",
+      "source": "item",
+      "population": "stat-modifier",
+      "classes": [
+        "stat-grant-is-conditional"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "the stat is named and a number is present, but nothing structural joins them"
+    },
+    {
+      "id": 3075,
+      "key": "pass",
+      "ownerName": "Thornmail",
+      "source": "item",
+      "population": "damaging-structural",
+      "classes": [
+        "retaliation"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "the recorded reading refuses this effect: retaliation"
+    },
+    {
+      "id": 3077,
+      "key": "pass",
+      "ownerName": "Tiamat",
+      "source": "item",
+      "population": "damaging-structural",
+      "classes": [
+        "other-enemies-only"
+      ],
+      "buckets": [
+        "out-of-champion-scope"
+      ],
+      "detail": "the recorded reading refuses this effect: other-enemies-only"
+    },
+    {
+      "id": 3179,
+      "key": "pass2",
+      "ownerName": "Umbral Glaive",
+      "source": "item",
+      "population": "damaging-structural",
+      "classes": [
+        "non-champion-target-only"
+      ],
+      "buckets": [
+        "out-of-champion-scope"
+      ],
+      "detail": "the recorded reading refuses this effect: non-champion-target-only"
+    },
+    {
+      "id": 3179,
+      "key": "pass3",
+      "ownerName": "Umbral Glaive",
+      "source": "item",
+      "population": "damaging-structural",
+      "classes": [
+        "scales-on-lethality"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "the recorded reading refuses this effect: scales-on-lethality"
+    },
+    {
+      "id": 3083,
+      "key": "pass",
+      "ownerName": "Warmog's Armor",
+      "source": "item",
+      "population": "stat-modifier",
+      "classes": [
+        "the-stat-is-a-threshold-not-a-grant"
+      ],
+      "buckets": [
+        "not-actually-in-scope"
+      ],
+      "detail": "an {{as}} run names the stat and carries its value"
+    },
+    {
+      "id": 3083,
+      "key": "pass3",
+      "ownerName": "Warmog's Armor",
+      "source": "item",
+      "population": "stat-modifier",
+      "classes": [
+        "stat-grant-is-a-share-of-another-stat"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "an {{as}} run names the stat and carries its value"
+    },
+    {
+      "id": 2526,
+      "key": "pass",
+      "ownerName": "Whispering Circlet",
+      "source": "item",
+      "population": "stat-modifier",
+      "classes": [
+        "stat-grant-is-a-share-of-another-stat"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "an {{as}} run names the stat and carries its value"
+    },
+    {
+      "id": 2526,
+      "key": "pass2",
+      "ownerName": "Whispering Circlet",
+      "source": "item",
+      "population": "stat-modifier",
+      "classes": [
+        "stat-grant-is-conditional"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "an {{as}} run names the stat and carries its value"
+    },
+    {
+      "id": 2526,
+      "key": "pass3",
+      "ownerName": "Whispering Circlet",
+      "source": "item",
+      "population": "stat-modifier",
+      "classes": [
+        "the-stat-is-a-threshold-not-a-grant"
+      ],
+      "buckets": [
+        "not-actually-in-scope"
+      ],
+      "detail": "an {{as}} run names the stat and carries its value"
+    },
+    {
+      "id": 3119,
+      "key": "pass",
+      "ownerName": "Winter's Approach",
+      "source": "item",
+      "population": "stat-modifier",
+      "classes": [
+        "stat-grant-is-a-share-of-another-stat"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "an {{as}} run names the stat and carries its value"
+    },
+    {
+      "id": 3119,
+      "key": "pass2",
+      "ownerName": "Winter's Approach",
+      "source": "item",
+      "population": "stat-modifier",
+      "classes": [
+        "stat-grant-is-conditional"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "an {{as}} run names the stat and carries its value"
+    },
+    {
+      "id": 3119,
+      "key": "pass3",
+      "ownerName": "Winter's Approach",
+      "source": "item",
+      "population": "stat-modifier",
+      "classes": [
+        "the-stat-is-a-threshold-not-a-grant"
+      ],
+      "buckets": [
+        "not-actually-in-scope"
+      ],
+      "detail": "an {{as}} run names the stat and carries its value"
+    },
+    {
+      "id": 3865,
+      "key": "pass2",
+      "ownerName": "World Atlas",
+      "source": "item",
+      "population": "stat-modifier",
+      "classes": [
+        "stat-grant-is-conditional"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "an {{as}} run names the stat and carries its value"
+    },
+    {
+      "id": 3032,
+      "key": "pass",
+      "ownerName": "Yun Tal Wildarrows",
+      "source": "item",
+      "population": "stat-modifier",
+      "classes": [
+        "stat-grant-is-conditional"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "an {{as}} run names the stat and carries its value"
+    },
+    {
+      "id": 8112,
+      "key": "rune",
+      "ownerName": "Electrocute",
+      "source": "rune",
+      "population": "damaging-structural",
+      "classes": [
+        "adaptive-damage-type",
+        "range-with-unstated-axis"
+      ],
+      "buckets": [
+        "contract",
+        "source-silent"
+      ],
+      "detail": "the recorded reading refuses this effect: adaptive-damage-type | the recorded reading refuses this effect: range-with-unstated-axis"
+    },
+    {
+      "id": 8128,
+      "key": "rune",
+      "ownerName": "Dark Harvest",
+      "source": "rune",
+      "population": "damaging-structural",
+      "classes": [
+        "adaptive-damage-type",
+        "scales-on-stacks"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "the recorded reading refuses this effect: adaptive-damage-type | the recorded reading refuses this effect: scales-on-stacks"
+    },
+    {
+      "id": 9923,
+      "key": "rune",
+      "ownerName": "Hail of Blades",
+      "source": "rune",
+      "population": "damaging-structural",
+      "classes": [
+        "range-with-unstated-axis"
+      ],
+      "buckets": [
+        "source-silent"
+      ],
+      "detail": "the recorded reading refuses this effect: range-with-unstated-axis"
+    },
+    {
+      "id": 8126,
+      "key": "rune",
+      "ownerName": "Cheap Shot",
+      "source": "rune",
+      "population": "damaging-prose",
+      "classes": [
+        "rune-prose-has-no-structure-to-confirm-a-reading"
+      ],
+      "buckets": [
+        "not-yet-read"
+      ],
+      "detail": "deals 10 - 45 bonus true damage"
+    },
+    {
+      "id": 8139,
+      "key": "rune",
+      "ownerName": "Taste of Blood",
+      "source": "rune",
+      "population": "stat-modifier",
+      "classes": [
+        "stat-grant-is-conditional",
+        "stat-grant-is-a-share-of-another-stat"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "a labelled line states the value"
+    },
+    {
+      "id": 8143,
+      "key": "rune",
+      "ownerName": "Sudden Impact",
+      "source": "rune",
+      "population": "damaging-prose",
+      "classes": [
+        "rune-prose-has-no-structure-to-confirm-a-reading"
+      ],
+      "buckets": [
+        "not-yet-read"
+      ],
+      "detail": "deals a bonus 20 - 80 true damage"
+    },
+    {
+      "id": 8141,
+      "key": "rune",
+      "ownerName": "Deep Ward",
+      "source": "rune",
+      "population": "stat-modifier",
+      "classes": [
+        "the-stat-belongs-to-a-ward-or-a-minion"
+      ],
+      "buckets": [
+        "not-actually-in-scope"
+      ],
+      "detail": "the stat is named and a number is present, but nothing structural joins them"
+    },
+    {
+      "id": 8351,
+      "key": "rune",
+      "ownerName": "Glacial Augment",
+      "source": "rune",
+      "population": "stat-modifier",
+      "classes": [
+        "stat-grant-is-conditional",
+        "stat-grant-is-a-share-of-another-stat"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "a labelled line states the value"
+    },
+    {
+      "id": 8352,
+      "key": "rune",
+      "ownerName": "Time Warp Tonic",
+      "source": "rune",
+      "population": "stat-modifier",
+      "classes": [
+        "stat-grant-is-conditional"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "the stat is named and a number is present, but nothing structural joins them"
+    },
+    {
+      "id": 8345,
+      "key": "rune",
+      "ownerName": "Biscuit Delivery",
+      "source": "rune",
+      "population": "stat-modifier",
+      "classes": [
+        "stat-grant-is-conditional",
+        "stat-grant-is-a-share-of-another-stat"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "a labelled line states the value"
+    },
+    {
+      "id": 8316,
+      "key": "rune",
+      "ownerName": "Jack Of All Trades",
+      "source": "rune",
+      "population": "stat-modifier",
+      "classes": [
+        "stat-grant-is-conditional"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "the stat is named and a number is present, but nothing structural joins them"
+    },
+    {
+      "id": 8005,
+      "key": "rune",
+      "ownerName": "Press the Attack",
+      "source": "rune",
+      "population": "damaging-prose",
+      "classes": [
+        "rune-prose-has-no-structure-to-confirm-a-reading"
+      ],
+      "buckets": [
+        "not-yet-read"
+      ],
+      "detail": "deals 40 - 160 bonus adaptive damage on the third consecutive attack"
+    },
+    {
+      "id": 8008,
+      "key": "rune",
+      "ownerName": "Lethal Tempo",
+      "source": "rune",
+      "population": "damaging-prose",
+      "classes": [
+        "rune-prose-has-no-structure-to-confirm-a-reading"
+      ],
+      "buckets": [
+        "not-yet-read"
+      ],
+      "detail": "at max stacks, deals 9-30 (melee) / 6-24 (ranged) bonus adaptive damage on-attack"
+    },
+    {
+      "id": 8021,
+      "key": "rune",
+      "ownerName": "Fleet Footwork",
+      "source": "rune",
+      "population": "stat-modifier",
+      "classes": [
+        "stat-grant-is-conditional"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "the stat is named and a number is present, but nothing structural joins them"
+    },
+    {
+      "id": 8010,
+      "key": "rune",
+      "ownerName": "Conqueror",
+      "source": "rune",
+      "population": "stat-modifier",
+      "classes": [
+        "stat-grant-is-conditional"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "damage and a number sit in one sentence with nothing structural joining them — a person must read it"
+    },
+    {
+      "id": 9111,
+      "key": "rune",
+      "ownerName": "Triumph",
+      "source": "rune",
+      "population": "stat-modifier",
+      "classes": [
+        "grants-healing-not-a-stat"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "the stat is named and a number is present, but nothing structural joins them"
+    },
+    {
+      "id": 9103,
+      "key": "rune",
+      "ownerName": "Legend: Bloodline",
+      "source": "rune",
+      "population": "stat-modifier",
+      "classes": [
+        "stat-grant-is-conditional",
+        "stat-grant-is-a-share-of-another-stat"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "the stat is named and a number is present, but nothing structural joins them"
+    },
+    {
+      "id": 8299,
+      "key": "rune",
+      "ownerName": "Last Stand",
+      "source": "rune",
+      "population": "stat-modifier",
+      "classes": [
+        "stat-grant-is-conditional",
+        "amplifies-damage-or-reduces-it"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "the stat is named and a number is present, but nothing structural joins them"
+    },
+    {
+      "id": 8437,
+      "key": "rune",
+      "ownerName": "Grasp of the Undying",
+      "source": "rune",
+      "population": "damaging-prose",
+      "classes": [
+        "rune-prose-has-no-structure-to-confirm-a-reading"
+      ],
+      "buckets": [
+        "not-yet-read"
+      ],
+      "detail": "deals bonus magic damage equal to 3.5% of the holder's maximum health"
+    },
+    {
+      "id": 8439,
+      "key": "rune",
+      "ownerName": "Aftershock",
+      "source": "rune",
+      "population": "damaging-structural",
+      "classes": [
+        "range-with-unstated-axis"
+      ],
+      "buckets": [
+        "source-silent"
+      ],
+      "detail": "the recorded reading refuses this effect: range-with-unstated-axis"
+    },
+    {
+      "id": 8465,
+      "key": "rune",
+      "ownerName": "Guardian",
+      "source": "rune",
+      "population": "stat-modifier",
+      "classes": [
+        "stat-grant-is-conditional",
+        "grants-a-shield"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "a labelled line states the value"
+    },
+    {
+      "id": 8446,
+      "key": "rune",
+      "ownerName": "Demolish",
+      "source": "rune",
+      "population": "damaging-prose",
+      "classes": [
+        "rune-prose-has-no-structure-to-confirm-a-reading"
+      ],
+      "buckets": [
+        "not-yet-read"
+      ],
+      "detail": "deals bonus physical damage — but ONLY to towers, so it never appears in a champion-versus-champion result"
+    },
+    {
+      "id": 8401,
+      "key": "rune",
+      "ownerName": "Shield Bash",
+      "source": "rune",
+      "population": "damaging-prose",
+      "classes": [
+        "rune-prose-has-no-structure-to-confirm-a-reading"
+      ],
+      "buckets": [
+        "not-yet-read"
+      ],
+      "detail": "the next basic attack deals 5 - 30 (+2.5% bonus health) bonus adaptive damage"
+    },
+    {
+      "id": 8429,
+      "key": "rune",
+      "ownerName": "Conditioning",
+      "source": "rune",
+      "population": "stat-modifier",
+      "classes": [
+        "stat-grant-is-conditional",
+        "stat-grant-multiplies-a-stat"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "the stat is named and a number is present, but nothing structural joins them"
+    },
+    {
+      "id": 8451,
+      "key": "rune",
+      "ownerName": "Overgrowth",
+      "source": "rune",
+      "population": "stat-modifier",
+      "classes": [
+        "stat-grant-is-conditional",
+        "stat-grant-is-a-share-of-another-stat"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "the stat is named and a number is present, but nothing structural joins them"
+    },
+    {
+      "id": 8453,
+      "key": "rune",
+      "ownerName": "Revitalize",
+      "source": "rune",
+      "population": "stat-modifier",
+      "classes": [
+        "grants-healing-not-a-stat"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "the stat is named and a number is present, but nothing structural joins them"
+    },
+    {
+      "id": 8242,
+      "key": "rune",
+      "ownerName": "Unflinching",
+      "source": "rune",
+      "population": "stat-modifier",
+      "classes": [
+        "stat-grant-is-conditional"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "the stat is named and a number is present, but nothing structural joins them"
+    },
+    {
+      "id": 8214,
+      "key": "rune",
+      "ownerName": "Summon Aery",
+      "source": "rune",
+      "population": "damaging-prose",
+      "classes": [
+        "rune-prose-has-no-structure-to-confirm-a-reading"
+      ],
+      "buckets": [
+        "not-yet-read"
+      ],
+      "detail": "Aery deals 10 - 50 based on level (+0.05 AP) (+0.1 bonus AD) — the source never says the word \"damage\""
+    },
+    {
+      "id": 8229,
+      "key": "rune",
+      "ownerName": "Arcane Comet",
+      "source": "rune",
+      "population": "damaging-structural",
+      "classes": [
+        "adaptive-damage-type"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "the recorded reading refuses this effect: adaptive-damage-type"
+    },
+    {
+      "id": 8230,
+      "key": "rune",
+      "ownerName": "Stormraider's Surge",
+      "source": "rune",
+      "population": "stat-modifier",
+      "classes": [
+        "stat-grant-is-conditional"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "a labelled line states the value"
+    },
+    {
+      "id": 8992,
+      "key": "rune",
+      "ownerName": "Deathfire Touch",
+      "source": "rune",
+      "population": "damaging-prose",
+      "classes": [
+        "rune-prose-has-no-structure-to-confirm-a-reading"
+      ],
+      "buckets": [
+        "not-yet-read"
+      ],
+      "detail": "burns for 3 - 12 based on level (+2.5% AP) (+7% bonus AD) magic damage"
+    },
+    {
+      "id": 8224,
+      "key": "rune",
+      "ownerName": "Axiom Arcanist",
+      "source": "rune",
+      "population": "stat-modifier",
+      "classes": [
+        "stat-grant-is-conditional",
+        "amplifies-damage-or-reduces-it"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "the stat is named and a number is present, but nothing structural joins them"
+    },
+    {
+      "id": 8226,
+      "key": "rune",
+      "ownerName": "Manaflow Band",
+      "source": "rune",
+      "population": "stat-modifier",
+      "classes": [
+        "stat-grant-is-conditional"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "a labelled line states the value"
+    },
+    {
+      "id": 8233,
+      "key": "rune",
+      "ownerName": "Absolute Focus",
+      "source": "rune",
+      "population": "stat-modifier",
+      "classes": [
+        "stat-grant-is-conditional",
+        "stat-grant-is-a-share-of-another-stat"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "the stat is named and a number is present, but nothing structural joins them"
+    },
+    {
+      "id": 8237,
+      "key": "rune",
+      "ownerName": "Scorch",
+      "source": "rune",
+      "population": "damaging-prose",
+      "classes": [
+        "rune-prose-has-no-structure-to-confirm-a-reading"
+      ],
+      "buckets": [
+        "not-yet-read"
+      ],
+      "detail": "sets champions on fire dealing 20 - 40 bonus magic damage based on level"
+    },
+    {
+      "id": 8232,
+      "key": "rune",
+      "ownerName": "Waterwalking",
+      "source": "rune",
+      "population": "stat-modifier",
+      "classes": [
+        "stat-grant-is-a-share-of-another-stat"
+      ],
+      "buckets": [
+        "contract"
+      ],
+      "detail": "the stat is named and a number is present, but nothing structural joins them"
+    },
+    {
+      "id": 8236,
+      "key": "rune",
+      "ownerName": "Gathering Storm",
+      "source": "rune",
+      "population": "stat-modifier",
+      "classes": [
+        "scales-on-elapsed-time"
+      ],
+      "buckets": [
+        "not-actually-in-scope"
+      ],
+      "detail": "the stat is named and a number is present, but nothing structural joins them"
+    }
+  ]
+}

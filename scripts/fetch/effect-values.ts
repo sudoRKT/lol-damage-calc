@@ -78,6 +78,26 @@ export type RefusalReason =
   | 'retaliation'
   /** More damage is added on a condition the contract cannot express. */
   | 'conditional-additional-damage'
+  /**
+   * The effect fires only when a unit that is not one of the two champions is killed or taken
+   * down. A two-champion scenario (SPECIFICATION §1) contains no such unit, and the one case
+   * where the unit IS the defender fires after the survival verdict is already settled.
+   */
+  | 'trigger-needs-a-third-unit'
+  /**
+   * The source states the value only as a multiple of ANOTHER effect's figure — Hollow Radiance
+   * `pass2` is "200% of Immolate's damage", written in the module as `{{#var:hollow_ibase}}*2`.
+   * The number exists, one indirection away; nothing here resolves a variable across effect
+   * keys, and inventing the expansion would be reading a figure no sentence states.
+   */
+  | 'value-stated-only-by-reference'
+  /**
+   * The number is a CRITICAL-STRIKE DAMAGE PERCENTAGE, not an amount of damage. `{{critical
+   * damage|60|80}}` changes what a critical strike multiplies by. `AbilityComponent` has no
+   * field that means that, and putting 60 in `base` would hand the holder 60 flat damage — a
+   * different number rather than an imprecise one.
+   */
+  | 'critical-strike-modifier'
   /** A token inside the damage run that this parser does not recognise. Always quoted. */
   | 'unparsed-token'
   /** No `{{as}}` run in this text names a damage type and carries a value. */

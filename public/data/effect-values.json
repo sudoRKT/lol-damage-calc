@@ -3,7 +3,7 @@
     "source": "Riot Data Dragon item.json + runesReforged.json (which items and runes exist); wiki Module:ItemData/data (item effect prose and values)",
     "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
     "patch": "16.16.1",
-    "fetched": "2026-08-13T22:50:55.892Z",
+    "fetched": "2026-08-14T15:04:08.084Z",
     "urls": {
       "patch": "https://ddragon.leagueoflegends.com/api/versions.json",
       "items": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
@@ -27,15 +27,17 @@
     "effectsInPopulation": 291,
     "structurallyStatedDamaging": 63,
     "needsAPersonToRead": 18,
-    "gated": 63,
-    "stored": 38,
-    "storedComplete": 33,
+    "gated": 73,
+    "stored": 43,
+    "storedComplete": 38,
     "storedWithUnresolvedOwner": 5,
     "storedWithRangeSplit": [
       "Hullbreaker [pass]",
       "Titanic Hydra [pass]",
       "Titanic Hydra [act]",
-      "Voltaic Cyclosword [pass3]"
+      "Voltaic Cyclosword [pass3]",
+      "Blade of The Ruined King [pass]",
+      "Eclipse [pass]"
     ],
     "storedAsDamageOverTime": [
       {
@@ -67,35 +69,55 @@
         "effect": "Unending Despair [pass]",
         "totalInstances": null,
         "sourceSays": "Every 4 seconds after entering combat with champions, sap all enemy champions around you within cr 650 units to deal magic damage equal to 3% of your bonus health to them and heal yourself equal to 250% of the post-mitigation Damage calculated after modifiers damage dealt."
+      },
+      {
+        "effect": "Liandry's Torment [pass]",
+        "totalInstances": 6,
+        "sourceSays": "1% of the target's maximum health magic damage every 0.5 seconds over 3 seconds, capped at 20 per tick against monsters."
+      },
+      {
+        "effect": "Malignance [pass2]",
+        "totalInstances": 12,
+        "sourceSays": "60/4 magic damage (+ 5/4 % AP) magic damage every 0.25 seconds"
+      },
+      {
+        "effect": "Zeke's Convergence [pass2]",
+        "totalInstances": 20,
+        "sourceSays": "30/4 magic damage every 0.25 seconds"
       }
     ],
     "appliesAs": {
-      "on-hit": 14,
+      "on-hit": 15,
+      "periodic": 9,
       "active": 7,
-      "periodic": 6,
       "spellblade": 6,
-      "NO CONTRACT ARM (reported, absent)": 5
+      "NO CONTRACT ARM (reported, absent)": 6
     },
     "appliesAsWithNoContractArm": [
       "Elixir of Sorcery: on damaging an enemy champion, 5 second cooldown per champion",
       "Hextech Alternator: on damaging an enemy champion",
       "Scout's Slingshot: on damaging an enemy champion, 40 second cooldown",
       "Stormsurge: a single delayed strike, 2 seconds after Squall is applied",
-      "Zaz'Zak's Realmspike: on dealing ability damage to an enemy champion, delayed 0.5 seconds"
+      "Zaz'Zak's Realmspike: on dealing ability damage to an enemy champion, delayed 0.5 seconds",
+      "Eclipse: on applying a second stack to the same champion within 2 seconds"
     ],
-    "refused": 25,
+    "refused": 30,
     "refusalsByReason": {
       "non-champion-target-only": 6,
       "other-enemies-only": 5,
       "scales-on-lethality": 3,
+      "conditional-additional-damage": 3,
       "adaptive-damage-type": 3,
       "range-with-unstated-axis": 3,
       "retaliation": 2,
       "scales-on-stacks": 2,
-      "conditional-additional-damage": 2,
+      "no-structural-damage-run": 2,
+      "critical-strike-modifier": 2,
       "ally-only": 1,
       "scales-on-crit-chance": 1,
-      "range-split-has-named-arguments": 1
+      "range-split-has-named-arguments": 1,
+      "trigger-needs-a-third-unit": 1,
+      "value-stated-only-by-reference": 1
     },
     "classSweptOverWholePopulation": {
       "states an interval at which something recurs": {
@@ -239,13 +261,13 @@
     "parserFiredOutsideReadPopulation": []
   },
   "findings": [
-    "DATA-SOURCES §39 records 28 stored effects; this run observed 38. §41.3 predicted the contract pass would release 19 of the 35 refusals, taking the set \"toward 47\". THE PREDICTION DOUBLE-COUNTS. The 12 melee/ranged and 7 damage-over-time refusals overlap in one effect (Bastionbreaker pass2), so they are 18 distinct effects, not 19; and 8 of those 18 carry a SECOND blocker the contract pass did not touch — five cleave items that damage only OTHER enemies, two that scale on lethality, one wards-only. Only 10 were ever releasable, and this run released 10."
+    "THE SECOND REACH RELEASED 5 EFFECTS THE STRUCTURAL POPULATION NEVER CONTAINED, taking the stored set from 38 to 43. They were not refused before — they were invisible, because `findBlocks` reports templates at the outermost nesting level only and every path in this pipeline is built on it. 11 item effects carry a damage figure inside a {{ft}} footnote; 2 more state the damage type and its value in two runs bridged by \"equal to\"."
   ],
   "secondSourceCorroboration": {
     "whatThisIs": "Each stored number looked for in Data Dragon's own item description, which Riot writes independently of the wiki. Where the number is present the two agree. Where Data Dragon states no number at all, NOTHING is claimed — absence is not agreement.",
-    "storedEffects": 38,
+    "storedEffects": 43,
     "everyNumberRestated": 7,
-    "dataDragonStatesNoNumbers": 27,
+    "dataDragonStatesNoNumbers": 30,
     "rows": [
       {
         "ownerName": "Ardent Censer",
@@ -716,6 +738,60 @@
           3
         ],
         "dataDragonProse": "Void Explosion Dealing Ability damage to a champion causes an explosion that deals magic damage . Active (4 charges) Places an Invisible Stealth Ward that grants vision."
+      },
+      {
+        "ownerName": "Blade of The Ruined King",
+        "key": "pass",
+        "numbers": [],
+        "restatedByDataDragon": [],
+        "absentFromDataDragon": [],
+        "dataDragonProse": "Mist's Edge Attacks deal a percentage of enemy's current Health as bonus physical damage On-Hit . Clawing Shadows Attacking a champion 3 times Slows them by 30% for 1 second."
+      },
+      {
+        "ownerName": "Eclipse",
+        "key": "pass",
+        "numbers": [],
+        "restatedByDataDragon": [],
+        "absentFromDataDragon": [],
+        "dataDragonProse": "Ever Rising Moon Hitting a champion with 2 separate Attacks or Abilities within 2 seconds grants you a Shield for 2 seconds."
+      },
+      {
+        "ownerName": "Liandry's Torment",
+        "key": "pass",
+        "numbers": [
+          1
+        ],
+        "restatedByDataDragon": [],
+        "absentFromDataDragon": [
+          1
+        ],
+        "dataDragonProse": "Torment Damaging Abilities burn enemies for 2% max Health magic damage per second for 3 seconds. Suffering For each second in combat with enemy champions, deal 2% bonus damage, up to 6%."
+      },
+      {
+        "ownerName": "Malignance",
+        "key": "pass2",
+        "numbers": [
+          15,
+          1.25
+        ],
+        "restatedByDataDragon": [],
+        "absentFromDataDragon": [
+          15,
+          1.25
+        ],
+        "dataDragonProse": "Scorn Gain 20 Ultimate Ability Haste. Hatefog Damaging a champion with your Ultimate burns the ground beneath them for 3s, dealing magic damage per second and reducing their Magic Resist ."
+      },
+      {
+        "ownerName": "Zeke's Convergence",
+        "key": "pass2",
+        "numbers": [
+          7.5
+        ],
+        "restatedByDataDragon": [],
+        "absentFromDataDragon": [
+          7.5
+        ],
+        "dataDragonProse": "Frostfire Tempest Casting your Ultimate summons a storm around you for 5 seconds. The storm deals 30 magic damage per second to enemy champions and Slows them by 30%."
       }
     ]
   },
@@ -2704,6 +2780,313 @@
           "detail": "the recorded reading refuses this effect: adaptive-damage-type"
         }
       ]
+    },
+    {
+      "id": 3153,
+      "key": "pass",
+      "ownerName": "Blade of The Ruined King",
+      "source": "item",
+      "hasUnresolvedOwner": false,
+      "sentence": "Basic attacks deal bonus physical damage on-hit equal to 9% / 6% of the target's current health, with a maximum of 100 against minions and monsters.",
+      "appliesAsSays": "on-hit",
+      "note": "THE OWNER IS STATED IN SO MANY WORDS — \"of the TARGET's current health\" — so this is not one of the burn family §37.3 leaves unresolved. The 100 cap applies against minions and monsters only and so cannot bind in a champion-versus-champion fight; it is not stored, and nothing in the contract could hold it if it were.",
+      "outcome": "stored",
+      "sourceRun": "{{as|'''bonus''' physical damage}} equal to {{as|{{rd|9%|6%}} of the target's '''current''' health}}",
+      "refusals": [],
+      "verification": "derived",
+      "appliesAs": "on-hit",
+      "components": [
+        {
+          "id": "blade-of-the-ruined-king-pass",
+          "label": "Mist's Edge",
+          "damageType": "physical",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              0
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "currentHP",
+              "owner": "target",
+              "scaling": "byRangeType",
+              "melee": {
+                "scaling": "explicit",
+                "perRank": [
+                  9
+                ]
+              },
+              "ranged": {
+                "scaling": "explicit",
+                "perRank": [
+                  6
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 1056,
+      "key": "pass",
+      "ownerName": "Doran's Ring",
+      "source": "item",
+      "hasUnresolvedOwner": false,
+      "sentence": "Restore 1 mana every second. Dealing damage to an enemy champion increases the restoration to 2 mana for the next 5 seconds.",
+      "appliesAsSays": null,
+      "note": "IN THE POPULATION BECAUSE OF ITS SHAPE, NOT ITS CONTENT. It carries an {{as}} block inside a footnote, so the hidden-block test finds it; the block is about mana restored and the effect deals no damage at all. The census already classifies it `damage: none`, and this reading agrees. Recorded rather than filtered out, so the population is what the test finds and not what someone thought it should find.",
+      "outcome": "refused",
+      "sourceRun": "",
+      "refusals": [
+        {
+          "reason": "no-structural-damage-run",
+          "detail": "the recorded reading refuses this effect: no-structural-damage-run"
+        }
+      ]
+    },
+    {
+      "id": 6692,
+      "key": "pass",
+      "ownerName": "Eclipse",
+      "source": "item",
+      "hasUnresolvedOwner": false,
+      "sentence": "Applying 2 stacks to a champion within a 2 second period deals bonus physical damage to them equal to 8% / 5% of target's maximum health and grants you a shield for 150 / 75 (+ 40% / 20% bonus AD) for 2 seconds.",
+      "appliesAsSays": "on applying a second stack to the same champion within 2 seconds",
+      "note": "THE SHIELD IN THE SAME SENTENCE HAS ITS OWN melee/ranged pair (150 / 75) and its own bonus-AD ratio, and it is a separate {{as}} run. It must not join the damage — this is the shape that cost four real damage instances in the census's first run (§37.4 defect 2). The damage carries ONE ratio and no flat base.",
+      "outcome": "stored",
+      "sourceRun": "{{as|'''bonus''' physical damage}} equal to {{as|{{rd|8%|5%}} of target's '''maximum''' health}}",
+      "refusals": [],
+      "verification": "derived",
+      "components": [
+        {
+          "id": "eclipse-pass",
+          "label": "Ever Rising Moon",
+          "damageType": "physical",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              0
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "maxHP",
+              "owner": "target",
+              "scaling": "byRangeType",
+              "melee": {
+                "scaling": "explicit",
+                "perRank": [
+                  8
+                ]
+              },
+              "ranged": {
+                "scaling": "explicit",
+                "perRank": [
+                  5
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 2512,
+      "key": "pass2",
+      "ownerName": "Fiendhunter Bolts",
+      "source": "item",
+      "hasUnresolvedOwner": false,
+      "sentence": "After casting your ultimate, your next 3 basic attacks are empowered to critically strike for 60 / 80 critical damage; if an attack would already have critically struck it instead critically strikes for 100 and deals bonus true damage equal to 15% of the triggering attack's pre-mitigation damage.",
+      "appliesAsSays": null,
+      "note": "THE NUMBER IS NOT AN AMOUNT OF DAMAGE. 60 / 80 is a critical-strike DAMAGE PERCENTAGE — it changes what a critical strike multiplies by, and `AbilityComponent` has no field that means that. Putting 60 in `base` would hand the holder 60 flat damage, which is a different number rather than an imprecise one. The true-damage half is 15% of the triggering attack's own damage, which multiplies a figure computed elsewhere in the combo and is not a ratio on any stat.",
+      "outcome": "refused",
+      "sourceRun": "",
+      "refusals": [
+        {
+          "reason": "critical-strike-modifier",
+          "detail": "the recorded reading refuses this effect: critical-strike-modifier"
+        },
+        {
+          "reason": "conditional-additional-damage",
+          "detail": "the recorded reading refuses this effect: conditional-additional-damage"
+        }
+      ]
+    },
+    {
+      "id": 6664,
+      "key": "pass2",
+      "ownerName": "Hollow Radiance",
+      "source": "item",
+      "hasUnresolvedOwner": false,
+      "sentence": "Killing a non-champion unit causes an eruption around their death location that deals 200% of Immolate's damage to enemies within 350 units. Scoring a takedown against an enemy champion within 3 seconds of damaging them causes a larger eruption dealing 400%.",
+      "appliesAsSays": null,
+      "note": "TWO INDEPENDENT BLOCKERS, and either alone would refuse it. (1) The eruption fires on KILLING a minion or monster, which a two-champion scenario does not contain; the larger eruption fires on a takedown of the defender, by which point the survival verdict is already settled. (2) The value is written as a multiple of another effect's variables ({{#var:hollow_ibase}}*2), so the number exists only by reference to Hollow Radiance `pass`. The parser refuses it too, with `unparsed-token`, and the two agree that nothing may be stored.",
+      "outcome": "refused",
+      "sourceRun": "",
+      "refusals": [
+        {
+          "reason": "trigger-needs-a-third-unit",
+          "detail": "the recorded reading refuses this effect: trigger-needs-a-third-unit"
+        },
+        {
+          "reason": "value-stated-only-by-reference",
+          "detail": "the recorded reading refuses this effect: value-stated-only-by-reference"
+        }
+      ]
+    },
+    {
+      "id": 6653,
+      "key": "pass",
+      "ownerName": "Liandry's Torment",
+      "source": "item",
+      "hasUnresolvedOwner": false,
+      "sentence": "Dealing ability damage or pet damage burns enemies, causing them to take 1% of the target's maximum health magic damage every 0.5 seconds over 3 seconds — footnoted as 6% of the target's maximum health total magic damage over 3 seconds.",
+      "appliesAsSays": "a burn applied by dealing ability damage, ticking every 0.5 seconds",
+      "note": "THE COUNT IS THE QUOTIENT OF TWO STATED FIGURES, NOT A NUMBER ON THE PAGE. 6% total ÷ 1% per tick = 6, and no elapsed time is divided by anything. What that guarantees is narrow and it is the only thing relied on: 1% × 6 reproduces the source's own 6% exactly, so the damage-over-time line reports the figure the source states. Storing the tick as the whole effect would understate it sixfold (§29 defect 1). The \"capped at 20 per tick against monsters\" clause cannot bind against a champion and is not stored.",
+      "outcome": "stored",
+      "sourceRun": "{{as|1% of the target's '''maximum''' health}} {{as|magic damage}}",
+      "refusals": [],
+      "verification": "derived",
+      "appliesAs": "periodic",
+      "overTime": {
+        "sourceSays": "1% of the target's maximum health magic damage every 0.5 seconds over 3 seconds, capped at 20 per tick against monsters.",
+        "totalInstances": 6
+      },
+      "components": [
+        {
+          "id": "liandry-s-torment-pass",
+          "label": "Torment",
+          "damageType": "magic",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              0
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "maxHP",
+              "owner": "target",
+              "scaling": "explicit",
+              "perRank": [
+                1
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 3118,
+      "key": "pass2",
+      "ownerName": "Malignance",
+      "source": "item",
+      "hasUnresolvedOwner": false,
+      "sentence": "Dealing damage to enemy champions with your ultimate ability creates a scorched zone beneath them for 3 seconds, applying a Curse to enemies within that deals 15 (+ 1.25% AP) magic damage every 0.25 seconds — footnoted as 180 (+ 15% AP) total magic damage over the duration.",
+      "appliesAsSays": "a zone created by your ultimate, cursing enemies inside it every 0.25 seconds",
+      "note": "TWO WITNESSES AGREE ON THE COUNT AND THEY ARE INDEPENDENT: 180 ÷ 15 = 12 from the flat base, and 15% ÷ 1.25% = 12 from the AP ratio. THE WIKITEXT DIVISOR IS NOT ONE OF THEM AND MUST NOT BE. Malignance writes its tick as {{ap|60/4}}, where 4 is TICKS PER SECOND, while Blackfire Torch writes {{ap|60/6}}, where 6 is the INSTANCE COUNT. The notation is identical and the meaning is opposite; reading the divisor here would give Malignance a third of its damage. The magic-resistance reduction in the same sentence is a separate run and is not part of this component.",
+      "outcome": "stored",
+      "sourceRun": "{{as|{{ap|60/4}}|magic damage}} {{as|(+ {{ap|5/4}}% AP)}} {{as|magic damage}}",
+      "refusals": [],
+      "verification": "derived",
+      "appliesAs": "periodic",
+      "overTime": {
+        "sourceSays": "60/4 magic damage (+ 5/4 % AP) magic damage every 0.25 seconds",
+        "totalInstances": 12
+      },
+      "components": [
+        {
+          "id": "malignance-pass2",
+          "label": "Hatefog",
+          "damageType": "magic",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              15
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "explicit",
+              "perRank": [
+                1.25
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 6610,
+      "key": "pass",
+      "ownerName": "Sundered Sky",
+      "source": "item",
+      "hasUnresolvedOwner": false,
+      "sentence": "Your next basic attack against a champion is empowered to critically strike for 60 / 80 critical damage and heal you for 90% / 45% base AD (+ 4% of your missing health).",
+      "appliesAsSays": null,
+      "note": "SAME SHAPE AS FIENDHUNTER BOLTS AND THE SAME REASON. The footnote states a critical damage percentage, not damage. The heal in the same sentence is a heal, not damage, and belongs to `Result.sustain` (§42.2) rather than to a damage component.",
+      "outcome": "refused",
+      "sourceRun": "",
+      "refusals": [
+        {
+          "reason": "critical-strike-modifier",
+          "detail": "the recorded reading refuses this effect: critical-strike-modifier"
+        }
+      ]
+    },
+    {
+      "id": 3083,
+      "key": "pass2",
+      "ownerName": "Warmog's Armor",
+      "source": "item",
+      "hasUnresolvedOwner": false,
+      "sentence": "Warmog's Heart: while you have at least 1100 bonus health, restore a share of maximum health every second when out of combat.",
+      "appliesAsSays": null,
+      "note": "Out of scope before it is anything else: the census marks it not damage-relevant, and it restores health out of combat. Recorded for the same reason as Doran's Ring — the hidden-block test finds it, so the reading has to say what it is.",
+      "outcome": "refused",
+      "sourceRun": "",
+      "refusals": [
+        {
+          "reason": "no-structural-damage-run",
+          "detail": "the recorded reading refuses this effect: no-structural-damage-run"
+        }
+      ]
+    },
+    {
+      "id": 3050,
+      "key": "pass2",
+      "ownerName": "Zeke's Convergence",
+      "source": "item",
+      "hasUnresolvedOwner": false,
+      "sentence": "Upon casting your ultimate ability you summon a storm around you for 5 seconds. The storm deals 7.5 magic damage every 0.25 seconds to enemy champions and monsters within 350 units — footnoted as 150 total magic damage over the duration.",
+      "appliesAsSays": "a storm around the holder after their ultimate, ticking every 0.25 seconds",
+      "note": "ONE WITNESS ONLY — 150 ÷ 7.5 = 20 — because the effect carries no ratio to check it against. That is weaker evidence than Malignance's two and is recorded as such. It is still accepted because the property being relied on is arithmetic: 7.5 × 20 is the 150 the source states. LIKE SUNFIRE AEGIS AND BAMI'S CINDER, this damage reaches only enemies standing inside a radius, and the engine models no positions; storing it follows the convention those already-stored effects set rather than establishing a new one.",
+      "outcome": "stored",
+      "sourceRun": "{{as|{{ap|30/4}} magic damage}}",
+      "refusals": [],
+      "verification": "derived",
+      "appliesAs": "periodic",
+      "overTime": {
+        "sourceSays": "30/4 magic damage every 0.25 seconds",
+        "totalInstances": 20
+      },
+      "components": [
+        {
+          "id": "zeke-s-convergence-pass2",
+          "label": "Frostfire Tempest",
+          "damageType": "magic",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              7.5
+            ]
+          },
+          "ratios": []
+        }
+      ]
     }
   ],
   "proposedItemEffects": [
@@ -2734,7 +3117,7 @@
         "source": "wiki Module:ItemData/data",
         "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
         "patch": "16.16.1",
-        "fetched": "2026-08-13T22:50:55.892Z"
+        "fetched": "2026-08-14T15:04:08.084Z"
       }
     },
     {
@@ -2767,7 +3150,7 @@
         "source": "wiki Module:ItemData/data",
         "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
         "patch": "16.16.1",
-        "fetched": "2026-08-13T22:50:55.892Z"
+        "fetched": "2026-08-14T15:04:08.084Z"
       }
     },
     {
@@ -2809,7 +3192,7 @@
         "source": "wiki Module:ItemData/data",
         "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
         "patch": "16.16.1",
-        "fetched": "2026-08-13T22:50:55.892Z"
+        "fetched": "2026-08-14T15:04:08.084Z"
       }
     },
     {
@@ -2847,7 +3230,7 @@
         "source": "wiki Module:ItemData/data",
         "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
         "patch": "16.16.1",
-        "fetched": "2026-08-13T22:50:55.892Z"
+        "fetched": "2026-08-14T15:04:08.084Z"
       }
     },
     {
@@ -2892,7 +3275,7 @@
         "source": "wiki Module:ItemData/data",
         "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
         "patch": "16.16.1",
-        "fetched": "2026-08-13T22:50:55.892Z"
+        "fetched": "2026-08-14T15:04:08.084Z"
       }
     },
     {
@@ -2919,7 +3302,7 @@
         "source": "wiki Module:ItemData/data",
         "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
         "patch": "16.16.1",
-        "fetched": "2026-08-13T22:50:55.892Z"
+        "fetched": "2026-08-14T15:04:08.084Z"
       }
     },
     {
@@ -2953,7 +3336,7 @@
         "source": "wiki Module:ItemData/data",
         "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
         "patch": "16.16.1",
-        "fetched": "2026-08-13T22:50:55.892Z"
+        "fetched": "2026-08-14T15:04:08.084Z"
       }
     },
     {
@@ -2982,7 +3365,7 @@
         "source": "wiki Module:ItemData/data",
         "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
         "patch": "16.16.1",
-        "fetched": "2026-08-13T22:50:55.892Z"
+        "fetched": "2026-08-14T15:04:08.084Z"
       }
     },
     {
@@ -3021,7 +3404,7 @@
         "source": "wiki Module:ItemData/data",
         "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
         "patch": "16.16.1",
-        "fetched": "2026-08-13T22:50:55.892Z"
+        "fetched": "2026-08-14T15:04:08.084Z"
       }
     },
     {
@@ -3049,7 +3432,7 @@
         "source": "wiki Module:ItemData/data",
         "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
         "patch": "16.16.1",
-        "fetched": "2026-08-13T22:50:55.892Z"
+        "fetched": "2026-08-14T15:04:08.084Z"
       }
     },
     {
@@ -3091,7 +3474,7 @@
         "source": "wiki Module:ItemData/data",
         "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
         "patch": "16.16.1",
-        "fetched": "2026-08-13T22:50:55.892Z"
+        "fetched": "2026-08-14T15:04:08.084Z"
       }
     },
     {
@@ -3128,7 +3511,7 @@
         "source": "wiki Module:ItemData/data",
         "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
         "patch": "16.16.1",
-        "fetched": "2026-08-13T22:50:55.892Z"
+        "fetched": "2026-08-14T15:04:08.084Z"
       }
     },
     {
@@ -3176,7 +3559,7 @@
         "source": "wiki Module:ItemData/data",
         "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
         "patch": "16.16.1",
-        "fetched": "2026-08-13T22:50:55.892Z"
+        "fetched": "2026-08-14T15:04:08.084Z"
       }
     },
     {
@@ -3246,7 +3629,7 @@
         "source": "wiki Module:ItemData/data",
         "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
         "patch": "16.16.1",
-        "fetched": "2026-08-13T22:50:55.892Z"
+        "fetched": "2026-08-14T15:04:08.084Z"
       }
     },
     {
@@ -3284,7 +3667,7 @@
         "source": "wiki Module:ItemData/data",
         "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
         "patch": "16.16.1",
-        "fetched": "2026-08-13T22:50:55.892Z"
+        "fetched": "2026-08-14T15:04:08.084Z"
       }
     },
     {
@@ -3328,7 +3711,7 @@
         "source": "wiki Module:ItemData/data",
         "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
         "patch": "16.16.1",
-        "fetched": "2026-08-13T22:50:55.892Z"
+        "fetched": "2026-08-14T15:04:08.084Z"
       }
     },
     {
@@ -3365,7 +3748,7 @@
         "source": "wiki Module:ItemData/data",
         "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
         "patch": "16.16.1",
-        "fetched": "2026-08-13T22:50:55.892Z"
+        "fetched": "2026-08-14T15:04:08.084Z"
       }
     },
     {
@@ -3402,7 +3785,7 @@
         "source": "wiki Module:ItemData/data",
         "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
         "patch": "16.16.1",
-        "fetched": "2026-08-13T22:50:55.892Z"
+        "fetched": "2026-08-14T15:04:08.084Z"
       }
     },
     {
@@ -3431,7 +3814,7 @@
         "source": "wiki Module:ItemData/data",
         "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
         "patch": "16.16.1",
-        "fetched": "2026-08-13T22:50:55.892Z"
+        "fetched": "2026-08-14T15:04:08.084Z"
       }
     },
     {
@@ -3468,7 +3851,7 @@
         "source": "wiki Module:ItemData/data",
         "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
         "patch": "16.16.1",
-        "fetched": "2026-08-13T22:50:55.892Z"
+        "fetched": "2026-08-14T15:04:08.084Z"
       }
     },
     {
@@ -3497,7 +3880,7 @@
         "source": "wiki Module:ItemData/data",
         "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
         "patch": "16.16.1",
-        "fetched": "2026-08-13T22:50:55.892Z"
+        "fetched": "2026-08-14T15:04:08.084Z"
       }
     },
     {
@@ -3536,7 +3919,7 @@
         "source": "wiki Module:ItemData/data",
         "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
         "patch": "16.16.1",
-        "fetched": "2026-08-13T22:50:55.892Z"
+        "fetched": "2026-08-14T15:04:08.084Z"
       }
     },
     {
@@ -3564,7 +3947,7 @@
         "source": "wiki Module:ItemData/data",
         "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
         "patch": "16.16.1",
-        "fetched": "2026-08-13T22:50:55.892Z"
+        "fetched": "2026-08-14T15:04:08.084Z"
       }
     },
     {
@@ -3601,7 +3984,7 @@
         "source": "wiki Module:ItemData/data",
         "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
         "patch": "16.16.1",
-        "fetched": "2026-08-13T22:50:55.892Z"
+        "fetched": "2026-08-14T15:04:08.084Z"
       }
     },
     {
@@ -3631,7 +4014,7 @@
         "source": "wiki Module:ItemData/data",
         "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
         "patch": "16.16.1",
-        "fetched": "2026-08-13T22:50:55.892Z"
+        "fetched": "2026-08-14T15:04:08.084Z"
       }
     },
     {
@@ -3660,7 +4043,7 @@
         "source": "wiki Module:ItemData/data",
         "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
         "patch": "16.16.1",
-        "fetched": "2026-08-13T22:50:55.892Z"
+        "fetched": "2026-08-14T15:04:08.084Z"
       }
     },
     {
@@ -3697,7 +4080,7 @@
         "source": "wiki Module:ItemData/data",
         "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
         "patch": "16.16.1",
-        "fetched": "2026-08-13T22:50:55.892Z"
+        "fetched": "2026-08-14T15:04:08.084Z"
       }
     },
     {
@@ -3734,7 +4117,7 @@
         "source": "wiki Module:ItemData/data",
         "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
         "patch": "16.16.1",
-        "fetched": "2026-08-13T22:50:55.892Z"
+        "fetched": "2026-08-14T15:04:08.084Z"
       }
     },
     {
@@ -3782,7 +4165,7 @@
         "source": "wiki Module:ItemData/data",
         "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
         "patch": "16.16.1",
-        "fetched": "2026-08-13T22:50:55.892Z"
+        "fetched": "2026-08-14T15:04:08.084Z"
       }
     },
     {
@@ -3826,7 +4209,7 @@
         "source": "wiki Module:ItemData/data",
         "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
         "patch": "16.16.1",
-        "fetched": "2026-08-13T22:50:55.892Z"
+        "fetched": "2026-08-14T15:04:08.084Z"
       }
     },
     {
@@ -3863,7 +4246,7 @@
         "source": "wiki Module:ItemData/data",
         "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
         "patch": "16.16.1",
-        "fetched": "2026-08-13T22:50:55.892Z"
+        "fetched": "2026-08-14T15:04:08.084Z"
       }
     },
     {
@@ -3917,7 +4300,7 @@
         "source": "wiki Module:ItemData/data",
         "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
         "patch": "16.16.1",
-        "fetched": "2026-08-13T22:50:55.892Z"
+        "fetched": "2026-08-14T15:04:08.084Z"
       }
     },
     {
@@ -3971,7 +4354,7 @@
         "source": "wiki Module:ItemData/data",
         "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
         "patch": "16.16.1",
-        "fetched": "2026-08-13T22:50:55.892Z"
+        "fetched": "2026-08-14T15:04:08.084Z"
       }
     },
     {
@@ -4008,7 +4391,7 @@
         "source": "wiki Module:ItemData/data",
         "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
         "patch": "16.16.1",
-        "fetched": "2026-08-13T22:50:55.892Z"
+        "fetched": "2026-08-14T15:04:08.084Z"
       }
     },
     {
@@ -4050,7 +4433,7 @@
         "source": "wiki Module:ItemData/data",
         "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
         "patch": "16.16.1",
-        "fetched": "2026-08-13T22:50:55.892Z"
+        "fetched": "2026-08-14T15:04:08.084Z"
       }
     },
     {
@@ -4098,7 +4481,7 @@
         "source": "wiki Module:ItemData/data",
         "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
         "patch": "16.16.1",
-        "fetched": "2026-08-13T22:50:55.892Z"
+        "fetched": "2026-08-14T15:04:08.084Z"
       }
     },
     {
@@ -4127,7 +4510,7 @@
         "source": "wiki Module:ItemData/data",
         "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
         "patch": "16.16.1",
-        "fetched": "2026-08-13T22:50:55.892Z"
+        "fetched": "2026-08-14T15:04:08.084Z"
       }
     },
     {
@@ -4172,7 +4555,221 @@
         "source": "wiki Module:ItemData/data",
         "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
         "patch": "16.16.1",
-        "fetched": "2026-08-13T22:50:55.892Z"
+        "fetched": "2026-08-14T15:04:08.084Z"
+      }
+    },
+    {
+      "itemId": 3153,
+      "itemName": "Blade of The Ruined King",
+      "key": "pass",
+      "name": "Mist's Edge",
+      "kind": "passive",
+      "components": [
+        {
+          "id": "blade-of-the-ruined-king-pass",
+          "label": "Mist's Edge",
+          "damageType": "physical",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              0
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "currentHP",
+              "owner": "target",
+              "scaling": "byRangeType",
+              "melee": {
+                "scaling": "explicit",
+                "perRank": [
+                  9
+                ]
+              },
+              "ranged": {
+                "scaling": "explicit",
+                "perRank": [
+                  6
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "appliesAs": "on-hit",
+      "verification": "derived",
+      "notes": "THE OWNER IS STATED IN SO MANY WORDS — \"of the TARGET's current health\" — so this is not one of the burn family §37.3 leaves unresolved. The 100 cap applies against minions and monsters only and so cannot bind in a champion-versus-champion fight; it is not stored, and nothing in the contract could hold it if it were.",
+      "provenance": {
+        "source": "wiki Module:ItemData/data",
+        "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+        "patch": "16.16.1",
+        "fetched": "2026-08-14T15:04:08.084Z"
+      }
+    },
+    {
+      "itemId": 6692,
+      "itemName": "Eclipse",
+      "key": "pass",
+      "name": "Ever Rising Moon",
+      "kind": "passive",
+      "components": [
+        {
+          "id": "eclipse-pass",
+          "label": "Ever Rising Moon",
+          "damageType": "physical",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              0
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "maxHP",
+              "owner": "target",
+              "scaling": "byRangeType",
+              "melee": {
+                "scaling": "explicit",
+                "perRank": [
+                  8
+                ]
+              },
+              "ranged": {
+                "scaling": "explicit",
+                "perRank": [
+                  5
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "verification": "derived",
+      "notes": "THE SHIELD IN THE SAME SENTENCE HAS ITS OWN melee/ranged pair (150 / 75) and its own bonus-AD ratio, and it is a separate {{as}} run. It must not join the damage — this is the shape that cost four real damage instances in the census's first run (§37.4 defect 2). The damage carries ONE ratio and no flat base.",
+      "provenance": {
+        "source": "wiki Module:ItemData/data",
+        "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+        "patch": "16.16.1",
+        "fetched": "2026-08-14T15:04:08.084Z"
+      }
+    },
+    {
+      "itemId": 6653,
+      "itemName": "Liandry's Torment",
+      "key": "pass",
+      "name": "Torment",
+      "kind": "passive",
+      "components": [
+        {
+          "id": "liandry-s-torment-pass",
+          "label": "Torment",
+          "damageType": "magic",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              0
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "maxHP",
+              "owner": "target",
+              "scaling": "explicit",
+              "perRank": [
+                1
+              ]
+            }
+          ]
+        }
+      ],
+      "appliesAs": "periodic",
+      "overTime": {
+        "sourceSays": "1% of the target's maximum health magic damage every 0.5 seconds over 3 seconds, capped at 20 per tick against monsters.",
+        "totalInstances": 6
+      },
+      "verification": "derived",
+      "notes": "THE COUNT IS THE QUOTIENT OF TWO STATED FIGURES, NOT A NUMBER ON THE PAGE. 6% total ÷ 1% per tick = 6, and no elapsed time is divided by anything. What that guarantees is narrow and it is the only thing relied on: 1% × 6 reproduces the source's own 6% exactly, so the damage-over-time line reports the figure the source states. Storing the tick as the whole effect would understate it sixfold (§29 defect 1). The \"capped at 20 per tick against monsters\" clause cannot bind against a champion and is not stored.",
+      "provenance": {
+        "source": "wiki Module:ItemData/data",
+        "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+        "patch": "16.16.1",
+        "fetched": "2026-08-14T15:04:08.084Z"
+      }
+    },
+    {
+      "itemId": 3118,
+      "itemName": "Malignance",
+      "key": "pass2",
+      "name": "Hatefog",
+      "kind": "passive",
+      "components": [
+        {
+          "id": "malignance-pass2",
+          "label": "Hatefog",
+          "damageType": "magic",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              15
+            ]
+          },
+          "ratios": [
+            {
+              "stat": "AP",
+              "scaling": "explicit",
+              "perRank": [
+                1.25
+              ]
+            }
+          ]
+        }
+      ],
+      "appliesAs": "periodic",
+      "overTime": {
+        "sourceSays": "60/4 magic damage (+ 5/4 % AP) magic damage every 0.25 seconds",
+        "totalInstances": 12
+      },
+      "verification": "derived",
+      "notes": "TWO WITNESSES AGREE ON THE COUNT AND THEY ARE INDEPENDENT: 180 ÷ 15 = 12 from the flat base, and 15% ÷ 1.25% = 12 from the AP ratio. THE WIKITEXT DIVISOR IS NOT ONE OF THEM AND MUST NOT BE. Malignance writes its tick as {{ap|60/4}}, where 4 is TICKS PER SECOND, while Blackfire Torch writes {{ap|60/6}}, where 6 is the INSTANCE COUNT. The notation is identical and the meaning is opposite; reading the divisor here would give Malignance a third of its damage. The magic-resistance reduction in the same sentence is a separate run and is not part of this component.",
+      "provenance": {
+        "source": "wiki Module:ItemData/data",
+        "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+        "patch": "16.16.1",
+        "fetched": "2026-08-14T15:04:08.084Z"
+      }
+    },
+    {
+      "itemId": 3050,
+      "itemName": "Zeke's Convergence",
+      "key": "pass2",
+      "name": "Frostfire Tempest",
+      "kind": "passive",
+      "components": [
+        {
+          "id": "zeke-s-convergence-pass2",
+          "label": "Frostfire Tempest",
+          "damageType": "magic",
+          "base": {
+            "scaling": "explicit",
+            "perRank": [
+              7.5
+            ]
+          },
+          "ratios": []
+        }
+      ],
+      "appliesAs": "periodic",
+      "overTime": {
+        "sourceSays": "30/4 magic damage every 0.25 seconds",
+        "totalInstances": 20
+      },
+      "verification": "derived",
+      "notes": "ONE WITNESS ONLY — 150 ÷ 7.5 = 20 — because the effect carries no ratio to check it against. That is weaker evidence than Malignance's two and is recorded as such. It is still accepted because the property being relied on is arithmetic: 7.5 × 20 is the 150 the source states. LIKE SUNFIRE AEGIS AND BAMI'S CINDER, this damage reaches only enemies standing inside a radius, and the engine models no positions; storing it follows the convention those already-stored effects set rather than establishing a new one.",
+      "provenance": {
+        "source": "wiki Module:ItemData/data",
+        "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
+        "patch": "16.16.1",
+        "fetched": "2026-08-14T15:04:08.084Z"
       }
     }
   ],

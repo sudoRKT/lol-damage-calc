@@ -31,6 +31,13 @@ import {
 import { extractItemEffect, type RefusalReason } from './effect-values.ts';
 import { gateEffect, proposedItemEffect, type GateResult } from './effect-values-gate.ts';
 import { READ_POPULATION, readingFor } from './effect-values-read.ts';
+import { REACH_READ_POPULATION, reachReadingFor } from './effect-values-read-reach.ts';
+import {
+  extractReachItemEffect,
+  hasHiddenAsBlock,
+  inSecondReachPopulation,
+  reachShapeOf,
+} from './effect-values-reach.ts';
 import { filterItems, type RawItemMap } from './items.ts';
 import { parseLuaModule } from './lua-table.ts';
 import {
@@ -145,17 +152,55 @@ export async function run(): Promise<void> {
       extractItemEffect,
     ),
   );
+  // ---- pass 2: THE SECOND REACH ------------------------------------------
+  // `findBlocks` reports templates at the outermost nesting level only, so an {{as}} block
+  // inside a {{ft}} footnote is invisible to the census, this parser and the gate at once —
+  // and invisible in the same way, which is why nothing ever contradicted anything. Same gate,
+  // same two-reading bar, its own recorded readings, and a population that is DISJOINT from the
+  // 63 by construction. See effect-values-reach.ts.
+  const structuralReadKeys = new Set(READ_POPULATION.map((r) => `${r.id}|${r.key}`));
+  const reachRows = rows.filter((r) => inSecondReachPopulation(r, structuralReadKeys));
+  const gatedReach: GateResult[] = reachRows.map((row) =>
+    gateEffect(row, extractReachItemEffect, reachReadingFor),
+  );
+  const overlap = gatedReach.filter((g) => gated.some((s) => s.id === g.id && s.key === g.key));
+  if (overlap.length > 0) {
+    findings.push(
+      `THE TWO EXTRACTION PASSES OVERLAP on ${overlap.length} effects, which would store one ` +
+        `damage figure twice: ${overlap.map((o) => `${o.ownerName} [${o.key}]`).join(', ')}`,
+    );
+  }
+  gated.push(...gatedReach);
+
   const stored = gated.filter((g) => g.outcome === 'stored');
   const refused = gated.filter((g) => g.outcome === 'refused');
 
-  console.log('\n--- THE 63, THROUGH THE GATE ---');
+  console.log('\n--- PASS 2: THE SECOND REACH (a damage figure the outermost-level scan cannot see) ---');
+  console.log(
+    table([
+      ['item effects with an {{as}} block no {{as}} block encloses', rows.filter((r) => r.source === 'item' && hasHiddenAsBlock(r.text)).length],
+      ['in the second-reach population (that shape, no main-path component, not among the 63)', reachRows.length],
+      ['  readings recorded for them', REACH_READ_POPULATION.length],
+      ['  STORED', gatedReach.filter((g) => g.outcome === 'stored').length],
+      ['  refused', gatedReach.filter((g) => g.outcome === 'refused').length],
+    ]),
+  );
+  for (const g of gatedReach) {
+    console.log(
+      `    ${g.outcome === 'stored' ? 'STORED ' : 'refused'} ${g.ownerName} [${g.key}] ` +
+        `(${reachShapeOf(reachRows.find((r) => r.id === g.id && r.key === g.key)!.text)})` +
+        (g.outcome === 'refused' ? ` — ${g.refusals.map((f) => f.reason).join(', ')}` : ''),
+    );
+  }
+
+  console.log('\n--- BOTH PASSES, THROUGH THE GATE ---');
   const rangeSplit = stored.filter((s) =>
     JSON.stringify(s.components ?? []).includes('byRangeType'),
   );
   const recurring = stored.filter((s) => s.overTime);
   console.log(
     table([
-      ['effects put through the gate', gated.length],
+      ['effects put through the gate (63 structural + the second reach)', gated.length],
       ['STORED (parser and reading agree, in full)', stored.length],
       ['  of those, carrying a stat NO source attributes (forces incomplete)', stored.filter((s) => s.hasUnresolvedOwner).length],
       ['  of those, complete (verification: derived)', stored.filter((s) => !s.hasUnresolvedOwner).length],
@@ -189,15 +234,24 @@ export async function run(): Promise<void> {
 
   // §39 recorded 28 stored / 35 refused; §41.3 predicted "19 of the 35 refusals are releasable,
   // taking the extracted set from 28 toward 47". Both are checked against what this run observed.
-  if (stored.length !== 28) {
+  // §39 recorded 28 stored; §41.3 corrected that to 38 after the contract pass. Both are checked
+  // against what this run observed, and the second reach is reported as its own delta rather than
+  // folded in — a figure that moved for two different reasons is a figure nobody can audit.
+  const storedByReach = gatedReach.filter((g) => g.outcome === 'stored').length;
+  if (stored.length !== 38 + storedByReach) {
     findings.push(
-      `DATA-SOURCES §39 records 28 stored effects; this run observed ${stored.length}. ` +
-        `§41.3 predicted the contract pass would release 19 of the 35 refusals, taking the set ` +
-        `"toward 47". THE PREDICTION DOUBLE-COUNTS. The 12 melee/ranged and 7 damage-over-time ` +
-        `refusals overlap in one effect (Bastionbreaker pass2), so they are 18 distinct effects, ` +
-        `not 19; and 8 of those 18 carry a SECOND blocker the contract pass did not touch — ` +
-        `five cleave items that damage only OTHER enemies, two that scale on lethality, one ` +
-        `wards-only. Only 10 were ever releasable, and this run released ${stored.length - 28}.`,
+      `DATA-SOURCES §41.3 records 38 stored effects from the structural population; this run ` +
+        `observed ${stored.length - storedByReach} from pass 1 and ${storedByReach} from pass 2.`,
+    );
+  }
+  if (storedByReach > 0) {
+    findings.push(
+      `THE SECOND REACH RELEASED ${storedByReach} EFFECTS THE STRUCTURAL POPULATION NEVER ` +
+        `CONTAINED, taking the stored set from 38 to ${stored.length}. They were not refused ` +
+        `before — they were invisible, because \`findBlocks\` reports templates at the ` +
+        `outermost nesting level only and every path in this pipeline is built on it. 11 item ` +
+        `effects carry a damage figure inside a {{ft}} footnote; 2 more state the damage type ` +
+        `and its value in two runs bridged by "equal to".`,
     );
   }
 
@@ -478,7 +532,9 @@ export async function run(): Promise<void> {
      */
     proposedItemEffects: stored
       .map((s) => {
-        const row = structural.find((r) => r.id === s.id && r.key === s.key);
+        const row =
+          structural.find((r) => r.id === s.id && r.key === s.key) ??
+          reachRows.find((r) => r.id === s.id && r.key === s.key);
         const proposal = proposedItemEffect(s, row?.effectName ?? s.key);
         return proposal
           ? {

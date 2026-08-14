@@ -207,8 +207,15 @@ export function disagreement(extraction: Extraction, reading: Reading): string |
 export function gateEffect(
   record: EffectRecord,
   extract: (r: EffectRecord) => Extraction = extractItemEffect,
+  /**
+   * Where to look the recorded reading up. Defaults to the structural 63 in
+   * `effect-values-read.ts`; the second-reach path passes its own population
+   * (`effect-values-read-reach.ts`) so BOTH paths clear the identical bar and neither can store
+   * on evidence the other would refuse.
+   */
+  lookup: (id: number, key: string) => Reading | undefined = readingFor,
 ): GateResult {
-  const reading = readingFor(record.id, record.key);
+  const reading = lookup(record.id, record.key);
   const base = {
     id: record.id,
     key: record.key,
