@@ -190,6 +190,14 @@ Two things worth knowing about how these fit together:
   `src/ui` root, each of which renders 8 directories at once. A path in no area is refused to
   every agent and belongs to the lead — that also includes `src/types/`, `/curated/`, and the
   project's Markdown.
+- **RELEASE AN AREA WHEN ITS AGENT REPORTS. This is a LEAD DISCIPLINE and it has already failed
+  once.** The ledger (`.claude/boundary-owners.tsv`) locks an area to its claimant, and a claim
+  expires only on a 12-hour timer — because the hook inspects tool calls and cannot ask whether a
+  process is still alive. **The lead can.** A completion notification is proof the owner is done,
+  and the claim must be dropped then. On 2026-08-15 eight claims from the previous evening's
+  fan-out were all held by agents that had finished, reported, and had their work committed; two
+  agents of the next fan-out were refused their own areas before anyone noticed, and three more
+  would have been. The timer is the backstop, not the mechanism.
 - **The `interface` role is RETIRED and refused by name.** It owned `src/ui/` entirely and now
   owns none of the eight. Spawn an agent with no role and it claims one area from its first
   write.
