@@ -5183,3 +5183,71 @@ different wrong number. `AbilityComponent.overTime` is the new field; `instanceT
 
 **Gate 1 refuses a recurring component that states no count.** A full-duration total needs a number
 of ticks, and §3.2 gives the engine no way to derive one from a duration.
+
+---
+
+## 59. The three self-contradicting pages, settled (2026-08-15)
+
+Three ability pages disagreed with themselves about how many times a burn ticks. **All three are
+settled against the LEVELING ROW — the row is wrong in every case** — and none was settled by
+preferring the tidier source. Each was taken to primary evidence outside the wiki.
+
+The cache was proved current first: live wiki revision ids match the 2026-08-13 cache exactly for
+all three templates, and two CDNs agree independently on the game data, so neither source is a
+stale mirror.
+
+### 59.1 Hecarim W — the answer is 4, not 5. The row overstates by 25%.
+
+The description says 4 seconds; the row multiplies by 5. Not two units — both are per-second
+figures. Riot's own patch notes for V14.14 settle it: **"Duration: 5 ⇒ 4 seconds"**, confirmed on
+leagueoflegends.com outside the wiki entirely. Game data matches the description at all five ranks
+and on the AP ratio. The editor updated the sentence in July 2024 and left the multiplier.
+
+**One extra fact worth storing: the real tick interval is 0.5s, so the true instance count is 8**,
+each dealing a fifth of the stated figure. The wiki's "Per Tick" label is really per-second — so 4
+is the right multiplier for the stated figure and NOT the number of damage instances.
+
+### 59.2 Dr. Mundo W — the answer is 12, not 16. The row overstates by 33%.
+
+3 seconds ÷ 0.25 = 12; the row says 16. Riot's live tooltip string computes damage per second × 3.
+The provenance of the 16 is explicit in the wiki's own patch history: it was correct when the
+duration was 4 seconds, and **V12.23 reduced it to 3** — again confirmed on leagueoflegends.com.
+
+Two caveats stored with the 12: the description says "up **to** 3 seconds" and the ability can be
+recast early, so 12 is a MAXIMUM rather than a fixed count; and the template's own notes record
+that it "will occasionally deal an additional tick" as a bug.
+
+### 59.3 Nasus E — the total is settled; the tick count is UNVERIFIABLE.
+
+This one could have been the innocent "two units" case and is not. Riot's patch notes for V14.18
+state the figure verbatim as **"Damage per Second"**, and the game calculation multiplies it by
+the duration. So the row's ×10 DOUBLES the ability's damage over time.
+
+**What no source states is the interval.** The wiki's damage-over-time article gives none, the
+game data carries no tick rate for this ability, and the buff object is an empty stub. "5 ticks of
+10–34" and "10 ticks of 5–17" are both consistent with everything reachable. The agent refused to
+compute an interval from a duration it inferred, which is correct.
+
+**Settled: the product is 50–170 (+60% AP) over 5 seconds. Storing 10 × (10–34) is wrong under
+either reading.** Settling the count needs a frame-counted in-client observation or a spell script
+nobody publishes.
+
+### 59.4 THE GENERALISABLE FINDING — two of the three are one defect class
+
+Hecarim and Dr. Mundo are the same mistake: **a patch reduced the ability's duration, the editor
+updated the prose sentence, and left the leveling row's `a*N` multiplier at its pre-nerf value.**
+Nasus is a different class — a per-second figure multiplied as though it were per-tick.
+
+The first class is **mechanically checkable across all 937 pages with no further fetching**: for
+every leveling row of the form `{{ap|a*N to b*N}}`, recompute N from the duration and interval
+stated in that ability's own description, and flag the mismatches.
+
+**It is a DETECTOR, not a fixer,** and Nasus is the proof: a mismatch can mean "the multiplier is
+stale" OR "the per-instance unit is misread", and only reading the sentence tells you which.
+
+### 59.5 What is stored today
+
+All three store the leveling-row figure — Nasus E `hits: 10`, Dr. Mundo W `hits: 16`, Hecarim W
+`hits: 5`. **All three entries are `incomplete`, so no wrong number is on screen.** But the counts
+are stored rather than blank, and each is the stale one. They are exactly the entries §58's rule
+held back for want of a reconciling count, and that rule was right to hold them.
