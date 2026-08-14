@@ -293,15 +293,43 @@ const NOT_MODELLED: Record<string, string> = {
     'ability in the curated data (SPECIFICATION §3.4) and has not been harvested',
 };
 
-function pendingInstance(step: ComboStep, note: string): PlannedInstance {
+/**
+ * An instance that contributes NO damage and says why.
+ *
+ * The shape is the whole contract: `verification: 'incomplete'`, a reason, and **no `damage`
+ * key at all**. `resolveDamage` in ./combo.ts short-circuits on the status, and the ability is
+ * pushed onto `Result.incompleteContributors` with its reason. Nothing downstream has to
+ * cooperate.
+ *
+ * `label` overrides the fallback `"<kind> — <ref>"`. Callers that know the real ability should
+ * pass `"R — Final Spark"`: the fallback exists for steps where nothing was harvested and there
+ * is no name to give, not as the normal case.
+ */
+function pendingInstance(step: ComboStep, note: string, label?: string): PlannedInstance {
   const reason: IncompleteReason = { kind: 'pending', note };
   return {
     stepId: step.id,
-    sourceLabel: `${step.kind} — ${step.ref}`,
+    sourceLabel: label ?? `${step.kind} — ${step.ref}`,
     instanceType: step.kind === 'basic-attack' ? 'basic-attack' : 'damaging-ability',
     verification: 'incomplete',
     incompleteReason: reason,
   };
+}
+
+/**
+ * What a reader is told when they cast an ability they have not put a point in.
+ *
+ * IT IS NOT PHRASED AS A DATA GAP, and that distinction is the reason this is a named constant.
+ * SPECIFICATION §8's `pending` normally means "the value exists in a source and this product has
+ * not extracted it yet — it will improve with work". Here nothing is missing from the data and no
+ * work will change it: the scenario says the ability is unlearned, so it deals nothing, and the
+ * fix is one keystroke in the reader's own hands. The sentence says so.
+ */
+export function unlearnedNote(slot: string): string {
+  return (
+    `no point has been put into ${slot}, so it deals no damage. This is your build rather than ` +
+    `a gap in our data — raise ${slot} above rank 0 to include it.`
+  );
 }
 
 function planStep(
@@ -376,17 +404,46 @@ function planStep(
     };
   }
 
+  const label = `${ability.slot} — ${ability.abilityName}`;
+
+  // A PASSIVE TAKES NO POINT. It is innate, so it has no rank to be zero, and it is pinned to 1
+  // here rather than read from the scenario — `Scenario.abilityRanks` carries Q/W/E/R only.
   const rank = step.ref === 'P' ? 1 : (config.abilityRanks[step.ref as 'Q' | 'W' | 'E' | 'R'] ?? 1);
+
+  // ═══ AN UNLEARNED ABILITY CONTRIBUTES NOTHING, AND SAYS SO ═══
+  //
+  // This line used to be `rank: Math.max(1, rank)` — sitting directly beneath a comment claiming
+  // the opposite rule, which is worse than no comment at all. The clamp silently promoted an
+  // unlearned ability to rank 1 and returned that ability's full rank-1 damage.
+  //
+  // MEASURED IN THE SHIPPED INTERFACE, not inferred: Lux's R set to rank 0 showed Final Spark at
+  // 217 magic damage, identical to rank 1, and an earlier probe returned the same figure marked
+  // `verified` — this product's strongest evidence claim, on a build that cannot exist. It is
+  // reachable in three keystrokes, because `min={1}` on the rank field is an HTML hint that
+  // `parseNumericInput` does not enforce, and `src/url/v1.ts` makes rank 0 explicitly legal in a
+  // shared link ("must be a rank of zero or more").
+  //
+  // NO CHAMPION IS EXCEPTED, and none can be: measured over all 937 ability entries across 173
+  // champions, NO entry carries a `maxRank` of 0 or null, so there is no data signal for a
+  // rankless ability anywhere in the roster. Aphelios's Q/W/E carry `maxRank: 6`, identical to
+  // Jayce's and Udyr's form-swapping abilities. The wiki's remark that his abilities "do not
+  // feature ranks" is a question about whether 6 is the right harvested value for his weapons —
+  // a data question, raised separately, not a reason to write a champion name into the engine.
+  //
+  // Rank 0 is a statement the SCENARIO makes, not a property of the ability. If a scenario says
+  // R is rank 0, the reader set it to 0.
+  if (step.ref !== 'P' && rank < 1) {
+    return pendingInstance(step, unlearnedNote(ability.slot), label);
+  }
+
   return {
     stepId: step.id,
-    sourceLabel: `${ability.slot} — ${ability.abilityName}`,
+    sourceLabel: label,
     instanceType: ability.instanceType,
     verification: ability.verification,
     damage: {
       components: ability.components,
-      // A RANK OF ZERO IS A REAL STATE — the user has not put a point in it — and the ability
-      // then deals nothing rather than its rank 1 figure.
-      rank: Math.max(1, rank),
+      rank,
       maxRank: ability.maxRank,
       ...(step.hitCounts ? { hitCounts: step.hitCounts } : {}),
       ...(step.options?.['forceCrit'] === true ? { crit: true } : {}),

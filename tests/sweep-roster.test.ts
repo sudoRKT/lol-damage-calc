@@ -18,7 +18,7 @@ import { readFileSync, readdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import type { Champion, ComboStep, Item, Scenario } from '../src/types';
-import { auditSweeps, type SweepAuditCase } from '../src/engine';
+import { auditSweeps, simulate, type SweepAuditCase } from '../src/engine';
 import { buildCatalogue } from '../src/ui/data/catalogue';
 
 const REPO = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -166,3 +166,65 @@ describe('sweep-roster/every detector, over every champion', () => {
     expect(Array.isArray(report.candidates)).toBe(true);
   });
 });
+
+// =========================================================================================
+// AN UNLEARNED ABILITY, ACROSS THE WHOLE ROSTER.
+//
+// The defect was found on one champion (Lux, R at rank 0, showing 217 magic damage identical to
+// rank 1). CLAUDE.md's standing instruction is that the work is not to fix that instance but to
+// write the check that finds every other instance of it. This is that check, at roster scale.
+// =========================================================================================
+
+describe('sweep-roster/no unlearned ability produces a damage figure', () => {
+  // DEFINITION: 173 champions as attacker at level 9 against Garen at level 9, no items and no
+  // runes, on published patch 16.16.1 data. For each champion, four runs — Q, W, E and R set to
+  // rank 0 in turn while the other three stay at rank 1 — each casting only the zeroed slot.
+  // 692 scenarios.
+  const SLOTS = ['Q', 'W', 'E', 'R'] as const;
+
+  const offenders: string[] = [];
+  let scenariosRun = 0;
+  let instancesChecked = 0;
+
+  for (const champion of CHAMPIONS) {
+    for (const slot of SLOTS) {
+      const attacker = { ...config(champion.apiname, 9), abilityRanks: { Q: 1, W: 1, E: 1, R: 1, [slot]: 0 } };
+      const sim = simulate(
+        {
+          version: 2,
+          attacker,
+          defender: config('Garen', 9),
+          combo: [{ id: 's', kind: 'ability', ref: slot }],
+        } as Scenario,
+        CATALOGUE,
+        { patch: '16.16.1' },
+      );
+      scenariosRun += 1;
+      if (!sim.ok) continue; // a refusal is a different, and acceptable, answer
+      for (const instance of sim.result.perInstance) {
+        instancesChecked += 1;
+        if (instance.verification === 'verified') {
+          offenders.push(`${champion.apiname} ${slot}: marked verified at rank 0`);
+        }
+        if (sim.result.burst.total !== 0) {
+          offenders.push(
+            `${champion.apiname} ${slot}: burst ${sim.result.burst.total} at rank 0 (${instance.sourceLabel})`,
+          );
+        }
+      }
+    }
+  }
+
+  it('runs the whole roster — the check cannot pass by finding nothing', () => {
+    console.log(
+      `sweep-roster unlearned: ${scenariosRun} scenarios, ${instancesChecked} instances checked`,
+    );
+    expect(scenariosRun).toBe(CHAMPIONS.length * SLOTS.length);
+    expect(instancesChecked).toBeGreaterThan(0);
+  });
+
+  it('NOT ONE champion deals damage from an ability at rank 0, and none is verified', () => {
+    expect(offenders.slice(0, 10)).toEqual([]);
+  });
+});
+
