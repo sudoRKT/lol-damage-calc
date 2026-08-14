@@ -49,13 +49,14 @@ import type {
   VerificationStatus,
 } from '../../types';
 import type { Result } from '../../types/result';
-import { simulate, type Catalogue, type SimulationResult } from '../../engine';
+import { simulate, compareBuilds, type Catalogue, type SimulationResult } from '../../engine';
 import { CURRENT_URL_VERSION } from '../../url';
 import { ChampionConfigPanel } from '../config';
 import { ComboBuilder, type ShelfAbility } from '../combo';
 import { ItemPicker } from '../items';
 import { StatBlockPanel } from '../stats';
 import { InstanceBreakdown } from '../breakdown';
+import { BuildComparisonPanel } from '../compare';
 import { HpBurndown } from '../burndown';
 import { VerificationStatusMark } from '../primitives';
 import { ResultNotices } from './ResultNotices';
@@ -256,6 +257,20 @@ export function App({
     }),
     [attackerConfig, defenderConfig, combo],
   );
+
+  /**
+   * The item-versus-no-item comparison, recomputed with the scenario.
+   *
+   * `null` when the attacker holds no items — see the note at the render site.
+   */
+  const comparison = useMemo(() => {
+    if (!catalogue || attackerConfig.items.length === 0) return null;
+    const bare: Scenario = {
+      ...scenario,
+      attacker: { ...scenario.attacker, items: [] },
+    };
+    return compareBuilds(bare, scenario, catalogue);
+  }, [catalogue, scenario, attackerConfig.items.length]);
 
   const simulation: SimulationResult | null = useMemo(() => {
     if (!catalogue || !data) return null;
@@ -460,6 +475,24 @@ export function App({
           {/* ═══ REGION 3 — DETAIL: the itemised evidence ═══ */}
           <div className="app__region app__region--detail">
           <InstanceBreakdown result={simulation.result} />
+
+          {/* WHAT THE ITEMS ARE WORTH — the comparison this page can make from what it already
+              has, without asking the reader to configure a second build.
+
+              It is the SAME scenario with the attacker's items removed, so the two sides differ
+              in exactly one thing and the delta means something. A comparison of two builds a
+              user has not stated would be the product choosing builds for them.
+
+              Absent entirely when there are no items: comparing a build against itself would
+              print a row of zeroes and invite the reader to think that is a finding. */}
+          {comparison ? (
+            <BuildComparisonPanel
+              comparison={comparison}
+              labels={{ a: 'Base statistics only', b: 'This build' }}
+              defenderName={defenderConfig.apiname}
+              patch={data.patch}
+            />
+          ) : null}
 
           <div className="app__row">
             <StatBlockPanel
