@@ -311,9 +311,9 @@ function readEntryNumber(config: ChampionConfig, key: string): number | undefine
 // ---------------------------------------------------------------------------------------
 
 const NOT_MODELLED: Record<string, string> = {
-  'item-active':
-    'item actives are not modelled yet: the extracted item effect values are a proposal in ' +
-    'public/data/effect-values.json and have not been merged into the curated file',
+  // 'item-active' was here until 2026-08-14. It is modelled now — see planItemActive. Its note
+  // said the values "have not been merged into the curated file", which stopped being true when
+  // they were, and a note describing a state the product has left is worse than no note.
   'on-hit':
     'on-hit effects are not modelled yet: they ride on item and rune effects, which are not ' +
     'merged into the curated file',
@@ -366,11 +366,133 @@ export function unlearnedNote(slot: string): string {
   );
 }
 
+/**
+ * AN ITEM ACTIVE — a step the user places, resolving like an ability with no rank axis.
+ *
+ * Built 2026-08-14, the first thing to read the item-effect lookup. **7 of the 43 stored effects
+ * are actives** (DATA-SOURCES §52.2) and every one of them is single-component and `derived`.
+ *
+ * THREE REFUSALS, EACH NAMING ITS OWN CAUSE, because they mean different things to a reader:
+ *
+ *   1. the step's `ref` is not a number at all — a malformed scenario, not a data gap;
+ *   2. the attacker does not OWN the item. This is a real check and not pedantry: an active a
+ *      champion has not bought cannot be pressed, and returning its damage would hand a build
+ *      damage it has no access to. It is the same class of error as the unlearned ability, so it
+ *      is reported the same way — a fact about the build, not a gap in the data;
+ *   3. the item is owned but nothing is stored for it. 43 effects across 42 items is a small
+ *      part of a 209-item pool, so this is the COMMON case and must not read like a fault.
+ *
+ * A NON-DAMAGING ACTIVE IS NOT A FAILURE. An item whose active grants a stat or a shield has no
+ * damage components, and the step reports `no-damage` rather than an absence.
+ *
+ * No rank axis: an item active is the same figure at every ability rank, so rank and maxRank are
+ * both 1 — the same convention gate 1 checks these entries under.
+ */
+function planItemActive(
+  step: ComboStep,
+  config: ChampionConfig,
+  catalogue: Catalogue,
+): PlannedInstance {
+  const itemId = Number(step.ref);
+  if (!Number.isInteger(itemId)) {
+    return pendingInstance(
+      step,
+      `this step names the item "${step.ref}", which is not an item id`,
+    );
+  }
+
+  const item = catalogue.item(itemId);
+  const label = item ? `${item.name} — active` : `Item ${itemId} — active`;
+
+  if (!config.items.includes(itemId)) {
+    return pendingInstance(
+      step,
+      `${item ? item.name : `item ${itemId}`} is not in this build, so its active cannot be ` +
+        `used. This is your build rather than a gap in our data — add the item to include it.`,
+      label,
+      'unlearned',
+    );
+  }
+
+  const actives = catalogue.itemEffects(itemId).filter((e) => e.kind === 'active');
+  if (actives.length === 0) {
+    // THE ENGINE MAY ONLY SPEAK ABOUT WHAT IT WAS GIVEN. An earlier wording said the active
+    // "has not been harvested yet", which this function cannot know: it sees a catalogue, not the
+    // harvest. 7 actives ARE stored today and nothing publishes them, so that sentence would have
+    // been false for every one of them — a plausible wrong statement, which is the same failure
+    // as a plausible wrong number in a place nobody would check.
+    return pendingInstance(
+      step,
+      `the catalogue carries no active for ${item ? item.name : `item ${itemId}`}, so this step ` +
+        `contributes nothing. Either the item has no active, or its values have not been ` +
+        `published to this build of the site.`,
+      label,
+    );
+  }
+  // One item, one active. `Module:ItemData/data` keys a second as 'act2', which nothing in the
+  // stored set uses — measured at 7 actives across 7 distinct items. If that ever changes this
+  // refuses rather than silently picking the first.
+  if (actives.length > 1) {
+    return pendingInstance(
+      step,
+      `${item ? item.name : `item ${itemId}`} stores ${actives.length} actives and the step does ` +
+        `not say which. It is refused rather than guessed.`,
+      label,
+    );
+  }
+
+  const active = actives[0]!;
+  const named = `${item ? item.name : `item ${itemId}`} — ${active.name}`;
+  const components = active.components ?? [];
+
+  if (active.verification === 'incomplete' || components.length === 0) {
+    return {
+      stepId: step.id,
+      sourceLabel: named,
+      instanceType: 'item-active',
+      verification: active.verification === 'no-damage' ? 'no-damage' : 'incomplete',
+      ...(active.verification === 'no-damage'
+        ? {}
+        : {
+            incompleteReason: {
+              kind: (active.unresolvable?.length ?? 0) > 0 ? 'permanent' : 'pending',
+              ...((active.unresolvable?.length ?? 0) > 0
+                ? { missingFacts: active.unresolvable }
+                : {
+                    note:
+                      active.notes ??
+                      'the data records no reason for this — the effect is marked incomplete ' +
+                        'and nothing states why, which is itself a gap in the harvested data ' +
+                        'rather than a fact about the item',
+                  }),
+            } as IncompleteReason,
+          }),
+    };
+  }
+
+  return {
+    stepId: step.id,
+    sourceLabel: named,
+    instanceType: 'item-active',
+    verification: active.verification,
+    damage: {
+      components,
+      rank: 1,
+      maxRank: 1,
+      ...(step.hitCounts ? { hitCounts: step.hitCounts } : {}),
+      // Deliberately no `forceCrit`. No stored active states a critical strike, and letting the
+      // option through would apply the attacker's crit multiplier to a figure no source says
+      // can crit.
+    },
+  };
+}
+
 function planStep(
   step: ComboStep,
   config: ChampionConfig,
   abilities: readonly CuratedAbility[],
   attacker: StatBlock,
+  catalogue: Catalogue,
 ): PlannedInstance {
   if (step.kind === 'basic-attack') {
     // A BASIC ATTACK DEALS THE ATTACKER'S TOTAL ATTACK DAMAGE, as physical damage. That is the
@@ -396,6 +518,8 @@ function planStep(
       },
     };
   }
+
+  if (step.kind === 'item-active') return planItemActive(step, config, catalogue);
 
   if (step.kind !== 'ability') {
     return pendingInstance(step, NOT_MODELLED[step.kind] ?? 'this step kind is not modelled yet');
@@ -574,7 +698,7 @@ export function planScenario(
 
   const abilities = catalogue.abilities(scenario.attacker.apiname);
   const instances = scenario.combo.map((step) =>
-    planStep(step, scenario.attacker, abilities, attacker.block),
+    planStep(step, scenario.attacker, abilities, attacker.block, catalogue),
   );
 
   const unknownStats = [...attacker.unknownItemStats, ...defender.unknownItemStats];

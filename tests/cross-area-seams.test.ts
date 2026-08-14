@@ -673,6 +673,17 @@ describe('seam: scenario -> simulate -> interface, on the shipped data', () => {
     // a mismatch that would otherwise silently supply zero abilities and look like a champion
     // with no kit (DATA-SOURCES §10).
     abilities: (apiname) => byChampion.get(byApiname.get(apiname)?.name ?? apiname) ?? [],
+    // ADDED 2026-08-14 WITH THE LOOKUPS THEMSELVES, and this seam is how the omission surfaced:
+    // extending `Catalogue` left this hand-built one behind, and the first step that asked for an
+    // item effect threw rather than reporting a gap. That is the exact defect class this file
+    // exists for — a producer changing a shape a consumer was never told about.
+    //
+    // Both answer [] here on purpose. This seam runs over the SHIPPED data, and nothing publishes
+    // item effects or defensive entries to `public/data/` yet, so an empty list is what the site
+    // really has. When the publish step lands, these read from it and the assertions below about
+    // unmodelled steps will change with it.
+    itemEffects: () => [],
+    defensiveEffects: () => [],
   };
 
   const scenarioFor = (attacker: string, defender: string, combo: Scenario['combo']): Scenario => ({
@@ -778,7 +789,15 @@ describe('seam: scenario -> simulate -> interface, on the shipped data', () => {
     if (!outcome.ok) return;
     expect(outcome.result.perInstance[1]!.final).toBe(0);
     expect(outcome.result.incompleteContributors).toHaveLength(1);
-    expect(outcome.result.incompleteContributors[0]!.reason.note).toMatch(/item actives/);
+    // THE ASSERTION IS THE INTENT, NOT THE PROSE. It matched /item actives/ until 2026-08-14,
+    // when item actives became modelled and the note stopped being a blanket "not modelled yet"
+    // and started naming the item and what is actually absent. The seam's question is unchanged:
+    // the step contributes nothing, it is named, and it says why — so that is what is asserted,
+    // rather than a sentence that will move again the moment the effects are published.
+    const note = outcome.result.incompleteContributors[0]!.reason.note!;
+    expect(note).toMatch(/Infinity Edge/);
+    expect(note).toMatch(/contributes nothing/);
+    expect(outcome.result.incompleteContributors[0]!.sourceLabel).toMatch(/Infinity Edge/);
   });
 
   it('populates mana from the RESOURCE, and leaves it absent for every other resource', () => {
