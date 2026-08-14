@@ -6,12 +6,13 @@
   "description": "Browser-based League of Legends damage simulator. Calculation runs entirely in the browser; no server, no database, no accounts.",
   "scripts": {
     "dev": "vite",
-    "build": "tsc --noEmit && vite build",
+    "build": "npm run build:coverage && tsc --noEmit && vite build",
     "preview": "vite preview",
     "fetch:data": "node scripts/fetch/index.ts",
     "test": "vitest run --passWithNoTests",
     "test:watch": "vitest",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "build:coverage": "node scripts/site/build-coverage.ts"
   },
   "dependencies": {
     "react": "^18.3.1",

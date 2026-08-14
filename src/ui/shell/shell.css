@@ -11,6 +11,18 @@
 
 @import '../tokens.css';
 
+/* ═══ THE ONE BASE RULE IN THIS PRODUCT ═══
+   Found 2026-08-14 by measuring the landing page at 375px: the page scrolled sideways by 2px,
+   and the cause was the BROWSER'S DEFAULT `body { margin: 8px }`. There is no CSS reset in this
+   project, so that margin had been on every page from the beginning — every layout sat 8px off
+   centre and 16px narrower than the viewport it was measured in.
+   Only the margin is reset. `box-sizing` is deliberately left alone: switching it globally would
+   change how padding resolves in every panel measured so far, which is a separate change with
+   its own before-and-after, not a side effect of fixing a margin. */
+body {
+  margin: 0;
+}
+
 .shell {
   background: var(--bg-base);
   color: var(--text-primary);

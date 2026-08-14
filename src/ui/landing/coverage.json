@@ -1,0 +1,11 @@
+{
+  "patch": "16.16.1",
+  "champions": 173,
+  "abilities": 937,
+  "verified": 10,
+  "derived": 474,
+  "incomplete": 247,
+  "noDamage": 206,
+  "incompleteWithReason": 247,
+  "permanentlyUnanswerable": 23
+}

@@ -1,0 +1,268 @@
+/*
+ * The landing page. Every value traces to DESIGN.md; `../primitives/token-audit.test.ts` sweeps
+ * this file with the rest of the area.
+ *
+ * NO HUE IN THIS FILE, AND THAT IS THE POINT OF THE PAGE'S LOOK. DESIGN.md §1 reserves colour
+ * for the three damage types, so a landing page — the one place a designer reaches for an accent
+ * by reflex — is graphite, steel and bone. The first coloured thing anyone sees on this site is
+ * a damage figure in the calculator, which is exactly the hierarchy §1 is asking for.
+ *
+ * The page's own idiom is the instrument's: hard 0-radius cells, mono figures, eyebrow labels,
+ * borders instead of shadows. It should read as the same machine as the calculator, not as a
+ * brochure that happens to link to one.
+ */
+
+@import '../tokens.css';
+
+/* --------------------------------------------------------------------------
+ * The lede
+ * -------------------------------------------------------------------------- */
+
+.lede {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.lede__eyebrow {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: var(--weight-display-medium);
+  font-size: var(--type-eyebrow);
+  line-height: var(--lh-eyebrow);
+  letter-spacing: var(--ls-eyebrow);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.lede__claim {
+  margin: 0;
+  max-inline-size: var(--measure-prose-max);
+  font-family: var(--font-display);
+  font-weight: var(--weight-display);
+  font-size: var(--type-display-xl);
+  line-height: var(--lh-display-xl);
+}
+
+.lede__stand {
+  margin: 0;
+  max-inline-size: var(--measure-prose-max);
+  font-size: var(--type-body-l);
+  line-height: var(--lh-body-l);
+  color: var(--text-secondary);
+}
+
+.lede__stand strong {
+  font-weight: var(--weight-body-strong);
+  color: var(--text-primary);
+}
+
+.lede__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3) var(--space-4);
+  margin: var(--space-2) 0 0;
+}
+
+/* The one action of this weight on the page. A bone border is DESIGN.md §6's "selected /
+   active" treatment — the strongest neutral emphasis the palette has, and it needs no hue. */
+.lede__go {
+  display: inline-flex;
+  align-items: center;
+  background: var(--bg-panel);
+  border: var(--border-active);
+  border-radius: var(--radius-control);
+  padding: var(--space-3) var(--space-4);
+  font-family: var(--font-display);
+  font-weight: var(--weight-display);
+  font-size: var(--type-display-m);
+  line-height: var(--lh-display-m);
+  color: var(--text-primary);
+  text-decoration: none;
+}
+
+.lede__go:hover {
+  background: var(--bg-panel-raised);
+  text-decoration: none;
+}
+
+.lede__aside {
+  font-size: var(--type-body-m);
+  line-height: var(--lh-body-m);
+  color: var(--text-secondary);
+}
+
+/* --------------------------------------------------------------------------
+ * The ledger — the page's evidence, and its signature element
+ * -------------------------------------------------------------------------- */
+
+.ledger {
+  background: var(--bg-panel);
+  border: var(--border-steel);
+  border-radius: var(--radius-panel);
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.ledger__head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.ledger__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: var(--weight-display);
+  font-size: var(--type-display-l);
+  line-height: var(--lh-display-l);
+}
+
+.ledger__defn {
+  margin: 0;
+  max-inline-size: var(--measure-prose-max);
+  font-size: var(--type-body-m);
+  line-height: var(--lh-body-m);
+  color: var(--text-secondary);
+}
+
+.ledger__defn strong,
+.ledger__headline strong {
+  font-weight: var(--weight-body-strong);
+  color: var(--text-primary);
+}
+
+.ledger__rows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  background: var(--bg-well);
+  border: var(--border-hair);
+}
+
+/* A readout grid, not a card list: the figure column is fixed so every number shares an edge,
+   which is what makes a column of figures read as data (DESIGN.md §5). */
+.ledger__row {
+  display: grid;
+  grid-template-columns: auto auto 1fr;
+  align-items: baseline;
+  gap: var(--space-2) var(--space-4);
+  padding: var(--space-3);
+  border-block-end: var(--border-hair);
+  border-radius: var(--radius-cell);
+}
+
+.ledger__row:last-child {
+  border-block-end: 0;
+}
+
+.ledger__count {
+  font-family: var(--font-mono);
+  font-weight: var(--weight-num-medium);
+  font-size: var(--type-num-l);
+  line-height: var(--lh-num-l);
+  color: var(--text-primary);
+  text-align: right;
+  min-inline-size: var(--space-7);
+}
+
+.ledger__mark {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-0);
+}
+
+.ledger__of {
+  font-family: var(--font-display);
+  font-weight: var(--weight-display-medium);
+  font-size: var(--type-eyebrow);
+  line-height: var(--lh-eyebrow);
+  letter-spacing: var(--ls-eyebrow);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.ledger__meaning {
+  font-size: var(--type-body-s);
+  line-height: var(--lh-body-s);
+  font-weight: var(--weight-body-medium);
+  color: var(--text-secondary);
+}
+
+/* The sentence the page exists for. Given the section-header size, because it is the claim. */
+.ledger__headline {
+  margin: 0;
+  max-inline-size: var(--measure-prose-max);
+  border-block-start: var(--border-steel);
+  padding-block-start: var(--space-4);
+  font-size: var(--type-body-l);
+  line-height: var(--lh-body-l);
+  color: var(--text-secondary);
+}
+
+.ledger__source {
+  margin: 0;
+}
+
+.ledger__source a {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--type-body-m);
+  line-height: var(--lh-body-m);
+  color: var(--text-secondary);
+}
+
+/* --------------------------------------------------------------------------
+ * Plain prose sections
+ * -------------------------------------------------------------------------- */
+
+.plain {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.plain__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: var(--weight-display);
+  font-size: var(--type-display-l);
+  line-height: var(--lh-display-l);
+}
+
+.plain__list {
+  margin: 0;
+  padding-inline-start: var(--space-4);
+  max-inline-size: var(--measure-prose-max);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  font-size: var(--type-body-m);
+  line-height: var(--lh-body-m);
+  color: var(--text-secondary);
+}
+
+/* --------------------------------------------------------------------------
+ * The author's note
+ *
+ * Its own band with a rule above it, and NOTHING legal inside it. It is the only first-person
+ * text on the page and it is given no panel, no heading and no emphasis — a quiet line, which is
+ * what it is meant to be. See the comment in Landing.tsx for why it must stay out of the footer.
+ * -------------------------------------------------------------------------- */
+
+.colophon {
+  border-block-start: var(--border-hair);
+  padding-block-start: var(--space-4);
+}
+
+.colophon__note {
+  margin: 0;
+  max-inline-size: var(--measure-prose-max);
+  font-size: var(--type-body-m);
+  line-height: var(--lh-body-m);
+  color: var(--text-secondary);
+}
