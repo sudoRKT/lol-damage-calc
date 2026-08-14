@@ -12,7 +12,16 @@
 import { describe, expect, it } from 'vitest';
 import committed from './coverage.json';
 import { coverageAddsUp, summariseCoverage, type CoverageEntry } from './coverage';
-import { readPublishedCoverage } from '../../../scripts/site/build-coverage.ts';
+import {
+  readPublishedCoverage,
+  readmeBlock,
+  spliceReadme,
+} from '../../../scripts/site/build-coverage.ts';
+import { readFileSync } from 'node:fs';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const REPO = join(dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
 
 describe('coverage/the committed figures match the published data', () => {
   it('recounts every ability file and gets the same answer', () => {
@@ -74,5 +83,18 @@ describe('coverage/the summariser refuses what it does not understand', () => {
   it('does not count an empty note as a reason', () => {
     const c = summariseCoverage([{ verification: 'incomplete', notes: '   ' }], meta);
     expect(c.incompleteWithReason).toBe(0);
+  });
+});
+
+describe('coverage/the README quotes the same figures', () => {
+  it('its generated block is current', () => {
+    // Markdown cannot import JSON, so the README's figures are SPLICED IN by the same script
+    // that writes coverage.json — and this fails if the file on disk has drifted from what the
+    // data now says. It is the README that a visitor reads before anything else, and a stale
+    // claim about trustworthiness there is worse than none.
+    //
+    // If this fails: run `npm run build:coverage`. Do not edit the block by hand.
+    const readme = readFileSync(join(REPO, 'README.md'), 'utf8');
+    expect(readme).toBe(spliceReadme(readme, readmeBlock(readPublishedCoverage())));
   });
 });
