@@ -5056,3 +5056,66 @@ the entire near-term DoT population is these 9 item effects, and its damage-bear
 
 **21 defensive entries are marked `overTime`** — healing over time. They are a separate question
 and are not part of this.
+
+---
+
+## 57. Champion damage over time — the population, measured (2026-08-14)
+
+Measured, reported, and **NOT built**. Everything below is a detector's output: it proposes
+candidates and decides nothing (CLAUDE.md).
+
+### 57.1 Two counts, each with its definition
+
+**COUNT A — DEFINITION: cached ability pages whose SOURCE WIKITEXT contains any recurring-damage
+language at all (`damage over time`, `every N seconds`, `per second for`, `burn`, `poison`,
+`bleed`, `ignite`, `scorch`, `tick`), over all 937 pages at patch 16.16.1.**
+
+**190 pages.** 185 of them are in the override file. Their stored `instanceType`: 128
+`damaging-ability`, 33 `non-damaging-ability`, 24 `on-hit`. **`dot-application`: 0.**
+
+This band is WIDE and contains false positives by construction — "per second" appears in healing
+and movement text, and "tick" appears in unrelated prose. It is the outer bound of where to look,
+not a worklist.
+
+**COUNT B — DEFINITION: the same 937 pages, where the source states a recurring DAMAGE FIGURE —
+a damage number tied to an interval, or the literal phrase "damage over time".**
+
+**16 pages, across 15 champions. `dot-application`: 0.**
+
+| | |
+|---|---|
+| Aurelion Sol R · Fizz W · Teemo E · Xin Zhao R | `damaging-ability`, `derived` — **carrying a figure today that the source describes as recurring** |
+| Nautilus W · Nilah R · Shyvana E · Teemo R | `damaging-ability`, `incomplete` |
+| Brand P · Kayn P · Twitch P | `on-hit`, `incomplete` |
+| Braum E · Naafiri P · Rengar P · Sylas R | `non-damaging-ability` |
+| Mel E | absent — one of the 18 the gate refused |
+
+### 57.2 The finding that matters, and it is not the count
+
+**Four entries carry a `derived` damage figure today for an ability the source describes as
+recurring: Aurelion Sol R, Fizz W, Teemo E, Xin Zhao R.**
+
+That is the one shape worth acting on, because it is the defect class CLAUDE.md already names —
+*"a damage-over-time ability storing one tick as the whole ability"*. If any of those four stored a
+per-tick figure and it is being reported as the ability's whole damage, the number on screen is
+wrong and nothing says so. If they stored a full-duration total, they belong in the DoT line
+rather than the burst total, and §3.8 is being broken quietly.
+
+**Which of the two it is has NOT been established for any of the four.** Deciding it means reading
+four sentences, not widening a pattern.
+
+### 57.3 What this does NOT say
+
+It does not say 16 champion abilities are missing from the product. Every one of the 16 is already
+present and already states its own status; 8 of them are `incomplete` and already contribute
+nothing and say why. The gap is that **none of them is classified as damage over time**, so
+whatever they contribute goes into the burst total or nowhere, and never into the second verdict.
+
+The champions named in the request land as follows. Brand's burn is his PASSIVE, stored `on-hit`
+and `incomplete`. Teemo appears twice — E and R. Cassiopeia and Malzahar appear only in the wide
+band, not the narrow one, so their pages use language this detector could not tie to a damage
+figure; that is a reason to read them, not evidence they have no burn.
+
+**A per-tick figure stored as a whole ability is a plausible wrong number, which is the failure
+this project exists to prevent. That makes the four in 57.2 the place to start, and it is a
+reading task rather than a coding one.**
