@@ -4578,3 +4578,191 @@ otherwise be stranded on the second.
 
 Verified on the path that failed: load the landing page, then change only the fragment. Lands on
 `/calculator/` with the shared matchup, and the landing page never renders.
+
+---
+
+## 51. The gate that was not looking (2026-08-14)
+
+### 51.1 Two holes in gate 1, both found while preparing the merge
+
+**`gateSchema` iterated `file.abilities` and `file.defensiveEffects` and nothing else.** Item
+effects and runes are fields of `CuratedFile` and were never walked, so every one of them would
+have entered the override file having passed a gate that did not look at it.
+
+This was not unnoticed. `scripts/extract/merge-proposal.ts` carried sweep S1 — *"gate 1 never
+walks item effects or runes, so run its component checker over them here"* — calling the
+validator's `checkEffectComponents` by hand. That covers the damage rows and **none of the fields
+around them**: identity, status, provenance, delivery mode, over-time recurrence, granted stats,
+stack counters. An effect with no `itemId`, one recording a fact no source states while claiming
+`derived`, one marked `no-damage` while carrying damage, or two effects claiming the same key of
+the same item all passed.
+
+**Second hole: `checkScalingShape` had no `byRangeType` case.** A value that states two numbers
+and says which champion gets which — *"12 for melee holders, 8 for ranged"* — has always been a
+legal arm of `Scaling` in the frozen contract (§39). The switch had no case for it, so the
+`default` arm reported contract-valid data as an unknown scaling kind. **This was a gate defect
+presenting as a data defect**, and the merge script had classified it correctly: the six affected
+effects were held back under `validator-has-no-arm-for-this-scaling` with the note that the data
+was right and the checker short of a case.
+
+### 51.2 What the gate now checks, and what it found
+
+Both loops added. Item effects and runes are held to the rules the ability and defensive sides
+already carry: an entry recording a fact no source states cannot also claim to be settled, an
+entry marked `no-damage` cannot hold damage, a component id may not repeat, a relation may only
+point at a sibling that exists, and a ratio on a stat that belongs to a champion requires an
+owner. The range-split case recurses into both arms, names the arm in any fault it carries up,
+and refuses a split nested inside a split — which could never be resolved, since a holder has one
+range type.
+
+**22 new tests in `src/types/validate-effects.test.ts`. All 22 were proved to fail by restoring
+the previous behaviour and re-running, not assumed to.**
+
+**What the newly-looking gate found in the real data: nothing.** Over the merge proposal, gate 1
+checked **1,117 entries** where it previously checked 1,074, and failed 0. The 43 item effects
+were already well formed. That is a real result and worth stating plainly rather than dressing
+up — the value of the fix is that the next 43 will be checked, not that these 43 were wrong.
+
+**The range-split case released 6 item effects and no others** — Hullbreaker, Titanic Hydra
+(twice), Voltaic Cyclosword, Blade of the Ruined King and Eclipse — taking the merged item-effect
+count from **37 to 43**. No stored value changed.
+
+**The rune loop is untested against real data, because zero runes have been harvested.** Its
+tests are fixtures. Stated here so nobody reads "gate 1 walks runes" as evidence about any rune.
+
+### 51.3 Two tests changed rather than deleted, and why that is not editing a test to pass
+
+`merge-proposal.test.ts` held two assertions that encoded the gap:
+
+- one required a range split to be **refused**. That was correct while the gate had no case for
+  it. Requiring it now would pin a closed gap open. It is re-pointed at an arm nobody has written
+  a case for (`byResourceType`), so it still guards the thing it existed to guard: data reaching
+  the override file ahead of the gate that reads it.
+- one restated the readable shapes as **four string literals**. That is how it fell out of step —
+  the list and the checker are two records of one fact. It now **asks the checker**, arm by arm,
+  and asserts in both directions. The two cannot drift apart again.
+
+The rule in CLAUDE.md is that a test is never edited to make the engine pass. Neither of these is
+that: the gate did not fail these tests by being wrong, it failed them by gaining a capability
+the tests were written to record the absence of.
+
+Two headers claiming gate 1 never looks at item effects are corrected, per the standing
+instruction that a check must not claim coverage it does not have.
+
+---
+
+## 52. What it would take for the engine to read item effects and defensive entries (2026-08-14)
+
+A sizing, asked for before any of it is built. Nothing below is started. Every figure is measured
+over `build/proposed-curated/merged-proposal.json` as it stands after §51.
+
+### 52.1 The shape of the gap
+
+The engine's machinery for both sides **already exists and is tested**. `shields.ts` models all
+three shield kinds, `damage-reduction.ts` models post-mitigation flat and percentage reduction,
+`amplification.ts` models both amplification kinds, and healing was built in §45. What does not
+exist is the **wiring**: `simulate()` never fills any of it from data. `resolveDamage` accepts
+`defenderShields` and `DefenderDamageReduction`; `simulate` passes neither, so today every
+defensive figure in a result comes from a hand-authored plan, and every item effect step returns
+a pending instance whose note says the values *"have not been merged into the curated file"*.
+
+`Catalogue` offers three lookups — `champion`, `item`, `abilities`. **Extending it is a change to
+the engine's public interface, so it is a lead action** (CLAUDE.md), and it is the first step of
+everything below.
+
+### 52.2 The item side — 43 effects, of which 25 can be sequenced
+
+**DEFINITION: the 43 item effects in the merged proposal, classified by `appliesAs` and
+verification status.**
+
+| | count | what it needs |
+|---|---:|---|
+| **on-hit** | 12 | rides on the basic attack that carried it — not a step of its own |
+| **active** | 7 | maps to the existing `item-active` combo step kind |
+| **spellblade** | 6 | rides on the next ability after a basic attack |
+| damage over time | 7 | its own line under §3.8, never a combo step |
+| delivery not stated | 6 | the source does not say how it reaches the target |
+| incomplete | 5 | a fact no source states — never completable |
+
+**25 of 43 can be sequenced once wired.** The other 18 are not work that has been skipped: 7 are a
+DoT line the burst total must never absorb, 6 have a delivery the source declines to state, and 5
+carry an `unresolvable` fact. The five unresolved ratio owners across all 43 are the same class as
+the ability side — a stat the source attributes to nobody.
+
+Every one of the 43 joins to an item in the shipped 209-item pool (sweep S5, 0 findings). All 43
+carry damage components; none is a pure stat grant, so `grants` is empty across the set and the
+stat-block path needs no change for them.
+
+**The work, in order:**
+
+1. **`Catalogue.itemEffects(itemId)`** — one lookup, lead change, mirrors `abilities()`. Returning
+   an empty list is a real answer.
+2. **An on-hit rider is not a step.** 18 of the 25 (on-hit + spellblade) attach to another
+   instance rather than standing alone. `ComboStep.ref` already anticipates *"an on-hit effect
+   key"* and `ComboStepKind` already has `on-hit`, so the contract holds — but the engine must
+   decide whether a rider's damage is its own `InstanceResult` or a component of the carrier's.
+   **That is a decision, not an implementation**, and it is visible to the user: it changes how
+   many rows the breakdown has. Raise it before building.
+3. **7 item actives** are the cheapest real win — a step the user places, resolving like an
+   ability with no rank axis.
+4. **The 7 periodic effects** need a `DotSource` per effect, and §3.8 fixes that the burst total
+   must not absorb them and the verdict is given twice.
+5. **The pending notes in `simulate.ts` become wrong the moment the merge lands.** Three of them
+   say the values *"have not been merged into the curated file"*. That sentence is a fact about
+   the file and it expires with the merge, whether or not any wiring follows.
+
+### 52.3 The defensive side — 155 entries, of which 90 are ready to apply
+
+**DEFINITION: the 155 defensive entries in the merged proposal. "Ready to apply" means the entry
+states a number (a `value` or ratios), is not `incomplete`, and names a kind the engine already
+has a step for.**
+
+| | count |
+|---|---:|
+| **ready to apply once wired** — 57 heals, 27 shields, 6 damage reductions, across 57 champions | **90** |
+| incomplete | 22 |
+| immunity — no step exists | 18 |
+| resistance grant — no step exists | 16 |
+| max-health grant — no step exists | 6 |
+| spell shield — no step exists | 3 |
+
+**All 90 ready entries are `conditional`.** Not one is always-active. This is the headline of the
+defensive sizing and it is a product question before it is an engineering one: **the engine cannot
+know whether Braum's shield was up when the combo landed.** SPECIFICATION §3.3 already fixes the
+answer in principle — `ChampionConfig.entryState` holds *"conditional-defence toggles"* — but 90
+toggles across 57 champions is a real interface surface that does not exist, and inventing a
+default would assert a defence the user never stated.
+
+**The four kinds with no engine step are not equal in cost.** A resistance grant (16) is the
+cheapest: it feeds the existing four-step resistance order as a stat, not a new mechanism. A
+max-health grant (6) changes the survival verdict rather than any damage figure. Immunity (18) and
+spell shield (3) are a different thing entirely — they make an instance not happen, which the
+per-instance walk has no arm for today.
+
+**The work, in order:**
+
+1. **`Catalogue.defensiveEffects(apiname)`** — lead change, same shape as above.
+2. **`simulate` builds `defenderShields` and `DefenderDamageReduction` from the entries** the
+   scenario's toggles say are up. The engine side of this is small precisely because the
+   machinery is already there and tested.
+3. **The toggles.** 90 conditional defences need somewhere to be stated, somewhere to be shown,
+   and somewhere in the link format. **The link format is at version 2 (§46) and would need a
+   version 3** — existing links must keep decoding unchanged.
+4. **Resistance grants (16) before immunity (18)**, because the first is a stat and the second is
+   a new arm in the instance walk.
+
+### 52.4 What this does NOT need
+
+- **No change to the four-step resistance order**, which is fixed by SPECIFICATION.
+- **No new rounding point.** Rounding stays where it is.
+- **No harvest work.** Both populations are already read and confirmed by a person (§39, §40,
+  §48). This is wiring, not extraction.
+- **No new hue.** A defensive figure is not damage data (DESIGN.md), and the reserved-hue law
+  stands.
+
+### 52.5 The honest summary
+
+The item side is **one lookup, one decision about riders, and 25 effects** — of which 7 actives
+are near-trivial. The defensive side is **one lookup, a small engine change, and 90 toggles that
+do not exist anywhere in the product**, which is the real cost. Neither is blocked on data.
+Both are blocked on the same contract change to `Catalogue`, which is a lead action.
