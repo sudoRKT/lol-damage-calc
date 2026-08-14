@@ -19,7 +19,7 @@
 // not used in this file; the one place a tag belongs in a stat block is nowhere.
 
 import type { StatBlock } from '../../types';
-import { formatDamage, formatReadout, roundReadout } from '../primitives';
+import { TableScroller, formatDamage, formatReadout, roundReadout } from '../primitives';
 import { ChampionPortrait } from '../art/ChampionPortrait';
 import './stats.css';
 
@@ -201,6 +201,10 @@ export function StatBlockPanel({
         level={stats.level}
       />
 
+      {/* Wrapped for the same reason every table in this area is: a stat label beside a long
+          figure is the construction that pushed the page sideways on a phone, and the rule is
+          the class, not the instance. It scrolls only if it does not fit. */}
+      <TableScroller label={`The ${role.toLowerCase()}’s statistics table`}>
       <table className="statblock__table">
         <caption className="u-visually-hidden">
           {`${championName}'s resolved statistics at level ${stats.level}, as the combo begins`}
@@ -219,6 +223,7 @@ export function StatBlockPanel({
           ))}
         </tbody>
       </table>
+      </TableScroller>
     </section>
   );
 }

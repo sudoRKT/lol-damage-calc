@@ -36,6 +36,35 @@
 }
 
 /* ---------------------------------------------------------------------------
+ * The horizontal scroll region (SPECIFICATION §10, DESIGN-AUDIT.md §6.5).
+ *
+ * NO NEW DESIGN VALUE, AND NO BREAKPOINT. This rule contains no width, no threshold and no
+ * media query: `overflow-x: auto` scrolls only when the content does not fit, at every
+ * viewport, which is why this treatment needed nothing DESIGN.md does not define. The one
+ * width in the whole design file is §7a's ~1280px rail breakpoint; a phone breakpoint would
+ * have been invented locally, which the preamble forbids.
+ *
+ * IT ALSO STOPS THE PROPAGATION, which is the part that fixes the PAGE rather than the table.
+ * A scroll container's minimum contribution to its parent's intrinsic width is zero — content
+ * can scroll — so a table wider than the phone no longer pushes its panel, its grid track and
+ * the document itself wider. That propagation is what DESIGN-AUDIT §6.5 measured as 579px of
+ * document scrollWidth inside a 375px viewport, and `items.css` records the same class of
+ * defect being fixed once before, locally, in a grid.
+ *
+ * THE FOCUS RING IS REQUIRED, NOT DECORATION. `TableScroller` makes this element focusable so
+ * a keyboard can scroll it; DESIGN.md §6 then requires the focus to be visible — "2px bone
+ * outline offset 2px", quoted verbatim and allow-listed by name in token-audit.test.ts.
+ * --------------------------------------------------------------------------- */
+.u-scroll-x {
+  overflow-x: auto;
+}
+
+.u-scroll-x:focus-visible {
+  outline: 2px solid var(--text-primary);
+  outline-offset: 2px;
+}
+
+/* ---------------------------------------------------------------------------
  * The damage value (DESIGN.md §8, SPECIFICATION §10.1).
  *
  * `{number}<thin space>{P|M|T}` in the damage-type hue. The tag is mandatory and is

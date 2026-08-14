@@ -71,7 +71,14 @@
      Two columns at a 1440px desktop, four when the panel goes full width, one on a phone —
      responsive with no breakpoint at all, which is the whole reason the measure is a width
      rather than a media query. */
-  grid-template-columns: repeat(auto-fit, minmax(var(--measure-list-column-min), 1fr));
+  /* THE `min(…, 100%)` GUARD IS WHAT MAKES THE MEASURE A PREFERENCE RATHER THAN A FLOOR.
+     `minmax(256px, 1fr)` keeps a 256px track even when the container is narrower than 256px, and
+     the grid then pushes its panel — and the page — sideways. On a 375px phone the pool has
+     295px, so it fits; on a 320px phone it has 240px and it does not. `min()` says "256px, or the
+     whole container if that is less", which is the same responsive behaviour everywhere it fits
+     and no overflow where it does not. 100% here is a fraction of the parent, not a design
+     length, and is allow-listed in ../primitives/token-audit.test.ts on that basis. */
+  grid-template-columns: repeat(auto-fit, minmax(min(var(--measure-list-column-min), 100%), 1fr));
   gap: var(--space-1);
   border: var(--border-hair);
   border-radius: var(--radius-control);

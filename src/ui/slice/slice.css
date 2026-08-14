@@ -80,7 +80,9 @@
   display: grid;
   /* Two equal columns. No breakpoint literal: the slice is a desktop proof, and DESIGN.md
      defines no width scale to draw one from. */
-  grid-template-columns: 1fr 1fr;
+  /* `minmax(0, …)`, not a bare `1fr`: a bare fraction track has a min-content automatic minimum
+     and a too-wide child widens the track and the page rather than its own cell. */
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: var(--space-5);
   margin-bottom: var(--space-5);
 }
@@ -131,7 +133,7 @@
 
 .ranks { display: flex; gap: var(--space-3); margin-bottom: var(--space-3); }
 
-.stats { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-2); margin: var(--space-4) 0 var(--space-2); }
+.stats { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--space-2); margin: var(--space-4) 0 var(--space-2); }
 .stats div { display: flex; justify-content: space-between; gap: var(--space-2); }
 .stats dt { color: var(--text-secondary); font-size: var(--type-body-m); }
 .stats dd { margin: 0; font-family: var(--font-mono); font-size: var(--type-num-m); font-weight: var(--weight-num); }

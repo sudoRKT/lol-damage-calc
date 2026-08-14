@@ -233,7 +233,10 @@
    which is what makes a column of figures read as data (DESIGN.md §5). */
 .ledger__row {
   display: grid;
-  grid-template-columns: auto auto 1fr;
+  /* The two `auto` tracks are a count and a status mark — both bounded, both allow-listed by
+     name in the overflow sweep. The third holds prose and is `minmax(0, 1fr)` so a long
+     unbroken string widens nothing but its own cell. */
+  grid-template-columns: auto auto minmax(0, 1fr);
   align-items: baseline;
   gap: var(--space-2) var(--space-4);
   padding: var(--space-3);

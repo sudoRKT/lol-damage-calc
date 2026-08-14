@@ -9,6 +9,11 @@
 //     `AggregateTotal`, which cannot render without the tagged composition bar.
 //   • Verification status goes through `VerificationStatusMark`. Five states, glyph and
 //     label, never a colour.
+//   • Every <table> in the area is wrapped in `TableScroller`. A table is the one thing in
+//     this product that is allowed to be wider than a phone screen, and this is the only way
+//     it is allowed to be: the scroll is confined to the table, and the region is keyboard
+//     reachable and announced. `../responsive-overflow.test.tsx` sweeps the whole area for a
+//     table that is not.
 
 export {
   DamageValue,
@@ -25,6 +30,9 @@ export type {
 } from './DamageValue';
 
 export { READOUT_DECIMALS, formatReadout, roundReadout } from './readout';
+
+export { TableScroller, SCROLL_REGION_SUFFIX } from './TableScroller';
+export type { TableScrollerProps } from './TableScroller';
 
 export {
   VerificationStatusMark,

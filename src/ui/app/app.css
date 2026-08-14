@@ -103,9 +103,16 @@
 /* The column gutter is --space-5, which is DESIGN.md §4's "grid gutter" verbatim. The ROW gap
    — which only applies once the grid has collapsed to one column — is the region's own
    --space-4, so a narrow viewport keeps the same rhythm the wide one has. */
+/* `minmax(0, 1fr)` RATHER THAN `1fr`, and it is not cosmetic. A bare `1fr` track has an
+   AUTOMATIC MINIMUM of min-content, so a panel wider than its share does not overflow its own
+   cell — it widens the track, and the whole page with it. That is the mechanism DESIGN-AUDIT.md
+   §6.5 measured as 579px of document scrollWidth inside a 375px viewport, and `items.css`
+   records the same defect being fixed once before in a different grid. `minmax(0, …)` pins the
+   track to its share; anything genuinely too wide is confined by its own scroll region.
+   Swept across every grid in the area by `../responsive-overflow.test.tsx`. */
 .app__row {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: var(--space-4) var(--space-5);
   align-items: start;
 }
@@ -120,7 +127,7 @@
    the layout goes single-column." The number is quoted from the design file, not chosen here. */
 @media (max-width: 80rem) {
   .app__row {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 

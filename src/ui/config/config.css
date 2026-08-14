@@ -71,6 +71,11 @@
 .config__missing {
   flex: 1 1 0;
   min-inline-size: 0;
+  /* Measured at 320px: these flowed inline items overhung the viewport by 2px, because a long
+     word has no break opportunity and inline text will overflow rather than break by default.
+     `break-word` lets the longest word break only when it would otherwise overflow — it changes
+     nothing at any width where the text already fits. */
+  overflow-wrap: break-word;
   list-style: none;
   margin: 0;
   padding: 0;

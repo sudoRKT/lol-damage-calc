@@ -46,7 +46,13 @@ import type {
   ReportedDamageType,
   Result,
 } from '../../types';
-import { AggregateTotal, DamageValue, VerificationStatusMark, formatReadout } from '../primitives';
+import {
+  AggregateTotal,
+  DamageValue,
+  TableScroller,
+  VerificationStatusMark,
+  formatReadout,
+} from '../primitives';
 import { AbilityChip } from '../art/AbilityChip';
 import { iconUrl } from '../data/roster';
 import './breakdown.css';
@@ -162,6 +168,13 @@ export function InstanceBreakdown({ result, patch }: InstanceBreakdownProps) {
         <p className="breakdown-panel__patch">Patch {result.patch}</p>
       </header>
 
+      {/* THE TABLE IS THE ONE THING ON THIS PAGE TOO WIDE FOR A PHONE, and this is where the
+          scrolling stops. Six columns whose combined minimum width no 375px viewport can hold
+          used to push the WHOLE DOCUMENT sideways — 579px of scrollWidth inside 375px, measured
+          in DESIGN-AUDIT.md §6.5. Every column is kept, because column alignment is what makes a
+          frame-data readout readable; only the table moves. The region is keyboard-reachable and
+          announced — see `../primitives/TableScroller.tsx` for the whole reasoning. */}
+      <TableScroller label="The per-instance damage table">
       <table className="breakdown">
         <caption className="u-visually-hidden">
           Each instance of the combo in order, with the state that applied at that point, the
@@ -193,6 +206,7 @@ export function InstanceBreakdown({ result, patch }: InstanceBreakdownProps) {
           ))}
         </tbody>
       </table>
+      </TableScroller>
 
       {/* THE BASELINE, PRINTED. The state column says what CHANGED, and a reader cannot use
           that without seeing what it changed from. This is the reference, in full, once —
@@ -425,6 +439,7 @@ function DotSection({ result, patch }: { result: Result; patch: string }) {
   return (
     <section className="breakdown-panel__block" aria-label="Damage over time">
       <h3 className="breakdown-panel__eyebrow">Damage over time — never in the burst total</h3>
+      <TableScroller label="The damage-over-time table">
       <table className="breakdown">
         <caption className="u-visually-hidden">
           Damage over time by source, over its full duration. Reported separately and never
@@ -471,6 +486,7 @@ function DotSection({ result, patch }: { result: Result; patch: string }) {
           ))}
         </tbody>
       </table>
+      </TableScroller>
     </section>
   );
 }

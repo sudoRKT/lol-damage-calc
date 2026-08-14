@@ -244,7 +244,25 @@
    is what holds each label clear of the previous one, so shrinking it moves labels toward each
    other. The arithmetic is in DESIGN-AUDIT.md §6.5, which now carries this as part of the
    mobile item — the honest fix is a responsive treatment of the plot, which is a design
-   decision and not a value to tune here. */
+   decision and not a value to tune here.
+
+   STILL OPEN AS OF 2026-08-14, AND HALF OF §6.5 IS NOT. The overflow half — the page itself
+   scrolling sideways, caused by the breakdown table — is fixed: every table in the area now sits
+   in `.u-scroll-x`, a keyboard-reachable, announced scroll region, and
+   `../responsive-overflow.test.tsx` sweeps for a table that does not. THIS half is untouched,
+   because every honest fix for it needs a value DESIGN.md does not define, and the design file
+   is the lead's. Two were costed and RAISED rather than picked:
+     (a) a minimum column width — the widest label measured is 59px and it sits --space-3 in from
+         its column's right edge, so a column must be at least 71px for two labels never to
+         touch. On §4a's rule that a layout measure is --space-8 × n, the smallest conforming
+         value is 128px. The plot then scrolls horizontally on a phone exactly as the table does,
+         with the y-axis rail left outside the scroller so it stays pinned. No breakpoint at all.
+     (b) all labels leave the plot for a row beneath it, in sequence order, each keeping its tag
+         and its hue — which is the resolution §7 already reached for the composition bar, and §8
+         states its general form: "when a mandatory cue will not fit, move the cue — never resize
+         the data to accommodate it." Needs a threshold, i.e. a phone breakpoint, which DESIGN.md
+         does not have.
+   DO NOT pick one of these locally, and do not narrow the inset. */
 .burn__label {
   position: absolute;
   inset-inline-end: var(--space-3);

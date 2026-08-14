@@ -140,9 +140,26 @@ const LENGTH_ALLOWLIST: Array<{ value: string; rule: string; reason: string }> =
     reason: 'DESIGN.md §6 states the focus ring verbatim: a 2px bone outline offset 2px',
   },
   {
+    value: '2px',
+    rule: '.u-scroll-x:focus-visible',
+    reason:
+      'DESIGN.md §6 states the focus ring verbatim: a 2px bone outline offset 2px. The scroll ' +
+      'region is focusable so a keyboard can scroll it (SPECIFICATION §10), so it must show ' +
+      'focus like every other focusable thing in the product.',
+  },
+  {
     value: '100%',
     rule: '.breakdown',
     reason: 'a table filling its panel — a fraction of the parent, not a design length',
+  },
+  {
+    value: '100%',
+    rule: '.items__pool',
+    reason:
+      'the `min(--measure-list-column-min, 100%)` guard on a grid track: 100% is the TRACK’S ' +
+      'OWN container, a fraction of the parent, not a design length. Without it the 256px ' +
+      'measure is a hard floor and the grid pushes the page sideways on a narrow phone — the ' +
+      'defect class DESIGN-AUDIT §6.5 measured. Same standing as .chip__img.',
   },
   {
     value: '100%',
@@ -160,6 +177,15 @@ const LENGTH_ALLOWLIST: Array<{ value: string; rule: string; reason: string }> =
     reason:
       'the open picker list hangs off the bottom edge of its field: 100% is the ANCHOR’S OWN ' +
       'height, a fraction of the parent, not a design length. Same standing as .chip__img.',
+  },
+  {
+    value: '100%',
+    rule: '.shell__main',
+    reason:
+      'the page column fills its parent and is then clamped by --measure-reading-max and centred ' +
+      'by margin-inline:auto. 100% is a fraction of the parent, not a design length — the same ' +
+      'standing as .breakdown and .statblock. It is REQUIRED, not decorative: margin-inline:auto ' +
+      'cancels flex stretch, so without it the column sizes to its content and overflows a phone.',
   },
   {
     value: '100%',

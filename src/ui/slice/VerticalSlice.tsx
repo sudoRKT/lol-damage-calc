@@ -11,7 +11,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 
-import { AggregateTotal, DamageValue, VerificationStatusMark } from '../primitives';
+import { AggregateTotal, DamageValue, TableScroller, VerificationStatusMark } from '../primitives';
 import { NumberInput } from '../inputs';
 import { AbilityChip } from '../art/AbilityChip';
 import { ChampionPortrait } from '../art/ChampionPortrait';
@@ -194,6 +194,11 @@ export function VerticalSlice() {
       {/* ---------------- result ---------------- */}
       <section className="panel" aria-labelledby="res-h">
         <h2 id="res-h" className="panel__h">Result</h2>
+        {/* EIGHT COLUMNS — the widest table in the area, and the one furthest from fitting a
+            phone. This component is a superseded proof and is mounted nowhere, but it is still
+            in the area and still swept, so it gets the same treatment as every shipped table
+            rather than an exemption nobody would remember to remove. */}
+        <TableScroller label="The vertical-slice damage table">
         <table className="breakdown">
           <caption className="u-visually-hidden">
             Per-instance damage breakdown, in combo order, with a running total and each ability's
@@ -250,6 +255,7 @@ export function VerticalSlice() {
             ))}
           </tbody>
         </table>
+        </TableScroller>
 
         <p className="total">
           Burst total{' '}

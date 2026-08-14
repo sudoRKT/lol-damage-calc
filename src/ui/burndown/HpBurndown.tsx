@@ -27,6 +27,7 @@ import type { DamageByType, DamageType, ReportedDamageType, Result } from '../..
 import {
   AggregateTotal,
   DamageValue,
+  TableScroller,
   VerificationStatusMark,
   formatReadout,
   roundReadout,
@@ -379,6 +380,11 @@ export function HpBurndown({ result, title = 'HP burndown' }: HpBurndownProps) {
         <p className="burn__caption">sequence — not elapsed time</p>
       </div>
 
+      {/* THE RULE IS EVERY TABLE, NOT THE ONE THAT WAS MEASURED TOO WIDE. This one is two rows
+          of short words and fits a phone today — but "LETHAL · instance 4" beside a long verdict
+          is the same construction that overflowed the breakdown, and a rule applied only where a
+          defect was found is a rule that stops holding the moment the data changes. */}
+      <TableScroller label="The two-verdict table">
       <table className="burn__verdicts">
         <caption className="u-visually-hidden">
           The survival verdict, given twice: burst alone, and burst plus damage over time.
@@ -394,6 +400,7 @@ export function HpBurndown({ result, title = 'HP burndown' }: HpBurndownProps) {
           </tr>
         </tbody>
       </table>
+      </TableScroller>
 
       {result.incompleteContributors.length > 0 ? (
         <ul className="burn__excluded">

@@ -113,11 +113,32 @@ body {
    measures are — see the note in tokens.css. It is not a new kind of value: --space-8 x 15 is
    960px, which holds roughly 90 characters at --type-body-l, the width prose stops being
    comfortable past. The calculator overrides it, because an instrument wants the whole screen. */
-/* No `inline-size: 100%` here: `.shell` is a flex column, so this stretches to full width by
-   default, and `margin-inline: auto` then centres it once `max-inline-size` binds. The explicit
-   100% was redundant AND an un-tokened length — the audit caught it. */
+/* ═══ THREE PROPERTIES THAT ONLY WORK TOGETHER. Each was got wrong once. ═══
+   A comment here previously said `inline-size: 100%` was "redundant under flex stretch" and
+   removed it. THAT WAS WRONG, and the browser proved it at 375px: `margin-inline: auto` CANCELS
+   stretch alignment, so the item sizes to its content instead of its container — this column
+   grew to 659px inside a 375px viewport and handed every table below it 577px of room, which is
+   why four scroll containers sat there not scrolling. A child cannot be narrower than the room
+   its parent insists on having.
+   `box-sizing: border-box` is required with it, because this project has no CSS reset: under the
+   browser's default content-box, `inline-size: 100%` plus 24px of side padding overflows by
+   exactly that padding. It is set HERE rather than globally on purpose — a global change alters
+   how padding resolves in every panel already measured, and that deserves its own
+   before-and-after (DESIGN-AUDIT §6.6). This is the second defect the missing reset has caused.
+   `min-inline-size: 0` stops the flex item's automatic minimum (its MIN-CONTENT width) from
+   putting the floor back. */
 .shell__main {
+  inline-size: 100%;
+  box-sizing: border-box;
   flex: 1 1 auto;
+  /* ═══ `min-inline-size: 0` IS WHAT MAKES EVERY SCROLL CONTAINER BELOW THIS WORK ═══
+     Found in a real browser at 375px on 2026-08-14, AFTER the table scrollers had been built
+     and their tests had passed. A flex item's automatic minimum size is its MIN-CONTENT width,
+     not zero — so this element grew to 659px inside a 375px viewport, handed the tables 577px
+     of room each, and they duly did not scroll because they did not need to. The page scrolled
+     instead. Every scroll container below here is inert until this line exists: a child cannot
+     be narrower than the room its parent insists on having. */
+  min-inline-size: 0;
   max-inline-size: var(--measure-reading-max);
   margin-inline: auto;
   padding: var(--space-6) var(--space-5) var(--space-7);
