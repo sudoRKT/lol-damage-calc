@@ -692,6 +692,68 @@ export interface VerificationEvidence {
   independentCheck?: { ledger: string; recordedOn: string };
 }
 
+/** The nine kinds the defensive census measured. Each is a different thing to do to incoming
+ *  damage, and each is named because §5 requires the defender modelled in full. */
+export type DefensiveKind =
+  | 'damage-reduction'
+  | 'type-specific-reduction'
+  | 'resistance-grant'
+  | 'shield'
+  | 'spell-shield'
+  | 'immunity'
+  | 'execute-threshold'
+  | 'heal'
+  | 'max-health-grant';
+
+/**
+ * THE KEY A DEFENSIVE TOGGLE IS STATED UNDER, in `ChampionConfig.entryState`. Added 2026-08-14.
+ *
+ * **90 of the 155 stored defensive entries are ready to apply and EVERY ONE OF THEM IS
+ * CONDITIONAL** (DATA-SOURCES §52.3). The engine cannot know whether Braum's shield was up when
+ * the combo landed, and SPECIFICATION §3.3 already fixes where the answer lives: `entryState`
+ * holds "conditional-defence toggles". What did not exist was the KEY.
+ *
+ * ═══ WHY THIS IS A FUNCTION AND NOT A CONVENTION IN A COMMENT ═══
+ *
+ * The interface writes these keys and the engine reads them. Two areas deriving "the same" key
+ * from the same fields is exactly the cross-area seam DATA-SOURCES §44 was written about: both
+ * suites pass, and the toggle silently never fires. One exported function means one producer,
+ * and `tests/cross-area-seams.test.ts` can run the consumer's assertions over it.
+ *
+ * ═══ WHY ALL FOUR PARTS ═══
+ *
+ * Measured over the 152 conditional entries across 87 champions, patch 16.16.1:
+ *   - `(slot, kind)` alone COLLIDES on 24 entries — a champion really can have two shields on one
+ *     slot, or a reduction and a grant that share both fields;
+ *   - `(slot, kind, label, id)` collides on ZERO.
+ * So the label and the id are both load-bearing, and neither can be dropped for brevity.
+ *
+ * The champion is NOT in the key. A scenario has one defender, the toggles are stated inside that
+ * champion's own config, and repeating the name in every key would spend the link budget
+ * (SPECIFICATION §12) on a fact already recorded one level up. **A scenario's toggles are only
+ * meaningful for the champion they were stated against** — a reader who switches defender is
+ * switching to a different set, and stale keys simply do not match.
+ *
+ * The value is a BOOLEAN: the defence was up, or it was not. Absent means NOT UP, and that is the
+ * only safe default — asserting a defence the user never stated would understate the damage, and
+ * this product's failure mode is a plausible wrong number.
+ *
+ * The most any one champion carries is 5 (Lissandra, Soraka), so a scenario's whole toggle set is
+ * small.
+ */
+export function defensiveToggleKey(e: {
+  slot: AbilitySlot;
+  kind: DefensiveKind;
+  label?: string;
+  id?: string;
+}): string {
+  // `d.` marks the namespace inside entryState, which also carries stacks and debuffs.
+  const parts = ['d', e.slot, e.kind];
+  if (e.id) parts.push(e.id);
+  else if (e.label) parts.push(e.label.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''));
+  return parts.join('.');
+}
+
 /** A curated item passive or active. Data Dragon carries the flat stats; the VALUES inside a
  *  passive live only in description text (DATA-SOURCES §5), so they are curated here. */
 /**
@@ -772,16 +834,7 @@ export interface CuratedDefensiveEffect {
    */
   relation?: ComponentRelation;
   /** The nine kinds the census measured. Each is a different thing to do to incoming damage. */
-  kind:
-    | 'damage-reduction'
-    | 'type-specific-reduction'
-    | 'resistance-grant'
-    | 'shield'
-    | 'spell-shield'
-    | 'immunity'
-    | 'execute-threshold'
-    | 'heal'
-    | 'max-health-grant';
+  kind: DefensiveKind;
   /**
    * §5's split, with the third bucket the census proved is needed.
    *

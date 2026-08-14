@@ -211,24 +211,14 @@ function zeroByType(): DamageByType {
 /**
  * Y-axis ticks at rounded HP intervals (DESIGN.md §7).
  *
- * Picks the smallest "nice" step (1, 2, 2.5 or 5 × a power of ten) that puts at most
- * `maxIntervals` gaps under `maxHp`, then adds the axis top as a final label when it is far
- * enough from the last tick not to collide with it (half a step).
+ * MOVED TO `../plot` on 2026-08-14 and re-exported here, so existing callers are untouched. It
+ * was always generic — it takes a maximum and a tick budget and knows nothing about health — and
+ * the curve charts need the identical rule. Two copies is how two charts come to put their
+ * gridlines in different places, which is the one thing a reader compares across charts.
  */
-export function niceTicks(maxHp: number, maxIntervals = 5): number[] {
-  if (!(maxHp > 0)) return [0];
-  const rough = maxHp / maxIntervals;
-  const magnitude = Math.pow(10, Math.floor(Math.log10(rough)));
-  const step =
-    [1, 2, 2.5, 5, 10].map((m) => m * magnitude).find((s) => maxHp / s <= maxIntervals) ??
-    10 * magnitude;
+import { niceTicks } from '../plot';
 
-  const ticks: number[] = [];
-  for (let v = 0; v <= maxHp + 1e-9; v += step) ticks.push(Number(v.toFixed(6)));
-  const last = ticks[ticks.length - 1]!;
-  if (maxHp - last >= step / 2) ticks.push(maxHp);
-  return ticks;
-}
+export { niceTicks };
 
 /** Where a vertical rule at fraction `f` must be nudged so its stroke stays inside the plot. */
 export function ruleShift(fraction: number): string {
