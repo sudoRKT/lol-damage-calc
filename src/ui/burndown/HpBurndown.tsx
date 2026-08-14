@@ -24,7 +24,13 @@
 import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { CSSProperties } from 'react';
 import type { DamageByType, DamageType, ReportedDamageType, Result } from '../../types';
-import { AggregateTotal, DamageValue, VerificationStatusMark, formatReadout } from '../primitives';
+import {
+  AggregateTotal,
+  DamageValue,
+  VerificationStatusMark,
+  formatReadout,
+  roundReadout,
+} from '../primitives';
 import {
   buildBurndownModel,
   odometerAt,
@@ -560,6 +566,23 @@ function Column({ column, index, maxHp, open, onOpen, onClose }: ColumnProps) {
  * is stated in words underneath. NOTHING IS FABRICATED to fill the gap: a per-step figure
  * that no engine produced would be exactly the plausible wrong number this product exists to
  * prevent. A contract change is raised, not made.
+ *
+ * ═══ EVERY FIGURE IN HERE IS ROUNDED FOR DISPLAY (added 2026-08-14) ═══
+ *
+ * This popover printed `57.91960035475755 magic damage after resistances` at a reader, visibly
+ * and to a screen reader, on the default scenario. Two of the four checkpoints the contract
+ * carries — `afterResistances` and `afterReductions` — are the engine's unrounded WORKING values,
+ * and `raw` can be too; only `final` arrives already rounded. Fourteen digits of floating-point
+ * noise in a product whose only claim is that its numbers are right reads as either a bug or fake
+ * precision, and a reader cannot tell which. It is the identical defect `../primitives/readout.ts`
+ * was written for.
+ *
+ * THE ROUNDING HAPPENS AT THIS CALL SITE, NOT INSIDE `DamageValue`, and that is deliberate.
+ * `DamageValue` still prints exactly what it is given, so it remains impossible for a damage
+ * figure anywhere else in the product to be rounded a second time by the display layer. What is
+ * rounded here is the value HANDED to it. `roundReadout` is a no-op on `final`, which the engine
+ * has already rounded at its own single documented rounding point — that point is untouched, and
+ * nothing rounded here is ever fed back into arithmetic.
  */
 function ResistancePopover({ id, column }: { id: string; column: BurndownColumn }) {
   const instance = column.instance;
@@ -581,7 +604,7 @@ function ResistancePopover({ id, column }: { id: string; column: BurndownColumn 
           <dt>Raw</dt>
           <dd>
             <DamageValue
-              value={instance.raw}
+              value={roundReadout(instance.raw)}
               damageType={singleDamageType(instance.damageType) ?? 'true'}
               size="m"
               spokenContext="before mitigation"
@@ -590,7 +613,7 @@ function ResistancePopover({ id, column }: { id: string; column: BurndownColumn 
           <dt>After resistances</dt>
           <dd>
             <DamageValue
-              value={instance.afterResistances}
+              value={roundReadout(instance.afterResistances)}
               damageType={singleDamageType(instance.damageType) ?? 'true'}
               size="m"
               spokenContext="after resistances"
@@ -599,7 +622,7 @@ function ResistancePopover({ id, column }: { id: string; column: BurndownColumn 
           <dt>After reductions</dt>
           <dd>
             <DamageValue
-              value={instance.afterReductions}
+              value={roundReadout(instance.afterReductions)}
               damageType={singleDamageType(instance.damageType) ?? 'true'}
               size="m"
               spokenContext="after reductions"
@@ -608,7 +631,7 @@ function ResistancePopover({ id, column }: { id: string; column: BurndownColumn 
           <dt>Final</dt>
           <dd>
             <DamageValue
-              value={instance.final}
+              value={roundReadout(instance.final)}
               damageType={singleDamageType(instance.damageType) ?? 'true'}
               size="m"
               spokenContext="applied"
@@ -622,7 +645,7 @@ function ResistancePopover({ id, column }: { id: string; column: BurndownColumn 
               <dt>Full duration</dt>
               <dd>
                 <DamageValue
-                  value={s.damage}
+                  value={roundReadout(s.damage)}
                   damageType={s.damageType}
                   size="m"
                   spokenContext="over time, never folded into the burst total"

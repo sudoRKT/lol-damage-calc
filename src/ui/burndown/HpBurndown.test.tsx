@@ -11,6 +11,16 @@
 // and the dashed lethal rule are PURELY VISUAL cues, so there is nothing in the
 // accessibility tree to ask. Each is paired with an accessible-name assertion covering the
 // same fact in words ("damage over time"), which is the point of the redundancy rule.
+//
+// ═══ WHAT THESE POPOVER TESTS DO AND DO NOT SEE (added 2026-08-14) ═══
+//
+// The popover assertions below run against MOCK_RESULT, whose figures are whole numbers by
+// construction. They prove the popover OPENS, carries the four checkpoints in the contract's
+// order, names the fixed modifier order and reports the verification status. **They cannot see
+// how a figure is FORMATTED**, because a tidy fixture has no fractional tail to mangle — and the
+// popover was in fact printing `57.91960035475755 magic damage after resistances` on real data
+// while every test here passed. That class is covered by `../app/rendered-figures.test.tsx`,
+// which now opens each riser across all 173 champions against real published data.
 
 import { describe, expect, it, afterEach, beforeEach, vi } from 'vitest';
 import { act, cleanup, render, screen, fireEvent } from '@testing-library/react';

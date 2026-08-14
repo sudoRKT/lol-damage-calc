@@ -4434,3 +4434,102 @@ Gate 1 over the reduced set: **155 checked, 155 passed, 0 failed.**
 example of alternating a Minimum/Maximum pair rather than summing it. Shen R is no longer in the
 population, so the example is now Ekko R, whose heal really does carry such a pair. The assertion
 is unchanged; moving an exemplar is not weakening a test.
+
+---
+
+## 50. A check that claims more than it measures (2026-08-14)
+
+### 50.1 The defect, and why it is the smaller half
+
+The burndown's resistance-math popover printed **`57.91960035475755 magic damage after resistances`**
+at a reader — visibly and to a screen reader — on the default scenario. Two of the four mitigation
+checkpoints the contract carries (`afterResistances`, `afterReductions`) are the engine's unrounded
+WORKING values; only `final` arrives rounded. It is the identical defect `src/ui/primitives/readout.ts`
+was written for on the same day, in a surface that file's sweep had never opened.
+
+**HOW MANY FIGURES THE FIX CORRECTS. DEFINITION: occurrences of the pattern `\d+\.\d{3,}` in text
+nodes and `aria-label`s inside `.burn__pop`, over every riser popover of every champion — 173
+champions as attacker at level 11 with rank-3 abilities, combo Q → W → E → R → basic attack against
+Garen at level 11, one popover opened at a time. Measured by reverting the fix and counting.**
+
+| | |
+|---|---:|
+| Noisy figure occurrences | **2,450** |
+| Distinct noisy values | **437** |
+| Champions affected | **173 of 173** |
+
+The rounding is applied at the popover's call site, never inside `DamageValue`, so the structural
+guarantee holds: no component can round a damage figure a second time, and the engine's single
+rounding point is untouched. `readout.ts`'s header said *"IT NEVER TOUCHES A DAMAGE FIGURE"*; that
+sentence is deleted rather than reworded, because it would now be false.
+
+### 50.2 The real problem: the claim was wider than the measurement
+
+`rendered-figures.test.tsx` said it renders **"the WHOLE result surface"**. It rendered
+`<HpBurndown>` and never opened a riser, so the popover was never in the tree it walks. **A check
+that renders a component is not a check that has seen the component's states.**
+
+**A wide claim is worse than a narrow one, because nobody goes looking behind it.** The sweep was
+the obvious place to ask "is any figure noisy?", it answered yes-everything-is-clean, and it was
+answering about a smaller surface than it named.
+
+**Proved to fail rather than assumed to work.** With the popover fix reverted, the widened sweep
+fails and names the champions. With it restored, it passes.
+
+### 50.3 THE CENSUS — every surface that exists only on interaction
+
+**DEFINITION: an element, or the text of a live region, that is absent from the rendered DOM (or
+`display: none`) until a user focuses, hovers, clicks or types. Population read from every shipped
+component under `src/ui/` — every `.tsx` reachable from `src/main.tsx`, which excludes `*.test.tsx`,
+`preview.tsx`, and `slice/VerticalSlice.tsx` (a dev scaffold `main.tsx` does not mount).**
+
+**"Reached by a sweep" means a check whose stated population is a whole surface or roster** —
+`rendered-figures`, `interactive-names`, `roster-sweep`, `accessible-names`, `negative-zero-sweep`,
+`rounding-presentation`, `token-audit` — as opposed to a targeted per-component test.
+
+| # | Surface | Revealed by | Reached by a sweep? | Reached by any test? |
+|---|---|---|---|---|
+| 1 | Burndown resistance popover | riser focus / hover | **now yes** (was NO) | yes — but on a whole-number fixture |
+| 2 | Champion picker option rows | field focus | yes | yes |
+| 3 | Picker "no champion matches" row | focus + non-matching query | **NO** | yes |
+| 4 | Picker match-count live text | field focus | **NO** | yes |
+| 5 | Item pool result rows | field focus / typing | **now yes** | yes |
+| 6 | Item status "N of M items match…" | field focus / typing | **NO** | yes |
+| 7 | Item add/remove announcement | after an add or remove | **NO** | **NO — nothing anywhere** |
+| 8 | Combo edit announcement | after add / move / remove | **NO** | yes |
+| 9 | Breakdown full-state row | click the row's toggle | **NO** | yes |
+| 10 | Odometer intermediate roll values | during the 300ms roll | **NO** | **NO — nothing anywhere** |
+
+**Counts, against the definition above.** Surfaces 5, 6 and 9 did not exist at the start of the
+session; they were created by the item-pool collapse and the state-column change, so the honest
+comparison is stated twice:
+
+- **At session start (commit `e6f8800`): 7 interaction-only surfaces, of which 1 was reached by a
+  sweep and 6 were not.** Two of those six — the item announcement and the odometer roll — were
+  reached by no test at all.
+- **Now: 10 interaction-only surfaces, of which 3 are reached by a sweep and 7 are not.** The same
+  two are still reached by no test at all.
+
+**The two with no coverage anywhere are named rather than quietly left.** The item picker's
+add/remove announcement is a live region whose text a screen reader user is the only person who
+ever receives — exactly the class §41.1's spoken-string defects came from. The odometer's
+intermediate values exist only mid-animation, which jsdom does not run; that one may be
+untestable without a real browser, and saying so is better than implying it is covered.
+
+### 50.4 The rule this leaves behind
+
+**A check states what it OPENS, not only what it renders.** Three headers were corrected on
+2026-08-14, and none of them by widening a claim without widening the measurement:
+
+- `rendered-figures.test.tsx` — the word "WHOLE" is gone; it now lists what it opens (every riser
+  popover) and what it does not render at all, and it asserts the number of popovers it opened so
+  a refactor that stops mounting them fails instead of silently shrinking the population.
+- `interactive-names.test.tsx` — its coverage claim now states the condition that keeps it true:
+  each fixture is measured in its default state plus exactly the surfaces its `after` hook opens,
+  and a control revealed by any other interaction is outside it and would not be noticed.
+- `src/ui/burndown/HpBurndown.test.tsx` — its popover tests are annotated with what they cannot
+  see: a fixture of whole numbers has no fractional tail to mangle, so they prove the popover
+  opens and is correct in structure while being blind to how a figure is formatted.
+
+**And `readout.ts` had its scope sentence deleted rather than softened**, because the fix made it
+false. A header that is merely *narrowed* after the fact still misleads anyone who read it before.

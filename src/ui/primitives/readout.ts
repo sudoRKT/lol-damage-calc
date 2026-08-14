@@ -25,11 +25,28 @@
 //
 // ═══ WHAT THIS IS NOT ═══
 //
-// **IT IS NOT THE ENGINE'S ROUNDING POINT AND IT NEVER TOUCHES A DAMAGE FIGURE.** Damage is
-// rounded exactly once, in the engine, and `DamageValue` / `AggregateTotal` still print what they
-// are given without rounding (§41.1). This governs READOUTS ONLY: resolved statistics, the state
-// snapshot, and the health figures spoken beside a burndown riser. The underlying values the
-// engine calculates with are untouched.
+// **IT IS NOT THE ENGINE'S ROUNDING POINT.** Damage is rounded exactly once, in the engine, and
+// `DamageValue` / `AggregateTotal` still print what they are GIVEN without rounding (§41.1). The
+// underlying values the engine calculates with are untouched, and nothing rounded here is ever
+// fed back into arithmetic.
+//
+// ═══ WHAT IT GOVERNS — WIDENED 2026-08-14, AND THE OLD SENTENCE IS GONE BECAUSE IT WOULD NOW BE
+// FALSE ═══
+//
+// This header used to say "**IT NEVER TOUCHES A DAMAGE FIGURE**" and list readouts only: resolved
+// statistics, the state snapshot, and the health figures spoken beside a burndown riser. It now
+// also governs the burndown popover's four MITIGATION CHECKPOINTS (`raw`, `afterResistances`,
+// `afterReductions`, `final`), which are damage figures.
+//
+// The distinction the old sentence was reaching for is real, and it is this: two of those
+// checkpoints are the engine's unrounded WORKING values, not its output. The popover printed
+// `57.91960035475755 magic damage after resistances` at a reader — the same defect, from the same
+// cause, in a surface the sweep had never opened. `final` arrives already rounded by the engine,
+// so rounding it here is a no-op.
+//
+// **The rounding is applied AT THE CALL SITE, never inside `DamageValue`.** That is what keeps
+// the structural guarantee intact: no component can round a damage figure a second time, because
+// the rounding is visible in the caller that chose it.
 
 /**
  * Decimal places a readout is printed to.

@@ -26,6 +26,24 @@
 // this area owns today. **The item picker was added on 2026-08-14 when item selection reached
 // the page; the sentence above is a claim about coverage, so a new control-bearing component
 // means a new fixture rather than a note that one exists elsewhere.**
+//
+// ═══ THE CONDITION UNDER WHICH THAT CLAIM STAYS TRUE — MADE EXPLICIT 2026-08-14 ═══
+//
+// **Each fixture is measured in its DEFAULT state, plus exactly the surfaces its `after` hook
+// opens.** Two are opened, and both had to be, because their controls do not exist until they
+// are: the champion picker's option rows, and the item pool's add controls. **A control that
+// appears only after some OTHER interaction is outside this sweep and this sweep would not
+// notice** — it would keep passing, over a smaller surface, which is the exact failure mode this
+// file was written to prevent in the components it measures.
+//
+// This is written down because the sibling sweep in `app/rendered-figures.test.tsx` failed in
+// precisely that way: it claimed the "whole" result surface while never opening the burndown
+// popover, and the popover printed floating-point noise at users for as long as it existed.
+//
+// Checked on 2026-08-14, and true today: no control in this area is revealed by any interaction
+// other than the two opened here. The breakdown's full-state expansion contains no control, and
+// the burndown's popover contains no control — both are read-only panels. **If either ever gains
+// one, this sweep needs a third `after` hook, not a footnote.**
 
 import { describe, expect, it, afterEach } from 'vitest';
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
