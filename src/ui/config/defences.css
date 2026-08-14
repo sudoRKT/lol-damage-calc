@@ -1,0 +1,170 @@
+/*
+ * The defender's conditional-defence toggles.
+ *
+ * NO HUE (DESIGN.md §1). A defence is not damage data. Every distinction here is border,
+ * brightness, weight, glyph and label — the same vocabulary §6 gives status and interaction.
+ *
+ * NO LENGTH LITERAL AND NO LOCAL BREAKPOINT. Every value is a token; the layout is a single
+ * column that reflows, so there is no grid track to be widened past a phone and no media query
+ * to invent a viewport width DESIGN.md has not stated (`../responsive-overflow.test.tsx`).
+ */
+
+@import '../tokens.css';
+
+.defences {
+  background: var(--bg-panel);
+  border: var(--border-steel);
+  border-radius: var(--radius-panel);
+  padding: var(--space-4); /* DESIGN.md §4 — panel inner padding */
+  font-family: var(--font-body);
+  color: var(--text-primary);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3); /* DESIGN.md §4 — row rhythm inside a panel */
+}
+
+.defences__head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.defences__eyebrow {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: var(--weight-display-medium);
+  font-size: var(--type-eyebrow);
+  line-height: var(--lh-eyebrow);
+  letter-spacing: var(--ls-eyebrow);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.defences__lede {
+  margin: 0;
+  max-inline-size: var(--measure-prose-max);
+  font-size: var(--type-body-m);
+  line-height: var(--lh-body-m);
+  color: var(--text-secondary);
+}
+
+/* The engine does not read these yet, and the panel says so. Set apart by a border and the
+   well surface, never by a hue — DESIGN.md §1 admits no exception for a caution. */
+.defences__pending {
+  margin: 0;
+  background: var(--bg-well);
+  border: var(--border-steel);
+  border-radius: var(--radius-control);
+  padding: var(--space-2) var(--space-3);
+  max-inline-size: var(--measure-prose-max);
+  font-size: var(--type-body-s);
+  line-height: var(--lh-body-s);
+  font-weight: var(--weight-body-medium);
+  color: var(--text-secondary);
+  overflow-wrap: break-word;
+}
+
+.defences__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+/* One ability, one question. A hairline above each row after the first — DESIGN.md §5,
+   "borders are the primary means of separation". */
+.defences__row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.defences__row + .defences__row {
+  border-block-start: var(--border-hair);
+  padding-block-start: var(--space-3);
+}
+
+/* Vertical padding widens the pointer target well past the native checkbox, which matters at
+   375px. The label is `htmlFor`-bound, so the whole line is the target, not just the box. */
+.defences__control {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  padding-block: var(--space-1);
+}
+
+.defences__check {
+  /* Bone, per the reserved-hue law: the checked state is a neutral, not an accent. */
+  accent-color: var(--text-primary);
+  flex: none;
+}
+
+.defences__check:focus-visible {
+  /* DESIGN.md §6 states the ring verbatim: a 2px bone outline offset 2px. Written as the two
+     tokens that already carry those values, so no literal appears here. */
+  outline: var(--border-active);
+  outline-offset: var(--space-0);
+}
+
+.defences__label {
+  font-size: var(--type-body-l);
+  line-height: var(--lh-body-l);
+  font-weight: var(--weight-body-medium);
+  color: var(--text-primary);
+  overflow-wrap: break-word;
+  cursor: pointer;
+}
+
+/* An ability with nothing statable carries no control, so its name is not a label. Muted,
+   because it is a heading for a refusal rather than something to act on. */
+.defences__label--static {
+  margin: 0;
+  color: var(--text-secondary);
+  cursor: auto;
+}
+
+.defences__detail {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  /* Indented under the control so the detail reads as belonging to it. The step is the
+     checkbox gap plus one, which is the only relationship this indent has to express. */
+  padding-inline-start: var(--space-5);
+}
+
+.defences__effects {
+  margin: 0;
+  font-size: var(--type-body-m);
+  line-height: var(--lh-body-m);
+  color: var(--text-primary);
+  overflow-wrap: break-word;
+}
+
+/* The source's own words, up to 126 characters of them. `break-word` only ever acts on a word
+   with no break opportunity that would otherwise overhang the viewport. */
+.defences__condition {
+  margin: 0;
+  max-inline-size: var(--measure-prose-max);
+  font-size: var(--type-body-s);
+  line-height: var(--lh-body-s);
+  color: var(--text-secondary);
+  overflow-wrap: break-word;
+}
+
+.defences__conditionLead {
+  font-weight: var(--weight-body-strong);
+}
+
+.defences__refusal {
+  margin: 0;
+  font-size: var(--type-body-s);
+  line-height: var(--lh-body-s);
+  overflow-wrap: break-word;
+}
+
+/* NOTHING HERE ANIMATES, deliberately. DESIGN.md §10 spends the motion budget on the burndown
+   and says panels and selection change instantly. A rule with no transition also cannot be
+   stranded at its first keyframe for a reduced-motion user, which is the sweep DATA-SOURCES
+   §45 turned into a standing check. */
