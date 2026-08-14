@@ -32,7 +32,13 @@
 // and each reads only the fields it uses. If the lead adds `Manifest` and `StatOverride` to
 // src/types/, this file should import them and delete its own.
 
-import type { Champion, CuratedAbility, Item } from '../../types';
+import type {
+  Champion,
+  CuratedAbility,
+  CuratedDefensiveEffect,
+  CuratedItemEffect,
+  Item,
+} from '../../types';
 import type { Catalogue } from '../../engine';
 
 /** Where the pipeline publishes the item pool. 209 items (DATA-SOURCES §5). */
@@ -176,6 +182,17 @@ export interface CatalogueSources {
   items: readonly Item[];
   /** Keyed by apiname. A champion absent from the map has no published abilities. */
   abilities: ReadonlyMap<string, readonly (CuratedAbility & { icon: string })[]>;
+  /**
+   * Keyed by item id. Added 2026-08-14 with the lookup the engine now asks for.
+   *
+   * OPTIONAL, and absent is the honest state today: nothing publishes item effects to
+   * `public/data/` yet, so the map is empty and every item-effect step still reports itself as
+   * not modelled. Wiring the publish step is separate work; leaving this required would have
+   * forced a fabricated empty map at every call site instead of one honest default here.
+   */
+  itemEffects?: ReadonlyMap<number, readonly CuratedItemEffect[]>;
+  /** Keyed by apiname. Same reasoning as above — absent means nothing is published yet. */
+  defensiveEffects?: ReadonlyMap<string, readonly CuratedDefensiveEffect[]>;
 }
 
 /**
@@ -193,5 +210,7 @@ export function buildCatalogue(sources: CatalogueSources): Catalogue {
     champion: (apiname) => championsByName.get(apiname),
     item: (id) => itemsById.get(id),
     abilities: (apiname) => sources.abilities.get(apiname) ?? [],
+    itemEffects: (id) => sources.itemEffects?.get(id) ?? [],
+    defensiveEffects: (apiname) => sources.defensiveEffects?.get(apiname) ?? [],
   };
 }

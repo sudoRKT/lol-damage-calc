@@ -23,6 +23,8 @@
 import type {
   Champion,
   CuratedAbility,
+  CuratedDefensiveEffect,
+  CuratedItemEffect,
   Item,
   Scenario,
   ChampionConfig,
@@ -41,14 +43,41 @@ import { BASE_CRITICAL_STRIKE_MULTIPLIER } from './crit';
 /**
  * The data a scenario needs, supplied by the caller.
  *
- * Three lookups and nothing else. Each returns `undefined` for something it does not have, and
- * `simulate` turns that into a NAMED refusal rather than a default.
+ * Each returns `undefined` — or an empty list — for something it does not have, and `simulate`
+ * turns that into a NAMED refusal rather than a default. **An empty list is a real answer**: it
+ * means nothing has been harvested, which is a different statement from "this champion has no
+ * abilities" and is reported as such.
+ *
+ * THE LAST TWO WERE ADDED 2026-08-14 (DATA-SOURCES §52). Until then this offered three lookups,
+ * and the consequence was structural rather than cosmetic: the engine's machinery for item
+ * effects and for the defender's own kit already existed and was tested — shields in all three
+ * kinds, post-mitigation reduction, healing — and NOTHING COULD FILL IT FROM DATA. Every
+ * defensive figure in a result came from a hand-authored plan, and every item-effect step
+ * returned a pending instance.
  */
 export interface Catalogue {
   champion(apiname: string): Champion | undefined;
   item(id: number): Item | undefined;
   /** Every curated ability for a champion. An empty list is a real answer — nothing harvested. */
   abilities(apiname: string): readonly CuratedAbility[];
+  /**
+   * Every curated effect on one item — its passives and its actives, keyed by item id.
+   *
+   * An item has more than one: `Module:ItemData/data` keys them `pass`, `pass2`, `pass3`, `act`
+   * and `consume`, and 42 distinct items carry the 43 effects in the override file. So this
+   * returns a list, never a single effect.
+   */
+  itemEffects(itemId: number): readonly CuratedItemEffect[];
+  /**
+   * Every curated defensive effect belonging to one champion's own kit — what their abilities do
+   * to damage they RECEIVE (SPECIFICATION §5).
+   *
+   * Keyed by champion rather than by ability, because the defender is chosen as a champion and
+   * the engine needs the whole set to decide which are up. **90 of the 155 stored entries are
+   * ready to apply and every one of them is conditional**, so the scenario's entry state — not
+   * this lookup — decides which ones actually resolve.
+   */
+  defensiveEffects(apiname: string): readonly CuratedDefensiveEffect[];
 }
 
 /** Why a scenario could not be simulated at all. Each names the exact thing that is missing. */
