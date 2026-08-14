@@ -34,6 +34,11 @@ export interface WikiChampion {
   id: number;
   /** Patch this champion last changed in, e.g. "V26.12". Used by the Fandom guard. */
   changes: string | null;
+  /** The word the module states for the champion's resource — "Mana", "Energy", "Fury", "None",
+   *  … `stats.mp_base` is the POOL and does not say which resource it is (DATA-SOURCES §43).
+   *  Undefined only for a source that does not carry the field at all, which the official wiki
+   *  does for all 175 entries and the stale Fandom copy does not. */
+  resource?: string;
   stats: ChampionBaseStats;
   abilityNames: Partial<Record<AbilitySlot, string[]>>;
 }
@@ -132,6 +137,18 @@ export function parseChampionModule(luaSource: string): WikiChampion[] {
       apiname: requireString(entry, 'apiname', wikiName),
       id: requireNumber(entry, 'id', wikiName),
       changes: typeof entry['changes'] === 'string' ? entry['changes'] : null,
+      // WHICH RESOURCE THIS CHAMPION SPENDS. `stats.mp_base` is the resource POOL and says
+      // nothing about which resource it is — 19 of the module's 175 entries state a non-mana
+      // resource with a non-zero pool (DATA-SOURCES §43).
+      //
+      // READ WHERE PRESENT, NOT REQUIRED HERE, and the reason is worth keeping. Making it a hard
+      // parse failure was tried first and it broke the WRONG-WIKI GUARD: the abandoned Fandom
+      // copy does not carry the field, so parsing threw before `assertOfficialWiki` could speak
+      // and the operator got "resource is not a string" instead of "this is the wrong wiki".
+      // A guard that cannot report is not a guard. The requirement lives at the roster level
+      // instead — `assertEveryChampionStatesAResource` below — where the message names the
+      // actual problem and every affected champion.
+      resource: typeof entry['resource'] === 'string' ? entry['resource'] : undefined,
       stats: readStats(entry, wikiName),
       abilityNames: readAbilityNames(entry, wikiName),
     });
@@ -173,6 +190,31 @@ export function highestChangesPatch(
  * every champion stat in the product.
  */
 export const MINIMUM_ACCEPTABLE_PATCH_MAJOR = 26;
+
+/**
+ * EVERY CHAMPION IN THE SHIPPED ROSTER STATES A RESOURCE. Throws naming those that do not.
+ *
+ * `Champion.resource` is optional in the contract only so a champions.json written before
+ * 2026-08-14 stays valid. The official wiki module states it for all 175 of its entries, so a
+ * champion reaching the roster without one means the source changed or the parser regressed —
+ * and the consequence is silent: `StatBlock` would carry no mana for that champion, so every
+ * mana-scaling ability they have would report as unmodellable rather than wrong. Silent is
+ * exactly what this project does not accept, so the fetch stops here instead.
+ *
+ * It runs on the JOINED roster rather than during parsing, so the wrong-wiki guard gets to
+ * report first when the input is the abandoned Fandom copy.
+ */
+export function assertEveryChampionStatesAResource(champions: Champion[]): void {
+  const missing = champions.filter((c) => !c.resource).map((c) => c.apiname);
+  if (missing.length === 0) return;
+  throw new Error(
+    `${missing.length} champion(s) reached the roster with no "resource" field: ` +
+      `${missing.join(', ')}. The wiki module states one for every entry, so this is a source ` +
+      `change or a parser regression, not a champion without a resource — "None" is itself a ` +
+      `stated value. Without it the pool in stats.mp_base cannot be read as mana ` +
+      `(DATA-SOURCES §43), and those champions would silently report no mana at all.`,
+  );
+}
 
 export function assertOfficialWiki(champions: WikiChampion[]): void {
   const highest = highestChangesPatch(champions);
@@ -258,6 +300,7 @@ export function joinChampions(
       name: winner.wikiName,
       id: winner.id,
       stats: winner.stats,
+      ...(winner.resource !== undefined ? { resource: winner.resource } : {}),
       abilityNames: winner.abilityNames,
       abilityMaxRanks: maxRanks.get(winner.apiname) ?? {},
       // Data Dragon names every champion portrait "<apiname>.png". Safe to build rather

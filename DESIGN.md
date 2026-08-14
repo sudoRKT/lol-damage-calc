@@ -507,6 +507,38 @@ is never framed or gilded (that ornamental treatment belonged to a rejected dire
   no tag (or an em-dash marker) — visibly "no damage type," not an omission.
 - Hover brightens the chip (`--bg-panel-raised`); it never changes hue.
 
+### The basic attack, which has no art (decided 2026-08-13)
+
+Data Dragon ships four asset categories — champion portraits, ability icons, item icons,
+rune icons — and **nothing for an auto-attack**. So the one control the combo builder
+cannot give an icon is the one §10.1's "abilities as their in-game icons rather than as
+lettered buttons" does not cover.
+
+| Where | What is drawn | Tokens |
+|---|---|---|
+| Combo **shelf** | A plainly labelled control reading **"Basic attack"** — deliberately a different SHAPE from an icon-chip, so the two never read as the same class of thing | `--bg-well`, `--border-steel`, `--radius-control`, `--type-body-m` |
+| Combo **sequence** | A chip-sized well carrying the mark **`AA`**, so every step keeps one rhythm | `--art-chip-combo` box, `--bg-base`, `--border-steel`, `--radius-control`, `--font-display` at `--type-eyebrow`, `--text-secondary` |
+
+**No new design value is introduced** — every token above is already defined in this file.
+This is the same construction the non-damaging chip above already uses: a visible marker
+saying "no art here", never an omission.
+
+**Why no art is borrowed, and this is the part not to relitigate.** The alternative is to
+take an existing Data Dragon asset — an item icon, a summoner-spell icon, the attack-move
+cursor — and let it stand for "basic attack". That is presenting official art as denoting
+something it does not denote, in a product whose §15 asset terms rest on using Riot's art
+as Riot ships it, and in an interface where **every other icon means exactly the thing it
+depicts**. A user who learns that one chip means something other than what it shows can no
+longer trust that any of them does. Drawing a bespoke icon is the same objection plus a new
+asset class this file would then have to define.
+
+The ban in §10.1 forbids substituting a letter for art **that exists**; its purpose is that
+a player recognises Q by its icon rather than by reading a letter, and that purpose has no
+application where there is no icon to recognise. A basic attack is also not an ability —
+SPECIFICATION §3.4 lists it as its own instance type. The full reasoning is
+DATA-SOURCES §42.6, and the code carries it on `BASIC_ATTACK_MARKER` in
+`src/ui/combo/sequence.ts`.
+
 ### Portraits tinted until active
 
 - Champion portraits are **desaturated and tinted toward `--bg-panel`** (low chroma) while

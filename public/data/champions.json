@@ -21,6 +21,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Physical"
     },
+    "resource": "Blood Well",
     "abilityNames": {
       "P": [
         "Deathbringer Stance"
@@ -51,7 +52,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -76,6 +77,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Magic"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Essence Theft"
@@ -104,7 +106,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -129,6 +131,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Physical"
     },
+    "resource": "Energy",
     "abilityNames": {
       "P": [
         "Assassin's Mark"
@@ -160,7 +163,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -185,6 +188,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Physical"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Dirty Fighting"
@@ -214,7 +218,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -239,6 +243,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Magic"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Triumphant Roar"
@@ -267,7 +272,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -292,6 +297,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Physical"
     },
+    "resource": "Energy",
     "abilityNames": {
       "P": [
         "Drakehound's Step"
@@ -321,7 +327,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -346,6 +352,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Magic"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Cursed Touch"
@@ -374,7 +381,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -399,6 +406,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Magic"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Rebirth"
@@ -427,7 +435,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -452,6 +460,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Magic"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Pyromania"
@@ -481,7 +490,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -506,6 +515,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Physical"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "The Hitman and the Seer",
@@ -544,7 +554,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -569,6 +579,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Physical"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Frost Shot",
@@ -599,7 +610,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -624,6 +635,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Magic"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Cosmic Creator"
@@ -653,7 +665,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -678,6 +690,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Magic"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Spirit Abjuration"
@@ -707,7 +720,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -732,6 +745,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Magic"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Shurima's Legacy"
@@ -760,7 +774,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -785,6 +799,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Magic"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Traveler's Call",
@@ -814,7 +829,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -839,6 +854,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Physical"
     },
+    "resource": "None",
     "abilityNames": {
       "P": [
         "Death in Lavender"
@@ -867,7 +883,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -892,6 +908,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Physical"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Mana Barrier",
@@ -921,7 +938,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -946,6 +963,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Magic"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Blaze",
@@ -975,7 +993,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -1000,6 +1018,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Magic"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Concussive Blows"
@@ -1028,7 +1047,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -1053,6 +1072,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Physical"
     },
+    "resource": "Frenzy",
     "abilityNames": {
       "P": [
         "Crimson Curse"
@@ -1083,7 +1103,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -1108,6 +1128,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Physical"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Headshot"
@@ -1136,7 +1157,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -1161,6 +1182,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Physical"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Adaptive Defenses"
@@ -1192,7 +1214,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -1217,6 +1239,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Magic"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Serpentine Grace",
@@ -1246,7 +1269,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -1271,6 +1294,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Magic"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Carnivore"
@@ -1299,7 +1323,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -1324,6 +1348,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Physical"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Hextech Munitions"
@@ -1353,7 +1378,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -1378,6 +1403,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Physical"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Hemorrhage"
@@ -1406,7 +1432,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -1431,6 +1457,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Magic"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Moonsilver Blade"
@@ -1459,7 +1486,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -1484,6 +1511,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Physical"
     },
+    "resource": "Health",
     "abilityNames": {
       "P": [
         "Goes Where He Pleases"
@@ -1512,7 +1540,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -1537,6 +1565,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Physical"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "League of Draven"
@@ -1566,7 +1595,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -1591,6 +1620,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Magic"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Z-Drive Resonance"
@@ -1619,7 +1649,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -1644,6 +1674,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Magic"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Spider Queen"
@@ -1676,7 +1707,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -1701,6 +1732,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Magic"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Demon Shade"
@@ -1730,7 +1762,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -1755,6 +1787,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Physical"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Rising Spell Force"
@@ -1783,7 +1816,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -1808,6 +1841,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Magic"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "A Harmless Scarecrow"
@@ -1836,7 +1870,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -1861,6 +1895,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Physical"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Duelist's Dance",
@@ -1891,7 +1926,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -1916,6 +1951,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Magic"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Nimble Fighter"
@@ -1945,7 +1981,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -1970,6 +2006,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Magic"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Colossal Smash"
@@ -1999,7 +2036,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -2024,6 +2061,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Physical"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Trial by Fire",
@@ -2054,7 +2092,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -2079,6 +2117,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Physical"
     },
+    "resource": "None",
     "abilityNames": {
       "P": [
         "Perseverance"
@@ -2108,7 +2147,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -2133,6 +2172,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Physical"
     },
+    "resource": "Rage",
     "abilityNames": {
       "P": [
         "Rage Gene"
@@ -2165,7 +2205,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -2190,6 +2230,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Magic"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Happy Hour"
@@ -2220,7 +2261,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -2245,6 +2286,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Physical"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "New Destiny"
@@ -2273,7 +2315,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -2298,6 +2340,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Magic"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "A Thousand Cuts"
@@ -2326,7 +2369,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -2351,6 +2394,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Physical"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Warpath"
@@ -2379,7 +2423,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -2404,6 +2448,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Magic"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Hextech Affinity"
@@ -2435,7 +2480,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -2460,6 +2505,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Magic"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Signature of the Visionary"
@@ -2498,7 +2544,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -2523,6 +2569,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Physical"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Prophet of an Elder God"
@@ -2552,7 +2599,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -2577,6 +2624,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Physical"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Ionian Fervor"
@@ -2605,7 +2653,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -2630,6 +2678,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Magic"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Friend of the Forest"
@@ -2659,7 +2708,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -2684,6 +2733,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Magic"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Tailwind"
@@ -2712,7 +2762,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -2737,6 +2787,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Physical"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Martial Cadence"
@@ -2765,7 +2816,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -2790,6 +2841,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Physical"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Relentless Assault"
@@ -2818,7 +2870,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -2843,6 +2895,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Physical"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Hextech Capacitor",
@@ -2876,7 +2929,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -2901,6 +2954,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Physical"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Whisper"
@@ -2932,7 +2986,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -2957,6 +3011,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Physical"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Get Excited!"
@@ -2989,7 +3044,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -3014,6 +3069,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Physical"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Dauntless Instinct"
@@ -3042,7 +3098,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -3067,6 +3123,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Magic"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Second Skin"
@@ -3098,7 +3155,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -3123,6 +3180,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Physical"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Martial Poise"
@@ -3151,7 +3209,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -3176,6 +3234,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Magic"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Gathering Fire"
@@ -3207,7 +3266,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -3232,6 +3291,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Magic"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Death Defied"
@@ -3260,7 +3320,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -3285,6 +3345,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Magic"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Void Stone"
@@ -3313,7 +3374,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -3338,6 +3399,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Magic"
     },
+    "resource": "None",
     "abilityNames": {
       "P": [
         "Voracity",
@@ -3367,7 +3429,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -3392,6 +3454,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Physical"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Divine Ascent",
@@ -3421,7 +3484,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -3446,6 +3509,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Physical"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "The Darkin Scythe",
@@ -3485,7 +3549,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -3510,6 +3574,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Magic"
     },
+    "resource": "Energy",
     "abilityNames": {
       "P": [
         "Mark of the Storm"
@@ -3538,7 +3603,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -3563,6 +3628,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Physical"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Unseen Threat"
@@ -3595,7 +3661,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -3620,6 +3686,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Physical"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Mark of the Kindred"
@@ -3648,7 +3715,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -3673,6 +3740,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Physical"
     },
+    "resource": "Courage",
     "abilityNames": {
       "P": [
         "Skaarl the Cowardly Lizard",
@@ -3705,7 +3773,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -3730,6 +3798,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Physical"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Icathian Surprise"
@@ -3758,7 +3827,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -3783,6 +3852,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Magic"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Mirror Image 2"
@@ -3815,7 +3885,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -3840,6 +3910,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Physical"
     },
+    "resource": "Energy",
     "abilityNames": {
       "P": [
         "Flurry"
@@ -3871,7 +3942,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -3896,6 +3967,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Physical"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Sunlight"
@@ -3924,7 +3996,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -3949,6 +4021,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Magic"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Dream-Laden Bough"
@@ -3978,7 +4051,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -4003,6 +4076,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Magic"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Iceborn Subjugation"
@@ -4031,7 +4105,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -4056,6 +4130,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Magic"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Silver Stake"
@@ -4084,7 +4159,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -4109,6 +4184,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Physical"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Lightslinger"
@@ -4139,7 +4215,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -4164,6 +4240,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Magic"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Pix, Faerie Companion"
@@ -4192,7 +4269,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -4217,6 +4294,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Magic"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Illumination"
@@ -4245,7 +4323,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -4270,6 +4348,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Magic"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Granite Shield"
@@ -4298,7 +4377,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -4323,6 +4402,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Magic"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Void Shift"
@@ -4351,7 +4431,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -4376,6 +4456,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Magic"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Sap Magic",
@@ -4405,7 +4486,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -4430,6 +4511,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Physical"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Double Strike"
@@ -4458,7 +4540,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -4483,6 +4565,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Magic"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Searing Brilliance"
@@ -4511,7 +4594,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -4536,6 +4619,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Magic"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Fired Up!"
@@ -4565,7 +4649,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -4590,6 +4674,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Physical"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Love Tap"
@@ -4620,7 +4705,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -4645,6 +4730,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Magic"
     },
+    "resource": "Shield",
     "abilityNames": {
       "P": [
         "Darkness Rise"
@@ -4674,7 +4760,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -4699,6 +4785,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Magic"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Soul Siphon"
@@ -4727,7 +4814,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -4752,6 +4839,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Physical"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "We Are More"
@@ -4780,7 +4868,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -4805,6 +4893,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Magic"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Surging Tides"
@@ -4833,7 +4922,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -4858,6 +4947,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Physical"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Soul Eater"
@@ -4886,7 +4976,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -4911,6 +5001,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Magic"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Staggering Blow"
@@ -4940,7 +5031,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -4965,6 +5056,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Magic"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Inherent Glamour"
@@ -4993,7 +5085,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -5018,6 +5110,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Magic"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Prowl"
@@ -5050,7 +5143,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -5075,6 +5168,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Physical"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Joy Unending"
@@ -5103,7 +5197,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -5128,6 +5222,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Physical"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Umbra Blades"
@@ -5156,7 +5251,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -5181,6 +5276,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Magic"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Call of the Freljord"
@@ -5209,7 +5305,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -5234,6 +5330,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Physical"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Berserker Rage"
@@ -5262,7 +5359,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -5287,6 +5384,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Magic"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Clockwork Windup",
@@ -5316,7 +5414,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -5341,6 +5439,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Physical"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Living Forge",
@@ -5370,7 +5469,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -5395,6 +5494,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Physical"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Mortal Will"
@@ -5423,7 +5523,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -5448,6 +5548,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Physical"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Iron Ambassador",
@@ -5478,7 +5579,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -5503,6 +5604,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Physical"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Gift of the Drowned Ones"
@@ -5532,7 +5634,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -5557,6 +5659,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Physical"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Royal Privilege"
@@ -5586,7 +5689,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -5611,6 +5714,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Physical"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Harrier"
@@ -5640,7 +5744,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -5665,6 +5769,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Magic"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Fey Feathers",
@@ -5695,7 +5800,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -5720,6 +5825,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Physical"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Spiked Shell"
@@ -5748,7 +5854,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -5773,6 +5879,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Physical"
     },
+    "resource": "Fury",
     "abilityNames": {
       "P": [
         "Fury of the Xer'Sai"
@@ -5804,7 +5911,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -5829,6 +5936,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Magic"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Break the Mold"
@@ -5858,7 +5966,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -5883,6 +5991,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Magic"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Leverage"
@@ -5911,7 +6020,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -5936,6 +6045,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Physical"
     },
+    "resource": "Fury",
     "abilityNames": {
       "P": [
         "Reign of Anger"
@@ -5964,7 +6074,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -5989,6 +6099,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Physical"
     },
+    "resource": "Ferocity",
     "abilityNames": {
       "P": [
         "Unseen Predator",
@@ -6019,7 +6130,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -6044,6 +6155,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Physical"
     },
+    "resource": "None",
     "abilityNames": {
       "P": [
         "Runic Blade"
@@ -6073,7 +6185,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -6098,6 +6210,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Magic"
     },
+    "resource": "Heat",
     "abilityNames": {
       "P": [
         "Junkyard Titan",
@@ -6130,7 +6243,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -6155,6 +6268,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Magic"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Arcane Mastery"
@@ -6186,7 +6300,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -6211,6 +6325,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Physical"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Daredevil Impulse",
@@ -6240,7 +6355,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -6265,6 +6380,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Magic"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Fury of the North"
@@ -6293,7 +6409,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -6318,6 +6434,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Physical"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Absolution"
@@ -6346,7 +6463,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -6371,6 +6488,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Magic"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Stage Presence"
@@ -6399,7 +6517,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -6424,6 +6542,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Physical"
     },
+    "resource": "Grit",
     "abilityNames": {
       "P": [
         "Pit Grit"
@@ -6453,7 +6572,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -6478,6 +6597,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Physical"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Backstab"
@@ -6507,7 +6627,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -6532,6 +6652,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Physical"
     },
+    "resource": "Energy",
     "abilityNames": {
       "P": [
         "Ki Barrier"
@@ -6563,7 +6684,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -6588,6 +6709,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Physical"
     },
+    "resource": "Fury",
     "abilityNames": {
       "P": [
         "Scalemail"
@@ -6619,7 +6741,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -6644,6 +6766,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Magic"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Noxious Slipstream"
@@ -6672,7 +6795,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -6697,6 +6820,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Physical"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Glory in Death",
@@ -6728,7 +6852,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -6753,6 +6877,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Physical"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Fleet of Foot"
@@ -6781,7 +6906,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -6806,6 +6931,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Physical"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Threads of Vibration"
@@ -6835,7 +6961,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -6860,6 +6986,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Physical"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Dragon Practice"
@@ -6888,7 +7015,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -6913,6 +7040,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Magic"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Power Chord"
@@ -6941,7 +7069,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -6966,6 +7094,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Magic"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Salvation"
@@ -6994,7 +7123,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -7019,6 +7148,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Magic"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Ravenous Flock"
@@ -7048,7 +7178,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -7073,6 +7203,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Magic"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Petricite Burst"
@@ -7102,7 +7233,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -7127,6 +7258,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Magic"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Transcendent"
@@ -7156,7 +7288,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -7181,6 +7313,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Magic"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "An Acquired Taste"
@@ -7210,7 +7343,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -7235,6 +7368,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Magic"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Rock Surfing"
@@ -7265,7 +7399,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -7290,6 +7424,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Physical"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Blade's End"
@@ -7318,7 +7453,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -7343,6 +7478,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Physical"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Bravado"
@@ -7372,7 +7508,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -7397,6 +7533,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Magic"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Guerrilla Warfare"
@@ -7425,7 +7562,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -7450,6 +7587,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Physical"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Damnation"
@@ -7483,7 +7621,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -7508,6 +7646,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Physical"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Draw a Bead"
@@ -7536,7 +7675,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -7561,6 +7700,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Physical"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "King's Tribute"
@@ -7589,7 +7729,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -7614,6 +7754,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Physical"
     },
+    "resource": "Fury",
     "abilityNames": {
       "P": [
         "Battle Fury"
@@ -7642,7 +7783,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -7667,6 +7808,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Magic"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Loaded Dice"
@@ -7699,7 +7841,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -7724,6 +7866,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Physical"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Deadly Venom"
@@ -7754,7 +7897,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -7779,6 +7922,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Physical"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Bridge Between"
@@ -7807,7 +7951,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -7832,6 +7976,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Physical"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Echoing Flames"
@@ -7860,7 +8005,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -7885,6 +8030,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Physical"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Living Vengeance"
@@ -7913,7 +8059,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -7938,6 +8084,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Physical"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Night Hunter"
@@ -7966,7 +8113,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -7991,6 +8138,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Magic"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Phenomenal Evil Power"
@@ -8019,7 +8167,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -8044,6 +8192,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Magic"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Organic Deconstruction"
@@ -8074,7 +8223,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -8099,6 +8248,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Magic"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Doom 'n Gloom"
@@ -8127,7 +8277,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -8152,6 +8302,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Physical"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Blast Shield"
@@ -8182,7 +8333,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -8207,6 +8358,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Physical"
     },
+    "resource": "None",
     "abilityNames": {
       "P": [
         "Sovereign's Domination"
@@ -8235,7 +8387,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -8260,6 +8412,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Magic"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Glorious Evolution",
@@ -8294,7 +8447,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -8319,6 +8472,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Magic"
     },
+    "resource": "Crimson Rush",
     "abilityNames": {
       "P": [
         "Crimson Pact"
@@ -8348,7 +8502,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -8373,6 +8527,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Physical"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "The Relentless Storm"
@@ -8401,7 +8556,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -8426,6 +8581,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Physical"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Eternal Hunger"
@@ -8454,7 +8610,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -8479,6 +8635,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Physical"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Stone Skin"
@@ -8507,7 +8664,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -8532,6 +8689,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Physical"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Clean Cuts",
@@ -8561,7 +8719,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -8586,6 +8744,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Magic"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Mana Surge"
@@ -8614,7 +8773,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -8639,6 +8798,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Physical"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Determination",
@@ -8668,7 +8828,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -8693,6 +8853,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Physical"
     },
+    "resource": "Flow",
     "abilityNames": {
       "P": [
         "Way of the Wanderer"
@@ -8723,7 +8884,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -8748,6 +8909,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Physical"
     },
+    "resource": "Flow",
     "abilityNames": {
       "P": [
         "Way of the Hunter"
@@ -8776,7 +8938,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -8801,6 +8963,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Physical"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Shepherd of Souls"
@@ -8831,7 +8994,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -8856,6 +9019,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Physical"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Vow of the First Lands"
@@ -8886,7 +9050,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -8911,6 +9075,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Magic"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Feline Friendship"
@@ -8941,7 +9106,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -8966,6 +9131,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Physical"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Cultivation of War",
@@ -8996,7 +9162,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -9021,6 +9187,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Magic"
     },
+    "resource": "Health",
     "abilityNames": {
       "P": [
         "Cell Division",
@@ -9050,7 +9217,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -9075,6 +9242,7 @@
       "rangetype": "Melee",
       "adaptivetype": "Physical"
     },
+    "resource": "Energy",
     "abilityNames": {
       "P": [
         "Contempt for the Weak"
@@ -9105,7 +9273,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -9130,6 +9298,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Physical"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Living Battery"
@@ -9158,7 +9327,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -9183,6 +9352,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Magic"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Short Fuse"
@@ -9211,7 +9381,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -9236,6 +9406,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Magic"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Time in a Bottle"
@@ -9264,7 +9435,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -9289,6 +9460,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Magic"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "More Sparkles!"
@@ -9318,7 +9490,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   },
   {
@@ -9343,6 +9515,7 @@
       "rangetype": "Ranged",
       "adaptivetype": "Magic"
     },
+    "resource": "Mana",
     "abilityNames": {
       "P": [
         "Garden of Thorns"
@@ -9371,7 +9544,7 @@
       "source": "League of Legends Wiki — Module:ChampionData/data (stats); Riot Data Dragon (art)",
       "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ChampionData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
       "patch": "16.16.1",
-      "fetched": "2026-08-13T09:20:05.508Z"
+      "fetched": "2026-08-14T06:47:40.212Z"
     }
   }
 ]

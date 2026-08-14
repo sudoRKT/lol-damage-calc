@@ -61,6 +61,7 @@ return {
   ["Wukong"] = {
     ["id"]         = 62,
     ["apiname"]    = "MonkeyKing",
+    ["resource"]   = "Mana",
     ["stats"] = {
       ["hp_base"]  = 610,
       ["hp_lvl"]   = 99,
@@ -89,6 +90,7 @@ return {
   ["Mega Gnar"] = {
     ["id"]         = 150.2,
     ["apiname"]    = "GnarBig",
+    ["resource"]   = "Rage",
     ["stats"] = {
       ["hp_base"]  = 640,
       ["hp_lvl"]   = 122,
@@ -118,6 +120,7 @@ return {
   ["Kled"] = {
     ["id"]         = 240,
     ["apiname"]    = "Kled",
+    ["resource"]   = "Courage",
     ["stats"] = {
       ["hp_base"]  = 410,
       ["hp_lvl"]   = 84,
@@ -142,6 +145,7 @@ return {
   ["Kled & Skaarl"] = {
     ["id"]         = 240.1,
     ["apiname"]    = "Kled",
+    ["resource"]   = "Courage",
     ["stats"] = {
       ["hp_base"]  = 810,
       ["hp_lvl"]   = 84+1000/17,

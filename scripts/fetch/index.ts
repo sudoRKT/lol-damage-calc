@@ -12,6 +12,7 @@ import { fileURLToPath } from 'node:url';
 
 import type { AbilitySlot, Provenance } from '../../src/types/data.ts';
 import {
+  assertEveryChampionStatesAResource,
   assertOfficialWiki,
   highestChangesPatch,
   joinChampions,
@@ -171,6 +172,9 @@ export async function run(): Promise<void> {
     fetched,
   };
   const { champions, withheld } = joinChampions(resolvedWiki, ddNames, championProvenance, maxRanks);
+  // Throws naming any champion whose resource the module did not state. Without it a mana pool
+  // cannot be told from an energy pool, and the failure would be silent (DATA-SOURCES §43).
+  assertEveryChampionStatesAResource(champions);
   console.log(`champions kept: ${champions.length}; withheld: ${withheld.length}`);
   for (const entry of withheld) {
     console.log(`  withheld "${entry.wikiName}" — ${entry.reason}`);

@@ -37,6 +37,7 @@ function champion(wikiName: string, apiname: string, stats: Partial<WikiChampion
     apiname,
     id: 22,
     changes: 'V26.15',
+    resource: 'Mana',
     stats: {
       hp_base: 610,
       hp_lvl: 101,

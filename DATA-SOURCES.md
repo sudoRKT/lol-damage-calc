@@ -3789,3 +3789,91 @@ Stated so the next session does not have to infer it:
 - **The full-roster batch was not re-run.** No stored ability figure changed, so
   `verification/measurements.json` is unaffected; the §41.3 note that it should be re-run to pick up
   shapes the harvester can now express still stands, and now includes the six defensive fields.
+
+---
+
+## 43. The resource field — what Ryze Q was waiting on (2026-08-14)
+
+§42.3 added optional mana to `StatBlock` and named the one thing still missing: **nothing could
+tell a mana pool from an energy pool.** This adds it.
+
+### 43.1 The field, and why `mp_base` is not enough
+
+`Module:ChampionData/data` carries a champion-level `resource` string beside `stats`.
+**`stats.mp_base` is the resource POOL and says nothing about which resource it is.**
+
+| Figure | Count | Definition |
+|---|---:|---|
+| module entries | **175** | top-level entries carrying an `apiname`. NOT 173 — the module also holds Mega Gnar and a second Kled form, which Data Dragon has no assets for |
+| — carrying a `resource` field | **175** | none absent |
+| — distinct `resource` values | **15** | Mana, Energy, None, Fury, Health, Rage, Courage, Flow, Blood Well, Frenzy, Shield, Ferocity, Heat, Grit, Crimson Rush |
+| — `resource: "Mana"` | **145** | |
+| — **non-mana resource with a NON-ZERO `mp_base`** | **19** | the measurement that makes the field necessary |
+| — `resource: "Mana"` with `mp_base` 0 | **0** | so a mana champion always has a pool to report |
+
+**Over the SHIPPED ROSTER of 173 champions the last two figures are 17 and 0**, not 19 and 0 —
+the two entries the module has and the roster does not (Mega Gnar `Rage 100`, Kled & Skaarl
+`Courage 100`) both fall in that class. **Both figures are real and they count different
+populations; quoting one for the other is how a count stops meaning anything.** The 17:
+Akali 200 energy · Ambessa 200 energy · Gnar 100 rage · Kennen 200 energy · Kled 100 courage ·
+Lee Sin 200 energy · Rek'Sai 100 fury · Renekton 100 fury · Rengar 4 ferocity · Rumble 150 heat ·
+**Shen 400 energy** · Shyvana 100 fury · Tryndamere 100 fury · Vladimir 2 crimson rush ·
+Yasuo 100 flow · **Yone 500 flow** · Zed 200 energy.
+
+Reading the pool as mana would have labelled every one of those as a mana champion, and — the part
+that reaches a damage number — would have let a `maxMana` ratio resolve against energy.
+
+**`ChampionResource` is a free string, deliberately.** 15 values observed, and Riot adds more with
+new champions; a closed union would make the fetch throw on the next release. Only the exact value
+`'Mana'` licenses populating a mana figure, so an unseen value correctly produces no mana.
+
+### 43.2 The requirement is at the ROSTER level, not in the parser, and that placement is
+### load-bearing
+
+Requiring `resource` during parsing was tried first and **it broke the wrong-wiki guard**. The
+abandoned Fandom copy does not carry the field, so parsing threw before `assertOfficialWiki` could
+run, and an operator served the stale copy would have seen *"resource is not a string"* instead of
+*"this is the wrong wiki"*. **A guard that cannot report is not a guard.**
+
+So the parser reads it where present, and `assertEveryChampionStatesAResource` runs on the JOINED
+roster and throws naming every champion that lacks one. The failure it prevents is silent: a
+champion with no resource gets no mana figure, so every mana-scaling ability they have reports as
+unmodellable rather than wrong — correct, and quiet enough that nobody would notice.
+
+`Champion.resource` is OPTIONAL in the contract only so a `champions.json` written before
+2026-08-14 stays valid. The source states it for all 175 entries, so an absent value means the file
+predates the field, never that the source was silent.
+
+### 43.3 THE RE-FETCH, DIFFED — NO BASE STATISTIC MOVED
+
+The whole pipeline was re-run against the live sources and the output diffed against the previous
+files, field by field, twice (once before the parser change and once after).
+
+| | Result |
+|---|---|
+| patch | **16.16.1 both times — unchanged** |
+| champions in the roster | **173 before, 173 after; none added, none removed** |
+| **base statistics that moved** | **0.** DEFINITION: any differing value under `stats` on any champion — all 16 fields, compared per champion across all 173 |
+| item values that moved | **0** |
+| rune values that moved | **0** |
+| withheld champions | 2 both times, the same two (Kled & Skaarl, Mega Gnar) |
+| contested source overrides | 5 both times, the same five (Jhin `as_lvl`, Kled `range`, Tristana `mr_base`, Twitch `mr_base`, Twitch `mr_lvl`) |
+| files changed under `public/data/` | 176 |
+| **fields that actually differ, across every changed file** | **exactly two** |
+
+The two: `provenance.fetched`, a timestamp, on 173 champions + 209 items + the manifest; and
+`resource`, added on 173 champions. A grep over the whole `public/data/` diff for any changed line
+naming neither field returns nothing. `defender-toggles.json`, `effect-census.json`,
+`effect-values.json`, `overrides.json` and `runes.json` are byte-identical.
+
+### 43.4 What this releases, and the one step still open
+
+- **Releases:** the product can now tell mana from every other resource, for all 173 champions.
+- **STILL OPEN, and it is not a data gap:** nothing yet BUILDS a `StatBlock` from a `Champion`.
+  That is `simulate(scenario) -> Result`, the public entry point which is unwritten (`src/engine/
+  index.ts` says so). When it is written, the rule it must follow is one line — populate `mana` and
+  `maxMana` only when `champion.resource === 'Mana'` — and the engine already resolves the ratio
+  correctly once they are present, which §42.3 tested end to end.
+- **Re-run:** none outstanding. The fetch has been run and diffed.
+- **Tests:** 7 in `champions.test.ts`, including the roster-wide 145 / 17 / 0 measurement, the
+  named-failure assertion, and the one that keeps the wrong-wiki guard able to speak.

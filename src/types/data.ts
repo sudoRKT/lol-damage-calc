@@ -76,6 +76,27 @@ export interface Provenance {
 // Fetched sources
 // ---------------------------------------------------------------------------
 
+/**
+ * WHICH RESOURCE A CHAMPION SPENDS. Added 2026-08-14; DATA-SOURCES §43.
+ *
+ * **`ChampionBaseStats.mp_base` HOLDS WHATEVER THE RESOURCE IS, NOT MANA.** Measured over all
+ * 175 entries of `Module:ChampionData/data` on 2026-08-13: every entry carries `resource`, 145
+ * say `Mana`, and **19 state a NON-MANA resource with a NON-ZERO `mp_base`** — Shen's 400 is
+ * energy, Yone's 500 is flow, Rumble's 150 is heat, Rengar's 4 is ferocity. Nothing in the pool
+ * figure distinguishes them.
+ *
+ * Without this field the product cannot tell a mana pool from an energy pool, so `StatBlock`'s
+ * mana had to stay absent for everyone and `RatioStat.maxMana` was unresolvable — Ryze Q reads
+ * the caster's maximum mana. **This field is the whole of what Ryze Q was waiting on.**
+ *
+ * IT IS A FREE STRING, deliberately. 15 distinct values were observed and Riot adds more with
+ * new champions; a closed union would make the fetch throw on the next release, which is a worse
+ * failure than carrying a word nothing reads. Only the exact value `'Mana'` licenses populating
+ * a mana figure, and every other value — including one this project has never seen — correctly
+ * produces no mana.
+ */
+export type ChampionResource = string;
+
 /** Champion base + per-level stats, from the wiki module — never Data Dragon
  *  (DATA-SOURCES §3, the AD-per-level gap). */
 export interface ChampionBaseStats {
@@ -102,6 +123,16 @@ export interface Champion {
   name: string;
   id: number;
   stats: ChampionBaseStats;
+  /**
+   * The word the wiki module states for this champion's resource — "Mana", "Energy", "Fury",
+   * "None", "Blood Well", … See `ChampionResource` for why it exists and why it is a string.
+   *
+   * OPTIONAL only so a champions.json written before 2026-08-14 stays valid. Every entry in the
+   * source states it, so an absent value means the file predates the field, never that the
+   * source was silent. A stat-block builder reading an absent value must produce NO mana figure,
+   * which is the same answer it gives for every non-mana resource.
+   */
+  resource?: ChampionResource;
   /**
    * Every ability name the wiki module lists for each slot, in module order — NOT just the
    * first.

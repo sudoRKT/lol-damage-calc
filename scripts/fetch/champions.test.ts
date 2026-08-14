@@ -9,6 +9,7 @@ import { describe, expect, it } from 'vitest';
 
 import type { Champion, Provenance } from '../../src/types/data.ts';
 import {
+  assertEveryChampionStatesAResource,
   assertOfficialWiki,
   highestChangesPatch,
   joinChampions,
@@ -179,5 +180,95 @@ describe('wrong-wiki-guard', () => {
     const manifest = readGenerated<{ wikiHighestChangesPatch: string }>('manifest.json');
     const major = Number(/^V(\d+)\./.exec(manifest.wikiHighestChangesPatch)?.[1]);
     expect(major).toBeGreaterThanOrEqual(26);
+  });
+});
+
+// =========================================================================================
+// WHICH RESOURCE A CHAMPION SPENDS (added 2026-08-14; DATA-SOURCES §43)
+//
+// `stats.mp_base` is the resource POOL and says nothing about which resource it is. Without
+// this field nothing could tell a mana pool from an energy pool, so `StatBlock` had to carry no
+// mana for anyone and Ryze Q — which reads the caster's maximum mana — was unmodellable.
+// =========================================================================================
+
+describe('champion-resource', () => {
+  const roster = () => readGenerated<Champion[]>('champions.json');
+
+  it('reads the resource word off the module rather than guessing it from the pool', () => {
+    const parsed = parseChampionModule(OFFICIAL_MODULE_LUA);
+    const aatrox = parsed.find((c) => c.apiname === 'Aatrox')!;
+    // Aatrox: a Blood Well, and `mp_base: 0`. The pool is 0 AND the resource is not mana; those
+    // are two separate facts and only the second one is decisive.
+    expect(aatrox.resource).toBe('Blood Well');
+    expect(aatrox.stats.mp_base).toBe(0);
+  });
+
+  it('carries the resource through the roster join onto every champion', () => {
+    const parsed = parseChampionModule(OFFICIAL_MODULE_LUA);
+    const { champions } = joinChampions(parsed, DATA_DRAGON_APINAMES, PROVENANCE);
+    expect(champions.every((c) => typeof c.resource === 'string' && c.resource.length > 0)).toBe(
+      true,
+    );
+    expect(() => assertEveryChampionStatesAResource(champions)).not.toThrow();
+  });
+
+  it('stops the fetch, naming the champions, when the source states no resource', () => {
+    // The requirement lives HERE and not in the parser, and that placement is load-bearing: the
+    // abandoned Fandom copy carries no `resource`, so a hard parse failure meant the wrong-wiki
+    // guard could never report — the operator saw "resource is not a string" instead of "this is
+    // the wrong wiki". A guard that cannot speak is not a guard.
+    const parsed = parseChampionModule(OFFICIAL_MODULE_LUA);
+    const { champions } = joinChampions(parsed, DATA_DRAGON_APINAMES, PROVENANCE);
+    const broken = champions.map((c, i) => (i === 0 ? { ...c, resource: undefined } : c));
+    expect(() => assertEveryChampionStatesAResource(broken)).toThrow(/no "resource" field/);
+    expect(() => assertEveryChampionStatesAResource(broken)).toThrow(champions[0]!.apiname);
+  });
+
+  it('still lets the wrong-wiki guard report when the input states no resource', () => {
+    // A module with the field stripped must still PARSE, so the guard is what rejects it — with
+    // its own message, about the right thing. The stripping is done here rather than asserted
+    // about the Fandom fixture, because that fixture is a minimal hand-authored slice and says
+    // nothing about which fields the real Fandom copy carries.
+    const stripped = STALE_FANDOM_MODULE_LUA.replace(/\s*\["resource"\][^,]*,/g, '');
+    const stale = parseChampionModule(stripped);
+    expect(stale.length).toBeGreaterThan(0);
+    expect(stale.every((c) => c.resource === undefined)).toBe(true);
+    expect(() => assertOfficialWiki(stale)).toThrow();
+  });
+
+  it('EVERY champion in the generated roster states a resource', () => {
+    // The guard against a future fetch silently dropping the field. `Champion.resource` is
+    // optional in the contract only so a file written before 2026-08-14 stays valid; the source
+    // states it for all 175 module entries, so an absent value here means the fetch regressed.
+    const missing = roster().filter((c) => !c.resource).map((c) => c.apiname);
+    expect(missing).toEqual([]);
+  });
+
+  it('measures the roster the mana figure may be populated for', () => {
+    // DEFINITION: over the 173 champions in the shipped roster — NOT the 175 entries in the wiki
+    // module, which include Mega Gnar and a second Kled form that Data Dragon has no assets for.
+    // The two populations differ and both figures are real; quoting one for the other is how a
+    // count stops meaning anything.
+    const mana = roster().filter((c) => c.resource === 'Mana');
+    expect(mana).toHaveLength(145);
+
+    // THE MEASUREMENT THAT MADE THE FIELD NECESSARY: champions whose resource is NOT mana and
+    // whose pool is nonetheless non-zero. Reading `mp_base` as mana would have labelled every
+    // one of these as having mana — Shen's 400 energy, Yone's 500 flow, Rengar's 4 ferocity.
+    const nonManaWithAPool = roster().filter(
+      (c) => c.resource !== 'Mana' && (c.stats.mp_base ?? 0) > 0,
+    );
+    expect(nonManaWithAPool).toHaveLength(17);
+
+    // The reverse never happens, so a mana champion always has a pool to report.
+    const manaWithNoPool = mana.filter((c) => (c.stats.mp_base ?? 0) === 0);
+    expect(manaWithNoPool).toEqual([]);
+  });
+
+  it('confirms Ryze — the ability this field was blocking — reads as a mana champion', () => {
+    const ryze = roster().find((c) => c.apiname === 'Ryze')!;
+    expect(ryze.resource).toBe('Mana');
+    expect(ryze.stats.mp_base).toBe(300);
+    expect(ryze.stats.mp_lvl).toBe(70);
   });
 });
