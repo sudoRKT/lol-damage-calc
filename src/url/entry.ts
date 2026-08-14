@@ -61,3 +61,46 @@ export function calculatorRedirectFor(href: string, calculatorPath = CALCULATOR_
   url.pathname = calculatorPath;
   return url.toString();
 }
+
+// ═══ IT MUST RUN TWICE, AND THE SECOND TIME IS NOT BELT AND BRACES ═══
+//
+// Found in a real browser on 2026-08-14, while verifying the very constraint it exists to
+// satisfy — and after the first version had already been committed.
+//
+// A module runs once per DOCUMENT load. Changing only the fragment of the current URL is a
+// SAME-DOCUMENT navigation: the browser fires `hashchange` and loads nothing. So a reader
+// already sitting on the landing page who pastes a shared link into the address bar, or follows
+// one that points at `/#s=…`, changes the fragment and stays exactly where they are — on the
+// front page, holding a scenario, with the redirect module long since finished.
+//
+// Opening a shared link cold works either way, which is what made this easy to miss: the first
+// verification navigated from /calculator/ to /#s=…, a DIFFERENT document, and passed.
+
+/** The narrow slice of `window` this needs — so a test can hand it a fake and watch. */
+export interface RedirectTarget {
+  location: { href: string; replace: (url: string) => void };
+  addEventListener: (type: 'hashchange', listener: () => void) => void;
+}
+
+/**
+ * Move to the calculator now if this URL carries a scenario, and again whenever the fragment
+ * changes without a page load. Returns whether it moved on the first check.
+ *
+ * `location.replace`, not an assignment to `href`: the landing page must not end up in the
+ * reader's back history, or Back from the calculator would bounce them straight forward again.
+ */
+export function installScenarioRedirect(target: RedirectTarget): boolean {
+  const move = (): boolean => {
+    const destination = calculatorRedirectFor(target.location.href);
+    if (!destination) return false;
+    target.location.replace(destination);
+    return true;
+  };
+  // Registered BEFORE the first check, and unconditionally. If the listener were only attached
+  // in the "did not move" branch, a reader who arrived with one scenario and pasted another
+  // would be stranded on the second.
+  target.addEventListener('hashchange', () => {
+    move();
+  });
+  return move();
+}
