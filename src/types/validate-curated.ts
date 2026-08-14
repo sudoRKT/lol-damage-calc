@@ -188,6 +188,31 @@ export function checkScalingShape(s: Scaling | undefined, where: string): string
         out.push(`${where}: byLevelExplicit has a level outside 1..18`);
       }
       break;
+    case 'byRangeType':
+      // TWO VALUES CHOSEN BY WHO HOLDS THE EFFECT, not a progression (DATA-SOURCES §39). The
+      // gate's job here is only that both arms exist and are themselves well-formed — which arm
+      // applies is the scenario's fact, not the file's.
+      //
+      // This case was ABSENT until 2026-08-14, and its absence was not inert: the `default` arm
+      // below refused every range-split value as an "unknown scaling kind", so 6 item effects
+      // that are correctly shaped could never enter the curated file.
+      if (!s.melee || typeof s.melee !== 'object') {
+        out.push(`${where}: byRangeType needs a 'melee' arm`);
+      } else if (s.melee.scaling === 'byRangeType') {
+        // A range split inside a range split has no meaning: the holder has one range type, so
+        // the inner choice can never be made.
+        out.push(`${where}.melee: a byRangeType arm cannot itself be byRangeType`);
+      } else {
+        out.push(...checkScalingShape(s.melee, `${where}.melee`));
+      }
+      if (!s.ranged || typeof s.ranged !== 'object') {
+        out.push(`${where}: byRangeType needs a 'ranged' arm`);
+      } else if (s.ranged.scaling === 'byRangeType') {
+        out.push(`${where}.ranged: a byRangeType arm cannot itself be byRangeType`);
+      } else {
+        out.push(...checkScalingShape(s.ranged, `${where}.ranged`));
+      }
+      break;
     default:
       out.push(`${where}: unknown scaling kind '${(s as { scaling: string }).scaling}'`);
   }
@@ -485,6 +510,65 @@ function abilityKey(a: CuratedAbility): string {
 }
 
 /** Gate 1 — schema. */
+const EFFECT_APPLIES_AS = new Set([
+  'on-hit',
+  'on-attack',
+  'spellblade',
+  'active',
+  'continuous',
+  'periodic',
+  'unstated',
+]);
+
+const RUNE_TREES = new Set(['Domination', 'Inspiration', 'Precision', 'Resolve', 'Sorcery']);
+
+/**
+ * The checks an item effect and a rune hold in common: their damage components, the stats they
+ * grant, and the stack counters they feed. Added 2026-08-14 with the gate-1 walk of both.
+ *
+ * An item effect carries no rank axis — an item passive is the same figure whatever rank the
+ * ability beside it is — so components are checked at maxRank 1.
+ */
+function checkEffectShared(
+  e: CuratedItemEffect | CuratedRune,
+  push: (message: string) => void,
+): void {
+  const components = e.components ?? [];
+  // 'no-damage' is a claim that there is nothing to verify. An entry holding damage contradicts
+  // itself, exactly as it does on the ability side.
+  if (e.verification === 'no-damage' && components.length > 0) {
+    push(
+      `marked 'no-damage' but carries ${components.length} damage component(s). ` +
+        `The status is a claim that the effect deals none.`,
+    );
+  }
+  const ids = new Set<string>();
+  components.forEach((c, i) => {
+    if (ids.has(c.id)) push(`duplicate component id '${c.id}'`);
+    ids.add(c.id);
+    checkComponent(c, `components[${i}]`, 1).forEach(push);
+  });
+  for (const c of components) {
+    if (c.relation?.kind === 'alternativeTo' && !ids.has(c.relation.componentId)) {
+      push(`component '${c.id}' is alternativeTo '${c.relation.componentId}', which is not here`);
+    }
+    if (c.relation?.kind === 'alternativeTo' && c.relation.componentId === c.id) {
+      push(`component '${c.id}' is marked alternativeTo itself`);
+    }
+  }
+  // A grant is a stat the effect confers. A non-finite one is a number the engine would add to a
+  // stat block and never recover from.
+  for (const [stat, value] of Object.entries(e.grants ?? {})) {
+    if (!isFiniteNumber(value)) push(`grants.${stat} is not a finite number`);
+  }
+  for (const [counter, value] of Object.entries(e.stackYields ?? {})) {
+    if (value === undefined) continue;
+    if (typeof value === 'number' && !Number.isFinite(value)) {
+      push(`stackYields.${counter} is not a finite number`);
+    }
+  }
+}
+
 export function gateSchema(file: CuratedFile): GateReport {
   const findings: Finding[] = [];
   let checked = 0;
@@ -589,6 +673,84 @@ export function gateSchema(file: CuratedFile): GateReport {
     });
     // The six shape fields.
     checkDefensiveEffect(e, file.defensiveEffects ?? [], 'entry').forEach(push);
+  }
+
+  // ITEM EFFECTS AND RUNES (added 2026-08-14).
+  //
+  // Until this date gate 1 iterated `file.abilities` and `file.defensiveEffects` and NOTHING
+  // ELSE, so every item effect and every rune in a curated file passed the gate by never being
+  // looked at. `scripts/extract/merge-proposal.ts` had noticed and was calling
+  // `checkEffectComponents` by hand — which walks the components and none of the fields around
+  // them, so a rune with no id, an effect claiming a status it contradicts, or two effects
+  // claiming the same key of the same item all went through.
+  //
+  // These entries carry no rank axis: an item passive is the same at every ability rank, so
+  // `checkComponent` is given a maxRank of 1 — the same value `checkEffectComponents` uses.
+  const seenEffectKeys = new Set<string>();
+  for (const e of file.itemEffects ?? []) {
+    checked += 1;
+    const key = `item ${e.itemId}/${e.key}`;
+    const push = (message: string) => findings.push({ gate: 'schema', entry: key, message });
+
+    if (seenEffectKeys.has(key)) {
+      push('duplicate entry — one item may hold each source key only once');
+    }
+    seenEffectKeys.add(key);
+
+    if (!Number.isInteger(e.itemId) || e.itemId < 1) push(`bad itemId '${e.itemId}'`);
+    if (!e.itemName) push('missing itemName');
+    if (!e.key) push("missing key — the effect's key in Module:ItemData/data");
+    if (!e.name) push('missing name');
+    if (e.kind !== 'passive' && e.kind !== 'active') push(`bad kind '${e.kind}'`);
+    if (!STATUSES.has(e.verification)) push(`bad verification '${e.verification}'`);
+    if (!e.provenance?.source || !e.provenance?.patch) push('provenance needs source and patch');
+    if (e.appliesAs !== undefined && !EFFECT_APPLIES_AS.has(e.appliesAs)) {
+      push(`bad appliesAs '${e.appliesAs}'`);
+    }
+    // The rule the ability and defensive sides both carry: a fact no source states forces
+    // 'incomplete', so an entry cannot record one and still claim to be settled.
+    if ((e.unresolvable?.length ?? 0) > 0 && e.verification !== 'incomplete') {
+      push(
+        `records an unresolvable fact but claims '${e.verification}'; a fact no source states ` +
+          `forces 'incomplete'`,
+      );
+    }
+    for (const [i, u] of (e.unresolvable ?? []).entries()) {
+      if (!u.field || !u.why) {
+        push(`unresolvable[${i}] must name the missing field and say why no source settles it`);
+      }
+    }
+    if (e.overTime !== undefined) {
+      if (!e.overTime.sourceSays) {
+        push('overTime must quote what the source says about the recurrence');
+      }
+      // Absent is a real state — the source does not state a count and the engine may not invent
+      // one (DATA-SOURCES §38). Present and nonsensical is not.
+      if (
+        e.overTime.totalInstances !== undefined &&
+        (!Number.isInteger(e.overTime.totalInstances) || e.overTime.totalInstances < 1)
+      ) {
+        push(`overTime.totalInstances must be an integer >= 1`);
+      }
+    }
+    checkEffectShared(e, push);
+  }
+
+  const seenRuneIds = new Set<number>();
+  for (const r of file.runes ?? []) {
+    checked += 1;
+    const key = `rune ${r.runeId}`;
+    const push = (message: string) => findings.push({ gate: 'schema', entry: key, message });
+
+    if (seenRuneIds.has(r.runeId)) push('duplicate entry — a rune may appear only once');
+    seenRuneIds.add(r.runeId);
+
+    if (!Number.isInteger(r.runeId) || r.runeId < 1) push(`bad runeId '${r.runeId}'`);
+    if (!r.runeName) push('missing runeName');
+    if (!RUNE_TREES.has(r.tree)) push(`bad tree '${r.tree}'`);
+    if (!STATUSES.has(r.verification)) push(`bad verification '${r.verification}'`);
+    if (!r.provenance?.source || !r.provenance?.patch) push('provenance needs source and patch');
+    checkEffectShared(r, push);
   }
 
   const failedEntries = new Set(findings.map((f) => f.entry));
