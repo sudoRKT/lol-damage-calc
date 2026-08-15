@@ -70,10 +70,30 @@
   padding: 0;
 }
 
-/* The button is a bare frame around the chip: the chip carries the border, the radius and the
-   art, and the button adds only the interaction. */
+/*
+ * The button is a bare frame around the chip: the chip carries the border, the radius and the
+ * art, and the button adds only the interaction.
+ *
+ * ═══ MEASURED IN A REAL BROWSER, 2026-08-15, AT 375px AND AT 320px ═══
+ *
+ * Both shelf buttons already meet WCAG 2.2 AA 2.5.8 (Target Size, Minimum) BY SIZE, and the
+ * figures are identical at both widths because the shelf wraps rather than shrinking:
+ *
+ *   icon button   34.00 x 49.19px, nearest other target 42.00px centre-to-centre
+ *   text button   96.91 x 36.84px, nearest other target 52.09px centre-to-centre
+ *
+ * So neither needed growing. What they DID lack is the one thing `.combo__control` below has:
+ * a STATED floor. The icon button's size is the chip's, and the text button's is padding plus
+ * a line box — both are arithmetic that happens to clear 24px, which is exactly how the
+ * 18.47 x 21.39px defect arrived on the controls. `--target-min` is DESIGN.md §4a's stated
+ * minimum; naming it here costs no rendered pixel (re-measured after: 34.00 x 49.19 and
+ * 96.91 x 36.84, unchanged) and makes a later type or spacing change fail loudly instead of
+ * quietly. It sits on the BASE class, so it covers the icon chips and the text button alike.
+ */
 .combo__shelf-button {
   display: block;
+  min-inline-size: var(--target-min);
+  min-block-size: var(--target-min);
   padding: 0;
   border: 0;
   background: transparent;

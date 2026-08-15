@@ -114,6 +114,14 @@ describe('combo/the reorder controls meet WCAG 2.5.8 by SIZE, not by the spacing
     expect(offset).toBeGreaterThan(arrowGap);
   });
 
+  it('states the floor rather than reaching it by accident', () => {
+    // `--target-min` is DESIGN.md §4a's stated minimum, and it must BE 24px — the constant this
+    // file asserts against is the token, not a number remembered alongside it.
+    expect(px(token('target-min'))).toBe(MINIMUM_TARGET);
+    expect(declaration('.combo__control', 'min-inline-size')).toBe('var(--target-min)');
+    expect(declaration('.combo__control', 'min-block-size')).toBe('var(--target-min)');
+  });
+
   it('spends the card HEIGHT rather than its width — the controls are their own row', () => {
     // The card had 3.46px of slack at 375px, so a wider single row costs the two-column
     // sequence and 158px of page height. This is the construction that avoids that trade, and
@@ -122,5 +130,64 @@ describe('combo/the reorder controls meet WCAG 2.5.8 by SIZE, not by the spacing
     // The step's own row. Without it the controls are a sibling of the chip and the card is
     // one row again — which is the layout this whole file exists to keep from coming back.
     expect(declaration('.combo__step-head', 'display')).toBe('flex');
+  });
+});
+
+// ═══ THE SHELF, MEASURED 2026-08-15 AND FOUND ALREADY COMPLIANT ═══
+//
+// The two shelf buttons were carried as `unmeasured` in `../target-size-register.test.ts` — nobody
+// had put a ruler against either. Measured in a real browser on the calculator page, at 375px and
+// again at 320px (the figures are the same at both, because the shelf WRAPS rather than shrinking):
+//
+//   .combo__shelf-button         34.00 x 49.19px   nearest other target 42.00px centre-to-centre
+//   .combo__shelf-button--text   96.91 x 36.84px   nearest other target 52.09px centre-to-centre
+//
+// Both pass 2.5.8 BY SIZE, on both axes, with room to spare — so NOTHING WAS GROWN. The measurement
+// refuted the suspicion that the text button would be the short one: it is the tallest control on
+// the shelf, because --lh-body-m is a larger line box than the chip's zero one and --space-2 pads
+// it twice.
+//
+// What these assertions add is the guard the `.combo__control` defect taught: the sizes above are
+// arithmetic that HAPPENS to clear 24px, and arithmetic is what silently stopped clearing it last
+// time. Each is re-derived from the tokens on every run, and glyph-independently in the inline axis.
+describe('combo/the shelf buttons meet WCAG 2.5.8 by SIZE — measured, then pinned to the tokens', () => {
+  it('carries the stated floor on the base class, so both variants inherit it', () => {
+    // One declaration covers the icon chips and the basic-attack button alike: the text button
+    // carries BOTH classes, and the base one is where the floor belongs.
+    expect(declaration('.combo__shelf-button', 'min-inline-size')).toBe('var(--target-min)');
+    expect(declaration('.combo__shelf-button', 'min-block-size')).toBe('var(--target-min)');
+  });
+
+  it('the icon button is the chip it frames — and the chip clears 24px', () => {
+    // The button contributes NO box of its own: zero padding, zero border. Its measured 34 x 49px
+    // is the chip's. So the guarantee to check is the chip token, plus the fact that this rule
+    // adds nothing that could shrink it.
+    expect(length(declaration('.combo__shelf-button', 'padding'))).toBe(0);
+    expect(length(declaration('.combo__shelf-button', 'border'))).toBe(0);
+    expect(px(token('art-chip-combo'))).toBeGreaterThanOrEqual(MINIMUM_TARGET);
+    expect(px(token('art-chip-combo'))).toBe(32); // browser-measured 34.00px with the chip's border
+  });
+
+  it('the basic-attack button clears 24px across, before the glyph is drawn', () => {
+    // Glyph-independent, exactly as for `.combo__control`: padding and border alone must reach 24,
+    // so no font substitution and no shorter label can take this under the minimum.
+    const { inline } = padding('.combo__shelf-button--text');
+    expect(declaration('.combo__shelf-button--text', 'border')).toBe('var(--border-steel)');
+    const guaranteed = inline * 2 + BORDER * 2;
+    expect(guaranteed).toBeGreaterThanOrEqual(MINIMUM_TARGET);
+    expect(guaranteed).toBe(26); // 12 + 12 + 1 + 1 — measured 96.91px with "Basic attack" in it
+  });
+
+  it('the basic-attack button clears 24px down the page, from its own line box', () => {
+    // NOTE the line-height: the base rule sets `line-height: 0` so the icon buttons collapse to
+    // their chip. This variant overrides it, and that override is load-bearing — without it the
+    // button's height is padding and border alone, 18px, and it is the one control on this shelf
+    // that has no chip to give it a box.
+    const { block } = padding('.combo__shelf-button--text');
+    expect(declaration('.combo__shelf-button--text', 'line-height')).toBe('var(--lh-body-m)');
+    const lineBox = px(token('type-body-m')) * parseFloat(token('lh-body-m'));
+    const height = lineBox + block * 2 + BORDER * 2;
+    expect(height).toBeGreaterThanOrEqual(MINIMUM_TARGET);
+    expect(+height.toFixed(2)).toBe(36.85); // 13 x 1.45 + 8 + 8 + 1 + 1 — browser-measured 36.84px
   });
 });
