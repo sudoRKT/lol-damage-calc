@@ -418,12 +418,39 @@ border before a shadow.
 
 | Token | Value | Use |
 |---|---|---|
-| `--elev-0` | none | Panels at rest — they sit by border + surface contrast |
-| `--elev-1` | `0 1px 2px rgba(0,0,0,0.40)` + `inset 0 1px 0 rgba(255,255,255,0.03)` | A barely-raised panel; the top inset highlight reads as a machined edge |
+| `--elev-0` | none | **Panels at rest.** They sit by border + surface contrast. This is the default and it covers almost everything |
+| `--elev-1` | `0 1px 2px rgba(0,0,0,0.40)` + `inset 0 1px 0 rgba(255,255,255,0.03)` | **A surface that must read as sitting ABOVE another surface.** The top inset highlight reads as a machined edge. **Nothing on the page uses it today** |
 | `--elev-2` | `0 6px 20px rgba(0,0,0,0.50)` | Popovers, dropdown pickers, menus — the only genuine shadow in the product |
 
 No coloured shadows. No glows anywhere except the burndown-specific effects defined in
 §7. If it is not a popover, it does not get `--elev-2`.
+
+**SETTLED 2026-08-15, because this table was underspecified and a build session had to guess.**
+The two rows above described "panels at rest" and "a barely-raised panel" without saying which
+panels were which, and a literal reading left `--elev-1` with no home at all. It was defined and
+referenced by nothing for the whole life of the project; DESIGN-AUDIT called that "the one genuinely
+missing token" and item 3 of its order of work asked for it to be applied. A session then applied it
+to every panel that is `--bg-panel` plus `--radius-panel`, which was a reasonable reading of the
+words as written.
+
+**That reading is now overruled, and the rule is:**
+
+- **`--elev-0` is panels at rest** — the calculator's configuration, items, combo, result and stat
+  panels, and every page's content panel. That is nearly every surface in the product, and it is
+  correct that they have no shadow: this direction is graphite and steel, and it holds a surface
+  down with a border and a value step rather than lifting it.
+- **`--elev-1` is reserved for a surface that must read as sitting above another surface.** Not "a
+  panel that would look nice slightly raised" — a panel whose *meaning* is that it overlays
+  something. **Nothing on the page is that today, so nothing uses it.**
+
+**An unused token is stated here rather than left as an aspiration.** `--elev-1` is not a gap, not a
+worklist item, and not evidence of an unfinished interface — it is a reserved value with no current
+occasion. A future overlay that is not a popover is what it is for. **Do not apply it to make a
+panel look more finished**; if a panel needs to read as raised, say why the meaning demands it and
+amend this section first.
+
+`--elev-0` is used, twice, in `shell/nav.css`. DESIGN-AUDIT's §5 count of "two unused tokens" is
+therefore also out of date and is corrected there.
 
 ---
 

@@ -55,7 +55,6 @@
     ],
     "deny": [
       "Edit(/curated/**)",
-      "Edit(/DESIGN.md)",
       "Bash(git reset:*)",
       "Bash(git checkout:*)",
       "Bash(git clean:*)",

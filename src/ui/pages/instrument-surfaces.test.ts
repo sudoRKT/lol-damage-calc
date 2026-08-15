@@ -108,11 +108,45 @@ describe('the ui-site area is measurable at all', () => {
 });
 
 describe('DESIGN.md §5 — elevation', () => {
-  it('carries the machined edge: every raised panel declares --elev-1', () => {
-    const bare = RAISED_PANELS.filter((r) => !has(r.body, 'box-shadow', '--elev-1')).map(
+  it('NOTHING declares --elev-1 — it is reserved, and reserved is not the same as missing', () => {
+    // ═══ THIS ASSERTION WAS THE EXACT OPPOSITE FOR ABOUT AN HOUR ON 2026-08-15 ═══
+    //
+    // It read "carries the machined edge: every raised panel declares --elev-1", and it passed. The
+    // reading behind it was reasonable: DESIGN-AUDIT called `--elev-1` "the one genuinely missing
+    // token", and DESIGN.md §5 described it as "a barely-raised panel" without saying WHICH panels
+    // were barely raised — a literal reading left the token with no home at all, so a build session
+    // resolved the ambiguity by measurement and gave it to every `--bg-panel` + `--radius-panel`
+    // surface.
+    //
+    // §5 has since been SETTLED and that reading is overruled. `--elev-0` is panels at rest, which
+    // is nearly every surface in the product; `--elev-1` is reserved for a surface whose MEANING is
+    // that it sits above another surface, and nothing on the page is that today.
+    //
+    // **An unused token is the correct state here, and it is stated rather than left as an
+    // aspiration.** A token defined and never used is normally a smell — that is what the audit
+    // reacted to — but a RESERVED value with no current occasion is a different thing, and the
+    // difference is now written in DESIGN.md §5 rather than inferred from a table.
+    //
+    // If a genuine overlay ever arrives: amend §5 first, then this test, then the stylesheet.
+    const raised = ALL_RULES.filter((r) => has(r.body, 'box-shadow', '--elev-1')).map(
       (r) => `${r.file} — ${r.selector}`,
     );
-    expect(bare).toEqual([]);
+    expect(
+      raised,
+      '--elev-1 is reserved for a surface that must read as sitting ABOVE another surface ' +
+        '(DESIGN.md §5, settled 2026-08-15). Do not apply it to make a panel look more finished.',
+    ).toEqual([]);
+  });
+
+  it('every panel at rest is --elev-0, which is to say it declares no shadow at all', () => {
+    // The positive statement of the same rule, so the file says what the panels ARE and not only
+    // what they are not. RAISED_PANELS is the `--bg-panel` + `--radius-panel` population the
+    // overruled reading was built on; it is kept because it is still the right population to sweep.
+    expect(RAISED_PANELS.length).toBeGreaterThan(0);
+    const shadowed = RAISED_PANELS.filter((r) => /box-shadow/.test(r.body)).map(
+      (r) => `${r.file} — ${r.selector}`,
+    );
+    expect(shadowed).toEqual([]);
   });
 
   it('gives --elev-2 to nothing that is not a menu or popover', () => {

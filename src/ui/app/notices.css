@@ -12,9 +12,6 @@
   border: var(--border-steel);
   border-radius: var(--radius-panel);
   padding: var(--space-4);
-  /* A raised panel: `--bg-panel` plus `--radius-panel`. See app.css for the rule and why the
-     two halves are both required. DESIGN-AUDIT item 3. */
-  box-shadow: var(--elev-1);
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;

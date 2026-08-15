@@ -369,6 +369,26 @@ member — `perTickAbilitiesHeldBack` fails that test out loud, and it survived 
 nobody said it aloud. **Never report a count without its definition** is already the standing rule
 for talking about figures; this is the same rule applied to storing them.
 
+**A MEASUREMENT MUST LAND IN A FILE THE PROJECT READS.** Written 2026-08-15, and it is the same
+failure as the rule above rather than a second one: **a fact stated somewhere nothing checks.** One
+is a name that no test can contradict; the other is a number no test can find.
+
+The case: a session measured all six unmeasured interactive controls in a real browser and stated
+the figures **in its commit message and in no file**. `git log -S` finds no commit that ever added
+them to the tree. The register still read `unmeasured`, so two agents were dispatched hours later to
+measure controls already measured — and when one of them did, it found the published figure named a
+box that accepted no clicks at all, and that the real target was an unrecorded 13×13px checkbox.
+
+A commit message is a **claim about a change**. It is not a record, because nothing reads it: no
+test asserts over it, no page prints it, and the next person searching for the figure will not find
+it. The same applies to a number that exists only in a chat transcript, an agent's report, or a
+paragraph of prose nobody derives.
+
+**So: if you measure something, the figure goes in a file in the same commit as the measuring.** A
+register, a test, a generated JSON — anywhere a check can reach it. Say the date, the viewport or
+population, and what would change the number. Then put the narrative in the commit message, where
+narrative belongs.
+
 **A falling count is usually the system working.** Making a gate more precise, or adding one,
 moves entries from `derived` to `incomplete` — that is evidence arriving, not regression. Compare
 counts only against a stated definition, never against yesterday's number alone.
