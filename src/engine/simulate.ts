@@ -25,6 +25,7 @@ import type {
   CuratedAbility,
   CuratedDefensiveEffect,
   CuratedItemEffect,
+  CuratedRune,
   Item,
   Scenario,
   ChampionConfig,
@@ -70,6 +71,30 @@ export interface Catalogue {
    * returns a list, never a single effect.
    */
   itemEffects(itemId: number): readonly CuratedItemEffect[];
+  /**
+   * Every curated effect on one rune, keyed by RUNE ID. Added 2026-08-15.
+   *
+   * Keyed by id and not by champion, because that is what the scenario names: `ChampionConfig`
+   * carries a `RunePage` of `keystone`, `primary`, `secondary` and `shards`, so the engine
+   * iterates the build and asks about each id. The catalogue never enumerates; the scenario does.
+   * This is the same relationship `item(id)` and `itemEffects(itemId)` already have, and
+   * deliberately NOT the relationship `defensiveEffects(apiname)` has — that one is keyed by
+   * champion and must answer for a champion with no stored defences.
+   *
+   * A LIST, not one effect, for the same reason `itemEffects` is: a rune that later carries two
+   * separate effects then needs no interface change.
+   *
+   * **AN EMPTY LIST FOR A RUNE THE BUILD CARRIES IS NOT SILENCE.** A build with no runes asks
+   * nothing and is a legitimate build. But a rune that IS in the build and has no curated entry
+   * must produce a named row saying its values are not published — never zero damage, which a
+   * reader would read as "this rune does nothing". `planItemActive` already does exactly this for
+   * an owned item with no stored active, and its wording is the model.
+   *
+   * STAT SHARDS ARE NOT THIS LOOKUP. They change the stat block rather than the combo and have
+   * their own shape; none is modelled yet, and this is named here so that "runes are modelled" is
+   * never said while shards are silently absent.
+   */
+  runeEffects(runeId: number): readonly CuratedRune[];
   /**
    * Every curated defensive effect belonging to one champion's own kit — what their abilities do
    * to damage they RECEIVE (SPECIFICATION §5).

@@ -194,6 +194,25 @@ The defender is nonetheless modelled in full. Their stat block responds to champ
 selection, level, complete item build, complete rune page, and their own kit. A defender is
 never represented by generic or averaged values.
 
+### A DEFENDER'S RUNES FIRE — RULED 2026-08-15, not to be relitigated
+
+**"The defender does not act" means they take no action. It does not mean nothing happens to
+them.** Runes that trigger from BEING HIT fire on the defender's side: Grasp of the Undying heals
+its wearer when they are struck, and Aftershock grants its wearer resistances when they immobilise
+— neither requires the defender to attack, reposition or cast anything.
+
+The question arose because these would be the first case where a defender's BUILD, as opposed to
+their own kit, produces something other than stats. It is settled by an existing precedent rather
+than by preference: **Bone Plating is a rune, is a flat reduction on damage received, and is
+already modelled on the defender's side.** It is the same shape and the same trigger. Ruling
+against Grasp and Aftershock would have made the product inconsistent with something it already
+does.
+
+**What does NOT follow.** A rune that fires from the defender ATTACKING does not fire — that is
+the defender acting, and the sentence above forbids it. And a rune whose condition the engine
+cannot know is still stated by the user in `entryState`, keyed by `runeToggleKey`, exactly as a
+conditional defence is: firing is permitted, assuming is not.
+
 **Defensive kit effects** are modelled and divided by activation condition:
 
 - *Always-active* effects are baked into the defender's resolved stat block. This includes

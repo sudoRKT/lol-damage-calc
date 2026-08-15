@@ -38,6 +38,7 @@ import type {
   CuratedDefensiveEffect,
   CuratedItemEffect,
   Item,
+  CuratedRune,
 } from '../../types';
 import type { Catalogue } from '../../engine';
 
@@ -272,6 +273,7 @@ export interface CatalogueSources {
   itemEffects?: ReadonlyMap<number, readonly CuratedItemEffect[]>;
   /** Keyed by apiname. Same reasoning as above — absent means nothing is published yet. */
   defensiveEffects?: ReadonlyMap<string, readonly CuratedDefensiveEffect[]>;
+  runeEffects?: ReadonlyMap<number, readonly CuratedRune[]>;
 }
 
 /**
@@ -291,5 +293,10 @@ export function buildCatalogue(sources: CatalogueSources): Catalogue {
     abilities: (apiname) => sources.abilities.get(apiname) ?? [],
     itemEffects: (id) => sources.itemEffects?.get(id) ?? [],
     defensiveEffects: (apiname) => sources.defensiveEffects?.get(apiname) ?? [],
+    // AN EMPTY LIST IS A REAL ANSWER AND NOT SILENCE. Nothing publishes rune effects yet, so this
+    // returns [] for every id; the engine's contract is explicit that a rune IN THE BUILD with no
+    // entry must produce a named row rather than zero damage, and that naming is the engine's job
+    // rather than this lookup's. See `Catalogue.runeEffects`.
+    runeEffects: (id) => sources.runeEffects?.get(id) ?? [],
   };
 }

@@ -107,6 +107,14 @@
   --measure-list-column-min: 256px; /* --space-8 x 4 — narrowest column in a responsive list */
   --measure-reading-max: 960px; /* --space-8 x 15 — widest a page of prose grows, then centres */
   --measure-prose-max: 640px; /* --space-8 x 10 — widest a single paragraph grows (~85 chars) */
+  /* --space-8 x 4 — widest a WRAPPING TABLE COLUMN grows before it wraps instead. Deliberately a
+     separate token from --measure-list-column-min, which is a MINIMUM for a list column: they
+     govern opposite directions and only happen to agree today (DESIGN.md §4a). */
+  --measure-table-column-max: 256px;
+  /* --space-5 — the smallest an interactive control may be on either axis (WCAG 2.2 AA 2.5.8).
+     Stated rather than emergent: it was reached once out of the spacing scale by arithmetic that
+     happened to land here, and the next component would have had to rediscover it. */
+  --target-min: 24px;
 
   /* THE ONE BREAKPOINT (DESIGN.md §4b). `@media (max-width: 30rem)` is the only width query this
    * product may write, and it governs exactly one thing: the burndown's riser labels leave the

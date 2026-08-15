@@ -256,6 +256,25 @@ comment saying it was raised rather than settled.
 | `--measure-list-column-min` | 256px | `--space-8` × 4 | The narrowest a column may be in a responsive list grid before the grid drops to fewer columns |
 | `--measure-reading-max` | 960px | `--space-8` × 15 | The widest a page of prose grows before it is centred — every page except the calculator, which wants the whole screen |
 | `--measure-prose-max` | 640px | `--space-8` × 10 | The widest a single PARAGRAPH grows: about 85 characters at `--type-body-l`, past which the eye loses the start of the next line |
+| `--measure-table-column-max` | 256px | `--space-8` × 4 | The widest a WRAPPING TABLE COLUMN grows before its text wraps instead — the per-instance breakdown's annotation column (§8) |
+| `--target-min` | 24px | `--space-5` (24px) | The smallest an interactive control may be on either axis. WCAG 2.2 AA 2.5.8 |
+
+**`--measure-table-column-max` is 256px and `--measure-list-column-min` is also 256px, and they are
+deliberately two tokens.** Added 2026-08-15. One is a MINIMUM for a list column and the other a
+MAXIMUM for a table column; they govern different things in opposite directions and happen to agree
+today. Borrowing the list measure for a table would have been §4a's forbidden borrowing, and the
+day either value moves the other must not follow.
+
+The measurement it was chosen from: three rows of the per-instance breakdown were 156px tall,
+driven entirely by an annotation cell holding 147px of content against 65px for the next-tallest
+cell — a column that at 375px sits wholly off screen. Capping it at 256px trades **302px of page
+length for 169px more horizontal reach**. 320px was measured and buys nothing further, so 256 is
+the knee rather than a round number.
+
+**`--target-min` is stated rather than emergent.** It was reached once out of the spacing scale by
+arithmetic that happened to land on 24px, and the next component would have had to rediscover it.
+§4a's rule that a new measure is `--space-8 × n` cannot express 24px, which is why this one is
+derived from `--space-5` instead and says so.
 
 ## 4b. THE ONE BREAKPOINT (added 2026-08-14)
 

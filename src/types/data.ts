@@ -741,6 +741,39 @@ export type DefensiveKind =
  * The most any one champion carries is 5 (Lissandra, Soraka), so a scenario's whole toggle set is
  * small.
  */
+/**
+ * What a stored over-time figure MEANS — one occurrence, or the whole duration.
+ *
+ * Shared by every over-time shape (defensive effects, item effects, ability components) so the
+ * three cannot answer the same question with different vocabularies. See
+ * `CuratedDefensiveEffect.overTime` for the measurement that made it necessary.
+ */
+export type OverTimeFigure = 'per-instance' | 'full-duration';
+
+/**
+ * THE KEY A RUNE'S CONDITION IS STATED UNDER, in `ChampionConfig.entryState`.
+ *
+ * Added 2026-08-15 beside `defensiveToggleKey`, and for the same reason that one exists: **the
+ * interface writes the key and the engine reads it, so if the two derive "the same" key
+ * independently they drift and both suites stay green.** That failure was found twice in one day
+ * — the coverage area and the engine holding different lists of defensive kinds, and the
+ * capability figures and the pages disagreeing about a count — which is why this is a function in
+ * the frozen contract rather than a convention.
+ *
+ * Cheap Shot's "the target is impaired", Aftershock's "you immobilised them" and Grasp's "every
+ * four seconds" are all facts the engine cannot know and the user must state.
+ *
+ * `r.` marks the namespace, as `d.` marks defensive toggles — `entryState` also carries stacks
+ * and debuffs, and a rune id could otherwise collide with a numeric stack key.
+ */
+export function runeToggleKey(e: { runeId: number; condition?: string }): string {
+  const parts = ['r', String(e.runeId)];
+  if (e.condition) {
+    parts.push(e.condition.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''));
+  }
+  return parts.join('.');
+}
+
 export function defensiveToggleKey(e: {
   slot: AbilitySlot;
   kind: DefensiveKind;
@@ -888,8 +921,36 @@ export interface CuratedDefensiveEffect {
    * `totalInstances` is how many times it lands over the full duration, WHERE THE SOURCE STATES
    * IT; absent means the source does not, and no count may be invented (§38). No interval is
    * recorded, because the engine models sequence and not time (§3.2).
+   *
+   * ═══ `figureIs` — ADDED 2026-08-15, AND IT IS THE LARGEST SINGLE BLOCKER IT CLEARS ═══
+   *
+   * A count is not enough. **The entry also has to say what the number it stores MEANS**, and
+   * until this field existed it could not. 18 otherwise-ready defensive entries across 8
+   * champions were refused for exactly this: the engine had a figure and a duration and no way
+   * to tell whether the figure was one occurrence or the whole of it, and multiplying the second
+   * reading by the count would have restored the health eight times over.
+   *
+   * **Master Yi W is the proof that this is a real distinction and not a pedantry: it stores BOTH
+   * readings side by side** — 15 per tick and 120 for the channel, exactly ×8 at every rank. An
+   * entry can hold two rows that differ only in this, so nothing but an explicit field
+   * distinguishes them.
+   *
+   * `'per-instance'` — the figure is one occurrence; the whole-duration total is it times
+   * `totalInstances`, and without a count the entry stays incomplete.
+   * `'full-duration'` — the figure already covers the whole duration and must never be
+   * multiplied. A count may still be present and is then descriptive only.
+   *
+   * **ABSENT MEANS THE SOURCE DOES NOT SAY, AND THE ENTRY IS THEREFORE INCOMPLETE.** It is
+   * deliberately not defaulted: picking either reading silently is how a heal gets counted eight
+   * times or a burn a tenth of once, and both are the plausible wrong number this project exists
+   * to prevent. Where the source states only one of the two, store that one and mark the rest
+   * incomplete rather than inferring the other from it.
    */
-  overTime?: { totalInstances?: number; sourceSays: string };
+  overTime?: {
+    totalInstances?: number;
+    sourceSays: string;
+    figureIs?: OverTimeFigure;
+  };
   /**
    * WHAT THE NUMBER IN `value` MEANS. Required by gate 1 whenever `value` is present.
    *

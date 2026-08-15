@@ -21,6 +21,7 @@ import type {
   Item,
   Ratio,
   Scaling,
+  CuratedRune,
 } from '../types';
 import type { StatBlock } from '../types/result';
 import type { ChampionConfig, ComboStep, Scenario } from '../types/scenario';
@@ -297,12 +298,14 @@ export function fixtureCatalogue(opts: {
   abilities?: CuratedAbility[];
   itemEffects?: CuratedItemEffect[];
   defensiveEffects?: CuratedDefensiveEffect[];
+  runeEffects?: readonly CuratedRune[];
 }): Catalogue {
   const champions = opts.champions ?? [];
   const items = opts.items ?? [];
   const abilities = opts.abilities ?? [];
   const itemEffects = opts.itemEffects ?? [];
   const defensiveEffects = opts.defensiveEffects ?? [];
+  const runeEffects = opts.runeEffects ?? [];
   return {
     champion: (apiname) => champions.find((c) => c.apiname === apiname),
     item: (id) => items.find((i) => i.id === id),
@@ -310,6 +313,7 @@ export function fixtureCatalogue(opts: {
     // An omitted list answers [] rather than throwing, so every fixture written before these
     // two lookups existed keeps working and means what it always meant: nothing harvested.
     itemEffects: (id) => itemEffects.filter((e) => e.itemId === id),
+    runeEffects: (id) => runeEffects.filter((e) => e.runeId === id),
     defensiveEffects: (apiname) => defensiveEffects.filter((e) => e.champion === apiname),
   };
 }
