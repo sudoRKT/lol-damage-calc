@@ -14,10 +14,17 @@
 
 import { describe, expect, it, afterEach } from 'vitest';
 import { cleanup, fireEvent, render, screen, within } from '@testing-library/react';
+import { readFileSync } from 'node:fs';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { SiteNav } from './SiteNav';
 import { SITE_PAGES } from './pages';
 
 afterEach(cleanup);
+
+const NAV_CSS = readFileSync(join(dirname(fileURLToPath(import.meta.url)), 'nav.css'), 'utf8');
+/** The `.nav__panel` rule that applies below the breakpoint — not the `.nav--inline` override. */
+const COLLAPSED_PANEL_RULE = NAV_CSS.match(/\n\.nav__panel \{([\s\S]*?)\n\}/)?.[1] ?? '';
 
 const IN_NAV = SITE_PAGES.filter((p) => p.inMainNav);
 const menu = () => screen.getByRole('button', { name: /^(Menu|Close menu)$/ });
@@ -26,6 +33,32 @@ describe('nav/population', () => {
   it('offers every page marked for the main navigation, and the legal pages are not', () => {
     expect(IN_NAV.length).toBe(6);
     expect(SITE_PAGES.filter((p) => !p.inMainNav).map((p) => p.id)).toEqual(['privacy', 'cookies']);
+  });
+});
+
+describe('nav/the open panel stays on the screen', () => {
+  it('ANCHORS TO THE EDGE THE TOGGLE IS ON, not to the opposite one', () => {
+    // MEASURED IN A REAL BROWSER, 2026-08-15, on every one of the eight pages:
+    //
+    //   viewport 375 and 320 · panel 258px wide · panel box left **-114.6px**, right 143.4px
+    //
+    // 114.6px of a 258px menu — 44% of it — sat off the LEFT edge of the screen. "Home",
+    // "Calculator", "Changelog" and "About" were entirely invisible; "How the numbers are
+    // checked" read as "…ers are checked".
+    //
+    // THE PART THAT MAKES IT INVISIBLE TO EVERY OTHER CHECK: overflow to the LEFT creates no
+    // scrollable area. `body.scrollWidth` stayed 320, `documentElement.scrollWidth` stayed 320,
+    // and `window.scrollTo(-9999, 0)` left `scrollX` at 0 — so the page reported itself clean
+    // and a reader could not pan to the missing half. It is also absent from a page-load sweep,
+    // because the menu is closed when the page loads.
+    //
+    // The cause is `inset-inline-end: 0` on an absolutely positioned panel whose containing
+    // block is the toggle-sized `.nav`. The toggle sits at the START of the header on a phone,
+    // so anchoring the panel's END edge to it throws the panel leftward off the screen. jsdom
+    // has no layout, so this asserts the stylesheet rather than the geometry.
+    expect(COLLAPSED_PANEL_RULE).toContain('position: absolute');
+    expect(COLLAPSED_PANEL_RULE).toMatch(/inset-inline-start:\s*0/);
+    expect(COLLAPSED_PANEL_RULE).not.toMatch(/inset-inline-end:\s*0/);
   });
 });
 

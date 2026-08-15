@@ -25,11 +25,14 @@ export function AboutPage() {
         <p className="prose__p">
           Item effects are part of a result — actives you place in the combo, and{' '}
           {CAPABILITY.itemRiders} on-hit and Spellblade effects that ride on the attack carrying
-          them, each as its own row. <strong>Runes are not:</strong>{' '}
-          {CAPABILITY.runesModelled} of {CAPABILITY.runesPublished} have a modelled effect. Nor are
-          the {CAPABILITY.defensiveStored} defensive effects read from champions’ own kits — the
-          shields, heals and damage reductions a defender uses against you. Both gaps are stated
-          here rather than left to be inferred from a result that looks finished.
+          them, each as its own row. So is the defender’s own kit, in part:{' '}
+          {CAPABILITY.defensiveApplied} of {CAPABILITY.defensiveStored} defensive effects — the
+          shields, heals and damage reductions a defender uses against you — change a figure, and
+          every one of them is conditional on your saying it was up when the combo landed.{' '}
+          <strong>Runes are not:</strong> {CAPABILITY.runesModelled} of{' '}
+          {CAPABILITY.runesPublished} have a modelled effect, so a total here is a total without
+          runes. Each gap is stated here rather than left to be inferred from a result that looks
+          finished.
         </p>
         <p className="prose__p">
           It runs entirely in your browser. There is no account, no database and no server holding

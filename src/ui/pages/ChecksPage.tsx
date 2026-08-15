@@ -107,13 +107,15 @@ export function ChecksPage() {
           So the sentence has to be read, one ability at a time.{' '}
           <strong>{CAPABILITY.abilityComponentsOverTime}</strong> have been, across{' '}
           {CAPABILITY.abilitiesWithOverTime} abilities, and those now go to the damage-over-time
-          line instead of the burst. The rest are held back:{' '}
+          line instead of the burst. Being read is not on its own enough to be shown:{' '}
           <strong>
             {CAPABILITY.perTickAbilitiesHeldBack} of the {CAPABILITY.perTickAbilities}
           </strong>{' '}
-          entries are incomplete today and contribute nothing to any total. Several of them are
-          well-known damage — a good part of the game’s burn roster — and they are absent rather
-          than approximated.
+          entries are incomplete today and contribute nothing to any total — some because nobody
+          has read their sentence yet, and some that were read and are still missing something
+          else. The two counts overlap rather than dividing the {CAPABILITY.perTickAbilities}{' '}
+          between them. Several are well-known damage — a good part of the game’s burn roster —
+          and they are absent rather than approximated.
         </p>
       </section>
 
@@ -242,7 +244,7 @@ export function ChecksPage() {
           <CapabilityRow
             count={CAPABILITY.itemBurnsThatFire}
             of="over time"
-            body={`Of ${CAPABILITY.itemBurns} effects the source describes as recurring, these three state a tick count and a trigger, so a full-duration total exists. They go to the damage-over-time line and never into the burst.`}
+            body={`Of ${CAPABILITY.itemBurns} effects the source describes as recurring, these state both a tick count and a trigger, so a full-duration total exists. They go to the damage-over-time line and never into the burst.`}
           />
           <CapabilityRow
             count={ITEM_EFFECTS_NAMED_NEVER_APPLIED}

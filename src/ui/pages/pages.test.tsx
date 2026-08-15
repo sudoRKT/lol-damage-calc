@@ -50,6 +50,35 @@ describe('pages/how the numbers are checked', () => {
     expect(text).toContain(String(CAPABILITY.perTickAbilitiesHeldBack));
   });
 
+  it('DOES NOT PRESENT THE READ COUNT AND THE HELD-BACK COUNT AS A PARTITION', () => {
+    // MEASURED 2026-08-15, on a phone read of the built page. Both counts are generated and both
+    // are true, and the paragraph joined them with "the rest" — which claims they are the two
+    // halves of one population. They are not, and the arithmetic below is what a reader does:
+    //
+    //   read (abilitiesWithOverTime)      27
+    //   held back (perTickAbilitiesHeldBack) 20   → 47, against a stated 39.
+    //
+    // Counted from `public/data/abilities/*.json`: of the 39 entries carrying a per-tick label,
+    // 27 have been read, 12 have not, and ALL 12 of the unread are incomplete — but so are 8 of
+    // the 27 that were read, for reasons of their own. 12 + 8 = 20. So the two figures OVERLAP,
+    // and "the rest" is the one word on the page that is false.
+    //
+    // This asserts the shape of the claim rather than the wording of the fix: while the two
+    // counts do not sum to the population, the page may not use partition language about them.
+    mount('checks', <ChecksPage />);
+    const fall = screen.getByRole('region', { name: 'Why derived can fall' });
+    const text = fall.textContent ?? '';
+    const partitions =
+      CAPABILITY.abilitiesWithOverTime + CAPABILITY.perTickAbilitiesHeldBack ===
+      CAPABILITY.perTickAbilities;
+    expect(partitions).toBe(false);
+    expect(text).not.toMatch(/the rest are held back/i);
+    // And it must say WHY the held-back count is larger than the unread one, or the reader is
+    // left to reconcile two figures that do not reconcile.
+    expect(text).toMatch(/read/i);
+    expect(text).toContain(String(CAPABILITY.perTickAbilitiesHeldBack));
+  });
+
   it('EXPLAINS DAMAGE OVER TIME AND WHAT MAKES THE TWO VERDICTS DISAGREE', () => {
     // SPECIFICATION §3.8 requires the verdict twice. Until 2026-08-14 the second one received a
     // zero in every real scenario, so the two lines never differed and nothing said why. A reader
@@ -63,6 +92,37 @@ describe('pages/how the numbers are checked', () => {
       `${CAPABILITY.itemBurnsThatFire} of the ${CAPABILITY.itemBurns} item burns`,
     );
     expect(text).toContain('The count of ticks is never invented');
+  });
+
+  it('NO ROW RESTATES ITS OWN COUNT AS A WORD — a typed number cannot regenerate', () => {
+    // Found 2026-08-15. The "over time" row printed the generated count 3 in its figure and then
+    // said "these three" in its body. Both were right that day; only one of them re-derives. The
+    // day a fourth burn states a tick count and a trigger, the figure becomes 4 and the sentence
+    // beside it still reads "three" — a stale number on the page whose whole claim is that
+    // nothing on it is typed.
+    //
+    // IT FLAGS A WORD ONLY WHERE IT EQUALS THAT ROW'S OWN FIGURE, which is what makes it a
+    // restatement rather than a coincidence. The derived row says "the three checks above" and
+    // means the three numbered points in the prose section — its own count is 474, so that
+    // sentence is about something else and is left alone. The burn row said "these three" beside
+    // the figure 3, and that is the defect: the same fact printed twice, generated once.
+    mount('checks', <ChecksPage />);
+    const WORDS: Record<string, number> = {
+      one: 1, two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7, eight: 8,
+      nine: 9, ten: 10, eleven: 11, twelve: 12,
+    };
+    const offenders: string[] = [];
+    for (const row of document.querySelectorAll('.ledger__row')) {
+      const count = Number(row.querySelector('.ledger__count')?.textContent);
+      const text = row.querySelector('.ledger__meaning')?.textContent ?? '';
+      for (const [word, value] of Object.entries(WORDS)) {
+        if (value !== count) continue;
+        if (new RegExp(`\\b${word}\\b`, 'i').test(text)) {
+          offenders.push(`row "${count}" says "${word}": ${text.slice(0, 70)}`);
+        }
+      }
+    }
+    expect(offenders).toEqual([]);
   });
 
   it('the item-effect rows account for every stored effect, with none left over', () => {
@@ -163,6 +223,40 @@ describe('pages/about', () => {
     expect(text).toContain('Item effects are part of a result');
     expect(text).toContain(`${CAPABILITY.runesModelled} of ${CAPABILITY.runesPublished}`);
     expect(text).toContain('The verdict is given twice');
+  });
+
+  it('AGREES WITH THE OTHER TWO PAGES ABOUT THE DEFENDER’S OWN KIT', () => {
+    // FOUND 2026-08-15, reading the site on a phone. Three pages state this product's position on
+    // the defender's kit and one of them had not been told it changed:
+    //
+    //   landing  "The defender’s own kit is applied in part: 77 of 155 defensive effects."
+    //   checks   "The defender’s own kit: 77 of 155 … 77 actually change a figure."
+    //   about    "Runes are not: 0 of 62 … NOR ARE the 155 defensive effects … Both gaps."
+    //
+    // The FIGURE on the About page was generated and correct; the sentence around it was typed,
+    // and it put the defender's kit in the same bucket as runes — a gap. 77 of them change a
+    // number. So a reader was told a defender's shields and heals do nothing, and could then
+    // watch one absorb damage in a result. That is the product understating itself in the same
+    // motion as contradicting its own other pages, which is why this is scoped across all three
+    // rather than to the page that was wrong.
+    //
+    // It asserts AGREEMENT, not wording: while any defence is applied, no page may describe the
+    // defensive population as unmodelled, and every page that names it states the applied count.
+    expect(CAPABILITY.defensiveApplied).toBeGreaterThan(0);
+    const applied = `${CAPABILITY.defensiveApplied} of ${CAPABILITY.defensiveStored}`;
+
+    for (const [id, node] of [
+      ['about', <AboutPage />],
+      ['checks', <ChecksPage />],
+    ] as const) {
+      cleanup();
+      mount(id, node);
+      const text = (document.body.textContent ?? '').replace(/\s+/g, ' ');
+      expect(text, `${id} must state the applied count`).toContain(applied);
+      expect(text, `${id} must not call the defensive kit an unmodelled gap`).not.toMatch(
+        /Nor are the \d+ defensive effects/i,
+      );
+    }
   });
 
   it('AND STILL KEEPS IT OUT OF THE LEGAL FOOTER', () => {

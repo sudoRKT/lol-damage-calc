@@ -68,11 +68,26 @@
 
 /* Below the breakpoint it is an overlay anchored to the toggle. FIXED-POSITION OVERLAY, NOT A
    DRAWER THAT PUSHES CONTENT: SPECIFICATION §13 asks for no cumulative layout shift, and a panel
-   that displaces the page moves the §16 ad containers every time it opens. */
+   that displaces the page moves the §16 ad containers every time it opens.
+
+   IT ANCHORS TO THE START EDGE, AND THAT IS THE WHOLE FIX FOR A MEASURED PHONE DEFECT. This rule
+   said `inset-inline-end: 0` until 2026-08-15. The containing block is `.nav`, which is only as
+   wide as the toggle, and the toggle sits at the START of the header on a phone — so pinning the
+   panel's END edge to it pushed a 258px panel to a left edge of **-114.6px** at both 375 and 320.
+   Nearly half the menu was off the screen and four of the six links were invisible.
+
+   Nothing reported it. Overflow to the LEFT creates no scrollable area, so `body.scrollWidth`,
+   `documentElement.scrollWidth` and `window.scrollTo(-9999, 0)` all read exactly as they do on a
+   clean page, and a reader could not pan to the missing half either.
+
+   NO WIDTH QUERY IS INVOLVED, and none may be — DESIGN.md §4b's single breakpoint governs the
+   burndown's riser labels and nothing else. This is the base rule, so it applies below 80rem; the
+   `.nav--inline` block below makes the panel `position: static` above it, where anchoring does
+   not apply at all. `SiteNav.test.tsx` carries the measurement and fails if the edge moves back. */
 .nav__panel {
   position: absolute;
   inset-block-start: 100%;
-  inset-inline-end: 0;
+  inset-inline-start: 0;
   z-index: 2;
   margin-block-start: var(--space-2);
   min-inline-size: var(--measure-list-column-min);
