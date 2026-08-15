@@ -5,10 +5,50 @@
 
 @import '../tokens.css';
 
+/* ═══ THE MACHINED EDGE — DESIGN.md §5's `--elev-1`, applied 2026-08-15 ═══
+ *
+ * DESIGN-AUDIT.md item 3. `--elev-1` was defined in tokens.css and referenced by NOTHING, in any
+ * of the twelve interface areas: measured on the live page, the only shadow the whole product
+ * rendered was `--elev-2` on three popovers. §5 describes `--elev-1` as "a barely-raised panel;
+ * the top inset highlight reads as a machined edge", and the audit's judgement is that that inset
+ * highlight "is precisely the detail that makes a surface read as milled metal rather than as a
+ * card."
+ *
+ * It is TWO shadows and the second is the one that matters: `0 1px 2px rgba(0,0,0,0.40)` is a
+ * hairline seam under the bottom edge, and `inset 0 1px 0 rgba(255,255,255,0.03)` is a 1px light
+ * line along the INSIDE of the top edge — a bevel, not a lift. Composited over `--bg-panel`
+ * (#262E38) that line lands on #2C343E — COMPUTED, not measured, because it is deterministic
+ * source-over: 255x0.03 + 38x0.97 = 44.5, and the same for the other two channels. It introduces
+ * NO NEW COLOUR VALUE and none needs naming: it is the panel's own colour with 3% white over it,
+ * which is what a machined edge catching the light actually is. The rendered shadow WAS measured,
+ * on /checks/ at 1440x1100: `rgba(0,0,0,0.4) 0 1px 2px, rgba(255,255,255,0.03) 0 1px 0 inset` on
+ * two elements, and it is the only `--elev-1` anywhere in the product.
+ *
+ * WHY IT IS NOT A CARD SHADOW, stated because §5's whole direction is "borders before shadows".
+ * A card shadow is a large soft drop that makes an element float. This is a 2px blur at 40% and a
+ * 1px inset. Measured at 1440px, it changes no element's box: page height, panel height and panel
+ * width are identical to the pixel before and after, on every page it touches. It is surface
+ * treatment, not layout.
+ *
+ * WHICH SURFACES GET IT, and the rule is mechanical rather than a judgement call per element —
+ * `instrument-surfaces.test.ts` in this directory carries the definition and fails on the next
+ * panel added here without it. A raised panel is `--bg-panel` PLUS `--radius-panel`. Controls
+ * (`--radius-control`) do not get it; the footer band, which spans the viewport and sets no
+ * radius, does not get it; the navigation menu keeps `--elev-2`, which §5 reserves for popovers.
+ *
+ * ONLY THE ui-site AREA IS DONE HERE. Sixteen further raised panels were measured on
+ * /calculator/ — `.config`, `.items`, `.runes`, `.defences`, `.combo`, `.app__resulthead`,
+ * `.burn`, `.notices`, `.breakdown-panel`, `.curve-panel`, `.statblock` — and every one of them
+ * belongs to another area. They need the same one declaration. Nothing in ui-site shares a page
+ * with any of them, so this area can carry the edge without the product looking half-finished:
+ * the only ui-site surface that appears on /calculator/ is the footer band, and it is excluded by
+ * the rule above rather than by an exception.
+ */
 .notwritten {
   background: var(--bg-panel);
   border: var(--border-steel);
   border-radius: var(--radius-panel);
+  box-shadow: var(--elev-1);
   padding: var(--space-4);
   display: flex;
   flex-direction: column;
@@ -187,6 +227,9 @@
   background: var(--bg-panel);
   border: var(--border-steel);
   border-radius: var(--radius-panel);
+  /* The machined edge — see the block above `.notwritten`. This is the panel the audit's finding
+     is actually about in this area: it is the landing page's evidence and /checks/'s readout. */
+  box-shadow: var(--elev-1);
   padding: var(--space-4);
   display: flex;
   flex-direction: column;

@@ -152,6 +152,27 @@ token's definition. **Two: `--elev-0` and `--elev-1`.**
 One oddity with no token behind it: a `0px 0px 0px 2px` asymmetric border-radius appears in the
 rendered output.
 
+> **CORRECTED 2026-08-15 — THIS WAS A FALSE POSITIVE, AND SO IS HALF OF ITEM 3.** The radius is
+> `span.chip__tag`, 8 instances on `/calculator/`, from `src/ui/art/art.css:57` —
+> `border-bottom-left-radius: var(--radius-control)`. **It does have a token behind it.** The audit
+> read the four-value CSS shorthand, which matches no single token *because it is one token applied
+> to one corner*: the ability-slot tag's inner corner, rounded so it does not cut a hard notch into
+> the chip. It is deliberate and correct and there is nothing to fix.
+>
+> **`--elev-0` is also no longer unused** — `src/ui/shell/nav.css` references it twice. One unused
+> token, not two.
+>
+> **What remains of item 3 is `--elev-1` alone**, and it is now applied: `pages.css` (`.ledger`,
+> `.notwritten`), `app.css` (`.app__notice`, `.app__refusal`, `.app__resulthead`) and `notices.css`
+> (`.notices`). The rule is mechanical rather than per-element taste — **a raised panel is
+> `--bg-panel` PLUS `--radius-panel`**, and both halves are required, because `--bg-panel` alone
+> also selects controls, which take `--radius-control` and must never carry a shadow. **13 rules
+> across 7 partitioned areas still owe the one-line declaration**; each area applies its own.
+>
+> This is the fourth wrong or stale claim found in this project's own documents in two days, which
+> is why CLAUDE.md now says to check the commit log before acting on any sentence here that says
+> something is missing or absent.
+
 ### §6 — verification status and interaction states · **holding**
 
 Glyph plus label, neutral throughout, no hue. `summaryNote` changes its sentence with the status so

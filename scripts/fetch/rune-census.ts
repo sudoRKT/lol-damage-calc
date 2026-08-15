@@ -1215,8 +1215,40 @@ export type CrossCheckVerdict =
  * formula in `x`. Where it is a formula we read it at x=1 and x=18 — 18 being the level cap, and
  * `Template:Passive progression` documenting that in-line display stops there.
  * NOTHING COMPUTED HERE IS STORED. Only the verdict is.
+ *
+ * THE TOLERANCE WAS 0.51 UNTIL 2026-08-15, AND IS NOW 1e-9. The decision is the project owner's;
+ * the numbers under it were measured, not argued.
+ *
+ * WHY IT FELL. 0.51 existed to absorb Data Dragon rounding its own printed endpoints. It was
+ * absorbing nothing: over the live population every rune this check calls "endpoints-agree"
+ * agrees EXACTLY — the largest gap among the ten is 0, at full float precision and not merely
+ * after rounding for display (`largestRawGapAmongAgreeing` in the census file). The one rune that
+ * disagrees, Deathfire Touch, is out by 1.5 low and 6 high, nine orders of magnitude clear of
+ * either tolerance. So the old value decided nothing, while standing ready to swallow half a
+ * point of real disagreement the day one appeared. Now such a difference is SURFACED. The cost
+ * accepted with it: a genuine display-rounding artifact would be reported as a source
+ * disagreement, and a person would have to read it. This census surfaces rather than reconciles,
+ * so that is the cheap direction to be wrong in.
+ *
+ * WHY 1e-9 AND NOT 0. Exact equality is brittle, and the brittleness was measured rather than
+ * assumed. The wiki side is ARITHMETIC this file performs — `a + (b-a)/17*(x-1)` evaluated at
+ * x=18 — and in IEEE 754 double precision that does not always land exactly on `b`. Sweeping the
+ * shape the wiki actually writes: over 25,000,000 linear progressions with one-decimal endpoints
+ * from 0.0 to 500.0, **16.78% carry a non-zero float error** and the largest is 7.99e-14
+ * (`276.7 + (4.1-276.7)/17*(x-1)` reads 4.10000000000008 at x=18). A second sweep over
+ * 116,116,029 progressions with divisors 2 to 30 agrees: largest error 5.68e-14. An
+ * exact-equality test would therefore report a source disagreement for about one in six future
+ * progressions with a decimal endpoint — an artifact of our own arithmetic, not of the sources,
+ * and the worst possible finding to hand a person because there is nothing in the sources to
+ * read.
+ *
+ * 1e-9 sits between the two failures with room on both sides: it is ~12,500x the largest measured
+ * float error, so it is not brittle; and it is at least 1,000,000x SMALLER than the finest
+ * difference either source can express (both print at most a few decimals, so the smallest real
+ * disagreement statable is on the order of 0.001), so it absorbs no disagreement that exists in
+ * the text. The comparison is strict `<`, so a gap equal to the tolerance disagrees.
  */
-export const ENDPOINT_TOLERANCE = 0.51;
+export const ENDPOINT_TOLERANCE = 1e-9;
 
 /**
  * THE MARKUP GUARD, as a pure function so it can be proved to say NO.
@@ -1252,13 +1284,22 @@ export function markupGuardFailure(
   return null;
 }
 
-function crossCheckEndpoints(
+/**
+ * Exported ONLY so the tolerance can be proved to decide what it claims to decide, without a
+ * network call. It reads two strings and returns a verdict; it stores nothing.
+ */
+export function crossCheckEndpoints(
   ddText: string,
   ddAnchorIndex: number,
   wikiText: string,
   wikiAnchorIndex: number,
   anchorLength: number,
-): { verdict: CrossCheckVerdict; detail: string; gap?: { low: number; high: number } } {
+): {
+  verdict: CrossCheckVerdict;
+  detail: string;
+  gap?: { low: number; high: number };
+  gapRaw?: { low: number; high: number };
+} {
   // A melee/ranged split is two different values, so a pair of endpoints cannot describe it.
   // Checked BEFORE the range test, or a split rune is mislabelled as "no range stated".
   if (wikiText.slice(wikiAnchorIndex, wikiAnchorIndex + anchorLength).includes('{{rd|')) {
@@ -1312,6 +1353,12 @@ function crossCheckEndpoints(
     // actually being used", which is the only way to say whether 0.51 hides anything; an endpoint
     // would be a rune value, and this file stores none.
     gap: { low: Number(lowGap.toFixed(4)), high: Number(highGap.toFixed(4)) },
+    // AND THE UNROUNDED GAP, because the rounded one cannot answer the question the tolerance
+    // asks of it. `toFixed(4)` prints 0 for a gap of 3.6e-15, so a file showing only the rounded
+    // figure would claim exact agreement for a comparison that an exact-equality test FAILS.
+    // The wiki side is arithmetic — "2 + (20-2)/17*(x-1)" at x=18 is 20.000000000000004 in IEEE
+    // 754 double precision, not 20 — so this is the figure the tolerance must clear.
+    gapRaw: { low: lowGap, high: highGap },
   };
 }
 
@@ -1430,7 +1477,12 @@ interface CensusRow {
   scalingAxis: { ddragon: StatedAxis; wiki: StatedAxis };
   adaptiveRule: AdaptiveRule;
   blockers: string[];
-  crossCheck: { verdict: CrossCheckVerdict; detail: string; gap?: { low: number; high: number } } | null;
+  crossCheck: {
+    verdict: CrossCheckVerdict;
+    detail: string;
+    gap?: { low: number; high: number };
+    gapRaw?: { low: number; high: number };
+  } | null;
   reading: string;
   /**
    * `ddragon` is the STRIPPED window, which is what every earlier reader saw. `ddragonMarkup` is
@@ -1783,30 +1835,46 @@ async function main(): Promise<void> {
         .map((r) => ({ rune: r.name, ...r.correctedFrom! })),
       endpointToleranceReviewed: {
         tolerance: ENDPOINT_TOLERANCE,
+        previousTolerance: 0.51,
         question:
-          'The two-source endpoint cross-check calls the sources agreed when both endpoints are ' +
-          'within 0.51. The normaliser sweep flagged that as reading half a point of genuine ' +
-          'disagreement as "endpoints-agree". Is it defensible?',
+          'The two-source endpoint cross-check used to call the sources agreed when both endpoints ' +
+          'were within 0.51. The normaliser sweep flagged that as reading half a point of genuine ' +
+          'disagreement as "endpoints-agree". Was it defensible?',
         whatTheTwoSidesActuallyAre:
           'Not two measurements of one quantity. The wiki side is a FORMULA this census evaluates ' +
           'at level 1 and level 18 (e.g. "2 + (20-2)/17*(x-1)"); the Data Dragon side is the ' +
-          'number Riot PRINTS after rounding it for display. A tolerance was put there to absorb ' +
+          'number Riot PRINTS after rounding it for display. The tolerance was there to absorb ' +
           'that rounding.',
         answer:
-          'DEFENSIBLE, AND MEASURED RATHER THAN ARGUED — the tolerance is currently deciding ' +
-          'NOTHING. Every rune the check calls "endpoints-agree" agrees EXACTLY: the largest gap ' +
-          'among them is 0. The one rune that disagrees, Deathfire Touch, is out by 1.5 at the low ' +
-          'end and 6 at the high end — an order of magnitude above the tolerance, so no plausible ' +
-          'tightening would change its verdict either. Nothing in the live population sits in the ' +
-          'band between 0 and 0.51, which is the band the sweep was worried about.',
-        theRecommendation:
-          'A DECISION FOR THE LEAD, NOT TAKEN HERE. Because no gap uses any of it, the tolerance ' +
-          'could be dropped to near zero today with no verdict moving — and a future half-point ' +
-          'disagreement would then be SURFACED instead of absorbed. The cost is the opposite ' +
-          'error: a display-rounding artifact would be reported as a source disagreement and ' +
-          'someone would have to read it. Since this census surfaces rather than reconciles, that ' +
-          'is a cheap error and the tighter tolerance is probably right — but it changes what "the ' +
-          'sources agree" means, so it is raised rather than made.',
+          'IT WAS DECIDING NOTHING, AND THAT WAS MEASURED RATHER THAN ARGUED. Every rune the check ' +
+          'calls "endpoints-agree" agrees EXACTLY: the largest gap among them is 0, at full float ' +
+          'precision (`largestRawGapAmongAgreeing`) and not merely after rounding for display. The ' +
+          'one rune that disagrees, Deathfire Touch, is out by 1.5 at the low end and 6 at the ' +
+          'high end — nine orders of magnitude clear of either tolerance, so no tightening changes ' +
+          'its verdict either. Nothing in the live population sat in the band between 0 and 0.51, ' +
+          'which is the band the sweep was worried about.',
+        decision:
+          'DROPPED TO 1e-9 ON 2026-08-15. The project owner\'s ruling, applied here: a tolerance ' +
+          'absorbing a class of disagreement it has never had to decide is worth less than having ' +
+          'a future half-point difference SURFACE. The cost is accepted with it — a display- ' +
+          'rounding artifact would now be reported as a source disagreement and a person would ' +
+          'have to read it. This census surfaces rather than reconciles, so that is the cheap ' +
+          'direction to be wrong in.',
+        whyNotExactlyZero:
+          'BECAUSE EXACT EQUALITY IS BRITTLE, MEASURED RATHER THAN ASSUMED. The wiki side is ' +
+          'arithmetic THIS FILE performs, and in IEEE 754 double precision "a + (b-a)/17*(x-1)" ' +
+          'does not always land exactly on b at x=18. Over 25,000,000 linear progressions with ' +
+          'one-decimal endpoints from 0.0 to 500.0, 16.78% carry a non-zero float error and the ' +
+          'largest is 7.99e-14 — "276.7 + (4.1-276.7)/17*(x-1)" reads 4.10000000000008. A second ' +
+          'sweep over 116,116,029 progressions with divisors 2 to 30 agrees: largest error ' +
+          '5.68e-14. An exact test would report a source disagreement for about one in six future ' +
+          'progressions with a decimal endpoint, with nothing in the sources for the reader to ' +
+          'find. 1e-9 is ~12,500x that largest measured error, and at least 1,000,000x smaller ' +
+          'than the finest difference either source can express (both print a few decimals at ' +
+          'most, so the smallest statable real disagreement is around 0.001).',
+        verdictsThatMovedWithIt:
+          'NONE. The ten agreeing runes agree at 0 and still agree; Deathfire Touch disagrees by ' +
+          '1.5 and 6 and still disagrees. Re-run and compared row by row against the 0.51 run.',
         // MEASURED, NOT ARGUED. If any live gap sits near the tolerance, the tolerance is load-
         // bearing and the argument above is worthless.
         measuredGaps: rows
@@ -1816,6 +1884,8 @@ async function main(): Promise<void> {
             verdict: r.crossCheck!.verdict,
             low: r.crossCheck!.gap!.low,
             high: r.crossCheck!.gap!.high,
+            rawLow: r.crossCheck!.gapRaw!.low,
+            rawHigh: r.crossCheck!.gapRaw!.high,
           }))
           .sort((a, b) => Math.max(b.low, b.high) - Math.max(a.low, a.high)),
         largestGapAmongAgreeing: Math.max(
@@ -1824,15 +1894,23 @@ async function main(): Promise<void> {
             .filter((r) => r.crossCheck?.verdict === 'endpoints-agree' && r.crossCheck.gap)
             .map((r) => Math.max(r.crossCheck!.gap!.low, r.crossCheck!.gap!.high)),
         ),
+        largestRawGapAmongAgreeing: Math.max(
+          0,
+          ...rows
+            .filter((r) => r.crossCheck?.verdict === 'endpoints-agree' && r.crossCheck.gapRaw)
+            .map((r) => Math.max(r.crossCheck!.gapRaw!.low, r.crossCheck!.gapRaw!.high)),
+        ),
         headroom:
-          'The verdict to read off `largestGapAmongAgreeing`: how much of the 0.51 any agreeing ' +
-          'rune actually uses. A figure near 0 means the tolerance decides nothing and could be ' +
-          'tightened at no cost; a figure near 0.5 means it is deciding outcomes and must be ' +
-          're-argued from the source rather than kept.',
-        notChanged:
-          'Left at 0.51 in this run. Changing a tolerance is changing what "the sources agree" ' +
-          'means, and it should be done against the measurement above rather than because the ' +
-          'number looks untidy. The gaps are now published so that decision has data behind it.',
+          'Read off `largestRawGapAmongAgreeing`, NOT the rounded one: how much of the tolerance ' +
+          'any agreeing rune actually uses, before any rounding for display. The rounded figure ' +
+          'cannot answer this — `toFixed(4)` prints 0 for a gap of 3.6e-15, so a file showing only ' +
+          'it would claim exact agreement for a comparison exact equality FAILS. A raw figure at 0 ' +
+          'means the tolerance decides nothing; a figure approaching 1e-9 means float noise is ' +
+          'reaching it and the sweep in rune-census.ts must be re-run before the value is trusted.',
+        whatWouldReopenThis:
+          'A raw gap that is neither 0 nor below 1e-13. Below 1e-13 it is this file\'s own ' +
+          'arithmetic and the tolerance is doing its job; anything larger is the two sources ' +
+          'differing, and belongs in a report for a person to read rather than in a tolerance.',
       },
     },
     rows,
@@ -1878,8 +1956,8 @@ async function main(): Promise<void> {
   );
   console.log(`    failures                           ${markupGuardFailures.join(', ') || 'none'}`);
   console.log(
-    `\n  ENDPOINT TOLERANCE ${ENDPOINT_TOLERANCE} — largest gap among agreeing runes: ` +
-      `${census.integrity.endpointToleranceReviewed.largestGapAmongAgreeing}`,
+    `\n  ENDPOINT TOLERANCE ${ENDPOINT_TOLERANCE} (was 0.51 until 2026-08-15) — largest RAW gap ` +
+      `among agreeing runes: ${census.integrity.endpointToleranceReviewed.largestRawGapAmongAgreeing}`,
   );
   console.log(`\n  written to public/data/rune-census.json\n`);
 }

@@ -140,6 +140,16 @@
   border: var(--border-steel);
   border-radius: var(--radius-panel);
   padding: var(--space-4);
+  /* DESIGN-AUDIT item 3, the instrument details. `--elev-1` was defined in tokens.css and
+     referenced by NOTHING — the only shadow the whole product rendered was `--elev-2`, twice.
+     DESIGN.md §5 calls this "a barely-raised panel" whose top inset highlight reads as a machined
+     edge, and the audit's judgement is that that 1px inset is what makes a surface read as milled
+     metal rather than as a card. It is the cheapest thing in the file and it is the difference
+     between "correct" and "Bench Test".
+     THE RULE, so this is mechanical rather than per-element taste: a raised panel is
+     `--bg-panel` PLUS `--radius-panel`. Both halves are needed — `--bg-panel` alone also selects
+     CONTROLS, which take `--radius-control` and must never carry a shadow. */
+  box-shadow: var(--elev-1);
 }
 
 /* A refusal is the one thing on this page that must not be skimmed past, so it takes the

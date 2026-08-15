@@ -86,13 +86,29 @@
   padding-block-start: var(--space-3);
 }
 
-/* Vertical padding widens the pointer target well past the native checkbox, which matters at
-   375px. The label is `htmlFor`-bound, so the whole line is the target, not just the box. */
+/* THE WHOLE ROW IS ONE POINTER TARGET, and it is a <label> element for that reason —
+   WCAG 2.2 AA 2.5.8, and `../target-size-register.test.ts` is where it is recorded.
+
+   THIS COMMENT USED TO CLAIM THE ROW WAS ALREADY THE TARGET. It said vertical padding widened
+   the target past the native checkbox and that "the whole line is the target, not just the box".
+   MEASURED in a real browser at 375px on /calculator/ with the default Garen defender, 2026-08-15,
+   that was false in every part: the box was a <div> with no handler, so `elementFromPoint`
+   returned it at the gap, at the trailing padding and at the top edge and a click there changed
+   nothing. `htmlFor` makes the LABEL a target, never the line. The two live targets were the
+   checkbox at 13 x 13.00px and the text at 141.63 x 22.50px, 11px apart — under 24px on the block
+   axis, both of them, inside a 293 x 30.50px box that was dead.
+
+   Wrapping is the fix rather than growing anything: the row already measured 30.50px on the block
+   axis, so the pass costs NO layout — nothing moved by a pixel. `min-block-size` makes that
+   structural instead of incidental, because the 30.50px is line-height plus padding and would
+   otherwise follow the type down if it ever changed. */
 .defences__control {
   display: flex;
   align-items: baseline;
   gap: var(--space-2);
   padding-block: var(--space-1);
+  min-block-size: var(--target-min);
+  cursor: pointer;
 }
 
 .defences__check {
@@ -114,15 +130,17 @@
   font-weight: var(--weight-body-medium);
   color: var(--text-primary);
   overflow-wrap: break-word;
-  cursor: pointer;
+  /* No `cursor` here. The row above is the label and carries it, so the whole target shows one
+     cursor rather than the text alone showing it — which was the old visual lie about where the
+     target was. */
 }
 
 /* An ability with nothing statable carries no control, so its name is not a label. Muted,
-   because it is a heading for a refusal rather than something to act on. */
+   because it is a heading for a refusal rather than something to act on. It is a <p> outside
+   any `.defences__control`, so it inherits no pointer cursor and needs no reset. */
 .defences__label--static {
   margin: 0;
   color: var(--text-secondary);
-  cursor: auto;
 }
 
 .defences__detail {

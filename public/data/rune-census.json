@@ -2,7 +2,7 @@
   "provenance": {
     "source": "Riot Data Dragon runesReforged.json (which runes exist, and prose values); League of Legends Wiki Template:Rune data <Name>, one page per rune (values in {{as}}/{{pp}} markup)",
     "patch": "16.16.1",
-    "fetched": "2026-08-15T21:05:32.653Z",
+    "fetched": "2026-08-15T22:24:48.085Z",
     "urls": {
       "patch": "https://ddragon.leagueoflegends.com/api/versions.json",
       "runes": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/runesReforged.json",
@@ -362,82 +362,108 @@
       }
     ],
     "endpointToleranceReviewed": {
-      "tolerance": 0.51,
-      "question": "The two-source endpoint cross-check calls the sources agreed when both endpoints are within 0.51. The normaliser sweep flagged that as reading half a point of genuine disagreement as \"endpoints-agree\". Is it defensible?",
-      "whatTheTwoSidesActuallyAre": "Not two measurements of one quantity. The wiki side is a FORMULA this census evaluates at level 1 and level 18 (e.g. \"2 + (20-2)/17*(x-1)\"); the Data Dragon side is the number Riot PRINTS after rounding it for display. A tolerance was put there to absorb that rounding.",
-      "answer": "DEFENSIBLE, AND MEASURED RATHER THAN ARGUED — the tolerance is currently deciding NOTHING. Every rune the check calls \"endpoints-agree\" agrees EXACTLY: the largest gap among them is 0. The one rune that disagrees, Deathfire Touch, is out by 1.5 at the low end and 6 at the high end — an order of magnitude above the tolerance, so no plausible tightening would change its verdict either. Nothing in the live population sits in the band between 0 and 0.51, which is the band the sweep was worried about.",
-      "theRecommendation": "A DECISION FOR THE LEAD, NOT TAKEN HERE. Because no gap uses any of it, the tolerance could be dropped to near zero today with no verdict moving — and a future half-point disagreement would then be SURFACED instead of absorbed. The cost is the opposite error: a display-rounding artifact would be reported as a source disagreement and someone would have to read it. Since this census surfaces rather than reconciles, that is a cheap error and the tighter tolerance is probably right — but it changes what \"the sources agree\" means, so it is raised rather than made.",
+      "tolerance": 1e-9,
+      "previousTolerance": 0.51,
+      "question": "The two-source endpoint cross-check used to call the sources agreed when both endpoints were within 0.51. The normaliser sweep flagged that as reading half a point of genuine disagreement as \"endpoints-agree\". Was it defensible?",
+      "whatTheTwoSidesActuallyAre": "Not two measurements of one quantity. The wiki side is a FORMULA this census evaluates at level 1 and level 18 (e.g. \"2 + (20-2)/17*(x-1)\"); the Data Dragon side is the number Riot PRINTS after rounding it for display. The tolerance was there to absorb that rounding.",
+      "answer": "IT WAS DECIDING NOTHING, AND THAT WAS MEASURED RATHER THAN ARGUED. Every rune the check calls \"endpoints-agree\" agrees EXACTLY: the largest gap among them is 0, at full float precision (`largestRawGapAmongAgreeing`) and not merely after rounding for display. The one rune that disagrees, Deathfire Touch, is out by 1.5 at the low end and 6 at the high end — nine orders of magnitude clear of either tolerance, so no tightening changes its verdict either. Nothing in the live population sat in the band between 0 and 0.51, which is the band the sweep was worried about.",
+      "decision": "DROPPED TO 1e-9 ON 2026-08-15. The project owner's ruling, applied here: a tolerance absorbing a class of disagreement it has never had to decide is worth less than having a future half-point difference SURFACE. The cost is accepted with it — a display- rounding artifact would now be reported as a source disagreement and a person would have to read it. This census surfaces rather than reconciles, so that is the cheap direction to be wrong in.",
+      "whyNotExactlyZero": "BECAUSE EXACT EQUALITY IS BRITTLE, MEASURED RATHER THAN ASSUMED. The wiki side is arithmetic THIS FILE performs, and in IEEE 754 double precision \"a + (b-a)/17*(x-1)\" does not always land exactly on b at x=18. Over 25,000,000 linear progressions with one-decimal endpoints from 0.0 to 500.0, 16.78% carry a non-zero float error and the largest is 7.99e-14 — \"276.7 + (4.1-276.7)/17*(x-1)\" reads 4.10000000000008. A second sweep over 116,116,029 progressions with divisors 2 to 30 agrees: largest error 5.68e-14. An exact test would report a source disagreement for about one in six future progressions with a decimal endpoint, with nothing in the sources for the reader to find. 1e-9 is ~12,500x that largest measured error, and at least 1,000,000x smaller than the finest difference either source can express (both print a few decimals at most, so the smallest statable real disagreement is around 0.001).",
+      "verdictsThatMovedWithIt": "NONE. The ten agreeing runes agree at 0 and still agree; Deathfire Touch disagrees by 1.5 and 6 and still disagrees. Re-run and compared row by row against the 0.51 run.",
       "measuredGaps": [
         {
           "rune": "Deathfire Touch",
           "verdict": "endpoints-disagree",
           "low": 1.5,
-          "high": 6
+          "high": 6,
+          "rawLow": 1.5,
+          "rawHigh": 6
         },
         {
           "rune": "Electrocute",
           "verdict": "endpoints-agree",
           "low": 0,
-          "high": 0
+          "high": 0,
+          "rawLow": 0,
+          "rawHigh": 0
         },
         {
           "rune": "Hail of Blades",
           "verdict": "endpoints-agree",
           "low": 0,
-          "high": 0
+          "high": 0,
+          "rawLow": 0,
+          "rawHigh": 0
         },
         {
           "rune": "Cheap Shot",
           "verdict": "endpoints-agree",
           "low": 0,
-          "high": 0
+          "high": 0,
+          "rawLow": 0,
+          "rawHigh": 0
         },
         {
           "rune": "Sudden Impact",
           "verdict": "endpoints-agree",
           "low": 0,
-          "high": 0
+          "high": 0,
+          "rawLow": 0,
+          "rawHigh": 0
         },
         {
           "rune": "Press the Attack",
           "verdict": "endpoints-agree",
           "low": 0,
-          "high": 0
+          "high": 0,
+          "rawLow": 0,
+          "rawHigh": 0
         },
         {
           "rune": "Aftershock",
           "verdict": "endpoints-agree",
           "low": 0,
-          "high": 0
+          "high": 0,
+          "rawLow": 0,
+          "rawHigh": 0
         },
         {
           "rune": "Shield Bash",
           "verdict": "endpoints-agree",
           "low": 0,
-          "high": 0
+          "high": 0,
+          "rawLow": 0,
+          "rawHigh": 0
         },
         {
           "rune": "Summon Aery",
           "verdict": "endpoints-agree",
           "low": 0,
-          "high": 0
+          "high": 0,
+          "rawLow": 0,
+          "rawHigh": 0
         },
         {
           "rune": "Arcane Comet",
           "verdict": "endpoints-agree",
           "low": 0,
-          "high": 0
+          "high": 0,
+          "rawLow": 0,
+          "rawHigh": 0
         },
         {
           "rune": "Scorch",
           "verdict": "endpoints-agree",
           "low": 0,
-          "high": 0
+          "high": 0,
+          "rawLow": 0,
+          "rawHigh": 0
         }
       ],
       "largestGapAmongAgreeing": 0,
-      "headroom": "The verdict to read off `largestGapAmongAgreeing`: how much of the 0.51 any agreeing rune actually uses. A figure near 0 means the tolerance decides nothing and could be tightened at no cost; a figure near 0.5 means it is deciding outcomes and must be re-argued from the source rather than kept.",
-      "notChanged": "Left at 0.51 in this run. Changing a tolerance is changing what \"the sources agree\" means, and it should be done against the measurement above rather than because the number looks untidy. The gaps are now published so that decision has data behind it."
+      "largestRawGapAmongAgreeing": 0,
+      "headroom": "Read off `largestRawGapAmongAgreeing`, NOT the rounded one: how much of the tolerance any agreeing rune actually uses, before any rounding for display. The rounded figure cannot answer this — `toFixed(4)` prints 0 for a gap of 3.6e-15, so a file showing only it would claim exact agreement for a comparison exact equality FAILS. A raw figure at 0 means the tolerance decides nothing; a figure approaching 1e-9 means float noise is reaching it and the sweep in rune-census.ts must be re-run before the value is trusted.",
+      "whatWouldReopenThis": "A raw gap that is neither 0 nor below 1e-13. Below 1e-13 it is this file's own arithmetic and the tolerance is doing its job; anything larger is the two sources differing, and belongs in a report for a person to read rather than in a tolerance."
     }
   },
   "rows": [
@@ -472,6 +498,10 @@
         "verdict": "endpoints-agree",
         "detail": "Read at level 1 and level 18, the wiki formula lands on the two numbers Data Dragon prints.",
         "gap": {
+          "low": 0,
+          "high": 0
+        },
+        "gapRaw": {
           "low": 0,
           "high": 0
         }
@@ -553,6 +583,10 @@
         "gap": {
           "low": 0,
           "high": 0
+        },
+        "gapRaw": {
+          "low": 0,
+          "high": 0
         }
       },
       "reading": "Damage type is stated and holdable. Data Dragon leaves the range unaxed; the wiki formula supplies it.",
@@ -591,6 +625,10 @@
         "verdict": "endpoints-agree",
         "detail": "Read at level 1 and level 18, the wiki formula lands on the two numbers Data Dragon prints.",
         "gap": {
+          "low": 0,
+          "high": 0
+        },
+        "gapRaw": {
           "low": 0,
           "high": 0
         }
@@ -664,6 +702,10 @@
         "verdict": "endpoints-agree",
         "detail": "Read at level 1 and level 18, the wiki formula lands on the two numbers Data Dragon prints.",
         "gap": {
+          "low": 0,
+          "high": 0
+        },
+        "gapRaw": {
           "low": 0,
           "high": 0
         }
@@ -1321,6 +1363,10 @@
         "gap": {
           "low": 0,
           "high": 0
+        },
+        "gapRaw": {
+          "low": 0,
+          "high": 0
         }
       },
       "reading": "Also carries an 8% damage amplifier as a rider on the same effect. Value and axis complete; only the type is unholdable.",
@@ -1799,6 +1845,10 @@
         "gap": {
           "low": 0,
           "high": 0
+        },
+        "gapRaw": {
+          "low": 0,
+          "high": 0
         }
       },
       "reading": "Holdable type, attributed bonus-health ratio. Data Dragon states the range with no axis; the wiki lets the progression template supply level.",
@@ -1947,6 +1997,10 @@
         "verdict": "endpoints-agree",
         "detail": "Read at level 1 and level 18, the wiki formula lands on the two numbers Data Dragon prints.",
         "gap": {
+          "low": 0,
+          "high": 0
+        },
+        "gapRaw": {
           "low": 0,
           "high": 0
         }
@@ -2193,6 +2247,10 @@
         "gap": {
           "low": 0,
           "high": 0
+        },
+        "gapRaw": {
+          "low": 0,
+          "high": 0
         }
       },
       "reading": "The one rune whose Data Dragon text names NO damage type at all — it just says \"dealing 10 - 50\". The wiki fills the gap and calls it adaptive.",
@@ -2235,6 +2293,10 @@
         "verdict": "endpoints-agree",
         "detail": "Read at level 1 and level 18, the wiki formula lands on the two numbers Data Dragon prints.",
         "gap": {
+          "low": 0,
+          "high": 0
+        },
+        "gapRaw": {
           "low": 0,
           "high": 0
         }
@@ -2312,6 +2374,10 @@
         "verdict": "endpoints-disagree",
         "detail": "The two sources do NOT land on the same endpoints. Surfaced, not reconciled — see the report.",
         "gap": {
+          "low": 1.5,
+          "high": 6
+        },
+        "gapRaw": {
           "low": 1.5,
           "high": 6
         }
@@ -2552,6 +2618,10 @@
         "verdict": "endpoints-agree",
         "detail": "Read at level 1 and level 18, the wiki formula lands on the two numbers Data Dragon prints.",
         "gap": {
+          "low": 0,
+          "high": 0
+        },
+        "gapRaw": {
           "low": 0,
           "high": 0
         }

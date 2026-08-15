@@ -296,7 +296,14 @@ export function DefenderDefences({
             return (
               <li className="defences__row" key={group.id}>
                 {group.toggleKeys.length > 0 ? (
-                  <div className="defences__control">
+                  // THE ROW IS THE TARGET, AND IT IS A <label> FOR THAT REASON (WCAG 2.2 AA
+                  // 2.5.8). It used to be a <div> holding a checkbox and a separate bound label,
+                  // and browser measurement at 375px showed why that fails: the div was 293 x
+                  // 30.50px and accepted no pointer anywhere, the checkbox was 13 x 13.00px and
+                  // the text 141.63 x 22.50px, with 11px of dead box between them. Both live
+                  // pieces were under 24px on the block axis. Wrapping makes the one box a
+                  // contiguous target and costs no layout at all.
+                  <label className="defences__control" htmlFor={controlId}>
                     <input
                       className="defences__check"
                       type="checkbox"
@@ -311,11 +318,12 @@ export function DefenderDefences({
                         control named by a bare letter, and "W" would be exactly that. The
                         condition is NOT in the name — it is up to 126 characters of the source's
                         own prose, which belongs in a description a reader reaches on focus
-                        rather than in a name read out every time the control is announced. */}
-                    <label className="defences__label" htmlFor={controlId}>
-                      {group.sourceLabel} was up
-                    </label>
-                  </div>
+                        rather than in a name read out every time the control is announced.
+
+                        A <span>, not a nested <label>: the row above is the label now, and a
+                        label inside a label is invalid and would split one target into two. */}
+                    <span className="defences__label">{group.sourceLabel} was up</span>
+                  </label>
                 ) : (
                   <p className="defences__label defences__label--static">{group.sourceLabel}</p>
                 )}

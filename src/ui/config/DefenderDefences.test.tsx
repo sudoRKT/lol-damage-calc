@@ -514,6 +514,51 @@ describe('defences/every control announces itself', () => {
     }
   });
 
+  it('THE WHOLE CONTROL BOX IS ONE TARGET, not a checkbox and a separate strip of text', () => {
+    // WCAG 2.2 AA 2.5.8, and the defect this encodes was MEASURED in a browser on 2026-08-15 at
+    // a 375px viewport, on /calculator/ with the default Garen defender:
+    //
+    //   `.defences__control`  293 x 30.50px — but a <div> with no handler, so DEAD everywhere.
+    //   the checkbox           13 x 13.00px — a target, and 11px under the 24px minimum on BOTH axes.
+    //   the <label>          141.63 x 22.50px — a target, 1.5px under on the block axis.
+    //   between them          11.00px of box that accepted no pointer at all.
+    //
+    // `document.elementFromPoint` returned the bare `.defences__control` div at the gap, at the
+    // trailing padding and at the top edge, and a click dispatched there changed nothing. The
+    // stylesheet's own comment claimed "the whole line is the target, not just the box"; `htmlFor`
+    // makes the LABEL a target, never the line, so the comment described an intention.
+    //
+    // jsdom computes no layout, so this asserts the STRUCTURE that makes the measured box one
+    // contiguous target: the element carrying `.defences__control` is itself the <label> bound to
+    // the checkbox. With the box dead, the two live pieces both fail on the block axis and no
+    // amount of padding on a div can rescue either.
+    cleanup();
+    render(
+      <DefenderDefences
+        championName="Lissandra"
+        entries={forChampion('Lissandra')}
+        entryState={{}}
+        onChange={() => {}}
+      />,
+    );
+    const boxes = screen.getAllByRole('checkbox');
+    expect(boxes.length).toBeGreaterThan(0);
+    const offenders: string[] = [];
+    for (const box of boxes) {
+      const control = box.closest('.defences__control');
+      if (!(control instanceof HTMLLabelElement)) {
+        offenders.push(`${box.id}: .defences__control is <${control?.tagName ?? 'missing'}>, not <label>`);
+        continue;
+      }
+      if (control.htmlFor !== box.id) {
+        offenders.push(`${box.id}: the control label is bound to "${control.htmlFor}"`);
+      }
+      // A label inside a label is invalid HTML and would give the row two overlapping targets.
+      if (control.querySelector('label')) offenders.push(`${box.id}: a nested <label> remains`);
+    }
+    expect(offenders).toEqual([]);
+  });
+
   it('mounting every one of the 87 champions renders without throwing', () => {
     // The broadest thing this suite can assert cheaply: no entry shape in the file breaks the
     // component. 87 champions, every conditional entry in the file.

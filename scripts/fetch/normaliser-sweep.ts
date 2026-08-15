@@ -289,18 +289,27 @@ export const SITES: NormaliserSite[] = [
     id: 'rune-endpoint-crosscheck-tolerance',
     where:
       'rune-census.ts:1058 evalFormula strips whitespace; :1177 strips a trailing "for N" clause',
-    comparedAt: 'rune-census.ts:1193 — Math.abs(low - ddLow) < 0.51 && Math.abs(high - ddHigh) < 0.51',
+    comparedAt:
+      'rune-census.ts — Math.abs(low - ddLow) < ENDPOINT_TOLERANCE && Math.abs(high - ddHigh) < ' +
+      'ENDPOINT_TOLERANCE, where ENDPOINT_TOLERANCE is 1e-9 (it was 0.51 until 2026-08-15)',
     removes:
-      'whitespace and a duration clause — neither carries a value. The risk here is the TOLERANCE, ' +
-      'not the text: half a point of genuine disagreement between the two sources reads as agreement',
+      'whitespace and a duration clause — neither carries a value. The risk here WAS the TOLERANCE, ' +
+      'not the text: at 0.51, half a point of genuine disagreement between the two sources read as ' +
+      'agreement. At 1e-9 no difference either source can express survives the comparison',
     removalCanCarryMeaning: false,
     comparison: 'source-vs-source',
-    strictComparisonFirst: false,
+    strictComparisonFirst: true,
     canInventADisagreement: false,
-    canHideADisagreement: true,
+    canHideADisagreement: false,
     measured:
-      'The tolerance is 0.51, chosen to absorb the wiki rounding its own displayed endpoints. Any ' +
-      'real difference below 0.51 is reported as "endpoints-agree".',
+      'THIS SWEEP\'S FINDING WAS ACTED ON. The tolerance was 0.51, chosen to absorb Data Dragon ' +
+      'rounding its own printed endpoints, and it was absorbing nothing: all 10 agreeing runes ' +
+      'agree at a raw gap of exactly 0, and the 1 disagreeing rune is out by 1.5 and 6. It is now ' +
+      '1e-9 and no verdict moved. Not 0, because the wiki side is arithmetic this pipeline ' +
+      'performs: over 25,000,000 one-decimal linear progressions, 16.78% carry a non-zero IEEE 754 ' +
+      'error, largest 7.99e-14 — so exact equality would INVENT a disagreement in about one case ' +
+      'in six. 1e-9 is ~12,500x that error and ~1,000,000x below the finest difference either ' +
+      'source can state.',
     liveDefect: null,
   },
   {

@@ -100,12 +100,49 @@ for (const key of ARRAYS) {
   }
 }
 
+// ═══ WHICH FIELDS DIFFER, BECAUSE "DIFFERS" IS NOT ONE SITUATION ═══
+//
+// Added 2026-08-15 after this script cried wolf. It reported NOT LANDED — "the copy did not take" —
+// for a proposal that differed from the live file by ONE PROSE STRING and zero numbers. That is a
+// true statement about bytes and a misleading one about the world: a merge that has landed and a
+// proposal that has since moved on both produce "they differ", and only one of them is a problem.
+//
+// So the verdict now names the KIND of difference. A difference confined to explanatory prose is
+// reported as exactly that, and does not claim the copy failed.
+const PROSE_FIELDS = new Set(['notes', 'gapReason', 'note', 'sourceSays', 'captureBlockedBy']);
+
+function differingFields(a: Entry, b: Entry): string[] {
+  const out: string[] = [];
+  for (const k of new Set([...Object.keys(a), ...Object.keys(b)])) {
+    if (JSON.stringify(a[k]) !== JSON.stringify(b[k])) out.push(k);
+  }
+  return out;
+}
+
+const changedFields = new Set<string>();
+for (const key of ARRAYS) {
+  const l = (live[key] ?? []) as Entry[];
+  const p = (proposal[key] ?? []) as Entry[];
+  const byName = new Map(l.map((e) => [name(e), e]));
+  for (const e of p) {
+    const other = byName.get(name(e));
+    if (other && JSON.stringify(other) !== JSON.stringify(e)) {
+      for (const f of differingFields(other, e)) changedFields.add(f);
+    }
+  }
+}
+
 console.log('');
 if (outstanding === 0 && onlyLive === 0) {
   console.log('  LANDED — every entry in the proposal is present in the live curated file.');
   console.log('  Re-pin the figures the merge moved, then run `npm test`.');
+} else if (changedFields.size > 0 && [...changedFields].every((f) => PROSE_FIELDS.has(f))) {
+  console.log(`  PROSE ONLY — the two files differ, and the ONLY fields that differ are ${[...changedFields].join(', ')}.`);
+  console.log('  No stored number moves. This is what a proposal that has moved on since the last');
+  console.log('  merge looks like, not a copy that failed. Merging it changes explanation, not data.');
 } else {
-  console.log(`  NOT LANDED — ${outstanding} proposal entr${outstanding === 1 ? 'y is' : 'ies are'} still missing from the live file.`);
-  console.log('  The copy did not take. Do NOT re-pin anything against this file.');
+  console.log(`  NOT LANDED — ${outstanding} proposal entr${outstanding === 1 ? 'y is' : 'ies are'} not present in the live file.`);
+  if (changedFields.size > 0) console.log(`  Fields that differ: ${[...changedFields].join(', ')}.`);
+  console.log('  Do NOT re-pin anything against this file until the copy has taken.');
   process.exitCode = 1;
 }
