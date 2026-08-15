@@ -5479,3 +5479,73 @@ by a test that existed.
 Everything in 62.1 is a PROPOSAL. `curated/curated-data.json` is guarded three ways and the unlock
 needs `chmod`, which `permissions.deny` refuses to every session. **Until the owner merges,
 Zoe E still serves 436.**
+
+---
+
+## 63. The check that runs the suite against a merge before it lands (2026-08-15)
+
+### 63.1 The failure it was built from
+
+The §62 merge was verified thoroughly and handed over with commands. The verification was real —
+the file's hash, its entry count, its component count, gate 8 over it, and the four abilities it was
+meant to fix, every one measured and every one correct. **The suite was green against the OLD file.
+Nothing ran it against the NEW one.**
+
+**Fifteen tests failed the moment it landed**, and the project owner found them rather than the
+session that handed over the commands. **Not one was a bad merge.** Every one was a check pinned to
+data the merge legitimately moved. But a person running four commands cannot tell that from a
+broken build, and being handed a red tree by someone who said it was green is the part that costs.
+
+**VERIFYING THE FILE IS NOT VERIFYING THE MERGE.** A merge changes the data a dozen tests measure,
+and the only way to know which is to run them against it.
+
+### 63.2 What it does
+
+`scripts/premerge-check.ts`, run as `npm run premerge:check [proposal] [--baseline file]`.
+
+It copies the repository into a throwaway directory, puts the proposed file where the curated one
+goes, regenerates the served per-champion ability files from it, and runs the real suite there.
+**Nothing in the working tree is touched and `/curated/` is never opened for writing.**
+
+The copy is what makes it honest: every path in this project resolves from the repository root, so
+a copied tree resolves entirely within itself. No test knows the tool exists, no loader needs an
+override hook, and a substitution cannot leak into a real run.
+
+**IT RUNS THE SUITE TWICE AND DIFFERENCES THE FAILURES.** Running once answers "what is red", which
+is the wrong question — a working tree mid-task has red tests that have nothing to do with any
+merge. So the baseline is measured first, in the same copy, and only tests that pass on the
+baseline and fail after are reported as the merge's doing. Tests already red are named separately
+so their number is never mistaken for a clean run, and tests the merge FIXES are named too.
+
+It guards itself, because the hooks cannot see inside a running script: it refuses to write unless
+the target resolves inside the temporary workspace and is not the real curated directory.
+
+### 63.3 Proved by replay, not assumed
+
+Run against the pre-merge file as baseline and the corrected file as the proposal, over the tree as
+it stood before any repair:
+
+**15 tests reported as caused by the merge — the exact fifteen — and 2 further tests correctly
+separated out as already failing and not the merge's doing.** Those 2 were in the rune work's
+source-quote table and nobody had noticed them.
+
+| what it named | count |
+|---|---:|
+| the three aggregate tests that asserted the BROKEN state | 3 |
+| the burndown's pinned census and its label headroom | 9 |
+| the capability figures | 1 |
+| the coverage recount | 1 |
+| the roster sweep, blind to the damage-over-time line | 1 |
+| **already red, not this merge** | **2** |
+
+### 63.4 Two defects in the tool itself, found by running it
+
+Neither would have been caught by reading it.
+
+- **It reported 0 failures while 9 tests were failing.** The parse looked for `FAIL` lines, which
+  the basic reporter does not print — its failures are `×` rows. A checking tool that silently
+  finds nothing is worse than no tool, so it now also treats "the run failed but nothing parsed" as
+  its own loud outcome rather than as a pass.
+- **It crashed on the first real run**, because skipping `build/` from the copy removed
+  `merge-refusals.json`, which `build-ability-files.ts` needs to carry the 18 gate-1 refusals into
+  the served files as named gaps (§53.2).

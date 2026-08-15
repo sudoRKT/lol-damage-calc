@@ -260,6 +260,31 @@ app is a pure static site — none of these start a server or database (§1).
 - Test (watch): `npm run test:watch`
 - Build: `npm run build` — typechecks, then emits the static site to `dist/`
 - Preview a build: `npm run preview`
+- **Before merging anything into `/curated/`: `npm run premerge:check`** — see below. It is not
+  optional and it is not slow; it is the difference between finding a moved figure before the
+  merge and after it.
+
+## Never hand over merge commands without running the pre-merge check
+
+**`npm run premerge:check` runs the whole suite against the curated file you are ABOUT to merge,
+and reports only what the merge would BREAK** — it measures a baseline first, in the same throwaway
+copy, and differences the two failure sets, so a working tree that is already red does not drown
+the answer.
+
+It exists because of a specific failure on 2026-08-15, and the failure is worth keeping because it
+was not carelessness. A merge was verified thoroughly: hash, entry count, component count, gate 8
+over the file, and the four abilities it was meant to fix, all measured, all correct. The suite was
+green — **against the old file.** Nothing ran it against the new one. **Fifteen tests failed the
+moment it landed**, and the project owner found them rather than the session that handed over the
+commands. Not one was a bad merge; every one was a check pinned to data the merge legitimately
+moved. But the person running the commands cannot tell those apart from a broken build, and being
+handed a red tree by someone who said it was green is the part that costs trust.
+
+**A merge changes the data a dozen tests measure.** Verifying the FILE is not verifying the MERGE.
+
+It was proved by replay rather than assumed to work: run against the pre-merge file as baseline and
+the corrected file as the proposal, it reports exactly those 15, and separately names 2 that were
+already failing and are not the merge's doing.
 
 ## Current state
 
