@@ -89,11 +89,33 @@ export interface CapabilityInputs {
 }
 
 /**
- * The defensive kinds the engine already has a step for. Anything else — immunity, a resistance
- * grant, a spell shield, a maximum-health grant — has no arm in the instance walk, so it could
- * not be applied even if it were published.
+ * The defensive kinds the engine already has a step for.
+ *
+ * ═══ CORRECTED 2026-08-15, AND IT WAS PUBLISHING A MISLEADING SUM ═══
+ *
+ * This set said `heal`, `shield`, `damage-reduction`, and the comment above it said a resistance
+ * grant "has no arm in the instance walk". **That was false.** `src/engine/defences.ts` switches on
+ * FIVE kinds — those three plus `resistance-grant` and `type-specific-reduction` — and resistance
+ * grants have five passing tests of their own.
+ *
+ * The consequence was not a wrong figure but a wrong RELATIONSHIP, which is harder to see.
+ * Measured over the stored population: 67 entries were both "ready" by this set and applied; 23
+ * were ready and not applied; and **10 more were applied while this set did not count them as
+ * ready** — every one a resistance grant. 67 + 10 = 77. So `defensiveApplied` was NOT a subset of
+ * `defensiveReadyToApply`, and `/checks/` invited a reader to subtract one from the other and read
+ * the difference as "entries the engine refused". That difference was a net of two populations.
+ *
+ * Both suites were green throughout, because each area held its own list. That is the cross-area
+ * class DATA-SOURCES §44 exists for, and `tests/cross-area-seams.test.ts` now runs the engine's
+ * own switch against this set so the two cannot drift again.
  */
-const DEFENSIVE_KINDS_WITH_A_STEP = new Set(['heal', 'shield', 'damage-reduction']);
+const DEFENSIVE_KINDS_WITH_A_STEP = new Set([
+  'heal',
+  'shield',
+  'damage-reduction',
+  'type-specific-reduction',
+  'resistance-grant',
+]);
 
 /** A component whose harvested label states a per-tick figure. The label is the wiki's own
  *  leveling-row name, so this is a stored fact rather than a reading of prose. */

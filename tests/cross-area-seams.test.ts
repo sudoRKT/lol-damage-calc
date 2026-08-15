@@ -841,3 +841,58 @@ describe('seam: scenario -> simulate -> interface, on the shipped data', () => {
     expect(outcome.result.incompleteContributors[0]!.reason.kind).toBe('permanent');
   });
 });
+
+// =========================================================================================
+// SEAM 6 — WHICH DEFENSIVE KINDS THE ENGINE CAN ACTUALLY APPLY
+//
+// Added 2026-08-15, from a real defect that both areas' suites were green through.
+//
+// `src/ui/coverage/capability.ts` publishes `defensiveReadyToApply` — how many stored defensive
+// effects "name something this engine already has a step for" — and it held its OWN list of those
+// kinds: heal, shield, damage-reduction. Its comment stated that a resistance grant "has no arm in
+// the instance walk". `src/engine/defences.ts` switches on FIVE kinds, resistance grants among
+// them, with five passing tests of their own.
+//
+// THE HARM WAS NOT A WRONG NUMBER. It was a wrong RELATIONSHIP, which is harder to see and was on
+// screen: 67 entries were ready and applied, 23 were ready and not applied, and 10 MORE were
+// applied while the interface did not count them as ready. 67 + 10 = 77. So `defensiveApplied`
+// was not a subset of `defensiveReadyToApply`, and `/checks/` invited a reader to subtract one
+// from the other and read the difference as "entries the engine refused". It was a net of two
+// different populations, and the true refused count is 23.
+//
+// This is the seam class exactly: an area's tests run over its own output, so two areas can hold
+// opposite rules about one shape with both suites passing. The engine's switch is the authority
+// because it is the thing that actually runs.
+describe('seam: engine defensive arms -> coverage capability', () => {
+  /** Every `case '...'` inside `applyDefensiveEffect`'s switch — the engine's own list. */
+  function engineArms(): string[] {
+    const src = readFileSync(join(ROOT, 'src', 'engine', 'defences.ts'), 'utf8');
+    return [...new Set([...src.matchAll(/^\s*case '([a-z-]+)':/gm)].map((m) => m[1]!))];
+  }
+
+  /** The set `capability.ts` uses to decide what counts as ready. */
+  function capabilityKinds(): string[] {
+    const src = readFileSync(join(ROOT, 'src', 'ui', 'coverage', 'capability.ts'), 'utf8');
+    const block = src.split('const DEFENSIVE_KINDS_WITH_A_STEP = new Set(')[1]!.split(');')[0]!;
+    return [...new Set([...block.matchAll(/'([a-z-]+)'/g)].map((m) => m[1]!))];
+  }
+
+  it('is reading something — neither list is empty', () => {
+    // Without this the comparison passes by finding nothing on both sides.
+    expect(engineArms().length).toBeGreaterThanOrEqual(5);
+    expect(capabilityKinds().length).toBeGreaterThanOrEqual(5);
+  });
+
+  it('every kind the engine has an arm for is counted as ready by the interface', () => {
+    const missing = engineArms().filter((k) => !capabilityKinds().includes(k));
+    expect(missing).toEqual([]);
+  });
+
+  it('and the interface claims no kind the engine cannot apply', () => {
+    // The other direction matters just as much: claiming readiness for a kind with no arm would
+    // publish a figure that can never be reached, which reads as engine work outstanding when
+    // the truth would be that the claim was wrong.
+    const invented = capabilityKinds().filter((k) => !engineArms().includes(k));
+    expect(invented).toEqual([]);
+  });
+});

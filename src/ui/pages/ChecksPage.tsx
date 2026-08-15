@@ -281,9 +281,14 @@ export function ChecksPage() {
           {CAPABILITY.defensiveReadyToApply} of them state a number, are complete, and name
           something this engine already has a step for — and{' '}
           <strong>{CAPABILITY.defensiveApplied} actually change a figure</strong>, measured by
-          switching each on alone against a level-11 defender. The gap between those two counts is
-          entries refused for a reason the shape alone could not show: the defence recurs over a
-          duration, or a ratio the source attributes to nobody. Every one is conditional — it
+          switching each on alone against a level-11 defender. The{' '}
+          {CAPABILITY.defensiveReadyToApply - CAPABILITY.defensiveApplied} between those two counts
+          are refused for a reason the shape alone could not show, and one reason is most of them:{' '}
+          <strong>18 recur over a duration</strong> and the entry never says whether the figure it
+          stores is one occurrence or the whole of it, so multiplying it could count it eight times
+          over. The rest read a share of damage the defender deals, which cannot exist because the
+          defender does not act; amplify other healing, which has no step; or read “the target”,
+          which on a defensive effect is ambiguous. Every one is conditional — it
           depends on whether the defender had it up when the combo landed, and you state that.
           A defence you have not switched on is treated as down: assuming otherwise would credit
           a build with a defence nobody chose.
