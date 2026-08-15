@@ -33,6 +33,7 @@ import type {
 } from '../types';
 import type { IncompleteReason, Result, StatBlock } from '../types/result';
 import { resolveAdaptiveForce } from './adaptive';
+import { resolveAttackSpeed } from './attack-speed';
 import { championStatAtLevel } from './champion-stats';
 import { runCombo, type ComboPlan, type PlannedInstance } from './combo';
 import { BASE_CRITICAL_STRIKE_MULTIPLIER } from './crit';
@@ -338,7 +339,23 @@ export function buildStatBlock(
     // THE BASE MULTIPLIER ONLY. Item modifiers to critical damage live in item PASSIVES, which
     // are curated and not yet merged, so applying none is honest — and it is disclosed.
     critDamage: BASE_CRITICAL_STRIKE_MULTIPLIER,
-    attackSpeed: s.as_base * (1 + items.totals.percentAttackSpeed),
+    // ATTACK SPEED IS y = mx + b, CAPPED — see attack-speed.ts for the source and the arithmetic.
+    //
+    // This line read `s.as_base * (1 + items.totals.percentAttackSpeed)` until 2026-08-15, which
+    // was wrong three ways: no level term at all (so every champion above level 1 was shown its
+    // level-1 attack speed), bonuses multiplied by the base instead of by the ratio, and neither
+    // cap applied. `as_lvl` and `as_ratio` were fetched, schema-required and bounds-checked, and
+    // nothing in `src/` read either of them.
+    //
+    // NOT AN ATTACK COUNT (SPECIFICATION §3.2). This is a displayed statistic. Nothing derives how
+    // many basic attacks fit into a window from it, and nothing may.
+    attackSpeed: resolveAttackSpeed({
+      base: s.as_base,
+      ratio: s.as_ratio,
+      growthPercentPerLevel: s.as_lvl,
+      level,
+      bonusFromSources: items.totals.percentAttackSpeed,
+    }).total,
     adaptiveType: adaptive.granted === 'Physical' ? 'physical' : 'magic',
     // Penetration comes from item passives and runes, neither of which is merged yet.
     penetration: {
@@ -1253,6 +1270,14 @@ export const SIMULATION_EXCLUSIONS: readonly string[] = [
     'from item passives and runes',
   'Movement speed, health regeneration and attack-speed effects on the number of attacks — the ' +
     'engine models sequence rather than elapsed time',
+  // ADDED 2026-08-15 WITH THE ATTACK-SPEED FIX, and only because that fix introduced a cap that
+  // can visibly clip a figure. A number held at a ceiling with nothing to say why is the kind of
+  // plausible wrong number this project exists to prevent.
+  'Effects that raise or remove the 3.003 attack speed ceiling — the wiki’s attack speed article ' +
+    '(read 2026-08-15) states the ceiling as an exact figure and notes that "some effects are ' +
+    'allowed to modify these values", naming a few champion abilities and one rune. None of them ' +
+    'is harvested, so a build carrying one is shown 3.003 where the game would allow more. The ' +
+    'figure is a displayed statistic either way: no damage number and no verdict reads it',
 
   // ═══ SUSTAIN: WHAT IS CARRIED AND WHAT IS NOT (§3.7, added 2026-08-15) ═══
   //

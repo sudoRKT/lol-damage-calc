@@ -203,6 +203,15 @@ export function fixtureChampion(opts: {
   resource?: string;
   manaBase?: number;
   manaPerLevel?: number;
+  /**
+   * The three attack-speed figures, defaulting to a champion whose ratio equals its base and whose
+   * attack speed does not grow — so every fixture written before these options existed keeps the
+   * attack speed it always had. A test exercising attack speed states all three (attack-speed.ts).
+   * `asPerLevel` is in PERCENTAGE POINTS, matching the stored `as_lvl`.
+   */
+  asBase?: number;
+  asPerLevel?: number;
+  asRatio?: number;
 }): Champion {
   return {
     apiname: opts.apiname,
@@ -219,9 +228,9 @@ export function fixtureChampion(opts: {
       mr_lvl: opts.magicResistPerLevel ?? 0,
       ad_base: opts.adBase ?? 0,
       ad_lvl: opts.adPerLevel ?? 0,
-      as_base: 0.625,
-      as_lvl: 0,
-      as_ratio: 0.625,
+      as_base: opts.asBase ?? 0.625,
+      as_lvl: opts.asPerLevel ?? 0,
+      as_ratio: opts.asRatio ?? opts.asBase ?? 0.625,
       range: 125,
       rangetype: 'Melee',
       adaptivetype: 'Physical',
