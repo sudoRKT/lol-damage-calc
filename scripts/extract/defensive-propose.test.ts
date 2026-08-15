@@ -18,13 +18,16 @@ import {
   KIND_MAP,
   gateDefensiveSchema,
   labelRefusal,
+  overTimeFigureIsUsable,
   parseDefensiveRow,
   proposeForPage,
+  recurringFigureCensus,
   releasedBy,
   roundTripDefensive,
   type ProposalSource,
   type Refusal,
 } from './defensive-propose.ts';
+import { SHAPES_READ } from './defensive-shapes.ts';
 import type { CachedPage } from './page-cache.ts';
 import { gateSchema } from '../../src/types/validate-curated.ts';
 
@@ -518,6 +521,80 @@ describe('proposing an entry', () => {
     expect(run.proposals[0]!.overTime?.sourceSays).toMatch(/every 0\.5 seconds/);
     // No count is invented: the source states a duration and an interval, not a number of ticks.
     expect(run.proposals[0]!.overTime?.totalInstances).toBeUndefined();
+    // READ 2026-08-15: the row is one tick of a channel with no duration anywhere on the page.
+    expect(run.proposals[0]!.overTime?.figureIs).toBe('per-instance');
+    // So no whole-duration total can ever be formed, and the entry says so permanently.
+    expect(run.proposals[0]!.verification).toBe('incomplete');
+    expect(run.proposals[0]!.unresolvable?.[0]!.field).toBe('overTime.totalInstances');
+  });
+
+  // ═══ THE 18, AND THE FIELD THAT DECIDES THEM ═══
+  //
+  // Master Yi W is the worked example the contract itself cites: four rows, two of them the same
+  // heal read two ways, differing in nothing an entry could carry until `figureIs` existed.
+  it('tells one tick from the whole channel on the page that stores both', () => {
+    const yi = page(
+      'Master Yi',
+      'W',
+      'Meditate',
+      '{{Ability data\n|description = Master Yi channels for up to 4 seconds, healing himself ' +
+        'every 0.5 seconds.\n' +
+        '|leveling = {{st|Minimum Heal Per Tick|{{ap|15 to 55}} {{as|(+ 12.5% AP)}}' +
+        '|Maximum Heal Per Tick|{{ap|15*2 to 55*2}} {{as|(+ 25% AP)}}}}\n' +
+        '{{st|Minimum Total Heal|{{ap|15*8 to 55*8}} {{as|(+ 100% AP)}}' +
+        '|Maximum Total Heal|{{ap|15*8*2 to 55*8*2}} {{as|(+ 200% AP)}}}}\n}}',
+    );
+    const run = proposeForPage(
+      yi,
+      {
+        key: 'Master Yi/W/Meditate',
+        kinds: ['heal'],
+        activation: 'conditional',
+        activationEvidence: 'Active; channelled',
+      },
+      OPTS,
+    );
+    const byLabel = new Map(run.proposals.map((p) => [p.label, p]));
+    expect(byLabel.get('Minimum Heal Per Tick')!.overTime?.figureIs).toBe('per-instance');
+    expect(byLabel.get('Maximum Heal Per Tick')!.overTime?.figureIs).toBe('per-instance');
+    expect(byLabel.get('Minimum Total Heal')!.overTime?.figureIs).toBe('full-duration');
+    expect(byLabel.get('Maximum Total Heal')!.overTime?.figureIs).toBe('full-duration');
+
+    // The whole-channel rows are 8x the per-tick rows at every rank — which is what makes storing
+    // the wrong one an eightfold error rather than a rounding one.
+    const tick = byLabel.get('Minimum Heal Per Tick')!.value as { perRank: number[] };
+    const total = byLabel.get('Minimum Total Heal')!.value as { perRank: number[] };
+    expect(total.perRank).toEqual(tick.perRank.map((v) => v * 8));
+
+    // AND THE CONSEQUENCE. The whole-duration rows are usable; the per-tick rows state one
+    // occurrence with no count of occurrences, so they may claim no better than 'incomplete'.
+    expect(byLabel.get('Minimum Total Heal')!.verification).toBe('derived');
+    expect(byLabel.get('Maximum Total Heal')!.verification).toBe('derived');
+    expect(byLabel.get('Minimum Heal Per Tick')!.verification).toBe('incomplete');
+    expect(byLabel.get('Maximum Heal Per Tick')!.verification).toBe('incomplete');
+  });
+
+  it('leaves the figure unstated where the page contradicts its own per-tick row', () => {
+    // Soraka Q. The page's notes say Rejuvenation's twelve ticks heal about 15% of the heal each
+    // for the first four, 5.5% for the next four and 4.5% for the last four — so the row's even
+    // twelfth is the amount of NO occurrence. Neither reading is taken.
+    const soraka = SHAPES_READ.find((s) => s.key === 'Soraka/Q/Starcall')!;
+    const perTick = soraka.rows.find((r) => r.label === 'Heal per Tick')!;
+    expect(perTick.overTime?.figureIs).toBeUndefined();
+    expect(perTick.overTime?.figureIsUnread).toMatch(/twelve ticks of THREE different sizes/);
+    const total = soraka.rows.find((r) => r.label === 'Total Heal')!;
+    expect(total.overTime?.figureIs).toBe('full-duration');
+  });
+
+  it('every reading that records a recurrence says what its figure covers, or why it cannot', () => {
+    // THE RULE THIS ENFORCES: an unfilled `figureIs` must be distinguishable from an unfinished
+    // reading. A row with neither the figure nor a stated reason is a reading somebody abandoned.
+    const unexplained = SHAPES_READ.flatMap((s) =>
+      s.rows
+        .filter((r) => r.overTime && !r.overTime.figureIs && !r.overTime.figureIsUnread)
+        .map((r) => `${s.key} "${r.label}"`),
+    );
+    expect(unexplained).toEqual([]);
   });
 
   it('drops a row granting to somebody who is not the defender, and says so', () => {
@@ -621,6 +698,75 @@ describe('gate D1 — the schema gate for defensive entries', () => {
   it('refuses a conditional effect that does not state its condition', () => {
     const { condition, ...noCondition } = base;
     expect(gateDefensiveSchema([noCondition as CuratedDefensiveEffect]).failed).toBe(1);
+  });
+
+  it("refuses a recurring entry that claims 'derived' without saying what its figure covers", () => {
+    const r = gateDefensiveSchema([
+      { ...base, overTime: { sourceSays: 'shields every 0.25 seconds over the duration' } },
+    ]);
+    expect(r.failed).toBe(1);
+    expect(r.findings[0]!.message).toMatch(/one occurrence or the whole duration/);
+  });
+
+  it("refuses a per-instance figure claiming 'derived' with no count of occurrences", () => {
+    const r = gateDefensiveSchema([
+      {
+        ...base,
+        overTime: { sourceSays: 'heals every 0.5 seconds', figureIs: 'per-instance' },
+      },
+    ]);
+    expect(r.failed).toBe(1);
+    expect(r.findings[0]!.message).toMatch(/no whole-duration total can be formed/);
+  });
+
+  it('accepts a whole-duration figure, which is complete on its own', () => {
+    const r = gateDefensiveSchema([
+      {
+        ...base,
+        overTime: { sourceSays: 'the maximum shield is reached over the duration', figureIs: 'full-duration' },
+      },
+    ]);
+    expect(r.failed).toBe(0);
+  });
+
+  it('accepts a per-instance figure once the source states how many times it lands', () => {
+    const r = gateDefensiveSchema([
+      {
+        ...base,
+        overTime: {
+          sourceSays: 'launch 5 magical waves ... allied champions hit by the waves are healed',
+          figureIs: 'per-instance',
+          totalInstances: 5,
+        },
+      },
+    ]);
+    expect(r.failed).toBe(0);
+  });
+
+  it('never lets an incomplete entry be counted as usable, whichever arm it falls in', () => {
+    expect(overTimeFigureIsUsable(undefined)).toBe(true);
+    expect(overTimeFigureIsUsable({ figureIs: 'full-duration' })).toBe(true);
+    expect(overTimeFigureIsUsable({ figureIs: 'per-instance' })).toBe(false);
+    expect(overTimeFigureIsUsable({ figureIs: 'per-instance', totalInstances: 8 })).toBe(true);
+    expect(overTimeFigureIsUsable({})).toBe(false);
+  });
+
+  it('counts recurring entries by what their figure covers, and names any left unexplained', () => {
+    const census = recurringFigureCensus([
+      { ...base, overTime: { sourceSays: 'a', figureIs: 'full-duration' } },
+      { ...base, champion: 'Janna', overTime: { sourceSays: 'b', figureIs: 'per-instance' } },
+      { ...base, champion: 'Yuumi', overTime: { sourceSays: 'c', figureIs: 'per-instance', totalInstances: 5 } },
+      { ...base, champion: 'Soraka', overTime: { sourceSays: 'd' } },
+      { ...base, champion: 'Garen' },
+    ]);
+    expect(census.recurring).toBe(4);
+    expect(census.fullDuration).toHaveLength(1);
+    expect(census.perInstanceNoCount).toHaveLength(1);
+    expect(census.perInstanceWithCount).toHaveLength(1);
+    expect(census.figureAbsent).toHaveLength(1);
+    // Not in SHAPES_READ, so nothing states why its figure is absent — and the census says so
+    // rather than letting it pass as read.
+    expect(census.unreadWithNoStatedReason).toHaveLength(1);
   });
 });
 

@@ -941,6 +941,77 @@ export const PER_TICK_READS: readonly PerTickRead[] = [
     marked: true,
     note: "the 1-second linger is the only duration the source fixes; the in-flight linger resets its remaining duration and has no stated length, so 4 is the count for the expanded bead",
   },
+
+  // ═══ THE TWO ADDED 2026-08-15, AND WHY THEY WERE NOT HERE ═══
+  //
+  // DATA-SOURCES §58.3 marked four entries as recurring before this table existed, on four
+  // sentences a person read. Their quotes were written as SUMMARIES — "the page states the figure
+  // per tick across the channel and calls it damage over time" — which is a reader's description
+  // of a sentence rather than the sentence. Both of these are among the 20 entries a per-tick
+  // component holds back, so both were opened again and read properly: the sentence, the interval,
+  // the duration, and the row's own arithmetic. Neither number moved. What changed is that the
+  // quote is now checkable, and `verifyQuotes` checks it.
+  //
+  // Fizz W and Teemo E are the other two of the four. They are `derived` and publishing today, so
+  // they are outside the 20 and were not opened in this pass; they stay in `ALREADY_READ`.
+  {
+    key: 'Teemo/R/Noxious Trap',
+    verdict: 'recurring',
+    countVerdict: 'corroborated',
+    quote:
+      'the mushroom explodes upon enemy contact, inflicting poison; the target takes magic damage every second over 4 seconds',
+    verbatim: [
+      'The target takes {{as|magic damage}} every second over 4 seconds. Subsequent inflictions refresh the duration.',
+      '{{st|Magic Damage per Tick|{{ap|200/4 to 450/4}} {{as|(+ {{ap|50/4}}% AP)}}|Total Magic Damage|{{ap|200 to 450}} {{as|(+ 50% AP)}}}}',
+      "''Noxious Trap'' deals {{tip|persistent area damage}}, additionally tagged as {{tip|indirect damage}}, and applies {{tip|spell effects}}.",
+      "Enemies who step on multiple ''Noxious Traps'' will only refresh the duration of the damage over time and slow.",
+    ],
+    durationSeconds: 4,
+    intervalSeconds: 1,
+    impliedTicks: 4,
+    storedHits: [4],
+    marked: true,
+    note:
+      "the count is stated three ways and all three agree on 4: the sentence's 4 seconds every " +
+      "second, the leveling row written as '200/4' of its own Total row, and the Total row itself. " +
+      'THE ENTRY IS STILL `incomplete` AND THIS DOES NOT CHANGE THAT — its blocker is not the tick ' +
+      'count but a variable-hit-count issue raised by the §38 detector on the mushroom BOUNCE ' +
+      'sentence ("If the mushroom lands on one that has already been placed, it will bounce ' +
+      'forward"). That sentence is about where a mushroom ends up, not about one champion taking ' +
+      "the poison twice, and this page answers the repeat question itself: \"Enemies who step on " +
+      'multiple Noxious Traps will only refresh the duration of the damage over time and slow." ' +
+      'DATA-SOURCES §38 already records Teemo R as read and REJECTED for that detector. Acting on ' +
+      'it needs a read-and-rejected list in `variable-hits.ts`, which does not exist; the finding ' +
+      'is reported rather than written',
+  },
+  {
+    key: 'Nilah/R/Apotheosis',
+    verdict: 'recurring',
+    countVerdict: 'corroborated',
+    quote:
+      'Nilah whirls her whip-blade over 1 second, dealing physical damage to nearby enemies every 0.25 seconds, then unleashes a burst',
+    verbatim: [
+      "'''Nilah''' whirls her whip-blade over 1 second, dealing {{as|physical damage}} to nearby enemies every {{fd|0.25}} seconds.",
+      "{{st|Physical Damage per Tick|{{ap|15 to 35 3}} {{as|(+ 10% '''bonus''' AD)}}|Total Physical Damage|{{ap|15*4 to 35*4 3}} {{as|(+ {{ap|10*4}}% '''bonus''' AD)}}}}",
+      '{{st|Maximum Total Physical Damage|{{ap|15*4+125 to 35*4+325 3}}',
+    ],
+    durationSeconds: 1,
+    intervalSeconds: 0.25,
+    impliedTicks: 4,
+    storedHits: [4],
+    marked: true,
+    note:
+      "1 second / 0.25 seconds is 4, and the page's own Total row is written '15*4', so the count " +
+      'is stated twice. THE BURST IS A SEPARATE COMPONENT AND IS NOT RECURRING: only the whirl ' +
+      'ticks, and marking the entry would be wrong if it moved the burst too — the split is per ' +
+      'component (§58.3). THE ENTRY STAYS `incomplete` on a different blocker, and the blocker ' +
+      'looks like a defect in gate 7 rather than in the data: gate 7 reports "the wiki states a ' +
+      'total of 60 and our components sum to 185", but 60 is the "Total Physical Damage" row, ' +
+      'which covers the whirl ALONE. The page also prints "Maximum Total Physical Damage" as ' +
+      "'15*4+125' — 185 at rank 1 — which is exactly what the stored components sum to. Gate 7 " +
+      'appears to have compared against the narrower of two total rows. Reported, not fixed: ' +
+      'changing which total gate 7 reads reaches far more than this entry',
+  },
 ];
 
 /** The entries this reading marks as recurring, as `key -> the sentence it rests on`. */
@@ -1099,12 +1170,17 @@ export function capturedHitCounts(): ReadonlyMap<string, StatedTotal> {
   );
 }
 
-/** The four read before these 37 (DATA-SOURCES §58.3). Not part of this reading. */
+/**
+ * The four read before these rows existed (DATA-SOURCES §58.3), MINUS THE TWO NOW IN THE TABLE.
+ *
+ * Teemo R and Nilah R were read properly on 2026-08-15 and have their own rows above, with quotes
+ * `verifyQuotes` checks against the cache. They must NOT be excluded from the population any more
+ * or `checkAgainstHarvest` would report them as "read, but not in the population" — the exclusion
+ * and the row are two ways of saying the same thing and only one may be used at a time.
+ */
 export const ALREADY_READ: ReadonlySet<string> = new Set([
   'Fizz/W/Seastone Trident',
   'Teemo/E/Toxic Shot',
-  'Teemo/R/Noxious Trap',
-  'Nilah/R/Apotheosis',
 ]);
 
 /** The same test merge-proposal.ts uses to find a per-tick component. */

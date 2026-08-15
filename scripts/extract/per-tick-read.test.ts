@@ -284,10 +284,22 @@ describe('checkAgainstHarvest — the table describes the real population, not a
 });
 
 describe('the table itself, against the real cached source', () => {
-  it('holds 37 entries, one per withdrawn ability, and every one is recurring', () => {
-    expect(PER_TICK_READS).toHaveLength(37);
-    expect(PER_TICK_READS.filter((r) => r.verdict === 'recurring')).toHaveLength(37);
-    expect(new Set(PER_TICK_READS.map((r) => r.key)).size).toBe(37);
+  // 37 -> 39 ON 2026-08-15, AND THE TWO NEW ROWS ARE NOT NEW READINGS OF NEW ABILITIES.
+  //
+  // Teemo R and Nilah R were two of the four §58.3 marked as recurring before this table existed,
+  // on sentences a person read and then wrote down as SUMMARIES rather than quotes. Both are among
+  // the 20 entries a per-tick component holds back, so both were opened again and read against
+  // their own template. Neither hit count moved — 4 and 4, corroborated — and the reason for
+  // adding them is that a summary cannot be checked and a quote can: `verifyQuotes` now proves
+  // seven more fragments are literally in the cached wikitext.
+  //
+  // They left `ALREADY_READ` in the same change. A row here and an exclusion there are two ways of
+  // saying "somebody read this", and holding both would make `checkAgainstHarvest` report them as
+  // read but outside the population.
+  it('holds 39 entries, one per withdrawn ability, and every one is recurring', () => {
+    expect(PER_TICK_READS).toHaveLength(39);
+    expect(PER_TICK_READS.filter((r) => r.verdict === 'recurring')).toHaveLength(39);
+    expect(new Set(PER_TICK_READS.map((r) => r.key)).size).toBe(39);
   });
 
   // THE COUNT MOVED TWICE ON 2026-08-15, 19 -> 23 -> 25, AND RISING IS THE DANGEROUS DIRECTION.
@@ -310,9 +322,14 @@ describe('the table itself, against the real cached source', () => {
   //
   // The tests below pin all six individually, so the total cannot rise again without a named row
   // rising with it.
-  it('marks 25 and leaves 12 withdrawn, every mark carrying its sentence', () => {
+  // 25 -> 27 later on 2026-08-15, and this rise marks NOTHING NEW: Teemo R and Nilah R were
+  // already marked as recurring by name in `merge-proposal.ts`, and moving them into this table
+  // moved their mark with them. The number of components the engine sends to the damage-over-time
+  // line is unchanged; what changed is that the sentence each mark rests on is now quoted from the
+  // source and checked, rather than paraphrased in a map.
+  it('marks 27 and leaves 12 withdrawn, every mark carrying its sentence', () => {
     const marked = markedOverTime();
-    expect(marked.size).toBe(25);
+    expect(marked.size).toBe(27);
     expect(PER_TICK_READS.filter((r) => !r.marked)).toHaveLength(12);
     for (const [, why] of marked) expect(why.length).toBeGreaterThan(20);
   });
@@ -407,10 +424,15 @@ describe('the table itself, against the real cached source', () => {
     // scorch sentence and its minimum and maximum rows, which state 3 and 15), Malzahar R gained
     // both its Total rows, and Swain R gained the Demonic Energy decay sentence that looks like a
     // duration and is not one.
+    //
+    // 68 -> 75 when Teemo R and Nilah R joined the table: four fragments for Teemo R (its poison
+    // sentence, its leveling row, its own "persistent area damage" tag, and the note saying
+    // multiple traps REFRESH rather than stack) and three for Nilah R (its whirl sentence and both
+    // of its total rows). Every one was checked as a literal substring before it was written down.
     const checks = verifyQuotes(PER_TICK_READS, await loadPages());
     const failed = checks.filter((c) => c.pageMissing || c.missing.length > 0);
     expect(failed).toEqual([]);
-    expect(checks.reduce((s, c) => s + c.found, 0)).toBe(68);
+    expect(checks.reduce((s, c) => s + c.found, 0)).toBe(75);
   });
 
   it('proves every corrected sentence is one of the checked fragments, not a summary', async () => {

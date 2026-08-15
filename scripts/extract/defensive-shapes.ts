@@ -36,7 +36,7 @@
 // text by `flatten()` in defensive.ts — the same text a person reads to confirm. They are quoted
 // rather than paraphrased so a reader can find the sentence again on the page.
 
-import type { CuratedDefensiveEffect, DamageType } from '../../src/types/data.ts';
+import type { CuratedDefensiveEffect, DamageType, OverTimeFigure } from '../../src/types/data.ts';
 import type { Kind } from './defensive.ts';
 
 /** One row of one ability, as a person read it. */
@@ -53,8 +53,48 @@ export interface RowReading {
    * "50 to 100%" of increased healing look identical in the wikitext and mean different things.
    */
   rateUnit?: 'percent-of-damage-dealt' | 'healing-multiplier';
-  /** The effect recurs. `sourceSays` quotes the sentence the recurrence rests on. */
-  overTime?: { sourceSays: string; totalInstances?: number };
+  /**
+   * The effect recurs. `sourceSays` quotes the sentence the recurrence rests on.
+   *
+   * ═══ `figureIs` — WHAT THE STORED NUMBER MEANS (read 2026-08-15) ═══
+   *
+   * `CuratedDefensiveEffect.overTime.figureIs` landed in the contract on 2026-08-15 because a
+   * recurrence and a count were never enough: the entry also has to say whether the number it
+   * stores is ONE OCCURRENCE or the WHOLE OF IT. Master Yi W is the proof it is a real
+   * distinction rather than a pedantry — the same ability stores both readings side by side, 15
+   * per tick and 120 for the channel, exactly x8 at every rank, and nothing but this field tells
+   * the two rows apart.
+   *
+   * IT IS FILLED IN FROM THE SENTENCE, NOT FROM THE LABEL. "Total" means "over the duration" on
+   * most of these pages and "across every target hit" on Vladimir R, so the word decides nothing
+   * (§48.3). Every value below was read against the ability's own description, and where the row's
+   * arithmetic corroborates it — Master Yi's Total row is written `15*8` and its description says
+   * 4 seconds every 0.5 — the corroboration is recorded in `read`.
+   *
+   * ABSENT IS A REAL STATE AND MEANS THE SOURCE DOES NOT SAY, which forces the entry to
+   * `incomplete`. `figureIsUnread` says why nobody could fill it in, so an unfilled field cannot
+   * be mistaken for an unfinished one.
+   */
+  overTime?: {
+    sourceSays: string;
+    totalInstances?: number;
+    figureIs?: OverTimeFigure;
+    /**
+     * REQUIRED WHEN `figureIs` IS ABSENT ON A ROW SOMEBODY READ. The sentence or the
+     * contradiction that stopped the reading, so "unread" and "unreadable" are distinguishable.
+     */
+    figureIsUnread?: string;
+    /**
+     * NO COUNT CAN EVER EXIST FOR THIS ROW, and why — permanent, not pending (§27).
+     *
+     * A per-instance figure needs a number of occurrences before a whole-duration total can be
+     * formed. On most of these pages that number is derivable and simply is not stored, which is
+     * work outstanding. On Swain R it is not: the source states no duration for the ability at
+     * all, because the channel is fed by a resource. Recording the difference is what stops the
+     * interface reading "not yet modelled" over an entry nobody can ever finish.
+     */
+    countUnresolvable?: string;
+  };
   /**
    * This row is an ALTERNATIVE to the row with this label, not an addition to it. Absent means
    * the row adds — which for two rows of one kind is a claim, and is why gate 1 makes it explicit.
@@ -305,7 +345,12 @@ export const SHAPES_READ: ShapeReading[] = [
     read:
       '"grants him and allied champions a shield at the start of the cast time ... The shield ' +
       'refreshes and increases in strength by an amount every 0.25 over the duration while they ' +
-      'remain in the area." The Total row is the same shield at the end of the duration.',
+      'remain in the area." The Total row is the same shield at the end of the duration. The ' +
+      'page\'s own note settles what that row IS: "The maximum shield defines the cap for the ' +
+      'strength, and it takes approximately 1.5 seconds to gain the full shield" — a cap, reached ' +
+      'over time, never a per-tick figure. The rows agree: the bonus row is the initial shield / 6 ' +
+      'and the Total row is the initial shield x 2, so six 0.25-second ticks (1.5 seconds) take it ' +
+      'from one to the other.',
     rows: [
       { label: 'Initial Shield Strength' },
       {
@@ -315,6 +360,9 @@ export const SHAPES_READ: ShapeReading[] = [
           sourceSays:
             'The shield refreshes and increases in strength by an amount every 0.25 over the ' +
             'duration while they remain in the area.',
+          // A CAP IS THE WHOLE OF IT. Multiplying this by a tick count would shield Hwei six
+          // times over for a shield the source calls a maximum.
+          figureIs: 'full-duration',
         },
       },
     ],
@@ -363,7 +411,9 @@ export const SHAPES_READ: ShapeReading[] = [
     kind: 'heal',
     read:
       '"charging for up to 1 second, during which she ... heals herself every 0.25 seconds." The ' +
-      'Maximum row is the whole charge, the per-tick row is one of its ticks.',
+      'Maximum row is the whole charge, the per-tick row is one of its ticks. The rows say the ' +
+      'same thing in their own arithmetic: the per-tick row is written `10/4` of the Maximum row, ' +
+      'and 1 second / 0.25 seconds is 4.',
     rows: [
       {
         label: 'Heal Per Tick',
@@ -371,6 +421,7 @@ export const SHAPES_READ: ShapeReading[] = [
           sourceSays:
             'Briar prepares to unleash a scream ... charging for up to 1 second, during which ' +
             'she ... heals herself every 0.25 seconds.',
+          figureIs: 'per-instance',
         },
       },
       {
@@ -380,6 +431,7 @@ export const SHAPES_READ: ShapeReading[] = [
           sourceSays:
             'Briar prepares to unleash a scream ... charging for up to 1 second, during which ' +
             'she ... heals herself every 0.25 seconds.',
+          figureIs: 'full-duration',
         },
       },
     ],
@@ -410,7 +462,10 @@ export const SHAPES_READ: ShapeReading[] = [
     read:
       '"Master Yi channels for up to 4 seconds, healing himself every 0.5 seconds, increased by ' +
       '1% per 1% missing health." Four rows: one tick or the whole channel, at minimum or maximum ' +
-      'missing health. Exactly one of the four is the answer at any moment.',
+      'missing health. Exactly one of the four is the answer at any moment. THIS IS THE PAGE THAT ' +
+      'PROVES `figureIs` IS NEEDED: the Total rows are written in the wikitext as the per-tick ' +
+      'rows times eight (`15*8 to 55*8`), and the description says 4 seconds every 0.5 seconds, ' +
+      'which is eight. Two rows that differ in nothing but this field.',
     rows: [
       {
         label: 'Minimum Heal Per Tick',
@@ -418,6 +473,7 @@ export const SHAPES_READ: ShapeReading[] = [
           sourceSays:
             'Master Yi channels for up to 4 seconds, healing himself every 0.5 seconds, increased ' +
             'by 1% per 1% missing health.',
+          figureIs: 'per-instance',
         },
       },
       {
@@ -427,6 +483,7 @@ export const SHAPES_READ: ShapeReading[] = [
           sourceSays:
             'Master Yi channels for up to 4 seconds, healing himself every 0.5 seconds, increased ' +
             'by 1% per 1% missing health.',
+          figureIs: 'per-instance',
         },
       },
       {
@@ -436,6 +493,7 @@ export const SHAPES_READ: ShapeReading[] = [
           sourceSays:
             'Master Yi channels for up to 4 seconds, healing himself every 0.5 seconds, increased ' +
             'by 1% per 1% missing health.',
+          figureIs: 'full-duration',
         },
       },
       {
@@ -445,6 +503,7 @@ export const SHAPES_READ: ShapeReading[] = [
           sourceSays:
             'Master Yi channels for up to 4 seconds, healing himself every 0.5 seconds, increased ' +
             'by 1% per 1% missing health.',
+          figureIs: 'full-duration',
         },
       },
     ],
@@ -462,6 +521,10 @@ export const SHAPES_READ: ShapeReading[] = [
           sourceSays:
             "Half of the drain's total damage, healing, and resistances reduction is applied " +
             'on-cast, while the other half is applied every second over the next 4 seconds.',
+          // THE ROW IS THE WHOLE DRAIN. The page splits it into an "Initial Healing" row (the
+          // Total / 2) and a "Healing Per Second" row (the Total / 8) beneath it, so the row
+          // stored here is by the source's own arithmetic the sum of both halves.
+          figureIs: 'full-duration',
         },
       },
     ],
@@ -481,6 +544,10 @@ export const SHAPES_READ: ShapeReading[] = [
             'Yuumi and Book of Thresholds channel for up to 3.5 seconds ... to launch 5 magical ' +
             'waves in the target direction. Allied champions hit by the waves are healed.',
           totalInstances: 5,
+          // The row is labelled "Total Heal" and the source states five waves over one channel,
+          // so the count here is DESCRIPTIVE — the figure already covers all five and must never
+          // be multiplied by them.
+          figureIs: 'full-duration',
         },
       },
     ],
@@ -499,7 +566,9 @@ export const SHAPES_READ: ShapeReading[] = [
     read:
       '"Self Cast: Lissandra ... enter[s] stasis for 2.5 seconds and heal[s] herself every 0.25 ' +
       'seconds over the duration. The healing is increased by 1% per 1% of missing health." One ' +
-      'tick or the whole stasis, at minimum or maximum missing health.',
+      'tick or the whole stasis, at minimum or maximum missing health. The wikitext writes the ' +
+      'per-tick rows as the Total rows DIVIDED by ten (`100/10 to 200/10`), and 2.5 seconds / ' +
+      '0.25 seconds is ten — so which row is the whole of it is stated by the source twice over.',
     rows: [
       {
         label: 'Minimum Heal per Tick',
@@ -507,6 +576,7 @@ export const SHAPES_READ: ShapeReading[] = [
           sourceSays:
             'Lissandra instantly entombs herself in ice, entering stasis for 2.5 seconds and ' +
             'healing herself every 0.25 seconds over the duration.',
+          figureIs: 'per-instance',
         },
       },
       {
@@ -516,6 +586,7 @@ export const SHAPES_READ: ShapeReading[] = [
           sourceSays:
             'Lissandra instantly entombs herself in ice, entering stasis for 2.5 seconds and ' +
             'healing herself every 0.25 seconds over the duration.',
+          figureIs: 'per-instance',
         },
       },
       {
@@ -525,6 +596,7 @@ export const SHAPES_READ: ShapeReading[] = [
           sourceSays:
             'Lissandra instantly entombs herself in ice, entering stasis for 2.5 seconds and ' +
             'healing herself every 0.25 seconds over the duration.',
+          figureIs: 'full-duration',
         },
       },
       {
@@ -534,6 +606,7 @@ export const SHAPES_READ: ShapeReading[] = [
           sourceSays:
             'Lissandra instantly entombs herself in ice, entering stasis for 2.5 seconds and ' +
             'healing herself every 0.25 seconds over the duration.',
+          figureIs: 'full-duration',
         },
       },
     ],
@@ -551,7 +624,12 @@ export const SHAPES_READ: ShapeReading[] = [
     kind: 'heal',
     read:
       '"a Victory Zone is created on their death location for 5 seconds, which heals Fiora and ' +
-      'all allies within the area every 0.25 seconds." The Maximum row is the whole zone.',
+      'all allies within the area every 0.25 seconds." The Maximum row is the whole zone. The ' +
+      'page carries a THIRD row between the two — "Heal per Second" — and the three agree: the ' +
+      'per-tick row is the per-second row / 4 (one tick every 0.25 seconds) and the Maximum row ' +
+      'is the per-second row x 5 (five seconds), which makes the Maximum exactly twenty ticks. ' +
+      'The per-second row is not stored and is not a defensive entry this shape can hold; it is ' +
+      'neither one occurrence nor the whole of it.',
     rows: [
       {
         label: 'Heal per Tick',
@@ -559,6 +637,7 @@ export const SHAPES_READ: ShapeReading[] = [
           sourceSays:
             'a Grand Challenge Victory Zone is created on their death location for 5 seconds, ' +
             'which heals Fiora and all allies within the area every 0.25 seconds.',
+          figureIs: 'per-instance',
         },
       },
       {
@@ -568,6 +647,7 @@ export const SHAPES_READ: ShapeReading[] = [
           sourceSays:
             'a Grand Challenge Victory Zone is created on their death location for 5 seconds, ' +
             'which heals Fiora and all allies within the area every 0.25 seconds.',
+          figureIs: 'full-duration',
         },
       },
     ],
@@ -575,7 +655,10 @@ export const SHAPES_READ: ShapeReading[] = [
   {
     key: 'Janna/R/Monsoon',
     kind: 'heal',
-    read: '"Janna also channels for up to 3 seconds, healing herself and nearby allies every 0.25 seconds."',
+    read:
+      '"Janna also channels for up to 3 seconds, healing herself and nearby allies every 0.25 ' +
+      'seconds." The wikitext writes the per-tick row as the Total row divided by twelve ' +
+      '(`300/12 to 600/12`), and 3 seconds / 0.25 seconds is twelve.',
     rows: [
       {
         label: 'Heal Per Tick',
@@ -583,6 +666,7 @@ export const SHAPES_READ: ShapeReading[] = [
           sourceSays:
             'Janna also channels for up to 3 seconds, healing herself and nearby allies every ' +
             '0.25 seconds.',
+          figureIs: 'per-instance',
         },
       },
       {
@@ -592,6 +676,7 @@ export const SHAPES_READ: ShapeReading[] = [
           sourceSays:
             'Janna also channels for up to 3 seconds, healing herself and nearby allies every ' +
             '0.25 seconds.',
+          figureIs: 'full-duration',
         },
       },
     ],
@@ -601,7 +686,11 @@ export const SHAPES_READ: ShapeReading[] = [
     kind: 'heal',
     read:
       '"Milio summons a fuemigo ... for 6 seconds ... Allied champions near the fuemigo ... heal ' +
-      'every 0.25 over the duration. Milio counts as an allied champion for this ability."',
+      'every 0.25 over the duration. Milio counts as an allied champion for this ability." WHICH ' +
+      'ROW IS WHICH IS NOT IN DOUBT — the per-tick row is written as the Total row divided by ' +
+      'twenty-five. THE COUNT IS: 6 seconds / 0.25 seconds is twenty-FOUR, and the row divides by ' +
+      'twenty-five. That disagreement is recorded and NO count is stored on either row; it does ' +
+      'not touch which row covers the whole duration, which is what `figureIs` states.',
     rows: [
       {
         label: 'Heal per Tick',
@@ -609,6 +698,7 @@ export const SHAPES_READ: ShapeReading[] = [
           sourceSays:
             'Allied champions near the fuemigo gain bonus attack range ... and heal every 0.25 ' +
             'over the duration.',
+          figureIs: 'per-instance',
         },
       },
       {
@@ -618,6 +708,7 @@ export const SHAPES_READ: ShapeReading[] = [
           sourceSays:
             'Allied champions near the fuemigo gain bonus attack range ... and heal every 0.25 ' +
             'over the duration.',
+          figureIs: 'full-duration',
         },
       },
     ],
@@ -641,12 +732,19 @@ export const SHAPES_READ: ShapeReading[] = [
     kind: 'heal',
     read:
       '"granting her Rejuvenation for 2.5 seconds ... Rejuvenation: Heal every 0.2 seconds and ' +
-      'gain bonus movement speed that decays over the duration."',
+      'gain bonus movement speed that decays over the duration." THE PAGE CONTRADICTS ITS OWN ' +
+      'PER-TICK ROW, and only one of the two rows survives the reading. Its notes state: ' +
+      '"Rejuvenation heals over 12 ticks, with the first 4 each healing for about 15% of the ' +
+      'heal, the next 4 ticks for about 5.5% each, and the last 4 for about 4.5% each." Those ' +
+      'twelve shares sum to 100%, which confirms the Total row is the whole of it — and they also ' +
+      'say NO tick heals the 1/12 (8.3%) the "Heal per Tick" row stores. So the Total row is a ' +
+      'full-duration figure and the per-tick row is a figure no occurrence ever has.',
     rows: [
       {
         label: 'Total Heal',
         overTime: {
           sourceSays: 'Rejuvenation: Heal every 0.2 seconds and gain bonus movement speed that decays over the duration.',
+          figureIs: 'full-duration',
         },
       },
       {
@@ -654,6 +752,14 @@ export const SHAPES_READ: ShapeReading[] = [
         alternativeTo: 'Total Heal',
         overTime: {
           sourceSays: 'Rejuvenation: Heal every 0.2 seconds and gain bonus movement speed that decays over the duration.',
+          // LEFT ABSENT DELIBERATELY. Calling it 'per-instance' would claim the stored number is
+          // one occurrence, which this page's own notes deny; calling it 'full-duration' would be
+          // twelve times worse. Neither reading is taken and the entry stays incomplete.
+          figureIsUnread:
+            'the page states twelve ticks of THREE different sizes (about 15% of the heal each ' +
+            'for the first four, 5.5% for the next four, 4.5% for the last four), so the row\'s ' +
+            'even twelfth is an average and not the amount of any one occurrence. The source ' +
+            'therefore does not state what this figure is, and neither reading is taken.',
         },
       },
     ],
@@ -672,7 +778,11 @@ export const SHAPES_READ: ShapeReading[] = [
     read:
       '"Swain ... drains the lifeforce of nearby enemies, both dealing magic damage and healing ' +
       'himself every 0.5 seconds per target affected." Per target resolves to one enemy in a ' +
-      'champion-versus-champion tool.',
+      'champion-versus-champion tool. ONE ROW ONLY, AND IT IS THE TICK: the page states no ' +
+      'duration for Demonic Ascension at all — it "is maintained with Demonic Energy, which ' +
+      'decays by 5 every 0.5 seconds ... and is lost once all Demonic Energy is depleted", and ' +
+      'Swain regenerates that energy while draining. So a full-duration total cannot be formed ' +
+      'from anything on this page, now or later.',
     rows: [
       {
         label: 'Heal per Tick',
@@ -680,6 +790,13 @@ export const SHAPES_READ: ShapeReading[] = [
           sourceSays:
             'Swain is ghosted and drains the lifeforce of nearby enemies, both dealing magic ' +
             'damage and healing himself every 0.5 seconds per target affected.',
+          figureIs: 'per-instance',
+          countUnresolvable:
+            'the source states no duration for Demonic Ascension: it "is maintained with Demonic ' +
+            'Energy, which decays by 5 every 0.5 seconds, increased to 7.5 after 5 seconds have ' +
+            'elapsed" and Swain "generates 10 Demonic Energy every 0.5 seconds while draining ' +
+            'from at least one enemy champion". How long it runs is a property of the fight, so ' +
+            'no number of heal ticks exists to state.',
         },
       },
     ],

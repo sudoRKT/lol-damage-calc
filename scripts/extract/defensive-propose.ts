@@ -287,6 +287,32 @@ export function labelFacts(kind: CuratedDefensiveEffect['kind'], label: string):
 }
 
 /**
+ * ═══ CAN A RECURRING ENTRY BE ACTED ON AT ALL? (2026-08-15) ═══
+ *
+ * `CuratedDefensiveEffect.overTime.figureIs` says whether the stored number is ONE OCCURRENCE or
+ * the WHOLE OF IT, and the contract states the consequence in its own words:
+ *
+ *   - `'full-duration'` — the figure already covers the duration and must never be multiplied.
+ *     Usable as it stands.
+ *   - `'per-instance'` — the whole-duration total is the figure times `totalInstances`, "and
+ *     without a count the entry stays incomplete".
+ *   - ABSENT — "the source does not say, and the entry is therefore incomplete".
+ *
+ * This is that rule and nothing more. It is written here rather than assumed, because the two
+ * failures it prevents are opposite and both are silent: a per-occurrence heal applied as the
+ * whole channel understates the defender, and a whole-channel heal multiplied by its tick count
+ * restores the health eight times over (Master Yi W, whose two readings differ by exactly x8).
+ */
+export function overTimeFigureIsUsable(
+  overTime: { totalInstances?: number; figureIs?: 'per-instance' | 'full-duration' } | undefined,
+): boolean {
+  if (!overTime) return true;
+  if (overTime.figureIs === 'full-duration') return true;
+  if (overTime.figureIs === 'per-instance') return overTime.totalInstances !== undefined;
+  return false;
+}
+
+/**
  * The most specific fact a label states, or `null`. Kept as the single-reason view for reading;
  * `labelFacts` is what the counts are taken from.
  */
@@ -742,6 +768,16 @@ export function proposeForPage(
         });
       });
 
+      // A COUNT NO SOURCE WILL EVER STATE. Distinguished from one that simply is not stored yet:
+      // Swain R's channel is fed by a resource and has no duration anywhere on the page, so the
+      // number of heal ticks is a fact nobody can supply (§27, permanent versus pending).
+      if (rowReading?.overTime?.countUnresolvable) {
+        unresolvable.push({
+          field: 'overTime.totalInstances',
+          why: rowReading.overTime.countUnresolvable,
+        });
+      }
+
       // THE UNIT. `flat` and `percent` are read off the row — the '%' is there or it is not.
       // A rate and an amplifier are not readable that way and come only from a reading.
       const unit: CuratedDefensiveEffect['unit'] | undefined =
@@ -764,14 +800,33 @@ export function proposeForPage(
         ...(rowReading?.appliesToDamageType
           ? { appliesToDamageType: rowReading.appliesToDamageType }
           : {}),
-        ...(rowReading?.overTime ? { overTime: rowReading.overTime } : {}),
+        // THE READING'S OWN NOTES DO NOT TRAVEL INTO THE ENTRY. `figureIsUnread` and
+        // `countUnresolvable` explain a reader's decision; the contract holds three fields and
+        // storing a fourth would put prose where the engine expects data.
+        ...(rowReading?.overTime
+          ? {
+              overTime: {
+                sourceSays: rowReading.overTime.sourceSays,
+                ...(rowReading.overTime.totalInstances !== undefined
+                  ? { totalInstances: rowReading.overTime.totalInstances }
+                  : {}),
+                ...(rowReading.overTime.figureIs
+                  ? { figureIs: rowReading.overTime.figureIs }
+                  : {}),
+              },
+            }
+          : {}),
         ...(unit ? { unit } : {}),
         ...(parsed.value ? { value: parsed.value } : {}),
         ...(parsed.ratios.length > 0 ? { ratios: parsed.ratios } : {}),
         ...(unresolvable.length > 0 ? { unresolvable } : {}),
         // Nothing a generator produces is 'verified'. An entry carrying a fact no source states is
-        // 'incomplete' and stays there until the SOURCE changes.
-        verification: unresolvable.length > 0 ? 'incomplete' : 'derived',
+        // 'incomplete' and stays there until the SOURCE changes — and so is a recurring entry
+        // whose figure the source never says covers one occurrence or the whole duration.
+        verification:
+          unresolvable.length > 0 || !overTimeFigureIsUsable(rowReading?.overTime)
+            ? 'incomplete'
+            : 'derived',
         provenance: {
           source: `Template:Data ${page.champion}/${page.abilityName} — leveling row "${row.label}"`,
           url: `https://wiki.leagueoflegends.com/en-us/Template:Data_${encodeURIComponent(
@@ -943,6 +998,57 @@ export function labelFactsCarried(
   return { defects, decidedByAReading };
 }
 
+/**
+ * WHAT EVERY RECURRING ENTRY SAYS ITS FIGURE COVERS, counted.
+ *
+ * DEFINITION of the population: every WRITTEN entry carrying `overTime`. The three arms are the
+ * contract's own three states and they are reported separately on purpose — `absent` is not a
+ * failure, it is the source declining to say, and rolling it into either of the others is the
+ * exact mistake `figureIs` was added to make impossible.
+ *
+ * `unreadWithNoStatedReason` MUST BE EMPTY. A row a person read that states neither the figure nor
+ * why it could not be stated is a reading somebody abandoned, and it would be indistinguishable
+ * from a row nobody has opened.
+ */
+export function recurringFigureCensus(proposals: CuratedDefensiveEffect[]): {
+  recurring: number;
+  fullDuration: string[];
+  perInstanceWithCount: string[];
+  perInstanceNoCount: string[];
+  figureAbsent: string[];
+  unreadWithNoStatedReason: string[];
+} {
+  const name = (e: CuratedDefensiveEffect) =>
+    `${e.champion}/${e.slot}/${e.abilityName} "${e.label ?? e.kind}"`;
+  const out = {
+    recurring: 0,
+    fullDuration: [] as string[],
+    perInstanceWithCount: [] as string[],
+    perInstanceNoCount: [] as string[],
+    figureAbsent: [] as string[],
+    unreadWithNoStatedReason: [] as string[],
+  };
+  for (const e of proposals) {
+    if (!e.overTime) continue;
+    out.recurring += 1;
+    if (e.overTime.figureIs === 'full-duration') out.fullDuration.push(name(e));
+    else if (e.overTime.figureIs === 'per-instance') {
+      (e.overTime.totalInstances === undefined
+        ? out.perInstanceNoCount
+        : out.perInstanceWithCount
+      ).push(name(e));
+    } else {
+      out.figureAbsent.push(name(e));
+      const reading = SHAPES_READ.find(
+        (s) =>
+          s.key === `${e.champion}/${e.slot}/${e.abilityName}` && KIND_MAP[s.kind] === e.kind,
+      )?.rows.find((r) => r.label === e.label);
+      if (!reading?.overTime?.figureIsUnread) out.unreadWithNoStatedReason.push(name(e));
+    }
+  }
+  return out;
+}
+
 export interface Sweeps {
   /** A reading whose key or kind names no confirmed pair — a typo that would silently do nothing. */
   readingsMatchingNoConfirmedPair: string[];
@@ -1099,6 +1205,22 @@ export function gateDefensiveSchema(effects: CuratedDefensiveEffect[]): {
         push(`ratios[${i}] on '${r.stat}' states no owner — §16 refuses it`);
       }
       if (r.stat === 'stacks' && !r.counter) push(`ratios[${i}] on 'stacks' names no counter`);
+    }
+    // ═══ A RECURRING ENTRY MAY NOT CLAIM MORE THAN ITS OWN `figureIs` ═══
+    //
+    // The two halves of the contract's rule, checked rather than trusted, because the proposer
+    // and this gate are the only two places the rule exists and one of them could drift.
+    if (e.overTime && !e.overTime.sourceSays) {
+      push('overTime must quote the sentence its recurrence rests on');
+    }
+    if (e.overTime && e.verification !== 'incomplete' && !overTimeFigureIsUsable(e.overTime)) {
+      push(
+        e.overTime.figureIs === undefined
+          ? "recurs and does not state whether its figure is one occurrence or the whole " +
+              "duration, so it may claim no better than 'incomplete'"
+          : "states a per-instance figure with no count of occurrences, so no whole-duration " +
+              "total can be formed and it may claim no better than 'incomplete'",
+      );
     }
     // An explicit list is self-describing; a linear one is not, and this shape has no maxRank.
     if (e.value?.scaling === 'linear') {
@@ -1510,6 +1632,15 @@ if (process.argv[1]?.endsWith('defensive-propose.ts')) {
           'carries it. `defects` must be zero. `decidedByAReading` is a person choosing not to ' +
           'carry it, with the sentence that says why.',
         ...labelFactsCarried(run.proposals),
+      },
+      recurringFigures: {
+        what:
+          'DEFINITION: every written entry carrying `overTime`, split by what its `figureIs` ' +
+          "says the stored number covers. 'full-duration' is usable as it stands; " +
+          "'per-instance' needs a count of occurrences and is incomplete without one; absent " +
+          'means the source does not say and the entry is incomplete. ' +
+          '`unreadWithNoStatedReason` must be empty.',
+        ...recurringFigureCensus(run.proposals),
       },
     },
     gateD2: {

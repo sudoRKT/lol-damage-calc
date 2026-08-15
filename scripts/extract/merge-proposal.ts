@@ -434,14 +434,13 @@ export const READ_AS_OVER_TIME: ReadonlyMap<string, string> = new Map([
     'Teemo/E/Toxic Shot',
     "the ability's own notes say it \"deals proc persistent damage (damage over time)\"",
   ],
-  [
-    'Teemo/R/Noxious Trap',
-    'the trap\'s damage is stated per tick over a duration, and the page calls it damage over time',
-  ],
-  [
-    'Nilah/R/Apotheosis',
-    'the page states the figure per tick across the channel and calls it damage over time',
-  ],
+  // TEEMO R AND NILAH R MOVED OUT OF THIS LIST ON 2026-08-15 and are now rows in
+  // `per-tick-read.ts`, reached through `markedOverTime()` below. Their sentences here were
+  // summaries a reader wrote — "the page states the figure per tick across the channel" — which
+  // nothing could check against the source. Both are among the 20 entries a per-tick component
+  // holds back, so both were read properly: quote, duration, interval and the row's own
+  // arithmetic. Neither hit count moved (4 and 4, corroborated); what changed is that the sentence
+  // stored on the component is now the wiki's own and `verifyQuotes` proves it.
   // The 19 of the 37 whose sentence says it recurs AND whose stored tick count the source's own
   // duration and interval corroborate. Every one carries its quote from per-tick-read.ts.
   ...markedOverTime(),
@@ -566,6 +565,61 @@ export function applyCapturedCounts(abilities: CuratedAbility[]): {
     }
   }
   return { applied, refused };
+}
+
+/**
+ * ═══ THE BLOCKER THAT WAS REMOVED AND NEVER TAKEN OFF THE ENTRY (2026-08-15) ═══
+ *
+ * Three entries — Nasus R, Rumble R, Wukong R — carry a per-tick component, a captured count that
+ * reconciles with the source's own duration and interval, and a `notes` field that says both of
+ * these things in one breath: "how many times this lands could not be read", and then "THE COUNT
+ * HAS SINCE BEEN READ FROM THE SOURCE AND APPLIED: 30 instances". They publish nothing, because
+ * the harvester marked them `incomplete` for the count and nothing ever unmarked them.
+ *
+ * `unknown-hit-count` is a statement about OUR DATA, not about the ability, and it is no longer
+ * true of these three. Leaving it standing is the mirror image of the defect this project guards
+ * against: not a wrong number published, but a right one withheld under a reason that has been
+ * answered. Renekton R — the same ability as Nasus R to the second, already `derived` at 30
+ * because its leveling row happened to carry the count the harvester could read — is what the
+ * inconsistency looks like from the outside.
+ *
+ * THE RULE IS DELIBERATELY NARROW, AND EVERY CLAUSE IS A REFUSAL:
+ *
+ *   1. the entry must be in the READ population and MARKED as recurring (so a person read the
+ *      sentence and the count is corroborated, captured or settled);
+ *   2. every per-tick component on it must hold that count (the same interlock the mark uses);
+ *   3. `unknown-hit-count` must be the ONLY issue the harvest recorded against it. An entry that
+ *      also fails gate 7, or holds a ratio owner no source states, is untouched — those blockers
+ *      are real and this rule knows nothing about them;
+ *   4. and the entry must currently be `incomplete`. Nothing here promotes anything to 'verified',
+ *      which needs an independent re-derivation this script cannot perform.
+ *
+ * Measured over the merged file when it was written: 3 entries qualify, and 17 other entries
+ * carrying a per-tick component stay `incomplete`.
+ */
+export function promoteSettledCounts(
+  abilities: CuratedAbility[],
+  issuesByEntry: ReadonlyMap<string, readonly string[]>,
+): Array<{ entry: string; from: string; only: string; count: number }> {
+  const promoted: Array<{ entry: string; from: string; only: string; count: number }> = [];
+  for (const a of abilities) {
+    if (a.verification !== 'incomplete') continue;
+    const key = abilityKey(a);
+    const read = PER_TICK_READS.find((r) => r.key === key);
+    if (!read?.marked) continue;
+    const perTick = a.components.filter((c) => PER_TICK_LABEL.test(c.label ?? ''));
+    if (perTick.length === 0) continue;
+    // Every per-tick component must be marked and carry a count. `hits: 1` satisfies gate 1 while
+    // being false, so the count is checked against the reading rather than merely for presence.
+    const count = read.statedTotal?.instances ?? read.impliedTicks;
+    if (count === null || count === undefined) continue;
+    if (!perTick.every((c) => c.overTime && c.hits === count)) continue;
+    const issues = issuesByEntry.get(key) ?? [];
+    if (issues.length !== 1 || issues[0] !== 'unknown-hit-count') continue;
+    a.verification = 'derived';
+    promoted.push({ entry: key, from: 'incomplete', only: 'unknown-hit-count', count });
+  }
+  return promoted;
 }
 
 export function classifyOverTime(abilities: CuratedAbility[]): {
@@ -761,6 +815,16 @@ async function main(): Promise<void> {
   // must be judged as incomplete, not as the derived entry it was a moment ago.
   const overTime = classifyOverTime(abilityFile.abilities);
   const capturedCounts = overTime.captured;
+
+  // AND THE OTHER HALF OF THE SAME PASS: an entry whose ONLY recorded blocker was a tick count
+  // that has since been read, captured and applied is no longer blocked, and saying so is not a
+  // relaxation of any gate — it is the removal of a reason that has been answered. The harvest's
+  // issue list is the authority for "what else is wrong with this entry", so it is read from the
+  // batch report rather than re-derived here.
+  const issuesByEntry = new Map<string, readonly string[]>(
+    report.drafts.map((d) => [d.entry, d.issues.map((i) => i.kind)]),
+  );
+  const promotedCounts = promoteSettledCounts(abilityFile.abilities, issuesByEntry);
 
   // AGGREGATE ROWS, BEFORE ANY GATE RUNS (DATA-SOURCES §60, §61). Twelve entries store a
   // "Maximum"/"at Max Stacks" row — arithmetic on their own other rows — marked `adds`, so the
@@ -1442,6 +1506,22 @@ async function main(): Promise<void> {
         applied: capturedCounts.length,
         entries: capturedCounts,
         refused: overTime.captureRefused,
+      },
+      promoted: {
+        what:
+          'entries whose ONLY recorded blocker was a tick count that has since been read from the ' +
+          'source and applied. The harvester wrote "how many times this lands could not be read" ' +
+          'and nothing ever unwrote it, so each of these carried a note saying the count could not ' +
+          'be read AND the count, and published nothing. DEFINITION: marked as recurring, every ' +
+          "per-tick component holding the read count, `unknown-hit-count` the ONLY issue in the " +
+          "harvest report, and currently 'incomplete'. Any entry that also fails gate 7 or holds " +
+          'an unresolved ratio owner is untouched.',
+        promoted: promotedCounts.length,
+        entries: promotedCounts,
+        note:
+          'Renekton R is the same ability as Nasus R to the second and has been `derived` at 30 ' +
+          'all along, because its leveling row carried the count where Nasus R\'s did not. Nothing ' +
+          "here reaches 'verified', which needs an independent re-derivation this script cannot do.",
       },
     },
     aggregateRows: {
