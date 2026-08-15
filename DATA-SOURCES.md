@@ -5284,3 +5284,88 @@ Maximum pair DERIVED_ROW was deliberately written NOT to drop (validate-curated.
 **Rumble R is a member of the same class and worse: it stores one damage THREE ways** — per tick,
 per second and maximum, all marked `adds`, which would treble it. It is `incomplete` and publishes
 nothing, and the harvester already recorded that "a total row cannot be attributed to one of them".
+
+---
+
+## 61. The twelve sentences, read — and gate 8 (2026-08-15)
+
+§60 named the class and left the reading. All twelve entries have now been read one at a time
+against their own source template, and the check that finds the class is built.
+
+### 61.1 What each of the twelve says
+
+Every one is a REAL aggregate. Not one of the twelve turned out to be a genuine second damage
+row, which is worth stating because the opposite result was possible and the reading was done to
+find out rather than to confirm.
+
+| entry | the source's own words | what the "Maximum" row is |
+|---|---|---|
+| **Zoe E** `derived` | *"bonus true damage equal to the post-mitigation damage dealt, capped at Sleepy Trouble Bubble's damage"* | bubble damage + the bonus cap. **The cap row is not stored at all**, so the entry holds an aggregate whose other half is absent |
+| **Yasuo E** `derived` | *"stacks up to 4 times … damage is increased by 25% per stack, up to 100% at maximum stacks"* | the per-stack row ×4. **Second defect in the same sentence: the per-stack component stores `hits: 8` where the source says 4** |
+| **Hwei W** `derived` | *"empower his next 3 basic attacks or ability hits to EACH deal bonus magic damage"* | the per-hit row ×3. The template pairs its mana row identically (Mana Restore 135/3, Total Mana Restore 135) |
+| **Kled Q** `derived` | *"deal 20% damage per pellet beyond the first"* | one full pellet + four reduced ones |
+| **Darius R** | *"increased by 20% for every Hemorrhage stack, capped at 100% at 5 stacks"* | base ×2 — the base plus five stacks, not a sixth damage |
+| **Jhin Q** | *"increased by 35% any time an enemy dies … before it strikes its next target"* | base × (1 + 0.35×3) — the same grenade after three deaths |
+| **Kassadin R** | *"stacking up to 4 times … For each stack, Riftwalk deals bonus magic damage"* | **two aggregates on one entry** — per-stack ×4, and base + that |
+| **Katarina R** | *"channels for up to 2.5 seconds, throwing a dagger every 0.166 seconds"* | both Maximum rows are their per-dagger row ×15. **The per-dagger PHYSICAL row is not stored**, so the physical side has only its aggregate |
+| **Locke Q** | *"can be recast twice more"* | the per-nail row ×3. Separate defect alongside it: the One / Two / Three Stacks rows are alternatives and all three are stored `adds` |
+| **Master Yi Q** | *"Marks after the first on the same target instead detonate instantly to deal reduced damage"* | the primary mark + three reduced ones |
+| **Rumble R** | *"taking magic damage every 0.25 seconds … up to 5 seconds, for a total of 20 instances"* | **one damage stored three ways** — per tick, per second (×4), maximum (×20). Only the per-tick figure is an instance |
+| **Varus W** | *"applies a stack of Blight … stacking up to 3 times"* | both "at Max Stacks" rows are their per-stack row ×3. Separate defect: all seven components are `adds`, including an empowered pair that are alternatives |
+
+**Three of the twelve carry a second, different defect found in the same reading** — Yasuo E's hit
+count, Locke Q's and Varus W's alternatives stored as additions. They are RECORDED, not fixed:
+each needs its own decision and the aggregate rule does not reach them.
+
+### 61.2 The check — gate 8, and why it is arithmetic rather than a label
+
+`scripts/extract/aggregate-rows.ts`, run by `scripts/extract/aggregate-audit.ts`. Offline, over the
+whole file, no fetching.
+
+**It never widens `DERIVED_ROW`.** That pattern is `/\btotal\b/i` and excludes "Minimum"/"Maximum"
+deliberately — including them would have dropped every damage row from 32 charge-up abilities. Gate
+8 drops nothing and changes no stored number. It reports.
+
+**What decides a finding is arithmetic:** is this additive component's whole value series — the base
+term AND every ratio, at every rank — reproducible as `m × S` or `A + m × B` from its siblings'
+series? Then it is not independent damage.
+
+**DEFINITION: additive components whose value series restates a sibling's, over the 919 stored
+entries at patch 16.16.1. 282 additive components were comparable; 8 components carry no per-rank
+series (a `byLevel` or `byRangeType` arm) and were not compared.**
+
+| tier | | |
+|---|---:|---|
+| **1 — redundant AND the label carries an aggregate word** | **14 components across 12 entries** | the §60 class. 4 on a `derived` entry, therefore on screen |
+| **2 — redundant, no aggregate word** | **36 components** | a different cause each time: a unit restated, an alternative stored as an addition, or a coincidence |
+
+The twelve it finds are §60's twelve exactly, reached from stored numbers rather than from the
+label, and the read population covers all fourteen components with none left unread.
+
+### 61.3 What gate 8 CANNOT catch — stated because the gaps are real
+
+- **Direction.** Arithmetic sees that two rows are related, never which was derived from which.
+  Kled Q's full-damage row is 5× its reduced-pellet row, which is true and backwards. That is why
+  tier 2 exists and why nothing in tier 2 is acted on by rule.
+- **An aggregate whose parts are not stored.** Zoe E is caught only because its aggregate happens
+  to be twice a row that IS stored. Had the bubble damage been absent instead of the cap row,
+  nothing would have fired. **A missing part hides an aggregate from this check completely.**
+- **An aggregate that is not a whole multiple or a base-plus-N-multiple.** The multiples tested are
+  the ones the wiki writes (2–6, 8, 10, 12, 15, 20). An aggregate at 2.05× a row — Jhin Q's real
+  shape — is caught only through its `A + m × B` form, and one that fits neither form is missed.
+- **Anything with no per-rank series.** 8 components, and the number will grow as `byRangeType`
+  spreads.
+- **Whether the fix is a relation change at all.** Katarina R's physical side loses its only stored
+  figure once its aggregate stops adding, because the per-dagger row was never harvested. The check
+  says "this is not independent damage"; it does not say what should stand in its place.
+
+**It is a detector. `READ_POPULATION` in the module holds the twelve, with the sentence each
+verdict rests on, and an entry outside it that trips tier 1 is reported for someone to read.**
+
+### 61.4 The four wrong numbers are STILL ON SCREEN
+
+Nothing above changes a stored value. `curated/curated-data.json` is the file the site's per-champion
+ability files are built from, and it is protected three ways — the hook, read-only filesystem
+permissions, and `permissions.deny`, which refuses the `chmod` that `curated/README.md` names as the
+unlock. **No session can correct these four without the owner unlocking first**, and that is the
+guard working rather than a problem to route around.
