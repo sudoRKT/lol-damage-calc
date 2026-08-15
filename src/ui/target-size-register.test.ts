@@ -78,7 +78,25 @@ const rel = (f: string) => relative(UI, f);
 const read = (f: string) => readFileSync(f, 'utf8');
 const stripComments = (css: string) => css.replace(/\/\*[\s\S]*?\*\//g, '');
 
-/** Selectors that style an interactive control, found by name. Broad on purpose. */
+/**
+ * Selectors that style an interactive control, found by name. Broad on purpose.
+ *
+ * ═══ AND IT MISSED ONE, WHICH IS THIS TRIPWIRE'S KNOWN LIMIT ═══
+ *
+ * The 13×13px checkbox at `.defences__check` matches none of these words, so the "every
+ * control-shaped selector is in the register" assertion never demanded an entry for it — and it
+ * went unrecorded through two measurement passes while the box beside it was measured twice.
+ *
+ * **The pattern finds controls by what they are CALLED, and a control that is named for its role
+ * rather than for being a control is invisible to it.** Widening the pattern is the safe direction
+ * here (it demands more entries, never fewer) but it is not a substitute: the next control named
+ * something nobody thought of is missed again.
+ *
+ * What actually closed it was a browser sweep asking `elementFromPoint` what receives a click.
+ * `config/pointer-target-register.test.tsx` holds 15 controls measured that way, including the
+ * inputs, options and labels this pattern does not name. **That file is ahead of this one**, and
+ * the reconciliation is a worklist rather than a claim of completeness.
+ */
 const CONTROL_SELECTOR = /(control|remove|toggle|__btn|button|riser|shelf-button)/;
 
 type Pass =
@@ -137,7 +155,8 @@ const CONTROLS: Record<string, Pass> = {
       'browser CONFIRMED the computed figure rather than refuting it. Fixed by SIZE, not by ' +
       'spacing: a remove control sits inside a build row, which leaves no 24px separation to pass ' +
       'on. The inline axis lost 0.55px because the box became a centring flex container, and the ' +
-      'build row grew 44.53 to 47.69px, which is the whole layout cost.',
+      'build row grew 44.53 to 47.69px, which is the whole layout cost. ' +
+      'Re-measured 2026-08-16 in the DENSE case — a full six-item build, not one item: 28.91 x 24.00px at 1440px, 27.22 x 24.00px narrow, and the nearest other remove control falls from 45.85 to 40.00px. Still clear of 24px, and it passes by SIZE regardless, which is the argument for having grown it rather than resting on separation. One unresolved spread flagged rather than smoothed: the inline axis reads 27.22 narrow, 28.91 wide and 28.36 in the original measurement — a 1.7px range suspected to be font-loading state. It does not touch the pass, which is on the block axis at exactly 24.00px.',
   },
   'burndown/burndown.css .burn__riser': {
     how: 'spacing',
@@ -162,8 +181,14 @@ const CONTROLS: Record<string, Pass> = {
       'row away — agreeing with the figure above to the pixel, and passing 2.5.8 by 6.5x.',
   },
   'primitives/primitives.css .disclosure__toggle': {
-    how: 'unmeasured',
-    why: 'full-width by construction on the inline axis; its block size is padding plus an eyebrow line and has not been measured.',
+    how: 'size',
+    measured:
+      '642.50 x 32.19px at 1440px, 293.00 x 44.38px at 375/404px and 349.00 x 45.38px at 446px, ' +
+      "2026-08-16, on /calculator/, measured on the rune panel's two collapsed lists. Full width " +
+      'by construction on the inline axis, as this entry suspected; the block axis is padding plus ' +
+      'an eyebrow line and it clears 24px at every width measured, GROWING rather than shrinking ' +
+      'as the label wraps. All nine elementFromPoint probes returned the button. Measured by ' +
+      'ui-config, which renders it but does not own primitives/.',
   },
   'shell/nav.css .nav__toggle': {
     how: 'unmeasured',
@@ -201,7 +226,19 @@ const CONTROLS: Record<string, Pass> = {
       'so the whole box is one contiguous target and the pass no longer depends on how much of ' +
       "the source's own prose the detail block happens to carry. Cost 1.50px per row and 4.50px " +
       'on Soraka (494.88 to 499.38px), all of it min-block-size, which the row did not need at ' +
-      '30.50px and which is there so the pass cannot follow the type size down later.',
+      '30.50px and which is there so the pass cannot follow the type size down later. ' +
+      "RE-MEASURED 2026-08-16 at 1440px and in the narrow layout, with elementFromPoint at nine points: 642.50 x 32.00px at 1440px and 293.00 x 32.00px narrow. The label owns its centre, all four edges, AND correctly owns nothing in the four gaps outside it. The fix holds.",
+  },
+  'config/defences.css .defences__check': {
+    how: 'size',
+    measured:
+      '13.00 x 13.00px at 375, 404, 446 and 1440px, 2026-08-16 — eleven pixels under the minimum ' +
+      'on BOTH axes as a box of its own, and NOT grown. It sits wholly inside .defences__control, ' +
+      'a <label> for this same checkbox measuring 32.00px on the block axis, so the two are ONE ' +
+      'contiguous target: probed six pixels above, below and right of the checkbox, ' +
+      'elementFromPoint returns that label. Nearest target belonging to anything else 167.88px at ' +
+      '1440px, 276.71px at 375px. THIS IS THE CONTROL THAT APPEARED IN NO PUBLISHED FIGURE AT ' +
+      'ALL — the register\'s name pattern never demanded it, which is the gap recorded above.',
   },
 };
 
