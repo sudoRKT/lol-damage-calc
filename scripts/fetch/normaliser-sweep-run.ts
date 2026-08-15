@@ -164,6 +164,7 @@ async function main(): Promise<void> {
       watched: summary.watched.length,
       safe: summary.safe.length,
       withALiveDefect: summary.liveDefects.length,
+      withADefectSinceFIXED: summary.fixedDefects.length,
       couldInventADisagreement: summary.canInvent.length,
       couldHideADisagreement: summary.canHide.length,
     },
@@ -171,6 +172,13 @@ async function main(): Promise<void> {
       dangerous: summary.dangerous,
       watched: summary.watched,
       safe: summary.safe,
+    },
+    defects: {
+      live: summary.liveDefects,
+      // Fixed 2026-08-15. A site stays `dangerous` after its defect is corrected, and that is
+      // deliberate: the verdict describes the NORMALISER, which is still there and can still
+      // manufacture the next disagreement. Only the instance is closed.
+      fixed: summary.fixedDefects,
     },
     sites: SITES.map((site) => ({ ...site, verdict: classifySite(site) })),
     checks: {
@@ -190,7 +198,10 @@ async function main(): Promise<void> {
           "`plainText` drops every `name=value` template argument as formatting. `type=` on the " +
           "wiki's {{pp}} progression template is not formatting — it states WHICH stat the " +
           'progression reads and, where it carries a possessive, WHOSE. Counted when the value ' +
-          'names one of the ten owner-required stats or contains a possessive.',
+          'names one of the ELEVEN owner-required stats or contains a possessive. It was the ten ' +
+          'until 2026-08-15, when level was added to OWNER_REQUIRED_STATS; against the ten this ' +
+          'check reported 10 / 5 / 2 where it now reports 12 / 12 / 7, and the three items ' +
+          "stating `type=target's level` were the reason level was added at all.",
         itemEffectsChecked: itemEffects.length,
         effectsCarryingSuchAnArgument: namedArgumentHits.length,
         effectsNamingAnOwnerRequiredStat: namesARequiredStat.length,

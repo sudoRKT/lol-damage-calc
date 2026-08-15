@@ -98,6 +98,55 @@ export function plainText(wikitext: string): string {
   return text.replace(/\s+/g, ' ').trim();
 }
 
+/** One named template argument, with its value and where the value sits in the source. */
+export interface NamedArgument {
+  /** The argument's name, lower-cased: "type", "formula", "color". */
+  name: string;
+  /** Its value, with bold/italic markers removed so it reads as words. */
+  value: string;
+  /** Index of the value in the ORIGINAL wikitext, so a caller can ask what encloses it. */
+  start: number;
+  end: number;
+}
+
+/**
+ * Every `name=value` argument of every innermost template, in source order.
+ *
+ * WHY THIS EXISTS. `plainText` deletes named arguments, on the stated grounds that they are
+ * "formatting, never words". That is true of `color=health` and `icononly=true`. It is NOT true
+ * of `type=`, which is where the wiki states WHICH stat a progression reads and, when it carries
+ * a possessive, WHOSE — `type=target's missing health` on Kraken Slayer. Deleting it made the
+ * owner census blind to references the source does attribute (DATA-SOURCES §37.3).
+ *
+ * This function only EXTRACTS. It says nothing about which arguments carry meaning; the caller
+ * decides that, and `findOwnerRefs` reads `type=` and nothing else.
+ */
+export function namedArguments(wikitext: string): NamedArgument[] {
+  const out: NamedArgument[] = [];
+  for (const template of wikitext.matchAll(/\{\{([^{}]*)\}\}/g)) {
+    const inner = template[1]!;
+    // Offset of `inner` within the whole text: the match index plus the two opening braces.
+    const innerStart = template.index! + 2;
+    let cursor = 0;
+    for (const part of inner.split('|')) {
+      const partStart = innerStart + cursor;
+      cursor += part.length + 1; // +1 for the '|' the split consumed
+      const kv = /^(\s*)([a-z0-9 _-]+)\s*=([\s\S]*)$/i.exec(part);
+      if (!kv) continue;
+      const value = kv[3]!;
+      if (value.trim() === '') continue;
+      const valueStart = partStart + part.length - value.length;
+      out.push({
+        name: kv[2]!.trim().toLowerCase(),
+        value: value.replace(/'''|''/g, '').replace(/\s+/g, ' ').trim(),
+        start: valueStart,
+        end: valueStart + value.length,
+      });
+    }
+  }
+  return out;
+}
+
 /** Strip the HTML tags Data Dragon wraps rune prose in, keeping the words between them. */
 export function stripHtml(html: string): string {
   return html

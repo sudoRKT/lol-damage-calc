@@ -11,6 +11,11 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import type { Provenance } from '../../src/types/data.ts';
+import {
+  CONFIRMED_MARKUP_READINGS,
+  MARKUP_HITS_EXAMINED_AND_REFUSED,
+  TYPE_ARGUMENT_READINGS,
+} from './confirmed-readings.ts';
 import { CANDIDATE_AUDIT, reconcileAudit } from './effect-census-audit.ts';
 import { classifyEffect, summarise, type EffectClassification } from './effect-census.ts';
 import {
@@ -114,12 +119,20 @@ export async function run(): Promise<void> {
         ['owner-required stat references', totals.ownerRefs],
         ['  owner stated: the holder', totals.ownerHolder],
         ['  owner stated: the other champion', totals.ownerOpponent],
+        ['  owner stated: an ALLY (a champion this engine does not model)', totals.ownerAlly],
         ['  owner NOT stated', totals.ownerUnstated],
         ['    ...of those, a verb implies the holder (NOT resolved)', totals.unstatedWithHolderVerb],
         ['  resolved only by a coordinated possessive', totals.ownerByCoordination],
         ['  of which health pools', totals.healthPoolRefs],
         ['  of which armor / MR / mana', totals.resistanceAndManaRefs],
+        ['  of which champion level', totals.levelRefs],
+        ['  found in a wiki `type=` argument', totals.refsInTypeArgument],
+        ['    attributed on a reading a person made', totals.refsInTypeArgumentAttributed],
+        ['    possessive nobody has read (reported, NOT attributed)', totals.refsInTypeArgumentNeedingAReading],
+        ['  §37.3-comparable: TEN stats, in prose', totals.ownerRefsProseTenStats],
+        ['    of those, owner NOT stated', totals.ownerUnstatedProseTenStats],
         ['bare "health"/"mana" mentions (not counted above)', totals.barePoolMentions],
+        ['bare "level" mentions (not counted above)', totals.bareLevelMentions],
       ]),
     );
   }
@@ -253,9 +266,22 @@ export async function run(): Promise<void> {
         'counted separately and never merged in.',
       owner:
         'holder = the source states the stat belongs to the item holder / rune owner ("your", ' +
-        '"his"). opponent = it states the other champion ("the target\'s", "their"). unstated ' +
-        '= the source names the stat and says whose it is nowhere in the effect text. ' +
+        '"his"). opponent = it states the other champion ("the target\'s", "their"). ally = it ' +
+        'states a champion this engine does not model — the ally being healed or shielded. ' +
+        'unstated = the source names the stat and says whose it is nowhere in the effect text. ' +
         'unstated is a PERMANENT state, not a to-do (DATA-SOURCES §16, SPECIFICATION §8).',
+      ownerReferenceLocation:
+        'prose = the flattened sentence, which is everything this census could see before ' +
+        '2026-08-15. type-argument = the wiki\'s own `type=` argument on a progression template, ' +
+        'which `plainText` deleted as formatting. `type=` is the ONLY named argument read: ' +
+        '`formula=` restates the same fact in prose and reading both would count one statement ' +
+        'twice.',
+      level:
+        'THE ELEVENTH OWNER-REQUIRED STAT (src/types/data.ts, 2026-08-15). Counted as a reference ' +
+        'ONLY where the source states it as the AXIS of a value — a `type=` argument. Prose ' +
+        'mentions ("based on level", "Level 11:") are counted separately as bareLevelMentions and ' +
+        'never merged in, because they are an axis with no possessive and a threshold ' +
+        'respectively, and merging them would bury the real references under noise.',
     },
     itemFilterStages: stages,
     join: {
@@ -274,6 +300,45 @@ export async function run(): Promise<void> {
       reconciliation: audit,
       verdicts: CANDIDATE_AUDIT,
       scopeAfterAudit: afterAudit,
+    },
+    // The two corrections applied on 2026-08-15, each carrying what this file said before it.
+    // A correction nobody can see is a correction nobody can check.
+    corrections: {
+      damageTypeStatedOnlyInDataDragonMarkup: {
+        whatItIs:
+          'This pipeline strips HTML before classifying rune prose, and Data Dragon states some ' +
+          'damage types only in the TAG NAME. First Strike was published as dealing no damage at ' +
+          'all, and as a conflict between the two sources, because of it — a disagreement the ' +
+          'pipeline manufactured downstream of two sources that agree.',
+        whyItIsAListAndNotARule:
+          'Measured live on 2026-08-15: 3 texts across all 62 runes and all 209 items state a ' +
+          'type only in markup, and in 2 of them (Hubris, Staff of Flowing Water) the tag is a ' +
+          'COLOUR on a stat grant rather than a damage type. Reading the tag as the type would ' +
+          'be wrong two times in three, so the correction is applied only to entries a person ' +
+          'has read.',
+        applied: CONFIRMED_MARKUP_READINGS,
+        examinedAndRefused: MARKUP_HITS_EXAMINED_AND_REFUSED,
+      },
+      whoseStatAtypeArgumentNames: {
+        whatItIs:
+          '`plainText` deletes named template arguments as formatting. `type=` is not ' +
+          'formatting: it is where the wiki states which stat a progression reads and, when it ' +
+          'carries a possessive, whose. Ten references were invisible, two of them attributed.',
+        whyTheOwnerIsNotMachineDecided:
+          '"target" means whoever the effect APPLIES TO. On Kraken Slayer that is the enemy ' +
+          'champion, because the effect damages them. On Locket of the Iron Solari, Mikael\'s ' +
+          'Blessing and Redemption it is an ALLY, because the effect shields or heals them. The ' +
+          'words are identical; only the sentence around them decides. So each possessive is ' +
+          'resolved by a person and recorded, and an unread one is reported, never attributed.',
+        readings: TYPE_ARGUMENT_READINGS,
+        stillNeedingAReading: all
+          .flatMap((row) =>
+            row.ownerRefs
+              .filter((ref) => ref.needsReading)
+              .map((ref) => `${row.ownerName} [${row.key}] — ${ref.quote}`),
+          )
+          .sort(),
+      },
     },
     effects: all,
   };

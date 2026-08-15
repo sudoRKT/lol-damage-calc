@@ -2,7 +2,7 @@
   "provenance": {
     "source": "Data Dragon item.json + runesReforged.json (pool, rune prose); wiki Module:ItemData/data (item effect prose)",
     "patch": "16.16.1",
-    "fetched": "2026-08-13T17:44:28.541Z",
+    "fetched": "2026-08-15T21:03:29.353Z",
     "urls": {
       "patch": "https://ddragon.leagueoflegends.com/api/versions.json",
       "items": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
@@ -21,7 +21,9 @@
     "inScope": "dealsDamage OR modifiesDamageRelevantStat. This is the harvest population.",
     "reach": "The DATA-SOURCES §26.3 split, applied to effects. R1: the source wraps the quantity and its value together (adjacent {{as}} blocks; a labelled rune line). R2: the same with exactly one bounded connective (as / of / equal to) between them. H1: the quantity is named but its value is not structurally attached — a person must read the sentence to decide which reading applies. H2: the source never labels the number.",
     "ownerReference": "One mention of one of the ten stats DATA-SOURCES §16 refuses without an owner: the four health pools, armor and bonus armor, magic resistance and bonus magic resistance, maximum and current mana. Longest phrasing wins, so \"bonus health\" is never also counted as \"health\". A bare \"health\"/\"mana\" with no pool qualifier is counted separately and never merged in.",
-    "owner": "holder = the source states the stat belongs to the item holder / rune owner (\"your\", \"his\"). opponent = it states the other champion (\"the target's\", \"their\"). unstated = the source names the stat and says whose it is nowhere in the effect text. unstated is a PERMANENT state, not a to-do (DATA-SOURCES §16, SPECIFICATION §8)."
+    "owner": "holder = the source states the stat belongs to the item holder / rune owner (\"your\", \"his\"). opponent = it states the other champion (\"the target's\", \"their\"). ally = it states a champion this engine does not model — the ally being healed or shielded. unstated = the source names the stat and says whose it is nowhere in the effect text. unstated is a PERMANENT state, not a to-do (DATA-SOURCES §16, SPECIFICATION §8).",
+    "ownerReferenceLocation": "prose = the flattened sentence, which is everything this census could see before 2026-08-15. type-argument = the wiki's own `type=` argument on a progression template, which `plainText` deleted as formatting. `type=` is the ONLY named argument read: `formula=` restates the same fact in prose and reading both would count one statement twice.",
+    "level": "THE ELEVENTH OWNER-REQUIRED STAT (src/types/data.ts, 2026-08-15). Counted as a reference ONLY where the source states it as the AXIS of a value — a `type=` argument. Prose mentions (\"based on level\", \"Level 11:\") are counted separately as bareLevelMentions and never merged in, because they are an axis with no possessive and a threshold respectively, and merging them would bury the real references under noise."
   },
   "itemFilterStages": {
     "total": 868,
@@ -112,26 +114,35 @@
       },
       "reachableInScope": 104,
       "hardInScope": 39,
-      "ownerRefs": 92,
-      "ownerHolder": 12,
-      "ownerOpponent": 11,
-      "ownerUnstated": 69,
+      "ownerRefs": 104,
+      "ownerHolder": 15,
+      "ownerOpponent": 13,
+      "ownerAlly": 3,
+      "ownerUnstated": 73,
       "ownerByCoordination": 1,
       "unstatedWithHolderVerb": 17,
       "ownerRefsByStat": {
         "maxMana": 23,
-        "bonusHP": 21,
+        "bonusHP": 22,
         "armor": 2,
         "currentHP": 2,
         "magicResist": 2,
-        "maxHP": 31,
+        "maxHP": 32,
+        "missingHP": 4,
+        "level": 7,
         "bonusMagicResist": 5,
-        "bonusArmor": 5,
-        "missingHP": 1
+        "bonusArmor": 5
       },
-      "healthPoolRefs": 55,
+      "healthPoolRefs": 60,
       "resistanceAndManaRefs": 37,
+      "levelRefs": 7,
       "barePoolMentions": 29,
+      "bareLevelMentions": 2,
+      "ownerRefsProseTenStats": 92,
+      "ownerUnstatedProseTenStats": 69,
+      "refsInTypeArgument": 12,
+      "refsInTypeArgumentAttributed": 8,
+      "refsInTypeArgumentNeedingAReading": 0,
       "damagingAfterAudit": 66,
       "inScopeAfterAudit": 131,
       "outOfScopeAfterAudit": 98,
@@ -142,24 +153,25 @@
       "effects": 62,
       "crossReferences": 0,
       "damageInstances": 5,
-      "damageCandidates": 14,
+      "damageCandidates": 15,
       "modifiesStat": 44,
       "modifiesDamageRelevantStat": 32,
       "conditional": 51,
       "alwaysActive": 11,
-      "inScope": 40,
-      "outOfScope": 22,
+      "inScope": 41,
+      "outOfScope": 21,
       "reach": {
-        "R1": 14,
+        "R1": 13,
         "R2": 0,
-        "H1": 38,
+        "H1": 39,
         "H2": 10
       },
       "reachableInScope": 11,
-      "hardInScope": 29,
+      "hardInScope": 30,
       "ownerRefs": 28,
       "ownerHolder": 15,
       "ownerOpponent": 0,
+      "ownerAlly": 0,
       "ownerUnstated": 13,
       "ownerByCoordination": 2,
       "unstatedWithHolderVerb": 5,
@@ -173,66 +185,82 @@
       },
       "healthPoolRefs": 17,
       "resistanceAndManaRefs": 11,
+      "levelRefs": 0,
       "barePoolMentions": 17,
-      "damagingAfterAudit": 15,
-      "inScopeAfterAudit": 37,
-      "outOfScopeAfterAudit": 25,
+      "bareLevelMentions": 23,
+      "ownerRefsProseTenStats": 28,
+      "ownerUnstatedProseTenStats": 13,
+      "refsInTypeArgument": 0,
+      "refsInTypeArgumentAttributed": 0,
+      "refsInTypeArgumentNeedingAReading": 0,
+      "damagingAfterAudit": 16,
+      "inScopeAfterAudit": 38,
+      "outOfScopeAfterAudit": 24,
       "statOnlyInScopeAfterAudit": 22,
-      "conditionalDamagingAfterAudit": 14
+      "conditionalDamagingAfterAudit": 15
     },
     "all": {
       "effects": 291,
       "crossReferences": 2,
       "damageInstances": 63,
-      "damageCandidates": 40,
+      "damageCandidates": 41,
       "modifiesStat": 169,
       "modifiesDamageRelevantStat": 132,
       "conditional": 222,
       "alwaysActive": 69,
-      "inScope": 183,
-      "outOfScope": 108,
+      "inScope": 184,
+      "outOfScope": 107,
       "reach": {
-        "R1": 122,
+        "R1": 121,
         "R2": 12,
-        "H1": 88,
+        "H1": 89,
         "H2": 69
       },
       "reachableInScope": 115,
-      "hardInScope": 68,
-      "ownerRefs": 120,
-      "ownerHolder": 27,
-      "ownerOpponent": 11,
-      "ownerUnstated": 82,
+      "hardInScope": 69,
+      "ownerRefs": 132,
+      "ownerHolder": 30,
+      "ownerOpponent": 13,
+      "ownerAlly": 3,
+      "ownerUnstated": 86,
       "ownerByCoordination": 3,
       "unstatedWithHolderVerb": 22,
       "ownerRefsByStat": {
         "maxMana": 26,
-        "bonusHP": 24,
+        "bonusHP": 25,
         "armor": 6,
         "currentHP": 2,
         "magicResist": 6,
-        "maxHP": 42,
+        "maxHP": 43,
+        "missingHP": 7,
+        "level": 7,
         "bonusMagicResist": 5,
-        "bonusArmor": 5,
-        "missingHP": 4
+        "bonusArmor": 5
       },
-      "healthPoolRefs": 72,
+      "healthPoolRefs": 77,
       "resistanceAndManaRefs": 48,
+      "levelRefs": 7,
       "barePoolMentions": 46,
-      "damagingAfterAudit": 81,
-      "inScopeAfterAudit": 168,
-      "outOfScopeAfterAudit": 123,
+      "bareLevelMentions": 25,
+      "ownerRefsProseTenStats": 120,
+      "ownerUnstatedProseTenStats": 82,
+      "refsInTypeArgument": 12,
+      "refsInTypeArgumentAttributed": 8,
+      "refsInTypeArgumentNeedingAReading": 0,
+      "damagingAfterAudit": 82,
+      "inScopeAfterAudit": 169,
+      "outOfScopeAfterAudit": 122,
       "statOnlyInScopeAfterAudit": 87,
-      "conditionalDamagingAfterAudit": 76
+      "conditionalDamagingAfterAudit": 77
     }
   },
   "handAudit": {
     "whatItIs": "One person reading each `candidate` sentence once, on 2026-08-13, recorded with the words the verdict rests on. NOT a verification: nothing here is independently re-derived and no entry may claim better than `derived` because of it.",
     "reconciliation": {
-      "audited": 40,
+      "audited": 41,
       "notCandidateAnyMore": [],
       "unaudited": [],
-      "dealsDamage": 18,
+      "dealsDamage": 19,
       "dealsNoDamage": 22
     },
     "verdicts": [
@@ -435,6 +463,12 @@
         "because": "Aery deals 10 - 50 based on level (+0.05 AP) (+0.1 bonus AD) — the source never says the word \"damage\""
       },
       {
+        "ownerName": "First Strike",
+        "key": "rune",
+        "dealsDamage": true,
+        "because": "deals bonus TRUE damage equal to 7% of post-mitigation damage dealt to champions — Data Dragon states the type in the tag, the wiki states it in words, and Riot's launch note (V11.23) says \"bonus true damage\""
+      },
+      {
         "ownerName": "Deathfire Touch",
         "key": "rune",
         "dealsDamage": true,
@@ -478,18 +512,163 @@
       }
     ],
     "scopeAfterAudit": {
-      "dealDamage": 81,
+      "dealDamage": 82,
       "dealDamageItems": 66,
-      "dealDamageRunes": 15,
+      "dealDamageRunes": 16,
       "dealDamageValueMachineReadable": 63,
-      "dealDamageValueNeedsAPerson": 18,
+      "dealDamageValueNeedsAPerson": 19,
       "dealDamageWithUnstatedOwner": 12,
       "statOnlyDamageRelevant": 87,
       "statOnlyConditional": 60,
       "statOnlyAlwaysActive": 27,
-      "statOnlyWithUnstatedOwner": 40,
-      "inScope": 168,
-      "outOfScope": 123
+      "statOnlyWithUnstatedOwner": 42,
+      "inScope": 169,
+      "outOfScope": 122
+    }
+  },
+  "corrections": {
+    "damageTypeStatedOnlyInDataDragonMarkup": {
+      "whatItIs": "This pipeline strips HTML before classifying rune prose, and Data Dragon states some damage types only in the TAG NAME. First Strike was published as dealing no damage at all, and as a conflict between the two sources, because of it — a disagreement the pipeline manufactured downstream of two sources that agree.",
+      "whyItIsAListAndNotARule": "Measured live on 2026-08-15: 3 texts across all 62 runes and all 209 items state a type only in markup, and in 2 of them (Hubris, Staff of Flowing Water) the tag is a COLOUR on a stat grant rather than a damage type. Reading the tag as the type would be wrong two times in three, so the correction is applied only to entries a person has read.",
+      "applied": [
+        {
+          "subject": "First Strike",
+          "source": "rune",
+          "id": 8369,
+          "key": "rune",
+          "type": "true",
+          "markup": "causing you to deal <truedamage>7%</truedamage> extra <truedamage> damage</truedamage> against champions",
+          "strippedReads": "causing you to deal 7% extra damage against champions",
+          "otherSourceSays": "wiki Template:Rune data First Strike — \"causing all of your post-mitigation damage dealt against champions to deal 7% bonus true damage\"",
+          "confirmedBy": "public/data/rune-contested.json, finding \"First Strike\", verdict \"not-contested-markup-stripped\". It carries both sources verbatim with their edit dates, and Riot's own launch note (V11.23) saying \"bonus true damage\", with every later note moving only the percentage: 10% → 9% → 8% → 7% → 8% → 7%.",
+          "confirmedOn": "2026-08-15",
+          "censusDamageVerdict": "candidate",
+          "censusReachReason": "the damage type is stated by Data Dragon markup and by the wiki in words; the VALUE is 7% of post-mitigation damage already dealt, which no parser here can read — a person must.",
+          "publishedBefore": [
+            {
+              "file": "public/data/effect-census.json",
+              "field": "effects[First Strike].damage / .inScope / .reach",
+              "was": "damage \"none\", inScope false, reach \"R1\" (\"a labelled line states the value\" — the cooldown line)"
+            },
+            {
+              "file": "public/data/rune-census.json",
+              "field": "counts.dealsDamage.sourcesDisagree",
+              "was": "[\"First Strike\"]"
+            },
+            {
+              "file": "public/data/rune-census.json",
+              "field": "counts.dealsDamage.byDataDragon / .bothAgree",
+              "was": "15 / 15"
+            },
+            {
+              "file": "public/data/rune-census.json",
+              "field": "counts.damageTypeOfDamagingRunes.typeNotStatedAtAll.ddragon",
+              "was": "[\"First Strike\", \"Summon Aery\"]"
+            },
+            {
+              "file": "public/data/rune-census.json",
+              "field": "counts.damageTypeOfDamagingRunes.ddragon",
+              "was": "{ adaptive 6, true 3, not-stated 2, magic 4, physical 1 }"
+            },
+            {
+              "file": "public/data/rune-census.json",
+              "field": "counts.blockers.sources-disagree-on-kind.runes",
+              "was": "[\"First Strike\"]"
+            },
+            {
+              "file": "public/data/rune-census.json",
+              "field": "rows[First Strike].dealsDamage.ddragon / .damageType.ddragon",
+              "was": "false / \"not-stated\""
+            }
+          ]
+        }
+      ],
+      "examinedAndRefused": [
+        {
+          "subject": "Hubris",
+          "source": "item",
+          "tag": "physicalDamage",
+          "wraps": "12 Attack Damage plus 3 per champion killed",
+          "why": "The tag colours a STAT GRANT. Nothing is dealt by the item; the census reads Hubris [pass] as dealing no damage and that reading stands."
+        },
+        {
+          "subject": "Staff of Flowing Water",
+          "source": "item",
+          "tag": "magicDamage",
+          "wraps": "40 Ability Power",
+          "why": "The tag colours a stat grant on a heal/shield trigger. Not a damage type."
+        }
+      ]
+    },
+    "whoseStatAtypeArgumentNames": {
+      "whatItIs": "`plainText` deletes named template arguments as formatting. `type=` is not formatting: it is where the wiki states which stat a progression reads and, when it carries a possessive, whose. Ten references were invisible, two of them attributed.",
+      "whyTheOwnerIsNotMachineDecided": "\"target\" means whoever the effect APPLIES TO. On Kraken Slayer that is the enemy champion, because the effect damages them. On Locket of the Iron Solari, Mikael's Blessing and Redemption it is an ALLY, because the effect shields or heals them. The words are identical; only the sentence around them decides. So each possessive is resolved by a person and recorded, and an unread one is reported, never attributed.",
+      "readings": [
+        {
+          "ownerName": "Kraken Slayer",
+          "key": "pass",
+          "states": "target's missing health",
+          "owner": "opponent",
+          "because": "the argument governs \"the next basic attack … to deal bonus physical damage on-hit, increased by …\" — the unit hit is the enemy champion.",
+          "corroboration": "Data Dragon item 6672: \"Every third Attack deals bonus physical damage On-Hit, increased based on their missing Health.\" The sources agree.",
+          "readOn": "2026-08-15"
+        },
+        {
+          "ownerName": "Lord Dominik's Regards",
+          "key": "pass",
+          "states": "target's bonus health",
+          "owner": "opponent",
+          "because": "the sentence ends \"increased damage against enemy champions\".",
+          "corroboration": "Data Dragon item 3036: \"Deal up to 15% bonus damage against champions based on their bonus Health.\" The sources agree.",
+          "readOn": "2026-08-15"
+        },
+        {
+          "ownerName": "Locket of the Iron Solari",
+          "key": "act",
+          "states": "target's level",
+          "owner": "ally",
+          "because": "the sentence is \"Grants you and allied champions within 850 units a shield for …\". The shield recipients are the holder and allies; no enemy is in the sentence at all.",
+          "corroboration": "Data Dragon item 3190: \"Grant nearby allies a 290 - 360 Shield that decays over 2.5 seconds.\" Allies, and Data Dragon names no level axis.",
+          "readOn": "2026-08-15"
+        },
+        {
+          "ownerName": "Mikael's Blessing",
+          "key": "act",
+          "states": "target's level",
+          "owner": "ally",
+          "because": "the sentence is \"Remove all crowd control debuffs … from yourself or the target allied champion and heal the target for …\". The source defines \"the target\" two clauses earlier as the allied champion.",
+          "corroboration": "Data Dragon item 3222: \"Remove all crowd control debuffs … from an ally champion and restore 100 - 250 Health.\"",
+          "readOn": "2026-08-15"
+        },
+        {
+          "ownerName": "Redemption",
+          "key": "act",
+          "states": "target's level",
+          "owner": "ally",
+          "because": "the argument sits inside \"Allies within the area are healed for …\", and the enemy clause that follows carries its own separate figure (\"enemy champions within take 10% of target's maximum health as true damage\"), which the census already reads as the opponent's. One sentence, two targets, and only the second is the enemy.",
+          "corroboration": "Data Dragon item 3107: \"Restore 150 - 350 Health to allied units and deal 10% max Health true damage to enemy champions after 2.5 seconds.\" The split is stated by both sources.",
+          "readOn": "2026-08-15"
+        },
+        {
+          "ownerName": "Dream Maker",
+          "key": "pass",
+          "states": "your level",
+          "owner": "holder",
+          "because": "the possessive is \"your\" and the holder is the item's owner, even though the bubbles are granted to an ally: the progression reads the GRANTER's level, which is what the source says.",
+          "corroboration": null,
+          "readOn": "2026-08-15"
+        },
+        {
+          "ownerName": "Solstice Sleigh",
+          "key": "pass",
+          "states": "your level",
+          "owner": "holder",
+          "because": "the possessive is \"your\", in \"causes you and the most wounded allied champion … to gain … bonus health\".",
+          "corroboration": null,
+          "readOn": "2026-08-15"
+        }
+      ],
+      "stillNeedingAReading": []
     }
   },
   "effects": [
@@ -509,7 +688,8 @@
       "reach": "H2",
       "reachReason": "no damage instance and no stat modification this engine models",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -534,10 +714,12 @@
           "evidence": "none",
           "verbImpliesHolder": false,
           "quote": "00% more mana; you gain 15% (+ 0.5 % per 100 bonus mana) increased ability damag",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 2
+      "barePoolMentions": 2,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -562,10 +744,12 @@
           "evidence": "none",
           "verbImpliesHolder": true,
           "quote": "Grants ability power equal to 1% bonus mana .",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -590,7 +774,8 @@
           "evidence": "none",
           "verbImpliesHolder": true,
           "quote": "with an ability consumes a charge to grant 5 bonus mana , increased to 10 mana i",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         },
         {
           "stat": "maxMana",
@@ -599,10 +784,12 @@
           "evidence": "none",
           "verbImpliesHolder": false,
           "quote": " they are a champion, up to a maximum of 360 bonus mana .",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 1
+      "barePoolMentions": 1,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -627,10 +814,12 @@
           "evidence": "none",
           "verbImpliesHolder": false,
           "quote": "Transforms into Seraph's Embrace at 360 bonus mana .",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -648,7 +837,8 @@
       "reach": "R1",
       "reachReason": "adjacent {{as}} blocks name the damage and carry its value",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -666,7 +856,8 @@
       "reach": "R1",
       "reachReason": "the source states this effect is the one on \"Plated Steelcaps\"",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -691,10 +882,12 @@
           "evidence": "none",
           "verbImpliesHolder": false,
           "quote": "s you a shield that absorbs 100 to 200 (+ 8% bonus health) physical damage for 5 s",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -712,7 +905,8 @@
       "reach": "H2",
       "reachReason": "no damage instance and no stat modification this engine models",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -730,7 +924,8 @@
       "reach": "R1",
       "reachReason": "adjacent {{as}} blocks name the damage and carry its value",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -748,7 +943,8 @@
       "reach": "R1",
       "reachReason": "an {{as}} run names the stat and carries its value",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -766,7 +962,8 @@
       "reach": "H2",
       "reachReason": "no damage instance and no stat modification this engine models",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -784,7 +981,8 @@
       "reach": "R1",
       "reachReason": "adjacent {{as}} blocks name the damage and carry its value",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -802,7 +1000,8 @@
       "reach": "R1",
       "reachReason": "adjacent {{as}} blocks name the damage and carry its value",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -827,7 +1026,8 @@
           "evidence": "none",
           "verbImpliesHolder": false,
           "quote": "acking up to 5 times. Each stack inflicts 6% armor reduction , up to 30% ar",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         },
         {
           "stat": "armor",
@@ -836,10 +1036,12 @@
           "evidence": "none",
           "verbImpliesHolder": false,
           "quote": "tack inflicts 6% armor reduction , up to 30% armor at 5 stacks. Non- basic ",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -857,7 +1059,8 @@
       "reach": "R1",
       "reachReason": "an {{as}} run names the stat and carries its value",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -875,7 +1078,8 @@
       "reach": "R1",
       "reachReason": "adjacent {{as}} blocks name the damage and carry its value",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -893,7 +1097,8 @@
       "reach": "H1",
       "reachReason": "the stat is named and a number is present, but nothing structural joins them",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -918,10 +1123,12 @@
           "evidence": "possessive",
           "verbImpliesHolder": false,
           "quote": "damage on-hit equal to 9% 6% of the target's current health , with a maximum of 100 ",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -939,7 +1146,8 @@
       "reach": "H2",
       "reachReason": "no damage instance and no stat modification this engine models",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -964,10 +1172,12 @@
           "evidence": "none",
           "verbImpliesHolder": false,
           "quote": "every 0.3 seconds. Each stack inflicts 7.5 % magic resistance reduction , up to 30% mr",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -985,7 +1195,8 @@
       "reach": "H2",
       "reachReason": "no damage instance and no stat modification this engine models",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -1003,7 +1214,8 @@
       "reach": "R1",
       "reachReason": "adjacent {{as}} blocks name the damage and carry its value",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -1028,10 +1240,12 @@
           "evidence": "none",
           "verbImpliesHolder": false,
           "quote": "ealing received from life steal in excess of maximum health into a shield for up to ",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -1049,7 +1263,8 @@
       "reach": "H1",
       "reachReason": "the stat is named and a number is present, but nothing structural joins them",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -1067,7 +1282,8 @@
       "reach": "R1",
       "reachReason": "adjacent {{as}} blocks name the damage and carry its value",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -1085,7 +1301,8 @@
       "reach": "H2",
       "reachReason": "no damage instance and no stat modification this engine models",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -1103,7 +1320,8 @@
       "reach": "H2",
       "reachReason": "no damage instance and no stat modification this engine models",
       "ownerRefs": [],
-      "barePoolMentions": 1
+      "barePoolMentions": 1,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -1121,7 +1339,8 @@
       "reach": "H2",
       "reachReason": "no damage instance and no stat modification this engine models",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -1139,7 +1358,8 @@
       "reach": "H2",
       "reachReason": "no damage instance and no stat modification this engine models",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -1164,10 +1384,12 @@
           "evidence": "none",
           "verbImpliesHolder": false,
           "quote": "s you a shield that absorbs 100 to 200 (+ 8% bonus health) magic damage for 5 seco",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -1185,7 +1407,8 @@
       "reach": "H1",
       "reachReason": "damage and a number sit in one sentence with nothing structural joining them — a person must read it",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -1203,7 +1426,8 @@
       "reach": "H2",
       "reachReason": "no damage instance and no stat modification this engine models",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -1221,7 +1445,8 @@
       "reach": "R1",
       "reachReason": "an {{as}} run names the stat and carries its value",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -1239,7 +1464,8 @@
       "reach": "H1",
       "reachReason": "the stat is named and a number is present, but nothing structural joins them",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -1257,7 +1483,8 @@
       "reach": "R1",
       "reachReason": "an {{as}} run names the stat and carries its value",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -1275,7 +1502,8 @@
       "reach": "H2",
       "reachReason": "no damage instance and no stat modification this engine models",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -1293,7 +1521,8 @@
       "reach": "H2",
       "reachReason": "no damage instance and no stat modification this engine models",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -1311,7 +1540,8 @@
       "reach": "R1",
       "reachReason": "an {{as}} run names the stat and carries its value",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -1329,7 +1559,8 @@
       "reach": "R1",
       "reachReason": "an {{as}} run names the stat and carries its value",
       "ownerRefs": [],
-      "barePoolMentions": 1
+      "barePoolMentions": 1,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -1347,7 +1578,8 @@
       "reach": "R1",
       "reachReason": "adjacent {{as}} blocks name the damage and carry its value",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -1365,7 +1597,8 @@
       "reach": "H1",
       "reachReason": "the stat is named and a number is present, but nothing structural joins them",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -1383,7 +1616,8 @@
       "reach": "H1",
       "reachReason": "damage and a number sit in one sentence with nothing structural joining them — a person must read it",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -1401,7 +1635,8 @@
       "reach": "H1",
       "reachReason": "damage and a number sit in one sentence with nothing structural joining them — a person must read it",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -1419,7 +1654,8 @@
       "reach": "R1",
       "reachReason": "adjacent {{as}} blocks name the damage and carry its value",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -1437,7 +1673,8 @@
       "reach": "R1",
       "reachReason": "an {{as}} run names the stat and carries its value",
       "ownerRefs": [],
-      "barePoolMentions": 3
+      "barePoolMentions": 3,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -1455,7 +1692,8 @@
       "reach": "R1",
       "reachReason": "adjacent {{as}} blocks name the damage and carry its value",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -1472,8 +1710,20 @@
       "inScope": true,
       "reach": "R1",
       "reachReason": "an {{as}} run names the stat and carries its value",
-      "ownerRefs": [],
-      "barePoolMentions": 2
+      "ownerRefs": [
+        {
+          "stat": "missingHP",
+          "phrase": "missing health",
+          "owner": "unstated",
+          "evidence": "none",
+          "verbImpliesHolder": false,
+          "quote": "type=current missing health",
+          "inAsBlock": true,
+          "statedIn": "type-argument"
+        }
+      ],
+      "barePoolMentions": 2,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -1491,7 +1741,8 @@
       "reach": "R1",
       "reachReason": "adjacent {{as}} blocks name the damage and carry its value",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -1509,7 +1760,8 @@
       "reach": "H2",
       "reachReason": "no damage instance and no stat modification this engine models",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -1526,8 +1778,30 @@
       "inScope": true,
       "reach": "R1",
       "reachReason": "adjacent {{as}} blocks name the damage and carry its value",
-      "ownerRefs": [],
-      "barePoolMentions": 0
+      "ownerRefs": [
+        {
+          "stat": "level",
+          "phrase": "level",
+          "owner": "holder",
+          "evidence": "read-by-a-person",
+          "verbImpliesHolder": false,
+          "quote": "type=your level — read as holder: the possessive is \"your\" and the holder is the item's owner, even though the bubbles are granted to an ally: the progression reads the GRANTER's level, which is what the source says.",
+          "inAsBlock": false,
+          "statedIn": "type-argument"
+        },
+        {
+          "stat": "level",
+          "phrase": "level",
+          "owner": "holder",
+          "evidence": "read-by-a-person",
+          "verbImpliesHolder": false,
+          "quote": "type=your level — read as holder: the possessive is \"your\" and the holder is the item's owner, even though the bubbles are granted to an ally: the progression reads the GRANTER's level, which is what the source says.",
+          "inAsBlock": true,
+          "statedIn": "type-argument"
+        }
+      ],
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -1552,10 +1826,12 @@
           "evidence": "none",
           "verbImpliesHolder": false,
           "quote": " magic damage and heals you for 10% AP (+ 3% bonus health) on-hit, and applies on-",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -1573,7 +1849,8 @@
       "reach": "H1",
       "reachReason": "damage and a number sit in one sentence with nothing structural joining them — a person must read it",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -1598,10 +1875,12 @@
           "evidence": "possessive",
           "verbImpliesHolder": false,
           "quote": "al damage to them equal to 8% 5% of target's maximum health and grants you a shield ",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -1619,7 +1898,8 @@
       "reach": "H2",
       "reachReason": "no damage instance and no stat modification this engine models",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -1644,10 +1924,12 @@
           "evidence": "none",
           "verbImpliesHolder": true,
           "quote": "Grants 300 bonus health , 25% Tenacity , and 15%",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -1665,7 +1947,8 @@
       "reach": "R1",
       "reachReason": "adjacent {{as}} blocks name the damage and carry its value",
       "ownerRefs": [],
-      "barePoolMentions": 1
+      "barePoolMentions": 1,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -1683,7 +1966,8 @@
       "reach": "H1",
       "reachReason": "damage and a number sit in one sentence with nothing structural joining them — a person must read it",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -1701,7 +1985,8 @@
       "reach": "R1",
       "reachReason": "an {{as}} run names the stat and carries its value",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -1719,7 +2004,8 @@
       "reach": "R1",
       "reachReason": "an {{as}} run names the stat and carries its value",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -1737,7 +2023,8 @@
       "reach": "R1",
       "reachReason": "adjacent {{as}} blocks name the damage and carry its value",
       "ownerRefs": [],
-      "barePoolMentions": 1
+      "barePoolMentions": 1,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -1755,7 +2042,8 @@
       "reach": "H1",
       "reachReason": "damage and a number sit in one sentence with nothing structural joining them — a person must read it",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -1773,7 +2061,8 @@
       "reach": "H1",
       "reachReason": "the stat is named and a number is present, but nothing structural joins them",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -1791,7 +2080,8 @@
       "reach": "R1",
       "reachReason": "an {{as}} run names the stat and carries its value",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -1809,7 +2099,8 @@
       "reach": "R1",
       "reachReason": "adjacent {{as}} blocks name the damage and carry its value",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -1827,7 +2118,8 @@
       "reach": "H1",
       "reachReason": "the stat is named and a number is present, but nothing structural joins them",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -1845,7 +2137,8 @@
       "reach": "H1",
       "reachReason": "damage and a number sit in one sentence with nothing structural joining them — a person must read it",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -1870,10 +2163,12 @@
           "evidence": "none",
           "verbImpliesHolder": true,
           "quote": "e every 1 second. At maximum stacks, gain 70 bonus magic resistance and 6% bonus movement sp",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -1891,7 +2186,8 @@
       "reach": "H2",
       "reachReason": "no damage instance and no stat modification this engine models",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -1909,7 +2205,8 @@
       "reach": "R1",
       "reachReason": "an {{as}} run names the stat and carries its value",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -1934,10 +2231,12 @@
           "evidence": "none",
           "verbImpliesHolder": false,
           "quote": "l for 50% of base health and restore 100% of maximum mana (300 second cooldown, st",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 1
+      "barePoolMentions": 1,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -1955,7 +2254,8 @@
       "reach": "H2",
       "reachReason": "no damage instance and no stat modification this engine models",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -1973,7 +2273,8 @@
       "reach": "R1",
       "reachReason": "an {{as}} run names the stat and carries its value",
       "ownerRefs": [],
-      "barePoolMentions": 2
+      "barePoolMentions": 2,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -1991,7 +2292,8 @@
       "reach": "R1",
       "reachReason": "adjacent {{as}} blocks name the damage and carry its value",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -2009,7 +2311,8 @@
       "reach": "R1",
       "reachReason": "an {{as}} run names the stat and carries its value",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -2027,7 +2330,8 @@
       "reach": "H2",
       "reachReason": "no damage instance and no stat modification this engine models",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -2045,7 +2349,8 @@
       "reach": "H2",
       "reachReason": "no damage instance and no stat modification this engine models",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -2063,7 +2368,8 @@
       "reach": "H1",
       "reachReason": "the stat is named and a number is present, but nothing structural joins them",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -2081,7 +2387,8 @@
       "reach": "H2",
       "reachReason": "no damage instance and no stat modification this engine models",
       "ownerRefs": [],
-      "barePoolMentions": 2
+      "barePoolMentions": 2,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -2106,7 +2413,8 @@
           "evidence": "none",
           "verbImpliesHolder": false,
           "quote": "me them all to deal 70 physical damage (+ 6% maximum health) bonus physical damage o",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         },
         {
           "stat": "maxHP",
@@ -2115,7 +2423,8 @@
           "evidence": "none",
           "verbImpliesHolder": false,
           "quote": "qual to 10% of that amount 70*0.1 (+ 6*0.1 % maximum health) (30 second cooldown per",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         },
         {
           "stat": "bonusHP",
@@ -2124,10 +2433,12 @@
           "evidence": "none",
           "verbImpliesHolder": true,
           "quote": "ysical damage on-hit and grant you permanent bonus health equal to 10% of that amo",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -2144,8 +2455,20 @@
       "inScope": false,
       "reach": "H1",
       "reachReason": "the stat is named and a number is present, but nothing structural joins them",
-      "ownerRefs": [],
-      "barePoolMentions": 0
+      "ownerRefs": [
+        {
+          "stat": "maxHP",
+          "phrase": "maximum health",
+          "owner": "unstated",
+          "evidence": "none",
+          "verbImpliesHolder": false,
+          "quote": "type=maximum health",
+          "inAsBlock": true,
+          "statedIn": "type-argument"
+        }
+      ],
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -2170,10 +2493,12 @@
           "evidence": "possessive",
           "verbImpliesHolder": false,
           "quote": "mage that would reduce you below 30% of your maximum health , you first gain a shiel",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -2191,7 +2516,8 @@
       "reach": "H2",
       "reachReason": "no damage instance and no stat modification this engine models",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -2209,7 +2535,8 @@
       "reach": "H2",
       "reachReason": "no damage instance and no stat modification this engine models",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -2227,7 +2554,8 @@
       "reach": "R1",
       "reachReason": "adjacent {{as}} blocks name the damage and carry its value",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -2245,7 +2573,8 @@
       "reach": "R1",
       "reachReason": "adjacent {{as}} blocks name the damage and carry its value",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -2263,7 +2592,8 @@
       "reach": "R1",
       "reachReason": "adjacent {{as}} blocks name the damage and carry its value",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -2288,10 +2618,12 @@
           "evidence": "none",
           "verbImpliesHolder": false,
           "quote": "s this passive for 3 seconds. Deal 15 (+ 1 % bonus health) magic damage magic dama",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -2316,7 +2648,8 @@
           "evidence": "none",
           "verbImpliesHolder": false,
           "quote": "d their death location that deals *2 (+ *2 % bonus health) magic damage magic dama",
-          "inAsBlock": false
+          "inAsBlock": false,
+          "statedIn": "prose"
         },
         {
           "stat": "bonusHP",
@@ -2325,10 +2658,12 @@
           "evidence": "none",
           "verbImpliesHolder": false,
           "quote": "uses a larger eruption that deals *4 (+ *4 % bonus health) magic damage magic dama",
-          "inAsBlock": false
+          "inAsBlock": false,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -2346,7 +2681,8 @@
       "reach": "H1",
       "reachReason": "damage and a number sit in one sentence with nothing structural joining them — a person must read it",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -2364,7 +2700,8 @@
       "reach": "H2",
       "reachReason": "no damage instance and no stat modification this engine models",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -2382,7 +2719,8 @@
       "reach": "H1",
       "reachReason": "damage and a number sit in one sentence with nothing structural joining them — a person must read it",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -2407,7 +2745,8 @@
           "evidence": "none",
           "verbImpliesHolder": false,
           "quote": "deal 120% 120*0.7 % base AD ad (+ 5% 5*0.7 % maximum health) bonus physical damage ,",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         },
         {
           "stat": "maxHP",
@@ -2416,10 +2755,12 @@
           "evidence": "none",
           "verbImpliesHolder": false,
           "quote": "to 300% 300*0.7 % base AD ad (+ 10% 10*0.7 % maximum health) against structures.",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -2444,7 +2785,8 @@
           "evidence": "none",
           "verbImpliesHolder": false,
           "quote": "in 70 to 130 for 11 70*0.5 to 130*0.5 for 11 bonus armor and bonus magic resistan",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         },
         {
           "stat": "bonusMagicResist",
@@ -2453,10 +2795,12 @@
           "evidence": "none",
           "verbImpliesHolder": false,
           "quote": " 11 70*0.5 to 130*0.5 for 11 bonus armor and bonus magic resistance , as well as 10% increas",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -2474,7 +2818,8 @@
       "reach": "R1",
       "reachReason": "adjacent {{as}} blocks name the damage and carry its value",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -2492,7 +2837,8 @@
       "reach": "R1",
       "reachReason": "the source states this effect is the one on \"Gluttonous Greaves\"",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -2517,7 +2863,8 @@
           "evidence": "possessive",
           "verbImpliesHolder": false,
           "quote": "While above 50% of your maximum health , you deal 4% increased ",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         },
         {
           "stat": "maxHP",
@@ -2526,10 +2873,12 @@
           "evidence": "possessive",
           "verbImpliesHolder": false,
           "quote": "4% increased damage. While below 50% of your maximum health , you gain 12% increased",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 1
+      "barePoolMentions": 1,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -2554,10 +2903,12 @@
           "evidence": "possessive",
           "verbImpliesHolder": false,
           "quote": "mage that would reduce you below 30% of your maximum health , you first gain a shiel",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -2575,7 +2926,8 @@
       "reach": "R1",
       "reachReason": "an {{as}} run names the stat and carries its value",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -2593,7 +2945,8 @@
       "reach": "H2",
       "reachReason": "no damage instance and no stat modification this engine models",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -2611,7 +2964,8 @@
       "reach": "H1",
       "reachReason": "the stat is named and a number is present, but nothing structural joins them",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -2636,7 +2990,8 @@
           "evidence": "possessive",
           "verbImpliesHolder": false,
           "quote": "to 5 times. At maximum stacks, increase your bonus armor and bonus magic resistan",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         },
         {
           "stat": "bonusMagicResist",
@@ -2645,10 +3000,12 @@
           "evidence": "coordination",
           "verbImpliesHolder": false,
           "quote": "aximum stacks, increase your bonus armor and bonus magic resistance by 30% until the end of ",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -2673,10 +3030,12 @@
           "evidence": "none",
           "verbImpliesHolder": false,
           "quote": "ld that absorbs magic damage equal to 15% of maximum health until destroyed.",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -2694,7 +3053,8 @@
       "reach": "H2",
       "reachReason": "no damage instance and no stat modification this engine models",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -2719,10 +3079,12 @@
           "evidence": "possessive",
           "verbImpliesHolder": false,
           "quote": "center to edge and you are above 30% of your maximum health , redirect 14% of the pr",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -2739,8 +3101,20 @@
       "inScope": true,
       "reach": "R1",
       "reachReason": "adjacent {{as}} blocks name the damage and carry its value",
-      "ownerRefs": [],
-      "barePoolMentions": 0
+      "ownerRefs": [
+        {
+          "stat": "missingHP",
+          "phrase": "missing health",
+          "owner": "opponent",
+          "evidence": "read-by-a-person",
+          "verbImpliesHolder": false,
+          "quote": "type=target's missing health — read as opponent: the argument governs \"the next basic attack … to deal bonus physical damage on-hit, increased by …\" — the unit hit is the enemy champion.",
+          "inAsBlock": false,
+          "statedIn": "type-argument"
+        }
+      ],
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -2765,7 +3139,8 @@
           "evidence": "possessive",
           "verbImpliesHolder": false,
           "quote": "ies, causing them to take 1% of the target's maximum health magic damage every 0.5 s",
-          "inAsBlock": false
+          "inAsBlock": false,
+          "statedIn": "prose"
         },
         {
           "stat": "maxHP",
@@ -2774,10 +3149,12 @@
           "evidence": "possessive",
           "verbImpliesHolder": false,
           "quote": "er tick against monsters. 6% of the target's maximum health total magic damage over ",
-          "inAsBlock": false
+          "inAsBlock": false,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -2795,7 +3172,8 @@
       "reach": "H1",
       "reachReason": "the stat is named and a number is present, but nothing structural joins them",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -2813,7 +3191,8 @@
       "reach": "R1",
       "reachReason": "adjacent {{as}} blocks name the damage and carry its value",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -2830,8 +3209,20 @@
       "inScope": false,
       "reach": "H2",
       "reachReason": "no damage instance and no stat modification this engine models",
-      "ownerRefs": [],
-      "barePoolMentions": 0
+      "ownerRefs": [
+        {
+          "stat": "level",
+          "phrase": "level",
+          "owner": "ally",
+          "evidence": "read-by-a-person",
+          "verbImpliesHolder": false,
+          "quote": "type=target's level — read as ally: the sentence is \"Grants you and allied champions within 850 units a shield for …\". The shield recipients are the holder and allies; no enemy is in the sentence at all.",
+          "inAsBlock": false,
+          "statedIn": "type-argument"
+        }
+      ],
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -2848,8 +3239,20 @@
       "inScope": true,
       "reach": "H1",
       "reachReason": "the stat is named and a number is present, but nothing structural joins them",
-      "ownerRefs": [],
-      "barePoolMentions": 0
+      "ownerRefs": [
+        {
+          "stat": "bonusHP",
+          "phrase": "bonus health",
+          "owner": "opponent",
+          "evidence": "read-by-a-person",
+          "verbImpliesHolder": false,
+          "quote": "type=target's bonus health — read as opponent: the sentence ends \"increased damage against enemy champions\".",
+          "inAsBlock": false,
+          "statedIn": "type-argument"
+        }
+      ],
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -2874,10 +3277,12 @@
           "evidence": "none",
           "verbImpliesHolder": false,
           "quote": "Upon leveling up, restores 20% of maximum mana over 3 seconds.",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -2895,7 +3300,8 @@
       "reach": "R1",
       "reachReason": "adjacent {{as}} blocks name the damage and carry its value",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -2913,7 +3319,8 @@
       "reach": "H1",
       "reachReason": "the stat is named and a number is present, but nothing structural joins them",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -2938,10 +3345,12 @@
           "evidence": "possessive",
           "verbImpliesHolder": false,
           "quote": "c damage over the duration and reduces their magic resistance by 10 (3 second cooldown",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -2966,10 +3375,12 @@
           "evidence": "none",
           "verbImpliesHolder": false,
           "quote": "Grants bonus attack damage equal to 2% maximum mana .",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -2994,7 +3405,8 @@
           "evidence": "none",
           "verbImpliesHolder": true,
           "quote": " an enemy or ally with an ability to grant 3 bonus mana , increased to 6 mana fo",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         },
         {
           "stat": "maxMana",
@@ -3003,10 +3415,12 @@
           "evidence": "none",
           "verbImpliesHolder": false,
           "quote": "for champion targets, up to a maximum of 360 bonus mana . Can only be triggered ",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 1
+      "barePoolMentions": 1,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -3031,10 +3445,12 @@
           "evidence": "none",
           "verbImpliesHolder": false,
           "quote": "Transforms into Muramana at 360 bonus mana .",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -3059,10 +3475,12 @@
           "evidence": "possessive",
           "verbImpliesHolder": false,
           "quote": "mage that would reduce you below 30% of your maximum health , you first gain a shiel",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -3080,7 +3498,8 @@
       "reach": "R1",
       "reachReason": "an {{as}} run names the stat and carries its value",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -3098,7 +3517,8 @@
       "reach": "R1",
       "reachReason": "an {{as}} run names the stat and carries its value",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -3115,8 +3535,20 @@
       "inScope": false,
       "reach": "H2",
       "reachReason": "no damage instance and no stat modification this engine models",
-      "ownerRefs": [],
-      "barePoolMentions": 0
+      "ownerRefs": [
+        {
+          "stat": "level",
+          "phrase": "level",
+          "owner": "ally",
+          "evidence": "read-by-a-person",
+          "verbImpliesHolder": false,
+          "quote": "type=target's level — read as ally: the sentence is \"Remove all crowd control debuffs … from yourself or the target allied champion and heal the target for …\". The source defines \"the target\" two clauses earlier as the allied champion.",
+          "inAsBlock": false,
+          "statedIn": "type-argument"
+        }
+      ],
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -3134,7 +3566,8 @@
       "reach": "H1",
       "reachReason": "the stat is named and a number is present, but nothing structural joins them",
       "ownerRefs": [],
-      "barePoolMentions": 1
+      "barePoolMentions": 1,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -3152,7 +3585,8 @@
       "reach": "H1",
       "reachReason": "damage and a number sit in one sentence with nothing structural joining them — a person must read it",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -3170,7 +3604,8 @@
       "reach": "H1",
       "reachReason": "damage and a number sit in one sentence with nothing structural joining them — a person must read it",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -3188,7 +3623,8 @@
       "reach": "H2",
       "reachReason": "no damage instance and no stat modification this engine models",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -3206,7 +3642,8 @@
       "reach": "H2",
       "reachReason": "no damage instance and no stat modification this engine models",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -3224,7 +3661,8 @@
       "reach": "R1",
       "reachReason": "adjacent {{as}} blocks name the damage and carry its value",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -3242,7 +3680,8 @@
       "reach": "H2",
       "reachReason": "no damage instance and no stat modification this engine models",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -3260,7 +3699,8 @@
       "reach": "H1",
       "reachReason": "damage and a number sit in one sentence with nothing structural joining them — a person must read it",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -3285,10 +3725,12 @@
           "evidence": "none",
           "verbImpliesHolder": false,
           "quote": "Gain bonus attack damage equal to 2.5 % bonus health .",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -3305,8 +3747,20 @@
       "inScope": true,
       "reach": "H1",
       "reachReason": "the stat is named and a number is present, but nothing structural joins them",
-      "ownerRefs": [],
-      "barePoolMentions": 0
+      "ownerRefs": [
+        {
+          "stat": "missingHP",
+          "phrase": "missing health",
+          "owner": "unstated",
+          "evidence": "none",
+          "verbImpliesHolder": false,
+          "quote": "type=missing health",
+          "inAsBlock": false,
+          "statedIn": "type-argument"
+        }
+      ],
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -3324,7 +3778,8 @@
       "reach": "R1",
       "reachReason": "an {{as}} run names the stat and carries its value",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -3342,7 +3797,8 @@
       "reach": "H2",
       "reachReason": "no damage instance and no stat modification this engine models",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -3360,7 +3816,8 @@
       "reach": "H2",
       "reachReason": "no damage instance and no stat modification this engine models",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -3378,7 +3835,8 @@
       "reach": "R1",
       "reachReason": "adjacent {{as}} blocks name the damage and carry its value",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -3396,7 +3854,8 @@
       "reach": "R1",
       "reachReason": "adjacent {{as}} blocks name the damage and carry its value",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -3421,7 +3880,8 @@
           "evidence": "possessive",
           "verbImpliesHolder": false,
           "quote": "mage that would reduce you below 30% of your maximum health , you first gain 100 to ",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         },
         {
           "stat": "bonusHP",
@@ -3430,7 +3890,8 @@
           "evidence": "none",
           "verbImpliesHolder": true,
           "quote": "r maximum health , you first gain 100 to 300 bonus health for 5 seconds and heal y",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         },
         {
           "stat": "bonusArmor",
@@ -3439,7 +3900,8 @@
           "evidence": "none",
           "verbImpliesHolder": false,
           "quote": "nds and heal yourself for 100 to 400 (+ 175% bonus armor) (+ 175% bonus magic res",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         },
         {
           "stat": "bonusMagicResist",
@@ -3448,10 +3910,12 @@
           "evidence": "none",
           "verbImpliesHolder": false,
           "quote": " for 100 to 400 (+ 175% bonus armor) (+ 175% bonus magic resistance) over the same duration,",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -3469,7 +3933,8 @@
       "reach": "H2",
       "reachReason": "no damage instance and no stat modification this engine models",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -3487,7 +3952,8 @@
       "reach": "H1",
       "reachReason": "the stat is named and a number is present, but nothing structural joins them",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -3505,7 +3971,8 @@
       "reach": "H2",
       "reachReason": "no damage instance and no stat modification this engine models",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -3523,7 +3990,8 @@
       "reach": "H2",
       "reachReason": "no damage instance and no stat modification this engine models",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -3541,7 +4009,8 @@
       "reach": "H2",
       "reachReason": "no damage instance and no stat modification this engine models",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -3559,7 +4028,8 @@
       "reach": "R1",
       "reachReason": "adjacent {{as}} blocks name the damage and carry its value",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -3577,7 +4047,8 @@
       "reach": "R1",
       "reachReason": "adjacent {{as}} blocks name the damage and carry its value",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -3595,7 +4066,8 @@
       "reach": "R1",
       "reachReason": "adjacent {{as}} blocks name the damage and carry its value",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -3613,7 +4085,8 @@
       "reach": "R1",
       "reachReason": "adjacent {{as}} blocks name the damage and carry its value",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -3632,16 +4105,28 @@
       "reachReason": "an {{as}} run joined by one bounded connective names the damage and carries its value",
       "ownerRefs": [
         {
+          "stat": "level",
+          "phrase": "level",
+          "owner": "ally",
+          "evidence": "read-by-a-person",
+          "verbImpliesHolder": false,
+          "quote": "type=target's level — read as ally: the argument sits inside \"Allies within the area are healed for …\", and the enemy clause that follows carries its own separate figure (\"enemy champions within take 10% of target's maximum health as true damage\"), which the census already reads as the opponent's. One sentence, two targets, and only the second is the enemy.",
+          "inAsBlock": false,
+          "statedIn": "type-argument"
+        },
+        {
           "stat": "maxHP",
           "phrase": "maximum health",
           "owner": "opponent",
           "evidence": "possessive",
           "verbImpliesHolder": false,
           "quote": " enemy champions within take 10% of target's maximum health as true damage . Can be ",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -3659,7 +4144,8 @@
       "reach": "H2",
       "reachReason": "no damage instance and no stat modification this engine models",
       "ownerRefs": [],
-      "barePoolMentions": 2
+      "barePoolMentions": 2,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -3677,7 +4163,8 @@
       "reach": "H2",
       "reachReason": "no damage instance and no stat modification this engine models",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -3695,7 +4182,8 @@
       "reach": "R1",
       "reachReason": "an {{as}} run names the stat and carries its value",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -3720,10 +4208,12 @@
           "evidence": "none",
           "verbImpliesHolder": true,
           "quote": "Gain ability power equal to 2% bonus health .",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -3748,7 +4238,8 @@
           "evidence": "none",
           "verbImpliesHolder": true,
           "quote": "This item gains 10 bonus health , 30 bonus mana , and 3 ",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         },
         {
           "stat": "bonusHP",
@@ -3757,7 +4248,8 @@
           "evidence": "none",
           "verbImpliesHolder": false,
           "quote": "minute, up to 10 times, for a maximum of 100 bonus health , 300 bonus mana , and 3",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         },
         {
           "stat": "maxMana",
@@ -3766,7 +4258,8 @@
           "evidence": "none",
           "verbImpliesHolder": true,
           "quote": "This item gains 10 bonus health , 30 bonus mana , and 3 ability power ev",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         },
         {
           "stat": "maxMana",
@@ -3775,10 +4268,12 @@
           "evidence": "none",
           "verbImpliesHolder": false,
           "quote": "mes, for a maximum of 100 bonus health , 300 bonus mana , and 30 ability power .",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 2
     },
     {
       "source": "item",
@@ -3796,7 +4291,8 @@
       "reach": "H2",
       "reachReason": "no damage instance and no stat modification this engine models",
       "ownerRefs": [],
-      "barePoolMentions": 1
+      "barePoolMentions": 1,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -3814,7 +4310,8 @@
       "reach": "R1",
       "reachReason": "adjacent {{as}} blocks name the damage and carry its value",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -3832,7 +4329,8 @@
       "reach": "H2",
       "reachReason": "no damage instance and no stat modification this engine models",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -3850,7 +4348,8 @@
       "reach": "H2",
       "reachReason": "no damage instance and no stat modification this engine models",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -3868,7 +4367,8 @@
       "reach": "H2",
       "reachReason": "no damage instance and no stat modification this engine models",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -3886,7 +4386,8 @@
       "reach": "R1",
       "reachReason": "adjacent {{as}} blocks name the damage and carry its value",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -3904,7 +4405,8 @@
       "reach": "H2",
       "reachReason": "no damage instance and no stat modification this engine models",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -3922,7 +4424,8 @@
       "reach": "H1",
       "reachReason": "damage and a number sit in one sentence with nothing structural joining them — a person must read it",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -3947,10 +4450,12 @@
           "evidence": "possessive",
           "verbImpliesHolder": false,
           "quote": "to an enemy that is at or below 50% of their maximum health slows them by 30% for 1 ",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -3975,10 +4480,12 @@
           "evidence": "none",
           "verbImpliesHolder": false,
           "quote": "ical damage damage against enemies below 40% maximum health .",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -3996,7 +4503,8 @@
       "reach": "R1",
       "reachReason": "adjacent {{as}} blocks name the damage and carry its value",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -4014,7 +4522,8 @@
       "reach": "R1",
       "reachReason": "an {{as}} run names the stat and carries its value",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -4032,7 +4541,8 @@
       "reach": "H2",
       "reachReason": "no damage instance and no stat modification this engine models",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -4051,16 +4561,28 @@
       "reachReason": "an {{as}} run names the stat and carries its value",
       "ownerRefs": [
         {
+          "stat": "level",
+          "phrase": "level",
+          "owner": "holder",
+          "evidence": "read-by-a-person",
+          "verbImpliesHolder": false,
+          "quote": "type=your level — read as holder: the possessive is \"your\", in \"causes you and the most wounded allied champion … to gain … bonus health\".",
+          "inAsBlock": true,
+          "statedIn": "type-argument"
+        },
+        {
           "stat": "bonusHP",
           "phrase": "bonus health",
           "owner": "unstated",
           "evidence": "none",
           "verbImpliesHolder": false,
           "quote": ".5 seconds and 50 to 230 for 13 1;7 to 18 hp bonus health for 2.5 seconds.",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 1
+      "barePoolMentions": 1,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -4078,7 +4600,8 @@
       "reach": "H1",
       "reachReason": "the stat is named and a number is present, but nothing structural joins them",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -4096,7 +4619,8 @@
       "reach": "H1",
       "reachReason": "the stat is named and a number is present, but nothing structural joins them",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -4114,7 +4638,8 @@
       "reach": "H1",
       "reachReason": "the stat is named and a number is present, but nothing structural joins them",
       "ownerRefs": [],
-      "barePoolMentions": 1
+      "barePoolMentions": 1,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -4132,7 +4657,8 @@
       "reach": "R1",
       "reachReason": "an {{as}} run names the stat and carries its value",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -4150,7 +4676,8 @@
       "reach": "H2",
       "reachReason": "no damage instance and no stat modification this engine models",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -4168,7 +4695,8 @@
       "reach": "H2",
       "reachReason": "no damage instance and no stat modification this engine models",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -4186,7 +4714,8 @@
       "reach": "R1",
       "reachReason": "adjacent {{as}} blocks name the damage and carry its value",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -4204,7 +4733,8 @@
       "reach": "R2",
       "reachReason": "an {{as}} run names the stat and carries its value",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -4229,7 +4759,8 @@
           "evidence": "possessive",
           "verbImpliesHolder": false,
           "quote": "mage that would reduce you below 30% of your maximum health , you first gain a shiel",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         },
         {
           "stat": "bonusHP",
@@ -4238,10 +4769,12 @@
           "evidence": "none",
           "verbImpliesHolder": false,
           "quote": "a shield that absorbs damage equal to 60% of bonus health which decays over 4.5 se",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -4259,7 +4792,8 @@
       "reach": "H2",
       "reachReason": "no damage instance and no stat modification this engine models",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -4277,7 +4811,8 @@
       "reach": "R1",
       "reachReason": "adjacent {{as}} blocks name the damage and carry its value",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -4302,10 +4837,12 @@
           "evidence": "possessive",
           "verbImpliesHolder": false,
           "quote": "e to an enemy champion equal to 25% of their maximum health within 2.5 seconds infli",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -4323,7 +4860,8 @@
       "reach": "R1",
       "reachReason": "adjacent {{as}} blocks name the damage and carry its value",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -4341,7 +4879,8 @@
       "reach": "R1",
       "reachReason": "adjacent {{as}} blocks name the damage and carry its value",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -4359,7 +4898,8 @@
       "reach": "R1",
       "reachReason": "adjacent {{as}} blocks name the damage and carry its value",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -4384,7 +4924,8 @@
           "evidence": "possessive",
           "verbImpliesHolder": false,
           "quote": "d heal you for 90% 45% base AD (+ 4% of your missing health) (10 second cooldown per",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         },
         {
           "stat": "maxHP",
@@ -4393,7 +4934,8 @@
           "evidence": "none",
           "verbImpliesHolder": false,
           "quote": " cooldown per target). Excess healing beyond maximum health is converted to bonus he",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         },
         {
           "stat": "bonusHP",
@@ -4402,10 +4944,12 @@
           "evidence": "none",
           "verbImpliesHolder": false,
           "quote": "ealing beyond maximum health is converted to bonus health for 8 seconds.",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -4430,10 +4974,12 @@
           "evidence": "none",
           "verbImpliesHolder": false,
           "quote": "this passive for 3 seconds. Deal 20 (+ 1.5 % bonus health) magic damage magic dama",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -4451,7 +4997,8 @@
       "reach": "H1",
       "reachReason": "the stat is named and a number is present, but nothing structural joins them",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -4469,7 +5016,8 @@
       "reach": "R1",
       "reachReason": "an {{as}} run names the stat and carries its value",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -4494,7 +5042,8 @@
           "evidence": "none",
           "verbImpliesHolder": true,
           "quote": "cast instance , consumes a charge to grant 3 bonus mana , increased to 6 mana if",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         },
         {
           "stat": "maxMana",
@@ -4503,10 +5052,12 @@
           "evidence": "none",
           "verbImpliesHolder": false,
           "quote": "if they are a champion, up to maximum of 360 bonus mana . Can only be triggered ",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 1
+      "barePoolMentions": 1,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -4524,7 +5075,8 @@
       "reach": "R1",
       "reachReason": "adjacent {{as}} blocks name the damage and carry its value",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -4542,7 +5094,8 @@
       "reach": "R1",
       "reachReason": "adjacent {{as}} blocks name the damage and carry its value",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -4561,13 +5114,24 @@
       "reachReason": "the stat is named and a number is present, but nothing structural joins them",
       "ownerRefs": [
         {
+          "stat": "level",
+          "phrase": "level",
+          "owner": "unstated",
+          "evidence": "none",
+          "verbImpliesHolder": false,
+          "quote": "type=level",
+          "inAsBlock": false,
+          "statedIn": "type-argument"
+        },
+        {
           "stat": "bonusArmor",
           "phrase": "bonus armor",
           "owner": "unstated",
           "evidence": "none",
           "verbImpliesHolder": true,
           "quote": "times. Light hits grant 6 to 8 for 3 1;11;14 bonus armor and bonus magic resistan",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         },
         {
           "stat": "bonusMagicResist",
@@ -4576,10 +5140,12 @@
           "evidence": "none",
           "verbImpliesHolder": false,
           "quote": "s grant 6 to 8 for 3 1;11;14 bonus armor and bonus magic resistance while Dark hits grant 10",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -4604,10 +5170,12 @@
           "evidence": "possessive",
           "verbImpliesHolder": false,
           "quote": "hat would leave a champion below 5% of their maximum health , execute them.",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -4625,7 +5193,8 @@
       "reach": "H2",
       "reachReason": "no damage instance and no stat modification this engine models",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -4650,10 +5219,12 @@
           "evidence": "none",
           "verbImpliesHolder": false,
           "quote": "ck by a basic attack on-hit , deal 20 (+ 10% bonus armor) magic damage magic dama",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -4671,7 +5242,8 @@
       "reach": "R1",
       "reachReason": "adjacent {{as}} blocks name the damage and carry its value",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -4689,7 +5261,8 @@
       "reach": "R1",
       "reachReason": "adjacent {{as}} blocks name the damage and carry its value",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -4714,7 +5287,8 @@
           "evidence": "none",
           "verbImpliesHolder": false,
           "quote": "Basic attacks on-hit deal 1% 0.5 % maximum health hp bonus physical damage",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         },
         {
           "stat": "maxHP",
@@ -4723,10 +5297,12 @@
           "evidence": "none",
           "verbImpliesHolder": false,
           "quote": "s physical damage to the target and 3% 1.5 % maximum health hp physical damage to ot",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -4751,7 +5327,8 @@
           "evidence": "none",
           "verbImpliesHolder": false,
           "quote": "hin 10 seconds empowers Cleave to deal 4% 2% maximum health hp bonus physical damage",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         },
         {
           "stat": "maxHP",
@@ -4760,10 +5337,12 @@
           "evidence": "none",
           "verbImpliesHolder": false,
           "quote": "al damage to the primary target and 9% 4.5 % maximum health hp physical damage to se",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -4781,7 +5360,8 @@
       "reach": "R1",
       "reachReason": "adjacent {{as}} blocks name the damage and carry its value",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -4799,7 +5379,8 @@
       "reach": "R1",
       "reachReason": "an {{as}} run names the stat and carries its value",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -4817,7 +5398,8 @@
       "reach": "H2",
       "reachReason": "no damage instance and no stat modification this engine models",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -4835,7 +5417,8 @@
       "reach": "R1",
       "reachReason": "adjacent {{as}} blocks name the damage and carry its value",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -4853,7 +5436,8 @@
       "reach": "R1",
       "reachReason": "adjacent {{as}} blocks name the damage and carry its value",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -4878,10 +5462,12 @@
           "evidence": "possessive",
           "verbImpliesHolder": false,
           "quote": "its to deal magic damage equal to 3% of your bonus health to them and heal yoursel",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -4899,7 +5485,8 @@
       "reach": "H2",
       "reachReason": "no damage instance and no stat modification this engine models",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -4917,7 +5504,8 @@
       "reach": "H2",
       "reachReason": "no damage instance and no stat modification this engine models",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -4935,7 +5523,8 @@
       "reach": "H2",
       "reachReason": "no damage instance and no stat modification this engine models",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -4960,10 +5549,12 @@
           "evidence": "possessive",
           "verbImpliesHolder": false,
           "quote": "ysical damage equal to 9% 7% of the target's current health , capped at 200 against ",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -4981,7 +5572,8 @@
       "reach": "H2",
       "reachReason": "no damage instance and no stat modification this engine models",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -5006,10 +5598,12 @@
           "evidence": "none",
           "verbImpliesHolder": false,
           "quote": "nts Warmog's Heart if you have at least 2000 bonus health .",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -5034,7 +5628,8 @@
           "evidence": "none",
           "verbImpliesHolder": false,
           "quote": "Regenerate 1.5 % maximum health every 0.5 seconds 15% ma",
-          "inAsBlock": false
+          "inAsBlock": false,
+          "statedIn": "prose"
         },
         {
           "stat": "maxHP",
@@ -5043,10 +5638,12 @@
           "evidence": "none",
           "verbImpliesHolder": false,
           "quote": "e 1.5 % maximum health every 0.5 seconds 15% maximum health every 5 seconds if damag",
-          "inAsBlock": false
+          "inAsBlock": false,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -5071,10 +5668,12 @@
           "evidence": "none",
           "verbImpliesHolder": true,
           "quote": "Gain bonus health equal to 12% bonus healt",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 1
+      "barePoolMentions": 1,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -5099,10 +5698,12 @@
           "evidence": "none",
           "verbImpliesHolder": false,
           "quote": "Grants heal and shield power equal to 0.5 % bonus mana .",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -5127,7 +5728,8 @@
           "evidence": "none",
           "verbImpliesHolder": true,
           "quote": " an enemy or ally with an ability to grant 4 bonus mana , increased to 8 mana fo",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         },
         {
           "stat": "maxMana",
@@ -5136,10 +5738,12 @@
           "evidence": "none",
           "verbImpliesHolder": false,
           "quote": "for champion targets, up to a maximum of 360 bonus mana . Can only be triggered ",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 1
+      "barePoolMentions": 1,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -5164,10 +5768,12 @@
           "evidence": "none",
           "verbImpliesHolder": false,
           "quote": "Transforms into Diadem of Songs at 360 bonus mana .",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -5192,7 +5798,8 @@
           "evidence": "none",
           "verbImpliesHolder": true,
           "quote": "Grants bonus health equal to 15% bonus mana ",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         },
         {
           "stat": "maxMana",
@@ -5201,10 +5808,12 @@
           "evidence": "none",
           "verbImpliesHolder": true,
           "quote": "Grants bonus health equal to 15% bonus mana .",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -5229,7 +5838,8 @@
           "evidence": "none",
           "verbImpliesHolder": true,
           "quote": " an enemy or ally with an ability to grant 3 bonus mana , increased to 6 mana fo",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         },
         {
           "stat": "maxMana",
@@ -5238,10 +5848,12 @@
           "evidence": "none",
           "verbImpliesHolder": false,
           "quote": "for champion targets, up to a maximum of 360 bonus mana .",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 1
+      "barePoolMentions": 1,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -5266,10 +5878,12 @@
           "evidence": "none",
           "verbImpliesHolder": false,
           "quote": "Transforms into Fimbulwinter at 360 bonus mana .",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -5287,7 +5901,8 @@
       "reach": "R1",
       "reachReason": "adjacent {{as}} blocks name the damage and carry its value",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -5305,7 +5920,8 @@
       "reach": "H1",
       "reachReason": "the stat is named and a number is present, but nothing structural joins them",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -5330,10 +5946,12 @@
           "evidence": "none",
           "verbImpliesHolder": false,
           "quote": "old . Damaging a minion below 50% 30% of its maximum health with a basic attack will",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -5351,7 +5969,8 @@
       "reach": "R1",
       "reachReason": "an {{as}} run names the stat and carries its value",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -5369,7 +5988,8 @@
       "reach": "R1",
       "reachReason": "an {{as}} run names the stat and carries its value",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -5387,7 +6007,8 @@
       "reach": "R1",
       "reachReason": "an {{as}} run names the stat and carries its value",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -5405,7 +6026,8 @@
       "reach": "R1",
       "reachReason": "an {{as}} run names the stat and carries its value",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -5423,7 +6045,8 @@
       "reach": "H2",
       "reachReason": "no damage instance and no stat modification this engine models",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -5448,10 +6071,12 @@
           "evidence": "possessive",
           "verbImpliesHolder": false,
           "quote": "gic damage (+ 15% AP) (+ 3% of each target's maximum health) magic damage to enemies",
-          "inAsBlock": true
+          "inAsBlock": true,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -5469,7 +6094,8 @@
       "reach": "H1",
       "reachReason": "the stat is named and a number is present, but nothing structural joins them",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -5487,7 +6113,8 @@
       "reach": "H1",
       "reachReason": "damage and a number sit in one sentence with nothing structural joining them — a person must read it",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "item",
@@ -5505,7 +6132,8 @@
       "reach": "H2",
       "reachReason": "no damage instance and no stat modification this engine models",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "rune",
@@ -5523,7 +6151,8 @@
       "reach": "R1",
       "reachReason": "a labelled line states the value: \"Damage: 70 - 240 (+0.1 bonus AD, +0.05 AP) damage.\"",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "rune",
@@ -5541,7 +6170,8 @@
       "reach": "R1",
       "reachReason": "a labelled line states the value: \"Dark Harvest damage: 30 (+11 damage per soul) (+0.1 bonus AD) (+0.05 AP)\"",
       "ownerRefs": [],
-      "barePoolMentions": 1
+      "barePoolMentions": 1,
+      "bareLevelMentions": 0
     },
     {
       "source": "rune",
@@ -5559,7 +6189,8 @@
       "reach": "R1",
       "reachReason": "a labelled line states the value: \"Damage: 2 - 20 (+0.12 bonus AD, +0.1 AP) damage. Attack resets incre\"",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "rune",
@@ -5577,7 +6208,8 @@
       "reach": "H1",
       "reachReason": "damage and a number sit in one sentence with nothing structural joining them — a person must read it",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 1
     },
     {
       "source": "rune",
@@ -5595,7 +6227,8 @@
       "reach": "R1",
       "reachReason": "a labelled line states the value",
       "ownerRefs": [],
-      "barePoolMentions": 1
+      "barePoolMentions": 1,
+      "bareLevelMentions": 1
     },
     {
       "source": "rune",
@@ -5613,7 +6246,8 @@
       "reach": "H1",
       "reachReason": "damage and a number sit in one sentence with nothing structural joining them — a person must read it",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 1
     },
     {
       "source": "rune",
@@ -5631,7 +6265,8 @@
       "reach": "H2",
       "reachReason": "no damage instance and no stat modification this engine models",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 1
     },
     {
       "source": "rune",
@@ -5649,7 +6284,8 @@
       "reach": "H1",
       "reachReason": "the stat is named and a number is present, but nothing structural joins them",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "rune",
@@ -5667,7 +6303,8 @@
       "reach": "H1",
       "reachReason": "the stat is named and a number is present, but nothing structural joins them",
       "ownerRefs": [],
-      "barePoolMentions": 1
+      "barePoolMentions": 1,
+      "bareLevelMentions": 1
     },
     {
       "source": "rune",
@@ -5685,7 +6322,8 @@
       "reach": "H1",
       "reachReason": "the stat is named and a number is present, but nothing structural joins them",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "rune",
@@ -5703,7 +6341,8 @@
       "reach": "H1",
       "reachReason": "the stat is named and a number is present, but nothing structural joins them",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "rune",
@@ -5721,7 +6360,8 @@
       "reach": "H1",
       "reachReason": "the stat is named and a number is present, but nothing structural joins them",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "rune",
@@ -5739,7 +6379,8 @@
       "reach": "R1",
       "reachReason": "a labelled line states the value",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "rune",
@@ -5757,7 +6398,8 @@
       "reach": "H2",
       "reachReason": "no damage instance and no stat modification this engine models",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "rune",
@@ -5767,15 +6409,60 @@
       "effectName": "Inspiration",
       "text": "Attacks or abilities against an enemy champion within 0.25s of entering champion combat grant 10 gold and First Strike for 3 seconds, causing you to deal 7% extra damage against champions, and granting 50% (35% for ranged champions) of bonus damage dealt as gold . Cooldown: 25 - 15 s",
       "crossReferenceTo": null,
-      "damage": "none",
+      "damage": "candidate",
+      "correctedFromMarkup": {
+        "machineVerdict": "none",
+        "type": "true",
+        "markup": "causing you to deal <truedamage>7%</truedamage> extra <truedamage> damage</truedamage> against champions",
+        "strippedReads": "causing you to deal 7% extra damage against champions",
+        "confirmedBy": "public/data/rune-contested.json, finding \"First Strike\", verdict \"not-contested-markup-stripped\". It carries both sources verbatim with their edit dates, and Riot's own launch note (V11.23) saying \"bonus true damage\", with every later note moving only the percentage: 10% → 9% → 8% → 7% → 8% → 7%.",
+        "publishedBefore": [
+          {
+            "file": "public/data/effect-census.json",
+            "field": "effects[First Strike].damage / .inScope / .reach",
+            "was": "damage \"none\", inScope false, reach \"R1\" (\"a labelled line states the value\" — the cooldown line)"
+          },
+          {
+            "file": "public/data/rune-census.json",
+            "field": "counts.dealsDamage.sourcesDisagree",
+            "was": "[\"First Strike\"]"
+          },
+          {
+            "file": "public/data/rune-census.json",
+            "field": "counts.dealsDamage.byDataDragon / .bothAgree",
+            "was": "15 / 15"
+          },
+          {
+            "file": "public/data/rune-census.json",
+            "field": "counts.damageTypeOfDamagingRunes.typeNotStatedAtAll.ddragon",
+            "was": "[\"First Strike\", \"Summon Aery\"]"
+          },
+          {
+            "file": "public/data/rune-census.json",
+            "field": "counts.damageTypeOfDamagingRunes.ddragon",
+            "was": "{ adaptive 6, true 3, not-stated 2, magic 4, physical 1 }"
+          },
+          {
+            "file": "public/data/rune-census.json",
+            "field": "counts.blockers.sources-disagree-on-kind.runes",
+            "was": "[\"First Strike\"]"
+          },
+          {
+            "file": "public/data/rune-census.json",
+            "field": "rows[First Strike].dealsDamage.ddragon / .damageType.ddragon",
+            "was": "false / \"not-stated\""
+          }
+        ]
+      },
       "modifiesStat": true,
       "modifiesDamageRelevantStat": false,
       "conditional": true,
-      "inScope": false,
-      "reach": "R1",
-      "reachReason": "a labelled line states the value",
+      "inScope": true,
+      "reach": "H1",
+      "reachReason": "the damage type is stated by Data Dragon markup and by the wiki in words; the VALUE is 7% of post-mitigation damage already dealt, which no parser here can read — a person must.",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "rune",
@@ -5793,7 +6480,8 @@
       "reach": "H2",
       "reachReason": "no damage instance and no stat modification this engine models",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "rune",
@@ -5811,7 +6499,8 @@
       "reach": "H1",
       "reachReason": "the stat is named and a number is present, but nothing structural joins them",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "rune",
@@ -5829,7 +6518,8 @@
       "reach": "H2",
       "reachReason": "no damage instance and no stat modification this engine models",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "rune",
@@ -5847,7 +6537,8 @@
       "reach": "H2",
       "reachReason": "no damage instance and no stat modification this engine models",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 3
     },
     {
       "source": "rune",
@@ -5865,7 +6556,8 @@
       "reach": "H1",
       "reachReason": "the stat is named and a number is present, but nothing structural joins them",
       "ownerRefs": [],
-      "barePoolMentions": 1
+      "barePoolMentions": 1,
+      "bareLevelMentions": 0
     },
     {
       "source": "rune",
@@ -5890,7 +6582,8 @@
           "evidence": "possessive",
           "verbImpliesHolder": false,
           "quote": "ntil 6 min. Biscuits restore 20 + 2% of your maximum health, increased by up to 100%",
-          "inAsBlock": false
+          "inAsBlock": false,
+          "statedIn": "prose"
         },
         {
           "stat": "missingHP",
@@ -5899,7 +6592,8 @@
           "evidence": "none",
           "verbImpliesHolder": false,
           "quote": "mum health, increased by up to 100% based on missing Health. Consuming or selling a ",
-          "inAsBlock": false
+          "inAsBlock": false,
+          "statedIn": "prose"
         },
         {
           "stat": "maxHP",
@@ -5908,10 +6602,12 @@
           "evidence": "possessive",
           "verbImpliesHolder": false,
           "quote": "selling a Biscuit permanently increases your max health by 30.",
-          "inAsBlock": false
+          "inAsBlock": false,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "rune",
@@ -5929,7 +6625,8 @@
       "reach": "H2",
       "reachReason": "no damage instance and no stat modification this engine models",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "rune",
@@ -5947,7 +6644,8 @@
       "reach": "R1",
       "reachReason": "a labelled line states the value",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "rune",
@@ -5965,7 +6663,8 @@
       "reach": "H1",
       "reachReason": "the stat is named and a number is present, but nothing structural joins them",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "rune",
@@ -5983,7 +6682,8 @@
       "reach": "H1",
       "reachReason": "damage and a number sit in one sentence with nothing structural joining them — a person must read it",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 1
     },
     {
       "source": "rune",
@@ -6001,7 +6701,8 @@
       "reach": "H1",
       "reachReason": "damage and a number sit in one sentence with nothing structural joining them — a person must read it",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "rune",
@@ -6019,7 +6720,8 @@
       "reach": "H1",
       "reachReason": "the stat is named and a number is present, but nothing structural joins them",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "rune",
@@ -6037,7 +6739,8 @@
       "reach": "H1",
       "reachReason": "damage and a number sit in one sentence with nothing structural joining them — a person must read it",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "rune",
@@ -6055,7 +6758,8 @@
       "reach": "H2",
       "reachReason": "no damage instance and no stat modification this engine models",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "rune",
@@ -6080,7 +6784,8 @@
           "evidence": "possessive",
           "verbImpliesHolder": false,
           "quote": "Takedowns restore 5% of your missing health, 2.5% of your max health",
-          "inAsBlock": false
+          "inAsBlock": false,
+          "statedIn": "prose"
         },
         {
           "stat": "maxHP",
@@ -6089,10 +6794,12 @@
           "evidence": "possessive",
           "verbImpliesHolder": false,
           "quote": "tore 5% of your missing health, 2.5% of your max health, and grant an additional",
-          "inAsBlock": false
+          "inAsBlock": false,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "rune",
@@ -6117,10 +6824,12 @@
           "evidence": "possessive",
           "verbImpliesHolder": false,
           "quote": "a or 6 energy. Takedowns restore 15% of your maximum mana or energy. Cooldown for ",
-          "inAsBlock": false
+          "inAsBlock": false,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 1
+      "barePoolMentions": 1,
+      "bareLevelMentions": 0
     },
     {
       "source": "rune",
@@ -6138,7 +6847,8 @@
       "reach": "H1",
       "reachReason": "the stat is named and a number is present, but nothing structural joins them",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "rune",
@@ -6156,7 +6866,8 @@
       "reach": "H1",
       "reachReason": "the stat is named and a number is present, but nothing structural joins them",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "rune",
@@ -6181,10 +6892,12 @@
           "evidence": "none",
           "verbImpliesHolder": true,
           "quote": " stacks ). At maximum Legend stacks, gain 85 max health . Earn progress toward L",
-          "inAsBlock": false
+          "inAsBlock": false,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "rune",
@@ -6202,7 +6915,8 @@
       "reach": "H1",
       "reachReason": "damage and a number sit in one sentence with nothing structural joining them — a person must read it",
       "ownerRefs": [],
-      "barePoolMentions": 1
+      "barePoolMentions": 1,
+      "bareLevelMentions": 0
     },
     {
       "source": "rune",
@@ -6220,7 +6934,8 @@
       "reach": "H1",
       "reachReason": "damage and a number sit in one sentence with nothing structural joining them — a person must read it",
       "ownerRefs": [],
-      "barePoolMentions": 1
+      "barePoolMentions": 1,
+      "bareLevelMentions": 0
     },
     {
       "source": "rune",
@@ -6238,7 +6953,8 @@
       "reach": "H1",
       "reachReason": "the stat is named and a number is present, but nothing structural joins them",
       "ownerRefs": [],
-      "barePoolMentions": 2
+      "barePoolMentions": 2,
+      "bareLevelMentions": 0
     },
     {
       "source": "rune",
@@ -6263,7 +6979,8 @@
           "evidence": "possessive",
           "verbImpliesHolder": false,
           "quote": "eal bonus magic damage equal to 3.5% of your max health Heal you for 1.3% of you",
-          "inAsBlock": false
+          "inAsBlock": false,
+          "statedIn": "prose"
         },
         {
           "stat": "maxHP",
@@ -6272,10 +6989,12 @@
           "evidence": "possessive",
           "verbImpliesHolder": false,
           "quote": "of your max health Heal you for 1.3% of your max health Permanently increase you",
-          "inAsBlock": false
+          "inAsBlock": false,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 2
+      "barePoolMentions": 2,
+      "bareLevelMentions": 0
     },
     {
       "source": "rune",
@@ -6300,7 +7019,8 @@
           "evidence": "possessive",
           "verbImpliesHolder": false,
           "quote": "mmobilizing an enemy champion, increase your Armor and Magic Resist by 45 +",
-          "inAsBlock": false
+          "inAsBlock": false,
+          "statedIn": "prose"
         },
         {
           "stat": "magicResist",
@@ -6309,7 +7029,8 @@
           "evidence": "coordination",
           "verbImpliesHolder": false,
           "quote": "g an enemy champion, increase your Armor and Magic Resist by 45 + 75% of your Bonu",
-          "inAsBlock": false
+          "inAsBlock": false,
+          "statedIn": "prose"
         },
         {
           "stat": "bonusHP",
@@ -6318,10 +7039,12 @@
           "evidence": "possessive",
           "verbImpliesHolder": false,
           "quote": "earby enemies. Damage: 25 - 120 (+8% of your bonus health) Cooldown: 20s Resistanc",
-          "inAsBlock": false
+          "inAsBlock": false,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 1
     },
     {
       "source": "rune",
@@ -6346,10 +7069,12 @@
           "evidence": "possessive",
           "verbImpliesHolder": false,
           "quote": "150 + 20% of your ability power + 6% of your bonus health Proc Threshold: 50 - 165",
-          "inAsBlock": false
+          "inAsBlock": false,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "rune",
@@ -6374,7 +7099,8 @@
           "evidence": "none",
           "verbImpliesHolder": false,
           "quote": " third attack against towers deals [85 (+28% max Health) Melee || 50 (+20% max H",
-          "inAsBlock": false
+          "inAsBlock": false,
+          "statedIn": "prose"
         },
         {
           "stat": "maxHP",
@@ -6383,10 +7109,12 @@
           "evidence": "none",
           "verbImpliesHolder": false,
           "quote": "eals [85 (+28% max Health) Melee || 50 (+20% max Health) Ranged] bonus physical ",
-          "inAsBlock": false
+          "inAsBlock": false,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "rune",
@@ -6404,7 +7132,8 @@
       "reach": "H2",
       "reachReason": "no damage instance and no stat modification this engine models",
       "ownerRefs": [],
-      "barePoolMentions": 2
+      "barePoolMentions": 2,
+      "bareLevelMentions": 0
     },
     {
       "source": "rune",
@@ -6429,10 +7158,12 @@
           "evidence": "none",
           "verbImpliesHolder": false,
           "quote": "ttack against a champion deals 5 - 30 (+2.5% Bonus Health) (+15.0% New Shield Amou",
-          "inAsBlock": false
+          "inAsBlock": false,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "rune",
@@ -6457,7 +7188,8 @@
           "evidence": "none",
           "verbImpliesHolder": true,
           "quote": "After 12 min gain +8 Armor and +8 Magic Resist and ",
-          "inAsBlock": false
+          "inAsBlock": false,
+          "statedIn": "prose"
         },
         {
           "stat": "armor",
@@ -6466,7 +7198,8 @@
           "evidence": "possessive",
           "verbImpliesHolder": false,
           "quote": " Armor and +8 Magic Resist and increase your Armor and Magic Resist by 3%.",
-          "inAsBlock": false
+          "inAsBlock": false,
+          "statedIn": "prose"
         },
         {
           "stat": "magicResist",
@@ -6475,7 +7208,8 @@
           "evidence": "none",
           "verbImpliesHolder": true,
           "quote": "After 12 min gain +8 Armor and +8 Magic Resist and increase your Armor ",
-          "inAsBlock": false
+          "inAsBlock": false,
+          "statedIn": "prose"
         },
         {
           "stat": "magicResist",
@@ -6484,10 +7218,12 @@
           "evidence": "coordination",
           "verbImpliesHolder": false,
           "quote": " +8 Magic Resist and increase your Armor and Magic Resist by 3%.",
-          "inAsBlock": false
+          "inAsBlock": false,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "rune",
@@ -6512,10 +7248,12 @@
           "evidence": "possessive",
           "verbImpliesHolder": false,
           "quote": " from an enemy champion, heal for 4% of your missing health over 10s.",
-          "inAsBlock": false
+          "inAsBlock": false,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "rune",
@@ -6533,7 +7271,8 @@
       "reach": "H1",
       "reachReason": "damage and a number sit in one sentence with nothing structural joining them — a person must read it",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 1
     },
     {
       "source": "rune",
@@ -6558,7 +7297,8 @@
           "evidence": "none",
           "verbImpliesHolder": false,
           "quote": "ons that die near you, permanently gaining 3 maximum health for every 8. When you've",
-          "inAsBlock": false
+          "inAsBlock": false,
+          "statedIn": "prose"
         },
         {
           "stat": "maxHP",
@@ -6567,10 +7307,12 @@
           "evidence": "none",
           "verbImpliesHolder": false,
           "quote": "rs or enemy minions, gain an additional 3.5% maximum health.",
-          "inAsBlock": false
+          "inAsBlock": false,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "rune",
@@ -6588,7 +7330,8 @@
       "reach": "H1",
       "reachReason": "the stat is named and a number is present, but nothing structural joins them",
       "ownerRefs": [],
-      "barePoolMentions": 1
+      "barePoolMentions": 1,
+      "bareLevelMentions": 0
     },
     {
       "source": "rune",
@@ -6613,7 +7356,8 @@
           "evidence": "none",
           "verbImpliesHolder": true,
           "quote": "Gain 10 Armor and Magic Resist when cr",
-          "inAsBlock": false
+          "inAsBlock": false,
+          "statedIn": "prose"
         },
         {
           "stat": "magicResist",
@@ -6622,10 +7366,12 @@
           "evidence": "none",
           "verbImpliesHolder": true,
           "quote": "Gain 10 Armor and Magic Resist when crowd controlled an",
-          "inAsBlock": false
+          "inAsBlock": false,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "rune",
@@ -6643,7 +7389,8 @@
       "reach": "H1",
       "reachReason": "damage and a number sit in one sentence with nothing structural joining them — a person must read it",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 2
     },
     {
       "source": "rune",
@@ -6661,7 +7408,8 @@
       "reach": "R1",
       "reachReason": "a labelled line states the value: \"Adaptive Damage: 15 - 100 based on level ( +0.05 AP and +0.1 bonus AD )\"",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 1
     },
     {
       "source": "rune",
@@ -6686,10 +7434,12 @@
           "evidence": "none",
           "verbImpliesHolder": false,
           "quote": "Dealing 25% of a champion's maximum health within 3s grants 48% Mov",
-          "inAsBlock": false
+          "inAsBlock": false,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "rune",
@@ -6707,7 +7457,8 @@
       "reach": "H1",
       "reachReason": "damage and a number sit in one sentence with nothing structural joining them — a person must read it",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 1
     },
     {
       "source": "rune",
@@ -6725,7 +7476,8 @@
       "reach": "H1",
       "reachReason": "the stat is named and a number is present, but nothing structural joins them",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "rune",
@@ -6750,7 +7502,8 @@
           "evidence": "possessive",
           "verbImpliesHolder": false,
           "quote": "n with an ability permanently increases your maximum mana by 25, up to 250 mana. A",
-          "inAsBlock": false
+          "inAsBlock": false,
+          "statedIn": "prose"
         },
         {
           "stat": "maxMana",
@@ -6759,10 +7512,12 @@
           "evidence": "none",
           "verbImpliesHolder": false,
           "quote": "na by 25, up to 250 mana. After reaching 250 bonus mana, restore 1% of your miss",
-          "inAsBlock": false
+          "inAsBlock": false,
+          "statedIn": "prose"
         }
       ],
-      "barePoolMentions": 2
+      "barePoolMentions": 2,
+      "bareLevelMentions": 0
     },
     {
       "source": "rune",
@@ -6780,7 +7535,8 @@
       "reach": "R1",
       "reachReason": "a labelled line states the value",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "rune",
@@ -6798,7 +7554,8 @@
       "reach": "H1",
       "reachReason": "the stat is named and a number is present, but nothing structural joins them",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 4
     },
     {
       "source": "rune",
@@ -6816,7 +7573,8 @@
       "reach": "H1",
       "reachReason": "the stat is named and a number is present, but nothing structural joins them",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     },
     {
       "source": "rune",
@@ -6834,7 +7592,8 @@
       "reach": "H1",
       "reachReason": "the stat is named and a number is present, but nothing structural joins them",
       "ownerRefs": [],
-      "barePoolMentions": 1
+      "barePoolMentions": 1,
+      "bareLevelMentions": 2
     },
     {
       "source": "rune",
@@ -6852,7 +7611,8 @@
       "reach": "H1",
       "reachReason": "damage and a number sit in one sentence with nothing structural joining them — a person must read it",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 1
     },
     {
       "source": "rune",
@@ -6870,7 +7630,8 @@
       "reach": "H1",
       "reachReason": "the stat is named and a number is present, but nothing structural joins them",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 1
     },
     {
       "source": "rune",
@@ -6888,7 +7649,8 @@
       "reach": "H1",
       "reachReason": "the stat is named and a number is present, but nothing structural joins them",
       "ownerRefs": [],
-      "barePoolMentions": 0
+      "barePoolMentions": 0,
+      "bareLevelMentions": 0
     }
   ]
 }

@@ -73,6 +73,7 @@ function row(text: string, conditional = false): EffectClassification {
     reachReason: '',
     ownerRefs: [],
     barePoolMentions: 0,
+    bareLevelMentions: 0,
   } as EffectClassification;
 }
 

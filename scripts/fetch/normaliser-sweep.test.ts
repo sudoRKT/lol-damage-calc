@@ -169,10 +169,16 @@ describe('normaliser-sweep/the First Strike sentence, put back through the censu
   // explains the stored record; the full rune text is refused a second time for its gold clause.
   const strippedSentence = 'causing you to deal 7% extra damage against champions';
   const restoredSentence = 'causing you to deal 7% bonus true damage against champions';
+  // CHANGED 2026-08-15, and the reason matters. The census now CORRECTS First Strike from a
+  // person's reading of the markup (`confirmed-readings.ts`), keyed on the rune's source + id +
+  // key. Feeding it rune 8369 therefore returns the corrected verdict whatever the text says —
+  // which would make this measurement about the correction rather than about the normaliser.
+  // The id is changed so the classifier is measured UNAIDED, which is what these two assertions
+  // were always for. Neither expected value moved.
   const record = (text: string) => ({
     source: 'rune' as const,
     ownerName: 'First Strike',
-    id: 8369,
+    id: 999999,
     key: 'rune',
     effectName: null,
     text,
@@ -180,6 +186,19 @@ describe('normaliser-sweep/the First Strike sentence, put back through the censu
 
   it('reads the stripped sentence as no damage at all', () => {
     expect(classifyEffect(record(strippedSentence)).damage).toBe('none');
+  });
+
+  it('the LIVE census row is nonetheless corrected, so the defect is not merely diagnosed', () => {
+    const live = classifyEffect({
+      source: 'rune',
+      ownerName: 'First Strike',
+      id: 8369,
+      key: 'rune',
+      effectName: null,
+      text: strippedSentence,
+    });
+    expect(live.damage).toBe('candidate');
+    expect(live.correctedFromMarkup?.machineVerdict).toBe('none');
   });
 
   it('reads the same sentence as a damage candidate once the type the tag carried is restored', () => {
@@ -208,8 +227,28 @@ describe('normaliser-sweep/check 2 — meaning inside a named template argument'
     expect(facts[0]!.attributesAnOwner).toBe(false);
   });
 
-  it('is silent on `type=level`, which names neither an owner-required stat nor an owner', () => {
-    expect(namedArgumentsCarryingMeaning(TERMINUS)).toEqual([]);
+  // CHANGED 2026-08-15, and it is a CONTRACT change rather than a fix to make code pass. This
+  // asserted that `type=level` names nothing, which was true while the owner-required stats were
+  // ten. Level became the eleventh (src/types/data.ts), on the strength of three items stating
+  // `type=target's level`. A detector that stayed silent about level would be quieter than the
+  // census it feeds. The verdict about the OWNER has not moved: `type=level` carries no
+  // possessive, so it is still nobody's.
+  it('reports `type=level` now that level is owner-required — naming the stat, not an owner', () => {
+    const facts = namedArgumentsCarryingMeaning(TERMINUS);
+    expect(facts).toHaveLength(1);
+    expect(facts[0]!.argument).toBe('type');
+    expect(facts[0]!.states).toBe('level');
+    expect(facts[0]!.ownerRequiredStat).toBe('level');
+    expect(facts[0]!.attributesAnOwner).toBe(false);
+  });
+
+  it("reports `type=target's level`, which is why level became owner-required at all", () => {
+    const facts = namedArgumentsCarryingMeaning(
+      "a shield for {{pp|290 to 360 for 11|1;9 to 18|type=target's level}} that decays.",
+    );
+    expect(facts).toHaveLength(1);
+    expect(facts[0]!.ownerRequiredStat).toBe('level');
+    expect(facts[0]!.attributesAnOwner).toBe(true);
   });
 
   it('is silent on purely formatting arguments — the point is not that named args are dropped', () => {

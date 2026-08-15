@@ -218,6 +218,22 @@ export const CANDIDATE_AUDIT: AuditVerdict[] = [
     because: 'Aery deals 10 - 50 based on level (+0.05 AP) (+0.1 bonus AD) — the source never says the word "damage"',
   },
   {
+    // ADDED 2026-08-15, and it is the only verdict here that rests on MARKUP rather than words.
+    // First Strike's damage type is stated by Data Dragon nowhere but the tag —
+    // `<truedamage>7%</truedamage> extra <truedamage> damage</truedamage>` — and the wiki says
+    // the same thing in words: "causing all of your post-mitigation damage dealt against
+    // champions to deal 7% bonus true damage". The census read the stripped sentence and
+    // classified the rune as dealing NO damage at all. See confirmed-readings.ts for the full
+    // record, including what was published before the correction.
+    ownerName: 'First Strike',
+    key: 'rune',
+    dealsDamage: true,
+    because:
+      'deals bonus TRUE damage equal to 7% of post-mitigation damage dealt to champions — Data ' +
+      'Dragon states the type in the tag, the wiki states it in words, and Riot\'s launch note ' +
+      '(V11.23) says "bonus true damage"',
+  },
+  {
     ownerName: 'Deathfire Touch',
     key: 'rune',
     dealsDamage: true,

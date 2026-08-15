@@ -21,7 +21,18 @@
 //
 // Pure: no network, no filesystem. Tested by effect-census.test.ts.
 
-import { crossReferenceTarget, findBlocks, plainText, type Block } from './effect-text.ts';
+import {
+  confirmedMarkupReading,
+  typeArgumentReading,
+  type ConfirmedMarkupReading,
+} from './confirmed-readings.ts';
+import {
+  crossReferenceTarget,
+  findBlocks,
+  namedArguments,
+  plainText,
+  type Block,
+} from './effect-text.ts';
 
 // ---------------------------------------------------------------------------
 // The population
@@ -109,6 +120,34 @@ export const OWNER_REQUIRED_PHRASES: { stat: string; pattern: RegExp }[] = [
 ];
 
 /**
+ * CHAMPION LEVEL — the eleventh owner-required stat, added to `OWNER_REQUIRED_STATS` in
+ * `src/types/data.ts` on 2026-08-15.
+ *
+ * It is NOT in the list above, and the omission is the definition, not an oversight. Level is
+ * counted as an owner-bearing reference ONLY where the source states it as the AXIS of a value —
+ * the wiki's `type=` argument on a progression template. Prose mentions are counted separately
+ * as `bareLevelMentions`, exactly as a bare "health" is, because they are two different things:
+ *
+ *   "20 - 80 True Damage based on level"  — an axis with no possessive, 25 of them across the
+ *                                           population, every one of which would land 'unstated'
+ *   "Level 11: Also reveal the ward"      — a threshold, not a stat read at all
+ *
+ * Merging those into the reference count would bury the six real ones under twenty-five that say
+ * nothing. Both figures are published, so widening the definition later is a decision someone can
+ * take against a measured number.
+ */
+const LEVEL_PHRASE = { stat: 'level', pattern: /\blevels?\b/gi };
+
+/** The phrases scanned inside a `type=` argument: the ten, plus level. */
+export const TYPE_ARGUMENT_PHRASES: { stat: string; pattern: RegExp }[] = [
+  ...OWNER_REQUIRED_PHRASES,
+  LEVEL_PHRASE,
+];
+
+/** Prose mentions of champion level. Counted, never merged into the reference total. */
+const BARE_LEVEL = /\blevels?\b/gi;
+
+/**
  * A bare `health` or `mana` with no qualifier. Counted SEPARATELY from the ten stats,
  * because "restores 4 health" names an amount, not a pool, and folding the two together is
  * how a count stops meaning anything.
@@ -183,7 +222,15 @@ const STATEFUL = /\b(stacks?|stacking|for \d|\d+ second|cooldown|charges?|until|
 // ---------------------------------------------------------------------------
 
 export type Reach = 'R1' | 'R2' | 'H1' | 'H2';
-export type OwnerVerdict = 'holder' | 'opponent' | 'unstated';
+/**
+ * `ally` is the fourth verdict, added 2026-08-15 with the `type=` reading.
+ *
+ * Three items state "target's level" about a champion this engine does not model: the ally being
+ * healed or shielded (Locket of the Iron Solari, Mikael's Blessing, Redemption). The source DOES
+ * say whose — so `unstated` would be false — and it is not the enemy, so `opponent` would be
+ * worse than false. It would scale an item off the wrong champion's level.
+ */
+export type OwnerVerdict = 'holder' | 'opponent' | 'ally' | 'unstated';
 
 /** HOW the owner was established — so a reader can weigh the verdict, not just read it. */
 export type OwnerEvidence =
@@ -191,6 +238,12 @@ export type OwnerEvidence =
   | 'possessive'
   /** A possessive governs a coordinated pair: "increase your Armor and Magic Resist". */
   | 'coordination'
+  /**
+   * A possessive inside a `type=` argument, whose referent a PERSON resolved by reading the
+   * sentence around it (`confirmed-readings.ts`). Never machine-decided: "target's" means the
+   * enemy on Kraken Slayer and an ally on Locket, and the words are identical.
+   */
+  | 'read-by-a-person'
   /** Nothing states it. A verb may IMPLY the holder; see `verbImpliesHolder`. */
   | 'none';
 
@@ -210,6 +263,18 @@ export interface OwnerRef {
   quote: string;
   /** True when the phrase sits inside an `{{as|…}}` block (items only). */
   inAsBlock: boolean;
+  /**
+   * WHERE in the source the reference was found. `prose` is the flattened sentence, which is
+   * everything the census could see before 2026-08-15. `type-argument` is the wiki's own
+   * `type=` argument on a progression template, which `plainText` deletes.
+   */
+  statedIn: 'prose' | 'type-argument';
+  /**
+   * True when the source attributes the stat with a possessive that NO person has read, so the
+   * referent is unknown. `owner` stays 'unstated' and the reference is REPORTED, never
+   * attributed — the "detector proposes, person confirms" rule (CLAUDE.md).
+   */
+  needsReading?: boolean;
 }
 
 export interface EffectClassification extends EffectRecord {
@@ -228,6 +293,21 @@ export interface EffectClassification extends EffectRecord {
   ownerRefs: OwnerRef[];
   /** Bare "health"/"mana" mentions with no pool qualifier. Counted, never merged in. */
   barePoolMentions: number;
+  /** Prose mentions of champion level. Counted, never merged into the reference total. */
+  bareLevelMentions: number;
+  /**
+   * Present only where a person's reading of Data Dragon's MARKUP overrides what the stripped
+   * text classifies to. Carries the machine's verdict and what the published files said before,
+   * so the correction is auditable rather than invisible.
+   */
+  correctedFromMarkup?: {
+    machineVerdict: DamageVerdict;
+    type: string;
+    markup: string;
+    strippedReads: string;
+    confirmedBy: string;
+    publishedBefore: ConfirmedMarkupReading['publishedBefore'];
+  };
 }
 
 /** Group `{{as|…}}` blocks into runs, the way the ability prose path does (§26.3).
@@ -521,22 +601,91 @@ export function findOwnerRefs(record: EffectRecord): OwnerRef[] {
         ...ownerOf(flat, start),
         quote: flat.slice(Math.max(0, start - 45), Math.min(flat.length, end + 25)),
         inAsBlock: [...asText].some((t) => t.includes(phrase)),
+        statedIn: 'prose',
       });
     }
   }
+  refs.push(...typeArgumentRefs(record));
   return refs.sort((a, b) => flat.indexOf(a.phrase) - flat.indexOf(b.phrase));
+}
+
+/**
+ * References the wiki states inside a `type=` argument, which `plainText` deletes.
+ *
+ * TWO RULES, both load-bearing:
+ *
+ *  1. **`type=` only.** `formula=` restates the same fact in prose ("1% per 100 bonus health"),
+ *     and reading both would count one statement twice. `color=`/`key=`/`levels=` are formatting.
+ *  2. **A possessive is not resolved by this function.** It is looked up in the population a
+ *     person has read (`confirmed-readings.ts`). "target's" means the enemy champion on Kraken
+ *     Slayer and an ALLY on Locket of the Iron Solari, and no pattern can tell those apart — so
+ *     an unread possessive stays 'unstated' and is flagged `needsReading`.
+ */
+function typeArgumentRefs(record: EffectRecord): OwnerRef[] {
+  if (record.source !== 'item') return [];
+  const asBlocks = findBlocks(record.text, 'as');
+  const refs: OwnerRef[] = [];
+  for (const argument of namedArguments(record.text)) {
+    if (argument.name !== 'type') continue;
+    const value = argument.value;
+    const claimed: [number, number][] = [];
+    for (const { stat, pattern } of TYPE_ARGUMENT_PHRASES) {
+      pattern.lastIndex = 0;
+      let match: RegExpExecArray | null;
+      while ((match = pattern.exec(value)) !== null) {
+        const start = match.index;
+        const end = start + match[0].length;
+        if (claimed.some(([s, e]) => start < e && end > s)) continue;
+        if (NOT_THE_SAME_STAT.test(value.slice(end))) continue;
+        claimed.push([start, end]);
+        const reading = typeArgumentReading(record.ownerName, record.key, value);
+        const machine = ownerOf(value, start);
+        // The possessive is the trigger for a person's reading, not the answer to it.
+        const hasPossessive = machine.evidence !== 'none';
+        // Unread is UNSTATED, whether or not a possessive is present. The possessive only
+        // decides whether someone is asked to read it.
+        const owner: OwnerVerdict = reading ? reading.owner : 'unstated';
+        refs.push({
+          stat,
+          phrase: match[0],
+          owner,
+          evidence: reading ? 'read-by-a-person' : 'none',
+          verbImpliesHolder: reading ? false : machine.verbImpliesHolder,
+          quote: `type=${value}` + (reading ? ` — read as ${reading.owner}: ${reading.because}` : ''),
+          inAsBlock: asBlocks.some((b) => argument.start >= b.start && argument.end <= b.end),
+          statedIn: 'type-argument',
+          ...(reading === null && hasPossessive ? { needsReading: true } : {}),
+        });
+      }
+    }
+  }
+  return refs;
 }
 
 export function classifyEffect(record: EffectRecord): EffectClassification {
   const crossReferenceTo = crossReferenceTarget(record.text);
   const flat = plainText(record.text);
 
-  const damage =
+  const machineDamage =
     crossReferenceTo !== null
       ? { verdict: 'none' as DamageVerdict, reach: null as Reach | null, why: '' }
       : record.source === 'item'
         ? classifyItemDamage(record.text)
         : classifyRuneDamage(record.text);
+
+  // THE MARKUP CORRECTION. The classifier reads text this pipeline has already stripped of
+  // Data Dragon's tags, and for First Strike the tag is the only place the damage type is
+  // stated (DATA-SOURCES §37; `confirmed-readings.ts`). The correction is applied ONLY to the
+  // entries a person has read — never derived from the presence of a tag, because two of the
+  // three tagged texts in the live data colour a stat grant rather than a damage type.
+  const confirmed = confirmedMarkupReading(record.source, record.id, record.key);
+  const damage = confirmed
+    ? {
+        verdict: confirmed.censusDamageVerdict as DamageVerdict,
+        reach: 'H1' as Reach,
+        why: confirmed.censusReachReason,
+      }
+    : machineDamage;
 
   const modifiesStat =
     crossReferenceTo === null && ANY_STAT.test(flat) && STAT_CHANGE_VERB.test(flat);
@@ -583,15 +732,32 @@ export function classifyEffect(record: EffectRecord): EffectClassification {
   BARE_POOL.lastIndex = 0;
   const bareMatches = flat.match(BARE_POOL) ?? [];
   const ownerRefs = findOwnerRefs(record);
+  // Only PROSE references are subtracted: a `type=` reference was never in the flattened text,
+  // so subtracting it would count one mention out of a total it never entered.
   const barePoolMentions = Math.max(
     0,
-    bareMatches.length - ownerRefs.filter((r) => /health|mana/i.test(r.phrase)).length,
+    bareMatches.length -
+      ownerRefs.filter((r) => r.statedIn === 'prose' && /health|mana/i.test(r.phrase)).length,
   );
+  BARE_LEVEL.lastIndex = 0;
+  const bareLevelMentions = (flat.match(BARE_LEVEL) ?? []).length;
 
   return {
     ...record,
     crossReferenceTo,
     damage: damage.verdict,
+    ...(confirmed
+      ? {
+          correctedFromMarkup: {
+            machineVerdict: machineDamage.verdict,
+            type: confirmed.type,
+            markup: confirmed.markup,
+            strippedReads: confirmed.strippedReads,
+            confirmedBy: confirmed.confirmedBy,
+            publishedBefore: confirmed.publishedBefore,
+          },
+        }
+      : {}),
     modifiesStat,
     modifiesDamageRelevantStat,
     conditional,
@@ -600,6 +766,7 @@ export function classifyEffect(record: EffectRecord): EffectClassification {
     reachReason,
     ownerRefs,
     barePoolMentions,
+    bareLevelMentions,
   };
 }
 
@@ -642,6 +809,8 @@ export interface CensusTotals {
   ownerRefs: number;
   ownerHolder: number;
   ownerOpponent: number;
+  /** The source states the stat belongs to an ALLY — a champion this engine does not model. */
+  ownerAlly: number;
   ownerUnstated: number;
   /** Of the resolved ones, how many rest on a coordinated possessive rather than a direct one. */
   ownerByCoordination: number;
@@ -650,7 +819,23 @@ export interface CensusTotals {
   ownerRefsByStat: Record<string, number>;
   healthPoolRefs: number;
   resistanceAndManaRefs: number;
+  /** References to champion LEVEL. Only ever from a `type=` argument — see LEVEL_PHRASE. */
+  levelRefs: number;
   barePoolMentions: number;
+  bareLevelMentions: number;
+  /**
+   * THE §37.3-COMPARABLE SUBTOTAL. References to the TEN stats, found in PROSE — the exact
+   * definition the 120/27/11/82 table was measured under, kept so the new figures can be
+   * compared against it instead of replacing it silently.
+   */
+  ownerRefsProseTenStats: number;
+  ownerUnstatedProseTenStats: number;
+  /** References found inside a wiki `type=` argument, which `plainText` used to delete. */
+  refsInTypeArgument: number;
+  /** Of those, how many the source attributes and a person has read. */
+  refsInTypeArgumentAttributed: number;
+  /** Of those, how many carry a possessive nobody has read yet. Reported, never attributed. */
+  refsInTypeArgumentNeedingAReading: number;
 }
 
 /**
@@ -680,13 +865,21 @@ export function summarise(
     ownerRefs: 0,
     ownerHolder: 0,
     ownerOpponent: 0,
+    ownerAlly: 0,
     ownerUnstated: 0,
     ownerByCoordination: 0,
     unstatedWithHolderVerb: 0,
     ownerRefsByStat: {},
     healthPoolRefs: 0,
     resistanceAndManaRefs: 0,
+    levelRefs: 0,
     barePoolMentions: 0,
+    bareLevelMentions: 0,
+    ownerRefsProseTenStats: 0,
+    ownerUnstatedProseTenStats: 0,
+    refsInTypeArgument: 0,
+    refsInTypeArgumentAttributed: 0,
+    refsInTypeArgumentNeedingAReading: 0,
   };
   const HEALTH = new Set(['maxHP', 'bonusHP', 'currentHP', 'missingHP']);
   for (const row of rows) {
@@ -706,16 +899,27 @@ export function summarise(
     }
     totals.reach[row.reach]++;
     totals.barePoolMentions += row.barePoolMentions;
+    totals.bareLevelMentions += row.bareLevelMentions;
     for (const ref of row.ownerRefs) {
       totals.ownerRefs++;
       totals.ownerRefsByStat[ref.stat] = (totals.ownerRefsByStat[ref.stat] ?? 0) + 1;
       if (ref.owner === 'holder') totals.ownerHolder++;
       else if (ref.owner === 'opponent') totals.ownerOpponent++;
+      else if (ref.owner === 'ally') totals.ownerAlly++;
       else totals.ownerUnstated++;
       if (ref.evidence === 'coordination') totals.ownerByCoordination++;
       if (ref.owner === 'unstated' && ref.verbImpliesHolder) totals.unstatedWithHolderVerb++;
       if (HEALTH.has(ref.stat)) totals.healthPoolRefs++;
+      else if (ref.stat === 'level') totals.levelRefs++;
       else totals.resistanceAndManaRefs++;
+      if (ref.statedIn === 'type-argument') {
+        totals.refsInTypeArgument++;
+        if (ref.evidence === 'read-by-a-person') totals.refsInTypeArgumentAttributed++;
+        if (ref.needsReading) totals.refsInTypeArgumentNeedingAReading++;
+      } else if (ref.stat !== 'level') {
+        totals.ownerRefsProseTenStats++;
+        if (ref.owner === 'unstated') totals.ownerUnstatedProseTenStats++;
+      }
     }
   }
 

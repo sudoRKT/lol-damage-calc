@@ -2,7 +2,7 @@
   "provenance": {
     "source": "Riot Data Dragon runesReforged.json (which runes exist, and prose values); League of Legends Wiki Template:Rune data <Name>, one page per rune (values in {{as}}/{{pp}} markup)",
     "patch": "16.16.1",
-    "fetched": "2026-08-14T22:49:32.709Z",
+    "fetched": "2026-08-15T21:05:32.653Z",
     "urls": {
       "patch": "https://ddragon.leagueoflegends.com/api/versions.json",
       "runes": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/runesReforged.json",
@@ -102,7 +102,7 @@
     },
     "sources-disagree-on-kind": {
       "bucket": "contested",
-      "definition": "The two sources disagree about whether the rune deals damage or amplifies it. Both counts are reported; neither is silently preferred."
+      "definition": "The two sources disagree about whether the rune deals damage or amplifies it. Both counts are reported; neither is silently preferred. EMPTY SINCE 2026-08-15, and kept rather than deleted: its only member was First Strike, and the disagreement turned out to be one this pipeline manufactured by stripping the markup Data Dragon states the damage type in. A class with no members is a statement — the next rune that lands here should be checked against the raw markup before anyone calls it contested."
     }
   },
   "priorClaimAudit": {
@@ -151,12 +151,10 @@
       "shield": 1
     },
     "dealsDamage": {
-      "byDataDragon": 15,
+      "byDataDragon": 16,
       "byWiki": 16,
-      "bothAgree": 15,
-      "sourcesDisagree": [
-        "First Strike"
-      ],
+      "bothAgree": 16,
+      "sourcesDisagree": [],
       "canReachAnEnemyChampion": 15,
       "outOfChampionScope": [
         "Demolish"
@@ -174,10 +172,10 @@
     "damageTypeOfDamagingRunes": {
       "ddragon": {
         "adaptive": 6,
-        "true": 3,
-        "not-stated": 2,
+        "true": 4,
         "magic": 4,
-        "physical": 1
+        "physical": 1,
+        "not-stated": 1
       },
       "wiki": {
         "variable": 2,
@@ -187,7 +185,7 @@
         "physical": 1
       },
       "contractHoldable": {
-        "ddragon": 8,
+        "ddragon": 9,
         "wiki": 9
       },
       "adaptiveOrVariable": {
@@ -196,7 +194,6 @@
       },
       "typeNotStatedAtAll": {
         "ddragon": [
-          "First Strike",
           "Summon Aery"
         ],
         "wiki": []
@@ -313,9 +310,7 @@
       },
       "sources-disagree-on-kind": {
         "bucket": "contested",
-        "runes": [
-          "First Strike"
-        ]
+        "runes": []
       }
     },
     "permanentlyUnreachable": {
@@ -339,7 +334,111 @@
   "integrity": {
     "rowsWritten": 62,
     "anchorFailures": [],
-    "note": "An anchor failure means the live source no longer contains the text a person read. The row is dropped, never guessed. A non-empty list here means this census needs re-reading."
+    "note": "An anchor failure means the live source no longer contains the text a person read. The row is dropped, never guessed. A non-empty list here means this census needs re-reading.",
+    "markupGuard": {
+      "whatItChecks": "Data Dragon states damage type in TAG NAMES, and every other anchor in this census is matched against text stripHtml has already removed them from. So until 2026-08-15 the source could have changed <truedamage> to <magicdamage> — the one place it keeps the type — and no anchor would have moved. This guard reads the RAW longDesc.",
+      "howItIsMeasured": "For every rune, the type its raw markup asserts is compared against the type the hand reading recorded. Recorded for all 62, including the ones that assert none: a tag appearing where a person recorded none fails just as loudly as a tag changing type. Where a type IS asserted, a verbatim raw substring including the tags must also still be present, so the exact spelling is pinned and not merely the presence of a tag.",
+      "runesCheckedAgainstRawMarkup": 62,
+      "runesWhoseMarkupAssertsAType": [
+        "Hail of Blades (true)",
+        "Sudden Impact (true)",
+        "First Strike (true)"
+      ],
+      "failures": []
+    },
+    "corrections": [
+      {
+        "rune": "First Strike",
+        "date": "2026-08-15",
+        "was": {
+          "dealsDamage.ddragon": "false",
+          "damageType.ddragon": "'not-stated'",
+          "blockers": "['sources-disagree-on-kind', 'self-referential-percentage']",
+          "note": "The single rune the two sources classify differently: Data Dragon calls it 7% extra damage (an amplifier), the wiki calls it 7% bonus TRUE damage (an added instance of a different type). The percentage is the same; what it MEANS is not.",
+          "published counts": "dealsDamage.sourcesDisagree [\"First Strike\"]; byDataDragon 15; bothAgree 15; typeNotStatedAtAll.ddragon [\"First Strike\", \"Summon Aery\"]"
+        },
+        "why": "The hand reading was written against text this pipeline had already stripped of HTML, so it recorded \"not-stated\" for a type the source does state. The comparison then reported a conflict the pipeline had manufactured itself, and the census published First Strike as the one rune whose KIND the two sources disagree about. Nothing in either source ever disagreed.",
+        "confirmedBy": "public/data/rune-contested.json, finding \"First Strike\", verdict \"not-contested-markup-stripped\", with both sources verbatim, their edit dates, and Riot's own launch note (V11.23) saying \"bonus true damage\"."
+      }
+    ],
+    "endpointToleranceReviewed": {
+      "tolerance": 0.51,
+      "question": "The two-source endpoint cross-check calls the sources agreed when both endpoints are within 0.51. The normaliser sweep flagged that as reading half a point of genuine disagreement as \"endpoints-agree\". Is it defensible?",
+      "whatTheTwoSidesActuallyAre": "Not two measurements of one quantity. The wiki side is a FORMULA this census evaluates at level 1 and level 18 (e.g. \"2 + (20-2)/17*(x-1)\"); the Data Dragon side is the number Riot PRINTS after rounding it for display. A tolerance was put there to absorb that rounding.",
+      "answer": "DEFENSIBLE, AND MEASURED RATHER THAN ARGUED — the tolerance is currently deciding NOTHING. Every rune the check calls \"endpoints-agree\" agrees EXACTLY: the largest gap among them is 0. The one rune that disagrees, Deathfire Touch, is out by 1.5 at the low end and 6 at the high end — an order of magnitude above the tolerance, so no plausible tightening would change its verdict either. Nothing in the live population sits in the band between 0 and 0.51, which is the band the sweep was worried about.",
+      "theRecommendation": "A DECISION FOR THE LEAD, NOT TAKEN HERE. Because no gap uses any of it, the tolerance could be dropped to near zero today with no verdict moving — and a future half-point disagreement would then be SURFACED instead of absorbed. The cost is the opposite error: a display-rounding artifact would be reported as a source disagreement and someone would have to read it. Since this census surfaces rather than reconciles, that is a cheap error and the tighter tolerance is probably right — but it changes what \"the sources agree\" means, so it is raised rather than made.",
+      "measuredGaps": [
+        {
+          "rune": "Deathfire Touch",
+          "verdict": "endpoints-disagree",
+          "low": 1.5,
+          "high": 6
+        },
+        {
+          "rune": "Electrocute",
+          "verdict": "endpoints-agree",
+          "low": 0,
+          "high": 0
+        },
+        {
+          "rune": "Hail of Blades",
+          "verdict": "endpoints-agree",
+          "low": 0,
+          "high": 0
+        },
+        {
+          "rune": "Cheap Shot",
+          "verdict": "endpoints-agree",
+          "low": 0,
+          "high": 0
+        },
+        {
+          "rune": "Sudden Impact",
+          "verdict": "endpoints-agree",
+          "low": 0,
+          "high": 0
+        },
+        {
+          "rune": "Press the Attack",
+          "verdict": "endpoints-agree",
+          "low": 0,
+          "high": 0
+        },
+        {
+          "rune": "Aftershock",
+          "verdict": "endpoints-agree",
+          "low": 0,
+          "high": 0
+        },
+        {
+          "rune": "Shield Bash",
+          "verdict": "endpoints-agree",
+          "low": 0,
+          "high": 0
+        },
+        {
+          "rune": "Summon Aery",
+          "verdict": "endpoints-agree",
+          "low": 0,
+          "high": 0
+        },
+        {
+          "rune": "Arcane Comet",
+          "verdict": "endpoints-agree",
+          "low": 0,
+          "high": 0
+        },
+        {
+          "rune": "Scorch",
+          "verdict": "endpoints-agree",
+          "low": 0,
+          "high": 0
+        }
+      ],
+      "largestGapAmongAgreeing": 0,
+      "headroom": "The verdict to read off `largestGapAmongAgreeing`: how much of the 0.51 any agreeing rune actually uses. A figure near 0 means the tolerance decides nothing and could be tightened at no cost; a figure near 0.5 means it is deciding outcomes and must be re-argued from the source rather than kept.",
+      "notChanged": "Left at 0.51 in this run. Changing a tolerance is changing what \"the sources agree\" means, and it should be done against the measurement above rather than because the number looks untidy. The gaps are now published so that decision has data behind it."
+    }
   },
   "rows": [
     {
@@ -371,13 +470,19 @@
       ],
       "crossCheck": {
         "verdict": "endpoints-agree",
-        "detail": "Read at level 1 and level 18, the wiki formula lands on the two numbers Data Dragon prints."
+        "detail": "Read at level 1 and level 18, the wiki formula lands on the two numbers Data Dragon prints.",
+        "gap": {
+          "low": 0,
+          "high": 0
+        }
       },
       "reading": "Data Dragon states a range and never says what moves it; the wiki states the formula with level as a written parameter.",
       "sourceText": {
         "ddragon": "Hitting a champion with 3 separate attacks or abilities within 3s deals bonus adaptive damage . Damage: 70 - 240 (+0.1 bonus AD, +0.05 AP) damage. Cooldown: 20s 'We called them the Thunderlords, for to speak of their lightning was to invite disaster.'",
+        "ddragonMarkup": null,
         "wiki": "…champion. Applying 3 stacks to a target within a 3 second period causes them to be struck by lightning after a {{fd|0.25}}-second delay, dealing them {{pp|60 + 10 * x|1 to 20 by 1}} {{as|(+ 10% '''bonus''' AD)}} {{as|(+ 5% AP)}} of either {{as|physical|physical damage}} or {{as|magic damage}}.\n|description2 = {{sbc|Variable Damag…"
-      }
+      },
+      "markupDamageType": null
     },
     {
       "id": 8128,
@@ -413,8 +518,10 @@
       "reading": "A flat base with a per-soul stack term. No level axis is stated because none is needed.",
       "sourceText": {
         "ddragon": "Damaging a Champion below 50% health deals adaptive damage and harvests their soul, permanently increasing Dark Harvest's damage by 11. Dark Harvest damage: 30 (+11 damage per soul) (+0.1 bonus AD) (+0.05 AP) Cooldown: 35s (resets to 1.0s on takedown)",
+        "ddragonMarkup": null,
         "wiki": "… Dealing {{tip|pet damage|pet}} or non-{{tip|proc damage|proc}} damage against enemy {{tip|champions}} below {{as|50% of their '''maximum''' health}} deals 30 {{as|(+ 11 per Soul)}} {{as|(+ 10% '''bonus''' AD)}} {{as|(+ 5% AP)}} '''bonus''' {{tip|adaptive damage}} and, after a {{fd|1.75}}-second delay, reap {{as|1 Soul}}. This ca…"
-      }
+      },
+      "markupDamageType": null
     },
     {
       "id": 9923,
@@ -442,13 +549,19 @@
       "blockers": [],
       "crossCheck": {
         "verdict": "endpoints-agree",
-        "detail": "Read at level 1 and level 18, the wiki formula lands on the two numbers Data Dragon prints."
+        "detail": "Read at level 1 and level 18, the wiki formula lands on the two numbers Data Dragon prints.",
+        "gap": {
+          "low": 0,
+          "high": 0
+        }
       },
       "reading": "Damage type is stated and holdable. Data Dragon leaves the range unaxed; the wiki formula supplies it.",
       "sourceText": {
         "ddragon": "…true damage when you attack an enemy champion for up to 3 attacks. No more than 3s can elapse between attacks or this effect will end. Cooldown: 10s. On-Hit Damage: 2 - 20 (+0.12 bonus AD, +0.1 AP) damage. Attack resets increase the attack limit by 1. Allows you to temporarily exceed the Attack Speed limit.",
+        "ddragonMarkup": "Gain 90% (60% for ranged champions) Attack Speed and <trueDamage>bonus true damage</trueDamage> when you attack an enemy champion for up to 3 attacks.<br><br>No more than 3s can elapse between attacks or this effect will end.<br><br>Cooldown: 10…",
         "wiki": "…}} {{sti|'''bonus''' attack speed}}|as}}, are allowed to exceed the {{tt|attack speed cap|normally 3.003 attacks per second}}, and basic attacks deal {{pp|2 + (20-2)/17*(x-1) for 20|color=true damage}} {{as|(+ 12% '''bonus''' AD)}} {{as|(+ 10% AP)}} {{as|{{sti|'''bonus''' true damage}}}}.<br><br>''The triggering attack benefits from Hail of Blades.'…"
-      }
+      },
+      "markupDamageType": "true"
     },
     {
       "id": 8126,
@@ -476,13 +589,19 @@
       "blockers": [],
       "crossCheck": {
         "verdict": "endpoints-agree",
-        "detail": "Read at level 1 and level 18, the wiki formula lands on the two numbers Data Dragon prints."
+        "detail": "Read at level 1 and level 18, the wiki formula lands on the two numbers Data Dragon prints.",
+        "gap": {
+          "low": 0,
+          "high": 0
+        }
       },
       "reading": "Complete in BOTH sources: type, value and axis all stated. The value is simply not on a labelled line.",
       "sourceText": {
         "ddragon": "Damaging champions with impaired movement or actions deals 10 - 45 bonus true damage (based on level). Cooldown: 4s Activates on damage occurring after the impairment.",
+        "ddragonMarkup": null,
         "wiki": "…    = Season 2018\n|path         = Domination\n|slot         = 1\n|description  = {{sbc|Passive:}} Non-{{tip|proc damage|proc}} damage sources deal {{as|{{pp|10 + (45-10)/17*(x-1)|1 to 20 by 1}}|true damage}} {{as|'''bonus''' true damage}} to enemy {{tip|champion|champions}} affected by certain {{tip|crowd control}} effects.\n|description2 = {…"
-      }
+      },
+      "markupDamageType": null
     },
     {
       "id": 8139,
@@ -512,8 +631,10 @@
       "reading": "Healing on the rune holder. Deals no damage.",
       "sourceText": {
         "ddragon": "Heal when you damage an enemy champion. Healing: 16-40 (+0.1 bonus AD, +0.05 AP) health (based on level) Cooldown: 20s",
+        "ddragonMarkup": null,
         "wiki": "…ason 2018\n|path         = Domination\n|slot         = 1\n|description  = {{sbc|Passive:}} Damaging an enemy {{tip|champion}} {{tip|heal|heals}} you for {{pp|16 + (40-16)/17*(x-1)|1 to 20 by 1|color=heal}} {{as|(+ 10% '''bonus''' AD)}} {{as|(+ 5% AP)}}.\n|description2 = Does not trigger at full health.\n|range        = \n|cooldown     = 20\n}}"
-      }
+      },
+      "markupDamageType": null
     },
     {
       "id": 8143,
@@ -541,13 +662,19 @@
       "blockers": [],
       "crossCheck": {
         "verdict": "endpoints-agree",
-        "detail": "Read at level 1 and level 18, the wiki formula lands on the two numbers Data Dragon prints."
+        "detail": "Read at level 1 and level 18, the wiki formula lands on the two numbers Data Dragon prints.",
+        "gap": {
+          "low": 0,
+          "high": 0
+        }
       },
       "reading": "Type and axis stated by both. The wiki writes the range without a basis parameter and lets the template default fill it.",
       "sourceText": {
         "ddragon": "Damaging basic attacks and abilities deal a bonus 20 - 80 True Damage based on level to enemy champions after using a dash, leap, blink, teleport, or when leaving stealth for 4s. Cooldown: 10s",
+        "ddragonMarkup": "Damaging basic attacks and abilities deal a bonus <trueDamage>20 - 80 True Damage</trueDamage> based on level to enemy champions after using a dash, leap, blink, teleport, or when leaving stealth for 4s.<br><br>Cooldown: 10s",
         "wiki": "…}} Dealing damage to an enemy {{tip|champion}} within 4 seconds of using a {{tip|dash}} or {{tip|blink}}, or exiting from {{tip|stealth}}, deals {{as|{{pp|20 to 80}} '''bonus''' true damage}} to them.\n|range        = \n|cooldown     = {{tt|10|Starts post-effect (after bonus damage is applied or expires)}}\n}}"
-      }
+      },
+      "markupDamageType": "true"
     },
     {
       "id": 8137,
@@ -577,8 +704,10 @@
       "reading": "Vision. Touches no damage number.",
       "sourceText": {
         "ddragon": "Automatically sense a nearby untracked and unseen ward, tracking it for the team. Level 11: Also reveal the ward for 10s. This effect has a 250 second Cooldown.",
+        "ddragonMarkup": null,
         "wiki": "… = 2025 Annual Cycle\n|path         = Domination\n|slot         = 2\n|description  = {{sbc|Passive:}} Upon moving near an un-tracked enemy {{tip|ward}}, it is automatically tracked with a [[File:Enemy Ward time indicator.png|30px|link=]] [[Ward#Ward_Timers|ward timer]].\n|description2 = At level 11, also {{tip|true sight|reveals}} the w…"
-      }
+      },
+      "markupDamageType": null
     },
     {
       "id": 8140,
@@ -608,8 +737,10 @@
       "reading": "Trinket haste. Not a damage-relevant stat under the sequence model.",
       "sourceText": {
         "ddragon": "Collect 1 memento on champion takedowns , up to 18 total. Gain 6 Trinket Haste for each collected. In game modes where vision Trinkets do not exist, instead gain 3 Summoner Spell Haste.",
+        "ddragonMarkup": null,
         "wiki": "…s|{{{2|}}}|{{{3|}}}|{{{4|}}}|{{{5|}}}\n|released     = 2025 Annual Cycle\n|path         = Domination\n|slot         = 2\n|description  = {{sbc|Passive:}} Gain 6 [[trinket haste]] per ''Memento'' stack, up to 108 haste at maximum stacks.\n|description2 = Earn a ''Memento'' stack whenever scoring a champion {{tip|takedown}}, up to 18 stacks.\n|cooldown…"
-      }
+      },
+      "markupDamageType": null
     },
     {
       "id": 8141,
@@ -639,8 +770,10 @@
       "reading": "Wards. Note the wiki names a scaling basis this project has met nowhere else: \"average champion level\".",
       "sourceText": {
         "ddragon": "Your wards in the enemy jungle are Deep . Deep wards gain +1 extra Health and +[30 - 45]s increased duration (+[45 - 150]s for Trinket stealth wards). Level 9: Wards in the river are also D…",
+        "ddragonMarkup": null,
         "wiki": "…n\n|slot         = 2\n|description  = {{sbc|Passive:}} {{tip|Stealth Ward|Stealth Wards}} and {{tip|Totem Ward|Totem Wards}} placed in the enemy jungle are considered ''Deep''. All ''Deep'' wards are granted {{as|1 '''bonus''' health}}, ''Deep'' {{tip|Stealth Ward|Stealth Wards}} last {{pp|30 to 45|type=average champion lev…"
-      }
+      },
+      "markupDamageType": null
     },
     {
       "id": 8135,
@@ -670,8 +803,10 @@
       "reading": "Gold.",
       "sourceText": {
         "ddragon": "Gain an additional 50 gold the next time you collect a Bounty Hunter stack. Increase the gold gained by 20 gold for each Bounty Hunter stack, up to 130 gold . Bounty Hunter sta…",
+        "ddragonMarkup": null,
         "wiki": "…5|}}}\n|released     = Season 2022\n|path         = Domination\n|slot         = 3\n|description  = Gain {{g|50}} (+ {{g|20}} per ''Bounty Hunter'' stack) per unique takedown, up to {{g|{{ap|(50*5)+(20*10)}}}} at 5 unique takedowns.\n|description2 = 1st unique takedown: {{g|50}}, 2nd: {{g|{{ap|50+20}}}}, 3rd: {{g|{{ap|50+(2…"
-      }
+      },
+      "markupDamageType": null
     },
     {
       "id": 8105,
@@ -701,8 +836,10 @@
       "reading": "Movement speed. Excluded from damage-relevant stats.",
       "sourceText": {
         "ddragon": "Gain 8 Move Speed out of combat per Bounty Hunter stack. Bounty Hunter stacks are earned the first time you get a takedown on each enemy champion.",
+        "ddragonMarkup": null,
         "wiki": "…|{{{3|}}}|{{{4|}}}|{{{5|}}}\n|released     = Season 2018\n|path         = Domination\n|slot         = 3\n|description  = {{sbc|Passive:}} Gain {{sti|{{as|8 '''bonus''' movement speed}}}} while [[combat status|out of combat]] per ''Bounty Hunter'' stack, up to {{as|40|ms}} at 5 stacks.\n|description2 = Earn a ''Bounty Hunter'' [[sta…"
-      }
+      },
+      "markupDamageType": null
     },
     {
       "id": 8106,
@@ -732,8 +869,10 @@
       "reading": "Ability haste. The engine models sequence, so cooldowns change no damage number.",
       "sourceText": {
         "ddragon": "Your ultimate gains 6 Ability Haste, plus an additional 5 Ability Haste per Bounty Hunter stack. Bounty Hunter stacks are earned the first time you get a takedown on each enemy champion…",
+        "ddragonMarkup": null,
         "wiki": "…{4|}}}|{{{5|}}}\n|released     = Season 2018\n|path         = Domination\n|slot         = 3\n|description  = Gain 6 (+ 5 per ''Bounty Hunter'' [[stack]]) [[ultimate haste]], up to 31 at 5 stacks.\n|description2 = Earn a ''Bounty Hunter'' stack whenever scoring a {{tip|takedown}} against an enemy {{tip|champion}}, up to on…"
-      }
+      },
+      "markupDamageType": null
     },
     {
       "id": 8351,
@@ -765,8 +904,10 @@
       "reading": "A 15% damage reduction that BOTH sources say excludes the holder. In a two-champion fight it protects nobody.",
       "sourceText": {
         "ddragon": "…s duration) seconds that slow enemies for 20% (+90% per 100% Heal and Shield Power) (+6% per 100 Ability Power) (+7% per 100 bonus Attack Damage) and reduce their damage by 15% against your allies (not including yourself). Cooldown: 25s",
+        "ddragonMarkup": null,
         "wiki": "…0 units, are {{tip|slow|slowed}} by 20% {{as|(+ 7% per 100 '''bonus''' AD)}} {{as|(+ 6% per 100 AP)}} {{as|(+ 9% per 10% heal and shield power)}} and have their damage reduced by 15% against your allies, excluding yourself.\n|range        = \n|cooldown     = 25\n}}"
-      }
+      },
+      "markupDamageType": null
     },
     {
       "id": 8360,
@@ -796,8 +937,10 @@
       "reading": "Summoner spells. Carries one of the three unexpanded Data Dragon placeholder tokens.",
       "sourceText": {
         "ddragon": "…equipped Summoner Spells to a new, single use Summoner Spell. Each unique Summoner Spell you swap to permanently decreases your swap cooldown by 25s (initial swap cooldown is @f3@ seconds). Your first swap becomes available at 6 mins. Summoner Spells can only be swapped while out of combat. After using a swapped Summoner Spell you must…",
+        "ddragonMarkup": null,
         "wiki": "…lot         = Keystone\n|description  = {{sbc|Passive:}} While not channeling {{si|Teleport}} and being [[combat status|out-of-combat]] for 5 seconds, you can swap one of your equipped [[summoner spell]]s to a new, single use summoner spell. You cannot select a summoner spell you have already equipped.\n|description2 = Your first swap becomes available …"
-      }
+      },
+      "markupDamageType": null
     },
     {
       "id": 8369,
@@ -806,7 +949,7 @@
       "slot": "keystone",
       "role": "damage-instance",
       "dealsDamage": {
-        "ddragon": false,
+        "ddragon": true,
         "wiki": true
       },
       "valueReach": {
@@ -814,7 +957,7 @@
         "wiki": "templated"
       },
       "damageType": {
-        "ddragon": "not-stated",
+        "ddragon": "true",
         "wiki": "true"
       },
       "scalingAxis": {
@@ -823,17 +966,30 @@
       },
       "adaptiveRule": null,
       "blockers": [
-        "sources-disagree-on-kind",
         "self-referential-percentage"
       ],
       "crossCheck": {
         "verdict": "not-comparable-no-range-in-ddragon",
         "detail": "Data Dragon states one value or a percentage here, so there are no endpoints to compare."
       },
-      "reading": "The single rune the two sources classify differently: Data Dragon calls it 7% extra damage (an amplifier), the wiki calls it 7% bonus TRUE damage (an added instance of a different type). The percentage is the same; what it MEANS is not.",
+      "reading": "BOTH SOURCES SAY TRUE DAMAGE. Data Dragon states the type in markup — \"<truedamage>7%</truedamage> extra <truedamage> damage</truedamage>\" — and the wiki states it in words: \"causing all of your post-mitigation damage dealt against champions to deal 7% bonus true damage\". The percentage is the same and so is what it means.",
       "sourceText": {
         "ddragon": "Attacks or abilities against an enemy champion within 0.25s of entering champion combat grant 10 gold and First Strike for 3 seconds, causing you to deal 7% extra damage against champions, and granting 50% (35% for ranged champions) of bonus damage dealt as gold . Cooldown: 25 - 15 s",
+        "ddragonMarkup": "…abilities against an enemy champion within 0.25s of entering champion combat grant 10 gold and <b>First Strike</b> for 3 seconds, causing you to deal <truedamage>7%</truedamage> extra <truedamage> damage</truedamage> against champions, and granting <gold>50% (35% for ranged champions)</gold> of bonus damage dealt as <gold>gold</gold>.<br><br>Cooldown: <scaleLevel>…",
         "wiki": "…|10}} and ''First Strike'' for 3 seconds, causing all of your {{tt|post-mitigation damage|Damage calculated after modifiers}} dealt against champions to deal {{as|7% '''bonus''' true damage}}. Afterwards, you are granted {{g|gold}} equal to {{rd|50%|35%}} of all '''bonus''' damage dealt within the duration.\n|description2 = ''First Strike''…"
+      },
+      "markupDamageType": "true",
+      "correctedFrom": {
+        "date": "2026-08-15",
+        "was": {
+          "dealsDamage.ddragon": "false",
+          "damageType.ddragon": "'not-stated'",
+          "blockers": "['sources-disagree-on-kind', 'self-referential-percentage']",
+          "note": "The single rune the two sources classify differently: Data Dragon calls it 7% extra damage (an amplifier), the wiki calls it 7% bonus TRUE damage (an added instance of a different type). The percentage is the same; what it MEANS is not.",
+          "published counts": "dealsDamage.sourcesDisagree [\"First Strike\"]; byDataDragon 15; bothAgree 15; typeNotStatedAtAll.ddragon [\"First Strike\", \"Summon Aery\"]"
+        },
+        "why": "The hand reading was written against text this pipeline had already stripped of HTML, so it recorded \"not-stated\" for a type the source does state. The comparison then reported a conflict the pipeline had manufactured itself, and the census published First Strike as the one rune whose KIND the two sources disagree about. Nothing in either source ever disagreed.",
+        "confirmedBy": "public/data/rune-contested.json, finding \"First Strike\", verdict \"not-contested-markup-stripped\", with both sources verbatim, their edit dates, and Riot's own launch note (V11.23) saying \"bonus true damage\"."
       }
     },
     {
@@ -864,8 +1020,10 @@
       "reading": "Mobility.",
       "sourceText": {
         "ddragon": "While Flash is on cooldown it is replaced by Hexflash . Hexflash : Channel for 2s to blink to a new location. Cooldown: 20s. Goes on a 10s cooldown when you enter champion combat.",
+        "ddragonMarkup": null,
         "wiki": "…18\n|path         = Inspiration\n|slot         = 1\n|description  = {{sbc|Passive:}} While {{si|Flash}} has a remaining cooldown greater than 2 seconds, it is replaced by ''{{si|Hexflash}}''.\n|description2 = {{sbc|Active:}} You begin {{tip|channel|charging}} for up to 2 seconds, setting your {{sti|ms|{{as|movement speed}}}} to a {{as|stat…"
-      }
+      },
+      "markupDamageType": null
     },
     {
       "id": 8304,
@@ -895,8 +1053,10 @@
       "reading": "Boots and movement speed.",
       "sourceText": {
         "ddragon": "You get free Slightly Magical Footwear at 12 min, but you cannot buy boots before then. For each takedown you acquire the boots 45s sooner. Slightly Magical Footwear grants you an additional 10 Move…",
+        "ddragonMarkup": null,
         "wiki": "…= 1\n|description  = {{sbc|Passive:}} After 12 minutes (reduced by 45 seconds whenever scoring a {{tip|takedown}} against an enemy champion), you gain {{ii|Slightly Magical Boots}} for {{g|free}}. ''Slightly Magical Boots'' are identical to {{ii|Boots}} and can be upgraded as if it were the item. If the inventory is full while r…"
-      }
+      },
+      "markupDamageType": null
     },
     {
       "id": 8321,
@@ -926,8 +1086,10 @@
       "reading": "Gold.",
       "sourceText": {
         "ddragon": "Get 7.5% Gold back when you purchase Legendary Items.",
+        "ddragonMarkup": null,
         "wiki": "…|}}}\n|released     = Season 2024\n|path         = Inspiration\n|slot         = 1\n|description  = {{sbc|Passive:}} Upon purchasing a [[Legendary item]], you are automatically refunded {{fd|7.5}}% of its total {{g|gold}} cost.\n|description2 = ''Selling or undoing the item's purchase will cancel the refund, reducing your current {{g|…"
-      }
+      },
+      "markupDamageType": null
     },
     {
       "id": 8313,
@@ -957,8 +1119,10 @@
       "reading": "Grants elixirs. Whatever those do is stated on the ITEMS, not here.",
       "sourceText": {
         "ddragon": "Upon reaching level 3, gain an Elixir of Avarice. Upon reaching level 6, gain an Elixir of Force. Upon reaching level 9, gain an Elixir of Skill.",
+        "ddragonMarkup": null,
         "wiki": "… Tonic|{{{2|}}}|{{{3|}}}|{{{4|}}}|{{{5|}}}\n|released     = Season 2024\n|path         = Inspiration\n|slot         = 2\n|description  = {{sbc|Passive:}} Gain an ''Elixir'' upon reaching each of the following levels:\n* Level 3: {{ii|Elixir of Avarice}}\n* Level 6: {{ii|Elixir of Force}}\n* Level 9: {{ii|Elixir of Skill}}\n|description2 = If the inventory is full upo…"
-      }
+      },
+      "markupDamageType": null
     },
     {
       "id": 8352,
@@ -988,8 +1152,10 @@
       "reading": "Healing, expressed as a percentage of a potion.",
       "sourceText": {
         "ddragon": "Consuming a potion grants 40% of its health restoration immediately.",
+        "ddragonMarkup": null,
         "wiki": "… = {{sbc|Passive:}} Upon consuming a potion ({{ii|Health Potion|icononly=true}}{{ii|Refillable Potion|icononly=true}}), you additionally {{tip|heal}} equal to 40% of its '''total''' health restoration.\n|description2 = If a health potion is consumed while one is already active, this effect will trigger on the activation of the next potion once the r…"
-      }
+      },
+      "markupDamageType": null
     },
     {
       "id": 8345,
@@ -1019,8 +1185,10 @@
       "reading": "Healing plus permanent maximum health. The health grant is damage-relevant; the healing is not damage.",
       "sourceText": {
         "ddragon": "Biscuit Delivery: Gain a Total Biscuit of Everlasting Will every 2 mins, until 6 min. Biscuits restore 20 + 2% of your maximum health, increased by up to 100% based on missing Health. Consuming or selling a Biscuit permanently increases your max health by 30.",
+        "ddragonMarkup": null,
         "wiki": "…s full while receiving a biscuit, the biscuit(s) will appear as soon as a slot in the inventory is available.\n|description2 = Consuming a ''Biscuit'' will permanently increase your {{as|{{sti|'''maximum''' health}}}} by {{as|30|health}}, in addition to its effects. You will also gain the increased health if you sell the biscuit …"
-      }
+      },
+      "markupDamageType": null
     },
     {
       "id": 8347,
@@ -1050,8 +1218,10 @@
       "reading": "Haste.",
       "sourceText": {
         "ddragon": "+ 18 Summoner Spell Haste + 10 Item Haste",
+        "ddragonMarkup": null,
         "wiki": "…nsight|{{{2|}}}|{{{3|}}}|{{{4|}}}|{{{5|}}}\n|released     = Season 2018\n|path         = Inspiration\n|slot         = 3\n|description  = {{sbc|Passive:}} Gain 18 [[ability haste#Increasing summoner spell haste|summoner spell haste]] and 10 [[ability haste#Increasing item haste|item haste]].\n|range        = \n|cooldown     = \n}}"
-      }
+      },
+      "markupDamageType": null
     },
     {
       "id": 8410,
@@ -1081,8 +1251,10 @@
       "reading": "Movement speed.",
       "sourceText": {
         "ddragon": "Gain 7.5% Move Speed towards nearby enemy champions that are movement impaired. This bonus is increased to 15% Move Speed for any enemy champion that you impair. Activation Range for CC from allies: 10…",
+        "ddragonMarkup": null,
         "wiki": "…4|}}}|{{{5|}}}\n|released     = Season 2018\n|path         = Inspiration\n|slot         = 3\n|description  = {{sbc|Passive:}} Gain {{sti|{{as|{{fd|7.5}}% '''bonus total''' movement speed}}}} while facing {{tip|sight|visible}} enemy {{tip|champions}} that are {{tip|immobilize|immobilized}}, {{tip|ground|grounded}}, or {{tip|slow|slowed…"
-      }
+      },
+      "markupDamageType": null
     },
     {
       "id": 8316,
@@ -1112,8 +1284,10 @@
       "reading": "Adaptive FORCE — a stat, not damage. Note the wiki spells the rune \"Jack of All Trades\" and Data Dragon \"Jack Of All Trades\"; the census had to carry the override.",
       "sourceText": {
         "ddragon": "For each different stat gained from items, gain one Jack stack. Each stack grants you 1 Ability Haste . Gain 8 or 20 bonus Adaptive Force at 5 and 10 stacks, respectively.",
+        "ddragonMarkup": null,
         "wiki": "…[[champion statistic|stat type]] currently gained from [[item]]s.\n|description2 = {{sbc|Jack:}} For each ''Jack'' stack, gain {{as|1 ability haste}}. At 5 ''Jack'' stacks, gain {{adaptive|8}}. At 10 ''Jack'' stacks, gain an additional {{adaptive|12}}, for a total of {{adaptive|20}} at 10 ''Jack'' stacks.\n|range        = \n|cooldown     = \n}…"
-      }
+      },
+      "markupDamageType": null
     },
     {
       "id": 8005,
@@ -1143,13 +1317,19 @@
       ],
       "crossCheck": {
         "verdict": "endpoints-agree",
-        "detail": "Read at level 1 and level 18, the wiki formula lands on the two numbers Data Dragon prints."
+        "detail": "Read at level 1 and level 18, the wiki formula lands on the two numbers Data Dragon prints.",
+        "gap": {
+          "low": 0,
+          "high": 0
+        }
       },
       "reading": "Also carries an 8% damage amplifier as a rider on the same effect. Value and axis complete; only the type is unholdable.",
       "sourceText": {
         "ddragon": "Hitting an enemy champion with 3 consecutive basic attacks deals 40 - 160 bonus adaptive damage (based on level) and amplifies your damage dealt by 8% until you leave combat with champions.",
+        "ddragonMarkup": null,
         "wiki": "…efreshing on subsequent applications, expiring upon attacking a new champion, and stacking up to 3 times. The third stack consumes all stacks to deal {{pp|40 + (160-40)/17*(x-1)|1 to 20 by 1}} '''bonus''' {{tip|adaptive damage}} and grant you 8% increased damage against champions until 5 seconds after exiting [[combat status|combat]] with t…"
-      }
+      },
+      "markupDamageType": null
     },
     {
       "id": 8008,
@@ -1185,8 +1365,10 @@
       "reading": "Melee and ranged carry different values, stated by both sources. The whole figure is then multiplied by bonus attack speed, which the model has no input for.",
       "sourceText": {
         "ddragon": "…tacking an enemy champion grants you [6% Melee || 4% Ranged] Attack Speed for 6 seconds, up to 6. At max stacks, deal [9 - 30 Melee || 6 - 24 Ranged] bonus adaptive damage On-Attack, increased by 1% per 1% Bonus Attack Speed .",
+        "ddragonMarkup": null,
         "wiki": "…as}} at maximum stacks.\n|description2 = At maximum stacks, basic attacks are empowered to fire a bolt at the target {{tip|on-attack}} that deals them {{rd|9 + (30-9)/17*(x-1) for 20|6 + (24-6)/17*(x-1) for 20|pp=true}} '''bonus''' {{tip|adaptive damage}} upon arrival, increased by {{rd|1%|{{fd|0.6{{recurring|6}}%}}}} per {{as|1% '''bonus''' attack speed}}.\n|descript…"
-      }
+      },
+      "markupDamageType": null
     },
     {
       "id": 8021,
@@ -1216,8 +1398,10 @@
       "reading": "Healing only.",
       "sourceText": {
         "ddragon": "Attacking and moving builds Energy stacks. At 100 stacks, your next attack is Energized Energized attacks heal you for 10 - 130 (+0.1 Bonus AD, +0.05 AP) and grant 20% Move Speed for 1s. For Ranged Champions, Healing is 60% effective and Move Speed is 75% effective. All healin…",
+        "ddragonMarkup": null,
         "wiki": "…on  = {{Unique|Energized|Moving and basic attacking generates ''Charges'', up to 100.}}\n|description2 = At 100 ''Charges'', become {{tip|Energized}}, empowering your next {{tip|basic attack}} to {{tip|heal}} you for {{rd|15+(145/17)*(x-1)*(0.7025+0.0175*(x-1)) for 20|15*0.6+((145*0.6)/17)*(x-1)*(0.7025+0.0175*(x-1)) for 20|color=heal|pp=true}} {{as|(+ {{rd|10…"
-      }
+      },
+      "markupDamageType": null
     },
     {
       "id": 8010,
@@ -1247,8 +1431,10 @@
       "reading": "Adaptive FORCE per stack, plus healing at full stacks. Grants a stat; deals no damage of its own.",
       "sourceText": {
         "ddragon": "Basic attacks or spells that deal damage to an enemy champion grant 2 stacks of Conqueror for 5s, gaining 1.8-4 Adaptive Force per stack. Stacks up to 12 times. Ranged champions gain only 1 stack per basic attack. When fully stacked, heal for 8% of the damage you deal to champions (5% …",
+        "ddragonMarkup": null,
         "wiki": "… {{tip|basic damage|basic}} nor non-{{tip|pet damage|pet}} {{tip|proc damage}}, up to once every 4 seconds per {{tip|cast instance}}.\n|description2 = Each stack of ''Conqueror'' grants {{adaptive|1.8 + (4-1.8)/17*(x-1)|20}}, up to {{adaptive|1.8*12 + (4*12-1.8*12)/17*(x-1)|20}} at maximum stacks, at which you also {{tip|heal}} for {{rd|8%|5%}} of the {{tt|post-mitigation…"
-      }
+      },
+      "markupDamageType": null
     },
     {
       "id": 9101,
@@ -1278,8 +1464,10 @@
       "reading": "Data Dragon states NO value at all — it ships the unexpanded token @HealAmount@. The wiki states a four-segment piecewise progression in full.",
       "sourceText": {
         "ddragon": "Killing a target heals you for @HealAmount@.",
+        "ddragonMarkup": null,
         "wiki": "…orb Life|{{{2|}}}|{{{3|}}}|{{{4|}}}|{{{5|}}}\n|released     = Season 2024\n|path         = Precision\n|slot         = 1\n|description  = {{sbc|Passive:}} Killing an enemy {{tip|heals}} you for {{pp|1; then +0.25*x for 4;then +1*x for 5; then +2*x|1 to 20 by 1|formula=1, +0.25 per level until level 5, then +1 per level until level 10, then +…"
-      }
+      },
+      "markupDamageType": null
     },
     {
       "id": 9111,
@@ -1309,8 +1497,10 @@
       "reading": "Healing on takedown. Both sources state the owner of both health pools (\"your\").",
       "sourceText": {
         "ddragon": "Takedowns restore 5% of your missing health, 2.5% of your max health, and grant an additional 20 gold. 'The most dangerous game brings the greatest glory.' —Noxian Reckoner",
+        "ddragonMarkup": null,
         "wiki": "…ath         = Precision\n|slot         = 1\n|description  = {{sbc|Passive:}} Scoring a {{tip|takedown}} against an enemy champion {{tip|heals}} you for {{as|{{fd|2.5}}% of your '''maximum''' health}} {{as|(+ 5% of your '''missing''' health)}} and grants you an additional {{g|20}}, both after a 1-second delay.\n|range        = \n|cooldown     = \n|cap…"
-      }
+      },
+      "markupDamageType": null
     },
     {
       "id": 8009,
@@ -1340,8 +1530,10 @@
       "reading": "Mana and energy. Relevant only to abilities that read a mana pool.",
       "sourceText": {
         "ddragon": "Damaging an enemy champion restores 6-50 (80% for ranged) mana or 6 energy. Takedowns restore 15% of your maximum mana or energy. Cooldown for damage restoration: 8s",
+        "ddragonMarkup": null,
         "wiki": "…d     = Season 2018\n|path         = Precision\n|slot         = 1\n|description  = {{sbc|Passive:}} Scoring a {{tip|takedown}} against an enemy champion restores {{as|15% of your '''maximum''' mana}} or {{as|15% of your '''maximum''' energy}} after a 1-second delay.\n|description2 = Damaging an enemy champion restores {{as|{{rd|6; then +0.8*x for 5…"
-      }
+      },
+      "markupDamageType": null
     },
     {
       "id": 9104,
@@ -1371,8 +1563,10 @@
       "reading": "Attack speed. Excluded from damage-relevant stats by the sequence model.",
       "sourceText": {
         "ddragon": "Gain 3% attack speed plus an additional 1.5% for every Legend stack ( max 10 stacks ). Earn progress toward Legend stacks for every champion takedown, epic monster takedown, large monster kill, …",
+        "ddragonMarkup": null,
         "wiki": "…}}|{{{5|}}}\n|released     = Season 2018\n|path         = Precision\n|slot         = 2\n|description  = {{sbc|Passive:}} Gain {{sti|{{as|{{#vardefineecho:basealacrity|3}}%|attack speed}} (+ {{as|{{fd|{{#vardefineecho:scalingalacrity|1.5}}}}%|attack speed}} per ''Legend'' {{tip|stack}}) {{as|'''bonus''' attack speed…"
-      }
+      },
+      "markupDamageType": null
     },
     {
       "id": 9105,
@@ -1402,8 +1596,10 @@
       "reading": "Ability haste.",
       "sourceText": {
         "ddragon": "Gain 1.5 basic ability haste for every Legend stack ( max 10 stacks ). Earn progress toward Legend stacks for every champion takedown, epic monster takedown, large monster kill, and minion kill.",
+        "ddragonMarkup": null,
         "wiki": "…  = Season 2024\n|path         = Precision\n|slot         = 2\n|description  = {{sbc|Passive:}} Gain {{sti|ability haste|icononly=true}} {{as|{{fd|1.5}} basic ability haste}} per ''Legend'' {{tip|stack}}, up to {{as|15|ability haste}} at maximum stacks.\n|description2 = {{sbc|Legend:}} Gain ''Legend'' stacks for every 100 points earned, u…"
-      }
+      },
+      "markupDamageType": null
     },
     {
       "id": 9103,
@@ -1433,8 +1629,10 @@
       "reading": "Life steal and maximum health — the life steal lands in Result.sustain (§42.2), the health in the survival verdict.",
       "sourceText": {
         "ddragon": "Gain 0.45% Life Steal for every Legend stack ( max 15 stacks ). At maximum Legend stacks, gain 85 max health . Earn progress toward Legend stacks for every champion takedown, epic monster takedo…",
+        "ddragonMarkup": null,
         "wiki": "…eased     = Season 2018\n|path         = Precision\n|slot         = 2\n|description  = {{sbc|Passive:}} Gain {{as|{{sti|life steal|{{fd|{{#vardefineecho:scalingbloodline|0.45}}% life steal}}}}}} per ''Legend'' {{tip|stack}}, up to {{as|{{fd|{{#expr:{{#var:scalingbloodline}}*15}}}}%|life steal}} at maximum stacks, at w…"
-      }
+      },
+      "markupDamageType": null
     },
     {
       "id": 8014,
@@ -1464,8 +1662,10 @@
       "reading": "An amplifier with a health threshold on the TARGET. The wiki states the pool (\"maximum health\"); Data Dragon says only \"health\".",
       "sourceText": {
         "ddragon": "Deal 8% more damage to champions who have less than 40% health.",
+        "ddragonMarkup": null,
         "wiki": "…de Grace|{{{2|}}}|{{{3|}}}|{{{4|}}}|{{{5|}}}\n|released     = Season 2018\n|path         = Precision\n|slot         = 3\n|description  = {{sbc|Passive:}} Deal 8% increased damage to champions below {{as|40% '''maximum''' health}}.\n|range        = \n|cooldown     = \n}}"
-      }
+      },
+      "markupDamageType": null
     },
     {
       "id": 8017,
@@ -1495,8 +1695,10 @@
       "reading": "The mirror of Coup de Grace, same shape.",
       "sourceText": {
         "ddragon": "Deal 8% more damage to champions who have more than 60% health.",
+        "ddragonMarkup": null,
         "wiki": "…Cut Down|{{{2|}}}|{{{3|}}}|{{{4|}}}|{{{5|}}}\n|released     = Season 2018\n|path         = Precision\n|slot         = 3\n|description  = {{sbc|Passive:}} Deal 8% increased damage to champions above {{as|60% '''maximum''' health}}.\n|range        = \n|cooldown     = \n}}"
-      }
+      },
+      "markupDamageType": null
     },
     {
       "id": 8299,
@@ -1526,8 +1728,10 @@
       "reading": "An amplifier whose size moves on the HOLDER's missing health — an axis that is neither level nor rank.",
       "sourceText": {
         "ddragon": "Deal 5% - 11% increased damage to champions while you are below 60% health. Max damage gained at 30% health.",
+        "ddragonMarkup": null,
         "wiki": "… Deal 5% increased damage to champions while below {{as|60% '''maximum''' health}}. This increases further based on your {{as|'''missing''' health}}, up to 11% increased damage while below {{as|30% '''maximum''' health}}.\n|range        = \n|cooldown     = \n}}"
-      }
+      },
+      "markupDamageType": null
     },
     {
       "id": 8437,
@@ -1560,8 +1764,10 @@
       "reading": "The most complete damaging rune in either source: holdable type, no axis needed, and the health pool is attributed (\"your maximum health\"). Data Dragon expresses the ranged case as \"40% effective\"; the wiki writes the ranged number out.",
       "sourceText": {
         "ddragon": "Every 4s in combat, your next basic attack on a champion will: Deal bonus magic damage equal to 3.5% of your max health Heal you for 1.3% of your max health Permanently increase your health by 5 Ranged Champions: Damage, healing, and permanent health gained are 40% eff…",
+        "ddragonMarkup": null,
         "wiki": "… 4 times. At maximum stacks, your next [[basic attack]] {{tip|on-hit}} within 5 seconds against an enemy {{tip|champion}} consumes all stacks to deal {{as|'''bonus''' magic damage}} equal to {{as|{{rd|{{fd|3.5}}%|{{fd|1.4}}%}} of your '''maximum''' health}}, {{tip|heal}} you for {{as|(+ {{rd|{{fd|1.3}}%|{{fd|0.52}}%}} of your '''maximum''' health)}}, and permanently grant you {{as|{{rd|5|2}} '''bonus''' …"
-      }
+      },
+      "markupDamageType": null
     },
     {
       "id": 8439,
@@ -1589,13 +1795,19 @@
       "blockers": [],
       "crossCheck": {
         "verdict": "endpoints-agree",
-        "detail": "Read at level 1 and level 18, the wiki formula lands on the two numbers Data Dragon prints."
+        "detail": "Read at level 1 and level 18, the wiki formula lands on the two numbers Data Dragon prints.",
+        "gap": {
+          "low": 0,
+          "high": 0
+        }
       },
       "reading": "Holdable type, attributed bonus-health ratio. Data Dragon states the range with no axis; the wiki lets the progression template supply level.",
       "sourceText": {
         "ddragon": "…nemy champion, increase your Armor and Magic Resist by 45 + 75% of your Bonus Resists for 2.5s. Then explode, dealing magic damage to nearby enemies. Damage: 25 - 120 (+8% of your bonus health) Cooldown: 20s Resistance bonus from Aftershock capped at: 80-150 (based on level)",
+        "ddragonMarkup": null,
         "wiki": "…{{fd|2.5}} seconds. The '''bonus''' resistances are each capped at {{pp|80 to 150}}.\n|description2 = After the duration, you release a shockwave that deals {{as|{{pp|25 to 120}}|magic damage}} {{as|(+ 8% of your '''bonus''' health)}} {{as|magic damage}} to enemy champions and {{tip|monster|monsters}} within a {{tip|cr|icononly=true}} 350 radius.\n|range        = \n|cooldown     = 20…"
-      }
+      },
+      "markupDamageType": null
     },
     {
       "id": 8465,
@@ -1625,8 +1837,10 @@
       "reading": "A shield, which changes the survival verdict but is not damage. Nothing in the contract holds shields today.",
       "sourceText": {
         "ddragon": "…ou or the ally take more than a small amount of damage over the duration of the Guard , both of you gain a shield for 1.5s. Cooldown: 75 - 40 seconds Shield: 40 - 150 + 20% of your ability power + 6% of your bonus health Proc Threshold: 50 - 165 postmitigation damage",
+        "ddragonMarkup": null,
         "wiki": "…ake {{pp|50 + (165-50)/17*(x-1) for 20}} damage within {{fd|2.5}} seconds or lethal damage from an enemy champion, {{tip|monster}} or {{tip|turret}}, you both gain a {{tip|shield}} for {{pp|40 + (150-40)/17*(x-1) for 20}} {{as|(+ 20% of your AP)}} {{as|(+ 6% of your '''bonus''' health)}} for 2 seconds.\n|description3 = ''Guardian'' o…"
-      }
+      },
+      "markupDamageType": null
     },
     {
       "id": 8446,
@@ -1661,8 +1875,10 @@
       "reading": "The only rune stating PHYSICAL damage — and both sources restrict it to turrets, so it can never reach the defender in a two-champion fight.",
       "sourceText": {
         "ddragon": "Your third attack against towers deals [85 (+28% max Health) Melee || 50 (+20% max Health) Ranged] bonus physical damage. Cooldown: 30s",
+        "ddragonMarkup": null,
         "wiki": "…acks {{tip|on-hit}} against {{tip|turrets}} apply a stack of ''Demolish'', stacking up to 3 times. The third stack against a turret consumes them all to deal {{as|{{rd|85|50}}|physical damage}} {{as|(+ {{rd|28%|20%}} of your '''maximum''' health)}} {{as|'''bonus''' physical damage}}.\n|description2 = ''Demolish'' cannot be triggered on the sa…"
-      }
+      },
+      "markupDamageType": null
     },
     {
       "id": 8463,
@@ -1694,8 +1910,10 @@
       "reading": "Second Data Dragon placeholder: @BaseHeal@ states no value. The wiki states the progression and the ranged reduction.",
       "sourceText": {
         "ddragon": "Impairing the movement of an enemy champion restores @BaseHeal@ Health to you and the lowest health nearby allied champion. 70% effect for Ranged Users. Cooldown: 20s",
+        "ddragonMarkup": null,
         "wiki": "…       = Resolve\n|slot         = 1\n|description  = {{sbc|Passive:}} {{tip|slow|Slowing}} or {{tip|immobilize|immobilizing}} an enemy {{tip|champion}} {{tip|heals}} you and the nearest and most wounded allied champion within {{tip|cr|icononly=true}} 1000 units for {{rd|10 + (50-10)/17*(x-1) for 20|10*0.7 + (50*0.7-10*0.7)/17*(x-1) for 20|pp=true|type=your level|col…"
-      }
+      },
+      "markupDamageType": null
     },
     {
       "id": 8401,
@@ -1727,13 +1945,19 @@
       ],
       "crossCheck": {
         "verdict": "endpoints-agree",
-        "detail": "Read at level 1 and level 18, the wiki formula lands on the two numbers Data Dragon prints."
+        "detail": "Read at level 1 and level 18, the wiki formula lands on the two numbers Data Dragon prints.",
+        "gap": {
+          "low": 0,
+          "high": 0
+        }
       },
       "reading": "The ONLY damaging rune carrying a fact no source states: \"+2.5% bonus health\" names the pool and, in BOTH sources, never says whose. Its second term is a percentage of a shield the contract cannot hold.",
       "sourceText": {
         "ddragon": "Whenever you gain a new shield, your next basic attack against a champion deals 5 - 30 (+2.5% Bonus Health) (+15.0% New Shield Amount) bonus adaptive damage. You have up to 2s after the shield expires to use this effect.",
+        "ddragonMarkup": null,
         "wiki": "…     = 1\n|description  = {{sbc|Passive:}} Whenever you gain a {{tip|shield}}, your next attack against an enemy {{tip|champion}} is empowered to deal {{pp|5 + (30-5)/17*(x-1)|1 to 20 by 1}} {{as|(+ {{fd|2.5}}% '''bonus''' health)}} {{as|(+ 15% shield amount)}} '''bonus''' {{tip|adaptive damage}} [[on-hit]]. The empowered attack lasts for up to 2 seconds after the shield expires.…"
-      }
+      },
+      "markupDamageType": null
     },
     {
       "id": 8429,
@@ -1763,8 +1987,10 @@
       "reading": "Armor and magic resistance on the holder — damage-relevant when the holder is the defender.",
       "sourceText": {
         "ddragon": "After 12 min gain +8 Armor and +8 Magic Resist and increase your Armor and Magic Resist by 3%.",
+        "ddragonMarkup": null,
         "wiki": "…nditioning|{{{2|}}}|{{{3|}}}|{{{4|}}}|{{{5|}}}\n|released     = Season 2018\n|path         = Resolve\n|slot         = 2\n|description  = {{sbc|Passive:}} After 12 minutes, gain {{sti|armor|{{as|8 '''bonus''' armor}}}} and {{sti|mr|{{as|8 '''bonus''' magic resistance}}}} and your {{as|'''total''' armor}} and {{as|'''total''' …"
-      }
+      },
+      "markupDamageType": null
     },
     {
       "id": 8444,
@@ -1796,8 +2022,10 @@
       "reading": "Healing spread over ten seconds — the sequence model has no way to say how much of it landed.",
       "sourceText": {
         "ddragon": "After taking damage from an enemy champion, heal for 4% of your missing health over 10s.",
+        "ddragonMarkup": null,
         "wiki": "…lot         = 2\n|description  = {{sbc|Passive:}} After taking damage from an enemy {{tip|champion}}, {{sti|health regeneration|link=true|regenerate}} {{as|4% of your '''missing''' health}} over 10 seconds, refreshing on subsequent damage.\n|range        = \n|cooldown     = \n}}"
-      }
+      },
+      "markupDamageType": null
     },
     {
       "id": 8473,
@@ -1827,8 +2055,10 @@
       "reading": "FLAT damage reduction on the defender, and the wiki adds that it applies to true damage too. This is a first-step term in the fixed four-step resistance order, and it is fully stated by both sources.",
       "sourceText": {
         "ddragon": "After taking damage from an enemy champion, the next 3 spells or attacks you receive from them deal 30-60 (based on level) less damage. Duration: 1.5s Cooldown: 55s",
+        "ddragonMarkup": null,
         "wiki": "…Bone Plating'' for {{fd|1.5}} seconds. While active, the next 3 spells or attacks you receive from the enemy champion that triggered this effect deal {{pp|30 + (60-30)/17*(x-1)|1 to 20 by 1}} less damage (including {{tip|true damage}}).\n|range        = \n|cooldown     = 55\n}}"
-      }
+      },
+      "markupDamageType": null
     },
     {
       "id": 8451,
@@ -1860,8 +2090,10 @@
       "reading": "Maximum health per stack — damage-relevant, and needs a stack count the user states.",
       "sourceText": {
         "ddragon": "Absorb life essence from monsters or enemy minions that die near you, permanently gaining 3 maximum health for every 8. When you've absorbed 120 monsters or enemy minions, gain an additional 3.5% maximum health.",
+        "ddragonMarkup": null,
         "wiki": "…description  = {{sbc|Passive:}} Every 8 {{tip|monster|monsters}} or enemy {{tip|minion|minions}} that die near you permanently generates a [[stack]]. Each stack grants {{as|3 '''bonus''' health}}. This effect can stack indefinitely.\n|description2 = After reaching 15 stacks (120 monsters or minions), your {{as|'''base'''|health}} and {{as|'''bo…"
-      }
+      },
+      "markupDamageType": null
     },
     {
       "id": 8453,
@@ -1891,8 +2123,10 @@
       "reading": "Heal and shield power — a multiplier on healing, which §42.2 put in Result.sustain.",
       "sourceText": {
         "ddragon": "Gain 5% Heal and Shield Power. Heals and shields you cast or receive are 10% stronger on targets below 40% health.",
+        "ddragonMarkup": null,
         "wiki": "…Revitalize|{{{2|}}}|{{{3|}}}|{{{4|}}}|{{{5|}}}\n|released     = Season 2018\n|path         = Resolve\n|slot         = 3\n|description  = {{sbc|Passive:}} Grants {{sti|heal and shield power|5% [[Heal and shield power]]}}.\n|description2 = Outgoing {{tip|heal|healing}} and outgoing {{tip|shield|shielding}} are increased by 10% on targets {…"
-      }
+      },
+      "markupDamageType": null
     },
     {
       "id": 8242,
@@ -1922,8 +2156,10 @@
       "reading": "Conditional armor and magic resistance on the holder.",
       "sourceText": {
         "ddragon": "Gain 10 Armor and Magic Resist when crowd controlled and for 2 seconds after.",
+        "ddragonMarkup": null,
         "wiki": "…|description  = {{sbc|Passive:}} While afflicted with {{tip|crowd control}} sourced from enemy {{tip|champion|champions}}, gain {{as|{{#vardefineecho:armorunflinching|10}} '''bonus''' armor}} and {{as|{{#vardefineecho:mrunflinching|10}} '''bonus''' magic resistance}}, lingering for 2 seconds after the impairment en…"
-      }
+      },
+      "markupDamageType": null
     },
     {
       "id": 8214,
@@ -1953,13 +2189,19 @@
       ],
       "crossCheck": {
         "verdict": "endpoints-agree",
-        "detail": "Read at level 1 and level 18, the wiki formula lands on the two numbers Data Dragon prints."
+        "detail": "Read at level 1 and level 18, the wiki formula lands on the two numbers Data Dragon prints.",
+        "gap": {
+          "low": 0,
+          "high": 0
+        }
       },
       "reading": "The one rune whose Data Dragon text names NO damage type at all — it just says \"dealing 10 - 50\". The wiki fills the gap and calls it adaptive.",
       "sourceText": {
         "ddragon": "Damaging enemy champions with basic attacks or abilities sends Aery to them, dealing 10 - 50 based on level (+ 0.05 AP ) (+ 0.1 bonus AD ). Empowering or protecting allies with abilities sends Aery to them, shielding them for 20 - 100 based on level (+ 0.05…",
+        "ddragonMarkup": null,
         "wiki": "…ities}}, and [[Named item effect|item effects]] against an enemy {{tip|champion}} signal ''Aery'' to pounce at them over {{fd|0.45}} seconds, dealing {{pp|10 + (40/17)*(x-1)|1 to 20 by 1}} {{as|(+ 10% '''bonus''' AD)}} {{as|(+ 5% AP)}} {{tip|adaptive damage}}. {{tip|Healing}}, {{tip|shield|shielding}}, or {{tip|buff|buffing}} an allied …"
-      }
+      },
+      "markupDamageType": null
     },
     {
       "id": 8229,
@@ -1991,13 +2233,19 @@
       ],
       "crossCheck": {
         "verdict": "endpoints-agree",
-        "detail": "Read at level 1 and level 18, the wiki formula lands on the two numbers Data Dragon prints."
+        "detail": "Read at level 1 and level 18, the wiki formula lands on the two numbers Data Dragon prints.",
+        "gap": {
+          "low": 0,
+          "high": 0
+        }
       },
       "reading": "Both sources state a distance-based amplification up to 100% at 750 range. The scenario has no geometry, so the number that reaches the defender is a choice nobody has made.",
       "sourceText": {
         "ddragon": "Damaging a champion with an ability hurls a comet at their location, dealing increased damage based on distance. Adaptive Damage : 15 - 100 based on level ( +0.05 AP and +0.1 bonus AD ) Cooldown: 20 - 8s Damage amplification scales up to 100% at 750 range.",
+        "ddragonMarkup": null,
         "wiki": "…age}} or {{tip|pet damage}} to an enemy {{tip|champion}} hurls an ''Arcane Comet'' at their current location that lands after {{rutngt|0.8}}, dealing {{pp|15 + (100-15)/17*(x-1)|1 to 20 by 1}} {{as|(+ 10% '''bonus''' AD)}} {{as|(+ 5% AP)}} of either {{as|physical|physical damage}} or {{as|magic damage}} to enemies within a {{tip|er|icononly…"
-      }
+      },
+      "markupDamageType": null
     },
     {
       "id": 8230,
@@ -2029,8 +2277,10 @@
       "reading": "Movement speed, on a trigger that reads 25% of the target's maximum health within 3 seconds.",
       "sourceText": {
         "ddragon": "Dealing 25% of a champion's maximum health within 3s grants 48% Move Speed and 50% Slow Resistance for 4s. Move Speed is 75% effective for ranged champions. Cooldown: 20s - 10s",
+        "ddragonMarkup": null,
         "wiki": "…       = Sorcery\n|slot         = Keystone\n|description  = {{sbc|Passive:}} Dealing {{tt|damage|post-mitigation damage}} to an enemy champion equal to {{as|25% of their '''maximum''' health}} within 3 seconds grants you {{as|{{rd|48%|36%}} '''bonus''' movement speed}} and 50% {{tip|slow resist}} for 4 seconds.\n|cooldown     = {{pp|20-10/17…"
-      }
+      },
+      "markupDamageType": null
     },
     {
       "id": 8992,
@@ -2060,13 +2310,19 @@
       ],
       "crossCheck": {
         "verdict": "endpoints-disagree",
-        "detail": "The two sources do NOT land on the same endpoints. Surfaced, not reconciled — see the report."
+        "detail": "The two sources do NOT land on the same endpoints. Surfaced, not reconciled — see the report.",
+        "gap": {
+          "low": 1.5,
+          "high": 6
+        }
       },
       "reading": "Damage over time. THE TWO SOURCES STATE THE SAME BURN IN DIFFERENT UNITS: Data Dragon per second, the wiki per half-second tick. Reading either as \"the damage\" is the exact per-tick defect gate 5 found in abilities.",
       "sourceText": {
         "ddragon": "Damaging a champion with an ability burns them for 3 - 12 based on level (+ 2.5% AP ) (+ 7% bonus AD ) magic damage per second. After burning for 3 seconds, the damage of the burn increases by 75% while they remain on fire…",
+        "ddragonMarkup": null,
         "wiki": "…y\n|slot         = Keystone\n|description  = Dealing {{tip|ability damage}} or {{tip|pet damage}} to enemy {{tip|champions}} inflicts a burn that deals {{pp|(3/2) + ((12/2)-(3/2))/17*(x-1) for 20|color=magic damage}} {{as|(+ {{ap|7/2}}% '''bonus''' AD)}} {{as|(+ {{ap|2.5/2}}% AP)}} {{as|magic damage}} every {{fd|0.5}} seconds over the duration. After the burn has …"
-      }
+      },
+      "markupDamageType": null
     },
     {
       "id": 8224,
@@ -2096,8 +2352,10 @@
       "reading": "An amplifier on the ultimate only, reduced to 8% for area abilities — so it needs to know which of the two an ability is.",
       "sourceText": {
         "ddragon": "Your Ultimate has 12% increased damage, healing, and shielding. (AoE damage is reduced to a 8% increase) Scoring a takedown on an enemy champion reduces your Ultimate's current cooldown by…",
+        "ddragonMarkup": null,
         "wiki": "…nist|{{{2|}}}|{{{3|}}}|{{{4|}}}|{{{5|}}}\n|released     = 2025 Annual Cycle\n|path         = Sorcery\n|slot         = 1\n|description  = {{sbc|Passive:}} Your ultimate has 12% increased damage (reduced to 8% for [[area of effect]] abilities), {{tip|heal|healing}} and {{tip|shield|shielding}}.\n|description2 = Scoring an enemy champion {{tip|…"
-      }
+      },
+      "markupDamageType": null
     },
     {
       "id": 8226,
@@ -2127,8 +2385,10 @@
       "reading": "Maximum mana, attributed to the holder by both sources. Matters only to the mana-ratio abilities.",
       "sourceText": {
         "ddragon": "Hitting an enemy champion with an ability permanently increases your maximum mana by 25, up to 250 mana. After reaching 250 bonus mana, restore 1% of your missing mana every 5 seconds. Cooldown: 15 seconds",
+        "ddragonMarkup": null,
         "wiki": "…{{sbc|Passive:}} {{tt|Affecting|See notes}} an enemy {{tip|champion}} with an [[champion ability|ability]] permanently increases your {{sti|mana|{{as|'''maximum''' mana by 25}}}}, up to {{as|250 mana}}. {{as|Mana}} gained from this effect preserves your {{as|'''current''' mana}}.\n|description2 = After reaching {{as|250 '''…"
-      }
+      },
+      "markupDamageType": null
     },
     {
       "id": 8275,
@@ -2158,8 +2418,10 @@
       "reading": "Movement speed. Its wiki progression names a basis this project has met nowhere else — \"summoner spell cooldown\".",
       "sourceText": {
         "ddragon": "After casting a Summoner Spell, gain a Move Speed increase that lasts for 2s and allows you to pass through units. Increase: 15% - 45% Move Speed based on the Summoner Spell's cooldown. (Higher cooldown Summoner Spells grant m…",
+        "ddragonMarkup": null,
         "wiki": "…ath         = Sorcery\n|slot         = 1\n|description  = {{sbc|Passive:}} Using a [[summoner spell]] grants {{tip|ghosted|ghosting}} and {{sti|ms|{{pp|type=summoner spell cooldown|key=%|15;35;45|0;100;250|color=ms|showtype=false|changedisplay=true}}}} {{as|(based on summoner spell cooldown)|ms}} {{as|'''bonus''' movement speed}…"
-      }
+      },
+      "markupDamageType": null
     },
     {
       "id": 8210,
@@ -2189,8 +2451,10 @@
       "reading": "Ability haste at level thresholds.",
       "sourceText": {
         "ddragon": "Gain bonuses upon reaching the following levels: Level 5: +5 Ability Haste Level 8: +5 Ability Haste Level 11: On Champion takedown, reduce the remaining cooldown of basic abilities by 20%.",
+        "ddragonMarkup": null,
         "wiki": "…nscendence|{{{2|}}}|{{{3|}}}|{{{4|}}}|{{{5|}}}\n|released     = Season 2018\n|path         = Sorcery\n|slot         = 2\n|description  = {{sbc|Passive:}} Gain '''bonuses''' upon reaching the following levels:\n* Level 5: + 5 [[ability haste]].\n* Level 8: + 5 [[ability haste]].\n* Level 11: Scoring a {{tip|takedown}} against an enemy {{tip|champion}} reduces…"
-      }
+      },
+      "markupDamageType": null
     },
     {
       "id": 8234,
@@ -2220,8 +2484,10 @@
       "reading": "Movement speed.",
       "sourceText": {
         "ddragon": "All movement bonuses are 7% more effective on you and gain 1% Move Speed .",
+        "ddragonMarkup": null,
         "wiki": "…|{{{5|}}}\n|released     = Season 2018\n|path         = Sorcery\n|slot         = 2\n|description  = {{sbc|Passive:}} All [[movement speed]] '''bonuses''' increase in effectiveness by 7%.\n|description2 = Additionally, you gain {{sti|{{as|1% '''bonus''' movement speed}}}}.\n|range        = \n|cooldown     = \n}}"
-      }
+      },
+      "markupDamageType": null
     },
     {
       "id": 8233,
@@ -2253,8 +2519,10 @@
       "reading": "Adaptive FORCE, conditional on the holder being above 70% maximum health. Its own template says the tie \"defaults to the first listed\"; the Adaptive force article says the tie follows the champion's adaptive type. Those are different rules.",
       "sourceText": {
         "ddragon": "While above 70% health, gain an adaptive bonus of up to 18 Attack Damage or 30 Ability Power (based on level). Grants 1.8 Attack Damage or 3 Ability Power at level 1.",
+        "ddragonMarkup": null,
         "wiki": "…Focus|{{{2|}}}|{{{3|}}}|{{{4|}}}|{{{5|}}}\n|released     = Season 2018\n|path         = Sorcery\n|slot         = 2\n|description  = {{sbc|Passive:}} Gain {{adaptive|3 + (30-3)/17*(x-1)|20}} while above {{as|70% of your '''maximum''' health}}.\n|description2 = {{sbc|Adaptive:}} Grants bonuses based on which stat you already have the most b…"
-      }
+      },
+      "markupDamageType": null
     },
     {
       "id": 8237,
@@ -2282,13 +2550,19 @@
       "blockers": [],
       "crossCheck": {
         "verdict": "endpoints-agree",
-        "detail": "Read at level 1 and level 18, the wiki formula lands on the two numbers Data Dragon prints."
+        "detail": "Read at level 1 and level 18, the wiki formula lands on the two numbers Data Dragon prints.",
+        "gap": {
+          "low": 0,
+          "high": 0
+        }
       },
       "reading": "Complete in both sources: holdable type, stated value, stated axis, no ratio to attribute. The single cleanest damaging rune there is.",
       "sourceText": {
         "ddragon": "Your next damaging ability hit sets champions on fire dealing 20 - 40 bonus magic damage based on level after 1s. Cooldown: 10s",
+        "ddragonMarkup": null,
         "wiki": "…       = 3\n|description  = {{sbc|Passive:}} Dealing {{tip|ability damage}} to an enemy {{tip|champion|champion}} sets them on fire, dealing them {{as|{{pp|20 + (40-20)/17*(x-1)|1 to 20 by 1}}|magic damage}} {{as|'''bonus''' magic damage}} after 1 second.\n|range        = \n|cooldown     = 10\n}}"
-      }
+      },
+      "markupDamageType": null
     },
     {
       "id": 8232,
@@ -2320,8 +2594,10 @@
       "reading": "Adaptive force while in the river — a map condition the scenario does not model.",
       "sourceText": {
         "ddragon": "Gain 10 Move Speed and 13 - 30 Adaptive Force (based on level) when in the river. May you be as swift as the rushing river and agile as a startled Rift Scuttler.",
+        "ddragonMarkup": null,
         "wiki": "…     = 3\n|description  = {{sbc|Passive:}} While in the [[Summoner's Rift|river]], you gain {{sti|{{as|10|ms}} {{as|'''bonus''' movement speed}}}} and {{adaptive|13 + (30-13)/17*(x-1)|20}}.\n|description2 = {{sbc|Adaptive:}} Grants bonuses based on which stat you already have the most bonuses for. ''Defaults to the first listed.''\n|range…"
-      }
+      },
+      "markupDamageType": null
     },
     {
       "id": 8236,
@@ -2354,8 +2630,10 @@
       "reading": "Adaptive force whose axis is ELAPSED MINUTES, stated as such by both sources. The engine models sequence, not time.",
       "sourceText": {
         "ddragon": "Every 10 min gain AP or AD, adaptive . 10 min : + 8 AP or 5 AD 20 min : + 24 AP or 14 AD 30 min : + 48 AP or 29 AD 40 min : + 80 AP or 48 AD 50 min : + 120 AP or 72 AD 60 min : + 168 AP …",
+        "ddragonMarkup": null,
         "wiki": "…iption  = {{sbc|Passive:}} Gain increasing {{tip|adaptive Force}} every 10 minutes that grants a total of {{as|{{pp|(4*0.6)*x*(x-1);∞|0 to 70 for 8;∞|type=minutes|formula=2.4 * m * (m-1), where m = 1 + (1 per 10 minutes of game time)|changedisplay=true}} '''bonus''' Attack Damage}} or {{as|{{pp|4*x*(x-1);∞|0 to…"
-      }
+      },
+      "markupDamageType": null
     }
   ]
 }

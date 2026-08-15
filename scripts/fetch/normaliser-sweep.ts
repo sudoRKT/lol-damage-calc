@@ -33,7 +33,11 @@
 //
 // Pure: no network, no filesystem. Tested by normaliser-sweep.test.ts.
 
-import { OWNER_REQUIRED_PHRASES } from './effect-census.ts';
+// The ELEVEN, not the ten: `level` became owner-required on 2026-08-15 (src/types/data.ts), and a
+// detector that does not know about a stat cannot propose the entries carrying it. Before this,
+// `type=target's level` on three items reported "stat: none" — the detector was quieter than the
+// census it feeds, which is the wrong direction for something whose job is to find candidates.
+import { TYPE_ARGUMENT_PHRASES } from './effect-census.ts';
 import { dataDragonTypeFromMarkup, dataDragonTypeLostByStripping } from './rune-contested.ts';
 
 // ---------------------------------------------------------------------------------------------
@@ -82,6 +86,20 @@ export interface NormaliserSite {
   measured: string;
   /** Live defect, or null. Present tense means it is still in a published file. */
   liveDefect: string | null;
+  /**
+   * What was done about it, where a defect this sweep found has since been corrected.
+   *
+   * The defect text is NOT deleted when it is fixed — it moves here, with what was published
+   * before, how the fix works, and what is still true afterwards. A sweep that quietly loses its
+   * own findings as they are closed cannot be audited, and the last field is the one that matters:
+   * every one of these fixes is narrower than the class that produced it.
+   */
+  fixed?: {
+    date: string;
+    what: string;
+    how: string;
+    whatIsStillTrue: string;
+  };
 }
 
 /**
@@ -113,14 +131,25 @@ export const SITES: NormaliserSite[] = [
       'through classifyEffect on 2026-08-15: the sentence "causing you to deal 7% extra damage ' +
       'against champions" classifies as damage "none"; restore the word the tag carried ("7% bonus ' +
       'true damage") and the same sentence classifies as "candidate", inScope true.',
-    liveDefect:
-      'public/data/effect-census.json records First Strike as damage:"none", inScope:false, so it ' +
-      'is outside the damaging rune population (runes.damageInstances = 5) — while both sources ' +
-      'say it deals true damage. STATED PRECISELY, because the whole point of this sweep is not to ' +
-      'over-claim: stripping is ONE of two causes. Restoring the type flips the sentence in ' +
-      'isolation but NOT the stored record, because the same sentence also ends "granting 50% … of ' +
-      'bonus damage dealt as gold", which the classifier refuses separately. Remove that clause as ' +
-      'well and the record classifies as a damage candidate.',
+    liveDefect: null,
+    fixed: {
+      date: '2026-08-15',
+      what:
+        'public/data/effect-census.json recorded First Strike as damage:"none", inScope:false — ' +
+        'outside the damaging population entirely, while both sources say it deals true damage. It ' +
+        'now reads damage:"candidate", inScope:true, and the row carries `correctedFromMarkup` ' +
+        'with the machine verdict it overrides, the markup, and what the file said before.',
+      how:
+        'NOT by teaching the classifier to read tags. The correction is applied to the one entry a ' +
+        'person read, listed in confirmed-readings.ts, because 2 of the 3 tagged texts in the live ' +
+        'data colour a stat grant rather than a damage type. The normaliser itself is unchanged: ' +
+        'the stripped sentence still classifies as "none", which is asserted in the tests so the ' +
+        'defect cannot quietly return.',
+      whatIsStillTrue:
+        'Stripping was one of TWO causes and the second is untouched. The full rune text also ends ' +
+        '"granting 50% … of bonus damage dealt as gold", which the classifier refuses separately ' +
+        'and rightly. Any other rune whose type lives only in a tag would still be misread.',
+    },
   },
   {
     id: 'rune-census-anchors-and-source-text-are-html-stripped',
@@ -134,14 +163,27 @@ export const SITES: NormaliserSite[] = [
     canInventADisagreement: true,
     canHideADisagreement: true,
     measured:
-      'The hand READING was written against the stripped text: First Strike carries ddAnchor ' +
+      'The hand READING was written against the stripped text: First Strike carried ddAnchor ' +
       '"causing you to deal 7% extra damage against champions", which is the stripped form, and ' +
-      'damageType.ddragon "not-stated".',
-    liveDefect:
-      'public/data/rune-census.json still publishes dealsDamage.sourcesDisagree = ["First Strike"] ' +
-      'and typeNotStatedAtAll.ddragon = ["First Strike", "Summon Aery"]. The First Strike entry in ' +
-      'both is manufactured by stripHtml. Separately the anchor guard is BLIND to a markup-only ' +
-      'change: Riot could change <truedamage> to <magicdamage> and no anchor would move.',
+      'damageType.ddragon "not-stated". Corrected 2026-08-15 to dealsDamage true / damageType ' +
+      '"true", with the raw markup pinned beside the stripped anchor.',
+    liveDefect: null,
+    fixed: {
+      date: '2026-08-15',
+      what:
+        'public/data/rune-census.json published dealsDamage.sourcesDisagree = ["First Strike"] and ' +
+        'typeNotStatedAtAll.ddragon = ["First Strike", "Summon Aery"]. Both entries were ' +
+        'manufactured by stripHtml. The reading is corrected, the row carries `correctedFrom` with ' +
+        'every superseded value, and the blocker class `sources-disagree-on-kind` is now empty.',
+      how:
+        'THE ANCHOR GUARD NOW READS THE RAW longDesc. Each reading records `markupType` — the ' +
+        'damage type the raw tags assert, or null — for ALL 62 runes, and a verbatim raw anchor ' +
+        'including the tags wherever a type is asserted. A tag changing type, or appearing where a ' +
+        'person recorded none, now fails the guard and the row is refused rather than published.',
+      whatIsStillTrue:
+        'stripHtml still runs before the two sources are compared. What changed is that the ' +
+        'stripped text is no longer the only thing a guard can see.',
+    },
   },
   {
     id: 'plaintext-deletes-named-template-arguments',
@@ -158,15 +200,34 @@ export const SITES: NormaliserSite[] = [
     canInventADisagreement: false,
     canHideADisagreement: true,
     measured:
-      'Over the 229 item effect texts in public/data/effect-census.json: 12 effects carry a named ' +
-      'argument stating a possessive or an owner-required pool stat; 22 use `type=` at all. 5 of ' +
-      'the 12 name one of the ten owner-required stats, and ALL 5 are recorded with ownerRefs: [].',
-    liveDefect:
-      "Kraken Slayer [pass] states `type=target's missing health` and Lord Dominik's Regards " +
-      "[pass] states `type=target's bonus health`. Both are recorded as having no owner-bearing " +
-      "reference at all, so neither reaches the 92 counted references nor the 69 \"unstated\". " +
-      'Data Dragon says "their missing Health" and "their bonus Health" for the same two items — ' +
-      'the sources AGREE, and the agreement is invisible.',
+      'Over the 229 item effect texts in public/data/effect-census.json, and 17 of them use ' +
+      '`type=` at all. Measured against the TEN owner-required stats, as the check stood when ' +
+      'this site was written: 10 effects carry a meaning-bearing named argument, 5 name one of ' +
+      'the ten, 2 attribute an owner — and every one of the 5 was recorded with ownerRefs: []. ' +
+      'Re-measured 2026-08-15 against the ELEVEN, level included: 12 effects, 12 naming a stat, ' +
+      '7 attributing an owner. AN EARLIER DRAFT OF THIS SENTENCE SAID 12 AND 22 for the first ' +
+      'pair; those figures were never produced by the check beside it, which computed 10 and 5 ' +
+      'from the day it was written (public/data/normaliser-sweep.json, ' +
+      '`meaningInsideANamedTemplateArgument`). The prose was wrong, not the check — which is the ' +
+      "same defect class this sweep exists to catch, in this file's own commentary.",
+    liveDefect: null,
+    fixed: {
+      date: '2026-08-15',
+      what:
+        "Kraken Slayer [pass] states `type=target's missing health` and Lord Dominik's Regards " +
+        "[pass] states `type=target's bonus health`; both were recorded as having no owner-bearing " +
+        'reference at all. `findOwnerRefs` now reads `type=` arguments. 12 references appear that ' +
+        'nothing counted before — 8 of them attributed — and the census total moves from 120 to 132.',
+      how:
+        'The STAT is read mechanically; the OWNER is not. Each possessive is looked up in the ' +
+        'population a person has read (confirmed-readings.ts), because "target" means the enemy on ' +
+        'Kraken Slayer and an ALLY on Locket of the Iron Solari, and the words are identical. An ' +
+        'unread possessive is flagged `needsReading` and left unstated.',
+      whatIsStillTrue:
+        '`plainText` still deletes named arguments, and every other reader of it is still blind to ' +
+        'them — including values.ts, where a wiki "unstated" is put to Data Dragon. Only the owner ' +
+        'census was taught to look.',
+    },
   },
   {
     id: 'ddragon-item-prose-is-html-stripped-before-corroboration',
@@ -395,6 +456,8 @@ export interface SweepSummary {
   watched: string[];
   safe: string[];
   liveDefects: string[];
+  /** Sites whose defect has been corrected. A closed finding is kept, never deleted. */
+  fixedDefects: string[];
   canInvent: string[];
   canHide: string[];
 }
@@ -407,6 +470,7 @@ export function summariseSites(sites: NormaliserSite[] = SITES): SweepSummary {
     watched: pick('watched'),
     safe: pick('safe'),
     liveDefects: sites.filter((s) => s.liveDefect !== null).map((s) => s.id),
+    fixedDefects: sites.filter((s) => s.fixed !== undefined).map((s) => s.id),
     canInvent: sites.filter((s) => s.canInventADisagreement).map((s) => s.id),
     canHide: sites.filter((s) => s.canHideADisagreement).map((s) => s.id),
   };
@@ -482,7 +546,7 @@ export function namedArgumentsCarryingMeaning(wikitext: string): NamedArgumentFa
       const states = kv[2]!.replace(/'''|''/g, '').replace(/\s+/g, ' ').trim();
       if (states === '') continue;
       const stat =
-        OWNER_REQUIRED_PHRASES.find((entry) => {
+        TYPE_ARGUMENT_PHRASES.find((entry) => {
           entry.pattern.lastIndex = 0;
           return entry.pattern.test(states);
         })?.stat ?? null;

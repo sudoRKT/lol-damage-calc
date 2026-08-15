@@ -25,6 +25,7 @@ import { dirname, join as joinPath } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
 import { stripHtml } from './effect-text.ts';
+import { dataDragonTypeFromMarkup } from './rune-contested.ts';
 import { VERSIONS_URL, ddragonRunesUrl, fetchJson } from './sources.ts';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -169,7 +170,11 @@ export const BLOCKER_CLASSES: Record<string, ClassDefinition> = {
     bucket: 'contested',
     definition:
       'The two sources disagree about whether the rune deals damage or amplifies it. Both counts ' +
-      'are reported; neither is silently preferred.',
+      'are reported; neither is silently preferred. EMPTY SINCE 2026-08-15, and kept rather than ' +
+      'deleted: its only member was First Strike, and the disagreement turned out to be one this ' +
+      'pipeline manufactured by stripping the markup Data Dragon states the damage type in. A ' +
+      'class with no members is a statement — the next rune that lands here should be checked ' +
+      'against the raw markup before anyone calls it contested.',
   },
 };
 
@@ -189,12 +194,45 @@ interface Reading {
   axis: { ddragon: StatedAxis; wiki: StatedAxis };
   adaptiveRule: AdaptiveRule;
   blockers: string[];
-  /** Verbatim substring that must be present in the live Data Dragon longDesc. */
+  /**
+   * Verbatim substring that must be present in the live Data Dragon longDesc AFTER stripHtml.
+   * This guards the WORDS. It cannot guard the markup — see `ddMarkupAnchor`.
+   */
   ddAnchor: string;
+  /**
+   * THE DAMAGE TYPE DATA DRAGON'S RAW MARKUP ASSERTS, or null where it asserts none.
+   *
+   * ADDED 2026-08-15, because the guard above could not see the place the source keeps this
+   * fact. Data Dragon states damage type in TAG NAMES — First Strike's type is stated nowhere
+   * but `<truedamage>`. Riot could change `<truedamage>` to `<magicdamage>` and not one anchor
+   * in this file would move, because every anchor is matched against text the tags have already
+   * been stripped from.
+   *
+   * It is recorded for EVERY rune, including the 59 that assert nothing: `null` is a claim too,
+   * and a tag appearing where a person recorded none fails the guard just as loudly as a tag
+   * changing colour. Absent means null.
+   */
+  markupType?: 'physical' | 'magic' | 'true' | null;
+  /**
+   * Verbatim substring of the RAW longDesc, tags included. Required wherever `markupType` is
+   * non-null, so the exact tag spelling around the phrase is pinned and not merely its presence.
+   */
+  ddMarkupAnchor?: string;
   /** Verbatim substring that must be present in the live wiki template wikitext. */
   wikiAnchor: string;
   /** What the reader concluded, in one sentence. */
   note: string;
+  /**
+   * Present only where this reading CORRECTS something a previous run published. It carries
+   * what was published and why it was wrong, so the correction is auditable in the output file
+   * rather than only in a commit message.
+   */
+  correctedFrom?: {
+    date: string;
+    was: Record<string, string>;
+    why: string;
+    confirmedBy: string;
+  };
 }
 
 const READINGS: Reading[] = [
@@ -235,6 +273,10 @@ const READINGS: Reading[] = [
     adaptiveRule: null,
     blockers: [],
     ddAnchor: 'On-Hit Damage: 2 - 20',
+    // The words "bonus true damage" sit INSIDE the tag, so stripping loses nothing here. The
+    // markup is still pinned: the tag is where the type lives even when the words agree.
+    markupType: 'true',
+    ddMarkupAnchor: '<trueDamage>bonus true damage</trueDamage>',
     wikiAnchor: '{{pp|2 + (20-2)/17*(x-1) for 20|color=true damage}}',
     note: 'Damage type is stated and holdable. Data Dragon leaves the range unaxed; the wiki formula supplies it.',
   },
@@ -274,6 +316,8 @@ const READINGS: Reading[] = [
     adaptiveRule: null,
     blockers: [],
     ddAnchor: 'bonus 20 - 80 True Damage based on level',
+    markupType: 'true',
+    ddMarkupAnchor: '<trueDamage>20 - 80 True Damage</trueDamage>',
     wikiAnchor: "{{pp|20 to 80}} '''bonus''' true damage",
     note: 'Type and axis stated by both. The wiki writes the range without a basis parameter and lets the template default fill it.',
   },
@@ -386,15 +430,45 @@ const READINGS: Reading[] = [
   {
     name: 'First Strike',
     role: 'damage-instance',
-    dealsDamage: { ddragon: false, wiki: true },
+    // CORRECTED 2026-08-15. Both sources say true damage; Data Dragon says it in the tag.
+    dealsDamage: { ddragon: true, wiki: true },
     reach: { ddragon: 'in-sentence', wiki: 'templated' },
-    damageType: { ddragon: 'not-stated', wiki: 'true' },
+    damageType: { ddragon: 'true', wiki: 'true' },
     axis: { ddragon: 'no-progression', wiki: 'no-progression' },
     adaptiveRule: null,
-    blockers: ['sources-disagree-on-kind', 'self-referential-percentage'],
+    blockers: ['self-referential-percentage'],
     ddAnchor: 'causing you to deal 7% extra damage against champions',
+    markupType: 'true',
+    ddMarkupAnchor: '<truedamage>7%</truedamage> extra <truedamage> damage</truedamage>',
     wikiAnchor: "to deal {{as|7% '''bonus''' true damage}}",
-    note: 'The single rune the two sources classify differently: Data Dragon calls it 7% extra damage (an amplifier), the wiki calls it 7% bonus TRUE damage (an added instance of a different type). The percentage is the same; what it MEANS is not.',
+    note:
+      'BOTH SOURCES SAY TRUE DAMAGE. Data Dragon states the type in markup — ' +
+      '"<truedamage>7%</truedamage> extra <truedamage> damage</truedamage>" — and the wiki states ' +
+      'it in words: "causing all of your post-mitigation damage dealt against champions to deal 7% ' +
+      'bonus true damage". The percentage is the same and so is what it means.',
+    correctedFrom: {
+      date: '2026-08-15',
+      was: {
+        'dealsDamage.ddragon': 'false',
+        'damageType.ddragon': "'not-stated'",
+        blockers: "['sources-disagree-on-kind', 'self-referential-percentage']",
+        note:
+          'The single rune the two sources classify differently: Data Dragon calls it 7% extra ' +
+          'damage (an amplifier), the wiki calls it 7% bonus TRUE damage (an added instance of a ' +
+          'different type). The percentage is the same; what it MEANS is not.',
+        'published counts': 'dealsDamage.sourcesDisagree ["First Strike"]; byDataDragon 15; bothAgree 15; typeNotStatedAtAll.ddragon ["First Strike", "Summon Aery"]',
+      },
+      why:
+        'The hand reading was written against text this pipeline had already stripped of HTML, so ' +
+        'it recorded "not-stated" for a type the source does state. The comparison then reported a ' +
+        'conflict the pipeline had manufactured itself, and the census published First Strike as ' +
+        'the one rune whose KIND the two sources disagree about. Nothing in either source ever ' +
+        'disagreed.',
+      confirmedBy:
+        'public/data/rune-contested.json, finding "First Strike", verdict ' +
+        '"not-contested-markup-stripped", with both sources verbatim, their edit dates, and Riot\'s ' +
+        'own launch note (V11.23) saying "bonus true damage".',
+    },
   },
   {
     name: 'Hextech Flashtraption',
@@ -1142,13 +1216,49 @@ export type CrossCheckVerdict =
  * `Template:Passive progression` documenting that in-line display stops there.
  * NOTHING COMPUTED HERE IS STORED. Only the verdict is.
  */
+export const ENDPOINT_TOLERANCE = 0.51;
+
+/**
+ * THE MARKUP GUARD, as a pure function so it can be proved to say NO.
+ *
+ * Every other anchor in this census is matched against text `stripHtml` has already removed the
+ * tags from — and the tag name is where Data Dragon states the damage type. So before 2026-08-15
+ * the source could have changed `<truedamage>` to `<magicdamage>`, the one place it keeps the
+ * fact, and every anchor would still have matched.
+ *
+ * Returns null when the live markup still says what the reading recorded, or the reason it does
+ * not. Checked for every rune, including the 59 asserting nothing: `null` is a claim too.
+ */
+export function markupGuardFailure(
+  reading: Pick<Reading, 'name' | 'markupType' | 'ddMarkupAnchor'>,
+  longDesc: string,
+): string | null {
+  const live = dataDragonTypeFromMarkup(longDesc);
+  const expected = reading.markupType ?? null;
+  const show = (t: string | null) => (t === null ? 'none' : `"${t}"`);
+  if (live !== expected) {
+    return (
+      `${reading.name}: Data Dragon's MARKUP now asserts damage type ${show(live)} where the ` +
+      `reading recorded ${show(expected)}. The stripped text cannot show this; re-read the rune ` +
+      `before this row is trusted.`
+    );
+  }
+  if (reading.ddMarkupAnchor !== undefined && !longDesc.includes(reading.ddMarkupAnchor)) {
+    return (
+      `${reading.name}: the RAW markup anchor "${reading.ddMarkupAnchor}" is no longer in the ` +
+      `live longDesc — the tags around the damage phrase have changed`
+    );
+  }
+  return null;
+}
+
 function crossCheckEndpoints(
   ddText: string,
   ddAnchorIndex: number,
   wikiText: string,
   wikiAnchorIndex: number,
   anchorLength: number,
-): { verdict: CrossCheckVerdict; detail: string } {
+): { verdict: CrossCheckVerdict; detail: string; gap?: { low: number; high: number } } {
   // A melee/ranged split is two different values, so a pair of endpoints cannot describe it.
   // Checked BEFORE the range test, or a split rune is mislabelled as "no range stated".
   if (wikiText.slice(wikiAnchorIndex, wikiAnchorIndex + anchorLength).includes('{{rd|')) {
@@ -1190,12 +1300,18 @@ function crossCheckEndpoints(
     low = evalFormula(stripped, 1);
     high = evalFormula(stripped, 18);
   }
-  const agree = Math.abs(low - Number(ddRange[1])) < 0.51 && Math.abs(high - Number(ddRange[2])) < 0.51;
+  const lowGap = Math.abs(low - Number(ddRange[1]));
+  const highGap = Math.abs(high - Number(ddRange[2]));
+  const agree = lowGap < ENDPOINT_TOLERANCE && highGap < ENDPOINT_TOLERANCE;
   return {
     verdict: agree ? 'endpoints-agree' : 'endpoints-disagree',
     detail: agree
       ? 'Read at level 1 and level 18, the wiki formula lands on the two numbers Data Dragon prints.'
       : 'The two sources do NOT land on the same endpoints. Surfaced, not reconciled — see the report.',
+    // THE GAP IS PUBLISHED, THE ENDPOINTS ARE NOT. A gap answers "how much of the tolerance is
+    // actually being used", which is the only way to say whether 0.51 hides anything; an endpoint
+    // would be a rune value, and this file stores none.
+    gap: { low: Number(lowGap.toFixed(4)), high: Number(highGap.toFixed(4)) },
   };
 }
 
@@ -1314,9 +1430,17 @@ interface CensusRow {
   scalingAxis: { ddragon: StatedAxis; wiki: StatedAxis };
   adaptiveRule: AdaptiveRule;
   blockers: string[];
-  crossCheck: { verdict: CrossCheckVerdict; detail: string } | null;
+  crossCheck: { verdict: CrossCheckVerdict; detail: string; gap?: { low: number; high: number } } | null;
   reading: string;
-  sourceText: { ddragon: string; wiki: string | null };
+  /**
+   * `ddragon` is the STRIPPED window, which is what every earlier reader saw. `ddragonMarkup` is
+   * the raw markup where it asserts a damage type — published because a file that only shows the
+   * stripped form hides the very fact this census got wrong once.
+   */
+  sourceText: { ddragon: string; ddragonMarkup: string | null; wiki: string | null };
+  /** What Data Dragon's raw tags assert, measured live rather than assumed. */
+  markupDamageType: 'physical' | 'magic' | 'true' | null;
+  correctedFrom?: Reading['correctedFrom'];
 }
 
 function windowAround(text: string, index: number, anchorLength: number): string {
@@ -1349,6 +1473,7 @@ async function main(): Promise<void> {
 
   const rows: CensusRow[] = [];
   const anchorFailures: string[] = [];
+  const markupGuardFailures: string[] = [];
 
   for (const { rune, tree, slot } of runes) {
     const reading = READINGS.find((r) => r.name === rune.name);
@@ -1362,6 +1487,19 @@ async function main(): Promise<void> {
       anchorFailures.push(
         `${rune.name}: the Data Dragon anchor "${reading.ddAnchor}" is no longer in the live longDesc`,
       );
+      continue;
+    }
+
+    // ---- THE MARKUP GUARD (added 2026-08-15) -------------------------------------------------
+    // The anchor above is matched against text stripHtml has already been over, so it cannot see
+    // the tag names — and the tag name is where Data Dragon states the damage type. Without this,
+    // <truedamage> could become <magicdamage> and every anchor in this file would still match.
+    // Checked for all 62, not only the 3 that carry a tag: a tag APPEARING is a change too.
+    const liveMarkupType = dataDragonTypeFromMarkup(rune.longDesc);
+    const markupFailure = markupGuardFailure(reading, rune.longDesc);
+    if (markupFailure !== null) {
+      anchorFailures.push(markupFailure);
+      markupGuardFailures.push(rune.name);
       continue;
     }
     const wikiText = templates.get(titleFor.get(rune.name)!) ?? null;
@@ -1398,11 +1536,21 @@ async function main(): Promise<void> {
       reading: reading.note,
       sourceText: {
         ddragon: windowAround(ddText, ddIndex, reading.ddAnchor.length),
+        ddragonMarkup:
+          reading.ddMarkupAnchor !== undefined
+            ? windowAround(
+                rune.longDesc,
+                rune.longDesc.indexOf(reading.ddMarkupAnchor),
+                reading.ddMarkupAnchor.length,
+              )
+            : null,
         wiki:
           wikiText !== null && wikiIndex !== -1
             ? windowAround(wikiText, wikiIndex, reading.wikiAnchor.length)
             : null,
       },
+      markupDamageType: liveMarkupType,
+      ...(reading.correctedFrom ? { correctedFrom: reading.correctedFrom } : {}),
     });
   }
 
@@ -1612,6 +1760,80 @@ async function main(): Promise<void> {
       note:
         'An anchor failure means the live source no longer contains the text a person read. The row ' +
         'is dropped, never guessed. A non-empty list here means this census needs re-reading.',
+      markupGuard: {
+        whatItChecks:
+          "Data Dragon states damage type in TAG NAMES, and every other anchor in this census is " +
+          'matched against text stripHtml has already removed them from. So until 2026-08-15 the ' +
+          'source could have changed <truedamage> to <magicdamage> — the one place it keeps the ' +
+          'type — and no anchor would have moved. This guard reads the RAW longDesc.',
+        howItIsMeasured:
+          'For every rune, the type its raw markup asserts is compared against the type the hand ' +
+          'reading recorded. Recorded for all 62, including the ones that assert none: a tag ' +
+          'appearing where a person recorded none fails just as loudly as a tag changing type. ' +
+          'Where a type IS asserted, a verbatim raw substring including the tags must also still ' +
+          'be present, so the exact spelling is pinned and not merely the presence of a tag.',
+        runesCheckedAgainstRawMarkup: runes.length,
+        runesWhoseMarkupAssertsAType: rows
+          .filter((r) => r.markupDamageType !== null)
+          .map((r) => `${r.name} (${r.markupDamageType})`),
+        failures: markupGuardFailures,
+      },
+      corrections: rows
+        .filter((r) => r.correctedFrom)
+        .map((r) => ({ rune: r.name, ...r.correctedFrom! })),
+      endpointToleranceReviewed: {
+        tolerance: ENDPOINT_TOLERANCE,
+        question:
+          'The two-source endpoint cross-check calls the sources agreed when both endpoints are ' +
+          'within 0.51. The normaliser sweep flagged that as reading half a point of genuine ' +
+          'disagreement as "endpoints-agree". Is it defensible?',
+        whatTheTwoSidesActuallyAre:
+          'Not two measurements of one quantity. The wiki side is a FORMULA this census evaluates ' +
+          'at level 1 and level 18 (e.g. "2 + (20-2)/17*(x-1)"); the Data Dragon side is the ' +
+          'number Riot PRINTS after rounding it for display. A tolerance was put there to absorb ' +
+          'that rounding.',
+        answer:
+          'DEFENSIBLE, AND MEASURED RATHER THAN ARGUED — the tolerance is currently deciding ' +
+          'NOTHING. Every rune the check calls "endpoints-agree" agrees EXACTLY: the largest gap ' +
+          'among them is 0. The one rune that disagrees, Deathfire Touch, is out by 1.5 at the low ' +
+          'end and 6 at the high end — an order of magnitude above the tolerance, so no plausible ' +
+          'tightening would change its verdict either. Nothing in the live population sits in the ' +
+          'band between 0 and 0.51, which is the band the sweep was worried about.',
+        theRecommendation:
+          'A DECISION FOR THE LEAD, NOT TAKEN HERE. Because no gap uses any of it, the tolerance ' +
+          'could be dropped to near zero today with no verdict moving — and a future half-point ' +
+          'disagreement would then be SURFACED instead of absorbed. The cost is the opposite ' +
+          'error: a display-rounding artifact would be reported as a source disagreement and ' +
+          'someone would have to read it. Since this census surfaces rather than reconciles, that ' +
+          'is a cheap error and the tighter tolerance is probably right — but it changes what "the ' +
+          'sources agree" means, so it is raised rather than made.',
+        // MEASURED, NOT ARGUED. If any live gap sits near the tolerance, the tolerance is load-
+        // bearing and the argument above is worthless.
+        measuredGaps: rows
+          .filter((r) => r.crossCheck?.gap)
+          .map((r) => ({
+            rune: r.name,
+            verdict: r.crossCheck!.verdict,
+            low: r.crossCheck!.gap!.low,
+            high: r.crossCheck!.gap!.high,
+          }))
+          .sort((a, b) => Math.max(b.low, b.high) - Math.max(a.low, a.high)),
+        largestGapAmongAgreeing: Math.max(
+          0,
+          ...rows
+            .filter((r) => r.crossCheck?.verdict === 'endpoints-agree' && r.crossCheck.gap)
+            .map((r) => Math.max(r.crossCheck!.gap!.low, r.crossCheck!.gap!.high)),
+        ),
+        headroom:
+          'The verdict to read off `largestGapAmongAgreeing`: how much of the 0.51 any agreeing ' +
+          'rune actually uses. A figure near 0 means the tolerance decides nothing and could be ' +
+          'tightened at no cost; a figure near 0.5 means it is deciding outcomes and must be ' +
+          're-argued from the source rather than kept.',
+        notChanged:
+          'Left at 0.51 in this run. Changing a tolerance is changing what "the sources agree" ' +
+          'means, and it should be done against the measurement above rather than because the ' +
+          'number looks untidy. The gaps are now published so that decision has data behind it.',
+      },
     },
     rows,
   };
@@ -1649,6 +1871,16 @@ async function main(): Promise<void> {
   console.log(`    complete (holdable + axed)    ${priorClaimAudit.theHarderFinding.completeStructuralRunes.join(', ') || 'NONE'}`);
   console.log(`\n  fetch failures  ${fetchFailures.length === 0 ? 'none' : JSON.stringify(fetchFailures)}`);
   console.log(`  anchor failures ${anchorFailures.length === 0 ? 'none' : '\n    ' + anchorFailures.join('\n    ')}`);
+  console.log(`\n  MARKUP GUARD (reads the RAW longDesc, which every other anchor cannot see)`);
+  console.log(`    runes checked against raw markup   ${runes.length}`);
+  console.log(
+    `    markup asserts a damage type       ${census.integrity.markupGuard.runesWhoseMarkupAssertsAType.join(', ') || 'none'}`,
+  );
+  console.log(`    failures                           ${markupGuardFailures.join(', ') || 'none'}`);
+  console.log(
+    `\n  ENDPOINT TOLERANCE ${ENDPOINT_TOLERANCE} — largest gap among agreeing runes: ` +
+      `${census.integrity.endpointToleranceReviewed.largestGapAmongAgreeing}`,
+  );
   console.log(`\n  written to public/data/rune-census.json\n`);
 }
 

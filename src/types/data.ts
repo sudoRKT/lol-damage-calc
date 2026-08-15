@@ -317,14 +317,25 @@ export type RatioStat =
   /**
    * THE CHAMPION'S LEVEL, 1 to 18. Added 2026-08-15.
    *
-   * **It is here because it carries the same ownership question the other ten do, and three item
-   * effects prove it.** The wiki's item module states, in a named template argument, that Locket
-   * of the Iron Solari, Mikael's Blessing and Redemption scale on **the TARGET's level** rather
-   * than the holder's. Nothing counted that, because level was not an owner-bearing stat and so
-   * no census looked for an owner on it.
+   * **It is here because it carries the same ownership question the other ten do**, and the
+   * measurement is: 7 references across 6 effects — **3 the holder's** (Dream Maker, which states
+   * it twice, and Solstice Sleigh, both saying "your"), **3 an ALLY's**, and **1 nobody's**
+   * (Terminus states a bare `type=level` and is not guessed at).
    *
-   * A progression reading the holder's level and one reading the target's differ by the whole
-   * gap between two champions' levels, which in a real matchup is routinely five or more.
+   * ═══ A CORRECTION TO THIS COMMENT'S FIRST VERSION, KEPT BECAUSE THE MISTAKE IS INSTRUCTIVE ═══
+   *
+   * It said Locket of the Iron Solari, Mikael's Blessing and Redemption "scale on the TARGET's
+   * level rather than the holder's". They do state `type=target's level` — **and in all three the
+   * target is an ALLY, not the enemy.** Locket shields "you and allied champions", Mikael's heals
+   * "yourself or the target allied champion", Redemption heals "Allies within the area", and Data
+   * Dragon corroborates each. The word "target" was read as "the enemy" because that is what it
+   * means everywhere else in this project.
+   *
+   * This engine models two champions and neither of them is a third ally, so those three are
+   * `ally` — a verdict that names a champion the engine cannot resolve, rather than resolving it
+   * wrongly. The reason level is owner-required is unchanged and was never in doubt: two effects
+   * say "your", one says nothing at all, and a progression read off the wrong champion's level
+   * differs by the whole gap between two levels, routinely five or more in a real matchup.
    */
   | 'level';
 
@@ -403,11 +414,12 @@ export const OWNER_REQUIRED_STATS = [
   'bonusMagicResist',
   'maxMana',
   'currentMana',
-  // LEVEL, added 2026-08-15 — the eleventh. Three item effects state in the wiki's own named
-  // template argument that they scale on the TARGET's level: Locket of the Iron Solari,
-  // Mikael's Blessing and Redemption. Nothing counted them, because level was not owner-bearing
-  // and so no census looked for an owner on it. It is exactly the ambiguity the other ten exist
-  // to answer, and the gap between two champions' levels in a real matchup is routinely five.
+  // LEVEL, added 2026-08-15 — the eleventh. 7 references across 6 effects: 3 the holder's, 3 an
+  // ALLY's (Locket of the Iron Solari, Mikael's Blessing, Redemption — all three shield or heal,
+  // so their `type=target's level` is the healed champion's, NOT the enemy's; see the correction
+  // on `RatioStat`'s 'level' arm), and 1 nobody's. Nothing counted them, because level was not
+  // owner-bearing and so no census looked for an owner on it. It is exactly the ambiguity the
+  // other ten exist to answer, and the gap between two levels in a real matchup is routinely five.
   'level',
 ] as const;
 export type OwnerRequiredStat = (typeof OWNER_REQUIRED_STATS)[number];

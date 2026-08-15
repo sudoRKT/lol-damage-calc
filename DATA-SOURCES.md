@@ -2840,22 +2840,24 @@ than counted as a second effect.
 
 | | Count | Definition |
 |---|---:|---|
-| **In scope** | **168 of 291** | deals damage, or modifies a stat that can change a damage number or the survival verdict |
-| — deal damage | **81** | 66 item, 15 rune |
+| **In scope** | **169 of 291** | deals damage, or modifies a stat that can change a damage number or the survival verdict |
+| — deal damage | **82** | 66 item, 16 rune |
 | — modify a damage-relevant stat only | **87** | 60 conditional, 27 always-active |
-| Out of scope | 123 | wards, gold, movement speed, haste, tenacity, vision, cosmetics |
-| Conditional, whole population | 222 | **76 of the 81 damaging effects are conditional** |
+| Out of scope | 122 | wards, gold, movement speed, haste, tenacity, vision, cosmetics |
+| Conditional, whole population | 222 | **77 of the 82 damaging effects are conditional** |
 
 Movement speed, attack speed, ability haste, cooldowns and tenacity are filtered out of
 "damage-relevant" because **the engine models sequence, not elapsed time** (SPECIFICATION §3.2). A
 broader "modifies any stat" count of **169** is reported alongside so that judgement stays visible
-rather than baked in.
+rather than baked in. **Those two 169s are a coincidence and not a duplication**: one is
+`inScopeAfterAudit`, the other `modifiesStat`, and they were 168 and 169 until First Strike's
+correction on 2026-08-15 moved the first. They will part again.
 
-**Machine-readable versus needs-a-person**, using §26.3's split: of the 81 damaging effects, **63
-state their value structurally and 18 need a person to read the sentence once** — 22%, against the
+**Machine-readable versus needs-a-person**, using §26.3's split: of the 82 damaging effects, **63
+state their value structurally and 19 need a person to read the sentence once** — 23%, against the
 41% §26.3 measured for abilities. **Item prose is better than PLAN.md §3 assumed, not worse.**
 
-All 40 sentences the classifier could not decide were hand-read. 18 deal damage; 22 do not, and
+All 41 sentences the classifier could not decide were hand-read. 19 deal damage; 22 do not, and
 they fail one recognisable way: **the damage is the trigger, not the payload**. "Dealing physical
 damage to enemy champions inflicts Grievous Wounds" is five items that deal nothing.
 
@@ -2863,15 +2865,29 @@ damage to enemy champions inflicts Grievous Wounds" is five items that deal noth
 
 Counting rule stated in §16's correction box and implemented in `scripts/fetch/effect-census.ts`.
 
-| | Refs | Holder | Other champion | **Not stated** |
-|---|---:|---:|---:|---:|
-| Items, health pools | 55 | 10 | 10 | **35** |
-| Items, armor/MR/mana | 37 | 2 | 1 | **34** |
-| Runes, health pools | 17 | 9 | 0 | **8** |
-| Runes, armor/MR/mana | 11 | 6 | 0 | **5** |
-| **Total** | **120** | 27 | 11 | **82** |
+| | Refs | Holder | Other champion | Ally | **Not stated** |
+|---|---:|---:|---:|---:|---:|
+| Items, health pools | 60 | 10 | 12 | 0 | **38** |
+| Items, armor/MR/mana | 37 | 2 | 1 | 0 | **34** |
+| Items, level | 7 | 3 | 0 | 3 | **1** |
+| Runes, health pools | 17 | 9 | 0 | 0 | **8** |
+| Runes, armor/MR/mana | 11 | 6 | 0 | 0 | **5** |
+| **Total** | **132** | 30 | 13 | 3 | **86** |
 
-**56 distinct effects carry at least one stat the source never attributes** — 47 items, 9 runes.
+**Re-measured 2026-08-15 when the census learned to read the `type=` argument** (§37.3a). The old
+table's own definition — ten stats, stated in prose — still yields exactly 120 and 82 against the
+same data, so nothing here was silently reinterpreted: the 12 new references are additive, and
+`ownerRefsProseTenStats` (92) and `ownerUnstatedProseTenStats` (69) are published beside the new
+figures so both definitions stay checkable.
+
+**`ally` is a fourth owner verdict and it exists because three items forced it.** Locket of the Iron
+Solari, Mikael's Blessing and Redemption all state `type=target's level`, and in all three the
+"target" is the champion being SHIELDED OR HEALED — an ally. **This engine models two champions and
+neither of them is that one**, so the verdict names a champion it cannot resolve rather than
+resolving it wrongly. Attributing those three to the enemy, which the word "target" invites, would
+have scaled three items off the wrong champion's level.
+
+**59 distinct effects carry at least one stat the source never attributes** — 50 items, 9 runes.
 **These are `unresolvable`, not a worklist** (SPECIFICATION §8). The clusters: the mana-stacking
 family (Archangel's Staff, Manamune, Winter's Approach, Tear of the Goddess, Rod of Ages), the burn
 family (Sunfire Aegis, Hollow Radiance, Heartsteel, Titanic Hydra, Warmog's, Hullbreaker), the

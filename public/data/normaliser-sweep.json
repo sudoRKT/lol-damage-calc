@@ -3,7 +3,7 @@
     "source": "Riot Data Dragon runesReforged.json and item.json (raw markup, tags intact); wiki Module:ItemData/data effect text as already stored verbatim in public/data/effect-census.json",
     "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
     "patch": "16.16.1",
-    "fetched": "2026-08-15T20:16:22.151Z"
+    "fetched": "2026-08-15T21:06:58.480Z"
   },
   "whatThisIs": "Every place in scripts/fetch/ where text or a value is altered before something is compared against it, with what the alteration removes, whether that can carry meaning, what the comparison is between, and BOTH failure directions — a disagreement invented, and a disagreement hidden. Written after the First Strike finding of 2026-08-15, where the pipeline stripped the tag that carried the damage type and then reported a conflict it had created itself.",
   "membershipRule": "A site is counted when a value is altered — markup stripped, case folded, whitespace collapsed, templates peeled, a number rounded or parsed — AND the altered value is then an operand of an equality test, a substring or regex test, or a numeric tolerance test. A normaliser whose output is only ever printed is not a site.",
@@ -13,7 +13,8 @@
     "dangerous": 6,
     "watched": 1,
     "safe": 7,
-    "withALiveDefect": 3,
+    "withALiveDefect": 0,
+    "withADefectSinceFIXED": 3,
     "couldInventADisagreement": 4,
     "couldHideADisagreement": 8
   },
@@ -39,6 +40,14 @@
       "owner-lookback-strips-quantifiers"
     ]
   },
+  "defects": {
+    "live": [],
+    "fixed": [
+      "rune-records-are-stored-html-stripped",
+      "rune-census-anchors-and-source-text-are-html-stripped",
+      "plaintext-deletes-named-template-arguments"
+    ]
+  },
   "sites": [
     {
       "id": "rune-records-are-stored-html-stripped",
@@ -51,7 +60,13 @@
       "canInventADisagreement": true,
       "canHideADisagreement": true,
       "measured": "Of 62 runes, 3 wrap text in exactly one damage-type tag; in 2 the stripped words state the same type and nothing is lost; in 1 (First Strike) the tag is the only statement. Run through classifyEffect on 2026-08-15: the sentence \"causing you to deal 7% extra damage against champions\" classifies as damage \"none\"; restore the word the tag carried (\"7% bonus true damage\") and the same sentence classifies as \"candidate\", inScope true.",
-      "liveDefect": "public/data/effect-census.json records First Strike as damage:\"none\", inScope:false, so it is outside the damaging rune population (runes.damageInstances = 5) — while both sources say it deals true damage. STATED PRECISELY, because the whole point of this sweep is not to over-claim: stripping is ONE of two causes. Restoring the type flips the sentence in isolation but NOT the stored record, because the same sentence also ends \"granting 50% … of bonus damage dealt as gold\", which the classifier refuses separately. Remove that clause as well and the record classifies as a damage candidate.",
+      "liveDefect": null,
+      "fixed": {
+        "date": "2026-08-15",
+        "what": "public/data/effect-census.json recorded First Strike as damage:\"none\", inScope:false — outside the damaging population entirely, while both sources say it deals true damage. It now reads damage:\"candidate\", inScope:true, and the row carries `correctedFromMarkup` with the machine verdict it overrides, the markup, and what the file said before.",
+        "how": "NOT by teaching the classifier to read tags. The correction is applied to the one entry a person read, listed in confirmed-readings.ts, because 2 of the 3 tagged texts in the live data colour a stat grant rather than a damage type. The normaliser itself is unchanged: the stripped sentence still classifies as \"none\", which is asserted in the tests so the defect cannot quietly return.",
+        "whatIsStillTrue": "Stripping was one of TWO causes and the second is untouched. The full rune text also ends \"granting 50% … of bonus damage dealt as gold\", which the classifier refuses separately and rightly. Any other rune whose type lives only in a tag would still be misread."
+      },
       "verdict": "dangerous"
     },
     {
@@ -64,8 +79,14 @@
       "strictComparisonFirst": false,
       "canInventADisagreement": true,
       "canHideADisagreement": true,
-      "measured": "The hand READING was written against the stripped text: First Strike carries ddAnchor \"causing you to deal 7% extra damage against champions\", which is the stripped form, and damageType.ddragon \"not-stated\".",
-      "liveDefect": "public/data/rune-census.json still publishes dealsDamage.sourcesDisagree = [\"First Strike\"] and typeNotStatedAtAll.ddragon = [\"First Strike\", \"Summon Aery\"]. The First Strike entry in both is manufactured by stripHtml. Separately the anchor guard is BLIND to a markup-only change: Riot could change <truedamage> to <magicdamage> and no anchor would move.",
+      "measured": "The hand READING was written against the stripped text: First Strike carried ddAnchor \"causing you to deal 7% extra damage against champions\", which is the stripped form, and damageType.ddragon \"not-stated\". Corrected 2026-08-15 to dealsDamage true / damageType \"true\", with the raw markup pinned beside the stripped anchor.",
+      "liveDefect": null,
+      "fixed": {
+        "date": "2026-08-15",
+        "what": "public/data/rune-census.json published dealsDamage.sourcesDisagree = [\"First Strike\"] and typeNotStatedAtAll.ddragon = [\"First Strike\", \"Summon Aery\"]. Both entries were manufactured by stripHtml. The reading is corrected, the row carries `correctedFrom` with every superseded value, and the blocker class `sources-disagree-on-kind` is now empty.",
+        "how": "THE ANCHOR GUARD NOW READS THE RAW longDesc. Each reading records `markupType` — the damage type the raw tags assert, or null — for ALL 62 runes, and a verbatim raw anchor including the tags wherever a type is asserted. A tag changing type, or appearing where a person recorded none, now fails the guard and the row is refused rather than published.",
+        "whatIsStillTrue": "stripHtml still runs before the two sources are compared. What changed is that the stripped text is no longer the only thing a guard can see."
+      },
       "verdict": "dangerous"
     },
     {
@@ -78,8 +99,14 @@
       "strictComparisonFirst": false,
       "canInventADisagreement": false,
       "canHideADisagreement": true,
-      "measured": "Over the 229 item effect texts in public/data/effect-census.json: 12 effects carry a named argument stating a possessive or an owner-required pool stat; 22 use `type=` at all. 5 of the 12 name one of the ten owner-required stats, and ALL 5 are recorded with ownerRefs: [].",
-      "liveDefect": "Kraken Slayer [pass] states `type=target's missing health` and Lord Dominik's Regards [pass] states `type=target's bonus health`. Both are recorded as having no owner-bearing reference at all, so neither reaches the 92 counted references nor the 69 \"unstated\". Data Dragon says \"their missing Health\" and \"their bonus Health\" for the same two items — the sources AGREE, and the agreement is invisible.",
+      "measured": "Over the 229 item effect texts in public/data/effect-census.json, and 17 of them use `type=` at all. Measured against the TEN owner-required stats, as the check stood when this site was written: 10 effects carry a meaning-bearing named argument, 5 name one of the ten, 2 attribute an owner — and every one of the 5 was recorded with ownerRefs: []. Re-measured 2026-08-15 against the ELEVEN, level included: 12 effects, 12 naming a stat, 7 attributing an owner. AN EARLIER DRAFT OF THIS SENTENCE SAID 12 AND 22 for the first pair; those figures were never produced by the check beside it, which computed 10 and 5 from the day it was written (public/data/normaliser-sweep.json, `meaningInsideANamedTemplateArgument`). The prose was wrong, not the check — which is the same defect class this sweep exists to catch, in this file's own commentary.",
+      "liveDefect": null,
+      "fixed": {
+        "date": "2026-08-15",
+        "what": "Kraken Slayer [pass] states `type=target's missing health` and Lord Dominik's Regards [pass] states `type=target's bonus health`; both were recorded as having no owner-bearing reference at all. `findOwnerRefs` now reads `type=` arguments. 12 references appear that nothing counted before — 8 of them attributed — and the census total moves from 120 to 132.",
+        "how": "The STAT is read mechanically; the OWNER is not. Each possessive is looked up in the population a person has read (confirmed-readings.ts), because \"target\" means the enemy on Kraken Slayer and an ALLY on Locket of the Iron Solari, and the words are identical. An unread possessive is flagged `needsReading` and left unstated.",
+        "whatIsStillTrue": "`plainText` still deletes named arguments, and every other reader of it is still blind to them — including values.ts, where a wiki \"unstated\" is put to Data Dragon. Only the owner census was taught to look."
+      },
       "verdict": "dangerous"
     },
     {
@@ -263,12 +290,23 @@
       ]
     },
     "meaningInsideANamedTemplateArgument": {
-      "definition": "`plainText` drops every `name=value` template argument as formatting. `type=` on the wiki's {{pp}} progression template is not formatting — it states WHICH stat the progression reads and, where it carries a possessive, WHOSE. Counted when the value names one of the ten owner-required stats or contains a possessive.",
+      "definition": "`plainText` drops every `name=value` template argument as formatting. `type=` on the wiki's {{pp}} progression template is not formatting — it states WHICH stat the progression reads and, where it carries a possessive, WHOSE. Counted when the value names one of the ELEVEN owner-required stats or contains a possessive. It was the ten until 2026-08-15, when level was added to OWNER_REQUIRED_STATS; against the ten this check reported 10 / 5 / 2 where it now reports 12 / 12 / 7, and the three items stating `type=target's level` were the reason level was added at all.",
       "itemEffectsChecked": 229,
-      "effectsCarryingSuchAnArgument": 10,
-      "effectsNamingAnOwnerRequiredStat": 5,
-      "effectsWhereTheWikiATTRIBUTESAnOwnerRequiredStat": 2,
+      "effectsCarryingSuchAnArgument": 12,
+      "effectsNamingAnOwnerRequiredStat": 12,
+      "effectsWhereTheWikiATTRIBUTESAnOwnerRequiredStat": 7,
       "hits": [
+        {
+          "effect": "Bloodthirster [pass]",
+          "facts": [
+            {
+              "argument": "formula",
+              "states": "165 base, then +15 per level starting from level 9.",
+              "ownerRequiredStat": "level",
+              "attributesAnOwner": false
+            }
+          ]
+        },
         {
           "effect": "Doran's Shield [pass]",
           "facts": [
@@ -298,7 +336,7 @@
             {
               "argument": "type",
               "states": "your level",
-              "ownerRequiredStat": null,
+              "ownerRequiredStat": "level",
               "attributesAnOwner": true
             }
           ]
@@ -331,7 +369,7 @@
             {
               "argument": "type",
               "states": "target's level",
-              "ownerRequiredStat": null,
+              "ownerRequiredStat": "level",
               "attributesAnOwner": true
             }
           ]
@@ -359,7 +397,7 @@
             {
               "argument": "type",
               "states": "target's level",
-              "ownerRequiredStat": null,
+              "ownerRequiredStat": "level",
               "attributesAnOwner": true
             }
           ]
@@ -381,7 +419,7 @@
             {
               "argument": "type",
               "states": "target's level",
-              "ownerRequiredStat": null,
+              "ownerRequiredStat": "level",
               "attributesAnOwner": true
             }
           ]
@@ -392,8 +430,19 @@
             {
               "argument": "type",
               "states": "your level",
-              "ownerRequiredStat": null,
+              "ownerRequiredStat": "level",
               "attributesAnOwner": true
+            }
+          ]
+        },
+        {
+          "effect": "Terminus [pass2]",
+          "facts": [
+            {
+              "argument": "type",
+              "states": "level",
+              "ownerRequiredStat": "level",
+              "attributesAnOwner": false
             }
           ]
         }

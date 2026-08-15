@@ -209,17 +209,17 @@ export const CLAIMS: Claim[] = [
   {
     id: 'effect-owner-refs',
     doc: 'DATA-SOURCES.md',
-    anchor: /\| \*\*Total\*\* \| \*\*(\d+)\*\* \| 27 \| 11 \| \*\*82\*\* \|/,
+    anchor: /\| \*\*Total\*\* \| \*\*(\d+)\*\* \| 30 \| 13 \| 3 \| \*\*86\*\* \|/,
     derive: () => census().totals.all.ownerRefs,
     definition:
-      'One reference is one mention of one of the ten owner-required stats within one ' +
+      'One reference is one mention of one of the ELEVEN owner-required stats within one ' +
       'effect\'s prose; longest phrasing wins; compound stats that merely contain a stat word ' +
       '(health regeneration, armor penetration) are different stats and are NOT counted.',
   },
   {
     id: 'effect-owner-unstated',
     doc: 'DATA-SOURCES.md',
-    anchor: /\| \*\*Total\*\* \| \*\*\d+\*\* \| 27 \| 11 \| \*\*(\d+)\*\* \|/,
+    anchor: /\| \*\*Total\*\* \| \*\*\d+\*\* \| 30 \| 13 \| 3 \| \*\*(\d+)\*\* \|/,
     derive: () =>
       census()
         .effects.flatMap((e) => e.ownerRefs)
