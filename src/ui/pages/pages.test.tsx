@@ -47,7 +47,7 @@ describe('pages/how the numbers are checked', () => {
     const text = document.body.textContent ?? '';
     expect(text).toContain('Derived is not a number that only goes up');
     expect(text).toContain('evidence arriving, not a regression');
-    expect(text).toContain(String(CAPABILITY.perTickAbilitiesHeldBack));
+    expect(text).toContain(String(CAPABILITY.perTickAbilitiesIncomplete));
   });
 
   it('DOES NOT PRESENT THE READ COUNT AND THE HELD-BACK COUNT AS A PARTITION', () => {
@@ -56,7 +56,7 @@ describe('pages/how the numbers are checked', () => {
     // halves of one population. They are not, and the arithmetic below is what a reader does:
     //
     //   read (abilitiesWithOverTime)      27
-    //   held back (perTickAbilitiesHeldBack) 20   → 47, against a stated 39.
+    //   held back (perTickAbilitiesIncomplete) 20   → 47, against a stated 39.
     //
     // Counted from `public/data/abilities/*.json`: of the 39 entries carrying a per-tick label,
     // 27 have been read, 12 have not, and ALL 12 of the unread are incomplete — but so are 8 of
@@ -69,14 +69,14 @@ describe('pages/how the numbers are checked', () => {
     const fall = screen.getByRole('region', { name: 'Why derived can fall' });
     const text = fall.textContent ?? '';
     const partitions =
-      CAPABILITY.abilitiesWithOverTime + CAPABILITY.perTickAbilitiesHeldBack ===
+      CAPABILITY.abilitiesWithOverTime + CAPABILITY.perTickAbilitiesIncomplete ===
       CAPABILITY.perTickAbilities;
     expect(partitions).toBe(false);
     expect(text).not.toMatch(/the rest are held back/i);
     // And it must say WHY the held-back count is larger than the unread one, or the reader is
     // left to reconcile two figures that do not reconcile.
     expect(text).toMatch(/read/i);
-    expect(text).toContain(String(CAPABILITY.perTickAbilitiesHeldBack));
+    expect(text).toContain(String(CAPABILITY.perTickAbilitiesIncomplete));
   });
 
   it('EXPLAINS DAMAGE OVER TIME AND WHAT MAKES THE TWO VERDICTS DISAGREE', () => {

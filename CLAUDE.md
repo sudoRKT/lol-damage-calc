@@ -227,6 +227,14 @@ Two things worth knowing about how these fit together:
 - **Publishing is a lead action.** Agents are refused `git push` by the hook rather than by a
   blanket rule, so the lead can still do its job. Agents are also instructed not to commit.
 
+- **The lead may edit `.claude/boundary-owners.tsv` and NOTHING ELSE in `.claude/`.** Granted
+  2026-08-15. Releasing a dead claim is housekeeping, not a guard change: the ledger records who
+  holds an area, the hooks and the deny rules are what enforce it, and waiting twelve hours for a
+  timer because a classifier refused a one-line edit is friction with no safety in it. The rule is
+  two lines in `permissions.allow` naming that one file. **It does not extend to
+  `.claude/hooks/`, `.claude/settings.json`, or `.claude/boundary-audit.log`** — the first two are
+  guards and the third is the audit trail, and an audit trail its subject can edit is not one.
+
 **Known limit, stated rather than papered over:** the hooks inspect tool calls. A write buried
 inside a Node or Python subprocess is invisible to them. `/curated/` is defended against that
 case by the read-only filesystem permissions; nothing else in the tree is.
@@ -340,6 +348,26 @@ belongs to another — a plausible wrong number, which is the failure this proje
 
 **Adding a member means reading its sentence, not widening the pattern.** Widening a detector so it
 stores more is the exact move this rule forbids.
+
+**A PUBLISHED FIGURE'S NAME IS A CLAIM, AND A NAME THAT DOES NOT MATCH ITS DEFINITION IS A WRONG
+NUMBER WITH NO DIGITS IN IT.** Written 2026-08-15 after the third one in a week. This project's whole
+premise is that a plausible wrong number is worse than no product, because nobody can tell it is
+wrong — and a figure whose digits are correct and whose NAME is false is exactly that, with the
+added problem that no test can fail on it. All three below were arithmetically perfect and all three
+sent someone to do the wrong work:
+
+| Figure | What the name claimed | What it counted |
+|---|---|---|
+| `runesModelled` | runes the engine applies | runes with a **curated entry**, applied or not |
+| `defensiveReadyToApply` | defences ready to apply | defences of **three** kinds, where the engine has five |
+| `perTickAbilitiesHeldBack` | held back **by the tick count** | per-tick entries that are `incomplete` **for any reason** — 8 of 17 for something else |
+
+The rule, in the order the checks are cheap: **a name states the definition, or the definition is
+stated beside it.** Where the two can drift, the definition wins and the name changes. When you
+publish a count, read its name back as a sentence and ask whether that sentence is true of every
+member — `perTickAbilitiesHeldBack` fails that test out loud, and it survived for weeks because
+nobody said it aloud. **Never report a count without its definition** is already the standing rule
+for talking about figures; this is the same rule applied to storing them.
 
 **A falling count is usually the system working.** Making a gate more precise, or adding one,
 moves entries from `derived` to `incomplete` — that is evidence arriving, not regression. Compare

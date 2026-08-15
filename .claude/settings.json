@@ -49,7 +49,9 @@
       "WebFetch(domain:wiki.leagueoflegends.com)",
       "WebFetch(domain:ddragon.leagueoflegends.com)",
       "WebFetch(domain:code.claude.com)",
-      "WebSearch"
+      "WebSearch",
+      "Write(.claude/boundary-owners.tsv)",
+      "Edit(.claude/boundary-owners.tsv)"
     ],
     "deny": [
       "Edit(/curated/**)",

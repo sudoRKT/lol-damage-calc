@@ -109,13 +109,17 @@ export function ChecksPage() {
           {CAPABILITY.abilitiesWithOverTime} abilities, and those now go to the damage-over-time
           line instead of the burst. Being read is not on its own enough to be shown:{' '}
           <strong>
-            {CAPABILITY.perTickAbilitiesHeldBack} of the {CAPABILITY.perTickAbilities}
+            {CAPABILITY.perTickAbilitiesIncomplete} of the {CAPABILITY.perTickAbilities}
           </strong>{' '}
-          entries are incomplete today and contribute nothing to any total — some because nobody
-          has read their sentence yet, and some that were read and are still missing something
-          else. The two counts overlap rather than dividing the {CAPABILITY.perTickAbilities}{' '}
-          between them. Several are well-known damage — a good part of the game’s burn roster —
-          and they are absent rather than approximated.
+          entries are incomplete today and contribute nothing to any total. Every one of those
+          sentences has now been read, and reading them cleared none of these entries — which is
+          worth saying plainly, because it is the opposite of what we expected. Nine are held back
+          by the tick count itself: six state a duration that depends on something the page never
+          fixes, and two are contested between the page’s own sentence and its own leveling row.
+          The other eight have a settled tick count and are missing something else entirely — a
+          stat whose owner no source names, or a total that will not reconcile against its own
+          parts. Several are well-known damage — a good part of the game’s burn roster — and they
+          are absent rather than approximated.
         </p>
       </section>
 

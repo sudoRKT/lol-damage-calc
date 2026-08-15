@@ -195,8 +195,25 @@ export interface Capability {
   perTickComponents: number;
   /** Ability entries carrying at least one of those components. */
   perTickAbilities: number;
-  /** Of those entries: how many show no damage, because nobody has read their sentence yet. */
-  perTickAbilitiesHeldBack: number;
+  /**
+   * Of those entries: how many are `incomplete` and therefore contribute nothing to any total.
+   *
+   * ═══ RENAMED 2026-08-15, FROM `perTickAbilitiesHeldBack`. THE NAME WAS A WRONG NUMBER ═══
+   *
+   * The old name said these were held back BY THE TICK COUNT — that nobody had read the sentence
+   * that says how many times the ability ticks. **All 17 have now been read, and only 9 are held
+   * back by the count at all.** The other 8 have a settled tick count and are blocked by something
+   * else entirely: a ratio owner no source states, a total that does not reconcile against its own
+   * parts, a specification question about where damage inside a lunge belongs.
+   *
+   * So the figure was right and its name was false for nearly half of it. **A reader who trusted
+   * the name would have concluded that reading 17 sentences would clear 17 entries.** Reading them
+   * cleared none, because for 8 of them the sentence was never the problem.
+   *
+   * The name now states the definition and nothing more: a per-tick entry whose verification is
+   * `incomplete`, for ANY reason. Whoever wants the reason has to look at the entry.
+   */
+  perTickAbilitiesIncomplete: number;
 }
 
 /**
@@ -286,7 +303,7 @@ export function summariseCapability(input: CapabilityInputs): Capability {
   let abilitiesWithOverTime = 0;
   let perTickComponents = 0;
   let perTickAbilities = 0;
-  let perTickAbilitiesHeldBack = 0;
+  let perTickAbilitiesIncomplete = 0;
 
   for (const ability of input.abilities) {
     const components = ability.components ?? [];
@@ -297,7 +314,7 @@ export function summariseCapability(input: CapabilityInputs): Capability {
     perTickComponents += perTick.length;
     if (perTick.length > 0) {
       perTickAbilities += 1;
-      if (ability.verification === 'incomplete') perTickAbilitiesHeldBack += 1;
+      if (ability.verification === 'incomplete') perTickAbilitiesIncomplete += 1;
     }
   }
 
@@ -334,7 +351,7 @@ export function summariseCapability(input: CapabilityInputs): Capability {
     abilitiesWithOverTime,
     perTickComponents,
     perTickAbilities,
-    perTickAbilitiesHeldBack,
+    perTickAbilitiesIncomplete,
   };
 }
 

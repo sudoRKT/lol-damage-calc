@@ -91,7 +91,7 @@ describe('capability/the committed figures match the data and the engine', () =>
     //
     //   abilityComponentsOverTime   4 -> 27
     //   abilitiesWithOverTime       4 -> 27
-    //   perTickAbilitiesHeldBack   37 -> 20 -> 17  (17 from 2026-08-15's second merge)
+    //   perTickAbilitiesIncomplete   37 -> 20 -> 17  (17 from 2026-08-15's second merge)
     //   defensiveReadyToApply     100 -> 91
     //
     // All three are one event: the curated file was merged, carrying the per-tick READINGS that
@@ -100,7 +100,7 @@ describe('capability/the committed figures match the data and the engine', () =>
     // damage marked recurring — so the held-back count fell by exactly those 17, and the
     // marked-as-recurring count rose by 23 components across 23 abilities.
     //
-    // THE DIRECTION MATTERS. `perTickAbilitiesHeldBack` FALLING is evidence arriving, not a check
+    // THE DIRECTION MATTERS. `perTickAbilitiesIncomplete` FALLING is evidence arriving, not a check
     // weakening: each of the 17 is in `PER_TICK_READS` with a verdict, a corroborated or settled
     // count, and a verbatim source quote. `abilitiesWithOverTime` RISING is the same event seen
     // from the other side. Neither figure was touched by hand; both are recomputed on every run
