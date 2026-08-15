@@ -110,6 +110,17 @@ const CONTROLS: Record<string, Pass> = {
     how: 'unmeasured',
     why: 'the phone menu button. Its PANEL was measured (and was 114.6px off screen); the toggle itself was not.',
   },
+  'picker/runes.css .runes__remove': {
+    how: 'unmeasured',
+    why:
+      'the rune picker\'s remove control, added 2026-08-15. NOBODY CAN MEASURE IT YET: the picker ' +
+      'is built and its own tests pass, but it is not mounted — `src/ui/app/` composes the page ' +
+      'and no area mounts its own component — so no page renders this control. It is registered ' +
+      'rather than left out because the tripwire that caught it is the point: a new control may ' +
+      'not ship unmeasured AND unnamed. Measure it the moment the lead wires the picker. Its ' +
+      'sibling `.items__remove` failed by 3.16px on the block axis and always passed on the ' +
+      'inline one, so expect the same shape of answer if it is built from the same type.',
+  },
   'config/defences.css .defences__control': {
     how: 'unmeasured',
     why: 'a conditional-defence toggle. Not present on the default scenario, so no pass has rendered one.',

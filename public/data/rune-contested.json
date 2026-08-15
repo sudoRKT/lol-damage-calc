@@ -1,0 +1,270 @@
+{
+  "provenance": {
+    "source": "Riot Data Dragon runesReforged.json (raw longDesc, markup intact); League of Legends Wiki Template:Rune data <Name>, the Adaptive force article, each rune article's Patch History, and the V26.16 patch article",
+    "url": "https://wiki.leagueoflegends.com/en-us/Adaptive_force",
+    "patch": "16.16.1",
+    "fetched": "2026-08-15T19:29:13.005Z"
+  },
+  "whatThisIs": "A reading of the six runes rune-census.json marks contested, answering what the disagreement IS before anyone tries to resolve it. Four verdicts are possible and one of them is \"genuinely contested\"; the classifier is proved able to reach it. Nothing here authors a rune value.",
+  "verdictCounts": {
+    "not-contested-scope-misread": 2,
+    "stale-on-one-side": 3,
+    "not-contested-markup-stripped": 1
+  },
+  "findings": [
+    {
+      "rune": "Electrocute",
+      "censusBlocker": "sources-disagree-on-tiebreak",
+      "claim": "what decides the damage type when the AD and AP contributions are equal — the champion's adaptive type, or magic damage",
+      "verdict": "not-contested-scope-misread",
+      "why": "The two texts do not govern the same thing, and the wiki says so in its own words: the Adaptive force article states that Electrocute does not use the adaptive-damage formula. A rule and its stated exception are not two answers to one question.",
+      "valueThatStands": "Physical or magic by which RATIO contributes more damage; magic on a tie or when both contributions are zero. The adaptive-damage rule does not reach this rune.",
+      "residual": "Data Dragon calls it 'adaptive damage' and states no rule at all, so it neither agrees nor disagrees. The `adaptive-type-unresolved` blocker still stands: the RULE is known and the resolution step that applies it does not exist yet.",
+      "evidence": {
+        "rune": "Electrocute",
+        "censusBlocker": "sources-disagree-on-tiebreak",
+        "claim": "what decides the damage type when the AD and AP contributions are equal — the champion's adaptive type, or magic damage",
+        "sideA": {
+          "source": "wiki Template:Tip data/Adaptive damage",
+          "text": "If the damage contribution of AD and AP are zero or otherwise equal, the damage type depends on the champion's adaptive type.",
+          "introduced": "2026-04-29",
+          "pageLastEdited": "2026-05-02"
+        },
+        "sideB": {
+          "source": "wiki Template:Rune data Electrocute, \"Variable Damage\" block",
+          "text": "If the damage contribution of AD and AP are zero or otherwise equal, the damage type defaults to magic damage.",
+          "introduced": "2026-05-02",
+          "pageLastEdited": "2026-05-02"
+        },
+        "exemptedBySourceItself": true,
+        "factSurvivesInRawMarkup": false,
+        "sideAReproducedInItsLaunchNote": false,
+        "sideACarriers": {
+          "carriers": 5,
+          "outOf": 62
+        },
+        "patchNoteDocumentsChange": false
+      }
+    },
+    {
+      "rune": "Arcane Comet",
+      "censusBlocker": "sources-disagree-on-tiebreak",
+      "claim": "as Electrocute — which of the two adaptive rules governs the tie",
+      "verdict": "not-contested-scope-misread",
+      "why": "The two texts do not govern the same thing, and the wiki says so in its own words: the Adaptive force article states that Arcane Comet does not use the adaptive-damage formula. A rule and its stated exception are not two answers to one question.",
+      "valueThatStands": "As Electrocute. Both sources also carry the V26.09 rework (15–100 base, amplification to 100% at 750 range), so neither is a patch behind on the numbers.",
+      "residual": "The `needs-position` blocker is untouched by this: the amplification is a distance the scenario has no way to state.",
+      "evidence": {
+        "rune": "Arcane Comet",
+        "censusBlocker": "sources-disagree-on-tiebreak",
+        "claim": "as Electrocute — which of the two adaptive rules governs the tie",
+        "sideA": {
+          "source": "wiki Template:Tip data/Adaptive damage",
+          "text": "If the damage contribution of AD and AP are zero or otherwise equal, the damage type depends on the champion's adaptive type.",
+          "introduced": "2026-04-29",
+          "pageLastEdited": "2026-05-02"
+        },
+        "sideB": {
+          "source": "wiki Template:Rune data Arcane Comet, \"Variable Damage\" block",
+          "text": "If the damage contribution of AD and AP are zero or otherwise equal, the damage type defaults to magic damage.",
+          "introduced": "2026-05-02",
+          "pageLastEdited": "2026-05-31"
+        },
+        "exemptedBySourceItself": true,
+        "factSurvivesInRawMarkup": false,
+        "sideAReproducedInItsLaunchNote": false,
+        "sideACarriers": {
+          "carriers": 5,
+          "outOf": 62
+        },
+        "patchNoteDocumentsChange": false
+      }
+    },
+    {
+      "rune": "Absolute Focus",
+      "censusBlocker": "sources-disagree-on-tiebreak",
+      "claim": "which stat adaptive FORCE grants when bonus attack damage and ability power are equal — attack damage (the first listed), or the champion's adaptive type",
+      "verdict": "stale-on-one-side",
+      "why": "The disputed sentence on Absolute Focus's template is verbatim launch-note text from 2017–2018, still reproduced in the rune article's own patch history. The competing rule was written in May 2026 on a page edited since. Only 3 of the 62 current runes still carry the old wording. This is one text being older than the other, not two current sources disagreeing.",
+      "valueThatStands": "The champion's adaptive type decides the tie — bonus AD for a physical-adaptive champion, AP for a magic-adaptive one. `adaptivetype` is already in public/data/champions.json.",
+      "residual": "NO PATCH NOTE DOCUMENTS THE CHANGE from \"first listed\" to adaptive type. The staleness is established from the wording being verbatim 2017 launch text, from the competing text being rewritten in 2026, and from only 3 of 62 current runes still carrying it — not from a note. §15 names the patch notes as the tie-break, and here they are silent.",
+      "evidence": {
+        "rune": "Absolute Focus",
+        "censusBlocker": "sources-disagree-on-tiebreak",
+        "claim": "which stat adaptive FORCE grants when bonus attack damage and ability power are equal — attack damage (the first listed), or the champion's adaptive type",
+        "sideA": {
+          "source": "wiki Template:Rune data Absolute Focus, description2",
+          "text": "Adaptive: Grants bonuses based on which stat you already have the most bonuses for. Defaults to the first listed.",
+          "introduced": "2017-09-26",
+          "pageLastEdited": "2026-01-23"
+        },
+        "sideB": {
+          "source": "wiki article \"Adaptive force\"",
+          "text": "If the bonus attack damage and the ability power of the unit are equal, the stat granted depends on the adaptive type of the champion.",
+          "introduced": "2026-05-02",
+          "pageLastEdited": "2026-05-27"
+        },
+        "exemptedBySourceItself": false,
+        "factSurvivesInRawMarkup": false,
+        "sideAReproducedInItsLaunchNote": true,
+        "sideACarriers": {
+          "carriers": 3,
+          "outOf": 62
+        },
+        "patchNoteDocumentsChange": false
+      }
+    },
+    {
+      "rune": "Waterwalking",
+      "censusBlocker": "sources-disagree-on-tiebreak",
+      "claim": "as Absolute Focus — the adaptive FORCE tie",
+      "verdict": "stale-on-one-side",
+      "why": "The disputed sentence on Waterwalking's template is verbatim launch-note text from 2017–2018, still reproduced in the rune article's own patch history. The competing rule was written in May 2026 on a page edited since. Only 3 of the 62 current runes still carry the old wording. This is one text being older than the other, not two current sources disagreeing.",
+      "valueThatStands": "As Absolute Focus — the champion's adaptive type decides the tie.",
+      "residual": "Same silence in the patch notes. Separately, this rune only applies while in the river, which the scenario does not model; the census records that in its reading but attaches no blocker to it.",
+      "evidence": {
+        "rune": "Waterwalking",
+        "censusBlocker": "sources-disagree-on-tiebreak",
+        "claim": "as Absolute Focus — the adaptive FORCE tie",
+        "sideA": {
+          "source": "wiki Template:Rune data Waterwalking, description2",
+          "text": "Adaptive: Grants bonuses based on which stat you already have the most bonuses for. Defaults to the first listed.",
+          "introduced": "2018-11-18",
+          "pageLastEdited": "2026-01-23"
+        },
+        "sideB": {
+          "source": "wiki article \"Adaptive force\"",
+          "text": "If the bonus attack damage and the ability power of the unit are equal, the stat granted depends on the adaptive type of the champion.",
+          "introduced": "2026-05-02",
+          "pageLastEdited": "2026-05-27"
+        },
+        "exemptedBySourceItself": false,
+        "factSurvivesInRawMarkup": false,
+        "sideAReproducedInItsLaunchNote": true,
+        "sideACarriers": {
+          "carriers": 3,
+          "outOf": 62
+        },
+        "patchNoteDocumentsChange": false
+      }
+    },
+    {
+      "rune": "Gathering Storm",
+      "censusBlocker": "sources-disagree-on-tiebreak",
+      "claim": "as Absolute Focus — the adaptive FORCE tie",
+      "verdict": "stale-on-one-side",
+      "why": "The disputed sentence on Gathering Storm's template is verbatim launch-note text from 2017–2018, still reproduced in the rune article's own patch history. The competing rule was written in May 2026 on a page edited since. Only 3 of the 62 current runes still carry the old wording. This is one text being older than the other, not two current sources disagreeing.",
+      "valueThatStands": "As Absolute Focus — the champion's adaptive type decides the tie.",
+      "residual": "Resolving the tie does not unblock this rune. `needs-elapsed-time` stands on its own: the value grows every 10 minutes and the engine models sequence, not time.",
+      "evidence": {
+        "rune": "Gathering Storm",
+        "censusBlocker": "sources-disagree-on-tiebreak",
+        "claim": "as Absolute Focus — the adaptive FORCE tie",
+        "sideA": {
+          "source": "wiki Template:Rune data Gathering Storm, description2",
+          "text": "Adaptive: Grants bonuses based on which stat you already have the most bonuses for. Defaults to the first listed.",
+          "introduced": "2018-11-04",
+          "pageLastEdited": "2026-04-22"
+        },
+        "sideB": {
+          "source": "wiki article \"Adaptive force\"",
+          "text": "If the bonus attack damage and the ability power of the unit are equal, the stat granted depends on the adaptive type of the champion.",
+          "introduced": "2026-05-02",
+          "pageLastEdited": "2026-05-27"
+        },
+        "exemptedBySourceItself": false,
+        "factSurvivesInRawMarkup": false,
+        "sideAReproducedInItsLaunchNote": true,
+        "sideACarriers": {
+          "carriers": 3,
+          "outOf": 62
+        },
+        "patchNoteDocumentsChange": false
+      }
+    },
+    {
+      "rune": "First Strike",
+      "censusBlocker": "sources-disagree-on-kind",
+      "claim": "whether the rune AMPLIFIES damage by 7% or adds a separate instance of 7% TRUE damage",
+      "verdict": "not-contested-markup-stripped",
+      "why": "Both sources state the same thing about First Strike. Data Dragon states it in markup — the phrase is wrapped in a <truedamage> tag — and this pipeline deletes tags before comparing the texts, so the fact was destroyed downstream of the source rather than disputed by it.",
+      "valueThatStands": "A separate instance of TRUE damage equal to 7% of post-mitigation damage dealt to champions. Both sources say so; the wiki says it in words, Data Dragon in markup. Riot's own launch note (V11.23) says 'bonus true damage' and every later note moves only the percentage: 10% → 9% (V12.15) → 8% (V13.20) → 7% (V13.21) → 8% (V14.10) → 7% (V14.12).",
+      "residual": "The `self-referential-percentage` blocker stands and is the real obstacle: where a percentage of already-mitigated damage lands in the fixed four-step order is a decision nobody has taken.",
+      "evidence": {
+        "rune": "First Strike",
+        "censusBlocker": "sources-disagree-on-kind",
+        "claim": "whether the rune AMPLIFIES damage by 7% or adds a separate instance of 7% TRUE damage",
+        "sideA": {
+          "source": "Data Dragon runesReforged.json 16.16.1, longDesc",
+          "text": "causing you to deal <truedamage>7%</truedamage> extra <truedamage> damage</truedamage> against champions",
+          "introduced": "2024-06-11",
+          "pageLastEdited": "2024-06-11"
+        },
+        "sideB": {
+          "source": "wiki Template:Rune data First Strike",
+          "text": "causing all of your post-mitigation damage dealt against champions to deal 7% bonus true damage",
+          "introduced": "2021-11-20",
+          "pageLastEdited": "2025-11-23"
+        },
+        "exemptedBySourceItself": false,
+        "factSurvivesInRawMarkup": true,
+        "sideAReproducedInItsLaunchNote": false,
+        "sideACarriers": {
+          "carriers": 3,
+          "outOf": 62
+        },
+        "patchNoteDocumentsChange": false
+      }
+    }
+  ],
+  "rosterWideChecks": {
+    "dataDragonStatesTypeOnlyInMarkup": {
+      "definition": "Data Dragon's markup asserts a damage type that does not survive stripHtml, so anything reading the stripped text loses a fact the source did state.",
+      "checkedOver": 62,
+      "typeStatedInMarkupAtAll": [
+        "Hail of Blades",
+        "Sudden Impact",
+        "First Strike"
+      ],
+      "lostByStripping": [
+        {
+          "rune": "First Strike",
+          "type": "true"
+        }
+      ]
+    },
+    "legacyAdaptiveTiebreak": {
+      "definition": "The rune template still carries the 2017 launch wording \"Defaults to the first listed\", which conflicts with the Adaptive force article's current rule.",
+      "checkedOver": 62,
+      "carriers": [
+        "Absolute Focus",
+        "Waterwalking",
+        "Gathering Storm"
+      ]
+    },
+    "variableDamageBlock": {
+      "definition": "The rune template states its own damage-type rule instead of using the adaptive one.",
+      "checkedOver": 62,
+      "carriers": [
+        "Electrocute",
+        "Arcane Comet"
+      ]
+    }
+  },
+  "adaptiveForceArticle": {
+    "lastEdited": "2026-05-27T21:26:35Z",
+    "tiebreak": "champion-adaptive-type",
+    "runesExemptFromTheAdaptiveDamageFormula": [
+      "Arcane Comet",
+      "Electrocute"
+    ]
+  },
+  "patchNotesTieBreak": {
+    "title": "V26.16",
+    "lastEdited": "2026-08-13T04:00:04Z",
+    "found": true,
+    "ofTheSixNamedInIt": [],
+    "note": "DATA-SOURCES §15 makes the patch article the tie-break. Where it names none of the six, it settles none of them — that is reported, not treated as agreement."
+  },
+  "fetchFailures": []
+}

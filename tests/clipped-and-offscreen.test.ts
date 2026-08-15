@@ -181,11 +181,17 @@ const INTERACTIVE_SURFACES: Array<{
     id: 'burndown resistance popover',
     file: 'burndown/burndown.css',
     opensOn: 'click',
-    measuredAt: [],
+    measuredAt: [320, 375, 480, 768, 1280],
     note:
-      'Already reported as a known risk by responsive-overflow.test.tsx, which states it cannot ' +
-      'see it: 256px wide, anchored to a column that is 47px on a phone. Nobody has opened it at ' +
-      '320px.',
+      'WAS BROKEN, AND FOUND BY OPENING IT — the second entry in this register to be, after the ' +
+      'navigation panel. All four popovers on the default scenario hung off the LEFT edge of the ' +
+      'viewport at 320px (131.0 / 94.0 / 57.0 / 20.0px) and three of four at 375px; 37 of 37 on ' +
+      'the preview harness at 320px. `documentElement.scrollWidth` read exactly 320 throughout, ' +
+      'which is the whole reason no sweep could see it. The figures are right-aligned so they ' +
+      'survived and the LABEL column went off screen: four bare damage numbers with nothing ' +
+      'saying which one lands. Fixed 2026-08-15 by bounding it to a plot-wide row whose trailing ' +
+      'pad is capped at one popover width, with no width query. Re-measured across five widths: ' +
+      '53 openings, none outside the viewport or its panel.',
   },
   {
     id: 'per-instance full-state expander',
