@@ -192,12 +192,17 @@ export function InstanceBreakdown({ result, patch }: InstanceBreakdownProps) {
         </caption>
         <thead>
           <tr>
+            {/* THE ORDER IS FIGURE-FIRST, AND THE STRETCHY COLUMN IS LAST. Measured 2026-08-15
+                in a real browser: with the annotation third, the Damage column began 298px into
+                a table with 293px of visible width at 375px, so none of the product's primary
+                figure was on screen until the reader scrolled. Full reasoning and the 320px
+                figures are on `.breakdown--instances` in breakdown.css. */}
             <th scope="col">#</th>
             <th scope="col">Source</th>
-            <th scope="col">Changed since the combo began</th>
             <th scope="col">Damage</th>
             <th scope="col">Running total</th>
             <th scope="col">Evidence</th>
+            <th scope="col">Changed since the combo began</th>
           </tr>
         </thead>
         <tbody>
@@ -337,24 +342,6 @@ function InstanceRow({
         ) : null}
       </td>
 
-      <td className="breakdown__state">
-        {/* A ROW WHERE NOTHING MOVED SAYS SO. An empty cell cannot be told apart from a cell
-            that failed to render, and instance 1 is always such a row — it is the baseline. */}
-        <span className="breakdown__state-changed">
-          {changed.length === 0 ? 'No change from the entry state' : changed.join(' · ')}
-        </span>
-        <button
-          type="button"
-          className="breakdown__state-toggle"
-          aria-expanded={expanded}
-          aria-controls={detailId}
-          aria-label={fullStateName(instance.index, expanded)}
-          onClick={() => setExpanded((open) => !open)}
-        >
-          <span aria-hidden="true">{expanded ? 'Full state ▴' : 'Full state ▾'}</span>
-        </button>
-      </td>
-
       <td className="breakdown__damage">
         <DamageCell instance={instance} />
       </td>
@@ -383,6 +370,27 @@ function InstanceRow({
           status={instance.verification}
           reason={instance.incompleteReason}
         />
+      </td>
+
+      {/* THE ANNOTATION, LAST. It is the only column that stretches — every other one is nowrap
+          and takes exactly the width it needs — so it is the only one whose position decides
+          whether the figures are on screen. See the header above. */}
+      <td className="breakdown__state">
+        {/* A ROW WHERE NOTHING MOVED SAYS SO. An empty cell cannot be told apart from a cell
+            that failed to render, and instance 1 is always such a row — it is the baseline. */}
+        <span className="breakdown__state-changed">
+          {changed.length === 0 ? 'No change from the entry state' : changed.join(' · ')}
+        </span>
+        <button
+          type="button"
+          className="breakdown__state-toggle"
+          aria-expanded={expanded}
+          aria-controls={detailId}
+          aria-label={fullStateName(instance.index, expanded)}
+          onClick={() => setExpanded((open) => !open)}
+        >
+          <span aria-hidden="true">{expanded ? 'Full state ▴' : 'Full state ▾'}</span>
+        </button>
       </td>
     </tr>
 

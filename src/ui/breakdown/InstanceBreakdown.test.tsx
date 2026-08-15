@@ -202,6 +202,72 @@ describe('breakdown/an incomplete instance shows no figure at all', () => {
   });
 });
 
+// =========================================================================================
+// THE FIGURE COMES BEFORE THE ANNOTATION ABOUT IT. Added 2026-08-15.
+//
+// WHAT THIS CAN AND CANNOT CHECK. jsdom computes no layout, so nothing here proves anything is
+// on screen. What it holds is the ORDER, which is the whole of the fix and the part a later
+// edit can undo without any browser noticing. The measurement that motivated it was taken in a
+// real browser and is written out on `.breakdown--instances` in breakdown.css: at 375px the
+// damage column began 298px into a table with 293px of visible width, so NOT ONE PIXEL of the
+// product's primary figure was on screen until the reader scrolled sideways.
+//
+// The state annotation is the only column that stretches; every other column is nowrap and
+// takes exactly the width it needs. Placing the stretchy column between the reader and the
+// figures is what pushed them off the edge, and it is the one thing about this table that can
+// be changed without a breakpoint (DESIGN.md §4b grants none to this file), without a new
+// design value, and without touching what any cell contains.
+// =========================================================================================
+
+/** The column order, top to bottom of the reader's priority. Changing this is a design act. */
+const COLUMN_ORDER = [
+  '#',
+  'Source',
+  'Damage',
+  'Running total',
+  'Evidence',
+  'Changed since the combo began',
+];
+
+describe('breakdown/a reader reaches the figure before the note about it', () => {
+  it('orders the columns figure-first, with the stretchy annotation last', () => {
+    mount();
+    const table = screen.getAllByRole('table')[0]!;
+    const headers = within(table)
+      .getAllByRole('columnheader')
+      .map((th) => th.textContent!.trim());
+    expect(headers).toEqual(COLUMN_ORDER);
+  });
+
+  it('puts every body cell in the same order as its header, so the columns line up', () => {
+    mount();
+    const table = screen.getAllByRole('table')[0]!;
+    const body = table.querySelector('tbody')!;
+    for (const row of body.querySelectorAll('tr')) {
+      const cells = [...row.children];
+      // The expanded full-state row spans the table and has one cell; skip it.
+      if (cells.length !== COLUMN_ORDER.length) continue;
+      expect(cells[0]!.className).toContain('breakdown__index');
+      expect(cells[1]!.className).toContain('breakdown__source');
+      expect(cells[2]!.className).toContain('breakdown__damage');
+      expect(cells[3]!.className).toContain('breakdown__running');
+      expect(cells[4]!.className).toContain('breakdown__evidence');
+      expect(cells[5]!.className).toContain('breakdown__state');
+    }
+  });
+
+  it('still pins the row number, which is the first cell and the row header', () => {
+    // The order change must not cost the sticky column its anchor: `#` stays cell one and stays
+    // the `<th scope="row">` that both the pinning and assistive technology rely on.
+    mount();
+    const table = screen.getAllByRole('table')[0]!;
+    const firstBodyRow = table.querySelector('tbody tr')!;
+    const first = firstBodyRow.children[0]! as HTMLElement;
+    expect(first.tagName).toBe('TH');
+    expect(first.getAttribute('scope')).toBe('row');
+  });
+});
+
 describe('breakdown/damage over time is a separate line (§3.8, §11)', () => {
   it('is in its own table, labelled as never being in the burst total', () => {
     mount();

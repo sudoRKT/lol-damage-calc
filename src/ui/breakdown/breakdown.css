@@ -145,7 +145,28 @@
    spans two damage types, so its cell becomes an untagged aggregate — and DESIGN.md §8 allows
    that only alongside a tagged composition bar. Figure 18px plus bar and labels 22px is 44px
    of required construction. Shrinking those rows means changing what §8 mandates, not what
-   this file lays out. */
+   this file lays out.
+
+   ═══ AND ALL OF THAT IS A 1440px FACT. AT PHONE WIDTH IT IS THE OTHER WAY ROUND. ═══
+   MEASURED 2026-08-15 at 375x812, default scenario, in a real browser.
+
+   This column is the ONLY one that stretches: the other five are `inline-size: 0` with a nowrap
+   element inside, so each takes exactly the width it needs and this one absorbs whatever is
+   left. At 1440 what is left is 839px and it wraps to one line — which is why the paragraph
+   above could truthfully say the state cell drives no row height. At 375 what is left is
+   NEGATIVE, so it collapses to its own minimum of 111px and wraps to about fifteen characters
+   a line: SEVEN lines, 139px of a 156px row, on three of the four rows.
+
+   PER ROW AT 375px: state 139px, running total 21px, damage 22px, source 19px, evidence 21px.
+   The composition bar costs 21px here and the annotation costs 139px. 468px of the table's
+   586px — and 43% of the whole panel's 1,076px — is this one column wrapping.
+
+   IT IS NOT FIXED HERE, AND THAT IS DELIBERATE. A floor on this column (256px would put the
+   rows back to 39/63/63/63 and the panel to 748px) is a LAYOUT MEASURE, and DESIGN.md §4a
+   names those in DESIGN.md, from `--space-8 × n`, for the thing they govern — not borrowed
+   from another measure that happens to be the right size. §4b forbids this file a width query.
+   Both files are the lead's. So the measurement is written down here and the value is RAISED,
+   not invented. What this file CAN do without either is put the column last — see below. */
 .breakdown__state {
   font-family: var(--font-body);
   font-size: var(--type-body-s);
@@ -212,7 +233,36 @@
   margin-block-start: var(--space-3);
 }
 
-/* Ranked by what the reader is looking for: the figures and the evidence take exactly the
+/* ═══ THE COLUMN ORDER, AND THE MEASUREMENT THAT SET IT ═══
+   MEASURED 2026-08-15 at 320x812 and 375x812 on the default scenario, in a real browser.
+   Offsets are from the table's own left edge; the scroll container shows the first 293px at
+   375px and the first 238px at 320px.
+
+   WITH THE ANNOTATION THIRD, WHICH IS HOW IT WAS BUILT:
+     #  0–34 · Source 34–186 · Changed 186–298 · DAMAGE 298–374 · Running 374–496 · Evidence 496–578
+   At 375px the damage column STARTS 5px past the right edge of what is on screen. Not one pixel
+   of the product's primary figure is visible at rest, and the figure is right-aligned, so
+   reaching it costs 81px of sideways scrolling at 375px and 142px at 320px. What the reader
+   does see instead is the row number, the ability, and two thirds of a fifteen-character-wide
+   column of prose.
+
+   WITH THE ANNOTATION LAST, WHICH IS HOW IT IS NOW:
+     #  0–34 · Source 34–186 · DAMAGE 186–262 · Running 262–385 · Evidence 385–466 · Changed 466–578
+   At 375px the ability and its damage figure are both fully on screen at rest — 262px of 293px,
+   nothing to scroll. At 320px the figure ends 31px past the edge, against 142px before: there is
+   no arrangement that fits 34 + 152 + 76 = 262px into 238px, and shrinking type or cell padding
+   to force it is forbidden (DESIGN.md §3, §4). Every figure below is roughly half as far away as
+   it was: running total 92px of scroll instead of 220px at 375px, evidence 173px instead of 285px.
+
+   THE TABLE IS EXACTLY AS WIDE AS BEFORE — 578px at 375px, 594px at 320px — and every row is
+   exactly as tall. Nothing was removed, no column was narrowed and no value was invented; the
+   one stretchy column moved out from between the reader and the readout.
+
+   WHY THE STRETCHY COLUMN IS THE ONE THAT MOVES. It is the only column whose width is decided by
+   what is left over, so it is the only one whose POSITION changes what is on screen. Putting it
+   last also means the reader who wants it scrolls to the end and back, rather than through it.
+
+   Ranked by what the reader is looking for: the figures and the evidence take exactly the
    width they need, and the state annotation absorbs the rest instead of the other way round. */
 .breakdown__index,
 .breakdown__damage,
@@ -235,10 +285,15 @@
    — `../primitives/TableScroller.tsx`, commit fdb482d — was the right call and is not revisited
    here: it stopped the whole page sliding sideways, which was the SPECIFICATION §10 breach.
    But confining the scroll to the table means a reader who scrolls it right loses the row's
-   identity. MEASURED at 320px, scrolled fully right: the reader sees Damage, Running total and
-   Evidence, while `#` sits 322px and Source 170px off the left edge. Every row looks identical.
-   On a table whose whole job is "which ability dealt what", that is the readout failing at the
-   width it was meant to be rescued at.
+   identity. MEASURED at 320px, scrolled fully right, with the column order it had then: the
+   reader saw Damage, Running total and Evidence, while `#` sat 322px and Source 170px off the
+   left edge. Every row looked identical. On a table whose whole job is "which ability dealt
+   what", that is the readout failing at the width it was meant to be rescued at.
+   RE-MEASURED 2026-08-15 after the column reorder above, at 375px scrolled fully right (285px,
+   its maximum): the reader sees Running total, Evidence and the annotation, Source is off the
+   left edge — and the pinned `#` is still at offset 0, which is the whole point. The reorder
+   changes WHICH columns are lost to the left; it does not change that the pin is what keeps the
+   row identifiable.
 
    WHY THE COLUMNS CANNOT SIMPLY BE MADE TO FIT, so nobody re-litigates this from the armchair.
    Every one of the six columns contains a nowrap element. The five that are genuinely fixed —
