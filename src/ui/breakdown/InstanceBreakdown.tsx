@@ -176,7 +176,11 @@ export function InstanceBreakdown({ result, patch }: InstanceBreakdownProps) {
           frame-data readout readable; only the table moves. The region is keyboard-reachable and
           announced — see `../primitives/TableScroller.tsx` for the whole reasoning. */}
       <TableScroller label="The per-instance damage table">
-      <table className="breakdown">
+      {/* `--instances` scopes the sticky row-number column (breakdown.css) to THIS table. The
+          damage-over-time table below shares the `.breakdown` class but has no `#` column, so an
+          unscoped rule would pin its header cell over body cells that scroll — a header that
+          belongs to no visible row. */}
+      <table className="breakdown breakdown--instances">
         <caption className="u-visually-hidden">
           Each instance of the combo in order, with the state that applied at that point, the
           damage it dealt, and the running total. The state column lists only what has changed

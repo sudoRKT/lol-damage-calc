@@ -8,6 +8,9 @@
 // reason.
 
 import { describe, expect, it, afterEach } from 'vitest';
+import { readFileSync } from 'node:fs';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { cleanup, fireEvent, render, screen, within } from '@testing-library/react';
 import { MOCK_RESULT } from '../../types';
 import type { Result } from '../../types';
@@ -239,6 +242,101 @@ describe('breakdown/what the result excludes is stated visibly (§11)', () => {
   it('shows the burst total with its tagged composition bar', () => {
     mount();
     expect(screen.getByText(/Burst total: 770 total damage — 570 physical, 200 magic/)).toBeTruthy();
+  });
+});
+
+// =========================================================================================
+// THE ROW NUMBER STAYS PUT WHILE THE TABLE SCROLLS SIDEWAYS. Added 2026-08-15.
+//
+// WHAT THESE CAN AND CANNOT CHECK, STATED PLAINLY. jsdom computes no layout, so NOTHING here
+// proves a cell actually pins — that was measured in a real browser at 320x812 and 375x812 and
+// the figures are on `.breakdown--instances` in breakdown.css. What these tests hold is the
+// part a future edit can silently break without any browser noticing: that the marker class is
+// on the right table and only that table, that the sticky rules are scoped to it, that a pinned
+// cell is never transparent, and that no width query was smuggled in to do the job.
+// =========================================================================================
+
+const BREAKDOWN_CSS = readFileSync(
+  join(dirname(fileURLToPath(import.meta.url)), 'breakdown.css'),
+  'utf8',
+);
+
+/** The stylesheet as `{selector, body}` rules, with comments stripped so their braces cannot lie. */
+function cssRules(css: string): { selector: string; body: string }[] {
+  const withoutComments = css.replace(/\/\*[\s\S]*?\*\//g, '');
+  const out: { selector: string; body: string }[] = [];
+  const re = /([^{}]+)\{([^{}]*)\}/g;
+  let m: RegExpExecArray | null;
+  while ((m = re.exec(withoutComments)) !== null) {
+    out.push({ selector: m[1]!.trim(), body: m[2]!.trim() });
+  }
+  return out;
+}
+
+describe('breakdown/the row number is pinned while the table scrolls', () => {
+  it('marks the per-instance table, and ONLY the per-instance table', () => {
+    mount();
+    const tables = screen.getAllByRole('table');
+    const marked = tables.filter((t) => t.classList.contains('breakdown--instances'));
+    expect(marked.length).toBe(1);
+    // It is the one with the row-number column, not the damage-over-time table beside it.
+    expect(within(marked[0]!).getByRole('columnheader', { name: '#' })).toBeTruthy();
+    // The DoT table shares the `.breakdown` class and has no `#` column. If it were marked, the
+    // sticky rule would pin its first HEADER cell over body cells that keep scrolling.
+    const dot = tables.find((t) => t.textContent?.includes('Sunfire Aegis (burn)'));
+    expect(dot).toBeTruthy();
+    expect(dot!.classList.contains('breakdown--instances')).toBe(false);
+  });
+
+  it('keeps the row number a row header, which is what the pinning pins', () => {
+    mount();
+    // Pinning `#` only makes sense because it IS the row's identity — `<th scope="row">` is what
+    // assistive technology already announces with every cell in the row.
+    const cell = screen.getAllByRole('rowheader')[0]!;
+    expect(cell.tagName).toBe('TH');
+    expect(cell.getAttribute('scope')).toBe('row');
+    expect(cell.classList.contains('breakdown__index')).toBe(true);
+  });
+
+  it('scopes every sticky rule to the marked table', () => {
+    const sticky = cssRules(BREAKDOWN_CSS).filter((r) => /position:\s*sticky/.test(r.body));
+    expect(sticky.length).toBeGreaterThan(0);
+    for (const rule of sticky) {
+      for (const selector of rule.selector.split(',')) {
+        expect(selector).toContain('.breakdown--instances');
+      }
+    }
+  });
+
+  it('never leaves a pinned cell transparent, or the scrolled columns show through it', () => {
+    const rules = cssRules(BREAKDOWN_CSS);
+    const sticky = rules.filter((r) => /position:\s*sticky/.test(r.body));
+    // Every selector that is made sticky must also be given a background somewhere in the file.
+    const backed = new Set<string>();
+    for (const rule of rules) {
+      if (!/background:/.test(rule.body)) continue;
+      for (const selector of rule.selector.split(',')) backed.add(selector.trim());
+    }
+    for (const rule of sticky) {
+      for (const raw of rule.selector.split(',')) {
+        const selector = raw.trim();
+        expect([...backed].some((b) => b === selector || b.startsWith(selector))).toBe(true);
+      }
+    }
+  });
+
+  it('paints the pinned cell from tokens only, never a raw colour', () => {
+    for (const rule of cssRules(BREAKDOWN_CSS)) {
+      if (!rule.selector.includes('.breakdown--instances')) continue;
+      expect(rule.body).not.toMatch(/#[0-9a-fA-F]{3,8}\b/);
+      expect(rule.body).not.toMatch(/\brgba?\(/);
+    }
+  });
+
+  it('invents no width query — DESIGN.md §4b grants exactly one, and not to this file', () => {
+    // §4b: `@media (max-width: 30rem)` governs the burndown's riser labels and nothing else.
+    // The whole point of pinning over a stacked-card layout is that it needs no breakpoint.
+    expect(BREAKDOWN_CSS).not.toMatch(/@media[^{]*width/);
   });
 });
 

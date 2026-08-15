@@ -228,6 +228,68 @@
   white-space: nowrap;
 }
 
+/* ═══ THE ROW NUMBER STAYS PUT WHILE THE TABLE SCROLLS ═══
+   MEASURED 2026-08-15 at 320x812 and 375x812 on the default scenario, in a real browser.
+
+   THE PROBLEM THIS CLOSES IS ONE THE SCROLL CONTAINER CREATED. DESIGN-AUDIT §6.5's option (a)
+   — `../primitives/TableScroller.tsx`, commit fdb482d — was the right call and is not revisited
+   here: it stopped the whole page sliding sideways, which was the SPECIFICATION §10 breach.
+   But confining the scroll to the table means a reader who scrolls it right loses the row's
+   identity. MEASURED at 320px, scrolled fully right: the reader sees Damage, Running total and
+   Evidence, while `#` sits 322px and Source 170px off the left edge. Every row looks identical.
+   On a table whose whole job is "which ability dealt what", that is the readout failing at the
+   width it was meant to be rescued at.
+
+   WHY THE COLUMNS CANNOT SIMPLY BE MADE TO FIT, so nobody re-litigates this from the armchair.
+   Every one of the six columns contains a nowrap element. The five that are genuinely fixed —
+   index 33px, source 152px, damage 76px, running total 122px, evidence 82px — total 465px
+   against the 238px a 320px phone leaves inside the panel. Deleting the state column outright
+   still leaves the table at nearly twice the available width. Scrolling is not a shortcut here;
+   it is the only honest option that keeps the columns.
+
+   WHY `#` AND NOT SOURCE. Source is 152px of the 238px available, so pinning it would leave
+   86px — less than one damage figure with its mandatory tag — and the scroll would buy nothing.
+   `#` costs 34px and leaves 204px. It is also already the row's identity in the markup: it is
+   the `<th scope="row">`, which assistive technology announces with every cell in the row, so
+   pinning it makes the visual reading match the spoken one instead of inventing a new cue.
+
+   WHAT THE STACKED-CARD OPTION (b) WOULD HAVE COST, since §6.5 left it open: it removes the
+   scroll entirely, and with it the column alignment that DESIGN.md §0 calls the readout — the
+   damage column stops being a column a reader can scan down. It also needs a phone breakpoint,
+   and DESIGN.md §4b grants exactly one width query for one job (the burndown's riser labels)
+   and says in terms that a second use needs its own entry and its own measurement. Sticky
+   needs no width query at all: it pins when the table overflows and does nothing when it does
+   not, at every viewport.
+
+   NO NEW DESIGN VALUE. The backgrounds are the two this table already paints with, the
+   separator is `--border-steel`, and nothing here animates, so there is no reduced-motion
+   selector to pair it with. */
+.breakdown--instances thead th:first-child,
+.breakdown--instances tbody th.breakdown__index {
+  position: sticky;
+  inset-inline-start: 0;
+  /* Above the cells that slide under it. Not a design value — DESIGN.md governs colour, type
+     and spacing, and stacking order is none of those. */
+  z-index: 1;
+  border-inline-end: var(--border-steel);
+}
+
+/* The pinned cell needs an opaque fill of its own, or the scrolled columns show through it.
+   Each takes the surface its own row already uses, so nothing changes at rest. */
+.breakdown--instances tbody th.breakdown__index {
+  background: var(--bg-well);
+}
+
+.breakdown--instances thead th:first-child {
+  background: var(--bg-panel);
+}
+
+/* The pinned cell tracks its row's hover, or the highlight stops dead at the 34px mark and the
+   row reads as two pieces. Instant, per DESIGN.md §10. */
+.breakdown--instances tbody tr:hover th.breakdown__index {
+  background: var(--bg-panel-raised);
+}
+
 /* The authoritative cumulative figure. Bone and untagged: it is a sum ACROSS damage types, so
    it has no single type to tag (DESIGN.md §8). */
 .breakdown__running-value {
