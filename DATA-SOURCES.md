@@ -5598,9 +5598,16 @@ would silently drop a real exclusion.
 The two curves fell from 9,781px to 1,903px at 375px.
 
 **The targets of 4 screens at 1440 and 8 at 375 are NOT reachable by collapsing anything else, and
-here is exactly what stands in the way.** What remains at 375px: the result's exclusions 2,611px,
-the items panel 2,033px, the configuration panel 1,539px, the two curves 1,903px, the burndown
-838px, the combo 370px. Reaching 8 screens means removing a further 5,068px, and every candidate is
-either information §11 requires or a control the reader configures the scenario with. **So the
-remaining distance is two decisions — the §11 ruling above, and whether the input panels collapse
-once configured — not an implementation.**
+here is exactly what stands in the way.**
+
+What remains at 375px, measured after the ruling: **the two input panels 3,572px (39.8% of the
+page), the two curves 1,903px, the breakdown 1,076px, the burndown 838px, the combo 370px.** The
+input panels are now the largest thing on the page by a wide margin, and the ruling puts them out
+of scope — they are controls, not output. **Reaching 8 screens means removing a further 2,489px
+from a page whose biggest region is deliberately protected**, so it is not available without
+revisiting that ruling.
+
+At 1440 the gap is 409px against a 4,400px target. Nothing that remains is a repeated list or an
+unused table; it is the burndown, the breakdown, two charts and two panels of controls, each once.
+**4.37 and 11.07 are where honest collapsing ends**, and the next move on page length is a layout
+question — how the input panels are shaped — rather than a disclosure question.
