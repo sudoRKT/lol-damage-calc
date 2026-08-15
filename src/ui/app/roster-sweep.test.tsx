@@ -21,7 +21,7 @@
 // engine's own suite and the known-answer tests. It checks that nothing is silently missing.
 
 import { describe, expect, it, afterEach } from 'vitest';
-import { cleanup, render, screen } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import type { Champion, ChampionConfig, ComboStep, Scenario } from '../../types';
 import type { Result } from '../../types/result';
 import { simulate } from '../../engine';
@@ -343,9 +343,17 @@ describe('roster-sweep/the reasons reach the SCREEN, not just the Result', () =>
   });
 
   it('the excluded-mechanics list is on screen too, every line of it', () => {
+    // COLLAPSED SINCE 2026-08-15 with its count on the control (SPECIFICATION §11, ruled). The
+    // count is checked first, because that is what §11 now requires be visible; the list itself is
+    // then opened and checked line by line, because "one click away" has to mean the whole list is
+    // actually there and not a truncation.
     const { result } = RESULTS[0]!;
     render(<InstanceBreakdown result={result} />);
-    expect(screen.getByText(/Mechanics this result excludes/i)).toBeTruthy();
+    const toggle = screen.getByRole('button', {
+      name: `Show Mechanics this result excludes, ${result.excludedMechanics.length} mechanics`,
+    });
+    expect(toggle.textContent).toContain(String(result.excludedMechanics.length));
+    fireEvent.click(toggle);
     for (const mechanic of result.excludedMechanics) {
       expect(screen.getByText(mechanic)).toBeTruthy();
     }

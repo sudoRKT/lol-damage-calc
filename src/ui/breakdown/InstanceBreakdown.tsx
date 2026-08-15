@@ -50,6 +50,7 @@ import {
   AggregateTotal,
   DamageValue,
   ExcludedAbility,
+  Disclosure,
   TableScroller,
   VerificationStatusMark,
   formatReadout,
@@ -263,21 +264,26 @@ export function InstanceBreakdown({ result, patch }: InstanceBreakdownProps) {
           than silently omitted." */}
       {result.excludedMechanics.length > 0 ? (
         <section className="breakdown-panel__block" aria-label="Mechanics this result excludes">
-          {/* THIS ONE STAYS OPEN, AND THE TWO SWEEP CURVES' COPIES DO NOT — decided 2026-08-15
-              rather than applied uniformly, because SPECIFICATION §11 names one surface:
-              "Every excluded mechanic is stated visibly in the RESULT rather than silently
-              omitted." This is that result. Collapsing it would need a ruling on whether a
-              22-count on a button is "stated visibly", and that is a question to raise, not to
-              answer by writing code that assumes an answer.
-              The curves are a different surface printing a near-identical copy of the same list,
-              which is where the page length actually came from: 5,386px of the 7,997px this list
-              occupied three times over. */}
-          <h3 className="breakdown-panel__eyebrow">Mechanics this result excludes</h3>
-          <ul className="breakdown-panel__list breakdown-panel__list--plain">
-            {result.excludedMechanics.map((m) => (
-              <li key={m}>{m}</li>
-            ))}
-          </ul>
+          {/* COLLAPSED WITH ITS COUNT ON THE CONTROL — SPECIFICATION §11, RULED 2026-08-15.
+              This block was left open on 2026-08-15 pending a ruling on whether a count on a
+              button is "stated visibly". The ruling is now in §11 and is explicit: it is, and the
+              count on the control is the CONDITION the permission rests on. The reasoning worth
+              carrying is the owner's — twenty-two paragraphs above the fold on a phone is how a
+              requirement becomes noise nobody reads, which defeats the rule rather than serving it.
+              This block was 2,611px at 375px and 727px at 1440px.
+              Merging it with the two curves' lists remains forbidden: a curve excludes something
+              a single result does not. Each surface keeps its own complete list. */}
+          <Disclosure
+            label="Mechanics this result excludes"
+            count={result.excludedMechanics.length}
+            noun="mechanic"
+          >
+            <ul className="breakdown-panel__list breakdown-panel__list--plain">
+              {result.excludedMechanics.map((m) => (
+                <li key={m}>{m}</li>
+              ))}
+            </ul>
+          </Disclosure>
         </section>
       ) : null}
     </section>

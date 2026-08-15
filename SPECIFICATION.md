@@ -547,6 +547,34 @@ Results are presented as more than a single figure:
 
 Every excluded mechanic is stated visibly in the result rather than silently omitted.
 
+### What "stated visibly" means — RULED 2026-08-15 by the project owner, not to be relitigated
+
+**A control reading "Mechanics this result excludes — 22" SATISFIES this sentence.** The list may
+start collapsed and open on one click.
+
+The ruling, in the owner's own terms: *"stated visibly" means a reader can see that exclusions
+exist and reach them without leaving the page.* A control carrying the count states the fact; the
+list is one click away, which is not hidden. **Twenty-two paragraphs above the fold on a phone is
+how a requirement becomes noise nobody reads** — a rule written to make omissions impossible to
+miss, defeated by making the page so long that nobody reaches the end of it.
+
+**THE COUNT MUST ALWAYS BE ON THE CONTROL. This is the part being ruled, and it is the condition
+the rest depends on.** A collapsed section that hides how much it hides is exactly what this
+permission does not extend to: a reader deciding whether to open something is entitled to know how
+much is behind it. `src/ui/primitives/Disclosure.tsx` puts the count on the button and speaks it in
+the control's accessible name, and `collapsed-sections.test.ts` refuses any collapsed section that
+does not.
+
+**Merging the lists is separately forbidden.** The breakdown and each sweep curve keep their own
+complete list, because a curve excludes something a single result does not, and one merged
+page-level list would silently drop it.
+
+**Input panels are not covered by this and do not collapse.** They are controls, not output, and a
+reader adjusting a build should not pay a click per change.
+
+The measurement behind the ruling: the same 22-item list printed three times was 7,997px, **41.1%
+of a calculator page that stood at 23.94 screens on a 375px phone** (DATA-SOURCES §64).
+
 ---
 
 ## 12. Sharing

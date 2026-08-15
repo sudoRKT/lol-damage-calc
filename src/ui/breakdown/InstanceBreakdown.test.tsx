@@ -226,8 +226,24 @@ describe('breakdown/damage over time is a separate line (§3.8, §11)', () => {
 });
 
 describe('breakdown/what the result excludes is stated visibly (§11)', () => {
-  it('lists every excluded mechanic', () => {
+  it('states the COUNT on the control, which is what §11 requires (ruled 2026-08-15)', () => {
+    // The ruling is explicit that the count is the condition, not a nicety: a collapsed section
+    // that hides how much it hides is the thing it rules against. So the count is asserted BEFORE
+    // the list, and in the spoken name as well as on screen — a count a screen reader cannot hear
+    // is not a count.
     mount();
+    const toggle = screen.getByRole('button', {
+      name: `Show Mechanics this result excludes, ${MOCK_RESULT.excludedMechanics.length} mechanics`,
+    });
+    expect(toggle.getAttribute('aria-expanded')).toBe('false');
+    expect(toggle.textContent).toContain(String(MOCK_RESULT.excludedMechanics.length));
+  });
+
+  it('lists every excluded mechanic, one click away', () => {
+    mount();
+    fireEvent.click(
+      screen.getByRole('button', { name: /^Show Mechanics this result excludes/ }),
+    );
     const block = screen.getByRole('region', { name: 'Mechanics this result excludes' });
     for (const mechanic of MOCK_RESULT.excludedMechanics) {
       expect(block.textContent).toContain(mechanic);
