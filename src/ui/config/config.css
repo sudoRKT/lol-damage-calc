@@ -69,7 +69,39 @@
    so three sentences of 40–86 characters took four lines in a 485px column; flowed inline they
    take two. `display: inline` on the items is what allows a line break inside a sentence. */
 .config__missing {
-  flex: 1 1 0;
+  /*
+   * THE BASIS IS NOT ZERO, AND THAT IS THE WHOLE FIX FOR A 2,851px DEFECT.
+   *
+   * It was `flex: 1 1 0` with `min-inline-size: 0`, which together mean "this item may shrink to
+   * nothing". `.config__note` sets `flex-wrap: wrap`, but a wrap never fired: a flex item wraps
+   * when its BASIS will not fit, and a basis of zero always fits. The eyebrow beside it is
+   * `white-space: nowrap` and measures ~230px, so on a narrow panel it took the whole line and
+   * the list was handed whatever was left.
+   *
+   * MEASURED on the live calculator, default Lux vs Garen, this rule the only thing changed —
+   * `.config__note` height, then the whole `.app__row`:
+   *
+   *   320px  note 1521 → 96   row 4322 → 1471   (the list column was ELEVEN PIXELS wide: two
+   *                                              short sentences set one character per line)
+   *   360px  note  352 → 80   row 1800 → 1258
+   *   375px  note  244 → 80   row 1563 → 1236
+   *   414px  note  167 → 80   row 1388 → 1215
+   *   480px  note   90 → 65   row 1203 → 1153
+   *   768px, 1280px, 1440px — unchanged, to the pixel.
+   *
+   * So it costs nothing at any width where the old layout was already working, which is why this
+   * is a basis and not a width query. DESIGN.md §4b allows exactly one `@media` and this is not
+   * it: the footnote is a REPEAT of one shape reflowing, which §4a says is the flex/grid tool's
+   * job, not a breakpoint's.
+   *
+   * THE 256px IS RAISED, NOT SETTLED. It is composed from the spacing scale as DESIGN.md §4a
+   * describes — the narrowest this footnote column may be before it drops to a line of its own.
+   * That is its own fact and not `--measure-list-column-min`, which governs a grid column and
+   * merely happens to share the value (§4a: "two measures that happen to share a value are still
+   * two measures"). It wants a name in tokens.css, which is the lead's file; until then it is
+   * composed here with this comment, which is the same route the four existing measures took.
+   */
+  flex: 1 1 calc(var(--space-8) * 4);
   min-inline-size: 0;
   /* Measured at 320px: these flowed inline items overhung the viewport by 2px, because a long
      word has no break opportunity and inline text will overflow rather than break by default.
@@ -95,4 +127,26 @@
 .config__missing li + li::before {
   content: ' · ';
   color: var(--text-muted);
+}
+
+/* THE RUNE STATEMENT. Not part of the footnote list and deliberately not styled like it: the
+   list is "we did not configure this here", and this is "nothing here or anywhere applies one".
+   Same 11px body role as the list so it does not shout, but --text-secondary rather than the
+   list's flow, and its first clause in --weight-body-strong (DESIGN.md §3) so the claim carries
+   without a hue — §1 reserves colour for damage types and a warning colour is exactly what that
+   rule forbids. No border of its own: `.config__note` above it already draws the hairline that
+   separates the footnotes from the fields. */
+.config__runes {
+  margin: 0;
+  max-inline-size: var(--measure-prose-max);
+  font-family: var(--font-body);
+  font-size: var(--type-body-s);
+  line-height: var(--lh-body-s);
+  font-weight: var(--weight-body-medium);
+  color: var(--text-secondary);
+}
+
+.config__runes-claim {
+  font-weight: var(--weight-body-strong);
+  color: var(--text-primary);
 }

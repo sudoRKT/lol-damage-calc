@@ -21,6 +21,7 @@ import { ChampionPicker } from '../picker';
 import { NumberInput } from '../inputs';
 import { CombatantNameplate } from '../stats';
 import { portraitUrl } from '../data/roster';
+import { CAPABILITY } from '../coverage';
 import './config.css';
 
 /** The four rankable slots, in the order the game prints them. */
@@ -30,9 +31,37 @@ type RankSlot = (typeof RANK_SLOTS)[number];
 /** What this panel does NOT configure yet. Printed on screen, never left to be assumed. */
 export const NOT_YET_CONFIGURED = [
   'Items',
-  'Runes — keystone, minor runes and stat shards',
   'Entry state — stacks and debuffs already active when the combo begins',
 ];
+
+/**
+ * THE LINE THIS PANEL WILL NOT PRINT, AND WHY IT IS NAMED HERE RATHER THAN DELETED.
+ *
+ * Until 2026-08-15 the footnote list carried this string under the eyebrow "NOT CONFIGURED IN THIS
+ * PANEL YET". Measured on the live page, that was the ONLY mention of runes on the calculator, and
+ * it said the wrong thing twice over:
+ *
+ *   1. "in this panel yet" is what the list says about ITEMS — and items really are configured in
+ *      the panel below, in the same list, in so many words. So the grammar of the list promises a
+ *      rune control somewhere else on the page. There is none, anywhere.
+ *   2. It describes a CONFIGURATION gap. The actual gap is a MODELLING one: `capability.json`
+ *      records 0 of 62 runes with a modelled effect, so a rune control would move no figure even
+ *      if one existed. A reader who took the list at its word would go looking for a control, not
+ *      adjust their reading of the total.
+ *
+ * The honest statement is a different KIND of claim from the rest of the list, so it is its own
+ * sentence below the list rather than another middle-dot item in it, and its figures are read from
+ * `capability.json` — the same committed file the landing page reads, so the two pages cannot
+ * disagree about how many runes are modelled.
+ *
+ * The string survives as a constant because `src/ui/app/App.tsx` (the lead's file, which this area
+ * may not write) still passes it in `CONFIGURED_ELSEWHERE`. The panel refuses it by exact identity
+ * rather than printing a claim it knows to be false. When the lead removes that line the filter
+ * becomes a no-op and this constant can go with it; `ChampionConfigPanel.test.tsx` reads App.tsx as
+ * text and fails if the line is ever REWORDED, because a reworded line would slip past the filter
+ * and the contradiction would be back on screen with nothing to catch it.
+ */
+export const SUPERSEDED_RUNE_ENTRY = 'Runes — keystone, minor runes and stat shards';
 
 export interface ChampionConfigPanelProps {
   /** "Attacker" or "Defender". */
@@ -50,6 +79,9 @@ export interface ChampionConfigPanelProps {
    * configures items in a panel of its own, so leaving "Items" in the default list would print a
    * sentence that is no longer true — and a panel that misstates what was modelled is worse than
    * one that lists nothing, because a user calibrates their trust against it.
+   *
+   * ONE ENTRY IS REFUSED: `SUPERSEDED_RUNE_ENTRY`. The panel states the rune fact itself, from
+   * generated counts, and will not also print a caller's claim that contradicts it.
    */
   notConfigured?: readonly string[];
 }
@@ -63,6 +95,8 @@ export function ChampionConfigPanel({
   patch,
   notConfigured = NOT_YET_CONFIGURED,
 }: ChampionConfigPanelProps) {
+  const listed = notConfigured.filter((item) => item !== SUPERSEDED_RUNE_ENTRY);
+
   const update = (next: Partial<ChampionConfig>) => {
     if (!champion) return;
     onChange({ ...config, ...next }, champion);
@@ -137,18 +171,32 @@ export function ChampionConfigPanel({
       </div>
 
       {/* WHAT IS NOT MODELLED HERE STAYS ON SCREEN, in full, unabridged — a panel that
-          silently omits runes invites a user to read a result as though their build had been
-          modelled. What changed is only its SHAPE: an eyebrow plus a three-line bulleted list
+          silently omits what it left out invites a user to read a result as though their build had
+          been modelled. What changed is only its SHAPE: an eyebrow plus a three-line bulleted list
           took ~100px of the first screen to say three short things, so it is now one wrapping
           footnote row. Every item is still its own element with its own exact text. */}
       <div className="config__note">
         <p className="config__eyebrow">Not configured in this panel yet</p>
         <ul className="config__missing">
-          {notConfigured.map((item) => (
+          {listed.map((item) => (
             <li key={item}>{item}</li>
           ))}
         </ul>
       </div>
+
+      {/* RUNES — stated, not promised. See SUPERSEDED_RUNE_ENTRY above for what this replaced.
+          Both counts come from `capability.json`, which is generated from `public/data/runes.json`
+          and the curated overrides, so neither can be typed wrong or go quietly stale after a
+          patch. It sits outside `.config__note` because it is not a configuration gap. */}
+      <p className="config__runes">
+        <strong className="config__runes-claim">
+          No rune changes a number: {CAPABILITY.runesModelled} of {CAPABILITY.runesPublished} have a
+          modelled effect.
+        </strong>{' '}
+        The whole pool is published and none of it is applied, so there is no rune control here — one
+        that moved no figure would tell you less than this sentence does. A total on this page is a
+        total without runes.
+      </p>
     </section>
   );
 }
