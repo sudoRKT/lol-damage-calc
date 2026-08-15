@@ -211,23 +211,40 @@ export {
 } from './resistance-sweep';
 
 // Damage across levels 1–18, with the levelling rules a build has to obey to exist at all.
+//
+// FOUR RULES GOVERN THE RANK POLICY and level-sweep.ts's header states them in full: the levelling
+// order is the CALLER's including where the ultimate sits; the order used is REPORTED as data on
+// `series.rankReport`; a build no champion level can hold is REFUSED at every level under every
+// policy; and every point carries a per-slot `rankShortfall` so a point drawn below the configured
+// build says so rather than passing as the user's own.
 export {
   ALL_LEVELS,
   DEFAULT_RANK_SCHEDULE,
+  MAX_CHAMPION_LEVEL,
+  MAX_RANKS_PER_SLOT,
+  RANKABLE_SLOTS,
   allocateRanks,
   damageVsLevel,
+  impossibleBuildProblems,
   maxRankAtLevel,
+  priorityProblems,
   rankProblems,
+  rankShortfallAt,
+  scheduleRankCap,
   skillPointsAtLevel,
   unlearnedCasts,
   type AppliedLevel,
   type LevelRankPolicy,
+  type LevelRankReport,
   type LevelSweepOptions,
   type LevelSweepOutcome,
   type LevelSweepSeries,
   type RankSchedule,
+  type RankShortfallCause,
   type Ranks,
   type RankableSlot,
+  type SlotRankShortfall,
+  type UltimatePlacement,
 } from './level-sweep';
 
 // Two attacker configurations against one defender. Refuses two different defenders by name.
