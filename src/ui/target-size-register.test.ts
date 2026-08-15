@@ -142,21 +142,38 @@ const CONTROLS: Record<string, Pass> = {
     why: 'the phone menu button. Its PANEL was measured (and was 114.6px off screen); the toggle itself was not.',
   },
   'picker/runes.css .runes__remove': {
-    how: 'unmeasured',
-    why:
-      "the rune picker's remove control, added 2026-08-15. THE PICKER IS NOW MOUNTED — this entry " +
-      'said "NOBODY CAN MEASURE IT YET" until 2026-08-15 23:2x and that stopped being true when ' +
-      'the lead wired the picker into `src/ui/app/`. A measurement is in flight. `b323e9b` also ' +
-      'claims to have measured it and to have found it passing by size, but recorded the figure ' +
-      'only in its commit message, so nothing here can be taken from that. It is registered ' +
-      'rather than left out because the tripwire that caught it is the point: a new control may ' +
-      'not ship unmeasured AND unnamed. Its ' +
-      'sibling `.items__remove` failed by 3.16px on the block axis and always passed on the ' +
-      'inline one, so expect the same shape of answer if it is built from the same type.',
+    how: 'size',
+    measured:
+      '28.91 x 24.00px at 375px, 2026-08-15, on /calculator/ with three runes worn on the ' +
+      'attacker. Nearest neighbouring target centre 131.63px, another remove; 227.27px with one ' +
+      'rune worn. It carries the --target-min floor from the start rather than having been found ' +
+      'short later, which is why the block axis is exactly 24.00 and not the 20.84 its sibling ' +
+      '.items__remove measured — THE PRIOR DID NOT HOLD HERE, and measuring is what showed that. ' +
+      'Commit b323e9b measured it the same day and reported the same pass by size; this is an ' +
+      'independent re-measurement and the two agree to the pixel.',
   },
   'config/defences.css .defences__control': {
-    how: 'unmeasured',
-    why: 'a conditional-defence toggle. Not present on the default scenario, so no pass has rendered one.',
+    how: 'size',
+    measured:
+      '293.00 x 32.00px at 375px, 2026-08-15, on /calculator/ — on the DEFAULT scenario, since ' +
+      'Garen is the default defender and has one toggle; and for all three rows with Soraka, the ' +
+      'largest panel. Nearest neighbouring target centre 99.24px, and 57.00px in the tightest ' +
+      'case the stylesheet allows, measured with every detail block collapsed. ' +
+      '═══ THIS ENTRY SAID "not present on the default scenario", AND THE FIGURE PUBLISHED FOR IT ' +
+      'BELONGED TO A DIFFERENT BOX. ═══ Commit b323e9b reported 22.5px on the block axis, failing ' +
+      'by 1.5px and passing by spacing at 78.34px. 22.50px is the .defences__label TEXT BOX. ' +
+      '.defences__control was a <div> measuring 293.00 x 30.50px that accepted no pointer ' +
+      'anywhere: elementFromPoint returned the bare div at the gap, at the trailing padding and ' +
+      'at the top edge, and a click there changed nothing. The two live targets were that ' +
+      '22.50px label and a 13.00 x 13.00px CHECKBOX 11px away — 11px under on BOTH axes — and ' +
+      'the checkbox appears in no published figure at all. 78.34px is not reproducible on any ' +
+      'scenario measured here: row separation is 114.62 and 99.24px on Soraka as rendered, and ' +
+      '57.00px collapsed. The spacing route WOULD have held at those distances; it was recorded ' +
+      'against a box that was not a target. Fixed by SIZE instead: the row IS the <label> now, ' +
+      'so the whole box is one contiguous target and the pass no longer depends on how much of ' +
+      "the source's own prose the detail block happens to carry. Cost 1.50px per row and 4.50px " +
+      'on Soraka (494.88 to 499.38px), all of it min-block-size, which the row did not need at ' +
+      '30.50px and which is there so the pass cannot follow the type size down later.',
   },
 };
 
