@@ -372,9 +372,10 @@ function InstanceRow({
         />
       </td>
 
-      {/* THE ANNOTATION, LAST. It is the only column that stretches — every other one is nowrap
-          and takes exactly the width it needs — so it is the only one whose position decides
-          whether the figures are on screen. See the header above. */}
+      {/* THE ANNOTATION, LAST. It is the only column that stretches — the four figure columns are
+          nowrap and Source shrinks to its min-content when the table is cramped, so every other
+          one takes exactly the width it needs — which makes this the only column whose position
+          decides whether the figures are on screen. See the header above. */}
       <td className="breakdown__state">
         {/* A ROW WHERE NOTHING MOVED SAYS SO. An empty cell cannot be told apart from a cell
             that failed to render, and instance 1 is always such a row — it is the baseline. */}

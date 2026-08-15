@@ -109,6 +109,53 @@
   white-space: nowrap;
 }
 
+/* ═══ THE SOURCE LABEL WRAPS IN THE PER-INSTANCE TABLE, AND ONLY THERE ═══
+   MEASURED 2026-08-15 at 320x812, 375x812 and 1440x1100 on the default scenario, in a real
+   browser. Offsets are from the table's own left edge.
+
+   WHAT WAS WRONG, AND IT IS NOT THE SAME DEFECT THE COLUMN REORDER FIXED. The reorder put the
+   Damage column at 186–262 at every width, which at 375px (293px visible) puts the whole figure
+   on screen. At 320px only 238px is visible, so the figure LANDED ON SCREEN AND ITS DAMAGE-TYPE
+   TAG DID NOT:
+
+     row 1  58 mag   number 198–218   tag 221–241   (3px past the edge)
+     row 2  47 mag   number 198–218   tag 221–241   (3px past)
+     row 3  43 phys  number 198–218   tag 221–248   (10px past — printed "phy")
+     row 4  217 mag  number 198–227   tag 230–250   (12px past — printed "m")
+
+   A CLIPPED TAG IS THE ONE FAILURE THIS PRODUCT MAY NOT HAVE. CLAUDE.md's non-negotiable and
+   DESIGN.md §8: damage type is never conveyed by colour alone. A blue 217 beside the letter "m"
+   is a hue with its cue cut off — the reader is left with the colour. Nothing in the previous
+   measurement caught it, because it measured where the COLUMN began and the column did begin on
+   screen. The figure being reachable and the figure being READABLE are different questions.
+
+   WHAT FIXES IT WITHOUT A BREAKPOINT OR A NEW VALUE. `Source` was the widest fixed column at
+   152px, held there by `nowrap` on this label. Letting it wrap makes it take its min-content when
+   the table is cramped and its max-content when it is not — which is the browser doing the
+   responsive work, with no width query (DESIGN.md §4b grants this file none) and no invented
+   length (§4a).
+
+     at 320px  Source 34–186 → 34–120 · DAMAGE 186–262 → 120–196 · table 578px → 511px
+     at 375px  identical column geometry; the table falls 578px → 511px
+     at 1440px NOTHING CHANGES — columns, row heights and panel height are byte-identical,
+               because there the state column absorbs 839px of slack and Source still gets its
+               max-content 189px.
+
+   AFTER, at 320px: every number and every tag is inside the 238px on screen, the furthest right
+   edge being row 4's tag at 184. Running total now starts at 196 rather than 262, so it is on
+   screen at rest too, and the maximum sideways scroll falls from 340px to 273px.
+
+   IT COSTS NO ROW HEIGHT. Rows measure 63/156/156/156 before and after at both phone widths, and
+   39/40/63/63 before and after at 1440. The state annotation already drives every row it is on,
+   so a source label taking two lines fits inside height that is already spent.
+
+   SCOPED TO `--instances` DELIBERATELY. The damage-over-time table shares this class, has three
+   columns rather than six, and does not appear in the scenario the page opens on — so it was not
+   measured. A rule is not extended to a table nobody has put a ruler against. */
+.breakdown--instances .breakdown__source-label {
+  white-space: normal;
+}
+
 /* A crit is marked in words, never by a colour — hue is reserved (DESIGN.md §1). */
 .breakdown__crit {
   font-family: var(--font-display);
@@ -150,9 +197,10 @@
    ═══ AND ALL OF THAT IS A 1440px FACT. AT PHONE WIDTH IT IS THE OTHER WAY ROUND. ═══
    MEASURED 2026-08-15 at 375x812, default scenario, in a real browser.
 
-   This column is the ONLY one that stretches: the other five are `inline-size: 0` with a nowrap
-   element inside, so each takes exactly the width it needs and this one absorbs whatever is
-   left. At 1440 what is left is 839px and it wraps to one line — which is why the paragraph
+   This column is the ONLY one that stretches: four of the other five are `inline-size: 0` with a
+   nowrap element inside, and the fifth (Source) takes its max-content when there is room and its
+   min-content when there is not, so each takes exactly the width it needs and this one absorbs
+   whatever is left. At 1440 what is left is 839px and it wraps to one line — which is why the paragraph
    above could truthfully say the state cell drives no row height. At 375 what is left is
    NEGATIVE, so it collapses to its own minimum of 111px and wraps to about fifteen characters
    a line: SEVEN lines, 139px of a 156px row, on three of the four rows.
@@ -296,15 +344,17 @@
    row identifiable.
 
    WHY THE COLUMNS CANNOT SIMPLY BE MADE TO FIT, so nobody re-litigates this from the armchair.
-   Every one of the six columns contains a nowrap element. The five that are genuinely fixed —
-   index 33px, source 152px, damage 76px, running total 122px, evidence 82px — total 465px
-   against the 238px a 320px phone leaves inside the panel. Deleting the state column outright
-   still leaves the table at nearly twice the available width. Scrolling is not a shortcut here;
-   it is the only honest option that keeps the columns.
+   RE-MEASURED 2026-08-15 after the source label was allowed to wrap (see `.breakdown__source-label`
+   above), at 320px: index 34px, source 86px, damage 76px, running total 122px, evidence 82px —
+   400px, against the 238px a 320px phone leaves inside the panel. It was 465px when the source
+   label was nowrap. Deleting the state column outright STILL leaves the table at 400px, nearly
+   twice the available width, so the conclusion is unchanged and only its arithmetic moved:
+   scrolling is not a shortcut here, it is the only honest option that keeps the columns.
 
-   WHY `#` AND NOT SOURCE. Source is 152px of the 238px available, so pinning it would leave
-   86px — less than one damage figure with its mandatory tag — and the scroll would buy nothing.
-   `#` costs 34px and leaves 204px. It is also already the row's identity in the markup: it is
+   WHY `#` AND NOT SOURCE. Source is 86px of the 238px available and was 152px before it wrapped;
+   pinning it would leave 152px, and the two columns a reader most wants beside the ability —
+   damage 76px and running total 122px — do not both fit in that. `#` costs 34px and leaves 204px,
+   which holds either of them whole. It is also already the row's identity in the markup: it is
    the `<th scope="row">`, which assistive technology announces with every cell in the row, so
    pinning it makes the visual reading match the spoken one instead of inventing a new cue.
 

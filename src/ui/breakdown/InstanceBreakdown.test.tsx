@@ -422,6 +422,80 @@ describe('breakdown/the row number is pinned while the table scrolls', () => {
   });
 });
 
+// =========================================================================================
+// THE DAMAGE-TYPE TAG IS NOT CLIPPED AT THE NARROWEST PHONE. Added 2026-08-15.
+//
+// WHAT THIS CAN AND CANNOT CHECK, STATED PLAINLY. jsdom computes no layout, so nothing here
+// proves a tag is on screen. That was measured in a real browser at 320x812 and is written out
+// on `.breakdown__source-label` in breakdown.css: with the source label held at `nowrap` the
+// Damage column ran 186–262 against 238px of visible width, so the FIGURE landed on screen and
+// its TAG did not — row 4 printed "217" beside the single letter "m", and row 3 printed "phy".
+//
+// That is the colour-alone failure CLAUDE.md calls non-negotiable, reached without anybody
+// removing a tag: the cue was rendered and then clipped by the scroll container. It is invisible
+// to an overflow sweep, because the table scrolls exactly as it is supposed to.
+//
+// What these tests hold is the part a later edit can undo without any browser noticing: that the
+// per-instance source label is still allowed to wrap, and that the rule stays off the
+// damage-over-time table, which has three columns and has never been measured.
+// =========================================================================================
+
+describe('breakdown/the damage-type tag survives the narrowest phone', () => {
+  /** Every rule in the file that sets `white-space` on the source label. */
+  const sourceLabelRules = () =>
+    cssRules(BREAKDOWN_CSS).filter(
+      (r) => r.selector.includes('.breakdown__source-label') && /white-space:/.test(r.body),
+    );
+
+  it('lets the per-instance source label wrap, so Damage starts 66px earlier', () => {
+    // 320px, measured: Source 34–186 → 34–120, Damage 186–262 → 120–196, so the figure AND its
+    // tag finish at 184 inside 238px of visible width. Nothing here can see those pixels; what it
+    // can see is that the declaration they depend on is still present.
+    const wrapping = sourceLabelRules().filter(
+      (r) => r.selector.includes('.breakdown--instances') && /white-space:\s*normal/.test(r.body),
+    );
+    expect(wrapping.length).toBe(1);
+  });
+
+  it('wins the cascade over the base rule, which is a single class', () => {
+    // `.breakdown--instances .breakdown__source-label` is two classes and beats the one-class base
+    // rule wherever it sits in the file. If somebody ever flattens the scoped selector to one
+    // class, source order starts deciding it and this stops being reliable — so it is asserted.
+    const base = sourceLabelRules().filter((r) => !r.selector.includes('.breakdown--instances'));
+    expect(base.length).toBe(1);
+    expect(base[0]!.selector.split(/\s+/).length).toBe(1);
+  });
+
+  it('leaves the damage-over-time table alone, because nobody has measured it', () => {
+    // The DoT table shares `.breakdown__source-label` and has three columns rather than six. A
+    // rule is not extended to a table nobody has put a ruler against.
+    for (const rule of sourceLabelRules()) {
+      if (!/white-space:\s*normal/.test(rule.body)) continue;
+      for (const selector of rule.selector.split(',')) {
+        expect(selector).toContain('.breakdown--instances');
+      }
+    }
+  });
+
+  it('keeps the four figure columns at exactly the width they need', () => {
+    // Source is now the one column that flexes. The figure columns must NOT start wrapping too —
+    // a damage figure split across two lines from its tag is the same defect by another route.
+    const fixed = cssRules(BREAKDOWN_CSS).filter((r) => /inline-size:\s*0/.test(r.body));
+    const selectors = fixed.flatMap((r) => r.selector.split(',').map((s) => s.trim()));
+    for (const column of [
+      '.breakdown__index',
+      '.breakdown__damage',
+      '.breakdown__running',
+      '.breakdown__evidence',
+    ]) {
+      expect(selectors).toContain(column);
+    }
+    for (const rule of fixed) expect(rule.body).toMatch(/white-space:\s*nowrap/);
+    // And Source is deliberately NOT one of them — it is the column that gives way.
+    expect(selectors).not.toContain('.breakdown__source');
+  });
+});
+
 /** Escape a state phrase for use inside a RegExp — values carry dots. */
 function escapeForRegExp(text: string): string {
   return text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
