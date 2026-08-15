@@ -522,18 +522,24 @@ export const PER_TICK_READS: readonly PerTickRead[] = [
   {
     key: 'Morgana/W/Tormented Shadow',
     verdict: 'recurring',
-    countVerdict: 'count-not-stored',
+    // RE-READ 2026-08-15 AND MOVED FROM 'count-not-stored' TO 'contested'. The count is not
+    // missing from the source — the source states TWO of them. Its description reads as 11
+    // instances (one on cast, then one every 0.5s across a 5-second field) and its own total row
+    // multiplies the per-tick figure by 10. Neither is taken silently (DATA-SOURCES §32.2), and
+    // no evidence outside the page settles which the game does, so nothing is captured here.
+    countVerdict: 'contested',
     quote:
-      'the area becomes desecrated for 5 seconds, and enemies within take magic damage on-cast and every 0.5 seconds thereafter',
+      'the area becomes desecrated for 5 seconds, and enemies within take magic damage on-cast and every 0.5 seconds thereafter, while the page own total row multiplies the per-tick figure by 10',
     verbatim: [
       'causing the area to become desecrated for 5 seconds. Enemies within take {{as|magic damage}} on-cast and every {{fd|0.5}} seconds thereafter',
+      '{{st|Minimum Total Damage|{{ap|9*10 to 35*10}}',
     ],
     durationSeconds: 5,
     intervalSeconds: 0.5,
     impliedTicks: 10,
     storedHits: [1, 1],
     marked: false,
-    note: "'on-cast AND every 0.5 seconds thereafter' reads as 11 instances while the source's own total row multiplies by 10. Both components store 1. A second question sits behind it: the minimum and maximum per-tick rows are the two ends of one missing-health scaling, not two damages to add",
+    note: "'on-cast AND every 0.5 seconds thereafter' reads as 11 instances while the source's own total row multiplies by 10, and one extra instance is 10% of the ability. Both components store 1. A second question sits behind it and is NOT fixed by a count: the minimum and maximum per-tick rows are the two ends of one missing-health scaling, and the harvest now stores the maximum as an alternative to the minimum, so capturing a count would still leave the entry unable to state its own total",
   },
   {
     key: 'Naafiri/Q/Darkin Daggers',

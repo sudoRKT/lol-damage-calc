@@ -287,11 +287,18 @@ describe('the table itself, against the real cached source', () => {
     expect(capturedHitCounts().has('Nasus/E/Spirit Fire')).toBe(false);
   });
 
-  it('quotes 57 fragments and every one is literally in the cached wikitext', async () => {
+  it('quotes 58 fragments and every one is literally in the cached wikitext', async () => {
+    // 57 UNTIL 2026-08-15, AND HERE IS THE ONE THAT MOVED IT. Morgana W was re-read and its
+    // `countVerdict` went from `count-not-stored` to `contested`: the count is not missing from
+    // the source, the source states TWO of them — its description reads as 11 instances (one on
+    // cast, then one every 0.5s over a 5-second field) and its own total row multiplies the
+    // per-tick figure by 10. Establishing that needed the total row quoted as well as the
+    // sentence, so the entry's `verbatim` list gained one fragment. Nothing was captured; §32.2
+    // holds that a source contradicting itself is contested rather than silently resolved.
     const checks = verifyQuotes(PER_TICK_READS, await loadPages());
     const failed = checks.filter((c) => c.pageMissing || c.missing.length > 0);
     expect(failed).toEqual([]);
-    expect(checks.reduce((s, c) => s + c.found, 0)).toBe(57);
+    expect(checks.reduce((s, c) => s + c.found, 0)).toBe(58);
   });
 
   it('proves every corrected sentence is one of the checked fragments, not a summary', async () => {
