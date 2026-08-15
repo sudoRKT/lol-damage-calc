@@ -4,10 +4,10 @@
     "source": "build/proposed-curated/ability-wikitext.json (the alias-deduped wiki templates, DATA-SOURCES §11) for every rank statement; public/data/champions.json for Data Dragon's per-slot maxrank (DATA-SOURCES §22); curated/curated-data.json read for comparison only and never written. Alias names resolved live against the wiki API.",
     "url": "https://wiki.leagueoflegends.com/en-us/api.php",
     "patch": "16.16.1",
-    "fetched": "2026-08-15T10:42:32.776Z",
+    "fetched": "2026-08-15T13:28:37.385Z",
     "inputs": {
       "abilityWikitextFetchedOn": "2026-08-13",
-      "curatedFileFetched": "2026-08-14",
+      "curatedFileFetched": "2026-08-15",
       "curatedFilePatch": "16.16.1",
       "rosterPatch": "16.16.1"
     }
@@ -3228,7 +3228,7 @@
         "present": true,
         "maxRank": 5,
         "components": 1,
-        "verification": "incomplete"
+        "verification": "derived"
       },
       "agreesWithCurated": true,
       "aliases": [],
@@ -4369,7 +4369,7 @@
         "present": true,
         "maxRank": 5,
         "components": 1,
-        "verification": "incomplete"
+        "verification": "derived"
       },
       "agreesWithCurated": true,
       "aliases": [],
@@ -5681,7 +5681,7 @@
         "present": true,
         "maxRank": 5,
         "components": 1,
-        "verification": "incomplete"
+        "verification": "derived"
       },
       "agreesWithCurated": true,
       "aliases": [],
@@ -5934,7 +5934,7 @@
         "present": true,
         "maxRank": 5,
         "components": 1,
-        "verification": "incomplete"
+        "verification": "derived"
       },
       "agreesWithCurated": true,
       "aliases": [],
@@ -5957,7 +5957,7 @@
         "present": true,
         "maxRank": 5,
         "components": 1,
-        "verification": "incomplete"
+        "verification": "derived"
       },
       "agreesWithCurated": true,
       "aliases": [],
@@ -6096,7 +6096,7 @@
       "curated": {
         "present": true,
         "maxRank": 3,
-        "components": 3,
+        "components": 2,
         "verification": "incomplete"
       },
       "agreesWithCurated": true,
@@ -7132,7 +7132,7 @@
         "present": true,
         "maxRank": 3,
         "components": 1,
-        "verification": "incomplete"
+        "verification": "derived"
       },
       "agreesWithCurated": true,
       "aliases": [],
@@ -8359,7 +8359,7 @@
         "present": true,
         "maxRank": 5,
         "components": 1,
-        "verification": "incomplete"
+        "verification": "derived"
       },
       "agreesWithCurated": true,
       "aliases": [],
@@ -8746,7 +8746,7 @@
         "present": true,
         "maxRank": 5,
         "components": 2,
-        "verification": "incomplete"
+        "verification": "derived"
       },
       "agreesWithCurated": true,
       "aliases": [],
@@ -8853,7 +8853,7 @@
       "curated": {
         "present": true,
         "maxRank": 5,
-        "components": 3,
+        "components": 2,
         "verification": "derived"
       },
       "agreesWithCurated": true,
@@ -9831,7 +9831,7 @@
         "present": true,
         "maxRank": 6,
         "components": 1,
-        "verification": "incomplete"
+        "verification": "derived"
       },
       "agreesWithCurated": true,
       "aliases": [],
@@ -10007,7 +10007,7 @@
       "curated": {
         "present": true,
         "maxRank": 5,
-        "components": 3,
+        "components": 2,
         "verification": "incomplete"
       },
       "agreesWithCurated": true,
@@ -10997,7 +10997,7 @@
       "curated": {
         "present": true,
         "maxRank": 3,
-        "components": 4,
+        "components": 2,
         "verification": "incomplete"
       },
       "agreesWithCurated": true,
@@ -11114,7 +11114,7 @@
       "curated": {
         "present": true,
         "maxRank": 3,
-        "components": 3,
+        "components": 1,
         "verification": "incomplete"
       },
       "agreesWithCurated": true,
@@ -11912,7 +11912,7 @@
       "curated": {
         "present": true,
         "maxRank": 5,
-        "components": 3,
+        "components": 2,
         "verification": "derived"
       },
       "agreesWithCurated": true,
@@ -12860,7 +12860,7 @@
       "curated": {
         "present": true,
         "maxRank": 5,
-        "components": 5,
+        "components": 4,
         "verification": "incomplete"
       },
       "agreesWithCurated": true,
@@ -13485,7 +13485,7 @@
         "present": true,
         "maxRank": 5,
         "components": 1,
-        "verification": "incomplete"
+        "verification": "derived"
       },
       "agreesWithCurated": true,
       "aliases": [],
@@ -13667,7 +13667,7 @@
       "curated": {
         "present": true,
         "maxRank": 5,
-        "components": 3,
+        "components": 2,
         "verification": "incomplete"
       },
       "agreesWithCurated": true,
@@ -14059,7 +14059,7 @@
         "present": true,
         "maxRank": 5,
         "components": 1,
-        "verification": "incomplete"
+        "verification": "derived"
       },
       "agreesWithCurated": true,
       "aliases": [],
@@ -14996,7 +14996,7 @@
         "present": true,
         "maxRank": 5,
         "components": 1,
-        "verification": "incomplete"
+        "verification": "derived"
       },
       "agreesWithCurated": true,
       "aliases": [],
@@ -15329,7 +15329,7 @@
         "present": true,
         "maxRank": 5,
         "components": 1,
-        "verification": "incomplete"
+        "verification": "derived"
       },
       "agreesWithCurated": true,
       "aliases": [],
@@ -17023,7 +17023,7 @@
         "present": true,
         "maxRank": 3,
         "components": 1,
-        "verification": "incomplete"
+        "verification": "derived"
       },
       "agreesWithCurated": true,
       "aliases": [],
@@ -17253,7 +17253,7 @@
         "present": true,
         "maxRank": 3,
         "components": 1,
-        "verification": "incomplete"
+        "verification": "derived"
       },
       "agreesWithCurated": true,
       "aliases": [],
@@ -17634,7 +17634,7 @@
       "curated": {
         "present": true,
         "maxRank": 3,
-        "components": 3,
+        "components": 1,
         "verification": "incomplete"
       },
       "agreesWithCurated": true,
@@ -21358,7 +21358,7 @@
         "present": true,
         "maxRank": 6,
         "components": 1,
-        "verification": "incomplete"
+        "verification": "derived"
       },
       "agreesWithCurated": true,
       "aliases": [],
@@ -21541,7 +21541,7 @@
       "curated": {
         "present": true,
         "maxRank": 5,
-        "components": 7,
+        "components": 5,
         "verification": "incomplete"
       },
       "agreesWithCurated": true,
@@ -23299,7 +23299,7 @@
       "curated": {
         "present": true,
         "maxRank": 5,
-        "components": 3,
+        "components": 2,
         "verification": "derived"
       },
       "agreesWithCurated": true,
@@ -23653,7 +23653,7 @@
         "present": true,
         "maxRank": 5,
         "components": 2,
-        "verification": "incomplete"
+        "verification": "derived"
       },
       "agreesWithCurated": true,
       "aliases": [],
@@ -24663,7 +24663,7 @@
       "curated": {
         "present": true,
         "maxRank": 5,
-        "components": 2,
+        "components": 1,
         "verification": "derived"
       },
       "agreesWithCurated": true,

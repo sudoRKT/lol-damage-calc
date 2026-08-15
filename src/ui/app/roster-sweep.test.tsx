@@ -165,13 +165,32 @@ describe('roster-sweep/no damage is missing without a name beside it', () => {
     // A ZERO MUST BE EXPLAINABLE. With ability power, attack damage, health, mana and armor all
     // supplied, an instance that still deals nothing cannot be blamed on the build — so it is
     // either honestly marked (incomplete / no-damage) or it is a silent hole in the total.
+    //
+    // ═══ A THIRD EXPLANATION EXISTS SINCE 2026-08-15, AND THIS SWEEP HAD TO LEARN IT ═══
+    //
+    // SPECIFICATION §3.8 keeps damage over time OUT of the burst total entirely. So an instance
+    // whose damage is recurring contributes 0 to burst BY DESIGN and appears on the DoT line
+    // instead. Fifteen instances entered that state when the per-tick readings were merged, and
+    // this sweep called all fifteen silent holes.
+    //
+    // IT IS NOT RELAXED TO ACCOMMODATE THEM. A `derived` instance dealing 0 burst is excused only
+    // when the DoT line CARRIES it — matched by label, and required to carry a positive figure.
+    // An instance that deals no burst, is not marked incomplete, and is absent from the DoT line
+    // is still an offender, which is the hole this test was written to find. Measured on the
+    // merged file: 15 instances take this arm, and every one of them is matched.
     const offenders: string[] = [];
+    let excusedByDot = 0;
     for (const { champion, result } of KITTED_RESULTS) {
+      const dotLabels = new Map(
+        result.dot.sources.filter((d) => d.total > 0).map((d) => [d.label, d.total]),
+      );
       for (const instance of result.perInstance) {
         const contributes = instance.final > 0;
         const excused =
           instance.verification === 'incomplete' || instance.verification === 'no-damage';
-        if (!contributes && !excused) {
+        const onTheDotLine = dotLabels.has(instance.sourceLabel);
+        if (onTheDotLine) excusedByDot++;
+        if (!contributes && !excused && !onTheDotLine) {
           offenders.push(
             `${champion.apiname} ${instance.sourceLabel}: dealt 0 while reading "${instance.verification}"`,
           );
@@ -179,6 +198,23 @@ describe('roster-sweep/no damage is missing without a name beside it', () => {
       }
     }
     expect(offenders).toEqual([]);
+    // The new arm must be LOAD-BEARING, not a clause that never fires. If this drops to zero the
+    // excuse above is dead code and the sweep is weaker than it reads.
+    expect(excusedByDot).toBeGreaterThan(0);
+  });
+
+  it('the DoT line is populated at all — the second verdict is no longer decorative', () => {
+    // DATA-SOURCES §56 measured this at ZERO: no real scenario had ever carried any damage over
+    // time, so the `+DoT` column had never appeared on the live site and SPECIFICATION §3.8's
+    // requirement that the verdict be given twice was satisfied in form and not in substance.
+    // Pinned here so a regression that empties the DoT line again is loud rather than invisible.
+    //
+    // DEFINITION: champions in the full-build sweep whose result carries at least one DoT source
+    // with a total above zero, over the 173 in `public/data/champions.json`.
+    const withDot = KITTED_RESULTS.filter(({ result }) =>
+      result.dot.sources.some((d) => d.total > 0),
+    );
+    expect(withDot.length).toBeGreaterThan(0);
   });
 
   it('an ability that scales purely from a stat the build lacks deals zero, and that is right', () => {

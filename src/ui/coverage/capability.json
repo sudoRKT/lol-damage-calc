@@ -15,9 +15,9 @@
   "defensiveStored": 155,
   "defensiveReadyToApply": 90,
   "defensiveApplied": 77,
-  "abilityComponentsOverTime": 4,
-  "abilitiesWithOverTime": 4,
+  "abilityComponentsOverTime": 27,
+  "abilitiesWithOverTime": 27,
   "perTickComponents": 43,
   "perTickAbilities": 39,
-  "perTickAbilitiesHeldBack": 37
+  "perTickAbilitiesHeldBack": 20
 }

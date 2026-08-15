@@ -84,7 +84,12 @@ describe('the defect this index exists for', () => {
     ]);
     const stirring = resolveAbility(index, 'Hwei', 'W', 'Stirring Lights');
     expect(stirring?.key).toBe('Hwei|W|Stirring Lights');
-    expect(stirring?.curated).toMatchObject({ present: true, components: 3 });
+    // TWO components since 2026-08-15, not three. DATA-SOURCES §61 read this ability's source
+    // sentence — "empower his next 3 basic attacks or ability hits to EACH deal bonus magic
+    // damage" — and its "Maximum Magic Damage" row is that per-hit figure times three, an
+    // aggregate of the rows beside it rather than a fourth damage. It was dropped at the merge
+    // (§62.1). The count moved because a row left, and the row left because a person read it.
+    expect(stirring?.curated).toMatchObject({ present: true, components: 2 });
     // The entry champion+slot used to return, which has no damage at all.
     const serenity = resolveAbility(index, 'Hwei', 'W', 'Subject: Serenity');
     expect(serenity?.curated).toMatchObject({ present: true, components: 0 });

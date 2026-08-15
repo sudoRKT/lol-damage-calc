@@ -1,7 +1,7 @@
 {
  "version": 1,
  "patch": "16.16.1",
- "fetched": "2026-08-14",
+ "fetched": "2026-08-15",
  "abilities": [
   {
    "champion": "Aatrox",
@@ -999,18 +999,20 @@
      "relation": {
       "kind": "adds"
      },
-     "hits": 10
+     "hits": 10,
+     "overTime": {
+      "sourceSays": "Alistar tramples the ground around him every 0.5 seconds over 5 seconds, becoming ghosted and dealing magic damage to nearby enemies"
+     }
     }
    ],
-   "verification": "incomplete",
+   "verification": "derived",
    "provenance": {
     "source": "Template:Data Alistar/Trample",
     "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Alistar/Trample",
     "patch": "16.16.1",
     "fetched": "2026-08-14"
    },
-   "sourceRevision": 4038209,
-   "notes": "this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). Nobody has yet read the source sentence to establish its full-duration shape, so no figure is published rather than one published in the wrong place."
+   "sourceRevision": 4038209
   },
   {
    "champion": "Alistar",
@@ -2828,18 +2830,20 @@
      "relation": {
       "kind": "adds"
      },
-     "hits": 20
+     "hits": 20,
+     "overTime": {
+      "sourceSays": "Aurelion Sol conjures a black hole at the target location that lasts for 5 seconds, dealing magic damage every 0.25 seconds to enemies within"
+     }
     }
    ],
-   "verification": "incomplete",
+   "verification": "derived",
    "provenance": {
     "source": "Template:Data Aurelion Sol/Singularity",
     "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Aurelion%20Sol/Singularity",
     "patch": "16.16.1",
     "fetched": "2026-08-14"
    },
-   "sourceRevision": 4038217,
-   "notes": "this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). Nobody has yet read the source sentence to establish its full-duration shape, so no figure is published rather than one published in the wrong place."
+   "sourceRevision": 4038217
   },
   {
    "champion": "Aurelion Sol",
@@ -5019,18 +5023,20 @@
      "relation": {
       "kind": "adds"
      },
-     "hits": 7
+     "hits": 7,
+     "overTime": {
+      "sourceSays": "enemies within the blast are poisoned for 3 seconds, taking magic damage every 3/7 seconds over the duration"
+     }
     }
    ],
-   "verification": "incomplete",
+   "verification": "derived",
    "provenance": {
     "source": "Template:Data Cassiopeia/Noxious Blast",
     "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Cassiopeia/Noxious%20Blast",
     "patch": "16.16.1",
     "fetched": "2026-08-14"
    },
-   "sourceRevision": 3906813,
-   "notes": "this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). Nobody has yet read the source sentence to establish its full-duration shape, so no figure is published rather than one published in the wrong place."
+   "sourceRevision": 3906813
   },
   {
    "champion": "Cassiopeia",
@@ -5442,18 +5448,20 @@
      "relation": {
       "kind": "adds"
      },
-     "hits": 5
+     "hits": 5,
+     "overTime": {
+      "sourceSays": "each blazing patch lasts 2.5 seconds, and enemies within the patches are dealt magic damage every 0.5 seconds"
+     }
     }
    ],
-   "verification": "incomplete",
+   "verification": "derived",
    "provenance": {
     "source": "Template:Data Corki/Valkyrie",
     "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Corki/Valkyrie",
     "patch": "16.16.1",
     "fetched": "2026-08-14"
    },
-   "sourceRevision": 4007589,
-   "notes": "this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). Nobody has yet read the source sentence to establish its full-duration shape, so no figure is published rather than one published in the wrong place."
+   "sourceRevision": 4007589
   },
   {
    "champion": "Corki",
@@ -5488,18 +5496,20 @@
      "relation": {
       "kind": "adds"
      },
-     "hits": 16
+     "hits": 16,
+     "overTime": {
+      "sourceSays": "Corki sprays bullets in a cone toward his facing direction for 4 seconds, dealing physical damage every 0.25 seconds to all enemies hit"
+     }
     }
    ],
-   "verification": "incomplete",
+   "verification": "derived",
    "provenance": {
     "source": "Template:Data Corki/Gatling Gun",
     "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Corki/Gatling%20Gun",
     "patch": "16.16.1",
     "fetched": "2026-08-14"
    },
-   "sourceRevision": 3948411,
-   "notes": "this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). Nobody has yet read the source sentence to establish its full-duration shape, so no figure is published rather than one published in the wrong place."
+   "sourceRevision": 3948411
   },
   {
    "champion": "Corki",
@@ -5764,27 +5774,6 @@
       "kind": "adds"
      },
      "hits": 1
-    },
-    {
-     "id": "maximum-true-damage",
-     "label": "Maximum True Damage",
-     "damageType": "true",
-     "base": {
-      "scaling": "linear",
-      "from": 250,
-      "to": 750
-     },
-     "ratios": [
-      {
-       "stat": "bonusAD",
-       "scaling": "linear",
-       "from": 150,
-       "to": 150
-      }
-     ],
-     "relation": {
-      "kind": "adds"
-     }
     }
    ],
    "verification": "incomplete",
@@ -6089,7 +6078,10 @@
      "relation": {
       "kind": "adds"
      },
-     "hits": 16
+     "hits": 12,
+     "overTime": {
+      "sourceSays": "Dr. Mundo charges up a defibrillator for up to 3 seconds, dealing magic damage every 0.25 seconds to nearby enemies"
+     }
     },
     {
      "id": "magic-damage",
@@ -6127,8 +6119,7 @@
      "field": "components[1].ratios[0].owner (bonusHP)",
      "why": "the source names bonusHP and never says whose, and no other source states it"
     }
-   ],
-   "notes": "this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). Nobody has yet read the source sentence to establish its full-duration shape, so no figure is published rather than one published in the wrong place."
+   ]
   },
   {
    "champion": "Dr. Mundo",
@@ -7513,18 +7504,20 @@
      "relation": {
       "kind": "adds"
      },
-     "hits": 20
+     "hits": 20,
+     "overTime": {
+      "sourceSays": "a murder of crows flies wildly around the target location for 5 seconds, dealing magic damage every 0.25 seconds to nearby enemies"
+     }
     }
    ],
-   "verification": "incomplete",
+   "verification": "derived",
    "provenance": {
     "source": "Template:Data Fiddlesticks/Crowstorm",
     "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Fiddlesticks/Crowstorm",
     "patch": "16.16.1",
     "fetched": "2026-08-14"
    },
-   "sourceRevision": 4004933,
-   "notes": "this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). Nobody has yet read the source sentence to establish its full-duration shape, so no figure is published rather than one published in the wrong place."
+   "sourceRevision": 4004933
   },
   {
    "champion": "Fiora",
@@ -9540,18 +9533,20 @@
      "relation": {
       "kind": "adds"
      },
-     "hits": 5
+     "hits": 4,
+     "overTime": {
+      "sourceSays": "Hecarim surrounds himself with the Spirit of Dread for 4 seconds, dealing magic damage every second to nearby enemies"
+     }
     }
    ],
-   "verification": "incomplete",
+   "verification": "derived",
    "provenance": {
     "source": "Template:Data Hecarim/Spirit of Dread",
     "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Hecarim/Spirit%20of%20Dread",
     "patch": "16.16.1",
     "fetched": "2026-08-14"
    },
-   "sourceRevision": 3725548,
-   "notes": "this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). Nobody has yet read the source sentence to establish its full-duration shape, so no figure is published rather than one published in the wrong place."
+   "sourceRevision": 3725548
   },
   {
    "champion": "Hecarim",
@@ -10151,18 +10146,20 @@
      "relation": {
       "kind": "adds"
      },
-     "hits": 10
+     "hits": 10,
+     "overTime": {
+      "sourceSays": "a fissure lasts for 2.5 seconds, dealing magic damage every 0.25 seconds to enemies within the area"
+     }
     }
    ],
-   "verification": "incomplete",
+   "verification": "derived",
    "provenance": {
     "source": "Template:Data Hwei/Molten Fissure",
     "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Hwei/Molten%20Fissure",
     "patch": "16.16.1",
     "fetched": "2026-08-14"
    },
-   "sourceRevision": 4026407,
-   "notes": "this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). Nobody has yet read the source sentence to establish its full-duration shape, so no figure is published rather than one published in the wrong place."
+   "sourceRevision": 4026407
   },
   {
    "champion": "Hwei",
@@ -10235,32 +10232,6 @@
        "scaling": "linear",
        "from": 15,
        "to": 15
-      }
-     ],
-     "relation": {
-      "kind": "adds"
-     }
-    },
-    {
-     "id": "maximum-magic-damage",
-     "label": "Maximum Magic Damage",
-     "damageType": "magic",
-     "base": {
-      "scaling": "linear",
-      "from": 60,
-      "to": 180
-     },
-     "ratios": [
-      {
-       "stat": "AP",
-       "scaling": "explicit",
-       "perRank": [
-        45,
-        45,
-        45,
-        45,
-        45
-       ]
       }
      ],
      "relation": {
@@ -10468,7 +10439,10 @@
      "relation": {
       "kind": "adds"
      },
-     "hits": 12
+     "hits": 12,
+     "overTime": {
+      "sourceSays": "the target is afflicted with an aura that grows over 3 seconds, and enemies within are dealt magic damage every 0.25 seconds"
+     }
     },
     {
      "id": "magic-damage",
@@ -11892,18 +11866,20 @@
      "relation": {
       "kind": "adds"
      },
-     "hits": 4
+     "hits": 4,
+     "overTime": {
+      "sourceSays": "Jayce surrounds himself with an electric field for 4 seconds that deals magic damage every second to nearby enemies"
+     }
     }
    ],
-   "verification": "incomplete",
+   "verification": "derived",
    "provenance": {
     "source": "Template:Data Jayce/Lightning Field",
     "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Jayce/Lightning%20Field",
     "patch": "16.16.1",
     "fetched": "2026-08-14"
    },
-   "sourceRevision": 3948933,
-   "notes": "this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). Nobody has yet read the source sentence to establish its full-duration shape, so no figure is published rather than one published in the wrong place."
+   "sourceRevision": 3948933
   },
   {
    "champion": "Jayce",
@@ -12164,38 +12140,6 @@
       "kind": "adds"
      },
      "hits": 1
-    },
-    {
-     "id": "maximum-final-bounce-physical-damage",
-     "label": "Maximum Final Bounce Physical Damage",
-     "damageType": "physical",
-     "base": {
-      "scaling": "linear",
-      "from": 90.19999999999999,
-      "to": 295.2
-     },
-     "ratios": [
-      {
-       "stat": "totalAD",
-       "scaling": "linear",
-       "from": 90.19999999999999,
-       "to": 151.7
-      },
-      {
-       "stat": "AP",
-       "scaling": "explicit",
-       "perRank": [
-        122.99999999999999,
-        122.99999999999999,
-        122.99999999999999,
-        122.99999999999999,
-        122.99999999999999
-       ]
-      }
-     ],
-     "relation": {
-      "kind": "adds"
-     }
     }
    ],
    "verification": "incomplete",
@@ -14034,68 +13978,6 @@
       "kind": "adds"
      },
      "hits": 1
-    },
-    {
-     "id": "maximum-bonus-damage",
-     "label": "Maximum Bonus Damage",
-     "damageType": "magic",
-     "base": {
-      "scaling": "linear",
-      "from": 140,
-      "to": 220
-     },
-     "ratios": [
-      {
-       "stat": "AP",
-       "scaling": "explicit",
-       "perRank": [
-        28,
-        28,
-        28
-       ]
-      },
-      {
-       "stat": "maxMana",
-       "owner": "unresolved",
-       "scaling": "linear",
-       "from": 4,
-       "to": 4
-      }
-     ],
-     "relation": {
-      "kind": "adds"
-     }
-    },
-    {
-     "id": "maximum-magic-damage",
-     "label": "Maximum Magic Damage",
-     "damageType": "magic",
-     "base": {
-      "scaling": "linear",
-      "from": 210,
-      "to": 330
-     },
-     "ratios": [
-      {
-       "stat": "AP",
-       "scaling": "explicit",
-       "perRank": [
-        78,
-        78,
-        78
-       ]
-      },
-      {
-       "stat": "maxMana",
-       "owner": "unresolved",
-       "scaling": "linear",
-       "from": 6,
-       "to": 6
-      }
-     ],
-     "relation": {
-      "kind": "adds"
-     }
     }
    ],
    "verification": "incomplete",
@@ -14285,46 +14167,6 @@
    "maxRank": 3,
    "components": [
     {
-     "id": "maximum-physical-damage",
-     "label": "Maximum Physical Damage",
-     "damageType": "physical",
-     "base": {
-      "scaling": "explicit",
-      "perRank": [
-       0,
-       0,
-       0
-      ]
-     },
-     "ratios": [
-      {
-       "stat": "bonusAD",
-       "multipliers": [
-        {
-         "per": "AP",
-         "per100": {
-          "scaling": "explicit",
-          "perRank": [
-           750,
-           750,
-           750
-          ]
-         }
-        }
-       ],
-       "scaling": "explicit",
-       "perRank": [
-        240,
-        240,
-        240
-       ]
-      }
-     ],
-     "relation": {
-      "kind": "adds"
-     }
-    },
-    {
      "id": "magic-damage-per-dagger",
      "label": "Magic Damage Per Dagger",
      "damageType": "magic",
@@ -14345,27 +14187,6 @@
       "kind": "adds"
      },
      "hits": 1
-    },
-    {
-     "id": "maximum-magic-damage",
-     "label": "Maximum Magic Damage",
-     "damageType": "magic",
-     "base": {
-      "scaling": "linear",
-      "from": 375,
-      "to": 750
-     },
-     "ratios": [
-      {
-       "stat": "AP",
-       "scaling": "linear",
-       "from": 285,
-       "to": 285
-      }
-     ],
-     "relation": {
-      "kind": "adds"
-     }
     }
    ],
    "verification": "incomplete",
@@ -15468,32 +15289,6 @@
      "relation": {
       "kind": "alternativeTo",
       "componentId": "physical-damage"
-     }
-    },
-    {
-     "id": "maximum-damage",
-     "label": "Maximum Damage",
-     "damageType": "physical",
-     "base": {
-      "scaling": "linear",
-      "from": 63,
-      "to": 171
-     },
-     "ratios": [
-      {
-       "stat": "bonusAD",
-       "scaling": "explicit",
-       "perRank": [
-        117,
-        117,
-        117,
-        117,
-        117
-       ]
-      }
-     ],
-     "relation": {
-      "kind": "adds"
      }
     }
    ],
@@ -17271,32 +17066,6 @@
      }
     },
     {
-     "id": "maximum-nail-damage",
-     "label": "Maximum Nail Damage",
-     "damageType": "magic",
-     "base": {
-      "scaling": "linear",
-      "from": 120,
-      "to": 216
-     },
-     "ratios": [
-      {
-       "stat": "AP",
-       "scaling": "explicit",
-       "perRank": [
-        60,
-        60,
-        60,
-        60,
-        60
-       ]
-      }
-     ],
-     "relation": {
-      "kind": "adds"
-     }
-    },
-    {
      "id": "one-stack-bonus-damage",
      "label": "One Stack Bonus Damage",
      "damageType": "magic",
@@ -18457,18 +18226,20 @@
      "relation": {
       "kind": "adds"
      },
-     "hits": 16
+     "hits": 16,
+     "overTime": {
+      "sourceSays": "Malzahar infects the target enemy's mind, dealing magic damage every 0.25 seconds over 4 seconds"
+     }
     }
    ],
-   "verification": "incomplete",
+   "verification": "derived",
    "provenance": {
     "source": "Template:Data Malzahar/Malefic Visions",
     "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Malzahar/Malefic%20Visions",
     "patch": "16.16.1",
     "fetched": "2026-08-14"
    },
-   "sourceRevision": 4015185,
-   "notes": "this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). Nobody has yet read the source sentence to establish its full-duration shape, so no figure is published rather than one published in the wrong place."
+   "sourceRevision": 4015185
   },
   {
    "champion": "Maokai",
@@ -18805,32 +18576,6 @@
       "componentId": "primary-physical-damage"
      },
      "hits": 1
-    },
-    {
-     "id": "maximum-single-target-damage",
-     "label": "Maximum Single-Target Damage",
-     "damageType": "physical",
-     "base": {
-      "scaling": "linear",
-      "from": 35,
-      "to": 175
-     },
-     "ratios": [
-      {
-       "stat": "totalAD",
-       "scaling": "explicit",
-       "perRank": [
-        122.5,
-        122.5,
-        122.5,
-        122.5,
-        122.5
-       ]
-      }
-     ],
-     "relation": {
-      "kind": "adds"
-     }
     }
    ],
    "verification": "incomplete",
@@ -19363,18 +19108,20 @@
      "relation": {
       "kind": "adds"
      },
-     "hits": 8
+     "hits": 8,
+     "overTime": {
+      "sourceSays": "Miss Fortune casts a storm of bullets at the target location for 2 seconds, dealing magic damage every 0.25 seconds to enemies within"
+     }
     }
    ],
-   "verification": "incomplete",
+   "verification": "derived",
    "provenance": {
     "source": "Template:Data Miss Fortune/Make It Rain",
     "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Miss%20Fortune/Make%20It%20Rain",
     "patch": "16.16.1",
     "fetched": "2026-08-14"
    },
-   "sourceRevision": 3936384,
-   "notes": "this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). Nobody has yet read the source sentence to establish its full-duration shape, so no figure is published rather than one published in the wrong place."
+   "sourceRevision": 3936384
   },
   {
    "champion": "Miss Fortune",
@@ -19870,7 +19617,10 @@
      "relation": {
       "kind": "adds"
      },
-     "hits": 10
+     "hits": 10,
+     "overTime": {
+      "sourceSays": "the dagger inflicts a bleed that deals bonus physical damage every 0.5 seconds over 5 seconds"
+     }
     },
     {
      "id": "minimum-bonus-physical-damage",
@@ -21100,18 +20850,20 @@
      "relation": {
       "kind": "adds"
      },
-     "hits": 4
+     "hits": 4,
+     "overTime": {
+      "sourceSays": "the trap springs upon contact with an enemy, dealing magic damage every second over 4 seconds"
+     }
     }
    ],
-   "verification": "incomplete",
+   "verification": "derived",
    "provenance": {
     "source": "Template:Data Nidalee/Bushwhack",
     "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Nidalee/Bushwhack",
     "patch": "16.16.1",
     "fetched": "2026-08-14"
    },
-   "sourceRevision": 4015217,
-   "notes": "this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). Nobody has yet read the source sentence to establish its full-duration shape, so no figure is published rather than one published in the wrong place."
+   "sourceRevision": 4015217
   },
   {
    "champion": "Nidalee",
@@ -21579,18 +21331,20 @@
      "relation": {
       "kind": "adds"
      },
-     "hits": 4
+     "hits": 4,
+     "overTime": {
+      "sourceSays": "Nocturne forms a tether between himself and the target for 2 seconds, during which the target takes magic damage every 0.5 seconds over the duration"
+     }
     }
    ],
-   "verification": "incomplete",
+   "verification": "derived",
    "provenance": {
     "source": "Template:Data Nocturne/Unspeakable Horror",
     "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Nocturne/Unspeakable%20Horror",
     "patch": "16.16.1",
     "fetched": "2026-08-14"
    },
-   "sourceRevision": 4015219,
-   "notes": "this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). Nobody has yet read the source sentence to establish its full-duration shape, so no figure is published rather than one published in the wrong place."
+   "sourceRevision": 4015219
   },
   {
    "champion": "Nocturne",
@@ -24462,18 +24216,20 @@
      "relation": {
       "kind": "adds"
      },
-     "hits": 8
+     "hits": 8,
+     "overTime": {
+      "sourceSays": "Rell creates a gravitational field around her for the next 2 seconds that deals magic damage every 0.25 seconds to nearby enemies"
+     }
     }
    ],
-   "verification": "incomplete",
+   "verification": "derived",
    "provenance": {
     "source": "Template:Data Rell/Magnet Storm",
     "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Rell/Magnet%20Storm",
     "patch": "16.16.1",
     "fetched": "2026-08-14"
    },
-   "sourceRevision": 4008010,
-   "notes": "this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). Nobody has yet read the source sentence to establish its full-duration shape, so no figure is published rather than one published in the wrong place."
+   "sourceRevision": 4008010
   },
   {
    "champion": "Renata Glasc",
@@ -24817,18 +24573,20 @@
      "relation": {
       "kind": "adds"
      },
-     "hits": 30
+     "hits": 30,
+     "overTime": {
+      "sourceSays": "Renekton empowers himself for 15 seconds, and during this time he deals magic damage every 0.5 seconds to nearby enemies"
+     }
     }
    ],
-   "verification": "incomplete",
+   "verification": "derived",
    "provenance": {
     "source": "Template:Data Renekton/Dominus",
     "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Renekton/Dominus",
     "patch": "16.16.1",
     "fetched": "2026-08-14"
    },
-   "sourceRevision": 3963895,
-   "notes": "this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). Nobody has yet read the source sentence to establish its full-duration shape, so no figure is published rather than one published in the wrong place."
+   "sourceRevision": 3963895
   },
   {
    "champion": "Rengar",
@@ -25679,55 +25437,9 @@
      "relation": {
       "kind": "adds"
      },
-     "hits": 1
-    },
-    {
-     "id": "magic-damage-per-second",
-     "label": "Magic Damage per Second",
-     "damageType": "magic",
-     "base": {
-      "scaling": "linear",
-      "from": 120,
-      "to": 280
-     },
-     "ratios": [
-      {
-       "stat": "AP",
-       "scaling": "explicit",
-       "perRank": [
-        35,
-        35,
-        35
-       ]
-      }
-     ],
-     "relation": {
-      "kind": "adds"
-     },
-     "hits": 1
-    },
-    {
-     "id": "maximum-magic-damage",
-     "label": "Maximum Magic Damage",
-     "damageType": "magic",
-     "base": {
-      "scaling": "linear",
-      "from": 600,
-      "to": 1400
-     },
-     "ratios": [
-      {
-       "stat": "AP",
-       "scaling": "explicit",
-       "perRank": [
-        175,
-        175,
-        175
-       ]
-      }
-     ],
-     "relation": {
-      "kind": "adds"
+     "hits": 20,
+     "overTime": {
+      "sourceSays": "enemies struck by the impact or within the field are marked Burning for 1 second, taking magic damage every 0.25 seconds, and may be Burning for up to 5 seconds, for a total of 20 instances of its effect"
      }
     }
    ],
@@ -31942,18 +31654,20 @@
      "relation": {
       "kind": "adds"
      },
-     "hits": 8
+     "hits": 8,
+     "overTime": {
+      "sourceSays": "Udyr summons a blizzard around himself for 4 seconds that deals magic damage every 0.5 seconds to nearby enemies"
+     }
     }
    ],
-   "verification": "incomplete",
+   "verification": "derived",
    "provenance": {
     "source": "Template:Data Udyr/Wingborne Storm",
     "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Udyr/Wingborne%20Storm",
     "patch": "16.16.1",
     "fetched": "2026-08-14"
    },
-   "sourceRevision": 4008208,
-   "notes": "this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). Nobody has yet read the source sentence to establish its full-duration shape, so no figure is published rather than one published in the wrong place."
+   "sourceRevision": 4008208
   },
   {
    "champion": "Urgot",
@@ -32393,48 +32107,6 @@
      "hits": 1
     },
     {
-     "id": "bonus-magic-damage-at-max-stacks",
-     "label": "Bonus Magic Damage at Max Stacks",
-     "damageType": "magic",
-     "base": {
-      "scaling": "explicit",
-      "perRank": [
-       0,
-       0,
-       0,
-       0,
-       0
-      ]
-     },
-     "ratios": [
-      {
-       "stat": "maxHP",
-       "owner": "target",
-       "multipliers": [
-        {
-         "per": "AP",
-         "per100": {
-          "scaling": "explicit",
-          "perRank": [
-           3.9000000000000004,
-           3.9000000000000004,
-           3.9000000000000004,
-           3.9000000000000004,
-           3.9000000000000004
-          ]
-         }
-        }
-       ],
-       "scaling": "linear",
-       "from": 9,
-       "to": 15
-      }
-     ],
-     "relation": {
-      "kind": "adds"
-     }
-    },
-    {
      "id": "maximum-bonus-magic-damage-per-stack",
      "label": "Maximum Bonus Magic Damage per Stack",
      "damageType": "magic",
@@ -32476,48 +32148,6 @@
       "kind": "adds"
      },
      "hits": 1
-    },
-    {
-     "id": "maximum-bonus-magic-damage-at-max-stacks",
-     "label": "Maximum Bonus Magic Damage at Max Stacks",
-     "damageType": "magic",
-     "base": {
-      "scaling": "explicit",
-      "perRank": [
-       0,
-       0,
-       0,
-       0,
-       0
-      ]
-     },
-     "ratios": [
-      {
-       "stat": "maxHP",
-       "owner": "target",
-       "multipliers": [
-        {
-         "per": "AP",
-         "per100": {
-          "scaling": "explicit",
-          "perRank": [
-           5.8500000000000005,
-           5.8500000000000005,
-           5.8500000000000005,
-           5.8500000000000005,
-           5.8500000000000005
-          ]
-         }
-        }
-       ],
-       "scaling": "linear",
-       "from": 13.5,
-       "to": 22.5
-      }
-     ],
-     "relation": {
-      "kind": "adds"
-     }
     },
     {
      "id": "active-minimum-magic-damage",
@@ -33872,7 +33502,10 @@
      "relation": {
       "kind": "adds"
      },
-     "hits": 1
+     "hits": 6,
+     "overTime": {
+      "sourceSays": "the singularity remains active as a moving storm for 6.5 seconds, striking a bolt of electricity onto enemies within it every second to deal magic damage"
+     }
     }
    ],
    "verification": "incomplete",
@@ -33990,7 +33623,10 @@
      "relation": {
       "kind": "adds"
      },
-     "hits": 4
+     "hits": 4,
+     "overTime": {
+      "sourceSays": "Vladimir sinks into a pool of blood for 2 seconds, and enemies within the pool are dealt magic damage every 0.5 seconds over the duration"
+     }
     }
    ],
    "verification": "incomplete",
@@ -34006,8 +33642,7 @@
      "field": "components[0].ratios[0].owner (bonusHP)",
      "why": "the source names bonusHP and never says whose, and no other source states it"
     }
-   ],
-   "notes": "this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). Nobody has yet read the source sentence to establish its full-duration shape, so no figure is published rather than one published in the wrong place."
+   ]
   },
   {
    "champion": "Vladimir",
@@ -35554,34 +35189,7 @@
      "relation": {
       "kind": "adds"
      },
-     "hits": 8
-    },
-    {
-     "id": "maximum-bonus-damage",
-     "label": "Maximum Bonus Damage",
-     "damageType": "magic",
-     "base": {
-      "scaling": "linear",
-      "from": 70,
-      "to": 130
-     },
-     "ratios": [
-      {
-       "stat": "bonusAD",
-       "scaling": "linear",
-       "from": 20,
-       "to": 20
-      },
-      {
-       "stat": "AP",
-       "scaling": "linear",
-       "from": 60,
-       "to": 60
-      }
-     ],
-     "relation": {
-      "kind": "adds"
-     }
+     "hits": 4
     }
    ],
    "verification": "derived",
@@ -36204,18 +35812,20 @@
      "relation": {
       "kind": "adds"
      },
-     "hits": 4
+     "hits": 4,
+     "overTime": {
+      "sourceSays": "upon reaching maximum range the bead expands and lingers in place for 1 second, and while lingering it deals a share of the impact damage as magic damage to nearby enemies every 0.25 seconds"
+     }
     }
    ],
-   "verification": "incomplete",
+   "verification": "derived",
    "provenance": {
     "source": "Template:Data Yunara/Arc of Judgment",
     "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Yunara/Arc%20of%20Judgment",
     "patch": "16.16.1",
     "fetched": "2026-08-14"
    },
-   "sourceRevision": 4008650,
-   "notes": "this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). Nobody has yet read the source sentence to establish its full-duration shape, so no figure is published rather than one published in the wrong place."
+   "sourceRevision": 4008650
   },
   {
    "champion": "Yunara",
@@ -38097,27 +37707,6 @@
        "scaling": "linear",
        "from": 45,
        "to": 45
-      }
-     ],
-     "relation": {
-      "kind": "adds"
-     }
-    },
-    {
-     "id": "maximum-mixed-damage",
-     "label": "Maximum Mixed Damage",
-     "damageType": "magic",
-     "base": {
-      "scaling": "linear",
-      "from": 140,
-      "to": 460
-     },
-     "ratios": [
-      {
-       "stat": "AP",
-       "scaling": "linear",
-       "from": 90,
-       "to": 90
       }
      ],
      "relation": {

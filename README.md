@@ -18,12 +18,12 @@ On patch 16.16.1, across 937 ability entries and 173 champions:
 | | |
 |---:|---|
 | 10 | independently re-derived (`verified`) — shown |
-| 457 | checked against the source three ways (`derived`) — shown |
-| 241 | not yet modelled — **not shown**, and each says what is missing |
+| 474 | checked against the source three ways (`derived`) — shown |
+| 224 | not yet modelled — **not shown**, and each says what is missing |
 | 23 | impossible to complete, because no source records the fact — **not shown** |
 | 206 | deal no damage, so there is nothing to have evidence about |
 
-**264 of the 264 refused abilities name what is missing**, not merely that
+**247 of the 247 refused abilities name what is missing**, not merely that
 something is. An ability that cannot be modelled contributes nothing to a total and is named
 in the result it is missing from.
 <!-- coverage:end -->

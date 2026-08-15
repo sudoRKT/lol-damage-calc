@@ -77,6 +77,30 @@ describe('capability/the committed figures match the data and the engine', () =>
     const fresh = derive();
     // If this fails, paste what it prints into capability.json AND update the sentences on the
     // landing page and /checks/ that state the figure. A number moving usually means a claim moved.
+    //
+    // ═══ THREE FIGURES MOVED ON 2026-08-15, AND HERE IS WHY ═══
+    //
+    // A re-pinned number with no stated cause is indistinguishable from a number adjusted to make
+    // a test pass, so the cause is recorded here rather than only in the commit.
+    //
+    //   abilityComponentsOverTime   4 -> 27
+    //   abilitiesWithOverTime       4 -> 27
+    //   perTickAbilitiesHeldBack   37 -> 20
+    //
+    // All three are one event: the curated file was merged, carrying the per-tick READINGS that
+    // had been sitting unmerged in the proposal (DATA-SOURCES §58, §59, §62). Seventeen abilities
+    // whose source sentence a person had read moved from `incomplete` back to `derived` with their
+    // damage marked recurring — so the held-back count fell by exactly those 17, and the
+    // marked-as-recurring count rose by 23 components across 23 abilities.
+    //
+    // THE DIRECTION MATTERS. `perTickAbilitiesHeldBack` FALLING is evidence arriving, not a check
+    // weakening: each of the 17 is in `PER_TICK_READS` with a verdict, a corroborated or settled
+    // count, and a verbatim source quote. `abilitiesWithOverTime` RISING is the same event seen
+    // from the other side. Neither figure was touched by hand; both are recomputed on every run
+    // by the assertion below, which is why this file cannot drift from the data.
+    //
+    // The consequence a reader sees: SPECIFICATION §3.8's damage-over-time line carries a figure
+    // for the first time. DATA-SOURCES §56 measured it at zero across all 173 champions.
     expect(fresh, `capability.json is stale. Current:\n${JSON.stringify(fresh, null, 2)}`).toEqual(
       committed,
     );

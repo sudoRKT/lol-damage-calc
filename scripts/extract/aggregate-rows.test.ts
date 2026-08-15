@@ -291,8 +291,15 @@ describe('the read population is anchored to entries that actually exist', () =>
         missing.push(`${key}: no such entry`);
         continue;
       }
+      // THE CORRECTION HAS LANDED, so every named aggregate must be GONE. This assertion was
+      // inverted until 2026-08-15: it required each id to be PRESENT, which is true only of the
+      // broken file and could never be true of the fixed one. A test that passes only against
+      // broken data is worse than no test — it goes quietly green again the moment someone
+      // regenerates the proposal from a stale batch, which is the exact reversion it should catch.
       for (const id of read.aggregates) {
-        if (!found.components.some((k) => k.id === id)) missing.push(`${key}: no component ${id}`);
+        if (found.components.some((k) => k.id === id)) {
+          missing.push(`${key}: aggregate ${id} is STILL STORED — the correction has been reverted`);
+        }
       }
     }
     expect(missing).toEqual([]);
@@ -308,14 +315,70 @@ describe('the read population is anchored to entries that actually exist', () =>
     expect(unread).toEqual([]);
   });
 
-  it('finds the twelve entries DATA-SOURCES §60 counted, and no more', () => {
+  it('finds NOTHING in tier 1 — the twelve §60 counted are corrected in the live file', () => {
     const audit = findRedundantAdditions(file.abilities);
-    const entries = new Set(
-      audit.findings
-        .filter((f) => f.tier === 1)
-        .map((f) => `${f.champion}/${f.slot}/${f.abilityName}`),
-    );
-    expect(entries.size).toBe(12);
+    const stillFiring = audit.findings
+      .filter((f) => f.tier === 1)
+      .map((f) => `${f.champion}/${f.slot}/${f.abilityName} [${f.label}]`);
+    expect(stillFiring).toEqual([]);
+  });
+
+  it('AND WOULD FIND ALL TWELVE AGAIN IF THE CORRECTION WERE REVERTED', () => {
+    // THE OTHER HALF, and the reason the three tests above are not enough on their own.
+    // "Tier 1 is empty" is also what a detector that has stopped working says. This reintroduces
+    // the defect into each of the twelve — a synthetic aggregate row, twice one of the entry's
+    // own remaining additive components, labelled and related exactly as the real ones were — and
+    // requires gate 8 to catch every one.
+    //
+    // It is built from the LIVE file rather than from `merge-report.json`, deliberately: that
+    // report lives under `build/`, which is git-ignored, so a test resting on it would pass or
+    // fail depending on whether someone had run the harvester lately.
+    // Doubling has to honour the ARM. Rumble R's ratio is `explicit` with a per-rank array and
+    // no from/to, so doubling only `from`/`to` left the ratio untouched and gate 8 correctly
+    // refused the fixture — a component that restates a sibling restates ALL of it. That was the
+    // fixture being wrong, not the detector, and it is worth the four lines to get right.
+    const double = (sc: { scaling: string; from?: number; to?: number; perRank?: number[] }) =>
+      sc.scaling === 'explicit'
+        ? { scaling: 'explicit' as const, perRank: (sc.perRank ?? []).map((v) => v * 2) }
+        : { scaling: 'linear' as const, from: (sc.from ?? 0) * 2, to: (sc.to ?? 0) * 2 };
+
+    const caught: string[] = [];
+    const notCaught: string[] = [];
+
+    for (const key of READ_POPULATION.keys()) {
+      const [champion, slot, ...rest] = key.split('/');
+      const abilityName = rest.join('/');
+      const entry = file.abilities.find(
+        (a) => a.champion === champion && a.slot === slot && a.abilityName === abilityName,
+      )!;
+      const part = entry.components.find((k) => k.relation?.kind === 'adds' && k.base);
+      if (!part) continue; // Varus W's rows are all percentage-of-health; nothing to double.
+
+      const reverted: CuratedAbility = {
+        ...entry,
+        components: [
+          ...entry.components,
+          {
+            ...part,
+            id: 'reverted-maximum',
+            label: 'Maximum Reverted Damage',
+            base: double(part.base!),
+            ratios: (part.ratios ?? []).map((r) => ({ ...r, ...double(r) })),
+            relation: { kind: 'adds' },
+          },
+        ],
+      } as CuratedAbility;
+
+      const found = findRedundantAdditions([reverted]).findings.filter(
+        (f) => f.tier === 1 && f.componentId === 'reverted-maximum',
+      );
+      (found.length === 1 ? caught : notCaught).push(key);
+    }
+
+    expect({ notCaught, caughtAtLeast: caught.length >= 11 }).toEqual({
+      notCaught: [],
+      caughtAtLeast: true,
+    });
   });
 });
 
@@ -653,17 +716,60 @@ describe('applyReadAggregates relates a confirmed aggregate to the part it aggre
     ]);
   });
 
-  it('gate 8 finds nothing left in the read population once the pass has run', () => {
+  it('the pass is IDEMPOTENT against the corrected file — it finds nothing left to drop', () => {
+    // Re-running the pass on data it has already corrected must be a no-op. Before 2026-08-15
+    // this asserted `dropped.length > 0`, which only held while the file was still broken.
     const file = JSON.parse(readFileSync('curated/curated-data.json', 'utf8')) as {
       abilities: CuratedAbility[];
     };
     const copy = JSON.parse(JSON.stringify(file.abilities)) as CuratedAbility[];
     const out = applyReadAggregates(copy);
-    expect(out.dropped.length).toBeGreaterThan(0);
 
-    const stillFiring = findRedundantAdditions(copy)
-      .findings.filter((f) => f.tier === 1)
-      .map((f) => `${f.champion}/${f.slot}/${f.abilityName} [${f.componentId}]`);
-    expect(stillFiring).toEqual([]);
+    expect(out.dropped).toEqual([]);
+    expect(findRedundantAdditions(copy).findings.filter((f) => f.tier === 1)).toEqual([]);
+  });
+
+  it('AND STILL DROPS THEM when handed data where the aggregates are back', () => {
+    // The pass proved to still work, not assumed to. A hand-built entry in the pre-correction
+    // shape — Zoe E exactly as it was stored on 2026-08-14 — must lose its aggregate row.
+    const broken: CuratedAbility[] = [
+      {
+        champion: 'Zoe',
+        slot: 'E',
+        abilityName: 'Sleepy Trouble Bubble',
+        instanceType: 'damaging-ability',
+        damageType: 'magic',
+        maxRank: 5,
+        verification: 'derived',
+        provenance: {
+          source: 'Template:Data Zoe/Sleepy Trouble Bubble',
+          url: 'https://example.invalid',
+          patch: '16.16.1',
+          fetched: '2026-08-15',
+        },
+        components: [
+          {
+            id: 'magic-damage',
+            label: 'Magic Damage',
+            damageType: 'magic',
+            base: { scaling: 'linear', from: 70, to: 230 },
+            ratios: [{ stat: 'AP', scaling: 'linear', from: 45, to: 45 }],
+            relation: { kind: 'adds' },
+          },
+          {
+            id: 'maximum-mixed-damage',
+            label: 'Maximum Mixed Damage',
+            damageType: 'magic',
+            base: { scaling: 'linear', from: 140, to: 460 },
+            ratios: [{ stat: 'AP', scaling: 'linear', from: 90, to: 90 }],
+            relation: { kind: 'adds' },
+          },
+        ],
+      } as CuratedAbility,
+    ];
+
+    const out = applyReadAggregates(broken);
+    expect(out.dropped.map((d) => d.componentId)).toEqual(['maximum-mixed-damage']);
+    expect(broken[0].components.map((k) => k.id)).toEqual(['magic-damage']);
   });
 });
