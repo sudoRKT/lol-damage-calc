@@ -24,7 +24,32 @@
  * Shell
  * -------------------------------------------------------------------------- */
 
-/* THE BEZEL. Until 2026-08-14 the burndown had no frame at all — the plot inside it did, but
+/* ═══ WHAT THIS PANEL COSTS IN PAGE LENGTH — MEASURED IN CHROME, /calculator/, 2026-08-15 ═══
+ *
+ * Recorded here rather than only in a report, and NOT acted on: page length is being handled
+ * separately and `src/ui/page-length-register.test.ts` is lead-only. Default scenario,
+ * `.burn`.getBoundingClientRect().height, borders included.
+ *
+ *   1440×1100 — panel 662.75px, of a 5,641px page (5.13 screens). The panel is 11.7% of it.
+ *   375×812   — panel 852.91px, of a 10,386px page (12.79 screens). The panel is 8.2% of it.
+ *
+ * Every pixel accounted for, so "could anything come out" is answerable rather than a matter of
+ * taste (1440 first, 375 in brackets where it differs):
+ *
+ *   border 1 + padding 16 · head 85.58 [203.56] + gap 12 · plot 422.78 [479.56] · verdicts
+ *   margin 16 + 92.39 [107.78] · padding 16 + border 1
+ *
+ * and inside the plot: border 1 + padding 16 · frame 320 (`--measure-plot-block`) · x-axis
+ * margin 15 + 23.39 + 15 · caption 15.39 (its 8px top margin COLLAPSES into the axis's 15) ·
+ * [stack margin 12 + 44.78 — the riser labels below §4b's breakpoint] · padding 16 + border 1.
+ *
+ * STRUCTURAL SPACE IS 122px AT 1440 AND 134px AT 375 — 18.4% and 15.7% of the panel. All of it
+ * is a DESIGN.md §4 step doing separation work, and all of it is declared, WITH ONE EXCEPTION
+ * worth 30px at both widths: see the note on `.burn__xaxis`. That 30px is the only vertical
+ * space in this panel that no rule asked for, no token names, and whose removal would remove no
+ * information a reader needs. It is left in place and raised, not taken.
+ *
+ * THE BEZEL. Until 2026-08-14 the burndown had no frame at all — the plot inside it did, but
    the signature element itself sat bare on the page canvas between two framed panels, which
    made the product's remembered object (§7) the one thing on the page that was not an object.
    DESIGN.md §5 calls --radius-panel "the outer corners of a panel / the instrument bezel", and
@@ -496,7 +521,25 @@
   margin-inline-start: calc(var(--space-7) + var(--space-2));
   /* NO TOP MARGIN ANY MORE: the tick below is what holds the names off the plot, and it is the
    * same 8px the margin was. The axis is no taller than it was — and at narrow widths it is one
-   * line SHORTER, because the names no longer wrap. */
+   * line SHORTER, because the names no longer wrap.
+   *
+   * ═══ THAT IS TRUE OF THIS FILE AND FALSE OF THE PAGE — MEASURED 2026-08-15 ═══
+   *
+   * This element is an `<ol>`, and the user-agent stylesheet gives a list `margin-block: 1em`.
+   * The rule below resets `padding` and sets `margin-inline-start`, and never touches
+   * `margin-block`. In Chrome on /calculator/, `getComputedStyle('.burn__xaxis')` reads
+   * `margin-top: 15px; margin-bottom: 15px` at BOTH 1440px and 375px — 1em of the inherited
+   * 15px `--type-body-l`. So the comment above describes the declaration and the browser
+   * disagrees about the render, which is the whole reason a stylesheet is not evidence.
+   *
+   * WHAT IT COSTS: 30px of the panel's height at 1440 (4.5%) and at 375 (3.5%) — the bottom 15
+   * partly absorbs the caption's 8px top margin by margin collapse, so the true net is 22px.
+   * It is also the one vertical space in this panel that is not a §4 spacing step: the scale
+   * has no 15px, because 15px is not a design decision anyone took.
+   *
+   * DELIBERATELY NOT FIXED HERE. Removing it changes page length, which is being handled
+   * separately by the lead, and `src/ui/page-length-register.test.ts` is lead-only. Raised, not
+   * taken. The fix, when it is wanted, is one declaration: `margin-block: 0`. */
   list-style: none;
   padding: 0;
 }
