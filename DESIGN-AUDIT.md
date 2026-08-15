@@ -218,13 +218,25 @@ Not DESIGN.md gaps, but each occupies space and so belongs in any layout rework 
 bolted on afterwards. **DEFINITION:** text search over `document.body.innerText` on the default
 scenario.
 
-| Requirement | Source | Present |
-|---|---|---|
-| The Riot disclaimer — "not endorsed by Riot Games…" | SPECIFICATION §15, "readily visible" | **No** |
-| The scope disclaimer — "does not account for crowd control…" | SPECIFICATION §15, "displayed alongside results" | **No** |
-| Report-a-wrong-number control, pre-populated with the scenario | SPECIFICATION §8, "every result carries" | **No** |
+| Requirement | Source | Present when audited | **Present now (2026-08-15)** |
+|---|---|---|---|
+| The Riot disclaimer — "not endorsed by Riot Games…" | SPECIFICATION §15, "readily visible" | **No** | **Yes** — `.foot__notice` in `SiteFooter`, so on all 8 pages |
+| The scope disclaimer — "does not account for crowd control…" | SPECIFICATION §15, "displayed alongside results" | **No** | **Yes** — `.notices__scope`, inside the result region |
+| Report-a-wrong-number control, pre-populated with the scenario | SPECIFICATION §8, "every result carries" | **No** | **Yes** — `.notices__go`, a pre-filled issue carrying a working scenario link |
 
 The excluded-mechanics panel (§11) **is** present.
+
+**ALL THREE LANDED IN COMMIT `1e3ba36` AND THIS TABLE READ "No / No / No" UNTIL 2026-08-15.** They
+were built roughly one minute after this file was written — the audit timestamps 20:21 and the shell
+20:22 — so the table was stale almost immediately and nothing re-checked it. Both disclaimer strings
+now match SPECIFICATION §15 character for character, verified against the live page rather than the
+source; the report control also carries the patch number, the matchup, the burst total, the verdict,
+the verification statuses and the exclusions, with a no-GitHub-account fallback to `/report/` on the
+same scenario fragment.
+
+**This is the third stale claim found in this project's own documents on 2026-08-15**, after
+CLAUDE.md's fold headline and its `KNOWN_DRIFT` paragraph. Each one sent work somewhere it was not
+needed. A "No" in a document is a measurement with a date on it, not a standing fact.
 
 ---
 
@@ -346,8 +358,11 @@ buys the least, and requires reversing a written argument to get it.
    is better done once, after the layout settles. **Option A adopted 2026-08-14** by the project
    owner, on the comprehension finding rather than on the cue being wrong.
 3. **The instrument details.** `--elev-1`'s machined edge; the stray asymmetric radius.
-4. **Reserved containers and the missing requirements.** Ad slots, both disclaimers, the report
-   control — all layout-affecting, so they should land before anything is called finished.
+4. ~~**Reserved containers and the missing requirements.** Ad slots, both disclaimers, the report
+   control — all layout-affecting, so they should land before anything is called finished.~~
+   **THE THREE REQUIREMENTS ARE DONE** — commit `1e3ba36`, confirmed on the live page 2026-08-15;
+   see the corrected table in §2. **Ad slots remain**, and they are gated: PLAN.md §6 fixes that
+   advertising cannot be switched on before the privacy and cookie policies exist.
 5. **The mobile horizontal overflow** (section 6.5). A SPECIFICATION §10 violation, pre-existing,
    and the only item on this list that is a spec breach rather than a design shortfall.
 6. **§9's portrait tint** — cool toward `--bg-panel` rather than plain greyscale. Smallest item.

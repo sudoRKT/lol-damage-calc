@@ -229,14 +229,58 @@
   border: var(--border-hair);
 }
 
-/* A readout grid, not a card list: the figure column is fixed so every number shares an edge,
-   which is what makes a column of figures read as data (DESIGN.md §5). */
+/* A readout row, not a card: the figure column keeps a fixed width so every number shares an
+   edge, which is what makes a column of figures read as data (DESIGN.md §5).
+ *
+ * ═══ WHY THIS IS A WRAPPING FLEX LINE AND NO LONGER A THREE-COLUMN GRID (2026-08-15) ═══
+ *
+ * It was `grid-template-columns: auto auto minmax(0, 1fr)` — count, status mark, prose. On a
+ * phone that grid COLLAPSES THE PROSE TO NOTHING. Every figure below was measured on the live
+ * page at patch 16.16.1, over the 14 ledger rows this area draws (5 on the landing page, 9 on
+ * /checks/), and NOT calculated:
+ *
+ *   at 320px the row's content box is 212px. The count column is 48px (--space-7) and the two
+ *   column gaps are 32px, leaving 132px for the mark and the prose together. A grid `auto`
+ *   track is sized on MAX-content, and the mark's max-content is 175.06px, 179.14px, 211.88px
+ *   and 221.58px on the four longest rows — so the mark takes the whole 132px and THE PROSE
+ *   TRACK RESOLVES TO 0px.
+ *
+ * Measured before this change:
+ *
+ *   | at 375px | prose < 40px | prose exactly 0px | tallest row | page scrollWidth |
+ *   |---|---:|---:|---:|---:|
+ *   | the 14 rows | 5 | 3 | 1,059.17px | 401px against a 375px viewport |
+ *
+ *   | at 320px | prose < 40px | prose exactly 0px | tallest row | page scrollWidth |
+ *   |---|---:|---:|---:|---:|
+ *   | the 14 rows | 6 | 5 | 1,059.17px | 347px against a 320px viewport |
+ *
+ * THE SIDEWAYS SCROLL IS THIS RULE'S DOING, and that makes it a SPECIFICATION §10 breach rather
+ * than an ugly row: a prose cell resolved to 0px does not stop its text from painting, so each
+ * word overflows its own box and the overflow propagates up — `.ledger__meaning` scrollWidth 80px
+ * in a 0px box, `.ledger__row` 359px in 291px, `<main>` 401px in 375px.
+ *
+ * `minmax(0, auto)` on the mark track does NOT fix it, and neither does
+ * `minmax(min-content, auto)`: both were applied in a live browser at 375px and every track
+ * width and every row height came back identical to the digit. A 0 minimum still grows to its
+ * max-content in the maximize step, while the `1fr` track is expanded last out of what is left,
+ * which is nothing.
+ *
+ * A wrapping flex line is the fix that needs no width query (DESIGN.md §4b keeps the one query
+ * this product may write for the burndown's riser labels): the prose asks for
+ * --measure-list-column-min, and when that cannot sit beside the mark the line breaks and the
+ * prose takes the row's full width. That is the token's stated job — the narrowest a column may
+ * be before the layout drops to fewer columns — applied to a list rather than a grid. Nothing is
+ * shortened; the same sentence is printed at 320px, 375px and 1280px.
+ *
+ * The desktop rendering is UNCHANGED: measured at 1280px before and after, every row's count
+ * width, mark width, prose width, prose left edge and row height are identical to the digit on
+ * all 14 rows. The rows never shared column edges with each other in any case — each `li` was
+ * its own grid container — so no alignment was lost. The one edge that IS shared, the figures',
+ * is `.ledger__count`'s fixed 48px and it is kept. */
 .ledger__row {
-  display: grid;
-  /* The two `auto` tracks are a count and a status mark — both bounded, both allow-listed by
-     name in the overflow sweep. The third holds prose and is `minmax(0, 1fr)` so a long
-     unbroken string widens nothing but its own cell. */
-  grid-template-columns: auto auto minmax(0, 1fr);
+  display: flex;
+  flex-wrap: wrap;
   align-items: baseline;
   gap: var(--space-2) var(--space-4);
   padding: var(--space-3);
@@ -248,7 +292,10 @@
   border-block-end: 0;
 }
 
+/* The figure column. `flex: 0 0 auto` against a fixed minimum is what keeps every number on one
+   edge; it neither grows nor shrinks, at any width. */
 .ledger__count {
+  flex: 0 0 auto;
   font-family: var(--font-mono);
   font-weight: var(--weight-num-medium);
   font-size: var(--type-num-l);
@@ -258,7 +305,22 @@
   min-inline-size: var(--space-7);
 }
 
+/* The status mark and its label. It keeps its automatic minimum ON PURPOSE — that minimum is the
+   nowrap `.vstat`, and letting it shrink below that would spill the status out of the row rather
+   than wrap it. It fits: the widest mark minimum over the 14 rows is 120.73px, the `⊘ Cannot be
+   completed` one, so at 320px the count, the gap and that mark come to 184.73px against 212px of
+   row — 27.27px of headroom before the status itself would be forced to break.
+ *
+ * KNOWN AND MEASURED, not a surprise: a flex line breaks on an item's MAX-content, and the mark's
+ * max-content is `.ledger__of`'s, not `.vstat`'s — up to 221.58px. So where that label is long the
+ * whole mark drops to its own line and the figure sits alone above it. Measured: 2 of the 14 rows
+ * at 375px, 5 of 14 at 320px, 0 of 14 at 1280px. The row still reads top to bottom — figure,
+ * status, sentence — and nothing is truncated or shortened.
+ *
+ * The alternatives were worse: a min-content flex-basis wraps those labels at every width
+ * including desktop, and a width query is DESIGN.md §4b's to give, not this file's to take. */
 .ledger__mark {
+  flex: 0 1 auto;
   display: flex;
   flex-direction: column;
   gap: var(--space-0);
@@ -274,7 +336,15 @@
   color: var(--text-secondary);
 }
 
+/* The prose. It asks for --measure-list-column-min beside the mark and takes the whole row when
+   that will not fit — the line break IS the responsive behaviour, and it needs no breakpoint.
+   Measured after: 267px on every row at 375px and 212px on every row at 320px, where the grid gave
+   0px to three rows and 11.94px to another; unchanged to the digit at 1280px.
+   `min-inline-size: 0` keeps a long unbroken string inside its own cell instead of widening the
+   row, which is what `minmax(0, 1fr)` did for it while this was a grid. */
 .ledger__meaning {
+  flex: 1 1 var(--measure-list-column-min);
+  min-inline-size: 0;
   font-size: var(--type-body-s);
   line-height: var(--lh-body-s);
   font-weight: var(--weight-body-medium);

@@ -318,13 +318,20 @@ const TRACK_ALLOWLIST: Array<{ rule: string; track: string; reason: string }> = 
       'Both are short fixed strings authored in this area, and the grid is sized to them rather ' +
       'than to a container it could exceed.',
   },
-  {
-    rule: '.ledger__row',
-    track: 'auto',
-    reason:
-      'a count (at most four digits) and a verification status mark (a glyph and one of five ' +
-      'fixed labels). Both bounded; the prose column beside them is minmax(0, 1fr).',
-  },
+  // `.ledger__row` HELD AN ENTRY HERE UNTIL 2026-08-15 AND IS DELIBERATELY NOT REPLACED.
+  //
+  // The rule is no longer a grid, so it has no tracks to allow. Its exemption said the count and
+  // the status mark were "both bounded" — and the second half was wrong in a way this sweep could
+  // never have caught, because the sweep asks whether a track can be pushed wider than its share
+  // and not what happens to the track BESIDE it. A grid `auto` track is sized on max-content, and
+  // the mark's max-content is its longest label rather than the nowrap glyph line, so the mark
+  // took every pixel and the `minmax(0, 1fr)` prose track resolved to 0px on three of fourteen
+  // rows at 375px. Text in a 0px box still paints: the overflow reached `<main>` as 401px against
+  // a 375px viewport, on two pages, which is the SPECIFICATION §10 breach class DESIGN-AUDIT §6.5
+  // records against the calculator's table and had not measured here.
+  //
+  // The row is a wrapping flex line now (pages.css carries the measurements before and after).
+  // Nothing about it needs an exemption, and re-adding one would re-admit the same reasoning.
   {
     rule: '.burn__steps',
     track: 'auto',

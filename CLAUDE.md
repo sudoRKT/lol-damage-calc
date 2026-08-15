@@ -153,14 +153,22 @@ and its placement on the ability chip, are DESIGN.md's additions** — so both c
 touching the colour-alone rule. A player reads a chip marked `M` as an ability slot, not as magic
 damage.
 
-Three SPECIFICATION requirements are absent from the page and are layout-affecting, so they belong
-in a layout pass rather than being bolted on: the Riot disclaimer and the scope disclaimer (§15),
-and the report-a-wrong-number control (§8).
+The three SPECIFICATION requirements the audit recorded as absent — the Riot disclaimer and the
+scope disclaimer (§15), and the report-a-wrong-number control (§8) — **are all present and were
+built in commit `1e3ba36`, about a minute after the audit was written.** Confirmed on the live page
+2026-08-15. The audit's §2 table said "No" to all three until then; it now carries both the audited
+and the current column.
 
-**Item 1 of its order of work is DONE and item 2's decision is taken.** Items 3 (the instrument
-details), 4 (the missing requirements above), 5 (the mobile horizontal overflow — 204px at 375px,
-caused by the `.breakdown` table, and the only SPECIFICATION breach on the list) and 6 (the
-portrait tint) are outstanding.
+**Item 1 of its order of work is DONE, item 2's decision is taken, and item 4's three requirements
+are done** (ad slots remain, and PLAN.md §6 gates them behind the privacy and cookie policies).
+Items 3 (the instrument details), 5 (the mobile horizontal overflow) and 6 (the portrait tint) are
+outstanding.
+
+**THREE STALE CLAIMS IN THIS PROJECT'S OWN DOCUMENTS WERE FOUND ON 2026-08-15 IN ONE SESSION** —
+the fold headline above, the `KNOWN_DRIFT` paragraph below, and this requirements table. Each sent
+an agent to do work that was already done. **Before acting on any sentence here that says something
+is missing, absent, open or undecided, check the commit log.** These documents are briefings with
+dates on them, not standing facts.
 
 ## The guards
 
