@@ -19,7 +19,7 @@
 //
 // THE SEQUENCE HAS NO TIME IN IT (SPECIFICATION §3.2). Positions, not timestamps.
 
-import { useState } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 import type { ComboStep } from '../../types';
 import { AbilityChip } from '../art/AbilityChip';
 import { abilityIconUrl } from '../data/roster';
@@ -50,6 +50,48 @@ export interface ComboBuilderProps {
   championName: string;
 }
 
+/**
+ * WHERE FOCUS GOES WHEN A ROW IS REMOVED. One rule, stated once.
+ *
+ * **Focus moves to the same control on the row that takes the removed row's place; if the
+ * removed row was the last, to that control on the new last row; and if the list is now empty,
+ * to the control that adds a new row.**
+ *
+ * WHY THIS EXISTS. Measured on the live calculator on 2026-08-15: pressing a step's remove
+ * control left `document.activeElement === document.body`. The removal was announced correctly,
+ * so a screen reader user was told the step had gone and then had nowhere to stand, and a
+ * keyboard user restarted tabbing from the top of the document. The same measurement found the
+ * identical defect on the item picker's remove control, in both the attacker and defender
+ * panels — so this is a general rule about removal, not a quirk of the combo.
+ *
+ * THIS BELONGS IN A SHARED HELPER AND IS RAISED RATHER THAN REACHED FOR. `src/ui/items/` is
+ * another agent's area and `src/ui/primitives/` is the lead's, so this is implemented here in
+ * the shape a shared helper would take, ready to be lifted without changing its behaviour.
+ *
+ * WHAT IT MUST NOT COST. Reordering a step keeps focus on the moved card, because the list is
+ * keyed by step id and React therefore moves the existing DOM node rather than rebuilding it.
+ * Nothing here touches the reorder path: the intent below is armed only by a removal.
+ */
+function focusAfterRemoval(
+  list: HTMLElement | null,
+  controlSelector: string,
+  removedIndex: number,
+  fallback: HTMLElement | null,
+): 'row' | 'fallback' | 'nowhere' {
+  const controls = list ? [...list.querySelectorAll<HTMLElement>(controlSelector)] : [];
+  if (controls.length > 0) {
+    // The row that slid into the removed row's index. When the removed row was the last there
+    // is no such row, so `Math.min` steps back to the new last row instead.
+    controls[Math.min(removedIndex, controls.length - 1)]!.focus();
+    return 'row';
+  }
+  if (fallback) {
+    fallback.focus();
+    return 'fallback';
+  }
+  return 'nowhere';
+}
+
 export function ComboBuilder({
   abilities,
   steps,
@@ -61,6 +103,29 @@ export function ComboBuilder({
   const shelf = sortBySlot(abilities);
   const views = viewSteps(steps, abilities);
   const total = views.length;
+
+  const shelfRef = useRef<HTMLUListElement>(null);
+  const sequenceRef = useRef<HTMLOListElement>(null);
+  /** The index that was just removed, or null. Armed by a removal, consumed by the effect below. */
+  const removedIndex = useRef<number | null>(null);
+
+  // A LAYOUT effect, not a plain one: it runs before the browser paints, so focus never visibly
+  // sits on the body for a frame. It has no dependency array on purpose — it runs after every
+  // render and takes the intent only when one is armed, which is what makes the SECOND and third
+  // removal work as well as the first.
+  useLayoutEffect(() => {
+    const index = removedIndex.current;
+    if (index === null) return;
+    removedIndex.current = null;
+    focusAfterRemoval(
+      sequenceRef.current,
+      '.combo__control--remove',
+      index,
+      // The list is empty, so there is no row to stand on. The shelf's first control is where a
+      // user who has just emptied the combo is going next — it is the control that adds a row.
+      shelfRef.current?.querySelector<HTMLElement>('button') ?? null,
+    );
+  });
 
   const apply = (next: ComboStep[], said: string) => {
     onChange(next);
@@ -81,7 +146,7 @@ export function ComboBuilder({
       <h3 className="combo__eyebrow" id="combo-shelf-label">
         Abilities
       </h3>
-      <ul className="combo__shelf" aria-labelledby="combo-shelf-label">
+      <ul className="combo__shelf" aria-labelledby="combo-shelf-label" ref={shelfRef}>
         {shelf.map((ability) => (
           <li key={`${ability.slot}-${ability.abilityName}`}>
             <button
@@ -141,7 +206,7 @@ export function ComboBuilder({
           No steps yet. Choose an ability above to begin the combo.
         </p>
       ) : (
-        <ol className="combo__sequence" aria-labelledby="combo-sequence-label">
+        <ol className="combo__sequence" aria-labelledby="combo-sequence-label" ref={sequenceRef}>
           {views.map((view, index) => (
             <li className="combo__step" key={view.step.id}>
               {/* The step is one row and the controls that act on it are the next. The two
@@ -207,12 +272,15 @@ export function ComboBuilder({
                   type="button"
                   className="combo__control combo__control--remove"
                   aria-label={removeName(view, total)}
-                  onClick={() =>
+                  onClick={() => {
+                    // Arm the focus rule BEFORE the state change, so the layout effect that runs
+                    // after the re-render knows which index vanished. See `focusAfterRemoval`.
+                    removedIndex.current = index;
                     apply(
                       removeStep(steps, index),
                       `${view.label} removed. ${total - 1} steps remain.`,
-                    )
-                  }
+                    );
+                  }}
                 >
                   <span aria-hidden="true">✕</span>
                 </button>

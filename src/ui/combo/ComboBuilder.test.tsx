@@ -11,6 +11,7 @@
 
 import { describe, expect, it, afterEach, vi } from 'vitest';
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
+import { useState } from 'react';
 import { readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -177,5 +178,151 @@ describe('combo/the sequence is ordered, reorderable and removable', () => {
       .getAllByRole('button')
       .filter((b) => ((b.getAttribute('aria-label') ?? b.textContent) ?? '').trim() === '');
     expect(unnamed).toEqual([]);
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// REMOVING A STEP MUST LEAVE THE KEYBOARD SOMEWHERE TO STAND.
+//
+// Measured on the live calculator on 2026-08-15: after pressing a step's remove control,
+// `document.activeElement === document.body`. The announcement was correct, so a screen
+// reader user was told the step had gone and then had nowhere to stand, and a keyboard user
+// restarted tabbing from the top of the document.
+//
+// THE RULE, in one sentence: **when a row is removed, focus moves to the same control on the
+// row that takes its place; if the removed row was the last, to that control on the new last
+// row; and if the list is now empty, to the control that adds a new row.**
+//
+// These tests need the steps to be REAL state — the `mount` helper above passes a `vi.fn()`,
+// so the list never actually shortens and a focus assertion against it would prove nothing.
+// `Harness` holds the combo the way `App` does.
+// ─────────────────────────────────────────────────────────────────────────────
+
+function Harness({ initial }: { initial: readonly ComboStep[] }) {
+  const [steps, setSteps] = useState<readonly ComboStep[]>(initial);
+  return (
+    <ComboBuilder
+      abilities={ABILITIES}
+      steps={steps}
+      onChange={setSteps}
+      patch="16.16.1"
+      championName="Lux"
+    />
+  );
+}
+
+/** What `document.activeElement` is called, for a readable assertion. */
+function focusedName(): string {
+  const el = document.activeElement;
+  if (!el || el === document.body) return 'BODY (focus lost)';
+  return (el.getAttribute('aria-label') ?? el.textContent ?? '').trim();
+}
+
+/**
+ * Press a control the way a person does — WITH FOCUS ON IT.
+ *
+ * `fireEvent.click` alone does not focus its target, but every real activation does: a mouse
+ * click focuses the button before the click event, and a keyboard user is by definition already
+ * focused on it when they press Enter. Asserting about focus after a `fireEvent.click` that
+ * never focused anything measures jsdom, not the component — it reported the REORDER controls
+ * as losing focus when the live page shows they keep it.
+ */
+function press(button: HTMLElement) {
+  (button as HTMLButtonElement).focus();
+  fireEvent.click(button);
+}
+
+describe('combo/removing a step never drops focus to the page body', () => {
+  it('a MIDDLE step: focus lands on the remove control of the step that took its place', () => {
+    render(<Harness initial={STEPS} />);
+    press(
+      screen.getByRole('button', { name: 'Remove Q — Light Binding from position 2 of 3' }),
+    );
+    // Q was position 2 of E,Q,R. R slides up into position 2, so R's remove control is the
+    // one now standing where the pressed control stood.
+    expect(focusedName()).toBe('Remove R — Final Spark from position 2 of 2');
+  });
+
+  it('the LAST step: focus lands on the remove control of the new last step', () => {
+    render(<Harness initial={STEPS} />);
+    press(
+      screen.getByRole('button', { name: 'Remove R — Final Spark from position 3 of 3' }),
+    );
+    // Nothing took position 3, so focus falls back one row rather than to the body.
+    expect(focusedName()).toBe('Remove Q — Light Binding from position 2 of 2');
+  });
+
+  it('the FIRST step: focus lands on the remove control of the step that took position 1', () => {
+    render(<Harness initial={STEPS} />);
+    press(
+      screen.getByRole('button', { name: 'Remove E — Lucent Singularity from position 1 of 3' }),
+    );
+    expect(focusedName()).toBe('Remove Q — Light Binding from position 1 of 2');
+  });
+
+  it('the ONLY step: the list empties, so focus lands on the control that adds a step', () => {
+    render(<Harness initial={[{ id: 'q1', kind: 'ability', ref: 'Q' }]} />);
+    press(
+      screen.getByRole('button', { name: 'Remove Q — Light Binding from position 1 of 1' }),
+    );
+    // There is no row left to stand on, so focus goes to the first control on the shelf —
+    // the thing a user who has just emptied the combo is going to reach for next.
+    expect(focusedName()).toBe('Add P — Illumination, magic damage, to the combo');
+  });
+
+  it('removing REPEATEDLY keeps working — focus never reaches the body on the way down', () => {
+    // The regression this guards is a fix that only holds for the first removal, because the
+    // effect that restores focus is consumed once and never rearmed.
+    render(<Harness initial={STEPS} />);
+    const seen: string[] = [];
+    for (let i = 0; i < 3; i += 1) {
+      const removes = screen
+        .getAllByRole('button')
+        .filter((b) => (b.getAttribute('aria-label') ?? '').startsWith('Remove '));
+      press(removes[removes.length - 1]!);
+      seen.push(focusedName());
+    }
+    expect(seen).toEqual([
+      'Remove Q — Light Binding from position 2 of 2',
+      'Remove E — Lucent Singularity from position 1 of 1',
+      'Add P — Illumination, magic damage, to the combo',
+    ]);
+  });
+
+  it('the removal is still ANNOUNCED — moving focus did not replace the live region', () => {
+    // The announcement was the one thing that already worked. A focus fix that silences it
+    // would trade one defect for another.
+    render(<Harness initial={STEPS} />);
+    press(
+      screen.getByRole('button', { name: 'Remove Q — Light Binding from position 2 of 3' }),
+    );
+    expect(screen.getByRole('status').textContent).toBe(
+      'Q — Light Binding removed. 2 steps remain.',
+    );
+  });
+});
+
+describe('combo/REORDERING keeps focus on the card that moved — do not lose this', () => {
+  // Measured on the live page: pressing "move later" leaves focus on the same control, whose
+  // accessible name updates from "position 1 of 3" to "position 2 of 3", because the list is
+  // keyed by step id. It is a genuine strength and the focus work above must not cost it.
+  it('focus stays on the moved step, and its name reports the NEW position', () => {
+    render(<Harness initial={STEPS} />);
+    press(
+      screen.getByRole('button', {
+        name: 'Move E — Lucent Singularity later, from position 1 of 3',
+      }),
+    );
+    expect(focusedName()).toBe('Move E — Lucent Singularity later, from position 2 of 3');
+  });
+
+  it('focus stays on the moved step when it moves EARLIER too', () => {
+    render(<Harness initial={STEPS} />);
+    press(
+      screen.getByRole('button', {
+        name: 'Move R — Final Spark earlier, from position 3 of 3',
+      }),
+    );
+    expect(focusedName()).toBe('Move R — Final Spark earlier, from position 2 of 3');
   });
 });
