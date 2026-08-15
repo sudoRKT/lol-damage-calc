@@ -147,7 +147,19 @@ const CONTROLS: Record<string, Pass> = {
   'breakdown/breakdown.css .breakdown__state-toggle': {
     how: 'spacing',
     separationPx: 155.5,
-    measured: '87.2 x 15.2px at 375px, 2026-08-15. One per table row, far apart.',
+    measured:
+      '87.2 x 15.2px at 375px, 2026-08-15. One per table row, far apart. ' +
+      'POINTER-CONFIRMED 2026-08-16, and the answer is the opposite of the .defences__control ' +
+      'case: the hit area is slightly TALLER than the measured box, never shorter. Scanned in ' +
+      '0.25px steps it is 87.5 x 17.5px against a border box of 87.23 x 15.19px — the extra is ' +
+      "the label span's own line box (--lh-eyebrow gives it 17.00px), overflowing 1.00px above " +
+      'and 0.81px below, and being a descendant of the button those slivers still fire it. So ' +
+      '15.2px is the CONSERVATIVE figure, which is the right way round for a register to be ' +
+      'wrong. Ten probes at both widths: centre and 1px inside all four edges return the toggle ' +
+      'itself every time; 4px and 11px into the gap beside it return the cell or the sibling ' +
+      'text and take no click at all. There is no second box. Separation re-measured ' +
+      'independently at 155.52px centre-to-centre — the next row\'s own toggle, exactly one body ' +
+      'row away — agreeing with the figure above to the pixel, and passing 2.5.8 by 6.5x.',
   },
   'primitives/primitives.css .disclosure__toggle': {
     how: 'unmeasured',

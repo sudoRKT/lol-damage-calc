@@ -81,10 +81,24 @@ const PAGES: PageLength[] = [
     budget: 12.79,
     measured:
       'Lead, 2026-08-15, dev server, default scenario. Was 23.94 screens before the length pass, ' +
-      '11.07 after it, 12.79 now. No horizontal overflow: scrollWidth equals the 375 viewport ' +
-      'exactly. THE PHONE FIGURE HAS NEVER MET ITS TARGET — 8 screens was asked for and 11.07 ' +
-      'was what the pass achieved, which was reported at the time rather than rounded down to ' +
-      'the target.',
+      '11.07 after it, 12.79 now. THE PHONE FIGURE HAS NEVER MET ITS TARGET — 8 screens was ' +
+      'asked for and 11.07 was what the pass achieved, which was reported at the time rather ' +
+      'than rounded down to the target. ' +
+      '═══ HORIZONTAL OVERFLOW: MEASURE IT WITH clientWidth, NEVER innerWidth. ═══ ' +
+      'This entry originally read "no horizontal overflow: scrollWidth equals the 375 viewport ' +
+      'exactly", derived from `scrollWidth - innerWidth`. **That subtraction cannot detect ' +
+      'overflow when a scrollbar is present**, because innerWidth INCLUDES the scrollbar and ' +
+      'scrollWidth does not — the two grow together and the difference stays 0. The ui-breakdown ' +
+      'area hit exactly this on 2026-08-16, reading clientWidth 375 against scrollWidth 404: a ' +
+      '29px overflow that the innerWidth form reports as zero. ' +
+      'RE-MEASURED with clientWidth by the lead, same session: 375 / 375 / 375 on the default ' +
+      'scenario AND with all four breakdown disclosures opened, so **no overflow reproduced ' +
+      'here**. 104 elements do extend to x=552, and every one is inside a `.u-scroll-x` ' +
+      'container doing its job — the table scrolls in its own region, which is the design. ' +
+      "The 404 reading is NOT dismissed: that agent's tab was resized under it three times and " +
+      'its scenario changed from 4 combo instances to 5 mid-run, so a state exists that this ' +
+      'measurement did not cover. DESIGN-AUDIT item 5 (mobile horizontal overflow) remains ' +
+      'OPEN, and the next person to chase it should vary the instance count first.',
   },
 ];
 
