@@ -174,6 +174,83 @@ export function useSettled(reduced: boolean, steps: number): boolean {
 }
 
 /**
+ * WHAT ONE BURST RISER SAYS ABOUT ITS FIGURE — or, four times out of five on real data, why it
+ * says no figure at all. Added 2026-08-15.
+ *
+ * ═══ THE DEFECT THIS REPLACES ═══
+ *
+ * This was one line: `${damage} ${type} damage`, with `type` falling back to an empty string
+ * when the instance had no single damage type. Measured in a browser against the published
+ * catalogue on 2026-08-15, EIGHT risers across FOUR of the five real scenarios read
+ * `0  damage` — a figure of zero, with the doubled space where the type should have been:
+ *
+ *   Renekton R and Q · Corki W and E · Alistar E and R · Cassiopeia Q
+ *
+ * The doubled space was the visible half. The half that matters is that **none of those
+ * abilities deals zero damage.** Five of them deal all of their damage over time, which
+ * SPECIFICATION §3.8 puts in the `+DoT` column and never folds into the burst; the other two are
+ * `incomplete`, where a zero is not a fact about the ability but the absence of one — the same
+ * chart's excluded-contributor note says so in words directly underneath it. A plausible wrong
+ * number is this project's defining failure, and "0" spoken as a damage figure is one.
+ *
+ * ═══ WHY THIS IS NOT DESIGN.md §6'S "No damage" STATE ═══
+ *
+ * §6 gives no-damage its own display state — an en dash, no dot, the label "No damage" — and
+ * `primitives/VerificationStatusMark.tsx` implements it correctly. It is claimed only when the
+ * source and `Module:DamageData/data` are SILENT TOGETHER (DATA-SOURCES §27): a positive finding
+ * that an ability deals none. None of the eight risers above is that. Borrowing the words would
+ * have made this component assert, in five cases, the opposite of what the data says. So the
+ * fix is not to reach for a fifth state — it is to stop stating a figure nobody established.
+ *
+ * Returns `null` when the riser should say nothing about a figure, in which case the trailing
+ * verification status is what carries the state — which is what it is for.
+ */
+function burstFigure(column: BurndownColumn): string | null {
+  const crit = column.crit ? ', critical strike' : '';
+
+  if (column.damageType) {
+    return `${column.damage} ${SPOKEN_TYPE[column.damageType]} damage${crit}`;
+  }
+
+  // MORE THAN ONE TYPE IN ONE INSTANCE. `InstanceResult.byType` is REQUIRED when the reported
+  // type is 'mixed' (src/types/result.ts), so each type is spoken with its OWN figure and the
+  // aggregate follows untagged — the one figure DESIGN.md §8 permits without a type word.
+  const split = column.instance?.byType;
+  if (column.damage > 0 && split) {
+    const spoken = (Object.keys(SPOKEN_TYPE) as DamageType[])
+      .filter((t) => split[t] > 0)
+      .map((t) => `${split[t]} ${SPOKEN_TYPE[t]}`);
+    return `${listOf(spoken)} damage, ${column.damage} in total${crit}`;
+  }
+  if (column.damage > 0) {
+    // A mixed instance that arrived without its split. The total is real, so it is spoken; the
+    // types are not known here, so none is claimed.
+    return `${column.damage} in total across more than one damage type${crit}`;
+  }
+
+  // ── A FIGURE OF ZERO. Three different facts, and none of them is "this dealt no damage". ──
+  if (column.verification === 'incomplete') {
+    // Nobody has established a figure. The status — "Not yet modelled" / "Cannot be completed",
+    // with the missing fact named — is the whole truth and it is already the last clause.
+    return null;
+  }
+  if (column.dotSource) {
+    return (
+      'No damage on impact — this ability deals its damage over time, in the +DoT column'
+    );
+  }
+  // The source says this ability deals none: DESIGN.md §6's own words, and the only place in
+  // this component they are correct.
+  return 'No damage';
+}
+
+/** "a", "a and b", "a, b and c" — spoken, so it reads as a sentence rather than a list. */
+function listOf(items: string[]): string {
+  if (items.length <= 1) return items[0] ?? '';
+  return `${items.slice(0, -1).join(', ')} and ${items[items.length - 1]}`;
+}
+
+/**
  * The accessible name of one riser. ONE TEXT NODE, built here.
  *
  * The accessibility tree concatenates a container's descendants after trimming each, which
@@ -204,18 +281,22 @@ export function riserName(column: BurndownColumn, maxHp: number, statusLabel: st
     if (column.groupId && column.groupIndex > 1) {
       parts.push(`riding on ${column.groupLabel}`);
     }
-    const type = column.damageType ? SPOKEN_TYPE[column.damageType] : '';
-    parts.push(`${column.damage} ${type} damage${column.crit ? ', critical strike' : ''}`);
+    const figure = burstFigure(column);
+    if (figure) parts.push(figure);
     // THE WORD AND THE DIRECTION CARRY THE HEAL, not a colour and not a stroke style. A screen
     // reader gets "heals 90" and "up to", which is the whole cue.
     if (column.healing > 0) parts.push(`Defender heals ${column.healing}`);
   }
 
   // "up to" / "down to" is the direction, spoken. `hpAfter` already includes any healing.
+  // HEALTH THAT DID NOT MOVE SAYS SO. "Health 2043 down to 2043" describes a fall that did not
+  // happen, and every instance whose damage is all over time produces exactly that sentence.
   const direction = column.hpAfter > column.hpBefore ? 'up to' : 'down to';
   parts.push(
-    `Health ${formatReadout(column.hpBefore)} ${direction} ${formatReadout(column.hpAfter)} ` +
-      `of ${formatReadout(maxHp)}`,
+    column.hpAfter === column.hpBefore
+      ? `Health ${formatReadout(column.hpBefore)} unchanged, of ${formatReadout(maxHp)}`
+      : `Health ${formatReadout(column.hpBefore)} ${direction} ${formatReadout(column.hpAfter)} ` +
+        `of ${formatReadout(maxHp)}`,
   );
   // OVERHEALING IS INFORMATION, not noise: it is how a theorycrafter sees that a bigger heal
   // would have bought nothing.
@@ -347,15 +428,14 @@ export function HpBurndown({ result, title = 'HP burndown' }: HpBurndownProps) {
                 >
                   <div className="burn__rule-stroke burn__rule-stroke--lethal" />
                 </div>
-                <span
-                  className="burn__callout burn__chip burn__chip--lethal"
-                  style={{
-                    left: pct(model.lethalRuleFraction),
-                    transform: 'translateX(-100%)',
-                  }}
+                <div
+                  className="burn__callout"
+                  style={{ paddingInlineEnd: pct(1 - model.lethalRuleFraction) }}
                 >
-                  LETHAL · instance {model.lethalAtInstance}
-                </span>
+                  <span className="burn__chip burn__chip--lethal">
+                    LETHAL · instance {model.lethalAtInstance}
+                  </span>
+                </div>
               </>
             ) : null}
 
@@ -371,15 +451,12 @@ export function HpBurndown({ result, title = 'HP burndown' }: HpBurndownProps) {
                 >
                   <div className="burn__rule-stroke burn__rule-stroke--dot" />
                 </div>
-                <span
-                  className="burn__callout burn__chip burn__chip--lethal"
-                  style={{
-                    left: pct(model.dotLethalRuleFraction),
-                    transform: 'translateX(-100%)',
-                  }}
+                <div
+                  className="burn__callout"
+                  style={{ paddingInlineEnd: pct(1 - model.dotLethalRuleFraction) }}
                 >
-                  LETHAL +DoT · after combo
-                </span>
+                  <span className="burn__chip burn__chip--lethal">LETHAL +DoT · after combo</span>
+                </div>
               </>
             ) : null}
           </div>

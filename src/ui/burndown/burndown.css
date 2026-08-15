@@ -93,7 +93,24 @@
   font-size: var(--type-display-l);
   line-height: var(--lh-display-l);
   color: var(--text-primary);
-  white-space: nowrap;
+  /* A CHIP WRAPS RATHER THAN ESCAPING ITS PANEL (2026-08-15). It was `white-space: nowrap`,
+     which cannot fit and does not try: measured in Chrome at a 320px viewport, the
+     `SURVIVES · 2311 HP` chip is 254px wide inside a 240px panel and hangs 31px past the
+     panel's own border. Nothing overflowed the PAGE, so no test saw it. The type role does not
+     move — DESIGN.md §3 sets it and §2 puts the lethal border's magenta in the large/bold band
+     on the strength of it — so the words wrap instead, which is §8's general rule applied to a
+     chip: when a mandatory cue will not fit, move the cue, never resize the data.
+
+     WHY WRAPPING IS THE WHOLE FIX AND NO WIDTH CAP IS NEEDED. Every chip in this component is a
+     FLEX ITEM — of `.burn__standing` in the header, of `.burn__callout` in the plot — so it
+     already shrinks to the space its container has. `nowrap` was what stopped it: it makes a
+     box's minimum width its ENTIRE string, so there was nothing to shrink to. Without it the
+     minimum is the longest word, and the chip fits wherever the longest word does.
+
+     A `max-inline-size: 100%` was tried here first and REMOVED: it is a length literal from no
+     token, `../primitives/token-audit.test.ts` refused it by name, and the audit was right —
+     it was also doing nothing the flex shrink above does not. */
+  flex-wrap: wrap;
 }
 
 /* DESIGN.md §7: "bone text on --bg-panel with a 2px --lethal border". The text stays bone —
@@ -440,10 +457,33 @@
   border-inline-start: 2px dashed var(--lethal);
 }
 
+/* ═══ THE KILL CALLOUT MAY NOT LEAVE THE PLOT (rebuilt 2026-08-15) ═══
+ *
+ * WHAT IT WAS, AND WHAT THAT DID. The chip was positioned `left: {rule}%` with
+ * `translateX(-100%)`, so it hung leftwards from the rule at whatever width its words needed.
+ * At a 375px viewport, on the Renekton scenario — the product's flagship damage-over-time case
+ * — the chip is 349px wide against a 204px plot: measured in Chrome, its left edge sat at
+ * **x = −48**, forty-eight pixels off the left of the VIEWPORT, and it read `THAL +DoT · after
+ * combo`. The word LETHAL, on the mark that announces a kill, was the part that was cut off.
+ *
+ * NO TEST COULD HAVE SEEN IT. Content overflowing to the LEFT never creates a horizontal
+ * scrollbar, so `document.scrollWidth` was exactly 375 and every overflow sweep in the product
+ * passed. The chart was correct, the page did not scroll, and the answer was off screen.
+ *
+ * HOW IT IS ANCHORED NOW. The callout is a full-width row inside the plot, padded on its
+ * trailing side by the fraction of the plot to the RIGHT of the rule (an inline style, because
+ * that is data). Its chip is right-aligned against the rule exactly as DESIGN.md §7 asks — "a
+ * callout chip sits at the top of the rule" — and grows leftwards into the row, wrapping when
+ * it runs out of plot instead of walking off the screen. There is no width query: this holds at
+ * every width, which is what DESIGN.md §4b's one-breakpoint rule requires of everything that is
+ * not the riser labels.
+ */
 .burn__callout {
   position: absolute;
   inset-block-start: 0;
-  white-space: nowrap;
+  inset-inline: 0;
+  display: flex;
+  justify-content: flex-end;
   animation: burn-fade-in 180ms ease-out backwards;
 }
 

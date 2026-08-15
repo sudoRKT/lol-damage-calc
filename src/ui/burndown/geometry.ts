@@ -82,6 +82,23 @@ export interface BurndownColumn {
   /** The instance this column came from — burst columns only. */
   instance: InstanceResult | null;
   /**
+   * DOES THIS INSTANCE'S DAMAGE ARRIVE IN THE `+DoT` COLUMN? Added 2026-08-15.
+   *
+   * 27 ability components across the roster are marked `overTime`, and an ability that deals ALL
+   * of its damage that way reports a burst of zero (SPECIFICATION §3.8 never folds the tail into
+   * the burst). Five of them were measured on real data on 2026-08-15 — Renekton R, Corki W,
+   * Corki E, Alistar E, Cassiopeia Q — and every one announced itself as a damage figure of
+   * zero, which is the opposite of true: their damage is real and it is one column to the right.
+   *
+   * IT IS PRESENTATIONAL AND CARRIES NO ARITHMETIC. Nothing reads this to compute a number; it
+   * changes only the WORDS a riser says about a zero. It is matched by `sourceLabel`, which is
+   * the same string the engine builds for the instance and for the DoT source, so a match is
+   * evidence about one ability and a miss costs only the extra clause.
+   *
+   * Always `false` on the `heal` and `+DoT` columns: neither is an instance that could have one.
+   */
+  dotSource: boolean;
+  /**
    * THE GROUP THIS COLUMN BELONGS TO. Added 2026-08-14.
    *
    * An on-hit or Spellblade item effect is its own instance and its own column, which is what
@@ -263,6 +280,12 @@ export function buildBurndownModel(result: Result): BurndownModel {
 
   let hp = startHp;
 
+  // Which sources the `+DoT` column is built from, so a burst column of zero can say that its
+  // damage is over there rather than announcing a figure of zero. Empty when there is no tail.
+  const dotSourceLabels = new Set(
+    result.dot.total > 0 ? result.dot.sources.map((s) => s.label) : [],
+  );
+
   const unplacedHealing = healingAt(null);
   if (unplacedHealing > 0) {
     const applied = Math.min(unplacedHealing, Math.max(0, maxHp - hp));
@@ -287,6 +310,7 @@ export function buildBurndownModel(result: Result): BurndownModel {
       verification: null,
       crit: false,
       instance: null,
+      dotSource: false,
       healing: unplacedHealing,
       healingWasted: unplacedHealing - applied,
       healRiserTop: frac(hp + applied),
@@ -334,6 +358,7 @@ export function buildBurndownModel(result: Result): BurndownModel {
       incompleteReason: instance.incompleteReason,
       crit: instance.crit,
       instance,
+      dotSource: dotSourceLabels.has(instance.sourceLabel),
       // Filled by `groupColumns` below, once every column exists — a group is a fact about
       // neighbours, so it cannot be decided while walking one column at a time.
       groupId: null,
@@ -401,6 +426,7 @@ export function buildBurndownModel(result: Result): BurndownModel {
       incompleteReason: result.dot.sources.find((s) => s.incompleteReason)?.incompleteReason,
       crit: false,
       instance: null,
+      dotSource: false,
       // NOTHING HEALS AFTER THE TRAILING LINE. §3.8 puts damage over time "following the combo",
       // and there is no instance left to carry a heal — the same rule the engine's verdict uses.
       healing: 0,

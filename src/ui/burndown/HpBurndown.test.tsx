@@ -22,10 +22,17 @@
 // while every test here passed. That class is covered by `../app/rendered-figures.test.tsx`,
 // which now opens each riser across all 173 champions against real published data.
 
+import { readFileSync } from 'node:fs';
 import { describe, expect, it, afterEach, beforeEach, vi } from 'vitest';
 import { act, cleanup, render, screen, fireEvent } from '@testing-library/react';
 import { MOCK_RESULT } from '../../types';
-import { BURST_KILLS } from './mock-variants';
+import {
+  BURST_KILLS,
+  DEFENDER_HEALS,
+  DOT_ONLY_INSTANCE,
+  MIXED_INSTANCE,
+  UNTYPED_INCOMPLETE_INSTANCE,
+} from './mock-variants';
 import { HpBurndown } from './HpBurndown';
 
 /**
@@ -110,6 +117,75 @@ describe('burndown/accessible-names', () => {
       if (/\s\s/.test(name) || /\.\s*\./.test(name)) offenders.push(`joined badly: ${name}`);
     }
     expect(offenders).toEqual([]);
+  });
+
+  /* ═══ THE SWEEP ABOVE PASSED WHILE FOUR OF FIVE REAL SCENARIOS WERE BROKEN ═══
+     (added 2026-08-15)
+
+     It runs over ONE fixture, and that fixture is the only Result in the project whose
+     zero-damage instance carries a damage type. Every real scenario measured in a browser on
+     2026-08-15 — Renekton, Corki, Alistar, Cassiopeia — carries at least one instance reporting
+     `damageType: 'none'`, and each of those announced `0  damage`, with the doubled space of an
+     empty type word where the type should be. The check existed; the shape did not.
+
+     The rule below is mechanical and stated once: A RISER NEVER PUTS A FIGURE NEXT TO THE WORD
+     "damage" WITHOUT A DAMAGE TYPE BETWEEN THEM. That single pattern catches the doubled space,
+     catches a bare `0 damage`, and catches any future path that loses a type word — and it runs
+     over every fixture this area has rather than the one it was written against. */
+  const EVERY_FIXTURE: Array<[string, typeof MOCK_RESULT]> = [
+    ['the canonical mock', MOCK_RESULT],
+    ['a burst that kills', BURST_KILLS],
+    ['a defender who heals', DEFENDER_HEALS],
+    ['an instance whose damage is all over time', DOT_ONLY_INSTANCE],
+    ['an instance nobody has modelled, with no type', UNTYPED_INCOMPLETE_INSTANCE],
+    ['an instance that dealt two types at once', MIXED_INSTANCE],
+  ];
+
+  it.each(EVERY_FIXTURE)(
+    'no riser states a figure without its damage type, and none is joined badly — %s',
+    (_what, result) => {
+      render(<HpBurndown result={result} />);
+      const offenders: string[] = [];
+      for (const b of screen.getAllByRole('button')) {
+        const name = b.getAttribute('aria-label') ?? '';
+        if (/\d\s*damage/.test(name)) offenders.push(`figure with no type: ${name}`);
+        if (/\s\s/.test(name) || /\.\s*\./.test(name)) offenders.push(`joined badly: ${name}`);
+      }
+      expect(offenders).toEqual([]);
+    },
+  );
+
+  it('an instance whose damage is ALL over time says so, rather than claiming a zero', () => {
+    render(<HpBurndown result={DOT_ONLY_INSTANCE} />);
+    expect(
+      screen.getByRole('button', {
+        name: 'Instance 4. On-hit — true damage (mock). No damage on impact — this ability deals its damage over time, in the +DoT column. Health 180 unchanged, of 1850. Derived.',
+      }),
+    ).toBeTruthy();
+  });
+
+  it('an instance nobody has modelled states no figure at all — its status carries it', () => {
+    render(<HpBurndown result={UNTYPED_INCOMPLETE_INSTANCE} />);
+    expect(
+      screen.getByRole('button', {
+        name: 'Instance 4. On-hit — true damage (mock). Health 180 unchanged, of 1850. Not yet modelled.',
+      }),
+    ).toBeTruthy();
+  });
+
+  it('a mixed instance speaks each type with its own figure, and the total untagged', () => {
+    render(<HpBurndown result={MIXED_INSTANCE} />);
+    expect(
+      screen.getByRole('button', {
+        name: 'Instance 3. W — Infernal Chains. 80 physical and 120 magic damage, 200 in total. Health 380 down to 180 of 1850. Derived.',
+      }),
+    ).toBeTruthy();
+  });
+
+  it('health that did not move says so, instead of falling to the number it started at', () => {
+    render(<HpBurndown result={UNTYPED_INCOMPLETE_INSTANCE} />);
+    const names = screen.getAllByRole('button').map((b) => b.getAttribute('aria-label') ?? '');
+    expect(names.filter((n) => /Health (\d+) down to \1 /.test(n))).toEqual([]);
   });
 
   it('the chart itself has a name', () => {
@@ -332,6 +408,56 @@ describe('burndown/visual-cues', () => {
     // Instance 5 of six columns: 83.3333% across, nudged so its 2px stroke stays inside.
     expect(rule.style.left).toBe('83.3333%');
     expect(rule.style.transform).toBe('translateX(-50%)');
+  });
+
+  /* ═══ THE KILL CALLOUT MAY NOT LEAVE THE PLOT (added 2026-08-15) ═══
+
+     WHAT WAS MEASURED, AND WHERE. jsdom computes no layout, so the pixels below were read in
+     Chrome on 2026-08-15 at a 375px viewport, on the Renekton scenario in `preview.tsx`: the
+     `LETHAL +DoT · after combo` chip is 349px wide against a 204px plot, and its left edge sat
+     at x = −48 — forty-eight pixels off the left of the viewport, reading `THAL +DoT · after
+     combo`. The kill mark, with the word LETHAL cut off.
+
+     WHY NO EXISTING CHECK SAW IT. Content that overflows to the LEFT never creates a horizontal
+     scrollbar: `document.documentElement.scrollWidth` was exactly 375, so every overflow sweep
+     in this product passed while the answer was off screen.
+
+     WHAT THESE TWO ASSERT. They cannot re-measure the pixels, so they pin the two declarations
+     that make the escape impossible, and both fail on the markup that produced it — which hung
+     the chip leftwards from the rule with `left` + `translateX(-100%)` and forbade it to wrap. */
+  it('the callout is a full-width row padded to the rule, never hung leftwards from it', () => {
+    const { container } = render(<HpBurndown result={MOCK_RESULT} />);
+    const callout = container.querySelector('.burn__callout') as HTMLElement;
+    expect(callout).toBeTruthy();
+    // The old anchoring, gone: nothing positions this chip by its own width any more.
+    expect(callout.style.left).toBe('');
+    expect(callout.style.transform).toBe('');
+    // The rule's position arrives as the trailing pad of a row that spans the whole plot.
+    expect(callout.style.paddingInlineEnd).not.toBe('');
+    // The chip is a child of the row now, not the row itself — that is what lets it wrap
+    // inside a box whose width the plot fixes.
+    expect(callout.querySelector('.burn__chip--lethal')).toBeTruthy();
+    expect(callout.classList.contains('burn__chip')).toBe(false);
+  });
+
+  it('the stylesheet gives the row the whole plot width, and lets the chip wrap inside it', () => {
+    // A PATH FROM THE REPO ROOT, not `import.meta.url`: this file runs in the jsdom
+    // environment, where `import.meta.url` is an http URL and `readFileSync` refuses it.
+    const css = readFileSync('src/ui/burndown/burndown.css', 'utf8').replace(
+      /\/\*[\s\S]*?\*\//g,
+      '',
+    );
+    const calloutRule = /\.burn__callout\s*\{([^}]*)\}/.exec(css);
+    expect(calloutRule, '.burn__callout rule not found').not.toBeNull();
+    expect(calloutRule![1]).toMatch(/inset-inline:\s*0/);
+    expect(calloutRule![1]).toMatch(/justify-content:\s*flex-end/);
+
+    const chipRule = /\.burn__chip\s*\{([^}]*)\}/.exec(css);
+    expect(chipRule, '.burn__chip rule not found').not.toBeNull();
+    // `nowrap` is what made a chip wider than its panel rather than taller than one line: it
+    // sets a box's minimum width to its whole string, so a flex item has nothing to shrink to.
+    expect(chipRule![1]).not.toMatch(/white-space:\s*nowrap/);
+    expect(chipRule![1]).toMatch(/flex-wrap:\s*wrap/);
   });
 
   it('the recent-damage ghost appears only where health was actually removed', () => {

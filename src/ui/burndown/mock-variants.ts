@@ -21,7 +21,15 @@
 // did.
 
 import { MOCK_RESULT } from '../../types';
-import type { Result } from '../../types';
+import type { InstanceResult, Result } from '../../types';
+
+/** The mock's instance 4 — the one instance that deals nothing. Every variant below moves it. */
+const FOURTH: InstanceResult = MOCK_RESULT.perInstance[3]!;
+
+/** The same list with instance 4 replaced. No other instance is touched by any variant here. */
+function withFourth(replacement: InstanceResult): InstanceResult[] {
+  return MOCK_RESULT.perInstance.map((instance, i) => (i === 3 ? replacement : instance));
+}
 
 /**
  * The same 770 burst against a defender entering on 700 health instead of 800.
@@ -107,3 +115,86 @@ export const DEFENDER_HEALS: Result = {
     },
   },
 };
+
+/**
+ * ═══ AN INSTANCE WHOSE DAMAGE IS ALL OVER TIME ═══ (added 2026-08-15)
+ *
+ * THE SHAPE THE ROSTER ACTUALLY PRODUCES, AND THE FIXTURE THIS AREA DID NOT HAVE. Measured in
+ * a browser on 2026-08-15 over the five real scenarios in `preview.tsx`: Renekton R, Corki W,
+ * Corki E, Alistar E and Cassiopeia Q all report `damageType: 'none'` with a burst of zero,
+ * because every point of their damage is in the `+DoT` column (SPECIFICATION §3.8 never folds
+ * it into burst). Nothing in `MOCK_RESULT` has that shape — its one zero instance carries a
+ * damage TYPE — so the chart's own accessible-name sweep passed while four of the five real
+ * scenarios announced `0  damage` at a screen reader, with the doubled space of an empty type.
+ *
+ * NO NUMBER IS INVENTED. The 160 magic tail is `MOCK_RESULT`'s own, and instance 4's figure is
+ * still zero. What moves is the ATTRIBUTION: the tail is credited to instance 4, which is what
+ * makes this the Cassiopeia Q shape — a derived ability that deals nothing on impact and
+ * everything afterwards.
+ */
+export const DOT_ONLY_INSTANCE: Result = {
+  ...MOCK_RESULT,
+  perInstance: withFourth({
+    ...FOURTH,
+    damageType: 'none',
+    // It is not incomplete: the source states this ability's damage in full, and all of it is
+    // over time. `incompleteReason` goes with the status it belongs to (src/types/result.ts).
+    verification: 'derived',
+    incompleteReason: undefined,
+  }),
+  dot: {
+    ...MOCK_RESULT.dot,
+    sources: MOCK_RESULT.dot.sources.map((source, i) =>
+      i === 0 ? { ...source, label: FOURTH.sourceLabel } : source,
+    ),
+  },
+  incompleteContributors: MOCK_RESULT.incompleteContributors.filter(
+    (c) => c.sourceLabel !== FOURTH.sourceLabel,
+  ),
+};
+
+/**
+ * ═══ AN INSTANCE NOBODY HAS MODELLED, WITH NO DAMAGE TYPE ═══ (added 2026-08-15)
+ *
+ * The other half of the same measurement: Alistar R (Unbreakable Will) and Renekton Q report
+ * `damageType: 'none'` with `verification: 'incomplete'`, and Alistar R's stated reason is that
+ * *no source says what damage type it deals*. A zero here is not a fact about the ability — it
+ * is the absence of one, and announcing it as a figure of zero states the opposite of what the
+ * excluded-contributor note printed under the same chart says.
+ *
+ * `MOCK_RESULT`'s instance 4 is already incomplete and already contributes nothing, so this
+ * variant changes exactly one field: its damage type, from `true` to `none`.
+ */
+export const UNTYPED_INCOMPLETE_INSTANCE: Result = {
+  ...MOCK_RESULT,
+  perInstance: withFourth({ ...FOURTH, damageType: 'none' }),
+};
+
+/**
+ * ═══ AN INSTANCE THAT DEALT TWO TYPES AT ONCE ═══ (added 2026-08-15)
+ *
+ * `ReportedDamageType` carries `'mixed'` for the 13 abilities that deal more than one type in
+ * one instance, and `InstanceResult.byType` is REQUIRED when it does. No fixture in the project
+ * had ever set it, so every mixed branch in this area was written against a shape nothing
+ * produced. This one exists so the riser's spoken name can be tested on it.
+ *
+ * The 200 magic of instance 3 is split 120 magic / 80 physical — the same 200, redistributed,
+ * so `burst.byType` still sums to the same 770 total it always did.
+ */
+export const MIXED_INSTANCE: Result = {
+  ...MOCK_RESULT,
+  perInstance: MOCK_RESULT.perInstance.map((instance, i) =>
+    i === 2
+      ? { ...instance, damageType: 'mixed' as const, byType: { physical: 80, magic: 120, true: 0 } }
+      : instance,
+  ),
+  burst: {
+    ...MOCK_RESULT.burst,
+    byType: {
+      physical: MOCK_RESULT.burst.byType.physical + 80,
+      magic: MOCK_RESULT.burst.byType.magic - 120,
+      true: MOCK_RESULT.burst.byType.true,
+    },
+  },
+};
+
