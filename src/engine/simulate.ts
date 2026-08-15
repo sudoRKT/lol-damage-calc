@@ -36,6 +36,7 @@ import { championStatAtLevel } from './champion-stats';
 import { runCombo, type ComboPlan, type PlannedInstance } from './combo';
 import { BASE_CRITICAL_STRIKE_MULTIPLIER } from './crit';
 import { resolveDefences } from './defences';
+import type { AttackerVamp } from './vamp';
 
 // ---------------------------------------------------------------------------------------
 // What the caller supplies
@@ -106,14 +107,18 @@ export type SimulationResult =
  *   FlatCritChanceMod 16 · FlatMPPoolMod 15 · FlatMovementSpeedMod 15 · PercentLifeStealMod 7 ·
  *   FlatHPRegenMod 2
  *
- * Eight are mapped below. The four that are not, and why — each is an EXCLUSION, not an
+ * NINE are mapped below. The three that are not, and why — each is an EXCLUSION, not an
  * oversight, and each is stated on the result:
  *   - the two movement-speed keys and health regeneration change no damage figure and no
- *     survival verdict, because this engine models sequence rather than elapsed time (§3.2);
- *   - `PercentLifeStealMod` is real sustain, and it is dropped HERE rather than modelled because
- *     turning a life-steal percentage into health restored needs the damage figure it applies
- *     to, which is a per-instance fact this function does not have. `Result.sustain` exists and
- *     is ready for it; wiring it is the next step, not a missing field.
+ *     survival verdict, because this engine models sequence rather than elapsed time (§3.2).
+ *
+ * `PercentLifeStealMod` WAS THE FOURTH UNTIL 2026-08-15. The note here said it was "real sustain"
+ * dropped because turning a percentage into health restored needs the per-instance damage figure
+ * this function does not have — which was true of THIS function and never true of the runner. It
+ * is now collected here as a rate (7 of the 209 shipped items carry it) and turned into health by
+ * `runCombo`, one instance at a time (vamp.ts). It is a RATE and not a stat: it does not enter the
+ * stat block, because the frozen `StatBlock` has no field for it and none is needed — it travels
+ * on the plan.
  *
  * A key this map does not know is REPORTED, never silently ignored: a new patch adding one
  * would otherwise drop a stat with nobody noticing.
@@ -127,11 +132,11 @@ const ITEM_STAT_KEYS = [
   'FlatMPPoolMod',
   'FlatCritChanceMod',
   'PercentAttackSpeedMod',
+  'PercentLifeStealMod',
   // Known and deliberately not applied — see above.
   'PercentMovementSpeedMod',
   'FlatMovementSpeedMod',
   'FlatHPRegenMod',
-  'PercentLifeStealMod',
 ] as const;
 
 interface ItemTotals {
@@ -143,6 +148,12 @@ interface ItemTotals {
   mana: number;
   critChance: number;
   percentAttackSpeed: number;
+  /**
+   * Life steal, as a FRACTION, summed across the build — Data Dragon states it as a fraction
+   * already (0.15 for a 15% item), and the wiki says sources "stack additively", so the sum is
+   * the whole rule. It is not part of the stat block: it leaves this function on the plan.
+   */
+  lifesteal: number;
   /** Stat keys the catalogue carried that this map does not know. Reported, never dropped. */
   unknownKeys: string[];
 }
@@ -160,6 +171,7 @@ function sumItems(ids: readonly number[], catalogue: Catalogue, path: string): {
     mana: 0,
     critChance: 0,
     percentAttackSpeed: 0,
+    lifesteal: 0,
     unknownKeys: [],
   };
   const refusals: SimulationRefusal[] = [];
@@ -203,8 +215,13 @@ function sumItems(ids: readonly number[], catalogue: Catalogue, path: string): {
         case 'PercentAttackSpeedMod':
           totals.percentAttackSpeed += value;
           break;
+        case 'PercentLifeStealMod':
+          // ADDITIVE across the build, per the wiki's life-steal article (read 2026-08-15):
+          // sources "stack additively". Two 10% items are 20%, never 21%.
+          totals.lifesteal += value;
+          break;
         default:
-          // The four damage-irrelevant keys. Named in ITEM_STAT_KEYS so they are recognised
+          // The three damage-irrelevant keys. Named in ITEM_STAT_KEYS so they are recognised
           // rather than reported as unknown, and applied to nothing.
           break;
       }
@@ -232,7 +249,17 @@ export function buildStatBlock(
   champion: Champion,
   config: ChampionConfig,
   catalogue: Catalogue,
-): { block: StatBlock; refusals: SimulationRefusal[]; unknownItemStats: string[] } {
+): {
+  block: StatBlock;
+  refusals: SimulationRefusal[];
+  unknownItemStats: string[];
+  /**
+   * The vamp rates this build carries (§3.7). BESIDE the stat block, not in it: the frozen
+   * `StatBlock` has no field for them, and they are not stats the damage arithmetic reads — they
+   * are rates applied to damage already dealt. Only the attacker's are used; see `ComboPlan`.
+   */
+  vamp: AttackerVamp;
+} {
   const level = config.level;
   const s = champion.stats;
   const items = sumItems(config.items, catalogue, config.apiname);
@@ -298,7 +325,15 @@ export function buildStatBlock(
     },
   };
 
-  return { block, refusals: items.refusals, unknownItemStats: items.totals.unknownKeys };
+  return {
+    block,
+    refusals: items.refusals,
+    unknownItemStats: items.totals.unknownKeys,
+    // ONLY WHAT THE BUILD ACTUALLY PROVIDES. A build with no life-steal item states no rate at
+    // all rather than a rate of zero, so "nothing was carried" and "nothing was restored" stay
+    // distinguishable further down.
+    vamp: items.totals.lifesteal > 0 ? { lifesteal: items.totals.lifesteal } : {},
+  };
 }
 
 /** A numeric entry-state value, or undefined. Booleans are not health figures. */
@@ -972,6 +1007,30 @@ export const SIMULATION_EXCLUSIONS: readonly string[] = [
   'Movement speed, health regeneration and attack-speed effects on the number of attacks — the ' +
     'engine models sequence rather than elapsed time',
 
+  // ═══ SUSTAIN: WHAT IS CARRIED AND WHAT IS NOT (§3.7, added 2026-08-15) ═══
+  //
+  // Life steal IS modelled from item statistics. These three are the edges of it, and each is a
+  // measurement rather than an impression — see the counts named in each line.
+  'Omnivamp from items and runes — no stored source states a rate. Measured 2026-08-15 across ' +
+    'the 209 shipped items and the shipped rune list: the item data states twelve stat keys in ' +
+    'total and none of them is omnivamp, and the rune list states no stat values at all. ' +
+    'Omnivamp does exist in game, carried by item PASSIVES and a few champion kits rather than ' +
+    'by an item’s statistics, and neither route is read here. Life steal is the one of the ' +
+    'three stats any stored source states, and 7 of the 209 items carry it',
+  'Spell vamp — it has no sources in the game at all. The wiki lists it for archival purposes ' +
+    'only, among the kinds of Vamp that "do not currently have any sources", its last source ' +
+    'having been removed in V26.04 (read 2026-08-15). Nothing is missing from this engine on ' +
+    'that account; the line is here so that a spell-vamp build coming back to the game is ' +
+    'noticed rather than silently ignored',
+  'Life steal on an item’s ON-HIT proc damage — AND THIS IS A KNOWN UNDER-COUNT, not a mechanic ' +
+    'that does not exist. The wiki states that "the damage of most item on-hit effects benefits ' +
+    'from life steal", so in game these procs usually DO heal. It is left out because "most" is ' +
+    'not "all" — the wiki decides membership item by item and names exceptions — and no stored ' +
+    'item record carries that fact. A build pairing life steal with an on-hit item therefore ' +
+    'reports LESS sustain here than it would restore in game',
+  'Life steal, omnivamp and spell vamp written into a champion’s own kit, an item PASSIVE or a ' +
+    'rune rather than into an item’s statistics — only the item statistic is read',
+
   // ═══ THE THREE DEFENSIVE KINDS WITH NO STEP IN THE ENGINE ═══
   //
   // Added 2026-08-14 with the defensive wiring. Shields, damage reduction, type-specific
@@ -1099,6 +1158,11 @@ export function planScenario(
     attacker: attacker.block,
     defender: defenderBlock,
     instances,
+    // THE ATTACKER'S ONLY, AND SAID PLAINLY: the defender does not act (SPECIFICATION §5), so a
+    // life-steal item on their build has no damage of theirs to read and restores nothing. That
+    // is a fact about the model, not a gap in it, so it is not an exclusion — it is the same
+    // reason the defensive layer refuses a heal stored as a share of damage dealt.
+    ...(attacker.vamp.lifesteal !== undefined ? { attackerVamp: attacker.vamp } : {}),
     ...(defences.shields.length > 0 ? { defenderShields: defences.shields } : {}),
     ...(defences.reductions.length > 0 ? { defenderReductions: defences.reductions } : {}),
     ...(defences.sustain.length > 0 ? { unplacedSustain: defences.sustain } : {}),

@@ -50,8 +50,12 @@
 //      source whose components disagree is refused rather than reported under one type.
 //   C. `StatBlock` carries no mana and no bonus-health figure, so a ratio reading one is
 //      refused by the component evaluator and the instance is named as incomplete.
-//   D. `Result` has nowhere to report healing, lifesteal, omnivamp or spell vamp, so none of
-//      them is modelled: a figure with nowhere to go is a figure a user never sees.
+//   D. WAS "`Result` has nowhere to report healing, lifesteal, omnivamp or spell vamp". That
+//      stopped being true when `Result.sustain` was added, and healing landed first (§45).
+//      Life steal and omnivamp landed 2026-08-15 and are resolved per instance (vamp.ts).
+//      SPELL VAMP is the one of the four still refused, and not for want of a field: the game
+//      has no source of spell vamp at all (last one removed in V26.04), so there is no rate for
+//      any build to carry. The refusal path stays because §3.7 names the stat.
 
 import type { AbilityComponent, DamageType, InstanceType, VerificationStatus } from '../types';
 import type {
@@ -79,6 +83,7 @@ import { isExecuted } from './execute';
 import { resistanceMultiplier, resolveResistanceSteps } from './resistances';
 import { applyShields, totalShieldRemaining, type ShieldPool } from './shields';
 import { roundDamage, roundSplit } from './rounding';
+import { statesSpellVamp, vampHealing, SPELL_VAMP_REFUSAL, type AttackerVamp } from './vamp';
 import { resolveVariableHits } from './variable-hits';
 import {
   applyStateEffects,
@@ -263,6 +268,19 @@ export interface ComboPlan {
   attackerPenetration?: { armor?: StaticPenetration; magicResist?: StaticPenetration };
   /** Damage-dealt amplifiers in force for the whole sequence (§3.7). Additive (amplification.ts). */
   attackerAmplifiers?: DamageDealtModifier[];
+  /**
+   * THE ATTACKER'S VAMP RATES (§3.7) — life steal, omnivamp, spell vamp. Added 2026-08-15.
+   *
+   * It is on the PLAN and not on `StatBlock` for a reason worth stating: a vamp rate is not a
+   * stat this engine's frozen stat block carries, and turning a rate into health restored needs
+   * the per-instance damage figure, which only exists inside this runner. So the caller states
+   * the rates and the runner does the arithmetic (vamp.ts).
+   *
+   * ONLY THE ATTACKER HAS ONE. The defender does not act (SPECIFICATION §5), so no damage of
+   * theirs exists for a rate to read — a defender wearing every life-steal item in the game
+   * still restores nothing by that route.
+   */
+  attackerVamp?: AttackerVamp;
   /** Flat reductions applied BEFORE resistances (§3.7). */
   defenderPreMitigationReductions?: PreMitigationReduction[];
   /** The defender's post-mitigation reductions (§3.7, §5). */
@@ -360,6 +378,25 @@ export const ENGINE_EXCLUSIONS: readonly string[] = [
   'Shield strength raised by heal and shield power, shield reduction (Serpent’s Fang) and ' +
     'shield destruction other than by an execute — the scenario states each shield’s remaining ' +
     'strength directly',
+
+  // ═══ THE TWO LIMITS OF THE ATTACKER'S SUSTAIN, ADDED 2026-08-15 WITH IT ═══
+  //
+  // The first is a CONTRACT limit and it is the reason the figure is not simply included.
+  // `SustainResult` carries one attacker total with no burst-against-damage-over-time split, and
+  // §3.8 forbids folding a damage-over-time figure into a burst one. Healing earned from a burn
+  // would land inside a total presented beside the burst, which is exactly that fold.
+  'Health the attacker regains from DAMAGE OVER TIME — omnivamp heals from a burn’s damage in ' +
+    'game, and the sustain line carries one attacker total with no separate damage-over-time ' +
+    'arm to put it in. Folding it in would put a damage-over-time figure inside a burst one, ' +
+    'which §3.8 forbids. Sustain earned by the burst instances IS counted',
+
+  // The second is a definition rather than a gap, and it is stated because a reader comparing the
+  // figure against the game would otherwise find it too large.
+  'The attacker’s sustain is the health their vamp RESTORED, before any of it is wasted on ' +
+    'health they had not lost. The attacker takes no damage in this model (§5, the defender does ' +
+    'not act), so how much of it was overheal depends on the health they entered with. The ' +
+    'defender’s healing is reported the same way on the same line, and the cap bites in the ' +
+    'verdict, which is the only place it changes an answer',
 ];
 
 // ---------------------------------------------------------------------------------------
@@ -417,6 +454,24 @@ export function runCombo(plan: ComboPlan): Result {
       fromInstance: null,
       verification: source.verification,
       ...(source.incompleteReason ? { incompleteReason: source.incompleteReason } : {}),
+    });
+  }
+
+  // SPELL VAMP IS NAMED ONCE AND RESTORES NOTHING (vamp.ts, SPELL_VAMP_REFUSAL). It is reported
+  // here rather than per instance because the reason is a property of the stat and not of any one
+  // ability: the rate depends on whether an ability is area-of-effect, and nothing states that.
+  // Silence would be the failure SPECIFICATION §8 exists to prevent — a user who built spell vamp
+  // seeing nothing at all, unable to tell "it healed you for zero" from "we did not model it".
+  if (statesSpellVamp(plan.attackerVamp)) {
+    sustainSources.push({
+      label: 'Spell vamp',
+      icon: null,
+      kind: 'spell-vamp',
+      restoresTo: 'attacker',
+      amount: 0,
+      fromInstance: null,
+      verification: 'incomplete',
+      incompleteReason: { kind: 'pending', note: SPELL_VAMP_REFUSAL },
     });
   }
 
@@ -551,6 +606,48 @@ export function runCombo(plan: ComboPlan): Result {
     burstByType.magic += appliedByType.magic;
     burstByType.true += appliedByType.true;
     appliedPerInstance.push(applied);
+
+    // ═══ THE ATTACKER'S VAMP, RESOLVED FROM THIS INSTANCE'S OWN DAMAGE (§3.7, vamp.ts) ═══
+    //
+    // WHICH FIGURE THE RATE READS, and why it is neither of the two obvious ones:
+    //
+    //   NOT `perInstance.final` — that figure is ROUNDED, and a percentage of a rounded number
+    //   compounds the error. Rounding happens once, at the reporting boundary (rounding.ts).
+    //
+    //   NOT `applied` in the ordinary case — that is what reached HEALTH, which is less than the
+    //   damage dealt whenever a shield absorbed part of it. The wiki calls life steal's basis the
+    //   "post-mitigation damage dealt", and the shield article puts absorption AFTER mitigation,
+    //   so the post-mitigation figure is the one before the shield took its share: `redByType`.
+    //
+    //   EXCEPT WHEN THE INSTANCE EXECUTED, where `applied` IS the damage dealt: an execute
+    //   delivers the target's remaining health, and reading the ability's own figure would heal
+    //   off damage that never happened.
+    //
+    // A REFUSED INSTANCE HEALS NOTHING with no special case: its damage is 0 (§8), and
+    // `vampHealing` returns nothing for a zero figure.
+    const vampBasis = executed ? applied : total(redByType);
+    for (const contribution of vampHealing(
+      plan.attackerVamp ?? {},
+      instance.instanceType,
+      vampBasis,
+    )) {
+      sustainSources.push({
+        // The rate is a SUM across every item that grants it, so no one item's icon depicts it
+        // and none is borrowed. The label names the stat and the instance that earned it.
+        label: `${VAMP_LABELS[contribution.kind]} — ${instance.sourceLabel}`,
+        icon: null,
+        kind: contribution.kind,
+        // Life steal and omnivamp heal WHOEVER DEALT THE DAMAGE, which in this product is always
+        // the attacker: the defender does not act (§5).
+        restoresTo: 'attacker',
+        amount: contribution.amount,
+        fromInstance: instanceNumber,
+        // NEVER 'verified'. The arithmetic follows the wiki's stated formula and the rate comes
+        // from the catalogue, and neither is an independent re-derivation (CLAUDE.md).
+        verification: 'derived',
+      });
+    }
+
     combat = {
       ...combat,
       cumulativeBurst: combat.cumulativeBurst + applied,
@@ -714,6 +811,13 @@ export function runCombo(plan: ComboPlan): Result {
 // ---------------------------------------------------------------------------------------
 // One instance's damage
 // ---------------------------------------------------------------------------------------
+
+/** How each vamp stat is named on the sustain line. Words, because the user reads them. */
+const VAMP_LABELS: Record<'lifesteal' | 'omnivamp' | 'spell-vamp', string> = {
+  lifesteal: 'Life steal',
+  omnivamp: 'Omnivamp',
+  'spell-vamp': 'Spell vamp',
+};
 
 /** The one order the three types are walked in, everywhere in this file. */
 const DAMAGE_TYPES: readonly DamageType[] = ['physical', 'magic', 'true'];
