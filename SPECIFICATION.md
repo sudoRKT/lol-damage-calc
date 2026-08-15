@@ -630,9 +630,41 @@ The following notice is displayed in a location readily visible to users:
 
 The following scope disclaimer is displayed alongside results:
 
-> This calculator computes champion ability damage, item stats, and rune bonuses only. It
+> This calculator computes champion ability damage, item statistics, and the item effects it
+> can model. It does not account for runes, crowd control, map-based damage, seasonal changes,
+> or passive effects requiring specific gameplay conditions.
+
+#### AMENDED 2026-08-15, AND IT MUST BE REVISITED WHEN RUNES ARE MODELLED
+
+**The wording until 2026-08-15 was:**
+
+> This calculator computes champion ability damage, item stats, and **rune bonuses** only. It
 > does not account for crowd control, map-based damage, seasonal changes, or passive effects
 > requiring specific gameplay conditions.
+
+**It claimed the product computes rune bonuses. It does not, and never has.** `capability.json`
+records **0 of 62 published runes with a modelled effect** — not one rune moves a figure anywhere
+on the page. The contradiction became visible the same day, when the configuration panel stopped
+promising a rune control it did not have and began saying so in plain words: the page then carried
+"no rune changes a number" and "computes … rune bonuses" within one screen of each other.
+
+**A disclaimer stating the product does something it does not is worse than an amended one** — it
+is the one paragraph a careful reader trusts to be conservative, and it was overclaiming.
+
+**Runes moved from the list of things computed to the list of things not accounted for.** "Item
+stats" became "item statistics" and gained "and the item effects it can model", because item
+passives and actives ARE partly modelled (DATA-SOURCES §55) and the old sentence undersold that
+while overselling runes.
+
+**THE OBLIGATION THIS CREATES: when any rune gains a modelled effect, this sentence is wrong
+again**, in the opposite direction, and it must be amended in the same breath. It is deliberately
+qualitative — "the item effects it can model" rather than a count — so that ordinary progress does
+not falsify it weekly; only the rune clause is a hard claim, and only because runes are currently
+all-or-nothing.
+
+**The Riot disclaimer above is NOT amendable in this way.** It is a required attribution whose
+wording is not this project's to choose. This one is the project's own scope note, which is why it
+could be corrected and that one could not.
 
 Wiki-derived content is attributed under its CC BY-SA licence with a link to the licence
 terms.

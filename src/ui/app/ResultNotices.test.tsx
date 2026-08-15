@@ -8,6 +8,7 @@ import { describe, expect, it, afterEach } from 'vitest';
 import { cleanup, render, screen } from '@testing-library/react';
 import { MOCK_RESULT } from '../../types';
 import type { Scenario } from '../../types';
+import { CAPABILITY } from '../coverage';
 import { ResultNotices, SCOPE_DISCLAIMER, buildReport } from './ResultNotices';
 import { startingConfig, startingCombo } from './App';
 import { CURRENT_URL_VERSION, scenarioFromUrl } from '../../url';
@@ -151,4 +152,44 @@ describe('notices/the scope disclaimer and the excluded list are BOTH required',
     expect(MOCK_RESULT.excludedMechanics.join(' ')).not.toContain(SCOPE_DISCLAIMER);
     expect(MOCK_RESULT.excludedMechanics.length).toBeGreaterThan(0);
   });
+
+  it('does not claim runes while no rune is modelled — SPECIFICATION §15, amended 2026-08-15', () => {
+    // THE OBLIGATION §15 CREATES, MADE MECHANICAL. The disclaimer said the calculator computes
+    // "rune bonuses" until 2026-08-15, and it never has: 0 of 62 published runes move a figure.
+    // §15 is explicit that when any rune GAINS a modelled effect, this sentence becomes wrong in
+    // the other direction and must be amended in the same breath. This is what notices someone.
+    //
+    // It fails in BOTH directions on purpose, because a disclaimer can overclaim or underclaim
+    // and both are the same defect: a paragraph a careful reader trusts to be conservative,
+    // saying something untrue about what the product does.
+    const claimsRunes = /\brune/i.test(SCOPE_DISCLAIMER.split('It does not account for')[0]!);
+    const disclaimsRunes = /\brunes\b/i.test(
+      SCOPE_DISCLAIMER.split('It does not account for')[1] ?? '',
+    );
+    expect({
+      modelled: CAPABILITY.runesModelled,
+      claimsRunes,
+      disclaimsRunes,
+    }).toEqual({
+      modelled: CAPABILITY.runesModelled,
+      claimsRunes: CAPABILITY.runesModelled > 0,
+      disclaimsRunes: CAPABILITY.runesModelled === 0,
+    });
+  });
+
+  it('matches SPECIFICATION §15 word for word — the code and the document cannot drift', () => {
+    // The tests around this one all read the CONSTANT, so they would pass against any wording at
+    // all. This is the only thing tying the sentence on screen to the sentence in the document.
+    const quoted = SPEC
+      .split('The following scope disclaimer is displayed alongside results:')[1]!
+      .split('####')[0]!
+      .split('\n')
+      .filter((l) => l.trimStart().startsWith('>'))
+      .map((l) => l.replace(/^\s*>\s?/, '').trim())
+      .join(' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+    expect(quoted).toBe(SCOPE_DISCLAIMER.replace(/\s+/g, ' ').trim());
+  });
+
 });

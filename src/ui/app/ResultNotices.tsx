@@ -35,11 +35,20 @@ import { encodeScenario, FRAGMENT_KEY, CALCULATOR_PATH } from '../../url';
 import { SOURCE_URL } from '../shell';
 import './notices.css';
 
-/** SPECIFICATION §15, verbatim. Quoted, never paraphrased — a tidier sentence is a different one. */
+/**
+ * SPECIFICATION §15, verbatim. Quoted, never paraphrased — a tidier sentence is a different one.
+ *
+ * AMENDED 2026-08-15. It used to say the calculator computes "rune bonuses", which it does not and
+ * never has: 0 of 62 published runes have a modelled effect. The full reasoning, and the previous
+ * wording kept beside it so nobody reads the change as accidental, are in SPECIFICATION §15.
+ *
+ * **When any rune gains a modelled effect this sentence becomes wrong the other way, and §15 is
+ * explicit that it must be amended in the same breath.**
+ */
 export const SCOPE_DISCLAIMER =
-  'This calculator computes champion ability damage, item stats, and rune bonuses only. It does ' +
-  'not account for crowd control, map-based damage, seasonal changes, or passive effects ' +
-  'requiring specific gameplay conditions.';
+  'This calculator computes champion ability damage, item statistics, and the item effects it ' +
+  'can model. It does not account for runes, crowd control, map-based damage, seasonal changes, ' +
+  'or passive effects requiring specific gameplay conditions.';
 
 export interface ReportDraft {
   title: string;
