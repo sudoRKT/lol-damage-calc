@@ -1542,7 +1542,7 @@
     "fetched": "2026-08-14"
    },
    "sourceRevision": 4006735,
-   "notes": "how many times this lands could not be read (\"Magic Damage Per Tick\" lands more than once and nothing in the template states how many)"
+   "notes": "how many times this lands could not be read (\"Magic Damage Per Tick\" lands more than once and nothing in the template states how many); this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). The source was read: it recurs, but states no duration — so no number of ticks exists to multiply, and a full-duration total cannot be stated at all. No figure is published rather than one published in the wrong place."
   },
   {
    "champion": "Amumu",
@@ -1786,7 +1786,7 @@
     "fetched": "2026-08-14"
    },
    "sourceRevision": 4006729,
-   "notes": "how many times this lands could not be read (2 repeating components; a total row cannot be attributed to one of them)"
+   "notes": "how many times this lands could not be read (2 repeating components; a total row cannot be attributed to one of them); this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). The source was read: it recurs, but states no duration — so no number of ticks exists to multiply, and a full-duration total cannot be stated at all. No figure is published rather than one published in the wrong place."
   },
   {
    "champion": "Annie",
@@ -2783,7 +2783,7 @@
     "fetched": "2026-08-14"
    },
    "sourceRevision": 4028021,
-   "notes": "how many times this lands could not be read (4 repeating components; a total row cannot be attributed to one of them); ; one expression is split across several {{as}} blocks (unbalanced parentheses), so the stat and its percentage were read separately and what is stored is not the ability: {{ap|60 to 100}} {{as|(+ 30% AP)}} {{ai|Cosmic Creator|Aurelion Sol|{{as|(+|hp}} {{as|({{fd|3.1}}% Stardust)}}"
+   "notes": "how many times this lands could not be read (4 repeating components; a total row cannot be attributed to one of them); ; one expression is split across several {{as}} blocks (unbalanced parentheses), so the stat and its percentage were read separately and what is stored is not the ability: {{ap|60 to 100}} {{as|(+ 30% AP)}} {{ai|Cosmic Creator|Aurelion Sol|{{as|(+|hp}} {{as|({{fd|3.1}}% Stardust)}}; this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). The source was read: it recurs, and the source states how many times it lands, but that count was never captured into the data — the entry holds one tick where it needs all of them. No figure is published rather than one published in the wrong place."
   },
   {
    "champion": "Aurelion Sol",
@@ -6119,7 +6119,8 @@
      "field": "components[1].ratios[0].owner (bonusHP)",
      "why": "the source names bonusHP and never says whose, and no other source states it"
     }
-   ]
+   ],
+   "notes": "THE COUNT HAS SINCE BEEN READ FROM THE SOURCE AND APPLIED: 12 instances. the description states the duration and the interval — up to 3 seconds, every 0.25 seconds — which is 12 instances. Its own leveling row multiplies by 16, and 16 is the stale figure: it was right while the duration was 4 seconds. The page contradicts itself and this was settled outside it: Riot's patch notes for V12.23 on leagueoflegends.com, which reduced Heart Zapper's duration from 4 seconds to 3 and were never carried into the leveling row. The wiki's own patch history records the same change, and Riot's live tooltip string computes the damage as damage-per-second times 3."
   },
   {
    "champion": "Dr. Mundo",
@@ -9546,7 +9547,8 @@
     "patch": "16.16.1",
     "fetched": "2026-08-14"
    },
-   "sourceRevision": 3725548
+   "sourceRevision": 3725548,
+   "notes": "THE COUNT HAS SINCE BEEN READ FROM THE SOURCE AND APPLIED: 4 instances. the description states the duration and the interval — 4 seconds, every second — which is 4 instances. Its own leveling row multiplies by 5, and 5 is the stale figure: it was right while the duration was 5 seconds. The page contradicts itself and this was settled outside it: Riot's patch notes for V14.14 on leagueoflegends.com, which state \"Duration: 5 ⇒ 4 seconds\" — confirmed outside the wiki entirely. The game data matches the description at all five ranks and on the AP ratio; the editor updated the sentence in July 2024 and left the multiplier."
   },
   {
    "champion": "Hecarim",
@@ -13740,7 +13742,7 @@
     "fetched": "2026-08-14"
    },
    "sourceRevision": 4006733,
-   "notes": "how many times this lands could not be read (2 repeating components; a total row cannot be attributed to one of them)"
+   "notes": "how many times this lands could not be read (2 repeating components; a total row cannot be attributed to one of them); this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). The source was read: it recurs, but states no duration — so no number of ticks exists to multiply, and a full-duration total cannot be stated at all. No figure is published rather than one published in the wrong place."
   },
   {
    "champion": "Karthus",
@@ -19489,7 +19491,7 @@
     "fetched": "2026-08-14"
    },
    "sourceRevision": 3949929,
-   "notes": "the parts do not add up to the total the source itself states (the wiki states a total of 90 at rank 1 and our additive components sum to 9 — a term or a multiplicity is missing); how many times this lands could not be read (2 repeating components; a total row cannot be attributed to one of them)"
+   "notes": "the parts do not add up to the total the source itself states (the wiki states a total of 90 at rank 1 and our additive components sum to 9 — a term or a multiplicity is missing); how many times this lands could not be read (2 repeating components; a total row cannot be attributed to one of them); this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). The source was read: it recurs, but the page contradicts itself about how many times — its description and its own leveling row give different tick counts, and neither is taken silently. Where outside evidence has since settled which half is stale the entry is corrected instead; this one has none, so no count exists to publish. No figure is published rather than one published in the wrong place."
   },
   {
    "champion": "Morgana",
@@ -20091,7 +20093,7 @@
     "fetched": "2026-08-14"
    },
    "sourceRevision": 4035787,
-   "notes": "the parts do not add up to the total the source itself states (the wiki states a total of 100 at rank 1 and our additive components sum to 150 — something is counted twice)"
+   "notes": "the parts do not add up to the total the source itself states (the wiki states a total of 100 at rank 1 and our additive components sum to 150 — something is counted twice); this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). The source was read: it recurs, but the page contradicts itself about how many times — its description and its own leveling row give different tick counts, and neither is taken silently. Where outside evidence has since settled which half is stale the entry is corrected instead; this one has none, so no count exists to publish. No figure is published rather than one published in the wrong place."
   },
   {
    "champion": "Nasus",
@@ -20135,7 +20137,10 @@
      "relation": {
       "kind": "adds"
      },
-     "hits": 1
+     "hits": 30,
+     "overTime": {
+      "sourceSays": "Nasus empowers himself for 15 seconds, and while empowered he deals magic damage every 0.5 seconds to nearby enemies"
+     }
     }
    ],
    "verification": "incomplete",
@@ -20146,7 +20151,7 @@
     "fetched": "2026-08-14"
    },
    "sourceRevision": 4007699,
-   "notes": "how many times this lands could not be read (\"Magic Damage Per Tick\" lands more than once and the source does not state how many times; the dropped total row does not divide by it evenly, so the count is not derivable)"
+   "notes": "how many times this lands could not be read (\"Magic Damage Per Tick\" lands more than once and the source does not state how many times; the dropped total row does not divide by it evenly, so the count is not derivable); THE COUNT HAS SINCE BEEN READ FROM THE SOURCE AND APPLIED: 30 instances. the description states the duration and the interval — 15 seconds, every 0.5 seconds — which is 30 instances, and the page's own Total row writes the multiplier out twice: '1.5*30 to 2.5*30' on the health percentage and '0.5*30' on the per-100-AP term, so the count of 30 is printed at every rank and on the coefficient as well."
   },
   {
    "champion": "Nautilus",
@@ -22130,7 +22135,7 @@
     "fetched": "2026-08-14"
    },
    "sourceRevision": 4011962,
-   "notes": "how many times this lands could not be read (\"Magic Damage Per Tick\" lands more than once and the source does not state how many times; the dropped total row does not divide by it evenly, so the count is not derivable)"
+   "notes": "how many times this lands could not be read (\"Magic Damage Per Tick\" lands more than once and the source does not state how many times; the dropped total row does not divide by it evenly, so the count is not derivable); this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). The source was read: it recurs, and both the source's own arithmetic and its own printed rows put the count at 5. It is still not written, and the reason is not in the source: not the count — the DESTINATION. Capturing a count marks the component as recurring, which moves its whole figure out of the burst total and into the damage-over-time line, and SPECIFICATION §3.8 defines that line as damage \"delivered over the effect's full duration FOLLOWING the combo\". All five gouts land inside the 0.75-second lunge itself, so nothing follows the combo at all. Marking it would show 0 burst damage for an ability that resolves inside one cast. RAISED for the lead rather than decided here. No figure is published rather than one published in the wrong place."
   },
   {
    "champion": "Ornn",
@@ -25321,7 +25326,7 @@
     "fetched": "2026-08-14"
    },
    "sourceRevision": 4034705,
-   "notes": "how many times this lands could not be read (4 repeating components; a total row cannot be attributed to one of them)"
+   "notes": "how many times this lands could not be read (4 repeating components; a total row cannot be attributed to one of them); this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). The source was read: it recurs, and the source states how many times it lands, but that count was never captured into the data — the entry holds one tick where it needs all of them. No figure is published rather than one published in the wrong place."
   },
   {
    "champion": "Rumble",
@@ -25451,7 +25456,7 @@
     "fetched": "2026-08-14"
    },
    "sourceRevision": 4008021,
-   "notes": "how many times this lands could not be read (2 repeating components; a total row cannot be attributed to one of them)"
+   "notes": "how many times this lands could not be read (2 repeating components; a total row cannot be attributed to one of them); THE COUNT HAS SINCE BEEN READ FROM THE SOURCE AND APPLIED: 20 instances. the description states it in words — \"for a total of 20 instances of its effect\" — and the page's own leveling row states it a second way: the per-tick figure is the per-second figure divided by 4, and the Maximum row is the per-second figure times 5, so the maximum is the per-tick figure times 20 at every rank and on the AP ratio too."
   },
   {
    "champion": "Ryze",
@@ -27477,7 +27482,7 @@
     "fetched": "2026-08-14"
    },
    "sourceRevision": 4006737,
-   "notes": "how many times this lands could not be read (2 repeating components; a total row cannot be attributed to one of them)"
+   "notes": "how many times this lands could not be read (2 repeating components; a total row cannot be attributed to one of them); this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). The source was read: it recurs, but the page contradicts itself about how many times — its description and its own leveling row give different tick counts, and neither is taken silently. Where outside evidence has since settled which half is stale the entry is corrected instead; this one has none, so no count exists to publish. No figure is published rather than one published in the wrong place."
   },
   {
    "champion": "Singed",
@@ -28997,7 +29002,7 @@
     "fetched": "2026-08-14"
    },
    "sourceRevision": 4020887,
-   "notes": "how many times this lands could not be read (\"Magic Damage per Tick\" lands more than once and nothing in the template states how many)"
+   "notes": "how many times this lands could not be read (\"Magic Damage per Tick\" lands more than once and nothing in the template states how many); this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). The source was read: it recurs, but states no duration — so no number of ticks exists to multiply, and a full-duration total cannot be stated at all. No figure is published rather than one published in the wrong place."
   },
   {
    "champion": "Swain",
@@ -33516,7 +33521,7 @@
     "fetched": "2026-08-14"
    },
    "sourceRevision": 4011945,
-   "notes": "the parts do not add up to the total the source itself states (the wiki states a total of 490 at rank 1 and our additive components sum to 165 — a term or a multiplicity is missing); how many times this lands could not be read (\"Magic Damage Per Tick\" lands more than once and the source does not state how many times; the dropped total row does not divide by it evenly, so the count is not derivable)"
+   "notes": "the parts do not add up to the total the source itself states (the wiki states a total of 490 at rank 1 and our additive components sum to 165 — a term or a multiplicity is missing); how many times this lands could not be read (\"Magic Damage Per Tick\" lands more than once and the source does not state how many times; the dropped total row does not divide by it evenly, so the count is not derivable); THE COUNT HAS SINCE BEEN READ FROM THE SOURCE AND APPLIED: 6 instances. the page states \"7 strikes (including the initial one)\" and the initial strike is a separate component, leaving 6 for the storm — and its own Total row writes the multiplier out, \"100+65*6 to 250+145*6\", with the AP ratio as \"50+35*6\", so the count of 6 is printed by the source at every rank and on the ratio."
   },
   {
    "champion": "Vladimir",
@@ -34331,7 +34336,10 @@
      "relation": {
       "kind": "adds"
      },
-     "hits": 1
+     "hits": 8,
+     "overTime": {
+      "sourceSays": "Wukong spins his staff around for up to 2 seconds, and the staff deals physical damage every 0.25 seconds to enemies hit"
+     }
     }
    ],
    "verification": "incomplete",
@@ -34342,7 +34350,7 @@
     "fetched": "2026-08-14"
    },
    "sourceRevision": 4021867,
-   "notes": "how many times this lands could not be read (\"Physical Damage Per Tick\" lands more than once and the source does not state how many times; the dropped total row does not divide by it evenly, so the count is not derivable)"
+   "notes": "how many times this lands could not be read (\"Physical Damage Per Tick\" lands more than once and the source does not state how many times; the dropped total row does not divide by it evenly, so the count is not derivable); THE COUNT HAS SINCE BEEN READ FROM THE SOURCE AND APPLIED: 8 instances. the description states the duration and the interval — up to 2 seconds, every 0.25 seconds — which is 8 instances, and the page's own leveling row divides the total by 8 on both terms: '8/8 to 16/8' of the health percentage against a total of '8 to 16', and '275/8' of the AD ratio against a total of 275."
   },
   {
    "champion": "Xayah",
@@ -45577,7 +45585,239 @@
    }
   }
  ],
- "runes": [],
+ "runes": [
+  {
+   "runeId": 9923,
+   "runeName": "Hail of Blades",
+   "tree": "Domination",
+   "provenance": {
+    "source": "Riot Data Dragon runesReforged.json (prose values) and League of Legends Wiki Template:Rune data Hail of Blades (revision 4051352)",
+    "url": "https://wiki.leagueoflegends.com/en-us/Template:Rune_data_Hail_of_Blades",
+    "patch": "16.16.1",
+    "fetched": "2026-08-15"
+   },
+   "components": [
+    {
+     "id": "bonus-damage",
+     "label": "On-Hit True Damage",
+     "damageType": "true",
+     "base": {
+      "scaling": "byLevel",
+      "from": 2,
+      "to": 20,
+      "atLevels": [
+       1,
+       18
+      ],
+      "steps": 18
+     },
+     "ratios": [
+      {
+       "stat": "bonusAD",
+       "scaling": "linear",
+       "from": 12,
+       "to": 12
+      },
+      {
+       "stat": "AP",
+       "scaling": "linear",
+       "from": 10,
+       "to": 10
+      }
+     ]
+    }
+   ],
+   "verification": "incomplete",
+   "notes": "The per-instance figure is agreed by both sources and is stored. What is CONTESTED is how many basic attacks carry the bonus damage, and it decides how much damage this rune deals in a sequence. Data Dragon: \"for up to 3 attacks ... Attack resets increase the attack limit by 1\" — three, plus one per reset with no stated ceiling. Wiki: \"you gain 2 stacks of the effect ... you generate an additional stack ... up to 2 times\", with a rider that \"The triggering attack benefits from Hail of Blades\" — which reads as two stacks plus the triggering attack, and a ceiling of two extra stacks rather than none. Neither is adopted, so the entry may claim no better than incomplete (DATA-SOURCES §32.2). NOT STORED, each stated plainly by the source and with no field to hold it: the 90% (60% ranged) bonus attack speed — the engine models sequence, not elapsed time (SPECIFICATION §3.2), so attack speed changes no damage figure it can produce; the 3-second window between attacks, and the 10-second cooldown — both are time."
+  },
+  {
+   "runeId": 8126,
+   "runeName": "Cheap Shot",
+   "tree": "Domination",
+   "provenance": {
+    "source": "Riot Data Dragon runesReforged.json (prose values) and League of Legends Wiki Template:Rune data Cheap Shot (revision 3992989)",
+    "url": "https://wiki.leagueoflegends.com/en-us/Template:Rune_data_Cheap_Shot",
+    "patch": "16.16.1",
+    "fetched": "2026-08-15"
+   },
+   "components": [
+    {
+     "id": "bonus-damage",
+     "label": "Bonus True Damage",
+     "damageType": "true",
+     "base": {
+      "scaling": "byLevel",
+      "from": 10,
+      "to": 45,
+      "atLevels": [
+       1,
+       18
+      ],
+      "steps": 18
+     },
+     "ratios": []
+    }
+   ],
+   "verification": "derived",
+   "notes": "Value cross-checked: the wiki's own formula evaluated at levels 1 and 18 lands on 10 and 45, which is the range Data Dragon prints. The wiki's level axis is deliberately not read — it says \"1 to 20 by 1\" and champions cap at 18 (DATA-SOURCES §13). NOT STORED, each stated plainly by the source and with no field to hold it: the trigger — the target must already be impaired by one of nine named crowd-control effects. CuratedRune has no condition field, so nothing records when this applies; the 4-second cooldown — time."
+  },
+  {
+   "runeId": 8143,
+   "runeName": "Sudden Impact",
+   "tree": "Domination",
+   "provenance": {
+    "source": "Riot Data Dragon runesReforged.json (prose values) and League of Legends Wiki Template:Rune data Sudden Impact (revision 3825916)",
+    "url": "https://wiki.leagueoflegends.com/en-us/Template:Rune_data_Sudden_Impact",
+    "patch": "16.16.1",
+    "fetched": "2026-08-15"
+   },
+   "components": [
+    {
+     "id": "bonus-damage",
+     "label": "Bonus True Damage",
+     "damageType": "true",
+     "base": {
+      "scaling": "byLevel",
+      "from": 20,
+      "to": 80,
+      "atLevels": [
+       1,
+       18
+      ],
+      "steps": 18
+     },
+     "ratios": []
+    }
+   ],
+   "verification": "derived",
+   "notes": "Value cross-checked: the wiki's own formula evaluated at levels 1 and 18 lands on 20 and 80, which is the range Data Dragon prints. The wiki's level axis is deliberately not read — it says \"1 to 20 by 1\" and champions cap at 18 (DATA-SOURCES §13). NOT STORED, each stated plainly by the source and with no field to hold it: the trigger — within 4 seconds of a dash, leap, blink, teleport or leaving stealth. No condition field exists on CuratedRune; the 10-second cooldown — time."
+  },
+  {
+   "runeId": 8437,
+   "runeName": "Grasp of the Undying",
+   "tree": "Resolve",
+   "provenance": {
+    "source": "Riot Data Dragon runesReforged.json (prose values) and League of Legends Wiki Template:Rune data Grasp of the Undying (revision 3963536)",
+    "url": "https://wiki.leagueoflegends.com/en-us/Template:Rune_data_Grasp_of_the_Undying",
+    "patch": "16.16.1",
+    "fetched": "2026-08-15"
+   },
+   "components": [
+    {
+     "id": "bonus-damage",
+     "label": "Bonus Magic Damage",
+     "damageType": "magic",
+     "base": {
+      "scaling": "linear",
+      "from": 0,
+      "to": 0
+     },
+     "ratios": [
+      {
+       "stat": "maxHP",
+       "owner": "holder",
+       "scaling": "byRangeType",
+       "melee": {
+        "scaling": "linear",
+        "from": 3.5,
+        "to": 3.5
+       },
+       "ranged": {
+        "scaling": "linear",
+        "from": 1.4,
+        "to": 1.4
+       }
+      }
+     ]
+    }
+   ],
+   "verification": "derived",
+   "notes": "The damage is a flat share of a health pool and does not scale with level, so there are no endpoints to cross-check; the two sources are checked against each other on the percentages instead, and agree. The base term is 0 because every point of this rune's damage comes from the ratio. NOT STORED, each stated plainly by the source and with no field to hold it: the heal — 1.3% of your maximum health (0.52% ranged). CuratedRune has no healing field; the permanent bonus health — 5 (2 ranged) per proc, and it accumulates. `grants` holds a flat number and cannot express either the range split or the accumulation; the 4-stack build-up and the 5-second window to spend it — time."
+  },
+  {
+   "runeId": 8439,
+   "runeName": "Aftershock",
+   "tree": "Resolve",
+   "provenance": {
+    "source": "Riot Data Dragon runesReforged.json (prose values) and League of Legends Wiki Template:Rune data Aftershock (revision 4022990)",
+    "url": "https://wiki.leagueoflegends.com/en-us/Template:Rune_data_Aftershock",
+    "patch": "16.16.1",
+    "fetched": "2026-08-15"
+   },
+   "components": [
+    {
+     "id": "bonus-damage",
+     "label": "Shockwave Magic Damage",
+     "damageType": "magic",
+     "base": {
+      "scaling": "byLevel",
+      "from": 25,
+      "to": 120,
+      "atLevels": [
+       1,
+       18
+      ],
+      "steps": 18
+     },
+     "ratios": [
+      {
+       "stat": "bonusHP",
+       "owner": "holder",
+       "scaling": "linear",
+       "from": 8,
+       "to": 8
+      }
+     ]
+    }
+   ],
+   "verification": "derived",
+   "notes": "Value cross-checked: the wiki's own formula evaluated at levels 1 and 18 lands on 25 and 120, which is the range Data Dragon prints. The wiki's level axis is deliberately not read — it says \"1 to 20 by 1\" and champions cap at 18 (DATA-SOURCES §13). NOT STORED, each stated plainly by the source and with no field to hold it: the resistance grant — 45 bonus armor and 45 bonus magic resistance, EACH plus 75% of the holder's bonus resistance of that type, capped at 80-150 by level. `grants` holds flat numbers only, so storing the 45s would drop both the 75% term and the cap, and a partly stored defence overstates or understates every mitigation it touches; the trigger — immobilizing an enemy champion. No condition field on CuratedRune; the 2.5-second delay before the shockwave, and the 20-second cooldown — time."
+  },
+  {
+   "runeId": 8237,
+   "runeName": "Scorch",
+   "tree": "Sorcery",
+   "provenance": {
+    "source": "Riot Data Dragon runesReforged.json (prose values) and League of Legends Wiki Template:Rune data Scorch (revision 3985169)",
+    "url": "https://wiki.leagueoflegends.com/en-us/Template:Rune_data_Scorch",
+    "patch": "16.16.1",
+    "fetched": "2026-08-15"
+   },
+   "components": [
+    {
+     "id": "bonus-damage",
+     "label": "Bonus Magic Damage",
+     "damageType": "magic",
+     "base": {
+      "scaling": "byLevel",
+      "from": 20,
+      "to": 40,
+      "atLevels": [
+       1,
+       18
+      ],
+      "steps": 18
+     },
+     "ratios": []
+    }
+   ],
+   "verification": "derived",
+   "notes": "Value cross-checked: the wiki's own formula evaluated at levels 1 and 18 lands on 20 and 40, which is the range Data Dragon prints. The wiki's level axis is deliberately not read — it says \"1 to 20 by 1\" and champions cap at 18 (DATA-SOURCES §13). NOT STORED, each stated plainly by the source and with no field to hold it: the trigger — the damage must come from an ability, not a basic attack. No condition field; the 1-second delay before it lands, and the 10-second cooldown — time. The delay does NOT make this damage over time: it is one instance, landed late, and the engine has no clock."
+  },
+  {
+   "runeId": 8473,
+   "runeName": "Bone Plating",
+   "tree": "Resolve",
+   "provenance": {
+    "source": "Riot Data Dragon runesReforged.json (prose values) and League of Legends Wiki Template:Rune data Bone Plating (revision 3985159)",
+    "url": "https://wiki.leagueoflegends.com/en-us/Template:Rune_data_Bone_Plating",
+    "patch": "16.16.1",
+    "fetched": "2026-08-15"
+   },
+   "verification": "incomplete",
+   "notes": "Bone Plating does not deal damage — it changes damage the holder RECEIVES, and CuratedRune has no field for that. It is recorded as incomplete rather than omitted, so the gap is visible; the shape it needs is in CONTRACT_GAPS (runes-read.ts). NOT STORED, each stated plainly by the source and with no field to hold it: the whole effect. Both sources state it completely — 30 to 60 by level, flat, off each of the next 3 instances, and the wiki adds that it applies to true damage as well — and CuratedRune can hold damage DEALT, flat stat grants and stack yields, none of which this is; the 1.5-second duration and the 55-second cooldown — time."
+  }
+ ],
  "shards": [],
  "exclusions": [
   {

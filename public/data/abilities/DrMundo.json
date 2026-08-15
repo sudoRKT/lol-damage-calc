@@ -149,6 +149,7 @@
           "why": "the source names bonusHP and never says whose, and no other source states it"
         }
       ],
+      "notes": "THE COUNT HAS SINCE BEEN READ FROM THE SOURCE AND APPLIED: 12 instances. the description states the duration and the interval — up to 3 seconds, every 0.25 seconds — which is 12 instances. Its own leveling row multiplies by 16, and 16 is the stale figure: it was right while the duration was 4 seconds. The page contradicts itself and this was settled outside it: Riot's patch notes for V12.23 on leagueoflegends.com, which reduced Heart Zapper's duration from 4 seconds to 3 and were never carried into the leveling row. The wiki's own patch history records the same change, and Riot's live tooltip string computes the damage as damage-per-second times 3.",
       "icon": "DrMundoW.png"
     },
     {

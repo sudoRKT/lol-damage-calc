@@ -141,7 +141,7 @@
         "fetched": "2026-08-14"
       },
       "sourceRevision": 4011962,
-      "notes": "how many times this lands could not be read (\"Magic Damage Per Tick\" lands more than once and the source does not state how many times; the dropped total row does not divide by it evenly, so the count is not derivable)",
+      "notes": "how many times this lands could not be read (\"Magic Damage Per Tick\" lands more than once and the source does not state how many times; the dropped total row does not divide by it evenly, so the count is not derivable); this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). The source was read: it recurs, and both the source's own arithmetic and its own printed rows put the count at 5. It is still not written, and the reason is not in the source: not the count — the DESTINATION. Capturing a count marks the component as recurring, which moves its whole figure out of the burst total and into the damage-over-time line, and SPECIFICATION §3.8 defines that line as damage \"delivered over the effect's full duration FOLLOWING the combo\". All five gouts land inside the 0.75-second lunge itself, so nothing follows the combo at all. Marking it would show 0 burst damage for an ability that resolves inside one cast. RAISED for the lead rather than decided here. No figure is published rather than one published in the wrong place.",
       "icon": "OrnnW.png"
     },
     {

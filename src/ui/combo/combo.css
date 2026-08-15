@@ -222,6 +222,14 @@
  * lead rather than filled locally.
  */
 .combo__control {
+  /* THE FLOOR IS STATED, NOT ARITHMETIC. The padding below happens to bring this control to
+     34.5 x 25.4px, which clears WCAG 2.2 AA 2.5.8 — but it cleared it by accident of the spacing
+     scale, and a later change to the padding or the type size would drop it back under 24px with
+     nothing to notice. `--target-min` is DESIGN.md §4a's stated minimum; naming it here is what
+     makes it a standard rather than a note, and `target-size-register.test.ts` requires at least
+     one component to do so. */
+  min-inline-size: var(--target-min);
+  min-block-size: var(--target-min);
   background: var(--bg-panel);
   color: var(--text-primary);
   border: var(--border-steel);

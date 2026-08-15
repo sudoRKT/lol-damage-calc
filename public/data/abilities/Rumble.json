@@ -348,7 +348,7 @@
         "fetched": "2026-08-14"
       },
       "sourceRevision": 4034705,
-      "notes": "how many times this lands could not be read (4 repeating components; a total row cannot be attributed to one of them)",
+      "notes": "how many times this lands could not be read (4 repeating components; a total row cannot be attributed to one of them); this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). The source was read: it recurs, and the source states how many times it lands, but that count was never captured into the data — the entry holds one tick where it needs all of them. No figure is published rather than one published in the wrong place.",
       "icon": "RumbleFlameThrower.png"
     },
     {
@@ -481,7 +481,7 @@
         "fetched": "2026-08-14"
       },
       "sourceRevision": 4008021,
-      "notes": "how many times this lands could not be read (2 repeating components; a total row cannot be attributed to one of them)",
+      "notes": "how many times this lands could not be read (2 repeating components; a total row cannot be attributed to one of them); THE COUNT HAS SINCE BEEN READ FROM THE SOURCE AND APPLIED: 20 instances. the description states it in words — \"for a total of 20 instances of its effect\" — and the page's own leveling row states it a second way: the per-tick figure is the per-second figure divided by 4, and the Maximum row is the per-second figure times 5, so the maximum is the per-tick figure times 20 at every rank and on the AP ratio too.",
       "icon": "RumbleCarpetBomb.png"
     }
   ],

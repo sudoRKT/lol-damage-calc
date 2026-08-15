@@ -165,7 +165,10 @@
           "relation": {
             "kind": "adds"
           },
-          "hits": 1
+          "hits": 8,
+          "overTime": {
+            "sourceSays": "Wukong spins his staff around for up to 2 seconds, and the staff deals physical damage every 0.25 seconds to enemies hit"
+          }
         }
       ],
       "verification": "incomplete",
@@ -176,7 +179,7 @@
         "fetched": "2026-08-14"
       },
       "sourceRevision": 4021867,
-      "notes": "how many times this lands could not be read (\"Physical Damage Per Tick\" lands more than once and the source does not state how many times; the dropped total row does not divide by it evenly, so the count is not derivable)",
+      "notes": "how many times this lands could not be read (\"Physical Damage Per Tick\" lands more than once and the source does not state how many times; the dropped total row does not divide by it evenly, so the count is not derivable); THE COUNT HAS SINCE BEEN READ FROM THE SOURCE AND APPLIED: 8 instances. the description states the duration and the interval — up to 2 seconds, every 0.25 seconds — which is 8 instances, and the page's own leveling row divides the total by 8 on both terms: '8/8 to 16/8' of the health percentage against a total of '8 to 16', and '275/8' of the AD ratio against a total of 275.",
       "icon": "MonkeyKingSpinToWin.png"
     }
   ],

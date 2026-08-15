@@ -65,8 +65,13 @@ export interface CapabilityInputs {
   burnTriggers: ReadonlyMap<number, 'ability-damage' | 'not-stated'>;
   /** Every rune in `public/data/runes.json` — the pool the rune picker offers. */
   runesPublished: number;
-  /** Curated rune effects. This is what the engine could read, and it is what "modelled" means. */
+  /** Curated rune effects — values read from source and stored. What the engine COULD read. */
   runeEffectsCurated: number;
+  /**
+   * Runes the engine actually applies. Absent means zero, which is the honest default: a caller
+   * that cannot say is not asserting that runes work.
+   */
+  runesAppliedByEngine?: number;
   defensiveEffects: readonly CapabilityDefensive[];
   /**
    * TRUE only if the catalogue the calculator runs against is given defensive entries at all.
@@ -151,7 +156,26 @@ export interface Capability {
   // ── RUNES ──────────────────────────────────────────────────────────────────
   /** Runes published to the site — the pool the picker offers. */
   runesPublished: number;
-  /** Runes whose effect the calculator can apply. */
+  /**
+   * Runes with a curated entry — a value read from source and stored.
+   *
+   * SPLIT FROM `runesModelled` ON 2026-08-15, because they stopped being the same number the
+   * moment seven runes were merged into the curated file. Storing a rune's value is not applying
+   * it, and the landing page prints the second.
+   */
+  runesCurated: number;
+  /**
+   * Runes whose effect the calculator ACTUALLY APPLIES — a rune that changes a figure on screen.
+   *
+   * THE NAME AND THE COUNT DISAGREED UNTIL 2026-08-15. This field read `runeEffectsCurated`,
+   * so the moment the curated file gained seven runes it would have reported seven "modelled"
+   * while the engine read none of them — and the landing page, `/checks/` and the configuration
+   * panel all print this figure in the sentence "no rune changes a number: N of 62". Publishing
+   * 7 there would have been a plausible wrong number about the product's own capability, which is
+   * the same class of defect as a wrong damage figure and harder to notice.
+   *
+   * It is derived from what the ENGINE can reach, not from what the file holds.
+   */
   runesModelled: number;
 
   // ── DEFENSIVE KIT ──────────────────────────────────────────────────────────
@@ -277,7 +301,12 @@ export function summariseCapability(input: CapabilityInputs): Capability {
     itemBurnsWithNoStatedTrigger: burnsWithNoStatedTrigger,
     itemEffectsWithNoStatedDelivery: by.undelivered,
     runesPublished: input.runesPublished,
-    runesModelled: input.runeEffectsCurated,
+    runesCurated: input.runeEffectsCurated,
+    // ZERO UNTIL THE ENGINE READS A RUNE. `Catalogue.runeEffects` exists as a lookup and the
+    // curated file carries seven entries, but nothing in `simulate` consults it yet, so no rune
+    // moves any figure. This is measured from the engine's own capability rather than from the
+    // file, so it cannot drift into a claim the product does not meet.
+    runesModelled: input.runesAppliedByEngine ?? 0,
     defensiveStored: input.defensiveEffects.length,
     defensiveReadyToApply: defensiveReady,
     // CORRECTED BY THE LEAD the same day this was written. "Ready" and "applied" are NOT the

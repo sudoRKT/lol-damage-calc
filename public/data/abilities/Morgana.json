@@ -138,7 +138,7 @@
         "fetched": "2026-08-14"
       },
       "sourceRevision": 3949929,
-      "notes": "the parts do not add up to the total the source itself states (the wiki states a total of 90 at rank 1 and our additive components sum to 9 — a term or a multiplicity is missing); how many times this lands could not be read (2 repeating components; a total row cannot be attributed to one of them)",
+      "notes": "the parts do not add up to the total the source itself states (the wiki states a total of 90 at rank 1 and our additive components sum to 9 — a term or a multiplicity is missing); how many times this lands could not be read (2 repeating components; a total row cannot be attributed to one of them); this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). The source was read: it recurs, but the page contradicts itself about how many times — its description and its own leveling row give different tick counts, and neither is taken silently. Where outside evidence has since settled which half is stale the entry is corrected instead; this one has none, so no count exists to publish. No figure is published rather than one published in the wrong place.",
       "icon": "MorganaW.png"
     },
     {

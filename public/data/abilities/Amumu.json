@@ -133,7 +133,7 @@
         "fetched": "2026-08-14"
       },
       "sourceRevision": 4006735,
-      "notes": "how many times this lands could not be read (\"Magic Damage Per Tick\" lands more than once and nothing in the template states how many)",
+      "notes": "how many times this lands could not be read (\"Magic Damage Per Tick\" lands more than once and nothing in the template states how many); this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). The source was read: it recurs, but states no duration — so no number of ticks exists to multiply, and a full-duration total cannot be stated at all. No figure is published rather than one published in the wrong place.",
       "icon": "AuraofDespair.png"
     },
     {

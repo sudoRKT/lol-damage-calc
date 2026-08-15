@@ -108,6 +108,7 @@
         "fetched": "2026-08-14"
       },
       "sourceRevision": 3725548,
+      "notes": "THE COUNT HAS SINCE BEEN READ FROM THE SOURCE AND APPLIED: 4 instances. the description states the duration and the interval — 4 seconds, every second — which is 4 instances. Its own leveling row multiplies by 5, and 5 is the stale figure: it was right while the duration was 5 seconds. The page contradicts itself and this was settled outside it: Riot's patch notes for V14.14 on leagueoflegends.com, which state \"Duration: 5 ⇒ 4 seconds\" — confirmed outside the wiki entirely. The game data matches the description at all five ranks and on the AP ratio; the editor updated the sentence in July 2024 and left the multiplier.",
       "icon": "HecarimW.png"
     },
     {

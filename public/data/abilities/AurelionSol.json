@@ -169,7 +169,7 @@
         "fetched": "2026-08-14"
       },
       "sourceRevision": 4028021,
-      "notes": "how many times this lands could not be read (4 repeating components; a total row cannot be attributed to one of them); ; one expression is split across several {{as}} blocks (unbalanced parentheses), so the stat and its percentage were read separately and what is stored is not the ability: {{ap|60 to 100}} {{as|(+ 30% AP)}} {{ai|Cosmic Creator|Aurelion Sol|{{as|(+|hp}} {{as|({{fd|3.1}}% Stardust)}}",
+      "notes": "how many times this lands could not be read (4 repeating components; a total row cannot be attributed to one of them); ; one expression is split across several {{as}} blocks (unbalanced parentheses), so the stat and its percentage were read separately and what is stored is not the ability: {{ap|60 to 100}} {{as|(+ 30% AP)}} {{ai|Cosmic Creator|Aurelion Sol|{{as|(+|hp}} {{as|({{fd|3.1}}% Stardust)}}; this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). The source was read: it recurs, and the source states how many times it lands, but that count was never captured into the data — the entry holds one tick where it needs all of them. No figure is published rather than one published in the wrong place.",
       "icon": "AurelionSolQ.png"
     },
     {

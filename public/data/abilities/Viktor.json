@@ -173,7 +173,7 @@
         "fetched": "2026-08-14"
       },
       "sourceRevision": 4011945,
-      "notes": "the parts do not add up to the total the source itself states (the wiki states a total of 490 at rank 1 and our additive components sum to 165 — a term or a multiplicity is missing); how many times this lands could not be read (\"Magic Damage Per Tick\" lands more than once and the source does not state how many times; the dropped total row does not divide by it evenly, so the count is not derivable)",
+      "notes": "the parts do not add up to the total the source itself states (the wiki states a total of 490 at rank 1 and our additive components sum to 165 — a term or a multiplicity is missing); how many times this lands could not be read (\"Magic Damage Per Tick\" lands more than once and the source does not state how many times; the dropped total row does not divide by it evenly, so the count is not derivable); THE COUNT HAS SINCE BEEN READ FROM THE SOURCE AND APPLIED: 6 instances. the page states \"7 strikes (including the initial one)\" and the initial strike is a separate component, leaving 6 for the storm — and its own Total row writes the multiplier out, \"100+65*6 to 250+145*6\", with the AP ratio as \"50+35*6\", so the count of 6 is printed by the source at every rank and on the ratio.",
       "icon": "ViktorR.png"
     },
     {
