@@ -1,0 +1,243 @@
+{
+  "what": "Curated rune effects, published from the protected override file. Every entry is here, including those the engine cannot yet deliver — simulate() names those rather than dropping them, and dropping them here would turn a named gap into silence.",
+  "patch": "16.16.1",
+  "fetched": "2026-08-15",
+  "count": 7,
+  "byVerification": {
+    "incomplete": 2,
+    "derived": 5
+  },
+  "runes": [
+    {
+      "runeId": 9923,
+      "runeName": "Hail of Blades",
+      "tree": "Domination",
+      "provenance": {
+        "source": "Riot Data Dragon runesReforged.json (prose values) and League of Legends Wiki Template:Rune data Hail of Blades (revision 4051352)",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Rune_data_Hail_of_Blades",
+        "patch": "16.16.1",
+        "fetched": "2026-08-15"
+      },
+      "components": [
+        {
+          "id": "bonus-damage",
+          "label": "On-Hit True Damage",
+          "damageType": "true",
+          "base": {
+            "scaling": "byLevel",
+            "from": 2,
+            "to": 20,
+            "atLevels": [
+              1,
+              18
+            ],
+            "steps": 18
+          },
+          "ratios": [
+            {
+              "stat": "bonusAD",
+              "scaling": "linear",
+              "from": 12,
+              "to": 12
+            },
+            {
+              "stat": "AP",
+              "scaling": "linear",
+              "from": 10,
+              "to": 10
+            }
+          ]
+        }
+      ],
+      "verification": "incomplete",
+      "notes": "The per-instance figure is agreed by both sources and is stored. What is CONTESTED is how many basic attacks carry the bonus damage, and it decides how much damage this rune deals in a sequence. Data Dragon: \"for up to 3 attacks ... Attack resets increase the attack limit by 1\" — three, plus one per reset with no stated ceiling. Wiki: \"you gain 2 stacks of the effect ... you generate an additional stack ... up to 2 times\", with a rider that \"The triggering attack benefits from Hail of Blades\" — which reads as two stacks plus the triggering attack, and a ceiling of two extra stacks rather than none. Neither is adopted, so the entry may claim no better than incomplete (DATA-SOURCES §32.2). NOT STORED, each stated plainly by the source and with no field to hold it: the 90% (60% ranged) bonus attack speed — the engine models sequence, not elapsed time (SPECIFICATION §3.2), so attack speed changes no damage figure it can produce; the 3-second window between attacks, and the 10-second cooldown — both are time."
+    },
+    {
+      "runeId": 8126,
+      "runeName": "Cheap Shot",
+      "tree": "Domination",
+      "provenance": {
+        "source": "Riot Data Dragon runesReforged.json (prose values) and League of Legends Wiki Template:Rune data Cheap Shot (revision 3992989)",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Rune_data_Cheap_Shot",
+        "patch": "16.16.1",
+        "fetched": "2026-08-15"
+      },
+      "components": [
+        {
+          "id": "bonus-damage",
+          "label": "Bonus True Damage",
+          "damageType": "true",
+          "base": {
+            "scaling": "byLevel",
+            "from": 10,
+            "to": 45,
+            "atLevels": [
+              1,
+              18
+            ],
+            "steps": 18
+          },
+          "ratios": []
+        }
+      ],
+      "verification": "derived",
+      "notes": "Value cross-checked: the wiki's own formula evaluated at levels 1 and 18 lands on 10 and 45, which is the range Data Dragon prints. The wiki's level axis is deliberately not read — it says \"1 to 20 by 1\" and champions cap at 18 (DATA-SOURCES §13). NOT STORED, each stated plainly by the source and with no field to hold it: the trigger — the target must already be impaired by one of nine named crowd-control effects. CuratedRune has no condition field, so nothing records when this applies; the 4-second cooldown — time."
+    },
+    {
+      "runeId": 8143,
+      "runeName": "Sudden Impact",
+      "tree": "Domination",
+      "provenance": {
+        "source": "Riot Data Dragon runesReforged.json (prose values) and League of Legends Wiki Template:Rune data Sudden Impact (revision 3825916)",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Rune_data_Sudden_Impact",
+        "patch": "16.16.1",
+        "fetched": "2026-08-15"
+      },
+      "components": [
+        {
+          "id": "bonus-damage",
+          "label": "Bonus True Damage",
+          "damageType": "true",
+          "base": {
+            "scaling": "byLevel",
+            "from": 20,
+            "to": 80,
+            "atLevels": [
+              1,
+              18
+            ],
+            "steps": 18
+          },
+          "ratios": []
+        }
+      ],
+      "verification": "derived",
+      "notes": "Value cross-checked: the wiki's own formula evaluated at levels 1 and 18 lands on 20 and 80, which is the range Data Dragon prints. The wiki's level axis is deliberately not read — it says \"1 to 20 by 1\" and champions cap at 18 (DATA-SOURCES §13). NOT STORED, each stated plainly by the source and with no field to hold it: the trigger — within 4 seconds of a dash, leap, blink, teleport or leaving stealth. No condition field exists on CuratedRune; the 10-second cooldown — time."
+    },
+    {
+      "runeId": 8437,
+      "runeName": "Grasp of the Undying",
+      "tree": "Resolve",
+      "provenance": {
+        "source": "Riot Data Dragon runesReforged.json (prose values) and League of Legends Wiki Template:Rune data Grasp of the Undying (revision 3963536)",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Rune_data_Grasp_of_the_Undying",
+        "patch": "16.16.1",
+        "fetched": "2026-08-15"
+      },
+      "components": [
+        {
+          "id": "bonus-damage",
+          "label": "Bonus Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "linear",
+            "from": 0,
+            "to": 0
+          },
+          "ratios": [
+            {
+              "stat": "maxHP",
+              "owner": "holder",
+              "scaling": "byRangeType",
+              "melee": {
+                "scaling": "linear",
+                "from": 3.5,
+                "to": 3.5
+              },
+              "ranged": {
+                "scaling": "linear",
+                "from": 1.4,
+                "to": 1.4
+              }
+            }
+          ]
+        }
+      ],
+      "verification": "derived",
+      "notes": "The damage is a flat share of a health pool and does not scale with level, so there are no endpoints to cross-check; the two sources are checked against each other on the percentages instead, and agree. The base term is 0 because every point of this rune's damage comes from the ratio. NOT STORED, each stated plainly by the source and with no field to hold it: the heal — 1.3% of your maximum health (0.52% ranged). CuratedRune has no healing field; the permanent bonus health — 5 (2 ranged) per proc, and it accumulates. `grants` holds a flat number and cannot express either the range split or the accumulation; the 4-stack build-up and the 5-second window to spend it — time."
+    },
+    {
+      "runeId": 8439,
+      "runeName": "Aftershock",
+      "tree": "Resolve",
+      "provenance": {
+        "source": "Riot Data Dragon runesReforged.json (prose values) and League of Legends Wiki Template:Rune data Aftershock (revision 4022990)",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Rune_data_Aftershock",
+        "patch": "16.16.1",
+        "fetched": "2026-08-15"
+      },
+      "components": [
+        {
+          "id": "bonus-damage",
+          "label": "Shockwave Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "byLevel",
+            "from": 25,
+            "to": 120,
+            "atLevels": [
+              1,
+              18
+            ],
+            "steps": 18
+          },
+          "ratios": [
+            {
+              "stat": "bonusHP",
+              "owner": "holder",
+              "scaling": "linear",
+              "from": 8,
+              "to": 8
+            }
+          ]
+        }
+      ],
+      "verification": "derived",
+      "notes": "Value cross-checked: the wiki's own formula evaluated at levels 1 and 18 lands on 25 and 120, which is the range Data Dragon prints. The wiki's level axis is deliberately not read — it says \"1 to 20 by 1\" and champions cap at 18 (DATA-SOURCES §13). NOT STORED, each stated plainly by the source and with no field to hold it: the resistance grant — 45 bonus armor and 45 bonus magic resistance, EACH plus 75% of the holder's bonus resistance of that type, capped at 80-150 by level. `grants` holds flat numbers only, so storing the 45s would drop both the 75% term and the cap, and a partly stored defence overstates or understates every mitigation it touches; the trigger — immobilizing an enemy champion. No condition field on CuratedRune; the 2.5-second delay before the shockwave, and the 20-second cooldown — time."
+    },
+    {
+      "runeId": 8237,
+      "runeName": "Scorch",
+      "tree": "Sorcery",
+      "provenance": {
+        "source": "Riot Data Dragon runesReforged.json (prose values) and League of Legends Wiki Template:Rune data Scorch (revision 3985169)",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Rune_data_Scorch",
+        "patch": "16.16.1",
+        "fetched": "2026-08-15"
+      },
+      "components": [
+        {
+          "id": "bonus-damage",
+          "label": "Bonus Magic Damage",
+          "damageType": "magic",
+          "base": {
+            "scaling": "byLevel",
+            "from": 20,
+            "to": 40,
+            "atLevels": [
+              1,
+              18
+            ],
+            "steps": 18
+          },
+          "ratios": []
+        }
+      ],
+      "verification": "derived",
+      "notes": "Value cross-checked: the wiki's own formula evaluated at levels 1 and 18 lands on 20 and 40, which is the range Data Dragon prints. The wiki's level axis is deliberately not read — it says \"1 to 20 by 1\" and champions cap at 18 (DATA-SOURCES §13). NOT STORED, each stated plainly by the source and with no field to hold it: the trigger — the damage must come from an ability, not a basic attack. No condition field; the 1-second delay before it lands, and the 10-second cooldown — time. The delay does NOT make this damage over time: it is one instance, landed late, and the engine has no clock."
+    },
+    {
+      "runeId": 8473,
+      "runeName": "Bone Plating",
+      "tree": "Resolve",
+      "provenance": {
+        "source": "Riot Data Dragon runesReforged.json (prose values) and League of Legends Wiki Template:Rune data Bone Plating (revision 3985159)",
+        "url": "https://wiki.leagueoflegends.com/en-us/Template:Rune_data_Bone_Plating",
+        "patch": "16.16.1",
+        "fetched": "2026-08-15"
+      },
+      "verification": "incomplete",
+      "notes": "Bone Plating does not deal damage — it changes damage the holder RECEIVES, and CuratedRune has no field for that. It is recorded as incomplete rather than omitted, so the gap is visible; the shape it needs is in CONTRACT_GAPS (runes-read.ts). NOT STORED, each stated plainly by the source and with no field to hold it: the whole effect. Both sources state it completely — 30 to 60 by level, flat, off each of the next 3 instances, and the wiki adds that it applies to true damage as well — and CuratedRune can hold damage DEALT, flat stat grants and stack yields, none of which this is; the 1.5-second duration and the 55-second cooldown — time."
+    }
+  ]
+}

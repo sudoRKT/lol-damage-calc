@@ -267,8 +267,11 @@ export function ChecksPage() {
             Runes: {CAPABILITY.runesModelled} of {CAPABILITY.runesPublished}.
           </strong>{' '}
           All {CAPABILITY.runesPublished} runes in the game are published to this site — that is the
-          full pool, names and icons — and not one has a modelled effect. There is no rune page to
-          configure yet, and no rune changes a number in any result. A keystone is often a large
+          full pool, names and icons — and {CAPABILITY.runesCurated} have a value read from source
+          and stored. Storing a value is not applying it: {CAPABILITY.runesModelled} of them
+          actually change a figure, because the engine fires a rune only where a person has read
+          the sentence that says how it reaches its target. There is no rune page to configure yet,
+          so even that one arrives only through a shared link. A keystone is often a large
           share of a real combo, so a total here is a total <em>without</em> runes and should be
           read that way.
         </p>

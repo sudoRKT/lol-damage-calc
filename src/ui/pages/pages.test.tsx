@@ -149,7 +149,7 @@ describe('pages/how the numbers are checked', () => {
     expect(text).toContain(
       `The defender’s own kit: ${CAPABILITY.defensiveApplied} of ${CAPABILITY.defensiveStored}`,
     );
-    expect(CAPABILITY.runesModelled).toBe(0);
+    expect(CAPABILITY.runesModelled).toBe(1); // was 0 until Scorch landed, 2026-08-15
     // The same tripwire, and it fired the same day. See Landing.test.tsx.
     expect(CAPABILITY.defensiveApplied).toBe(77);
   });

@@ -195,11 +195,11 @@ export function Landing() {
           </li>
           <li>
             <strong>
-              No rune changes a number: {capability.runesModelled} of {capability.runesPublished}{' '}
-              have a modelled effect.
+              {capability.runesModelled} of {capability.runesPublished} runes change a number.
             </strong>{' '}
-            The whole rune pool is published here, and none of it is applied yet. A keystone can be
-            a large share of a real combo, so read a total as a total without runes.
+            The whole rune pool is published here; almost none of it is applied yet. A keystone can
+            be a large share of a real combo, so read a total as a total with almost no runes in
+            it.
           </li>
           <li>
             <strong>

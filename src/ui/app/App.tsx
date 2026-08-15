@@ -44,6 +44,7 @@ import type {
   ComboStep,
   CuratedDefensiveEffect,
   CuratedItemEffect,
+  CuratedRune,
   Item,
   Scenario,
   VerificationStatus,
@@ -79,6 +80,7 @@ import {
   itemEffectsById,
   loadDefensiveEffects,
   defensiveEffectsByChampion,
+  loadRuneEffects,
   loadOverrides,
   rosterPatch,
   type AbilitiesFile,
@@ -126,6 +128,8 @@ interface LoadedData {
   overrides: StatOverrideRecord[];
   /** The curated actives and riders. An empty list is a real answer — see `loadItemEffects`. */
   itemEffects: CuratedItemEffect[];
+  /** The curated rune effects, keyed by rune id. Empty is a real answer. */
+  runeEffects: Map<number, CuratedRune[]>;
   /** The defender's own defences. Empty is a real answer — see `loadDefensiveEffects`. */
   defensiveEffects: CuratedDefensiveEffect[];
   patch: string;
@@ -196,8 +200,9 @@ export function App({
       // else, and the engine already names every effect it cannot reach (see loadItemEffects).
       loadItemEffects(fetchImpl),
       loadDefensiveEffects(fetchImpl),
+      loadRuneEffects(fetchImpl),
     ])
-      .then(([roster, items, overrides, itemEffects, defensiveEffects]) => {
+      .then(([roster, items, overrides, itemEffects, defensiveEffects, runeEffects]) => {
         if (!live) return;
         setData({
           roster,
@@ -205,6 +210,7 @@ export function App({
           overrides,
           itemEffects,
           defensiveEffects,
+          runeEffects,
           patch: rosterPatch(roster),
         });
       })
@@ -251,6 +257,9 @@ export function App({
       // nothing. It was missing until 2026-08-14, which is why none of that work reached a
       // visitor (DATA-SOURCES §57).
       itemEffects: itemEffectsById(data.itemEffects),
+      // Same trap, one layer along: without this the rune lookup answers empty for every id and
+      // no rune moves a figure however many are curated. `loadRuneEffects` already keys them.
+      runeEffects: data.runeEffects,
       // Without this the engine's defensive lookup answers empty for every champion, and every
       // toggle a reader sets does nothing at all (DATA-SOURCES §59).
       defensiveEffects: defensiveEffectsByChampion(data.defensiveEffects),

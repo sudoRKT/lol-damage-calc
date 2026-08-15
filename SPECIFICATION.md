@@ -649,9 +649,9 @@ The following notice is displayed in a location readily visible to users:
 
 The following scope disclaimer is displayed alongside results:
 
-> This calculator computes champion ability damage, item statistics, and the item effects it
-> can model. It does not account for runes, crowd control, map-based damage, seasonal changes,
-> or passive effects requiring specific gameplay conditions.
+> This calculator computes champion ability damage, item statistics, and the item and rune
+> effects it can model. It does not account for crowd control, map-based damage, seasonal
+> changes, or passive effects requiring specific gameplay conditions.
 
 #### AMENDED 2026-08-15, AND IT MUST BE REVISITED WHEN RUNES ARE MODELLED
 
@@ -676,7 +676,15 @@ passives and actives ARE partly modelled (DATA-SOURCES §55) and the old sentenc
 while overselling runes.
 
 **THE OBLIGATION THIS CREATES: when any rune gains a modelled effect, this sentence is wrong
-again**, in the opposite direction, and it must be amended in the same breath. It is deliberately
+again**, in the opposite direction, and it must be amended in the same breath.
+
+**AMENDED A SECOND TIME, 2026-08-15, and the obligation above is what fired.** Scorch became the
+first rune the calculator applies. "Does not account for runes" was true that morning and false
+that evening, so runes moved back into the computed list — qualified as "the rune effects it can
+model", which is 1 of 62 and is the honest shape while that number is neither zero nor all. The
+precise count is not in this sentence: it is on the landing page, `/checks/` and the configuration
+panel, all generated from `capability.json`. **The obligation now runs both ways and does not
+expire.** It is deliberately
 qualitative — "the item effects it can model" rather than a count — so that ordinary progress does
 not falsify it weekly; only the rune clause is a hard claim, and only because runes are currently
 all-or-nothing.

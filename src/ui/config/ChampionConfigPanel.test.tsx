@@ -146,17 +146,21 @@ describe('config/runes are stated, never promised', () => {
     // Not a hand-typed number anywhere: the same committed file the landing page reads, so the
     // two pages cannot disagree about how many runes are modelled.
     expect(p!.textContent).toContain(
-      `No rune changes a number: ${CAPABILITY.runesModelled} of ${CAPABILITY.runesPublished} have a modelled effect.`,
+      `${CAPABILITY.runesModelled} of ${CAPABILITY.runesPublished} runes change a number.`,
     );
     // And it says what that means for the reader, not just the arithmetic.
-    expect(p!.textContent).toContain('A total on this page is a total without runes.');
+    expect(p!.textContent).toContain('Read a total on this page as a total with almost no runes in it.');
   });
 
   it('the sentence is only true while no rune is modelled, so the count is pinned', () => {
     // If a rune ever gains a modelled effect this fails, and the sentence above must be rewritten
     // rather than silently starting to under-report. Landing.test.tsx pins the same figure for the
     // same reason.
-    expect(CAPABILITY.runesModelled).toBe(0);
+    // THE PIN MOVED FROM 0 TO 1 ON 2026-08-15, when Scorch became the first rune the engine
+    // applies. The point of pinning it was never that the number is zero — it was that the
+    // SENTENCE and the number must move together, and this test is what made that happen: the
+    // copy said "no rune changes a number" and would have printed "1 of 62" beside it.
+    expect(CAPABILITY.runesModelled).toBe(1);
     expect(CAPABILITY.runesPublished).toBeGreaterThan(0);
   });
 
@@ -165,7 +169,7 @@ describe('config/runes are stated, never promised', () => {
     expect(screen.queryByText(SUPERSEDED_RUNE_ENTRY)).toBeNull();
     expect(screen.getByText('Entry state')).toBeTruthy();
     // The panel is not silent about runes — it replaced a weaker claim with a checked one.
-    expect(runeSentence()!.textContent).toContain('No rune changes a number');
+    expect(runeSentence()!.textContent).toContain('runes change a number');
     // And it says it exactly once, so the two statements can never sit side by side.
     const note = document.querySelector('.config__note') as HTMLElement;
     expect(/rune/i.test(note.textContent ?? '')).toBe(false);

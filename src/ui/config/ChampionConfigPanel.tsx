@@ -190,12 +190,12 @@ export function ChampionConfigPanel({
           patch. It sits outside `.config__note` because it is not a configuration gap. */}
       <p className="config__runes">
         <strong className="config__runes-claim">
-          No rune changes a number: {CAPABILITY.runesModelled} of {CAPABILITY.runesPublished} have a
-          modelled effect.
+          {CAPABILITY.runesModelled} of {CAPABILITY.runesPublished} runes change a number.
         </strong>{' '}
-        The whole pool is published and none of it is applied, so there is no rune control here — one
-        that moved no figure would tell you less than this sentence does. A total on this page is a
-        total without runes.
+        The whole pool is published; almost none of it is applied. There is no rune control here
+        yet, so a rune that does have a modelled effect reaches a result only through a shared
+        link. Read a total on this page as a total with {CAPABILITY.runesModelled === 0 ? 'no' : 'almost no'}{' '}
+        runes in it.
       </p>
     </section>
   );

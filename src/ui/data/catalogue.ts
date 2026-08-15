@@ -50,6 +50,7 @@ export const OVERRIDES_URL = '/data/overrides.json';
 
 /** Where the curated item effects are published (`scripts/build-item-effects.ts`). */
 export const ITEM_EFFECTS_URL = '/data/item-effects.json';
+export const RUNE_EFFECTS_URL = '/data/rune-effects.json';
 
 /** Where the curated defensive effects are published (`scripts/build-defensive-effects.ts`). */
 export const DEFENSIVE_EFFECTS_URL = '/data/defensive-effects.json';
@@ -136,6 +137,28 @@ export async function loadOverrides(
  * A malformed file is still an error: a payload without an `itemEffects` list is a broken build
  * step, not a build that published nothing.
  */
+/**
+ * The curated rune effects, keyed by rune id for `Catalogue.runeEffects`.
+ *
+ * Fails soft exactly as `loadItemEffects` does: an absent file costs the rune rows and nothing
+ * else, and `simulate` already names every rune it cannot apply, so a missing file degrades to
+ * "no rune changes a number" — which was true until today and is the safe direction to fail in.
+ */
+export async function loadRuneEffects(
+  fetchImpl: typeof fetch = fetch,
+  url: string = RUNE_EFFECTS_URL,
+): Promise<Map<number, CuratedRune[]>> {
+  const response = await fetchImpl(url);
+  if (response.status === 404) return new Map();
+  if (!response.ok) throw new Error(`Rune effects: ${url} returned ${response.status}`);
+  const file = (await response.json()) as { runes?: CuratedRune[] };
+  const out = new Map<number, CuratedRune[]>();
+  for (const rune of file?.runes ?? []) {
+    out.set(rune.runeId, [...(out.get(rune.runeId) ?? []), rune]);
+  }
+  return out;
+}
+
 export async function loadItemEffects(
   fetchImpl: typeof fetch = fetch,
   url: string = ITEM_EFFECTS_URL,

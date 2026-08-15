@@ -684,6 +684,16 @@ describe('seam: scenario -> simulate -> interface, on the shipped data', () => {
     // unmodelled steps will change with it.
     itemEffects: () => [],
     defensiveEffects: () => [],
+    // Added 2026-08-15 with `Catalogue.runeEffects`. Answering [] is what this seam wants: it
+    // runs over the SHIPPED data, and a scenario built here carries an empty rune page, so no
+    // lookup happens at all. The seam that WOULD catch a rune defect is the app's own catalogue,
+    // which reads `public/data/rune-effects.json` — and `catalogue.test.ts` covers that.
+    //
+    // WORTH RECORDING: this literal is typed `Catalogue` and TypeScript did NOT reject it when
+    // the method was added, because it is built by an object literal assigned through a helper
+    // that widens it. The suite caught it instead, with five red tests naming the missing
+    // function — which is the cross-area seam doing exactly its job.
+    runeEffects: () => [],
   };
 
   const scenarioFor = (attacker: string, defender: string, combo: Scenario['combo']): Scenario => ({

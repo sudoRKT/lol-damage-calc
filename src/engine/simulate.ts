@@ -653,6 +653,68 @@ function withRiders(
  * neither stored sentence says what sets them off. They are named as incomplete rather than fired
  * unconditionally, because firing them would assert they always happen.
  */
+/**
+ * WHICH RUNES THE ENGINE APPLIES, AND HOW EACH REACHES ITS TARGET.
+ *
+ * ═══ A READ POPULATION, NOT A DETECTOR ═══
+ *
+ * `CuratedRune` carries no delivery field — no `appliesAs`, no condition. A rune states its
+ * trigger in a sentence and nowhere else. Deciding "Scorch rides on an ability" from the rune's
+ * NAME would be a detector deciding what a person must confirm, which CLAUDE.md forbids for
+ * anything that multiplies a damage number.
+ *
+ * So this is the same shape as `BURN_TRIGGERS` above: one entry per rune whose sentence a person
+ * has read, and **a rune absent from this map is REPORTED rather than guessed at**. Five runes
+ * carry a curated value today and one is here, which is the honest state — the other four are
+ * listed in `RUNES_READ_BUT_NOT_DELIVERABLE` with what each is waiting on.
+ *
+ * ═══ WHAT `ability-hit` MEANS AND WHAT IT LEAVES OUT ═══
+ *
+ * The rune fires once on the first ability instance of the sequence that deals damage. Scorch's
+ * source states a 1-second delay before it lands and a 10-second cooldown; **neither is modelled,
+ * because this engine models sequence and not elapsed time (§3.2)**, and both are disclosed in
+ * `SIMULATION_EXCLUSIONS` rather than approximated. The cooldown is why it fires ONCE: a second
+ * ability inside ten seconds would not re-trigger it in the game, and the engine has no clock to
+ * tell it otherwise, so firing once is the reading that cannot overstate.
+ *
+ * The delay does NOT make this damage over time. It is one instance landed late, which is a
+ * different fact from a figure delivered across a duration (§3.8).
+ */
+export const RUNE_DELIVERY: ReadonlyMap<number, 'ability-hit'> = new Map([
+  // Scorch — "damaging an enemy champion with an ability sets them on fire". The trigger is
+  // stated plainly and the entry's own notes record it: the damage must come from an ability,
+  // not a basic attack.
+  [8237, 'ability-hit'],
+]);
+
+/**
+ * Runes with a stored value that this engine still cannot deliver, and what each waits on.
+ *
+ * Named rather than silently skipped, because "the file has seven runes" and "the calculator
+ * applies one" are different facts and a reader is entitled to both.
+ */
+export const RUNES_READ_BUT_NOT_DELIVERABLE: ReadonlyMap<number, string> = new Map([
+  [
+    8126,
+    'Cheap Shot — fires only against a target that is impaired. The condition is a fact the ' +
+      'engine cannot know and the user must state, and no rune toggle exists in the interface yet.',
+  ],
+  [
+    8143,
+    'Sudden Impact — fires after a dash, blink or stealth exit. The engine models a sequence of ' +
+      'damage instances and has no notion of movement, so nothing in a scenario can satisfy it.',
+  ],
+  [
+    8437,
+    'Grasp of the Undying — rides on a basic attack every four seconds, which is elapsed time ' +
+      '(§3.2), and also grants permanent bonus health, which no step can express.',
+  ],
+  [
+    8439,
+    'Aftershock — fires on immobilising a champion. The engine has no notion of immobilising.',
+  ],
+]);
+
 export const BURN_TRIGGERS: ReadonlyMap<number, 'ability-damage' | 'not-stated'> = new Map([
   [2503, 'ability-damage'], // Blackfire Torch — "Dealing ability damage burns enemies"
   [2508, 'ability-damage'], // Fated Ashes — "Dealing ability damage burns enemies"
@@ -852,6 +914,117 @@ function riderInstance(
       holder: 'attacker',
       rangeType,
       // DELIBERATELY NO `crit`. See the header — this is the correctness the separate row buys.
+    },
+  };
+}
+
+
+/**
+ * THE RUNE ROWS. Built 2026-08-15 — the first time a rune changes a figure in this product.
+ *
+ * A rune rides on the instance that triggered it, exactly as an on-hit item effect does, and for
+ * the same two reasons `withRiders` gives: it keeps the carrier's resistance working intact when
+ * the two damage types differ, and it keeps the rune out of a critical strike it does not share.
+ *
+ * ONLY RUNES IN `RUNE_DELIVERY` ARE APPLIED. A rune with a curated value and no read delivery is
+ * NOT silently skipped — `runesNotDelivered` collects it so the caller can name it, because
+ * "seven runes are stored" and "one rune moves a figure" are different facts.
+ *
+ * ONCE PER SEQUENCE. See `RUNE_DELIVERY` for why: the source states a cooldown, the engine has no
+ * clock, and firing once is the reading that cannot overstate.
+ */
+function withRuneRows(
+  planned: PlannedInstance[],
+  combo: readonly ComboStep[],
+  config: ChampionConfig,
+  catalogue: Catalogue,
+  rangeType: 'Melee' | 'Ranged',
+): { instances: PlannedInstance[]; notDelivered: string[] } {
+  const page = config.runes;
+  const worn = [page.keystone, ...page.primary, ...page.secondary].filter(
+    (id): id is number => typeof id === 'number',
+  );
+
+  const notDelivered: string[] = [];
+  const toFire: Array<{ runeId: number; effect: CuratedRune }> = [];
+
+  for (const runeId of worn) {
+    const effects = catalogue.runeEffects(runeId);
+    if (effects.length === 0) continue; // not curated: the caller's exclusions already say so
+    for (const effect of effects) {
+      if (RUNE_DELIVERY.get(runeId) === 'ability-hit') toFire.push({ runeId, effect });
+      else {
+        notDelivered.push(
+          RUNES_READ_BUT_NOT_DELIVERABLE.get(runeId) ??
+            `${effect.runeName ?? `rune ${runeId}`} — a value is stored and its delivery has not ` +
+              `been read, so nothing is applied rather than a carrier being guessed at`,
+        );
+      }
+    }
+  }
+  if (toFire.length === 0) return { instances: planned, notDelivered };
+
+  // The first ability step in the sequence. A basic attack does not trigger these.
+  const carrierIndex = combo.findIndex((step) => step.kind === 'ability');
+  if (carrierIndex === -1) {
+    for (const { effect } of toFire) {
+      notDelivered.push(
+        `${effect.runeName ?? 'a rune'} — it fires on an ability and this combo has none`,
+      );
+    }
+    return { instances: planned, notDelivered };
+  }
+
+  const carrier = combo[carrierIndex]!;
+  const out = [...planned];
+  const at = out.findIndex((i) => i.stepId === carrier.id);
+  let ordinal = 0;
+  for (const { effect } of toFire) {
+    out.splice(at + 1 + ordinal, 0, runeInstance(effect, carrier, ordinal, rangeType));
+    ordinal += 1;
+  }
+  return { instances: out, notDelivered };
+}
+
+/** One rune's row, shaped exactly as an item rider's. */
+function runeInstance(
+  effect: CuratedRune,
+  carrier: ComboStep,
+  ordinal: number,
+  rangeType: 'Melee' | 'Ranged',
+): PlannedInstance {
+  const stepId = `${carrier.id}-rune-${ordinal}`;
+  const label = `${effect.runeName ?? 'Rune'} (rune)`;
+  const components = effect.components ?? [];
+
+  if (effect.verification === 'incomplete' || components.length === 0) {
+    return {
+      stepId,
+      carriedBy: carrier.id,
+      sourceLabel: label,
+      instanceType: 'on-hit',
+      verification: 'incomplete',
+      incompleteReason: {
+        kind: 'pending',
+        note: effect.notes ?? 'a rune value is stored and the entry states no usable figure',
+      } as IncompleteReason,
+    };
+  }
+
+  return {
+    stepId,
+    carriedBy: carrier.id,
+    sourceLabel: label,
+    instanceType: 'on-hit',
+    verification: effect.verification,
+    damage: {
+      components,
+      rank: 1,
+      maxRank: 1,
+      // The rune is on the ATTACKER's page, so a `holder` ratio reads the attacker.
+      holder: 'attacker',
+      rangeType,
+      // DELIBERATELY NO `crit`, for the reason the item riders give.
     },
   };
 }
@@ -1150,7 +1323,14 @@ export function planScenario(
   );
   const rangeType = attackerChampion.stats.rangetype === 'Ranged' ? 'Ranged' : 'Melee';
   const withRiderRows = withRiders(planned, scenario.combo, scenario.attacker, catalogue, rangeType);
-  const instances = withBurns(withRiderRows, scenario.combo, scenario.attacker, catalogue, rangeType);
+  const withRunes = withRuneRows(withRiderRows, scenario.combo, scenario.attacker, catalogue, rangeType);
+  const instances = withBurns(
+    withRunes.instances,
+    scenario.combo,
+    scenario.attacker,
+    catalogue,
+    rangeType,
+  );
 
   // ═══ THE DEFENDER'S OWN KIT (SPECIFICATION §5) ═══
   //

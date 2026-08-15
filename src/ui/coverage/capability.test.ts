@@ -19,6 +19,7 @@
 // the writer is `scripts/site/build-coverage.ts`, alongside the coverage one.
 
 import { describe, expect, it } from 'vitest';
+import { RUNE_DELIVERY } from '../../engine';
 import { readFileSync, readdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -63,6 +64,11 @@ function derive(): ReturnType<typeof summariseCapability> {
     burnTriggers: BURN_TRIGGERS,
     runesPublished: read('public/data/runes.json').runes.length,
     runeEffectsCurated: curated.runes.length,
+    // DERIVED FROM THE ENGINE, NOT COUNTED HERE. `RUNE_DELIVERY` is the engine's read population:
+    // one entry per rune whose trigger sentence a person has read, and a rune absent from it is
+    // reported rather than fired. So "runes the calculator applies" is exactly its size, and this
+    // figure cannot drift into claiming a rune works because its value happens to be stored.
+    runesAppliedByEngine: RUNE_DELIVERY.size,
     defensiveEffects: curated.defensiveEffects,
     defensiveEffectsReachTheCalculator: defensiveEffectsReachTheCalculator(),
     // The engine's own number, not the ready count — see DEFENSIVE_APPLIED_MEASURED.

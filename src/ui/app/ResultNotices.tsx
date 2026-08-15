@@ -46,9 +46,9 @@ import './notices.css';
  * explicit that it must be amended in the same breath.**
  */
 export const SCOPE_DISCLAIMER =
-  'This calculator computes champion ability damage, item statistics, and the item effects it ' +
-  'can model. It does not account for runes, crowd control, map-based damage, seasonal changes, ' +
-  'or passive effects requiring specific gameplay conditions.';
+  'This calculator computes champion ability damage, item statistics, and the item and rune ' +
+  'effects it can model. It does not account for crowd control, map-based damage, seasonal ' +
+  'changes, or passive effects requiring specific gameplay conditions.';
 
 export interface ReportDraft {
   title: string;

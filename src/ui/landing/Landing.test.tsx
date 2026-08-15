@@ -82,7 +82,7 @@ describe('landing/it names the gaps a reader would otherwise assume away', () =>
     mountPage();
     const gaps = screen.getByRole('region', { name: 'What it does not do' });
     expect(gaps.textContent).toContain(
-      `No rune changes a number: ${capability.runesModelled} of ${capability.runesPublished}`,
+      `${capability.runesModelled} of ${capability.runesPublished} runes change a number.`,
     );
   });
 
@@ -104,7 +104,7 @@ describe('landing/it names the gaps a reader would otherwise assume away', () =>
   it('and these are not zeroes typed in — they come from the generated file', () => {
     // If either ever becomes non-zero, the sentences above become false and must be rewritten.
     // This is the tripwire for that day.
-    expect(capability.runesModelled).toBe(0);
+    expect(capability.runesModelled).toBe(1); // was 0 until Scorch landed, 2026-08-15
     // WAS 0 UNTIL THE WIRING LANDED, hours after this test was written, and it was placed as a
     // tripwire for exactly that. 77 of 155 now change a figure — the engine's own measurement,
     // not the 90 that merely LOOK ready.

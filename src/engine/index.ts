@@ -282,3 +282,6 @@ export {
   type SweepFinding,
   type SweepFindingKind,
 } from './sweep-audit';
+
+// The rune read population and the runes it cannot yet deliver — see simulate.ts.
+export { RUNE_DELIVERY, RUNES_READ_BUT_NOT_DELIVERABLE } from './simulate';
