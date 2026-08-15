@@ -1,0 +1,402 @@
+{
+ "what": "Revision-level drift of the offline ability-wikitext cache against the live League wiki. Measures only; refreshes nothing. Cross-referenced against the two tables of readings a person made, so a page that moved under a stored conclusion is named rather than counted.",
+ "measuredOn": "2026-08-15T14:36:29.528Z",
+ "cacheFetchedOn": "2026-08-13",
+ "cacheFile": "build/proposed-curated/ability-wikitext.json",
+ "sourceUrl": "https://wiki.leagueoflegends.com/en-us/api.php",
+ "patch": {
+  "pinnedPatch": "16.16.1",
+  "livePatch": "16.16.1",
+  "samePatch": true,
+  "wikiPatchNotes": [
+   {
+    "title": "V26.16",
+    "exists": true
+   },
+   {
+    "title": "V26.17",
+    "exists": false
+   },
+   {
+    "title": "V26.18",
+    "exists": false
+   }
+  ]
+ },
+ "definition": {
+  "unchanged": "The live page's latest revision id EQUALS the cached one. MediaWiki revision ids are a monotonic per-edit counter, so equal ids mean the cached wikitext is byte-for-byte what the wiki serves today.",
+  "moved": "The live latest revision id DIFFERS from the cached one. Any edit at all counts, including one that changes no damage number.",
+  "vanished": "The wiki returned no revision for the resolved title.",
+  "movedButTextIdentical": "Moved by revision id, but the live wikitext is byte-identical to the cache — a null edit, a revert, or an edit to a different slot of the page.",
+  "readingStillRests": "Every `verbatim` string the reader pinned their conclusion to is still a literal substring of the live page. False means a person must read that ability again.",
+  "sameEntry": "The project's own extractor (`draftFromTemplate`) produces an identical entry from the cached and the live wikitext, ignoring provenance fields. True means the page moved but no figure this project stores moved with it."
+ },
+ "summary": {
+  "total": 937,
+  "unchanged": 926,
+  "moved": 11,
+  "vanished": 0
+ },
+ "failedBatches": [],
+ "missingTitles": [],
+ "moved": [
+  {
+   "key": "Aphelios/R/Moonlight Vigil",
+   "champion": "Aphelios",
+   "slot": "R",
+   "abilityName": "Moonlight Vigil",
+   "resolved": "Template:Data Aphelios/Moonlight Vigil",
+   "cachedRevid": 3996444,
+   "liveRevid": 4052070,
+   "status": "moved",
+   "editedOn": "2026-08-15T12:21:40Z",
+   "editComment": "[[w:Help:Reverting|Reverted]] edits by [[Special:Contributions/~2026-KalistaDoranConditioning5778|~2026-KalistaDoranConditioning5778]] ([[User talk:~2026-KalistaDoranConditioning5778|talk]] | [[Special:Block/~2026-KalistaDoranConditioning5778|block]]) to last version by [[User:Krante1|Krante1]]",
+   "editedBy": "1Dawn2Dusk3"
+  },
+  {
+   "key": "Gangplank/Q/Parrrley",
+   "champion": "Gangplank",
+   "slot": "Q",
+   "abilityName": "Parrrley",
+   "resolved": "Template:Data Gangplank/Parrrley",
+   "cachedRevid": 4015393,
+   "liveRevid": 4051880,
+   "status": "moved",
+   "editedOn": "2026-08-14T12:36:15Z",
+   "editComment": "This is just the default crit damage",
+   "editedBy": "1Dawn2Dusk3"
+  },
+  {
+   "key": "Kled/R/Chaaaaaaaarge!!!",
+   "champion": "Kled",
+   "slot": "R",
+   "abilityName": "Chaaaaaaaarge!!!",
+   "resolved": "Template:Data Kled/Chaaaaaaaarge!!!",
+   "cachedRevid": 4016270,
+   "liveRevid": 4051917,
+   "status": "moved",
+   "editedOn": "2026-08-14T15:00:34Z",
+   "editComment": "",
+   "editedBy": "BadActor69"
+  },
+  {
+   "key": "Nasus/Q/Siphoning Strike",
+   "champion": "Nasus",
+   "slot": "Q",
+   "abilityName": "Siphoning Strike",
+   "resolved": "Template:Data Nasus/Siphoning Strike",
+   "cachedRevid": 4051347,
+   "liveRevid": 4051777,
+   "status": "moved",
+   "editedOn": "2026-08-13T23:17:11Z",
+   "editComment": "[[Project:Revert policy|Undid]] revision 4051776 by [[Special:Contributions/~2026-UnflinchingYuumiDomination5768|~2026-UnflinchingYuumiDomination5768]] ([[User talk:~2026-UnflinchingYuumiDomination5768|talk]])",
+   "editedBy": "ScraftyLeague"
+  },
+  {
+   "key": "Samira/P/Daredevil Impulse",
+   "champion": "Samira",
+   "slot": "P",
+   "abilityName": "Daredevil Impulse",
+   "resolved": "Template:Data Samira/Daredevil Impulse",
+   "cachedRevid": 4050599,
+   "liveRevid": 4051977,
+   "status": "moved",
+   "editedOn": "2026-08-14T22:21:12Z",
+   "editComment": "",
+   "editedBy": "Tyranitar12"
+  },
+  {
+   "key": "Shyvana/E/Molten Burst",
+   "champion": "Shyvana",
+   "slot": "E",
+   "abilityName": "Molten Burst",
+   "resolved": "Template:Data Shyvana/Molten Burst",
+   "cachedRevid": 4013244,
+   "liveRevid": 4051915,
+   "status": "moved",
+   "editedOn": "2026-08-14T14:39:48Z",
+   "editComment": "",
+   "editedBy": "Tritannix2"
+  },
+  {
+   "key": "Warwick/P/Eternal Hunger",
+   "champion": "Warwick",
+   "slot": "P",
+   "abilityName": "Eternal Hunger",
+   "resolved": "Template:Data Warwick/Eternal Hunger",
+   "cachedRevid": 4022413,
+   "liveRevid": 4051829,
+   "status": "moved",
+   "editedOn": "2026-08-14T05:43:32Z",
+   "editComment": "",
+   "editedBy": "AnataBakka"
+  },
+  {
+   "key": "Yasuo/P/Way of the Wanderer",
+   "champion": "Yasuo",
+   "slot": "P",
+   "abilityName": "Way of the Wanderer",
+   "resolved": "Template:Data Yasuo/Way of the Wanderer",
+   "cachedRevid": 3986755,
+   "liveRevid": 4051866,
+   "status": "moved",
+   "editedOn": "2026-08-14T12:16:09Z",
+   "editComment": "Cleaned up blurb and added back crit reduction rule",
+   "editedBy": "1Dawn2Dusk3"
+  },
+  {
+   "key": "Yone/P/Way of the Hunter",
+   "champion": "Yone",
+   "slot": "P",
+   "abilityName": "Way of the Hunter",
+   "resolved": "Template:Data Yone/Way of the Hunter",
+   "cachedRevid": 3983113,
+   "liveRevid": 4051867,
+   "status": "moved",
+   "editedOn": "2026-08-14T12:16:49Z",
+   "editComment": "Cleaned up blurb and added back crit reduction rule",
+   "editedBy": "1Dawn2Dusk3"
+  },
+  {
+   "key": "Yorick/W/Dark Procession",
+   "champion": "Yorick",
+   "slot": "W",
+   "abilityName": "Dark Procession",
+   "resolved": "Template:Data Yorick/Dark Procession",
+   "cachedRevid": 4016421,
+   "liveRevid": 4051828,
+   "status": "moved",
+   "editedOn": "2026-08-14T05:43:17Z",
+   "editComment": "",
+   "editedBy": "AnataBakka"
+  },
+  {
+   "key": "Yunara/Q/Cultivation of Spirit",
+   "champion": "Yunara",
+   "slot": "Q",
+   "abilityName": "Cultivation of Spirit",
+   "resolved": "Template:Data Yunara/Cultivation of Spirit",
+   "cachedRevid": 4050595,
+   "liveRevid": 4051868,
+   "status": "moved",
+   "editedOn": "2026-08-14T12:18:27Z",
+   "editComment": "This is just the default crit damage",
+   "editedBy": "1Dawn2Dusk3"
+  }
+ ],
+ "movedButTextIdentical": [
+  "Aphelios/R/Moonlight Vigil",
+  "Nasus/Q/Siphoning Strike"
+ ],
+ "movedWithTextChange": [
+  {
+   "key": "Gangplank/Q/Parrrley",
+   "resolved": "Template:Data Gangplank/Parrrley",
+   "removed": [
+    "|description  = {{sbc|Active:}} '''Gangplank''' fires a shot at the target enemy that deals {{as|physical damage}}, applies {{tip|on-hit}} effects as a {{tip|ranged}} attack, and triggers {{tip|on-attack}} effects. ''Parrrley'' can {{tip|critically strike}} for {{as|{{critical damage|{{ccd|Gangplank|crit_base}}|100}}|critical damage}} damage."
+   ],
+   "added": [
+    "|description  = {{sbc|Active:}} '''Gangplank''' fires a shot at the target enemy that deals {{as|physical damage}}, applies {{tip|on-hit}} effects as a {{tip|ranged}} attack, and triggers {{tip|on-attack}} effects. ''Parrrley'' can {{tip|critically strike}}."
+   ]
+  },
+  {
+   "key": "Kled/R/Chaaaaaaaarge!!!",
+   "resolved": "Template:Data Kled/Chaaaaaaaarge!!!",
+   "removed": [
+    "* It is possible for '''Kled''' to briefly lose his {{tip|cc-immune|crowd control immunity}} while colliding with an enemy champion, which can cause the {{tip|dash}}, and its subsequent damage and {{tip|airborne|displacement}} to be interrupted.{{bug}} [https://www.twitch.tv/soulmario/clip/GracefulKathishLEDNotATK-z8lcRukK7sQrI1jS]|affectedEffects=Kled R; Self CC-Immune|estimatedPatchOrigin=V6.16|<!--added automatically-->wikiUploadTimestamp=1774029734|<!--added automatically-->pagename=Template:Data Kled/Chaaaaaaaarge!!!"
+   ],
+   "added": [
+    "* It is possible for '''Kled''' to briefly lose his {{tip|cc-immune|crowd control immunity}} while colliding with an enemy champion, which can allow the {{tip|dash}}, and its subsequent damage and {{tip|airborne|displacement}} to get {{tip|knockdown|interrupted}}.{{bug}} [https://www.twitch.tv/soulmario/clip/GracefulKathishLEDNotATK-z8lcRukK7sQrI1jS]|affectedEffects=Kled R; Self CC-Immune|estimatedPatchOrigin=V6.16|<!--added automatically-->wikiUploadTimestamp=1774029734|<!--added automatically-->pagename=Template:Data Kled/Chaaaaaaaarge!!!"
+   ]
+  },
+  {
+   "key": "Samira/P/Daredevil Impulse",
+   "resolved": "Template:Data Samira/Daredevil Impulse",
+   "removed": [
+    "|icon         = false"
+   ],
+   "added": [
+    "|icon         = Samira Inferno Trigger 2.png"
+   ]
+  },
+  {
+   "key": "Shyvana/E/Molten Burst",
+   "resolved": "Template:Data Shyvana/Molten Burst",
+   "removed": [
+    "|description  = {{sbc|Active:}} '''Shyvana''' launches a fireball in the target direction that explodes upon colliding with the first enemy or reaching maximum range, dealing {{as|magic damage}} to enemies hit and {{tip|slowing}} by 30% them for 2 seconds."
+   ],
+   "added": [
+    "|description  = {{sbc|Active:}} '''Shyvana''' launches a fireball in the target direction that explodes upon colliding with the first enemy or reaching maximum range, dealing {{as|magic damage}} to enemies hit and {{tip|slowing}} them by 30% for 2 seconds."
+   ]
+  },
+  {
+   "key": "Warwick/P/Eternal Hunger",
+   "resolved": "Template:Data Warwick/Eternal Hunger",
+   "removed": [],
+   "added": [
+    "** {{cai|W|Yorick}}"
+   ]
+  },
+  {
+   "key": "Yasuo/P/Way of the Wanderer",
+   "resolved": "Template:Data Yasuo/Way of the Wanderer",
+   "removed": [
+    "|blurb        = {{sbc|Innate - Intent:}} {{ci|Yasuo}} gains increased {{as|{{sti|critical strike chance}}}}.",
+    "|blurb2      = He also gains {{as|{{sti|attack damage}}}} from excess {{as|{{sti|critical strike chance}}}}. ",
+    "|blurb3      = {{sbc|Innate - Resolve:}} '''Yasuo's''' movement generates the {{tip|Flow}} resource. He gains a brief {{tip|shield}} when taking damage from a {{tip|champion}} or {{tip|monster}} at maximum '''Flow''', consuming all of it."
+   ],
+   "added": [
+    "|blurb        = {{sbc|Innate - Intent:}} {{ci|Yasuo}} gains increased {{as|{{sti|critical strike chance}}}}. He also gains {{as|{{sti|attack damage}}}} from excess {{as|{{sti|critical strike chance}}}}. However, his critical strikes deal reduced damage.",
+    "|blurb2       = {{sbc|Innate - Resolve:}} '''Yasuo's''' movement generates the {{tip|Flow}} resource. He gains a brief {{tip|shield}} when taking damage from a {{tip|champion}} or {{tip|monster}} at maximum '''Flow''', consuming all of it."
+   ]
+  },
+  {
+   "key": "Yone/P/Way of the Hunter",
+   "resolved": "Template:Data Yone/Way of the Hunter",
+   "removed": [
+    "|blurb            = {{sbc|Innate - Intent:}} {{ci|Yone}} gains increased {{as|{{sti|critical strike chance}}}}.",
+    "|blurb2           = He also gains {{as|{{sti|attack damage}}}} from excess {{as|{{sti|critical strike chance}}}}. ",
+    "|blurb3           = {{sbc|Innate - Steel and Spirit:}} '''Yone's''' basic attacks alternate between his {{as|Steel Sword|Steel}} and {{as|Azakana Sword|azakana}}. His {{as|Azakana Sword|azakana}} deals equal parts {{as|physical|pdamage}} and {{as|magic|mdamage}} damage."
+   ],
+   "added": [
+    "",
+    "<!-- Blurb -->",
+    "|blurb            = {{sbc|Innate - Intent:}} {{ci|Yone}} gains increased {{as|{{sti|critical strike chance}}}}. He also gains {{as|{{sti|attack damage}}}} from excess {{as|{{sti|critical strike chance}}}}. However, his critical strikes deal reduced damage. ",
+    "|blurb2           = {{sbc|Innate - Steel and Spirit:}} '''Yone's''' basic attacks alternate between his {{as|Steel Sword|Steel}} and {{as|Azakana Sword|azakana}}. His {{as|Azakana Sword|azakana}} deals equal parts {{as|physical|pdamage}} and {{as|magic|mdamage}} damage."
+   ]
+  },
+  {
+   "key": "Yorick/W/Dark Procession",
+   "resolved": "Template:Data Yorick/Dark Procession",
+   "removed": [
+    "* The perimeter is made up of 18 units with 100 {{tip|pathing radius}} and 20 {{tip|gameplay radius}} each."
+   ],
+   "added": [
+    "* The perimeter is made up of 18 units with 100 {{tip|pathing radius}} and 20 {{tip|gameplay radius}} each, which interact with effects like {{cai|I|Warwick}}. [https://youtu.be/OXjhRp1Rd5s?si=sHg_NfUBput9cC0F&t=42]"
+   ]
+  },
+  {
+   "key": "Yunara/Q/Cultivation of Spirit",
+   "resolved": "Template:Data Yunara/Cultivation of Spirit",
+   "removed": [
+    "|description2 = {{sbc|Active:}} '''Yunara''' unleashes for 5 seconds: gaining {{sti|{{as|'''bonus''' attack speed}}}}, dealing {{as|'''additional bonus''' magic damage|magic damage}} {{tip|on-hit}}, and augmenting her basic attacks to have increased missile speed, a 40% lower {{tip|attack windup|windup}} time, and an {{tip|uncancellable windup}}. Her basic attacks are also empowered to spread to each enemy near the target, dealing {{as|30% AD}} {{as|physical damage}}.<br>Each spread attack {{tip|applies lifesteal|applies}} {{as|{{sti|life steal}}}} and {{tip|on-hit}} effects, with on-hit damage reduced to 30% effectiveness, and will {{tip|critically strike}} for {{as|{{critical damage|{{ccd|Yunara|crit_base}}|100}}|critical damage}} damage if the triggering attack does. Spread attacks deal 250% damage against {{tip|minions}} {{as|below 30% '''maximum''' health}}."
+   ],
+   "added": [
+    "|description2 = {{sbc|Active:}} '''Yunara''' unleashes for 5 seconds: gaining {{sti|{{as|'''bonus''' attack speed}}}}, dealing {{as|'''additional bonus''' magic damage|magic damage}} {{tip|on-hit}}, and augmenting her basic attacks to have increased missile speed, a 40% lower {{tip|attack windup|windup}} time, and an {{tip|uncancellable windup}}. Her basic attacks are also empowered to spread to each enemy near the target, dealing {{as|30% AD}} {{as|physical damage}}.<br>Each spread attack {{tip|applies lifesteal|applies}} {{as|{{sti|life steal}}}} and {{tip|on-hit}} effects, with on-hit damage reduced to 30% effectiveness, and will {{tip|critically strike}} if the triggering attack does. Spread attacks deal 250% damage against {{tip|minions}} {{as|below 30% '''maximum''' health}}."
+   ]
+  }
+ ],
+ "readingImpact": [],
+ "extractionImpact": [
+  {
+   "key": "Aphelios/R/Moonlight Vigil",
+   "sameEntry": true,
+   "changedFields": [],
+   "componentsBefore": 1,
+   "componentsAfter": 1,
+   "mutationsTried": 107,
+   "mutationsDetected": 6,
+   "checkIsVacuous": false
+  },
+  {
+   "key": "Gangplank/Q/Parrrley",
+   "sameEntry": true,
+   "changedFields": [],
+   "componentsBefore": 1,
+   "componentsAfter": 1,
+   "mutationsTried": 29,
+   "mutationsDetected": 3,
+   "checkIsVacuous": false
+  },
+  {
+   "key": "Kled/R/Chaaaaaaaarge!!!",
+   "sameEntry": true,
+   "changedFields": [],
+   "componentsBefore": 2,
+   "componentsAfter": 2,
+   "mutationsTried": 130,
+   "mutationsDetected": 14,
+   "checkIsVacuous": false
+  },
+  {
+   "key": "Nasus/Q/Siphoning Strike",
+   "sameEntry": true,
+   "changedFields": [],
+   "componentsBefore": 1,
+   "componentsAfter": 1,
+   "mutationsTried": 20,
+   "mutationsDetected": 3,
+   "checkIsVacuous": false
+  },
+  {
+   "key": "Samira/P/Daredevil Impulse",
+   "sameEntry": true,
+   "changedFields": [],
+   "componentsBefore": 1,
+   "componentsAfter": 1,
+   "mutationsTried": 108,
+   "mutationsDetected": 1,
+   "checkIsVacuous": false
+  },
+  {
+   "key": "Shyvana/E/Molten Burst",
+   "sameEntry": true,
+   "changedFields": [],
+   "componentsBefore": 3,
+   "componentsAfter": 3,
+   "mutationsTried": 79,
+   "mutationsDetected": 26,
+   "checkIsVacuous": false
+  },
+  {
+   "key": "Warwick/P/Eternal Hunger",
+   "sameEntry": true,
+   "changedFields": [],
+   "componentsBefore": 1,
+   "componentsAfter": 1,
+   "mutationsTried": 24,
+   "mutationsDetected": 7,
+   "checkIsVacuous": false
+  },
+  {
+   "key": "Yasuo/P/Way of the Wanderer",
+   "sameEntry": true,
+   "changedFields": [],
+   "componentsBefore": 0,
+   "componentsAfter": 0,
+   "mutationsTried": 91,
+   "mutationsDetected": 0,
+   "checkIsVacuous": true
+  },
+  {
+   "key": "Yone/P/Way of the Hunter",
+   "sameEntry": true,
+   "changedFields": [],
+   "componentsBefore": 2,
+   "componentsAfter": 2,
+   "mutationsTried": 23,
+   "mutationsDetected": 2,
+   "checkIsVacuous": false
+  },
+  {
+   "key": "Yorick/W/Dark Procession",
+   "sameEntry": true,
+   "changedFields": [],
+   "componentsBefore": 0,
+   "componentsAfter": 0,
+   "mutationsTried": 34,
+   "mutationsDetected": 0,
+   "checkIsVacuous": true
+  },
+  {
+   "key": "Yunara/Q/Cultivation of Spirit",
+   "sameEntry": true,
+   "changedFields": [],
+   "componentsBefore": 3,
+   "componentsAfter": 3,
+   "mutationsTried": 96,
+   "mutationsDetected": 18,
+   "checkIsVacuous": false
+  }
+ ]
+}
