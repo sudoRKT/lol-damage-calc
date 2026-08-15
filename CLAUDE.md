@@ -131,9 +131,21 @@ The site's look is a defined deliverable, not something that emerges from the bu
 
 `DESIGN-AUDIT.md` at the project root records the state of the built interface against DESIGN.md,
 section by section, measured on the live page rather than judged. **Start there rather than
-re-deriving it.** The headline: the configuration row occupies the whole first screen and the
-burndown — the signature element — begins 309px below the fold, at 16.7% of a page 3.4 screens
-tall. The interface is correct and characterless.
+re-deriving it.**
+
+**THE HEADLINE HAS MOVED, AND THIS PARAGRAPH WAS STALE UNTIL 2026-08-15.** It said the
+configuration row occupied the whole first screen and the burndown — the signature element —
+began 309px below the fold, on a page 3.4 screens tall. That was true when audited and was fixed
+on 2026-08-14 by commits `658d61c` and `a09cd0c`, re-measured in DESIGN-AUDIT §6.1: the
+configuration row fell 921px → 413px, the page 3,793px → 3,286px, and **the burndown's top edge
+moved from 309px BELOW the fold to 350px ABOVE it**, with the first 235px of the chart itself
+above it too. The first screen now holds both champions, the combo, the running total, the
+verdict and the top of the burndown.
+
+**What has NOT changed is the judgement: the interface is correct and characterless.** Item 1 of
+the audit's order of work is done; items 3–6 are not, and §4's caution stands — items 1 and 3 are
+where "Bench Test" actually lives, and item 3 is the more tempting to defer because nothing is
+broken.
 
 It also carries the damage-type tag finding and its reframing, which is the part most easily lost:
 **SPECIFICATION §10.1 requires only that damage type is never conveyed by colour alone. The letter,
@@ -145,7 +157,10 @@ Three SPECIFICATION requirements are absent from the page and are layout-affecti
 in a layout pass rather than being bolted on: the Riot disclaimer and the scope disclaimer (§15),
 and the report-a-wrong-number control (§8).
 
-**Nothing in that audit has been started.** It ends with a proposed order of work.
+**Item 1 of its order of work is DONE and item 2's decision is taken.** Items 3 (the instrument
+details), 4 (the missing requirements above), 5 (the mobile horizontal overflow — 204px at 375px,
+caused by the `.breakdown` table, and the only SPECIFICATION breach on the list) and 6 (the
+portrait tint) are outstanding.
 
 ## The guards
 
