@@ -49,7 +49,15 @@ import type {
   VerificationStatus,
 } from '../../types';
 import type { Result } from '../../types/result';
-import { simulate, compareBuilds, type Catalogue, type SimulationResult } from '../../engine';
+import {
+  simulate,
+  compareBuilds,
+  damageVsLevel,
+  damageVsResistance,
+  type Catalogue,
+  type LevelRankPolicy,
+  type SimulationResult,
+} from '../../engine';
 import { CURRENT_URL_VERSION } from '../../url';
 import { ChampionConfigPanel } from '../config';
 import { ComboBuilder, type ShelfAbility } from '../combo';
@@ -57,6 +65,7 @@ import { ItemPicker } from '../items';
 import { StatBlockPanel } from '../stats';
 import { InstanceBreakdown } from '../breakdown';
 import { BuildComparisonPanel } from '../compare';
+import { DamageCurve } from '../curves';
 import { HpBurndown } from '../burndown';
 import { VerificationStatusMark } from '../primitives';
 import { ResultNotices } from './ResultNotices';
@@ -278,6 +287,61 @@ export function App({
     return simulate(scenario, catalogue, { patch: data.patch });
   }, [catalogue, data, scenario, combo.length]);
 
+  /**
+   * THE TWO SWEEP CURVES (SPECIFICATION §11), mounted here because `src/ui/app/` composes and no
+   * area mounts its own component.
+   *
+   * `priority` rather than `as-configured` is a deliberate choice and it is only safe since the
+   * engine's rank rewrite: `as-configured` refuses every level below the configured build, which
+   * is most of the axis, so it drew 166 points and refused 2,948 across the roster. `priority`
+   * spends a point per level and now REFUSES a build no champion level can hold rather than
+   * quietly lowering it, so a full-looking curve is no longer a curve drawn below the reader's
+   * build. `ranks` is passed so the chart prints the schedule it ran under and marks any slot the
+   * curve never reaches — without it the reader cannot judge either.
+   *
+   * Both are null with an empty combo, for the same reason the result table is: there is nothing
+   * to sweep.
+   */
+  /**
+   * THE LEVELLING ORDER IS A PRODUCT DECISION AND THE ENGINE REFUSES TO GUESS ONE.
+   *
+   * `LevelRankPolicy` requires the caller to state which slots take points first, deliberately:
+   * there is no default anywhere in `level-sweep.ts`, because a guessed order draws a curve the
+   * reader never asked for. So the page states one, and the chart PRINTS it — Q then W then E,
+   * with the ultimate taken as soon as it is available, which is the most common levelling in the
+   * game and is a starting point rather than a claim about this matchup.
+   *
+   * Named once so the sweep and the chart cannot drift apart on what was used.
+   */
+  const LEVEL_RANK_POLICY: LevelRankPolicy = {
+    kind: 'priority',
+    order: ['Q', 'W', 'E'],
+    ultimate: 'first-available',
+  };
+
+  const levelCurve = useMemo(() => {
+    if (!catalogue || combo.length === 0) return null;
+    const out = damageVsLevel(scenario, catalogue, { who: 'attacker', ranks: LEVEL_RANK_POLICY });
+    return out.ok ? out.series : null;
+  }, [catalogue, scenario, combo.length, LEVEL_RANK_POLICY]);
+
+  const resistanceCurve = useMemo(() => {
+    if (!catalogue || combo.length === 0) return null;
+    // THE RANGE IS THE CALLER'S TOO — `damageVsResistance` throws rather than pick one, for the
+    // same reason the rank policy has no default. 0 to 300 in steps of 25 spans what a champion
+    // actually reaches: 0 is a target with its resistances fully shredded, and 300 is beyond a
+    // full tank build, so the reader's own matchup always sits inside the axis rather than at
+    // its edge.
+    const out = damageVsResistance(scenario, catalogue, {
+      axis: 'both',
+      from: 0,
+      to: 300,
+      step: 25,
+      sort: true,
+    });
+    return out.ok ? out.series : null;
+  }, [catalogue, scenario, combo.length]);
+
   if (error) {
     return (
       <main className="app">
@@ -492,6 +556,20 @@ export function App({
               defenderName={defenderConfig.apiname}
               patch={data.patch}
             />
+          ) : null}
+
+          {/* SPECIFICATION §11's two sweeps. The level curve carries `ranks` so it can print the
+              schedule it ran under; the resistance curve does not, because ranks do not move
+              along that axis and the chart says so by their absence. */}
+          {levelCurve ? (
+            <DamageCurve
+              series={levelCurve}
+              title="Damage as the attacker levels"
+              ranks={{ configured: attackerConfig.abilityRanks, policy: LEVEL_RANK_POLICY }}
+            />
+          ) : null}
+          {resistanceCurve ? (
+            <DamageCurve series={resistanceCurve} title="Damage against the target's resistances" />
           ) : null}
 
           <div className="app__row">

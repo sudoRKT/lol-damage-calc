@@ -483,8 +483,20 @@ export function DamageCurve({
         </table>
       </TableScroller>
 
+      {/* THE REGION NAME BELOW CARRIES THE CHART'S TITLE, and that is not decoration.
+          `InstanceBreakdown` names a region "Excluded from these totals" too, and the calculator
+          page mounts it beside two of these — so a reader navigating by region heard the same name
+          three times with no way to tell which totals were meant. Neither area could see it: each
+          renders one region and is correct alone. It appeared the moment the page composed them,
+          which is the cross-area class DATA-SOURCES §44 describes.
+          The visible heading is unchanged; only the announced name is qualified. */}
       {series.incompleteSomewhere.length > 0 ? (
-        <section className="curve-panel__block" aria-label="Excluded from these totals">
+        <section
+          className="curve-panel__block"
+          aria-label={
+            title ? `Excluded from these totals — ${title}` : 'Excluded from these totals'
+          }
+        >
           <h3 className="curve-panel__eyebrow">Excluded from these totals</h3>
           <ul className="curve-panel__list">
             {series.incompleteSomewhere.map((label) => (

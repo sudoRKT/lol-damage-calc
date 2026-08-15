@@ -126,7 +126,12 @@ describe('app/an unmodellable ability is named, never quietly dropped', () => {
         { id: 'aa1', kind: 'basic-attack', ref: 'basic' },
       ],
     });
-    const excluded = await screen.findByRole('region', { name: /Excluded from these totals/i });
+    // NAMED EXACTLY SINCE 2026-08-15, when the two sweep curves were mounted. Each curve renders
+    // its own "Excluded from these totals" region, qualified with its chart title, so a loose
+    // pattern now matches three regions and the assertion below would be testing whichever came
+    // first. The breakdown's is the one this test is about, and it is the unqualified one.
+    // A string name in `findByRole` is already an exact match; the pattern here was a regex.
+    const excluded = await screen.findByRole('region', { name: 'Excluded from these totals' });
     // TWO matches since 2026-08-14, and that is the change rather than a looser assertion: the
     // ability is now named in VISIBLE text as well as inside the mark's spoken sentence. It used
     // to be spoken only, so a sighted reader saw a column of identical "Not yet modelled" marks
