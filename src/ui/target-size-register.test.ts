@@ -83,8 +83,14 @@ const CONTROLS: Record<string, Pass> = {
     why: 'the basic-attack button, which is text rather than an icon and therefore the one on this shelf most likely to be short.',
   },
   'items/items.css .items__remove': {
-    how: 'unmeasured',
-    why: 'COMPUTED at about 20.9px on the block axis from the token values (13px x 1.45 line-height plus two 1px borders), which is under 24px. Computed, NOT measured on the live page, and reported 2026-08-15 by the area that found it rather than fixed in passing.',
+    how: 'size',
+    measured:
+      '28.36 x 24.00px at 375px, 2026-08-15, on /calculator/ with one item in the build. It was ' +
+      '28.91 x 20.84 — the block axis failed by 3.16px and the inline axis always passed, and the ' +
+      'browser CONFIRMED the computed figure rather than refuting it. Fixed by SIZE, not by ' +
+      'spacing: a remove control sits inside a build row, which leaves no 24px separation to pass ' +
+      'on. The inline axis lost 0.55px because the box became a centring flex container, and the ' +
+      'build row grew 44.53 to 47.69px, which is the whole layout cost.',
   },
   'burndown/burndown.css .burn__riser': {
     how: 'spacing',

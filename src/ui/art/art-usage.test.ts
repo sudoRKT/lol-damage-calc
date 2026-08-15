@@ -60,8 +60,12 @@ describe('art-sweep/only art/ renders an image', () => {
     expect(offenders).toEqual([]);
   });
 
-  it('the three art components are the ones that do', () => {
+  it('the four art components are the ones that do', () => {
     // The guard is not pointing at a stub: the components it protects really render the images.
+    //
+    // `RuneChip` joined on 2026-08-15, when a rune picker reached the page. The picker area
+    // could not render its own icons — the sweep above forbids it — and RAISED that rather than
+    // working around it, which is the partition doing its job rather than getting in the way.
     //
     // `ItemChip` joined the list on 2026-08-14, when item selection reached the page and
     // SPECIFICATION §10.1's "official game art in place of text labels" started applying to item
@@ -75,6 +79,7 @@ describe('art-sweep/only art/ renders an image', () => {
       'art/AbilityChip.tsx',
       'art/ChampionPortrait.tsx',
       'art/ItemChip.tsx',
+      'art/RuneChip.tsx',
     ]);
   });
 });

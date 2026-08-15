@@ -5,6 +5,7 @@
 // reader announces is the claim, and the visual cue is the redundant channel.
 
 import { describe, expect, it } from 'vitest';
+import { RuneChip, runeChipAccessibleName } from './RuneChip';
 import { cleanup, render, screen } from '@testing-library/react';
 
 import type { DamageType } from '../../types/data';
@@ -171,5 +172,34 @@ describe('portraits', () => {
     const { container: active } = render(<ChampionPortrait src="/x.png" name="Lux" active />);
     expect(inactive.querySelector('.portrait--active')).toBeNull();
     expect(active.querySelector('.portrait--active')).not.toBeNull();
+  });
+});
+
+describe('a rune chip announces a rune, and never an item', () => {
+  // THE ACCESSIBLE NAME IS THE WHOLE REASON THIS IS A THIRD COMPONENT. `ItemChip` would have
+  // rendered the same picture and announced "Electrocute, item", which is a sentence that is not
+  // true of the thing on screen. Nothing else about the construction differs, deliberately.
+  it('names the rune and calls it a rune', () => {
+    expect(runeChipAccessibleName('Electrocute')).toBe('Electrocute, rune');
+  });
+
+  it('is an image with that name when it stands alone', () => {
+    render(<RuneChip src="/e.png" runeName="Electrocute" />);
+    expect(screen.getByRole('img', { name: 'Electrocute, rune' })).toBeTruthy();
+  });
+
+  it('announces NOTHING when decorative, so a labelled control is not read twice', () => {
+    const { container } = render(<RuneChip src="/e.png" runeName="Electrocute" decorative />);
+    expect(screen.queryByRole('img')).toBeNull();
+    expect(container.querySelector('[aria-hidden="true"]')).toBeTruthy();
+  });
+
+  it('carries no damage-type cue, because a chip is not where that question is answered', () => {
+    // 55 of 62 published runes have no modelled effect and one changes a figure. That distinction
+    // belongs to the row's status mark, not to the art — a chip encoding it would be a second,
+    // quieter status vocabulary competing with VerificationStatusMark.
+    const { container } = render(<RuneChip src="/e.png" runeName="Electrocute" />);
+    expect(container.querySelector('.chip__underline--none')).toBeTruthy();
+    expect(container.querySelector('.chip__tag')?.textContent).toBe('—');
   });
 });
