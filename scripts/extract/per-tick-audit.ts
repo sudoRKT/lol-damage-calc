@@ -79,12 +79,25 @@ async function main(): Promise<void> {
       countVerdict:
         'A SEPARATE question from the verdict: is the stored `hits` count a full-duration count? ' +
         "'corroborated' — the source's own duration divided by its own interval equals it. " +
+        "'captured' — the harvest stored 1, the page PRINTS the count, and the printed count " +
+        'equals that arithmetic, so the merge corrects `hits` to it. ' +
+        "'settled' — the page contradicts ITSELF about the count and evidence from outside the " +
+        'page (Riot patch notes) says which half is stale, so the merge corrects `hits` to the ' +
+        'half that survives. ' +
         "'count-not-stored' — a count exists in the source and `hits` holds 1. " +
         "'no-duration-stated' — a toggle or aura, so no count can exist. " +
-        "'contested' — the source's description and its own leveling row disagree.",
+        "'contested' — the source's description and its own leveling row disagree and nothing " +
+        'reachable settles it.',
       marked:
-        'True only when the entry is recurring AND its count is corroborated. A marked component ' +
-        'moves to the DoT line; everything else stays withdrawn to incomplete.',
+        'True only when the entry is recurring AND its count is established — corroborated, ' +
+        'captured or settled. A marked component moves to the DoT line; everything else stays ' +
+        'withdrawn to incomplete.',
+      correctedCount:
+        'Present on a captured or settled row only. `instances` is the number the merge writes ' +
+        'over the stored `hits`, `statedBy` is how the source states it, and `settledBy` — on a ' +
+        'settled row — names the evidence OUTSIDE the cached page that overrode the page. ' +
+        'Nothing checks `settledBy` mechanically; a patch note is not in the cached wikitext by ' +
+        'definition, so it is the one link in a settled row a person has to follow.',
       verbatim:
         'The quoted sentence exactly as it appears in the cached wikitext. Every one was checked ' +
         'as a literal substring before this file was written.',
@@ -98,10 +111,13 @@ async function main(): Promise<void> {
       },
       countVerdicts: {
         corroborated: by('corroborated'),
+        captured: by('captured'),
+        settled: by('settled'),
         countNotStored: by('count-not-stored'),
         noDurationStated: by('no-duration-stated'),
         contested: by('contested'),
       },
+      countsCorrectedAtMerge: PER_TICK_READS.filter((r) => r.statedTotal).length,
       marked: markedOverTime().size,
       stillWithdrawn: PER_TICK_READS.filter((r) => !r.marked).length,
       quoteFragmentsChecked: PER_TICK_READS.reduce((s, r) => s + r.verbatim.length, 0),
@@ -121,6 +137,16 @@ async function main(): Promise<void> {
           ? `no duration stated; ticks every ${r.intervalSeconds}s`
           : `${r.durationSeconds}s / ${r.intervalSeconds}s = ${r.impliedTicks} ticks`,
       storedHits: r.storedHits,
+      ...(r.statedTotal
+        ? {
+            correctedCount: {
+              instances: r.statedTotal.instances,
+              onComponents: r.statedTotal.componentIds,
+              statedBy: r.statedTotal.statedBy,
+              ...(r.statedTotal.settledBy ? { settledBy: r.statedTotal.settledBy } : {}),
+            },
+          }
+        : {}),
       ...(r.note ? { note: r.note } : {}),
       verbatim: r.verbatim,
     })),

@@ -22,6 +22,8 @@ import {
   PER_TICK_READS,
   type CachedPage,
   type PerTickRead,
+  type StatedTotal,
+  capturedHitCounts,
   checkAgainstHarvest,
   checkMarkRule,
   loadPages,
@@ -118,6 +120,77 @@ describe('checkMarkRule — only a corroborated count may be marked', () => {
   });
 });
 
+// A ROW THAT CORRECTS A STORED COUNT IS THE ONE PLACE A HAND READING OVERWRITES A NUMBER, so every
+// way of writing a count nothing checked is shown here FAILING before the real table is asked.
+describe('checkMarkRule — a corrected count carries more conditions, not fewer', () => {
+  const captured = (over: Partial<StatedTotal> = {}): PerTickRead =>
+    read({
+      countVerdict: 'captured',
+      storedHits: [1],
+      statedTotal: {
+        instances: 4,
+        componentIds: ['magic-damage-per-tick'],
+        statedBy: 'the page prints it',
+        verbatim: 'deals {{as|magic damage}} every second',
+        ...over,
+      },
+    });
+
+  it('accepts a captured row whose printed count equals the arithmetic', () => {
+    expect(checkMarkRule([captured()])).toEqual([]);
+  });
+
+  it('refuses a captured count that does not reconcile with the duration and interval', () => {
+    const wrong = checkMarkRule([captured({ instances: 9 })]);
+    expect(wrong.some((w) => w.includes('must reconcile'))).toBe(true);
+  });
+
+  it('refuses a captured row whose sentence is not among the checked fragments', () => {
+    const wrong = checkMarkRule([captured({ verbatim: 'a sentence nobody checked' })]);
+    expect(wrong.some((w) => w.includes('not among the row'))).toBe(true);
+  });
+
+  it('refuses a captured row that changes nothing — that row is corroborated', () => {
+    const wrong = checkMarkRule([
+      read({ countVerdict: 'captured', storedHits: [4], statedTotal: captured().statedTotal! }),
+    ]);
+    expect(wrong.some((w) => w.includes('nothing changed'))).toBe(true);
+  });
+
+  it('refuses a captured row that names no component to put the count on', () => {
+    const wrong = checkMarkRule([captured({ componentIds: [] })]);
+    expect(wrong.some((w) => w.includes('no component'))).toBe(true);
+  });
+
+  it('refuses a settled row that names no evidence outside the page', () => {
+    const wrong = checkMarkRule([
+      read({
+        countVerdict: 'settled',
+        storedHits: [5],
+        statedTotal: captured().statedTotal!,
+      }),
+    ]);
+    expect(wrong.some((w) => w.includes('names no evidence outside the page'))).toBe(true);
+  });
+
+  it('refuses a captured row that had to cite outside evidence — that row is settled', () => {
+    const wrong = checkMarkRule([captured({ settledBy: "Riot's patch notes" })]);
+    expect(wrong.some((w) => w.includes('is settled, not captured'))).toBe(true);
+  });
+
+  it('refuses a corrected count hung on a row whose verdict does not correct anything', () => {
+    const wrong = checkMarkRule([
+      read({ countVerdict: 'contested', marked: false, statedTotal: captured().statedTotal! }),
+    ]);
+    expect(wrong.some((w) => w.includes('carries a corrected count'))).toBe(true);
+  });
+
+  it('refuses a settled row carrying no corrected count at all', () => {
+    const wrong = checkMarkRule([read({ countVerdict: 'settled', storedHits: [5] })]);
+    expect(wrong.some((w) => w.includes('states no corrected count'))).toBe(true);
+  });
+});
+
 describe('checkAgainstHarvest — the table describes the real population, not a remembered one', () => {
   const ability = (champion: string, slot: string, name: string, hits: number) => ({
     champion,
@@ -163,9 +236,19 @@ describe('the table itself, against the real cached source', () => {
     expect(new Set(PER_TICK_READS.map((r) => r.key)).size).toBe(37);
   });
 
-  it('marks 19 and leaves 18 withdrawn, every mark carrying its sentence', () => {
+  // THE COUNT MOVED ON 2026-08-15, 19 -> 23, AND A RISING COUNT IS THE DANGEROUS DIRECTION.
+  //
+  // DEFINITION of the 23: rows where the sentence says the damage recurs AND the number of times
+  // it lands equals the source's own duration divided by its own interval. That definition did not
+  // change. What changed is that four rows reached that arithmetic where they previously could
+  // not — Rumble R and Viktor R because the page prints the count and the harvest had stored 1,
+  // Hecarim W and Dr. Mundo W because Riot's patch notes settled which of two self-contradicting
+  // halves of the page is stale (DATA-SOURCES §59). The tests below pin all four individually, so
+  // the total cannot rise again without a named row rising with it.
+  it('marks 23 and leaves 14 withdrawn, every mark carrying its sentence', () => {
     const marked = markedOverTime();
-    expect(marked.size).toBe(19);
+    expect(marked.size).toBe(23);
+    expect(PER_TICK_READS.filter((r) => !r.marked)).toHaveLength(14);
     for (const [, why] of marked) expect(why.length).toBeGreaterThan(20);
   });
 
@@ -173,10 +256,51 @@ describe('the table itself, against the real cached source', () => {
     expect(checkMarkRule()).toEqual([]);
   });
 
-  it('quotes 54 fragments and every one is literally in the cached wikitext', async () => {
+  it('corrects exactly four counts, and every one equals the source own duration over interval', () => {
+    const corrected = [...capturedHitCounts()];
+    expect(corrected.map(([k]) => k).sort()).toEqual([
+      'Dr. Mundo/W/Heart Zapper',
+      'Hecarim/W/Spirit of Dread',
+      'Rumble/R/The Equalizer',
+      'Viktor/R/Arcane Storm',
+    ]);
+    for (const [key, stated] of corrected) {
+      const row = PER_TICK_READS.find((r) => r.key === key)!;
+      expect(stated.instances).toBe(row.impliedTicks);
+      expect(row.storedHits).not.toContain(stated.instances);
+    }
+  });
+
+  it('states the four corrected counts by name, so none can drift silently', () => {
+    const at = (key: string) => capturedHitCounts().get(key)!.instances;
+    expect(at('Rumble/R/The Equalizer')).toBe(20);
+    expect(at('Viktor/R/Arcane Storm')).toBe(6);
+    expect(at('Hecarim/W/Spirit of Dread')).toBe(4);
+    expect(at('Dr. Mundo/W/Heart Zapper')).toBe(12);
+  });
+
+  it('leaves Nasus E unmarked and uncorrected — no source states its interval', () => {
+    const nasus = PER_TICK_READS.find((r) => r.key === 'Nasus/E/Spirit Fire')!;
+    expect(nasus.countVerdict).toBe('contested');
+    expect(nasus.marked).toBe(false);
+    expect(nasus.statedTotal).toBeUndefined();
+    expect(capturedHitCounts().has('Nasus/E/Spirit Fire')).toBe(false);
+  });
+
+  it('quotes 57 fragments and every one is literally in the cached wikitext', async () => {
     const checks = verifyQuotes(PER_TICK_READS, await loadPages());
     const failed = checks.filter((c) => c.pageMissing || c.missing.length > 0);
     expect(failed).toEqual([]);
-    expect(checks.reduce((s, c) => s + c.found, 0)).toBe(54);
+    expect(checks.reduce((s, c) => s + c.found, 0)).toBe(57);
+  });
+
+  it('proves every corrected sentence is one of the checked fragments, not a summary', async () => {
+    const pages = await loadPages();
+    for (const [key, stated] of capturedHitCounts()) {
+      const row = PER_TICK_READS.find((r) => r.key === key)!;
+      expect(row.verbatim).toContain(stated.verbatim);
+      const page = pages.find((p) => `${p.champion}/${p.slot}/${p.abilityName}` === key)!;
+      expect(page.wikitext).toContain(stated.verbatim);
+    }
   });
 });

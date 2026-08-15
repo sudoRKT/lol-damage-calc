@@ -5204,7 +5204,10 @@ leagueoflegends.com outside the wiki entirely. Game data matches the description
 and on the AP ratio. The editor updated the sentence in July 2024 and left the multiplier.
 
 **One extra fact worth storing: the real tick interval is 0.5s, so the true instance count is 8**,
-each dealing a fifth of the stated figure. The wiki's "Per Tick" label is really per-second — so 4
+each dealing HALF the stated figure. (This line said "a fifth" until 2026-08-15 and the
+arithmetic was wrong: 8 instances summing to 4x the stated figure makes each one a half. The
+agent that spotted it acted on this section's CONCLUSION — the multiplier 4 — rather than on the
+faulty line, which is why nothing downstream inherited the error.) The wiki's "Per Tick" label is really per-second — so 4
 is the right multiplier for the stated figure and NOT the number of damage instances.
 
 ### 59.2 Dr. Mundo W — the answer is 12, not 16. The row overstates by 33%.
@@ -5251,3 +5254,33 @@ All three store the leveling-row figure — Nasus E `hits: 10`, Dr. Mundo W `hit
 `hits: 5`. **All three entries are `incomplete`, so no wrong number is on screen.** But the counts
 are stored rather than blank, and each is the stale one. They are exactly the entries §58's rule
 held back for want of a reconciling count, and that rule was right to hold them.
+
+
+---
+
+## 60. An aggregate row stored as an addition — a LIVE wrong number (2026-08-15)
+
+Found while finishing the per-tick counts, and it is a DIFFERENT defect class from the per-tick
+one — the sweep that looks for duplicate labels cannot see it, because the labels differ.
+
+**DEFINITION: entries holding an aggregate row (a "Maximum" or "Total") stored as an ADDITIVE
+component beside the very parts it aggregates, over the 919 stored entries at patch 16.16.1.
+12 entries, 4 of them `derived` and therefore ON SCREEN — Zoe E, Yasuo E, Hwei W, Kled Q.**
+
+**Zoe E is unambiguous from its own source.** It stores `Magic Damage` 70 to 230 and
+`Maximum Mixed Damage` 140 to 460, BOTH marked `adds`, and the wiki's own text makes the second
+the SUM of the bubble damage and the sleep-consumption bonus. At rank 1 the product publishes
+**210 for an ability whose stated maximum is 140** — a 50% overstatement, derived, on screen, with
+nothing saying it is wrong.
+
+This is exactly what gate 3 exists to catch and does not: gate 3 fires on components that fail to
+state a relation, and these state one — the wrong one.
+
+**It needs the twelve sentences read one at a time.** A detector proposes, a person confirms
+(CLAUDE.md). Widening a filter to catch it would be the move that rule forbids, because "Maximum"
+in a label sometimes means a genuine second damage row on a charge-up ability — the Minimum /
+Maximum pair DERIVED_ROW was deliberately written NOT to drop (validate-curated.ts).
+
+**Rumble R is a member of the same class and worse: it stores one damage THREE ways** — per tick,
+per second and maximum, all marked `adds`, which would treble it. It is `incomplete` and publishes
+nothing, and the harvester already recorded that "a total row cannot be attributed to one of them".

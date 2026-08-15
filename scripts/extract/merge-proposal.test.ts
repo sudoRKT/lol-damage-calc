@@ -132,19 +132,66 @@ describe('classifyOverTime — the per-tick split', () => {
 
   it('leaves an ability with no per-tick component completely alone', () => {
     const a = ability({ verification: 'derived' });
-    expect(classifyOverTime([a])).toEqual({ marked: 0, refused: [] });
+    const out = classifyOverTime([a]);
+    expect(out.marked).toBe(0);
+    expect(out.refused).toEqual([]);
+    expect(out.captured).toEqual([]);
     expect(a.verification).toBe('derived');
   });
 
-  it('marks 23 entries in all — the 4 read in §58 and the 19 whose counts the source corroborates', () => {
-    expect(READ_AS_OVER_TIME.size).toBe(23);
+  // DEFINITION of the 27: the 4 entries read on 2026-08-14 plus every row of per-tick-read.ts
+  // whose sentence says the damage recurs AND whose number of ticks equals the source's own
+  // duration divided by its own interval. It read 23 until 2026-08-15, when four rows reached that
+  // arithmetic for the first time — two because the page prints the count and the harvest had
+  // stored 1, two because Riot's patch notes settled which half of a self-contradicting page is
+  // stale (DATA-SOURCES §59). The definition did not move; the evidence did.
+  it('marks 27 entries in all — the 4 read in §58 and the 23 whose counts the source establishes', () => {
+    expect(READ_AS_OVER_TIME.size).toBe(27);
     for (const [, why] of READ_AS_OVER_TIME) expect(why.length).toBeGreaterThan(20);
+  });
+
+  it('corrects a stored hit count only where the reading says to, and reports it', () => {
+    const a = ability({
+      champion: 'Hecarim',
+      slot: 'W',
+      abilityName: 'Spirit of Dread',
+      components: [perTick({ id: 'magic-damage-per-tick', hits: 5 })],
+    });
+    const out = classifyOverTime([a]);
+    expect(a.components[0]!.hits).toBe(4);
+    expect(a.components[0]!.overTime).toBeDefined();
+    expect(out.captured).toHaveLength(1);
+    expect(out.captured[0]).toMatchObject({
+      entry: 'Hecarim/W/Spirit of Dread',
+      componentId: 'magic-damage-per-tick',
+      before: 5,
+      after: 4,
+    });
+  });
+
+  // THE INTERLOCK, PROVED TO FIRE. If the harvester ever renames the component the reading names,
+  // the count lands on nothing — and marking the entry anyway would publish one tick as the whole
+  // burn. The entry must be withdrawn instead, not marked with whatever hits it happens to hold.
+  it('refuses to mark a corrected entry when the count could not be applied', () => {
+    const a = ability({
+      champion: 'Hecarim',
+      slot: 'W',
+      abilityName: 'Spirit of Dread',
+      components: [perTick({ id: 'renamed-since-the-reading', hits: 5 })],
+    });
+    const out = classifyOverTime([a]);
+    expect(a.components[0]!.overTime).toBeUndefined();
+    expect(a.components[0]!.hits).toBe(5);
+    expect(a.verification).toBe('incomplete');
+    expect(out.marked).toBe(0);
+    expect(out.refused).toEqual(['Hecarim/W/Spirit of Dread']);
+    expect(out.captureRefused.join(' ')).toContain('not applied to anything');
   });
 });
 
 describe('withdrawalReason — a withdrawn entry says what is actually missing', () => {
   it('names the missing count for an entry whose source states one nobody captured', () => {
-    expect(withdrawalReason('Rumble/R/The Equalizer')).toContain('never captured');
+    expect(withdrawalReason('Nasus/R/Fury of the Sands')).toContain('never captured');
   });
 
   it('says no count can exist for a toggle, rather than implying somebody could go and find one', () => {

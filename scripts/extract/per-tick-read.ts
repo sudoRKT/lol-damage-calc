@@ -23,8 +23,23 @@
  *
  *   1. IS IT RECURRING? Decided by the sentence. All 37 are — every one states an interval in
  *      seconds. Not one turned out to be the `per Arrow` shape. That is the finding.
- *   2. IS THE STORED COUNT A FULL-DURATION COUNT? A separate, stored fact, and 18 of the 37 fail
- *      it. `marked` is true only when BOTH hold.
+ *   2. IS THE STORED COUNT A FULL-DURATION COUNT? A separate, stored fact. 18 of the 37 failed it
+ *      when this table was written on 2026-08-14. **4 of those 18 were corrected on 2026-08-15**,
+ *      so 14 fail it today. `marked` is true only when BOTH hold.
+ *
+ * THE FOUR CORRECTED ON 2026-08-15, and they are two different things:
+ *
+ *   - CAPTURED — Rumble R (20) and Viktor R (6). The harvest stored 1; the page PRINTS the count,
+ *     in words or in its own total-row multiplier, and the printed count equals the arithmetic.
+ *   - SETTLED — Hecarim W (4, not the stored 5) and Dr. Mundo W (12, not the stored 16). The page
+ *     contradicts ITSELF, and Riot's own patch notes — outside the wiki entirely — say which half
+ *     is stale. DATA-SOURCES §59.
+ *
+ * NASUS E IS THE ONE THAT STAYED REFUSED, and it is the reason this table does not simply take
+ * the description's arithmetic whenever the row disagrees. Its total is settled by Riot's patch
+ * notes as firmly as Hecarim's is. Its INTERVAL is stated by nothing anywhere, so "5 ticks of
+ * 10–34" and "10 ticks of 5–17" are both consistent with every reachable source, and a count
+ * cannot be computed from a duration alone. It stays `contested` and unmarked BY DECISION.
  *
  * Why the second question gates the first. Marking a component moves its figure out of the burst
  * line and into the damage-over-time line — where the engine multiplies it by `hits` and states it
@@ -53,12 +68,81 @@ export const WIKITEXT_CACHE = 'build/proposed-curated/ability-wikitext.json';
 export type CountVerdict =
   /** The source's duration divided by its interval equals the stored `hits`. Safe to mark. */
   | 'corroborated'
+  /**
+   * THE SOURCE STATES THE COUNT ITSELF, THE HARVESTER STORED 1, AND THE COUNT IS TAKEN FROM THE
+   * SOURCE'S OWN WORDS (2026-08-15).
+   *
+   * Distinguished sharply from `count-not-stored`, which is where these two rows sat until today.
+   * A `captured` row is one where the source does not merely make a count DERIVABLE from a
+   * duration and an interval — it PRINTS one, in a sentence or in its own leveling-row formula —
+   * and that printed count equals the arithmetic. Three statements have to agree before a row may
+   * be captured, and `statedTotal` records the printed one:
+   *
+   *   1. the sentence's duration divided by the sentence's interval (`impliedTicks`);
+   *   2. the count the source states in words or in its own total-row multiplier;
+   *   3. and they must be the same number.
+   *
+   * Only then is `hits` corrected, at merge time, from 1 to the stated count — and the correction
+   * is reported entry by entry rather than folded into a total. Capturing a count that reconciles
+   * with nothing would publish a fraction of a burn as the whole of it, which is exactly what the
+   * `count-not-stored` arm exists to refuse.
+   */
+  | 'captured'
+  /**
+   * THE PAGE CONTRADICTED ITSELF AND AN INDEPENDENT PRIMARY SOURCE DECIDED WHICH HALF IS RIGHT
+   * (2026-08-15, DATA-SOURCES §59).
+   *
+   * A `settled` row began as `contested`: the description's duration and interval imply one count
+   * and the page's own leveling row multiplies by another. Preferring the tidier half is exactly
+   * what this project forbids, so neither was taken on the page's own authority. What moves a row
+   * out of `contested` is evidence from OUTSIDE the wiki — in both current cases Riot's own patch
+   * notes on leagueoflegends.com, which record the duration change the leveling row was never
+   * updated for. `settledBy` names it.
+   *
+   * The same three statements as `captured` must still agree, and one more:
+   *
+   *   1. the sentence's duration divided by the sentence's interval (`impliedTicks`);
+   *   2. the count `statedTotal.instances` claims;
+   *   3. they must be the same number;
+   *   4. and `settledBy` must name the source outside the cached page that decided it.
+   *
+   * WHAT NOTHING CHECKS MECHANICALLY: `settledBy`. `verifyQuotes` proves a fragment is literally in
+   * the cached wikitext, and a patch note is not in the cached wikitext by definition. So a settled
+   * row's `verbatim` is the WIKI SENTENCE the count is computed from — which is checked — while the
+   * citation that broke the tie is prose a person has to follow. That asymmetry is stated here
+   * rather than hidden, because it is the weakest link in a settled row.
+   */
+  | 'settled'
   /** The source states no duration at all — a toggle, an aura, a resource-fed channel. */
   | 'no-duration-stated'
   /** A duration and interval are stated, so a count exists, but `hits` is 1: it was never stored. */
   | 'count-not-stored'
   /** The source's own description and its own leveling row imply DIFFERENT counts. */
   | 'contested';
+
+/**
+ * THE COUNT A `captured` OR `settled` ROW CORRECTS THE HARVEST TO.
+ *
+ * `verbatim` must also appear in the row's `verbatim` list, so `verifyQuotes` proves it is a
+ * literal substring of the cached wikitext — a corrected count rests on a checked sentence, never
+ * on a reader's summary of one.
+ */
+export interface StatedTotal {
+  /** The number of instances the source states for the component(s) named below. */
+  instances: number;
+  /** The `id` of every component this count applies to, as the harvest stored it. */
+  componentIds: string[];
+  /** How the source states it, in plain English, for the audit. */
+  statedBy: string;
+  /** The fragment of source text the count is read from. Also present in `verbatim`. */
+  verbatim: string;
+  /**
+   * REQUIRED ON A `settled` ROW, FORBIDDEN ON A `captured` ONE. The evidence from outside the
+   * cached page that decided which of the page's two self-contradicting halves is right — named
+   * specifically enough that a reader can go and check it, because nothing here can.
+   */
+  settledBy?: string;
+}
 
 export interface PerTickRead {
   /** `champion/slot/abilityName`, the same key merge-proposal.ts uses. */
@@ -76,9 +160,22 @@ export interface PerTickRead {
   intervalSeconds: number;
   /** duration / interval, where both exist. */
   impliedTicks: number | null;
-  /** What `hits` actually holds in the harvested entry today. */
+  /**
+   * What `hits` actually holds in THE HARVESTED ENTRY today — not what the merge writes.
+   *
+   * A `captured` or `settled` row leaves this at what the harvest holds (1 for Rumble R and
+   * Viktor R, the stale leveling-row multiplier for Hecarim W and Dr. Mundo W), because that is
+   * what this field documents and what `checkAgainstHarvest` compares against. The corrected count
+   * lives in `statedTotal.instances`, and the correction happens in the merge proposal, where it is
+   * reported before and after.
+   */
   storedHits: number[];
-  /** True only when verdict is 'recurring' AND countVerdict is 'corroborated'. */
+  /** Present only on a `captured` or `settled` row: the corrected count and where it comes from. */
+  statedTotal?: StatedTotal;
+  /**
+   * True only when verdict is 'recurring' AND countVerdict is 'corroborated', 'captured' or
+   * 'settled'.
+   */
   marked: boolean;
   /** Anything a reader of this table needs that the quote does not carry. */
   note?: string;
@@ -218,7 +315,7 @@ export const PER_TICK_READS: readonly PerTickRead[] = [
   {
     key: 'Dr. Mundo/W/Heart Zapper',
     verdict: 'recurring',
-    countVerdict: 'contested',
+    countVerdict: 'settled',
     quote:
       'Dr. Mundo charges up a defibrillator for up to 3 seconds, dealing magic damage every 0.25 seconds to nearby enemies',
     verbatim: [
@@ -229,8 +326,23 @@ export const PER_TICK_READS: readonly PerTickRead[] = [
     intervalSeconds: 0.25,
     impliedTicks: 12,
     storedHits: [16],
-    marked: false,
-    note: "THE SOURCE DISAGREES WITH ITSELF: 3 seconds at 0.25 gives 12 ticks, but its own total row multiplies the per-tick figure by 16. The page also notes 'Heart Zapper will occasionally deal an additional tick of damage' as a bug. Surfaced, not reconciled",
+    statedTotal: {
+      instances: 12,
+      componentIds: ['magic-damage-per-tick'],
+      statedBy:
+        'the description states the duration and the interval — up to 3 seconds, every 0.25 ' +
+        'seconds — which is 12 instances. Its own leveling row multiplies by 16, and 16 is the ' +
+        'stale figure: it was right while the duration was 4 seconds',
+      settledBy:
+        "Riot's patch notes for V12.23 on leagueoflegends.com, which reduced Heart Zapper's " +
+        'duration from 4 seconds to 3 and were never carried into the leveling row. The wiki\'s ' +
+        "own patch history records the same change, and Riot's live tooltip string computes the " +
+        'damage as damage-per-second times 3',
+      verbatim:
+        'charges up a defibrillator for up to 3 seconds, dealing {{as|magic damage}} every {{fd|0.25}} seconds to nearby enemies',
+    },
+    marked: true,
+    note: "SETTLED 2026-08-15 (DATA-SOURCES §59.2) at 12, not the stored 16: the row overstates by 33%. TWO CAVEATS TRAVEL WITH THE 12 and neither is modelled. The description says 'up TO 3 seconds' and the ability can be recast early, so 12 is a MAXIMUM rather than a fixed count — the engine models sequence, not elapsed time, so it publishes the full-duration figure as every other marked burn does. And the page's own notes record that it 'will occasionally deal an additional tick of damage' as a bug, which would make the real figure 13 and which nothing here reproduces. THE ENTRY IS `incomplete` IN THE HARVEST AND STAYS THERE, so this correction publishes no number today; it stops a wrong one being published if it ever ceases to be incomplete",
   },
   {
     key: 'Fiddlesticks/R/Crowstorm',
@@ -250,7 +362,7 @@ export const PER_TICK_READS: readonly PerTickRead[] = [
   {
     key: 'Hecarim/W/Spirit of Dread',
     verdict: 'recurring',
-    countVerdict: 'contested',
+    countVerdict: 'settled',
     quote:
       'Hecarim surrounds himself with the Spirit of Dread for 4 seconds, dealing magic damage every second to nearby enemies',
     verbatim: [
@@ -261,8 +373,23 @@ export const PER_TICK_READS: readonly PerTickRead[] = [
     intervalSeconds: 1,
     impliedTicks: 4,
     storedHits: [5],
-    marked: false,
-    note: 'THE SOURCE DISAGREES WITH ITSELF by one tick: 4 seconds at 1 second gives 4, its own total row multiplies by 5 (an initial tick plus four would explain it, but the page never says so). One tick of five is a fifth of the ability',
+    statedTotal: {
+      instances: 4,
+      componentIds: ['magic-damage-per-tick'],
+      statedBy:
+        'the description states the duration and the interval — 4 seconds, every second — which ' +
+        'is 4 instances. Its own leveling row multiplies by 5, and 5 is the stale figure: it was ' +
+        'right while the duration was 5 seconds',
+      settledBy:
+        "Riot's patch notes for V14.14 on leagueoflegends.com, which state \"Duration: 5 ⇒ 4 " +
+        'seconds\" — confirmed outside the wiki entirely. The game data matches the description ' +
+        'at all five ranks and on the AP ratio; the editor updated the sentence in July 2024 and ' +
+        'left the multiplier',
+      verbatim:
+        'surrounds himself with the Spirit of Dread for 4 seconds, dealing {{as|magic damage}} every second to nearby enemies',
+    },
+    marked: true,
+    note: "SETTLED 2026-08-15 (DATA-SOURCES §59.1) at 4, not the stored 5: the row overstates by 25%. THIS IS THE ONE ROW IN THIS TABLE THAT PUBLISHES A NUMBER — the harvest holds Hecarim W as `derived`, so marking it puts 4 x (20 to 60) (+ 4 x 20% AP) on the damage-over-time line where 5 x would have gone into burst. WHAT THE 4 IS AND IS NOT: DATA-SOURCES §59.1 records that the real tick interval is 0.5s, so the true number of damage INSTANCES is 8 — the wiki's 'Per Tick' label is really per-second. 4 is therefore the right multiplier for the STATED FIGURE and NOT the number of instances, and the full-duration product is the same either way. (§59.1 also says each instance deals 'a fifth' of the stated figure; 8 instances summing to 4 x the stated figure makes each a HALF. The discrepancy is raised rather than resolved here, and it does not affect the product, which is all the engine uses)",
   },
   {
     key: 'Hwei/Q/Molten Fissure',
@@ -439,7 +566,7 @@ export const PER_TICK_READS: readonly PerTickRead[] = [
     impliedTicks: 5,
     storedHits: [10],
     marked: false,
-    note: 'THE SOURCE DISAGREES WITH ITSELF BY A FACTOR OF TWO: the description says each second for 5 seconds, which is 5 ticks; its own total row multiplies the per-tick figure by 10. One of the two is wrong and the page does not say which',
+    note: "THE SOURCE DISAGREES WITH ITSELF BY A FACTOR OF TWO: the description says each second for 5 seconds, which is 5 ticks; its own total row multiplies the per-tick figure by 10. INVESTIGATED AND STILL REFUSED 2026-08-15 (DATA-SOURCES §59.3). The TOTAL is settled — Riot's V14.18 patch notes state the figure verbatim as 'Damage per Second' and the game multiplies it by the duration, so the product is 50-170 (+60% AP) over 5 seconds and the row's x10 doubles it. But NO SOURCE STATES THE INTERVAL: the wiki's damage-over-time article gives none, the game data carries no tick rate, and the buff object is an empty stub, so '5 ticks of 10-34' and '10 ticks of 5-17' are both consistent with everything reachable. A count cannot be computed from a duration alone. This row stays `contested` and unmarked BY DECISION, not by omission — settling it needs a frame-counted in-client observation or a spell script nobody publishes",
   },
   {
     key: 'Nasus/R/Fury of the Sands',
@@ -557,19 +684,32 @@ export const PER_TICK_READS: readonly PerTickRead[] = [
   {
     key: 'Rumble/R/The Equalizer',
     verdict: 'recurring',
-    countVerdict: 'count-not-stored',
+    countVerdict: 'captured',
     quote:
       'enemies struck by the impact or within the field are marked Burning for 1 second, taking magic damage every 0.25 seconds, and may be Burning for up to 5 seconds, for a total of 20 instances of its effect',
     verbatim: [
       "are marked ''Burning'' for 1 second, taking {{as|magic damage}} every {{fd|0.25}} seconds",
       "Enemies may be ''Burning'' for up to 5 seconds, for a total of 20 instances of its effect.",
+      '{{st|Magic Damage per Tick|{{ap|{{#var:r_b1}}/4 to {{#var:r_b5}}/4}}',
+      '|Maximum Magic Damage|{{ap|{{#var:r_b1}}*5 to {{#var:r_b5}}*5}}',
     ],
     durationSeconds: 5,
     intervalSeconds: 0.25,
     impliedTicks: 20,
     storedHits: [1],
-    marked: false,
-    note: "ACTIONABLE: the source states the count in words — 'a total of 20 instances' — and the harvester stored 1. This one needs no further reading, only capturing",
+    statedTotal: {
+      instances: 20,
+      componentIds: ['magic-damage-per-tick'],
+      statedBy:
+        'the description states it in words — "for a total of 20 instances of its effect" — and ' +
+        "the page's own leveling row states it a second way: the per-tick figure is the " +
+        'per-second figure divided by 4, and the Maximum row is the per-second figure times 5, ' +
+        'so the maximum is the per-tick figure times 20 at every rank and on the AP ratio too',
+      verbatim:
+        "Enemies may be ''Burning'' for up to 5 seconds, for a total of 20 instances of its effect.",
+    },
+    marked: true,
+    note: "CAPTURED 2026-08-15: three statements agree on 20 — the sentence's own words, 5s / 0.25s, and the leveling row's own multiplier (base/4 per tick against base*5 maximum). THE ENTRY STAYS `incomplete` REGARDLESS, and not for the count: its three components — per tick, per second, and Maximum — are three expressions of ONE damage and the harvest marked all three 'adds', so summing them would treble it. That is a separate defect and it is not fixed here",
   },
   {
     key: 'Singed/Q/Poison Trail',
@@ -622,19 +762,30 @@ export const PER_TICK_READS: readonly PerTickRead[] = [
   {
     key: 'Viktor/R/Arcane Storm',
     verdict: 'recurring',
-    countVerdict: 'count-not-stored',
+    countVerdict: 'captured',
     quote:
       'the singularity remains active as a moving storm for 6.5 seconds, striking a bolt of electricity onto enemies within it every second to deal magic damage',
     verbatim: [
       'The singularity then remains active as a moving storm for {{fd|6.5}} seconds, striking a bolt of electricity onto enemies within it every second to deal {{as|magic damage}}',
       'The base duration allows for 7 strikes (including the initial one).',
+      '|Total Magic Damage|{{ap|100+65*6 to 250+145*6}} {{as|(+ {{ap|50+35*6}}% AP)}}',
     ],
     durationSeconds: 6.5,
     intervalSeconds: 1,
     impliedTicks: 6,
     storedHits: [1],
-    marked: false,
-    note: "ACTIONABLE: the page states '7 strikes (including the initial one)', and the initial strike is a separate component, so this one is 6. The count was not stored because the total row folds the initial hit in and the harvester's division rule could not apply",
+    statedTotal: {
+      instances: 6,
+      componentIds: ['magic-damage-per-tick'],
+      statedBy:
+        'the page states "7 strikes (including the initial one)" and the initial strike is a ' +
+        'separate component, leaving 6 for the storm — and its own Total row writes the ' +
+        'multiplier out, "100+65*6 to 250+145*6", with the AP ratio as "50+35*6", so the count ' +
+        'of 6 is printed by the source at every rank and on the ratio',
+      verbatim: 'The base duration allows for 7 strikes (including the initial one).',
+    },
+    marked: true,
+    note: "CAPTURED 2026-08-15: three statements agree on 6 — the note's 7 strikes less the initial one, 6.5s / 1s, and the Total row's own '*6'. The capture also RECONCILES the arithmetic behind this entry's gate-7 failure, which was the harvest reporting a total of 490 against components summing to 165: 100 + 65 x 6 = 490 exactly. IT DOES NOT CLEAR THE GATE-7 REPORT: gate 7 is answered during harvest and merge-proposal.ts carries the finding rather than recomputing it, so the entry keeps its total-mismatch issue and its `incomplete` status until a fresh harvest runs. Nothing is published either way",
   },
   {
     key: 'Vladimir/W/Sanguine Pool',
@@ -694,21 +845,38 @@ export function markedOverTime(): ReadonlyMap<string, string> {
   return new Map(PER_TICK_READS.filter((r) => r.marked).map((r) => [r.key, r.quote]));
 }
 
+/** The three count verdicts a row may be marked on. Every other verdict leaves it withdrawn. */
+export const MARKABLE_COUNT_VERDICTS: readonly CountVerdict[] = ['corroborated', 'captured', 'settled'];
+
+/** The two verdicts that CORRECT a stored hit count rather than agreeing with it. */
+export const CORRECTING_COUNT_VERDICTS: readonly CountVerdict[] = ['captured', 'settled'];
+
 /**
- * A MARKED ROW MUST BE RECURRING AND ITS COUNT CORROBORATED. Nothing else may be marked.
+ * A MARKED ROW MUST BE RECURRING AND ITS COUNT ESTABLISHED. Nothing else may be marked.
  *
  * The rule the table is written to, restated as a check so a later edit cannot quietly break it:
- * marking a row whose count is contested or unstored publishes a wrong burn total.
+ * marking a row whose count is contested or unstored publishes a wrong burn total. There are
+ * exactly three ways a count can be established, and every one of them ends at the same
+ * arithmetic — the source's own duration divided by its own interval:
+ *
+ *   - `corroborated` — the harvest already holds that number.
+ *   - `captured`     — the harvest holds 1 and the page PRINTS the number in words or in its own
+ *                      total-row multiplier.
+ *   - `settled`      — the page contradicts itself and evidence from outside the page decided it.
+ *
+ * A row that reaches the number any other way is not markable, and Nasus E is the standing proof:
+ * its total is settled and its interval is stated by nothing, so no count exists to check.
  */
 export function checkMarkRule(reads: readonly PerTickRead[] = PER_TICK_READS): string[] {
   const wrong: string[] = [];
   for (const r of reads) {
-    const eligible = r.verdict === 'recurring' && r.countVerdict === 'corroborated';
+    const eligible =
+      r.verdict === 'recurring' && MARKABLE_COUNT_VERDICTS.includes(r.countVerdict);
     if (r.marked && !eligible) {
       wrong.push(`${r.key}: marked, but it is ${r.verdict} with a ${r.countVerdict} count`);
     }
     if (!r.marked && eligible) {
-      wrong.push(`${r.key}: recurring with a corroborated count, but not marked`);
+      wrong.push(`${r.key}: recurring with a ${r.countVerdict} count, but not marked`);
     }
     if (r.marked && !r.quote) wrong.push(`${r.key}: marked with no quote`);
     if (r.countVerdict === 'corroborated' && r.impliedTicks !== r.storedHits[0]) {
@@ -717,8 +885,82 @@ export function checkMarkRule(reads: readonly PerTickRead[] = PER_TICK_READS): s
           `${r.impliedTicks} and hits is ${r.storedHits[0]}`,
       );
     }
+    // A CORRECTING ROW CARRIES MORE CONDITIONS THAN A CORROBORATED ONE, NOT FEWER. Each of these
+    // is a way of writing a count nothing checked, which is the defect the whole table exists to
+    // prevent — so each is refused by name rather than by a general "looks wrong".
+    const corrects = CORRECTING_COUNT_VERDICTS.includes(r.countVerdict);
+    if (corrects) {
+      const s = r.statedTotal;
+      if (!s) {
+        wrong.push(`${r.key}: called ${r.countVerdict} but states no corrected count at all`);
+      } else {
+        if (s.instances !== r.impliedTicks) {
+          wrong.push(
+            `${r.key}: ${r.countVerdict} ${s.instances} instances, but ${r.durationSeconds}s / ` +
+              `${r.intervalSeconds}s = ${r.impliedTicks}. A corrected count must reconcile with ` +
+              `the source's own duration and interval, or it is a number nobody checked`,
+          );
+        }
+        if (s.componentIds.length === 0) {
+          wrong.push(`${r.key}: ${r.countVerdict} a count and names no component to put it on`);
+        }
+        if (!s.verbatim || !r.verbatim.includes(s.verbatim)) {
+          wrong.push(
+            `${r.key}: the corrected count's sentence is not among the row's verbatim fragments, ` +
+              `so nothing proves it is in the source`,
+          );
+        }
+        if (r.storedHits.every((h) => h === s.instances)) {
+          wrong.push(
+            `${r.key}: ${r.countVerdict} ${s.instances}, which the harvest already holds — this ` +
+              `row is corroborated, and calling it ${r.countVerdict} hides that nothing changed`,
+          );
+        }
+        // THE ONE CONDITION ONLY A SETTLED ROW CARRIES. A settled row overrides a number the page
+        // itself states, so the evidence that overrode it has to be named. Nothing here can check
+        // that citation — it is outside the cached page by definition — but an unnamed one is a
+        // reader's preference dressed as a source, and that is refusable.
+        if (r.countVerdict === 'settled' && !s.settledBy) {
+          wrong.push(
+            `${r.key}: settled a count the page contradicts, and names no evidence outside the ` +
+              `page that settled it`,
+          );
+        }
+        if (r.countVerdict === 'captured' && s.settledBy) {
+          wrong.push(
+            `${r.key}: called captured — the page prints the count — yet cites outside evidence ` +
+              `to settle it. If the page had to be overridden the row is settled, not captured`,
+          );
+        }
+      }
+    }
+    if (!corrects && r.statedTotal) {
+      wrong.push(`${r.key}: carries a corrected count while its verdict is '${r.countVerdict}'`);
+    }
   }
   return wrong;
+}
+
+/**
+ * THE COUNTS TO CORRECT AT MERGE TIME, keyed by entry.
+ *
+ * Two shapes, both here because both end in the same edit — one component's `hits` replaced by a
+ * number that equals the source's own duration divided by its own interval:
+ *
+ *   - `captured` — the harvest holds 1 because its division rule could not reach the number, and
+ *     the page prints it (Rumble R, Viktor R).
+ *   - `settled` — the harvest holds the page's own leveling-row multiplier, that multiplier is
+ *     stale, and outside evidence says so (Hecarim W, Dr. Mundo W).
+ *
+ * `merge-proposal.ts` applies these and reports every change, before and after. Nothing else in
+ * the pipeline writes a hit count from a hand reading.
+ */
+export function capturedHitCounts(): ReadonlyMap<string, StatedTotal> {
+  return new Map(
+    PER_TICK_READS.filter(
+      (r) => CORRECTING_COUNT_VERDICTS.includes(r.countVerdict) && r.statedTotal,
+    ).map((r) => [r.key, r.statedTotal as StatedTotal]),
+  );
 }
 
 /** The four read before these 37 (DATA-SOURCES §58.3). Not part of this reading. */

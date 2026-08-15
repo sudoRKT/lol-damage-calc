@@ -9,9 +9,19 @@
 //   merge-refusals.json    every proposed entry NOT recommended for merge, with the reason
 //
 // WHAT IT NEVER DOES. It does not write /curated/ — that merge is a lead action behind a human
-// unlock (curated/README.md). It does not change a stored value, does not invent an owner, does
-// not widen any detector, and does not mark anything `verified`. Where a proposal and a gate
-// disagree, the entry is REFUSED and named; nothing is quietly repaired to raise a count.
+// unlock (curated/README.md). It does not invent an owner, does not widen any detector, and does
+// not mark anything `verified`. Where a proposal and a gate disagree, the entry is REFUSED and
+// named; nothing is quietly repaired to raise a count.
+//
+// THE ONE STORED NUMBER IT CHANGES, AND WHY (2026-08-15). This header said "does not change a
+// stored value" until today, and one narrow case now makes that untrue rather than leave it
+// misleading: `applyCapturedCounts` writes the tick count that the SOURCE ITSELF PRINTS onto the
+// two entries whose harvest stored 1 — Rumble R (20 instances, stated in words) and Viktor R (6,
+// written into the wiki's own total-row formula). Nothing else in the file is touched, every
+// change is listed in merge-report.json with its before and after, and the count has to reconcile
+// with the source's own duration and interval before `per-tick-read.ts` will hand it over. The
+// alternative was not "leave the number alone" — it was to mark a five-second burn as recurring
+// while it holds one tick, which publishes a twentieth of it as the whole.
 //
 // WHY REFUSING IS THE POINT. A curated file is held to gate 1 as a whole. One entry the
 // validator rejects makes the whole file un-mergeable, so an entry that fails is listed with the
@@ -47,7 +57,7 @@ import {
   type Finding,
   type GateReport,
 } from '../../src/types/validate-curated.ts';
-import { PER_TICK_READS, markedOverTime } from './per-tick-read.ts';
+import { PER_TICK_READS, capturedHitCounts, markedOverTime } from './per-tick-read.ts';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, '..', '..');
@@ -454,30 +464,115 @@ export function withdrawalReason(key: string): string {
       return (
         "The source was read: it recurs, but the page contradicts itself about how many times — " +
         'its description and its own leveling row give different tick counts, and neither is ' +
-        'taken silently.'
+        'taken silently. Where outside evidence has since settled which half is stale the entry ' +
+        'is corrected instead; this one has none, so no count exists to publish.'
       );
     case 'corroborated':
+    case 'captured':
+    case 'settled':
       // Unreachable while the mark rule holds; stated rather than assumed.
-      return 'The source was read and its tick count corroborated, yet the entry was not marked.';
+      return (
+        `The source was read and its tick count established (${read.countVerdict}), yet the ` +
+        'entry was not marked.'
+      );
   }
+}
+
+/** One hit count corrected from the source's own printed number, recorded so it can be audited. */
+export interface CapturedCount {
+  entry: string;
+  componentId: string;
+  before: number | undefined;
+  after: number;
+  statedBy: string;
+  verbatim: string;
+}
+
+/**
+ * APPLY THE COUNTS THE SOURCE PRINTS. The one place in this script that changes a stored number.
+ *
+ * This script changes no stored value anywhere else, and it does it here for a reason that is
+ * narrower than it looks: a component may only be marked as recurring if it carries the number of
+ * times it lands (gate 1), and `hits: 1` satisfies that gate while being false. Marking Rumble R
+ * with `hits: 1` would state a twentieth of a five-second burn as the whole of it — a plausible
+ * wrong number, in a new place. So the choice is between capturing the count the source prints and
+ * leaving both entries withdrawn; it is not between capturing and marking-as-is.
+ *
+ * WHAT IT WILL NOT DO. It refuses silently to nothing: a named component that is not on the entry,
+ * or an entry that is not in the file, is REPORTED and left alone rather than searched for by
+ * label. `per-tick-read.ts`'s own mark rule has already refused any count that does not reconcile
+ * with the source's duration and interval, and any count with no quoted sentence behind it.
+ */
+export function applyCapturedCounts(abilities: CuratedAbility[]): {
+  applied: CapturedCount[];
+  refused: string[];
+} {
+  const applied: CapturedCount[] = [];
+  const refused: string[] = [];
+  const captures = capturedHitCounts();
+  const byKey = new Map(abilities.map((a) => [abilityKey(a), a]));
+  for (const [key, stated] of captures) {
+    const ability = byKey.get(key);
+    if (!ability) {
+      refused.push(`${key}: captured a count of ${stated.instances}, but the entry is not in the file`);
+      continue;
+    }
+    for (const id of stated.componentIds) {
+      const component = ability.components.find((c) => c.id === id);
+      if (!component) {
+        refused.push(`${key}: no component with id '${id}' — the count was not applied to anything`);
+        continue;
+      }
+      applied.push({
+        entry: key,
+        componentId: id,
+        before: component.hits,
+        after: stated.instances,
+        statedBy: stated.statedBy,
+        verbatim: stated.verbatim,
+      });
+      component.hits = stated.instances;
+    }
+  }
+  return { applied, refused };
 }
 
 export function classifyOverTime(abilities: CuratedAbility[]): {
   marked: number;
   refused: string[];
+  captured: CapturedCount[];
+  captureRefused: string[];
 } {
   let marked = 0;
   const refused: string[] = [];
+  // BEFORE ANY MARK. A component may not be marked as recurring holding a count the source
+  // contradicts, and the two captured entries hold 1 until this runs. Doing it here rather than in
+  // the caller means there is one entry point and no order for a later caller to get wrong.
+  const capture = applyCapturedCounts(abilities);
   for (const a of abilities) {
     const perTick = a.components.filter((c) => PER_TICK_LABEL.test(c.label ?? ''));
     if (perTick.length === 0) continue;
     const why = READ_AS_OVER_TIME.get(abilityKey(a));
     if (why) {
-      for (const c of perTick) {
-        c.overTime = { sourceSays: why };
-        marked += 1;
+      // THE INTERLOCK. A read entry whose count the source PRINTS may only be marked once that
+      // count is on the component. If the capture did not land — a renamed component id, an entry
+      // that moved — the entry is withdrawn like any other unread one rather than marked holding
+      // a count of 1, which would state one tick as the whole burn.
+      const stated = capturedHitCounts().get(abilityKey(a));
+      const unapplied = stated
+        ? perTick.filter((c) => (c.hits ?? 1) !== stated.instances)
+        : [];
+      if (unapplied.length === 0) {
+        for (const c of perTick) {
+          c.overTime = { sourceSays: why };
+          marked += 1;
+        }
+        continue;
       }
-      continue;
+      capture.refused.push(
+        `${abilityKey(a)}: not marked — the source states ${stated!.instances} instances and ` +
+          `${unapplied.length} per-tick component(s) do not hold that count`,
+      );
     }
     // NOT MARKED. The figure is withdrawn rather than moved or left where it is.
     //
@@ -494,7 +589,7 @@ export function classifyOverTime(abilities: CuratedAbility[]): {
         `time is never part of a burst total (SPECIFICATION §3.8). ${reason} No figure is ` +
         `published rather than one published in the wrong place.`;
   }
-  return { marked, refused };
+  return { marked, refused, captured: capture.applied, captureRefused: capture.refused };
 }
 
 /**
@@ -613,6 +708,7 @@ async function main(): Promise<void> {
   // rest changes what gates 1 and 6 then see, which is the point: an entry made incomplete here
   // must be judged as incomplete, not as the derived entry it was a moment ago.
   const overTime = classifyOverTime(abilityFile.abilities);
+  const capturedCounts = overTime.captured;
 
   const abilityPass = refuseSchemaInvalidAbilities(
     abilityFile.abilities,
@@ -1153,6 +1249,24 @@ async function main(): Promise<void> {
         "a gate-7 failure that is already 'incomplete' puts no number in front of a user: simulate " +
         'contributes no damage for an incomplete ability and prints the reason instead.',
       entries: gate7Failures,
+    },
+    perTickCounts: {
+      what:
+        'the per-tick reading of DATA-SOURCES §58, applied. A component whose label states a ' +
+        'per-tick figure is moved out of the burst line only when the source says it recurs AND ' +
+        'the number of times it lands is established. Everything else is withdrawn to incomplete.',
+      markedComponents: overTime.marked,
+      withdrawnEntries: overTime.refused.length,
+      captured: {
+        what:
+          'hit counts corrected from the number the SOURCE ITSELF PRINTS, because the harvest ' +
+          "stored 1 and a component may not be marked as recurring while holding a count the " +
+          'source contradicts. Each had to reconcile with the source\'s own duration and interval ' +
+          'before it was accepted.',
+        applied: capturedCounts.length,
+        entries: capturedCounts,
+        refused: overTime.captureRefused,
+      },
     },
     sweeps,
     diffAgainstCurated: diff,
