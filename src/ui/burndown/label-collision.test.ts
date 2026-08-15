@@ -478,7 +478,12 @@ const IN_PLOT: Record<string, Census> = {
   'P2 at 320px': {
     scenarios: 173,
     scenariosWithACollision: 111,
-    collidingPairs: 189,
+    // 189 UNTIL 2026-08-15's second curated merge, when `figureIs` marked nine per-tick heal rows
+    // per-instance and moved them to incomplete. One roster scenario's column set changed as a
+    // result, adding a single colliding pair to this COUNTERFACTUAL census — the table that
+    // measures what the labels WOULD do in the plot, which is what the fix is measured against
+    // and is deliberately not the shipping layout.
+    collidingPairs: 190,
     worstOverlapPx: 19.38,
     worstOverlapWhere: 'Senna: "263 phys" over "23 phys"',
     maxColumns: 7,

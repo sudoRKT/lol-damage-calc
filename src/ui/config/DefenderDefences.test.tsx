@@ -79,15 +79,30 @@ describe('defences/key-provenance', () => {
   });
 
   it('writes a key for every statable entry and for no incomplete one', () => {
-    // DEFINITION: statable = conditional AND not `incomplete`. 125 of the 152.
-    expect(CONDITIONAL.filter((e) => e.verification !== 'incomplete').length).toBe(125);
-    expect(CONDITIONAL.filter((e) => e.verification === 'incomplete').length).toBe(27);
+    // DEFINITION: statable = conditional AND not `incomplete`. 116 of the 152.
+    //
+    // ═══ 125 / 27 UNTIL 2026-08-15. NINE ENTRIES MOVED, AND THAT IS EVIDENCE ARRIVING ═══
+    //
+    // The nine are every per-tick HEAL row among the eighteen over-time defensive entries:
+    // Master Yi W (minimum and maximum), Lissandra R (minimum and maximum), Fiora R, Janna R,
+    // Milio W, Soraka Q and Swain R.
+    //
+    // THE CAUSE. `CuratedDefensiveEffect.overTime.figureIs` was added to the contract, and reading
+    // their sources marked each of these `per-instance` — the stored figure is ONE occurrence.
+    // Forming a whole-duration total from a per-instance figure needs a count of occurrences, and
+    // none of the nine states one. So each is honestly `incomplete` rather than applying one tick
+    // of healing as though it were the whole channel.
+    //
+    // A FALLING STATABLE COUNT HERE IS THE SYSTEM WORKING (CLAUDE.md). Before the field existed
+    // these nine looked complete because nothing could ask the question that makes them not.
+    expect(CONDITIONAL.filter((e) => e.verification !== 'incomplete').length).toBe(116);
+    expect(CONDITIONAL.filter((e) => e.verification === 'incomplete').length).toBe(36);
 
     let keys = 0;
     for (const champion of new Set(CONDITIONAL.map((e) => e.champion))) {
       for (const g of groupDefences(forChampion(champion))) keys += g.toggleKeys.length;
     }
-    expect(keys).toBe(125);
+    expect(keys).toBe(116);
   });
 
   it('every key this area writes is namespaced and URL-safe', () => {
@@ -207,12 +222,25 @@ describe('defences/wording', () => {
   });
 
   it('an unresolvable entry is PERMANENT, and one without is pending', () => {
-    // DEFINITION: 26 of the 27 incomplete conditional entries carry `unresolvable` — facts no
-    // source states. Those are "Cannot be completed"; the remaining one is "Not yet modelled".
+    // DEFINITION: of the 36 incomplete conditional entries, 27 carry `unresolvable` — facts no
+    // source states. Those read "Cannot be completed"; the other 9 read "Not yet modelled".
+    //
+    // ═══ 27 / 26 UNTIL 2026-08-15, AND THE SPLIT IS THE POINT ═══
+    //
+    // The nine per-tick heal rows that became incomplete when `figureIs` marked them
+    // `per-instance` are PENDING, not permanent — a count of occurrences is a fact a source could
+    // state and nobody has read yet. They must read "Not yet modelled".
+    //
+    // Getting that backwards would be the worse error in the direction this product cares about:
+    // "Cannot be completed" tells a reader to stop looking, and SPECIFICATION §8 reserves it for
+    // facts NO source states. Nine entries waiting on a sentence somebody has not read yet are
+    // not that.
     const incomplete = CONDITIONAL.filter((e) => e.verification === 'incomplete');
     const permanent = incomplete.filter((e) => incompleteReasonFor(e).kind === 'permanent');
-    expect(incomplete.length).toBe(27);
-    expect(permanent.length).toBe(26);
+    const pending = incomplete.filter((e) => incompleteReasonFor(e).kind === 'pending');
+    expect(incomplete.length).toBe(36);
+    expect(permanent.length).toBe(27);
+    expect(pending.length).toBe(9);
   });
 });
 

@@ -193,7 +193,7 @@
           },
           "hits": 4,
           "overTime": {
-            "sourceSays": "the trap's damage is stated per tick over a duration, and the page calls it damage over time"
+            "sourceSays": "the mushroom explodes upon enemy contact, inflicting poison; the target takes magic damage every second over 4 seconds"
           }
         }
       ],

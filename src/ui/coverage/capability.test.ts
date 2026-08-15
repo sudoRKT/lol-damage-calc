@@ -91,7 +91,8 @@ describe('capability/the committed figures match the data and the engine', () =>
     //
     //   abilityComponentsOverTime   4 -> 27
     //   abilitiesWithOverTime       4 -> 27
-    //   perTickAbilitiesHeldBack   37 -> 20
+    //   perTickAbilitiesHeldBack   37 -> 20 -> 17  (17 from 2026-08-15's second merge)
+    //   defensiveReadyToApply     100 -> 91
     //
     // All three are one event: the curated file was merged, carrying the per-tick READINGS that
     // had been sitting unmerged in the proposal (DATA-SOURCES §58, §59, §62). Seventeen abilities

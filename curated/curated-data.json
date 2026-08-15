@@ -20143,7 +20143,7 @@
      }
     }
    ],
-   "verification": "incomplete",
+   "verification": "derived",
    "provenance": {
     "source": "Template:Data Nasus/Fury of the Sands",
     "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Nasus/Fury%20of%20the%20Sands",
@@ -21159,7 +21159,7 @@
      },
      "hits": 4,
      "overTime": {
-      "sourceSays": "the page states the figure per tick across the channel and calls it damage over time"
+      "sourceSays": "Nilah whirls her whip-blade over 1 second, dealing physical damage to nearby enemies every 0.25 seconds, then unleashes a burst"
      }
     },
     {
@@ -25448,7 +25448,7 @@
      }
     }
    ],
-   "verification": "incomplete",
+   "verification": "derived",
    "provenance": {
     "source": "Template:Data Rumble/The Equalizer",
     "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Rumble/The%20Equalizer",
@@ -30354,7 +30354,7 @@
      },
      "hits": 4,
      "overTime": {
-      "sourceSays": "the trap's damage is stated per tick over a duration, and the page calls it damage over time"
+      "sourceSays": "the mushroom explodes upon enemy contact, inflicting poison; the target takes magic damage every second over 4 seconds"
      }
     }
    ],
@@ -34342,7 +34342,7 @@
      }
     }
    ],
-   "verification": "incomplete",
+   "verification": "derived",
    "provenance": {
     "source": "Template:Data Wukong/Cyclone",
     "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Wukong/Cyclone",
@@ -38017,7 +38017,8 @@
    "activation": "conditional",
    "condition": "Active; \"while charging\"",
    "overTime": {
-    "sourceSays": "Briar prepares to unleash a scream ... charging for up to 1 second, during which she ... heals herself every 0.25 seconds."
+    "sourceSays": "Briar prepares to unleash a scream ... charging for up to 1 second, during which she ... heals herself every 0.25 seconds.",
+    "figureIs": "per-instance"
    },
    "ratios": [
     {
@@ -38060,7 +38061,8 @@
    "activation": "conditional",
    "condition": "Active; \"while charging\"",
    "overTime": {
-    "sourceSays": "Briar prepares to unleash a scream ... charging for up to 1 second, during which she ... heals herself every 0.25 seconds."
+    "sourceSays": "Briar prepares to unleash a scream ... charging for up to 1 second, during which she ... heals herself every 0.25 seconds.",
+    "figureIs": "full-duration"
    },
    "ratios": [
     {
@@ -38339,7 +38341,8 @@
    "activation": "conditional",
    "condition": "Active channel; \"while channeling\"",
    "overTime": {
-    "sourceSays": "Master Yi channels for up to 4 seconds, healing himself every 0.5 seconds, increased by 1% per 1% missing health."
+    "sourceSays": "Master Yi channels for up to 4 seconds, healing himself every 0.5 seconds, increased by 1% per 1% missing health.",
+    "figureIs": "per-instance"
    },
    "unit": "flat",
    "value": {
@@ -38365,7 +38368,7 @@
      ]
     }
    ],
-   "verification": "derived",
+   "verification": "incomplete",
    "provenance": {
     "source": "Template:Data Master Yi/Meditate — leveling row \"Minimum Heal Per Tick\"",
     "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Master%20Yi/Meditate",
@@ -38386,7 +38389,8 @@
    "activation": "conditional",
    "condition": "Active channel; \"while channeling\"",
    "overTime": {
-    "sourceSays": "Master Yi channels for up to 4 seconds, healing himself every 0.5 seconds, increased by 1% per 1% missing health."
+    "sourceSays": "Master Yi channels for up to 4 seconds, healing himself every 0.5 seconds, increased by 1% per 1% missing health.",
+    "figureIs": "per-instance"
    },
    "unit": "flat",
    "value": {
@@ -38412,7 +38416,7 @@
      ]
     }
    ],
-   "verification": "derived",
+   "verification": "incomplete",
    "provenance": {
     "source": "Template:Data Master Yi/Meditate — leveling row \"Maximum Heal Per Tick\"",
     "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Master%20Yi/Meditate",
@@ -38434,7 +38438,8 @@
    "activation": "conditional",
    "condition": "Active channel; \"while channeling\"",
    "overTime": {
-    "sourceSays": "Master Yi channels for up to 4 seconds, healing himself every 0.5 seconds, increased by 1% per 1% missing health."
+    "sourceSays": "Master Yi channels for up to 4 seconds, healing himself every 0.5 seconds, increased by 1% per 1% missing health.",
+    "figureIs": "full-duration"
    },
    "unit": "flat",
    "value": {
@@ -38482,7 +38487,8 @@
    "activation": "conditional",
    "condition": "Active channel; \"while channeling\"",
    "overTime": {
-    "sourceSays": "Master Yi channels for up to 4 seconds, healing himself every 0.5 seconds, increased by 1% per 1% missing health."
+    "sourceSays": "Master Yi channels for up to 4 seconds, healing himself every 0.5 seconds, increased by 1% per 1% missing health.",
+    "figureIs": "full-duration"
    },
    "unit": "flat",
    "value": {
@@ -39481,7 +39487,8 @@
    "activation": "conditional",
    "condition": "Active; steals resistances from the target, so it depends on the target",
    "overTime": {
-    "sourceSays": "Half of the drain's total damage, healing, and resistances reduction is applied on-cast, while the other half is applied every second over the next 4 seconds."
+    "sourceSays": "Half of the drain's total damage, healing, and resistances reduction is applied on-cast, while the other half is applied every second over the next 4 seconds.",
+    "figureIs": "full-duration"
    },
    "ratios": [
     {
@@ -39811,7 +39818,8 @@
    "activation": "conditional",
    "condition": "Active; \"while within the area\"; \"reduced to 85% for allies\"",
    "overTime": {
-    "sourceSays": "The shield refreshes and increases in strength by an amount every 0.25 over the duration while they remain in the area."
+    "sourceSays": "The shield refreshes and increases in strength by an amount every 0.25 over the duration while they remain in the area.",
+    "figureIs": "full-duration"
    },
    "unit": "flat",
    "value": {
@@ -41617,7 +41625,8 @@
    "activation": "conditional",
    "condition": "Self-cast Active; \"entering stasis for 2.5 seconds\"",
    "overTime": {
-    "sourceSays": "Lissandra instantly entombs herself in ice, entering stasis for 2.5 seconds and healing herself every 0.25 seconds over the duration."
+    "sourceSays": "Lissandra instantly entombs herself in ice, entering stasis for 2.5 seconds and healing herself every 0.25 seconds over the duration.",
+    "figureIs": "per-instance"
    },
    "unit": "flat",
    "value": {
@@ -41639,7 +41648,7 @@
      ]
     }
    ],
-   "verification": "derived",
+   "verification": "incomplete",
    "provenance": {
     "source": "Template:Data Lissandra/Frozen Tomb — leveling row \"Minimum Heal per Tick\"",
     "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lissandra/Frozen%20Tomb",
@@ -41660,7 +41669,8 @@
    "activation": "conditional",
    "condition": "Self-cast Active; \"entering stasis for 2.5 seconds\"",
    "overTime": {
-    "sourceSays": "Lissandra instantly entombs herself in ice, entering stasis for 2.5 seconds and healing herself every 0.25 seconds over the duration."
+    "sourceSays": "Lissandra instantly entombs herself in ice, entering stasis for 2.5 seconds and healing herself every 0.25 seconds over the duration.",
+    "figureIs": "per-instance"
    },
    "unit": "flat",
    "value": {
@@ -41682,7 +41692,7 @@
      ]
     }
    ],
-   "verification": "derived",
+   "verification": "incomplete",
    "provenance": {
     "source": "Template:Data Lissandra/Frozen Tomb — leveling row \"Maximum Heal per Tick\"",
     "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lissandra/Frozen%20Tomb",
@@ -41704,7 +41714,8 @@
    "activation": "conditional",
    "condition": "Self-cast Active; \"entering stasis for 2.5 seconds\"",
    "overTime": {
-    "sourceSays": "Lissandra instantly entombs herself in ice, entering stasis for 2.5 seconds and healing herself every 0.25 seconds over the duration."
+    "sourceSays": "Lissandra instantly entombs herself in ice, entering stasis for 2.5 seconds and healing herself every 0.25 seconds over the duration.",
+    "figureIs": "full-duration"
    },
    "unit": "flat",
    "value": {
@@ -41748,7 +41759,8 @@
    "activation": "conditional",
    "condition": "Self-cast Active; \"entering stasis for 2.5 seconds\"",
    "overTime": {
-    "sourceSays": "Lissandra instantly entombs herself in ice, entering stasis for 2.5 seconds and healing herself every 0.25 seconds over the duration."
+    "sourceSays": "Lissandra instantly entombs herself in ice, entering stasis for 2.5 seconds and healing herself every 0.25 seconds over the duration.",
+    "figureIs": "full-duration"
    },
    "unit": "flat",
    "value": {
@@ -42281,7 +42293,8 @@
    "activation": "conditional",
    "condition": "The Victory Zone appears only on the target's death",
    "overTime": {
-    "sourceSays": "a Grand Challenge Victory Zone is created on their death location for 5 seconds, which heals Fiora and all allies within the area every 0.25 seconds."
+    "sourceSays": "a Grand Challenge Victory Zone is created on their death location for 5 seconds, which heals Fiora and all allies within the area every 0.25 seconds.",
+    "figureIs": "per-instance"
    },
    "unit": "flat",
    "value": {
@@ -42303,7 +42316,7 @@
      ]
     }
    ],
-   "verification": "derived",
+   "verification": "incomplete",
    "provenance": {
     "source": "Template:Data Fiora/Grand Challenge — leveling row \"Heal per Tick\"",
     "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Fiora/Grand%20Challenge",
@@ -42324,7 +42337,8 @@
    "activation": "conditional",
    "condition": "The Victory Zone appears only on the target's death",
    "overTime": {
-    "sourceSays": "a Grand Challenge Victory Zone is created on their death location for 5 seconds, which heals Fiora and all allies within the area every 0.25 seconds."
+    "sourceSays": "a Grand Challenge Victory Zone is created on their death location for 5 seconds, which heals Fiora and all allies within the area every 0.25 seconds.",
+    "figureIs": "full-duration"
    },
    "unit": "flat",
    "value": {
@@ -42455,7 +42469,8 @@
    "activation": "conditional",
    "condition": "Active channel; \"for up to 3 seconds\"",
    "overTime": {
-    "sourceSays": "Janna also channels for up to 3 seconds, healing herself and nearby allies every 0.25 seconds."
+    "sourceSays": "Janna also channels for up to 3 seconds, healing herself and nearby allies every 0.25 seconds.",
+    "figureIs": "per-instance"
    },
    "unit": "flat",
    "value": {
@@ -42477,7 +42492,7 @@
      ]
     }
    ],
-   "verification": "derived",
+   "verification": "incomplete",
    "provenance": {
     "source": "Template:Data Janna/Monsoon — leveling row \"Heal Per Tick\"",
     "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Janna/Monsoon",
@@ -42498,7 +42513,8 @@
    "activation": "conditional",
    "condition": "Active channel; \"for up to 3 seconds\"",
    "overTime": {
-    "sourceSays": "Janna also channels for up to 3 seconds, healing herself and nearby allies every 0.25 seconds."
+    "sourceSays": "Janna also channels for up to 3 seconds, healing herself and nearby allies every 0.25 seconds.",
+    "figureIs": "full-duration"
    },
    "unit": "flat",
    "value": {
@@ -42662,7 +42678,8 @@
    "activation": "conditional",
    "condition": "Allies must be near the fuemigo",
    "overTime": {
-    "sourceSays": "Allied champions near the fuemigo gain bonus attack range ... and heal every 0.25 over the duration."
+    "sourceSays": "Allied champions near the fuemigo gain bonus attack range ... and heal every 0.25 over the duration.",
+    "figureIs": "per-instance"
    },
    "unit": "flat",
    "value": {
@@ -42688,7 +42705,7 @@
      ]
     }
    ],
-   "verification": "derived",
+   "verification": "incomplete",
    "provenance": {
     "source": "Template:Data Milio/Cozy Campfire — leveling row \"Heal per Tick\"",
     "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Milio/Cozy%20Campfire",
@@ -42709,7 +42726,8 @@
    "activation": "conditional",
    "condition": "Allies must be near the fuemigo",
    "overTime": {
-    "sourceSays": "Allied champions near the fuemigo gain bonus attack range ... and heal every 0.25 over the duration."
+    "sourceSays": "Allied champions near the fuemigo gain bonus attack range ... and heal every 0.25 over the duration.",
+    "figureIs": "full-duration"
    },
    "unit": "flat",
    "value": {
@@ -43102,7 +43120,8 @@
    "activation": "conditional",
    "condition": "The heal fires only on hitting an enemy champion",
    "overTime": {
-    "sourceSays": "Rejuvenation: Heal every 0.2 seconds and gain bonus movement speed that decays over the duration."
+    "sourceSays": "Rejuvenation: Heal every 0.2 seconds and gain bonus movement speed that decays over the duration.",
+    "figureIs": "full-duration"
    },
    "unit": "flat",
    "value": {
@@ -43175,7 +43194,7 @@
      ]
     }
    ],
-   "verification": "derived",
+   "verification": "incomplete",
    "provenance": {
     "source": "Template:Data Soraka/Starcall — leveling row \"Heal per Tick\"",
     "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Soraka/Starcall",
@@ -43318,7 +43337,8 @@
    "activation": "conditional",
    "condition": "Active drain; \"per target affected\"",
    "overTime": {
-    "sourceSays": "Swain is ghosted and drains the lifeforce of nearby enemies, both dealing magic damage and healing himself every 0.5 seconds per target affected."
+    "sourceSays": "Swain is ghosted and drains the lifeforce of nearby enemies, both dealing magic damage and healing himself every 0.5 seconds per target affected.",
+    "figureIs": "per-instance"
    },
    "unit": "flat",
    "value": {
@@ -43350,7 +43370,13 @@
      ]
     }
    ],
-   "verification": "derived",
+   "unresolvable": [
+    {
+     "field": "overTime.totalInstances",
+     "why": "the source states no duration for Demonic Ascension: it \"is maintained with Demonic Energy, which decays by 5 every 0.5 seconds, increased to 7.5 after 5 seconds have elapsed\" and Swain \"generates 10 Demonic Energy every 0.5 seconds while draining from at least one enemy champion\". How long it runs is a property of the fight, so no number of heal ticks exists to state."
+    }
+   ],
+   "verification": "incomplete",
    "provenance": {
     "source": "Template:Data Swain/Demonic Ascension — leveling row \"Heal per Tick\"",
     "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Swain/Demonic%20Ascension",
