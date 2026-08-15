@@ -1,0 +1,403 @@
+{
+  "provenance": {
+    "source": "Riot Data Dragon runesReforged.json and item.json (raw markup, tags intact); wiki Module:ItemData/data effect text as already stored verbatim in public/data/effect-census.json",
+    "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
+    "patch": "16.16.1",
+    "fetched": "2026-08-15T20:16:22.151Z"
+  },
+  "whatThisIs": "Every place in scripts/fetch/ where text or a value is altered before something is compared against it, with what the alteration removes, whether that can carry meaning, what the comparison is between, and BOTH failure directions — a disagreement invented, and a disagreement hidden. Written after the First Strike finding of 2026-08-15, where the pipeline stripped the tag that carried the damage type and then reported a conflict it had created itself.",
+  "membershipRule": "A site is counted when a value is altered — markup stripped, case folded, whitespace collapsed, templates peeled, a number rounded or parsed — AND the altered value is then an operand of an equality test, a substring or regex test, or a numeric tolerance test. A normaliser whose output is only ever printed is not a site.",
+  "verdictRule": "safe: nothing it removes can carry meaning, OR an exact comparison decides first and the fold only classifies the miss. dangerous: a meaning-carrying removal feeding a comparison between two sources, or between a source and a pattern standing in for what the source says. watched: a meaning-carrying removal feeding a comparison against our own stored value or our own previous run.",
+  "counts": {
+    "sites": 14,
+    "dangerous": 6,
+    "watched": 1,
+    "safe": 7,
+    "withALiveDefect": 3,
+    "couldInventADisagreement": 4,
+    "couldHideADisagreement": 8
+  },
+  "byVerdict": {
+    "dangerous": [
+      "rune-records-are-stored-html-stripped",
+      "rune-census-anchors-and-source-text-are-html-stripped",
+      "plaintext-deletes-named-template-arguments",
+      "ddragon-item-prose-is-html-stripped-before-corroboration",
+      "patch-note-templates-unwrapped-before-the-number-is-read",
+      "bridge-reduces-to-equal-to"
+    ],
+    "watched": [
+      "effect-id-slugged"
+    ],
+    "safe": [
+      "patch-note-champion-name-matched-exactly",
+      "rune-endpoint-crosscheck-tolerance",
+      "ability-name-normalised-only-to-classify",
+      "snapshot-numbers-rounded-before-diff",
+      "template-name-lowercased-before-matching",
+      "mediawiki-title-normalisation-applied-as-given",
+      "owner-lookback-strips-quantifiers"
+    ]
+  },
+  "sites": [
+    {
+      "id": "rune-records-are-stored-html-stripped",
+      "where": "effect-population.ts:122 — buildRuneEffectRecords stores stripHtml(longDesc)",
+      "comparedAt": "effect-census.ts:444/534 — every damage, stat and owner regex in the census runs on that stored text",
+      "removes": "every HTML tag and entity from Data Dragon's rune prose, including the tag NAMES <truedamage> / <magicDamage> / <physicalDamage>",
+      "removalCanCarryMeaning": true,
+      "comparison": "source-vs-pattern",
+      "strictComparisonFirst": false,
+      "canInventADisagreement": true,
+      "canHideADisagreement": true,
+      "measured": "Of 62 runes, 3 wrap text in exactly one damage-type tag; in 2 the stripped words state the same type and nothing is lost; in 1 (First Strike) the tag is the only statement. Run through classifyEffect on 2026-08-15: the sentence \"causing you to deal 7% extra damage against champions\" classifies as damage \"none\"; restore the word the tag carried (\"7% bonus true damage\") and the same sentence classifies as \"candidate\", inScope true.",
+      "liveDefect": "public/data/effect-census.json records First Strike as damage:\"none\", inScope:false, so it is outside the damaging rune population (runes.damageInstances = 5) — while both sources say it deals true damage. STATED PRECISELY, because the whole point of this sweep is not to over-claim: stripping is ONE of two causes. Restoring the type flips the sentence in isolation but NOT the stored record, because the same sentence also ends \"granting 50% … of bonus damage dealt as gold\", which the classifier refuses separately. Remove that clause as well and the record classifies as a damage candidate.",
+      "verdict": "dangerous"
+    },
+    {
+      "id": "rune-census-anchors-and-source-text-are-html-stripped",
+      "where": "rune-census.ts:1359 — ddText = stripHtml(rune.longDesc)",
+      "comparedAt": "rune-census.ts:1360 (anchor indexOf), 1428-1456 (dealsDamage and damageType, ddragon vs wiki)",
+      "removes": "as above, before the two sources are counted against each other",
+      "removalCanCarryMeaning": true,
+      "comparison": "source-vs-source",
+      "strictComparisonFirst": false,
+      "canInventADisagreement": true,
+      "canHideADisagreement": true,
+      "measured": "The hand READING was written against the stripped text: First Strike carries ddAnchor \"causing you to deal 7% extra damage against champions\", which is the stripped form, and damageType.ddragon \"not-stated\".",
+      "liveDefect": "public/data/rune-census.json still publishes dealsDamage.sourcesDisagree = [\"First Strike\"] and typeNotStatedAtAll.ddragon = [\"First Strike\", \"Summon Aery\"]. The First Strike entry in both is manufactured by stripHtml. Separately the anchor guard is BLIND to a markup-only change: Riot could change <truedamage> to <magicdamage> and no anchor would move.",
+      "verdict": "dangerous"
+    },
+    {
+      "id": "plaintext-deletes-named-template-arguments",
+      "where": "effect-text.ts:89 — plainText filters out every `name=value` template argument",
+      "comparedAt": "effect-census.ts:498 findOwnerRefs, then values.ts:370-386 where a wiki \"unstated\" is put to Data Dragon's item prose",
+      "removes": "named arguments of wiki templates. The comment calls them \"formatting, never words\" — but `type=` on {{pp}} is the wiki's own statement of WHICH stat the progression reads and WHOSE",
+      "removalCanCarryMeaning": true,
+      "comparison": "source-vs-source",
+      "strictComparisonFirst": false,
+      "canInventADisagreement": false,
+      "canHideADisagreement": true,
+      "measured": "Over the 229 item effect texts in public/data/effect-census.json: 12 effects carry a named argument stating a possessive or an owner-required pool stat; 22 use `type=` at all. 5 of the 12 name one of the ten owner-required stats, and ALL 5 are recorded with ownerRefs: [].",
+      "liveDefect": "Kraken Slayer [pass] states `type=target's missing health` and Lord Dominik's Regards [pass] states `type=target's bonus health`. Both are recorded as having no owner-bearing reference at all, so neither reaches the 92 counted references nor the 69 \"unstated\". Data Dragon says \"their missing Health\" and \"their bonus Health\" for the same two items — the sources AGREE, and the agreement is invisible.",
+      "verdict": "dangerous"
+    },
+    {
+      "id": "ddragon-item-prose-is-html-stripped-before-corroboration",
+      "where": "effect-owner-crosscheck.ts:95 — ddragonEffectProse drops <stats> then every tag",
+      "comparedAt": "effect-owner-crosscheck.ts:44 (numbers) and :119 (possessives), driven from values.ts:306/369",
+      "removes": "the flat stat block, and every tag name including the <passive> / <active> boundary between one item's separate effects",
+      "removalCanCarryMeaning": true,
+      "comparison": "source-vs-source",
+      "strictComparisonFirst": false,
+      "canInventADisagreement": false,
+      "canHideADisagreement": true,
+      "measured": "Over the 209-item pool: 64 items wrap text in exactly one damage-type tag; in 62 the stripped words state the same type; in 2 the tag is the only claim and in BOTH the tag is a colour on a stat grant, not a damage type. Possessives are never inside tag names, so the owner half cannot be changed by stripping.",
+      "liveDefect": null,
+      "verdict": "dangerous"
+    },
+    {
+      "id": "patch-note-templates-unwrapped-before-the-number-is-read",
+      "where": "patch-notes.ts:103 unwrapTemplates, :132 toLowerCase, :140 the to/from number regex",
+      "comparedAt": "overrides.ts:130 — Math.abs(note.to - dataDragonValue) < 1e-9",
+      "removes": "single-argument display templates ({{fd|1.1}} -> 1.1) and case. A line the regex cannot read is dropped silently, and a dropped note turns a `confirmed` override into a `contested` one",
+      "removalCanCarryMeaning": true,
+      "comparison": "source-vs-source",
+      "strictComparisonFirst": false,
+      "canInventADisagreement": true,
+      "canHideADisagreement": false,
+      "measured": "Measured live against V26.16 on 2026-08-15: 125 bullet lines, 57 start with a known stat phrase, 57 parsed into a change, 0 dropped, and 0 lines contain a stat phrase without starting with one. The site is dangerous by shape and is not firing today.",
+      "liveDefect": null,
+      "verdict": "dangerous"
+    },
+    {
+      "id": "patch-note-champion-name-matched-exactly",
+      "where": "patch-notes.ts:124 — championName is section[1].trim(), nothing more",
+      "comparedAt": "overrides.ts:87 — change.championName === champion.wikiName",
+      "removes": "nothing but surrounding whitespace. Listed because the ABSENCE of a normaliser here has the same failure mode: a name the notes spell differently finds no note, and the override is then contested rather than confirmed",
+      "removalCanCarryMeaning": false,
+      "comparison": "source-vs-source",
+      "strictComparisonFirst": true,
+      "canInventADisagreement": true,
+      "canHideADisagreement": false,
+      "measured": "All 35 distinct {{ci|…}} names in V26.16 match a roster name exactly. 0 mismatches. Keeping it exact is also correct: folding names would silently accept a genuine rename.",
+      "liveDefect": null,
+      "verdict": "safe"
+    },
+    {
+      "id": "rune-endpoint-crosscheck-tolerance",
+      "where": "rune-census.ts:1058 evalFormula strips whitespace; :1177 strips a trailing \"for N\" clause",
+      "comparedAt": "rune-census.ts:1193 — Math.abs(low - ddLow) < 0.51 && Math.abs(high - ddHigh) < 0.51",
+      "removes": "whitespace and a duration clause — neither carries a value. The risk here is the TOLERANCE, not the text: half a point of genuine disagreement between the two sources reads as agreement",
+      "removalCanCarryMeaning": false,
+      "comparison": "source-vs-source",
+      "strictComparisonFirst": false,
+      "canInventADisagreement": false,
+      "canHideADisagreement": true,
+      "measured": "The tolerance is 0.51, chosen to absorb the wiki rounding its own displayed endpoints. Any real difference below 0.51 is reported as \"endpoints-agree\".",
+      "liveDefect": null,
+      "verdict": "safe"
+    },
+    {
+      "id": "bridge-reduces-to-equal-to",
+      "where": "effect-values-reach.ts:302 — links, bold, object pronouns and commas removed, lowercased",
+      "comparedAt": "effect-values-reach.ts:309 — stripped === \"equal to\"",
+      "removes": "a wiki link, \"to them/him/her/it\", bold and italic markers. A wiki link could in principle carry a qualifier",
+      "removalCanCarryMeaning": true,
+      "comparison": "source-vs-pattern",
+      "strictComparisonFirst": false,
+      "canInventADisagreement": false,
+      "canHideADisagreement": true,
+      "measured": "Bounded by construction: the bridge must be under 40 characters and any digit in it refuses outright, so no number can be swallowed. The two links it exists for are [[on-hit]] and Eclipse's \"to them\".",
+      "liveDefect": null,
+      "verdict": "dangerous"
+    },
+    {
+      "id": "ability-name-normalised-only-to-classify",
+      "where": "rework.ts:82 — normaliseAbilityName folds NFC, apostrophes, dashes, spacing and case",
+      "comparedAt": "rework.ts:164 exact match decides; :172 the folded form only names the KIND of miss",
+      "removes": "apostrophe style, dash style, spacing and case — from an ability NAME",
+      "removalCanCarryMeaning": true,
+      "comparison": "source-vs-stored",
+      "strictComparisonFirst": true,
+      "canInventADisagreement": false,
+      "canHideADisagreement": false,
+      "measured": "Run against the real curated file and the current snapshot on 2026-08-15: 919 curated abilities, 919 matched EXACTLY, 0 matched only after folding, and all 152 findings are `source-ability-uncurated` reviews. The normaliser decided nothing at all. A fold-only hit is reported as `ability-name-formatting` for a person, never accepted. This is the shape every other site should be measured against.",
+      "liveDefect": null,
+      "verdict": "safe"
+    },
+    {
+      "id": "snapshot-numbers-rounded-before-diff",
+      "where": "diff.ts:58 — normaliseNumber rounds to 6 decimal places",
+      "comparedAt": "diff.ts:65 — Object.is on the rounded pair",
+      "removes": "anything below 1e-6, and joins ability-name lists with \" | \" before comparing them",
+      "removalCanCarryMeaning": false,
+      "comparison": "run-vs-run",
+      "strictComparisonFirst": false,
+      "canInventADisagreement": false,
+      "canHideADisagreement": true,
+      "measured": "No champion statistic in the wiki module carries more than three decimals, so 1e-6 is far below any figure the source states. Both operands are our own snapshots.",
+      "liveDefect": null,
+      "verdict": "safe"
+    },
+    {
+      "id": "template-name-lowercased-before-matching",
+      "where": "effect-text.ts:57 — findBlocks lowercases the template name",
+      "comparedAt": "effect-text.ts:58 — templateName === name.toLowerCase()",
+      "removes": "case from a MediaWiki template name, which MediaWiki itself treats as insignificant",
+      "removalCanCarryMeaning": false,
+      "comparison": "source-vs-pattern",
+      "strictComparisonFirst": false,
+      "canInventADisagreement": false,
+      "canHideADisagreement": false,
+      "measured": "This is the source's own rule, not ours: {{As}} and {{as}} are one template. Measured over the 229 item effect texts — 25 distinct template names as written, 25 after lowercasing, so the fold collapses nothing. 1 of the 25 carries an uppercase letter at all.",
+      "liveDefect": null,
+      "verdict": "safe"
+    },
+    {
+      "id": "mediawiki-title-normalisation-applied-as-given",
+      "where": "roster-abilities.ts:144 and cache-drift.ts:206 — the API's own `normalized` map",
+      "comparedAt": "cache-drift.ts:289 — checkVerbatimSurvival uses raw includes(), no folding at all",
+      "removes": "nothing of ours. MediaWiki reports how it normalised a title and both names are recorded, so a lookup can go either way",
+      "removalCanCarryMeaning": false,
+      "comparison": "source-vs-stored",
+      "strictComparisonFirst": true,
+      "canInventADisagreement": false,
+      "canHideADisagreement": false,
+      "measured": "The verbatim-survival check compares raw wikitext to raw wikitext. It can raise a false alarm on a whitespace edit and can never fall silent on a real one — the safe direction. Over the last run recorded in state/cache-drift.json: 937 titles resolved, 0 missing, 11 moved, 0 reading impacts. No title was lost to a folding rule of ours.",
+      "liveDefect": null,
+      "verdict": "safe"
+    },
+    {
+      "id": "owner-lookback-strips-quantifiers",
+      "where": "effect-census.ts:466 — strip() removes a trailing bonus/max/current/missing/total/own",
+      "comparedAt": "effect-census.ts:470-487 — the possessive tests",
+      "removes": "the quantifier sitting between the possessive and the stat, so \"the target's bonus health\" can be seen as the target's",
+      "removalCanCarryMeaning": false,
+      "comparison": "source-vs-pattern",
+      "strictComparisonFirst": false,
+      "canInventADisagreement": false,
+      "canHideADisagreement": false,
+      "measured": "The removed words are quantifiers; WHICH pool is captured separately by OWNER_REQUIRED_PHRASES, so nothing about the stat identity rests on this strip. 23 of the 92 item owner references are attributed (22 by possessive, 1 by coordination) and 22 of those carry a quantifier this strip has to step over to see the possessive at all.",
+      "liveDefect": null,
+      "verdict": "safe"
+    },
+    {
+      "id": "effect-id-slugged",
+      "where": "effect-values-gate.ts:345 — `${ownerName} ${key}` lowercased with runs of non-alphanumerics collapsed to '-'",
+      "comparedAt": "the id is the key two effects would collide on if the fold made them equal",
+      "removes": "case and punctuation from an item name — \"Doran's Blade\" and \"Dorans Blade\" fold alike",
+      "removalCanCarryMeaning": true,
+      "comparison": "source-vs-stored",
+      "strictComparisonFirst": false,
+      "canInventADisagreement": false,
+      "canHideADisagreement": true,
+      "measured": "Measured over all 291 item and rune effect records: 291 distinct slugs, 0 collisions. Nothing asserts that, which is the gap — a future item whose name differs from an existing one only in punctuation would merge with it silently.",
+      "liveDefect": null,
+      "verdict": "watched"
+    }
+  ],
+  "checks": {
+    "damageTypeStatedOnlyInMarkup": {
+      "definition": "Data Dragon's markup asserts exactly one damage type and that type survives nowhere in the stripped text. Anything reading the stripped text alone has lost a fact the source stated. IT PROPOSES: the tag is also used as a COLOUR on stat text, so a hit is a candidate for a person to read, never a damage type to store.",
+      "runesChecked": 62,
+      "runeHits": [
+        {
+          "subject": "First Strike",
+          "type": "true",
+          "wraps": "7%"
+        }
+      ],
+      "itemsChecked": 209,
+      "itemHits": [
+        {
+          "subject": "Hubris",
+          "type": "physical",
+          "wraps": "12 Attack Damage plus 3 per champion killed"
+        },
+        {
+          "subject": "Staff of Flowing Water",
+          "type": "magic",
+          "wraps": "40 Ability Power"
+        }
+      ]
+    },
+    "meaningInsideANamedTemplateArgument": {
+      "definition": "`plainText` drops every `name=value` template argument as formatting. `type=` on the wiki's {{pp}} progression template is not formatting — it states WHICH stat the progression reads and, where it carries a possessive, WHOSE. Counted when the value names one of the ten owner-required stats or contains a possessive.",
+      "itemEffectsChecked": 229,
+      "effectsCarryingSuchAnArgument": 10,
+      "effectsNamingAnOwnerRequiredStat": 5,
+      "effectsWhereTheWikiATTRIBUTESAnOwnerRequiredStat": 2,
+      "hits": [
+        {
+          "effect": "Doran's Shield [pass]",
+          "facts": [
+            {
+              "argument": "formula1",
+              "states": "0.066 health regen for every 1% missing health",
+              "ownerRequiredStat": "missingHP",
+              "attributesAnOwner": false
+            },
+            {
+              "argument": "formula2",
+              "states": "0.05 health regen for every 1% missing health",
+              "ownerRequiredStat": "missingHP",
+              "attributesAnOwner": false
+            },
+            {
+              "argument": "type",
+              "states": "current missing health",
+              "ownerRequiredStat": "missingHP",
+              "attributesAnOwner": false
+            }
+          ]
+        },
+        {
+          "effect": "Dream Maker [pass]",
+          "facts": [
+            {
+              "argument": "type",
+              "states": "your level",
+              "ownerRequiredStat": null,
+              "attributesAnOwner": true
+            }
+          ]
+        },
+        {
+          "effect": "Heartsteel [pass2]",
+          "facts": [
+            {
+              "argument": "type",
+              "states": "maximum health",
+              "ownerRequiredStat": "maxHP",
+              "attributesAnOwner": false
+            }
+          ]
+        },
+        {
+          "effect": "Kraken Slayer [pass]",
+          "facts": [
+            {
+              "argument": "type",
+              "states": "target's missing health",
+              "ownerRequiredStat": "missingHP",
+              "attributesAnOwner": true
+            }
+          ]
+        },
+        {
+          "effect": "Locket of the Iron Solari [act]",
+          "facts": [
+            {
+              "argument": "type",
+              "states": "target's level",
+              "ownerRequiredStat": null,
+              "attributesAnOwner": true
+            }
+          ]
+        },
+        {
+          "effect": "Lord Dominik's Regards [pass]",
+          "facts": [
+            {
+              "argument": "type",
+              "states": "target's bonus health",
+              "ownerRequiredStat": "bonusHP",
+              "attributesAnOwner": true
+            },
+            {
+              "argument": "formula",
+              "states": "1% per 100 bonus health, up to a maximum of 15% at 1500 bonus health.",
+              "ownerRequiredStat": "bonusHP",
+              "attributesAnOwner": false
+            }
+          ]
+        },
+        {
+          "effect": "Mikael's Blessing [act]",
+          "facts": [
+            {
+              "argument": "type",
+              "states": "target's level",
+              "ownerRequiredStat": null,
+              "attributesAnOwner": true
+            }
+          ]
+        },
+        {
+          "effect": "Overlord's Bloodmail [pass2]",
+          "facts": [
+            {
+              "argument": "type",
+              "states": "missing health",
+              "ownerRequiredStat": "missingHP",
+              "attributesAnOwner": false
+            }
+          ]
+        },
+        {
+          "effect": "Redemption [act]",
+          "facts": [
+            {
+              "argument": "type",
+              "states": "target's level",
+              "ownerRequiredStat": null,
+              "attributesAnOwner": true
+            }
+          ]
+        },
+        {
+          "effect": "Solstice Sleigh [pass]",
+          "facts": [
+            {
+              "argument": "type",
+              "states": "your level",
+              "ownerRequiredStat": null,
+              "attributesAnOwner": true
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
