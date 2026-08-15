@@ -362,6 +362,109 @@ describe('burndown/popover', () => {
   });
 });
 
+// ═══════════════════════════════════════════════════════════════════════════════════════════
+// THE POPOVER MAY NOT LEAVE THE PLOT (added 2026-08-15)
+//
+// WHAT WAS MEASURED, in Chrome, on the real calculator page at a genuine 320px viewport. The
+// popover was `position: absolute` inside a `.burn__col`, pinned `inset-inline-end: 0` and up to
+// 282px wide against a column 37px wide. Every one of the default scenario's four popovers hung
+// off the LEFT EDGE OF THE VIEWPORT: 131.0px, 94.0px, 57.0px and 20.0px. At 375px three of four
+// did, by 117.3px, 66.5px and 15.8px. On the preview page's seven-column chart the worst was
+// 135.4px. What a reader lost was not the numbers — those are right-aligned and survived — but
+// the LABELS beside them: four magic-damage figures printed in a column with `Raw`, `After
+// resistances`, `After reductions` and `Final` all off screen, and the popover's title with them.
+// Four figures and no way to tell which one is the damage that lands is exactly the plausible
+// wrong number this product exists to prevent.
+//
+// WHY NOTHING SAW IT. Overflow to the LEFT creates no scrollable area: `documentElement.
+// scrollWidth` read exactly 320 with the popover 131px off screen, so every width sweep passed.
+// It is the third instance of this class in one day — the navigation panel at −114.6px and the
+// kill callout at −48px were the first two — and `tests/clipped-and-offscreen.test.ts` had it
+// registered as `measuredAt: []`, meaning nobody had ever opened it on a phone.
+//
+// WHAT THESE ASSERT. jsdom computes no layout, so they cannot re-measure a pixel. They pin the
+// three declarations that make the escape impossible, exactly as the callout's two do above, and
+// every one of them fails against the markup that produced the readings.
+// ═══════════════════════════════════════════════════════════════════════════════════════════
+
+describe('burndown/the popover is bounded by the plot, not by a 37px column', () => {
+  it('it is no longer a child of a column — it hangs in a row that spans the plot', () => {
+    const { container } = render(<HpBurndown result={MOCK_RESULT} />);
+    fireEvent.focus(screen.getByRole('button', { name: /Instance 1\./ }));
+
+    // THE OLD CONSTRUCTION, GONE. A popover positioned inside `.burn__col` takes that column as
+    // its containing block, and at 320px that block is 37px wide against a 282px popover.
+    expect(container.querySelector('.burn__col .burn__pop')).toBeNull();
+    // THE NEW ONE. One row, spanning the plot area, with the popover as its flex item.
+    const bar = container.querySelector('.burn__popbar') as HTMLElement;
+    expect(bar, '.burn__popbar not found').toBeTruthy();
+    expect(bar.querySelector('.burn__pop')).toBeTruthy();
+    // Exactly one is open at a time — the row is rendered from the open column, not per column.
+    expect(container.querySelectorAll('.burn__popbar').length).toBe(1);
+    expect(container.querySelectorAll('.burn__pop').length).toBe(1);
+  });
+
+  it('the row is padded to its own column, but the pad is capped so it cannot push past the start', () => {
+    const { container } = render(<HpBurndown result={MOCK_RESULT} />);
+
+    // THE LEFTMOST COLUMN IS THE WORST CASE and it is the one that was 131px off screen. Six
+    // columns in the mock, so the pad the column asks for is 5/6 of the plot — far more than a
+    // 320px plot has. `min()` against the popover's own maximum is what stops it: when the plot
+    // is narrower than the popover, the cap is 0 and the popover sits flush with the plot's
+    // start instead of hanging past it.
+    fireEvent.focus(screen.getByRole('button', { name: /Instance 1\./ }));
+    const first = (container.querySelector('.burn__popbar') as HTMLElement).style.paddingInlineEnd;
+    expect(first).toContain('83.3333%');
+    expect(first).toContain('--measure-popover-max-inline');
+    expect(first).toMatch(/^min\(/);
+
+    // The last column asks for no pad at all, and the cap cannot make it negative.
+    fireEvent.focus(screen.getByRole('button', { name: /Damage over time/ }));
+    const last = (container.querySelector('.burn__popbar') as HTMLElement).style.paddingInlineEnd;
+    expect(last).toContain('0.0000%');
+    expect(last).toContain('max(0px');
+  });
+
+  it('the stylesheet stops it positioning itself, and makes the token mean the WHOLE box', () => {
+    const css = readFileSync('src/ui/burndown/burndown.css', 'utf8').replace(
+      /\/\*[\s\S]*?\*\//g,
+      '',
+    );
+
+    const barRule = /\.burn__popbar\s*\{([^}]*)\}/.exec(css);
+    expect(barRule, '.burn__popbar rule not found').not.toBeNull();
+    expect(barRule![1]).toMatch(/position:\s*absolute/);
+    expect(barRule![1]).toMatch(/justify-content:\s*flex-end/);
+    // The row is transparent to the mouse: it covers the header while open, and the header has
+    // controls in it.
+    expect(barRule![1]).toMatch(/pointer-events:\s*none/);
+
+    const popRule = /\.burn__pop\s*\{([^}]*)\}/.exec(css);
+    expect(popRule, '.burn__pop rule not found').not.toBeNull();
+    // It no longer places itself anywhere: the row does that, and the row cannot leave the plot.
+    expect(popRule![1]).not.toMatch(/position:\s*absolute/);
+    // `max-content` sets a flex item's minimum to its whole content, so it had nothing to shrink
+    // to — the same declaration that made the kill callout wider than its plot.
+    expect(popRule![1]).not.toMatch(/inline-size:\s*max-content/);
+    expect(popRule![1]).toMatch(/min-inline-size:\s*0/);
+    // BORDER-BOX, or `--measure-popover-max-inline` caps the TEXT and the padding and border are
+    // added to it: the popover measured 282px against a token that reads 256px, and the 26px
+    // difference is real screen a narrow plot does not have.
+    expect(popRule![1]).toMatch(/box-sizing:\s*border-box/);
+    expect(popRule![1]).toMatch(/max-inline-size:\s*var\(--measure-popover-max-inline\)/);
+  });
+
+  it('and it is still switched off under reduced motion', () => {
+    // A guard, not a change: the fade is the only thing it animates, and an animated selector
+    // that is missing from the reduced-motion block sticks at its first keyframe — opacity 0 —
+    // for anyone who asked for less motion.
+    const css = readFileSync('src/ui/burndown/burndown.css', 'utf8');
+    const reduced = /@media \(prefers-reduced-motion: reduce\) \{([\s\S]*?)\n\}/.exec(css);
+    expect(reduced, 'no reduced-motion block').not.toBeNull();
+    expect(reduced![1]).toContain('.burn__pop');
+  });
+});
+
 describe('burndown/visual-cues', () => {
   // MARKUP ASSERTIONS, and labelled as such: a hatch pattern and a dash pattern have no
   // representation in the accessibility tree. The accessible half of each fact is asserted

@@ -725,15 +725,62 @@
  * shadow in the product and popovers are the only thing that gets it (§5).
  * -------------------------------------------------------------------------- */
 
-.burn__pop {
+/* ═══ THE ROW THE POPOVER MAY NOT LEAVE (added 2026-08-15) ═══
+ *
+ * WHAT IT WAS, AND WHAT THAT DID. The popover was `position: absolute` inside `.burn__col`,
+ * pinned `inset-inline-end: 0`, up to 282px wide against a column 37px wide on a phone. Opened
+ * in Chrome on the real calculator page at a genuine 320px viewport, ALL FOUR of the default
+ * scenario's popovers hung off the LEFT EDGE OF THE VIEWPORT — 131.0px, 94.0px, 57.0px and
+ * 20.0px — and at 375px three of four did. The figures are right-aligned, so what fell off was
+ * the LABEL COLUMN: `Raw`, `After resistances`, `After reductions` and `Final`, and the title
+ * naming the ability. Four magic-damage figures with nothing saying which one lands.
+ *
+ * NO TEST COULD HAVE SEEN IT. Overflow to the LEFT creates no scrollable area, so
+ * `documentElement.scrollWidth` read exactly 320 with a third of the popover off screen. Third
+ * instance of that class in one day, after the navigation panel at −114.6px and the kill callout
+ * at −48px, and this one was registered in `tests/clipped-and-offscreen.test.ts` as
+ * `measuredAt: []` — nobody had ever opened it on a phone.
+ *
+ * HOW IT IS ANCHORED NOW — the kill callout's construction, one row spanning the plot with the
+ * popover right-aligned inside it and free to shrink and wrap. The trailing pad is the fraction
+ * of the plot to the right of the column (an inline style, because that is data) CAPPED at
+ * `100% - --measure-popover-max-inline`, the pad that still leaves one popover's width inside the
+ * plot. Where the plot is narrower than the popover the cap is 0, the pad collapses and the
+ * popover sits flush with the plot's leading edge. There is no width query; this holds at every
+ * width, which is what DESIGN.md §4b requires of everything that is not the riser labels.
+ *
+ * IT REACHES BACK OVER THE Y-AXIS RAIL, by exactly the offset the x axis uses to skip it. The
+ * popover floats ABOVE the plot area, not over it, so the rail's width is free screen — and at
+ * 320px it is the difference between a 148px popover, where every label wraps, and a 204px one,
+ * where they do not. Percentages inside it still resolve against `.burn__area`, the containing
+ * block, which is the same box the column fractions are fractions of.
+ *
+ * TRANSPARENT TO THE MOUSE. While open, this row covers the header — which holds the title, the
+ * running total and the verdict chip — so it must not intercept anything. The popover has never
+ * been reachable by pointer anyway: leaving the riser closes it.
+ */
+.burn__popbar {
   position: absolute;
+  inset-inline-end: 0;
+  inset-inline-start: calc(-1 * (var(--space-7) + var(--space-2)));
+  display: flex;
+  justify-content: flex-end;
+  pointer-events: none;
+}
+
+.burn__pop {
   z-index: 1;
   background: var(--bg-panel-raised);
   border: var(--border-steel);
   border-radius: var(--radius-panel);
   box-shadow: var(--elev-2);
   padding: var(--space-3);
-  inline-size: max-content;
+  /* BORDER-BOX, and this is a correction rather than a preference. DESIGN.md §4a defines
+     `--measure-popover-max-inline` as "the width at which a popover stops growing"; under
+     `content-box` it capped the TEXT and the padding and border were added on top, so the
+     popover measured 282px against a token that reads 256px. The bracket above carries the same
+     note for the same reason — a border widening a box that was already sized. */
+  box-sizing: border-box;
   /* This was the FOURTH inline composition of the spacing scale, and it was still here after the
      first three were named — found by searching for the construction rather than by remembering
      it. DESIGN.md §4a now calls it `--measure-popover-max-inline`, at the same value and derived
@@ -741,6 +788,12 @@
      separate token: a popover's maximum width and a grid column's minimum width are different
      facts that happen to agree today. */
   max-inline-size: var(--measure-popover-max-inline);
+  /* `inline-size: max-content` stood here and it is the declaration that made the escape
+     unfixable: it sets a flex item's minimum to its ENTIRE content, so there was nothing to
+     shrink to. It is the same one that made the kill callout wider than its own plot. Without
+     it the item takes its max-content width, the cap above holds it at the token, and a plot
+     narrower than that shrinks it the rest of the way. */
+  min-inline-size: 0;
   animation: burn-fade-in 140ms ease-out;
 }
 

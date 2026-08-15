@@ -51,6 +51,15 @@ function pct(fraction: number): string {
   return `${(fraction * 100).toFixed(4)}%`;
 }
 
+/**
+ * The popover's id. It is written in two places — the riser's `aria-describedby` and the
+ * popover itself — and those two places are no longer in the same component, so it is one
+ * function rather than one template string copied.
+ */
+function popId(column: BurndownColumn): string {
+  return `burn-pop-${column.kind}-${column.position}`;
+}
+
 function sumOf(byType: DamageByType): number {
   return byType.physical + byType.magic + byType.true;
 }
@@ -332,6 +341,15 @@ export function HpBurndown({ result, title = 'HP burndown' }: HpBurndownProps) {
 
   const close = useCallback(() => setOpen(null), []);
 
+  // WHICH COLUMN IS OPEN, and how much plot lies to the RIGHT of it. The popover is rendered
+  // here rather than inside the column so that the box it cannot leave is the plot — see the
+  // comment on `.burn__popbar` below. The fraction is the same one the x axis divides by:
+  // columns are `flex: 1 1 0` of one axis, so column i ends at (i + 1) / n of the plot.
+  const openIndex = model.columns.findIndex((c) => c.position === open);
+  const openColumn = openIndex === -1 ? null : model.columns[openIndex]!;
+  const openTrailingFraction =
+    openIndex === -1 ? 0 : (model.columns.length - 1 - openIndex) / model.columns.length;
+
   // WHY THE SECOND VERDICT READS AS IT DOES. Three states, and only the first is the one this
   // product spent its whole life in.
   const dotNote =
@@ -415,6 +433,40 @@ export function HpBurndown({ result, title = 'HP burndown' }: HpBurndownProps) {
                 />
               ))}
             </ol>
+
+            {/* ═══ THE RESISTANCE POPOVER, AND WHY IT IS NOT INSIDE ITS COLUMN ═══
+
+                It used to be, pinned `inset-inline-end: 0` to a `.burn__col` — and a column is
+                37px wide at a 320px viewport against a popover up to 282px. Measured in Chrome
+                on the real calculator page, all four of the default scenario's popovers hung off
+                the LEFT EDGE OF THE VIEWPORT: 131.0px, 94.0px, 57.0px and 20.0px. The figures
+                are right-aligned so they survived; the labels beside them did not, and four
+                magic-damage numbers with nothing saying which one lands is the plausible wrong
+                number this product exists to prevent. Nothing reported it, because overflow to
+                the left creates no scrollable area — `scrollWidth` read exactly 320.
+
+                THE CONSTRUCTION IS THE KILL CALLOUT'S, which fixed the identical escape a few
+                hours earlier: a row spanning the plot, padded on its trailing side by the
+                fraction of the plot to the RIGHT of the column, with the popover right-aligned
+                inside it and free to shrink and wrap. The one addition is the CAP. The callout's
+                chip can wrap down to its longest word and always fit; a popover cannot usefully
+                go below its own width, so the pad is `min()`-ed against
+                `100% - --measure-popover-max-inline` — the pad that leaves exactly one popover's
+                width in the plot. On a plot narrower than the popover that cap is 0, the pad
+                collapses, and the popover sits flush with the plot's start rather than past it.
+                No width query: this holds at every width, which is what DESIGN.md §4b requires
+                of everything that is not the riser labels. */}
+            {openColumn ? (
+              <div
+                className="burn__popbar"
+                style={{
+                  insetBlockEnd: '100%',
+                  paddingInlineEnd: `min(${pct(openTrailingFraction)}, max(0px, calc(100% - var(--measure-popover-max-inline))))`,
+                }}
+              >
+                <ResistancePopover id={popId(openColumn)} column={openColumn} />
+              </div>
+            ) : null}
 
             {model.lethalRuleFraction !== null ? (
               <>
@@ -607,8 +659,6 @@ function Column({ column, index, maxHp, open, onOpen, onClose }: ColumnProps) {
     bottom: pct(column.riserBottom),
     height: pct(Math.max(0, column.riserTop - column.riserBottom)),
   };
-  const popId = `burn-pop-${column.kind}-${column.position}`;
-
   const statusLabel = column.verification
     ? column.verification === 'incomplete'
       ? column.incompleteReason?.kind === 'permanent'
@@ -698,7 +748,7 @@ function Column({ column, index, maxHp, open, onOpen, onClose }: ColumnProps) {
         className="burn__riser"
         style={band}
         aria-label={riserName(column, maxHp, statusLabel)}
-        aria-describedby={open ? popId : undefined}
+        aria-describedby={open ? popId(column) : undefined}
         onMouseEnter={onOpen}
         onMouseLeave={onClose}
         onFocus={onOpen}
@@ -707,8 +757,6 @@ function Column({ column, index, maxHp, open, onOpen, onClose }: ColumnProps) {
           if (e.key === 'Escape') onClose();
         }}
       />
-
-      {open ? <ResistancePopover id={popId} column={column} /> : null}
     </li>
   );
 }
