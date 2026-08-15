@@ -86,8 +86,8 @@ export interface CapabilityInputs {
    * from the entry shape. See `DEFENSIVE_APPLIED_MEASURED`.
    *
    * Absent falls back to the ready count, which is what a small fixture wants. The REAL page
-   * must pass it: ready is 90 and applied is 77, and publishing the first as the second would
-   * overstate the product by thirteen defences.
+   * must pass it: ready is 91 and applied is 86, and publishing the first as the second would
+   * overstate the product by five defences.
    */
   defensiveAppliedMeasured?: number;
   abilities: readonly CapabilityAbility[];
@@ -218,7 +218,20 @@ export interface Capability {
  * roster, which is not something a page render may do. It is the engine's number; when the
  * engine's coverage changes it must be RE-MEASURED, never adjusted to taste.
  */
-export const DEFENSIVE_APPLIED_MEASURED = 77;
+/**
+ * 77 UNTIL 2026-08-15, AND THE SITE WAS UNDERSTATING THE ENGINE BY NINE.
+ *
+ * The `figureIs` merge landed and nine `full-duration` heal and shield rows became applicable —
+ * Master Yi W and Lissandra R (minimum and maximum total heal each), Fiora R, Janna R, Milio W,
+ * Soraka Q and Hwei W's shield. The engine applied them from the moment the data said what its
+ * figure meant; this constant did not follow, so `/checks/` was presenting 14 entries as refused
+ * when the true figure is 5.
+ *
+ * Re-measured by driving `resolveDefences` over all 155 stored entries one at a time. The same
+ * script run against the PRE-merge file returns 77, matching this constant's old value and its
+ * stated three-way split — so the before and after are one definition, not two.
+ */
+export const DEFENSIVE_APPLIED_MEASURED = 86;
 
 export function summariseCapability(input: CapabilityInputs): Capability {
   const known = new Set(['on-hit', 'spellblade', 'active', 'periodic']);

@@ -108,7 +108,7 @@ describe('landing/it names the gaps a reader would otherwise assume away', () =>
     // WAS 0 UNTIL THE WIRING LANDED, hours after this test was written, and it was placed as a
     // tripwire for exactly that. 77 of 155 now change a figure — the engine's own measurement,
     // not the 90 that merely LOOK ready.
-    expect(capability.defensiveApplied).toBe(77);
+    expect(capability.defensiveApplied).toBe(86) // 77 until 2026-08-15: nine full-duration rows became applicable when figureIs said what their figure meant;
   });
 });
 

@@ -1090,3 +1090,146 @@ describe('per-instance is multiplied only where occurrences ADD UP', () => {
     expect(excluded(result, 'differ by a factor of 8')).toBe(true);
   });
 });
+
+// ---------------------------------------------------------------------------------------
+// AN INCOMPLETE ENTRY THAT RECURS — the sentence must not say the entry is silent when it is not
+// ---------------------------------------------------------------------------------------
+//
+// ═══ WHY THIS BLOCK EXISTS: A POPULATION MOVED UNDER A SENTENCE ═══
+//
+// The `incomplete` arm is reached before the over-time arm, and its second sentence reads "the
+// stored entry is marked incomplete and records no reason, which is itself a gap in the harvested
+// data rather than a fact about the ability". That was true of every entry that reached it when it
+// was written. It stopped being true the moment `figureIs` landed: nine per-tick heal rows moved
+// to `incomplete` carrying `figureIs: 'per-instance'` and no occurrence count, and SEVEN of them
+// carry no `unresolvable`, so they are handed that sentence.
+//
+// **The entry does record a reason — the contract's own words for it.** `src/types/data.ts` on
+// `figureIs` states: "'per-instance' — the figure is one occurrence; the whole-duration total is
+// it times `totalInstances`, and WITHOUT A COUNT THE ENTRY STAYS INCOMPLETE." So the two fields
+// the entry carries state exactly why it cannot be completed, and the engine reads both of them
+// already. Telling the reader nothing was recorded is a false statement about their own data, and
+// it points them at the harvester when the gap is in the source.
+//
+// NOTHING BELOW CHANGES A NUMBER. Every entry here contributes nothing before and after; the
+// sentence is the whole deliverable, exactly as in the block above.
+
+describe('an incomplete entry that recurs states what its own over-time fields say', () => {
+  /** The shape seven stored rows now have: incomplete, one occurrence, no count, no unresolvable. */
+  const INCOMPLETE_PER_TICK = defence({
+    kind: 'heal',
+    id: 'minimum-heal-per-tick',
+    label: 'Minimum Heal Per Tick',
+    unit: 'flat',
+    verification: 'incomplete',
+    value: { scaling: 'explicit', perRank: [15, 15, 15, 15, 15] },
+    overTime: {
+      sourceSays: 'channels for up to 4 seconds, healing every 0.5 seconds',
+      figureIs: 'per-instance',
+    },
+  });
+
+  it('it does not tell the reader that no reason was recorded', () => {
+    const result = resultOf(
+      run([INCOMPLETE_PER_TICK], {
+        ...HALF_HEALTH,
+        [defensiveToggleKey(INCOMPLETE_PER_TICK)]: true,
+      }),
+    );
+    expect(soleRefusal(result)).not.toContain('records no reason');
+  });
+
+  it('it names the two facts the entry actually carries: one occurrence, and no count', () => {
+    const result = resultOf(
+      run([INCOMPLETE_PER_TICK], {
+        ...HALF_HEALTH,
+        [defensiveToggleKey(INCOMPLETE_PER_TICK)]: true,
+      }),
+    );
+    const refusal = soleRefusal(result);
+    expect(refusal).toContain('covers ONE occurrence');
+    expect(refusal).toContain('states no number of occurrences');
+    expect(refusal).toContain('channels for up to 4 seconds');
+  });
+
+  it('it still says the entry is marked incomplete, because it is', () => {
+    const result = resultOf(
+      run([INCOMPLETE_PER_TICK], {
+        ...HALF_HEALTH,
+        [defensiveToggleKey(INCOMPLETE_PER_TICK)]: true,
+      }),
+    );
+    expect(soleRefusal(result)).toContain('incomplete');
+  });
+
+  it('no health is restored and no damage figure moves', () => {
+    const result = resultOf(
+      run([INCOMPLETE_PER_TICK], {
+        ...HALF_HEALTH,
+        [defensiveToggleKey(INCOMPLETE_PER_TICK)]: true,
+      }),
+    );
+    expect(result.verdict.burstOnly.healingApplied).toBe(0);
+    expect(result.burst.total).toBe(200);
+  });
+
+  it('an incomplete entry whose figure has no stated meaning says THAT, not that nothing was recorded', () => {
+    // Soraka Q's per-tick row: incomplete, recurring, and `figureIs` absent. Absent is itself a
+    // stated fact under the contract — "the source does not say" — so the reader is told which
+    // question is open rather than being told the entry is silent.
+    const noMeaning = defence({
+      ...INCOMPLETE_PER_TICK,
+      overTime: { sourceSays: 'heals every 0.5 seconds while channelling' },
+    });
+    const refusal = soleRefusal(
+      resultOf(run([noMeaning], { ...HALF_HEALTH, [defensiveToggleKey(noMeaning)]: true })),
+    );
+    expect(refusal).toContain('one occurrence or the whole duration');
+    expect(refusal).not.toContain('records no reason');
+  });
+
+  it('an entry that records its OWN reason keeps that reason, and the over-time text does not replace it', () => {
+    // Briar E's real shape: incomplete AND recurring AND carrying an unresolvable. The stored
+    // reason is the more specific of the two and must not be overwritten by the general one.
+    const withUnresolvable = defence({
+      ...INCOMPLETE_PER_TICK,
+      unresolvable: [
+        { field: 'ratios[0].owner (maxHP)', why: 'the source names maxHP and never says whose' },
+      ],
+    });
+    const refusal = soleRefusal(
+      resultOf(
+        run([withUnresolvable], { ...HALF_HEALTH, [defensiveToggleKey(withUnresolvable)]: true }),
+      ),
+    );
+    expect(refusal).toContain('ratios[0].owner (maxHP)');
+    expect(refusal).toContain('never says whose');
+  });
+
+  it('an incomplete WHOLE-DURATION entry still says the reason itself is missing', () => {
+    // Trundle R's real shape: incomplete, recurring, and its figure covers the whole duration —
+    // so the over-time question is settled and the entry genuinely records nothing about why it
+    // is incomplete. This pins the narrowness of the change: the new sentence is only given where
+    // the over-time fields ACTUALLY state something that would refuse the entry.
+    const wholeDuration = defence({
+      ...INCOMPLETE_PER_TICK,
+      label: 'Total Healing',
+      overTime: {
+        sourceSays: 'the other half is applied every second over the next 4 seconds',
+        figureIs: 'full-duration',
+      },
+    });
+    const refusal = soleRefusal(
+      resultOf(run([wholeDuration], { ...HALF_HEALTH, [defensiveToggleKey(wholeDuration)]: true })),
+    );
+    expect(refusal).toContain('records no reason');
+  });
+
+  it('an incomplete entry that does not recur at all is untouched', () => {
+    const plain = defence({ ...SHIELD_60, verification: 'incomplete' });
+    const refusal = soleRefusal(
+      resultOf(run([plain], { [defensiveToggleKey(plain)]: true })),
+    );
+    expect(refusal).toContain('records no reason');
+  });
+});

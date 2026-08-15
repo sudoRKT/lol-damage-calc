@@ -443,6 +443,25 @@ function figureIsRefusal(
   return undefined;
 }
 
+/**
+ * WHAT AN ENTRY'S OVER-TIME FIELDS SAY THAT WOULD REFUSE IT — or `undefined` when they say nothing
+ * that would.
+ *
+ * One place, two callers, and that is the point: the main pass asks it of an entry that is
+ * otherwise ready, and the `incomplete` arm asks it of an entry that records no reason of its own.
+ * Both readers get the same sentence for the same data, which they did not before.
+ *
+ * `full-duration` returns `undefined` — that figure is applied as it stands, so the over-time
+ * fields refuse nothing and an incomplete entry carrying one is genuinely silent about its gap.
+ */
+function overTimeRefusal(
+  kind: DefensiveKind,
+  overTime: { totalInstances?: number; sourceSays: string; figureIs?: OverTimeFigure },
+): string | undefined {
+  if (overTime.figureIs === undefined) return recurringRefusal(overTime);
+  return figureIsRefusal(kind, overTime);
+}
+
 /** A shield's kind, from the one damage type the source restricted it to. */
 function shieldKind(type: DamageType | undefined): ShieldPool['kind'] {
   if (type === 'physical') return 'physical';
@@ -518,13 +537,31 @@ export function resolveDefences(args: {
     }
 
     // An entry the data itself calls incomplete contributes nothing, and says what is missing.
+    //
+    // ═══ THE THIRD BRANCH EXISTS BECAUSE A POPULATION MOVED UNDER THE SECOND ═══
+    //
+    // The second sentence — "records no reason" — was true of every entry that reached it until
+    // `figureIs` landed on 2026-08-15. Nine per-tick heal rows then moved to `incomplete` carrying
+    // `figureIs: 'per-instance'` and no occurrence count, SEVEN of them with no `unresolvable`, so
+    // they were handed a sentence saying their entry was silent while the entry stated the reason
+    // in two fields the engine already reads. `src/types/data.ts` on `figureIs`: "'per-instance' —
+    // the figure is one occurrence; the whole-duration total is it times `totalInstances`, and
+    // without a count the entry stays incomplete."
+    //
+    // So an entry with no reason of its own is asked its OVER-TIME fields before being called
+    // silent, and the answer is the same sentence it would have got had it not been incomplete.
+    // A stored `unresolvable` is still preferred: it is the more specific fact of the two.
     if (effect.verification === 'incomplete') {
       const missing = effect.unresolvable?.map((u) => `${u.field}: ${u.why}`).join('; ');
+      const fromOverTime = effect.overTime ? overTimeRefusal(effect.kind, effect.overTime) : undefined;
       refuse(
         effect,
         missing
           ? `the stored entry is incomplete — ${missing}`
-          : 'the stored entry is marked incomplete and records no reason, which is itself a gap ' +
+          : fromOverTime
+            ? `the stored entry is marked incomplete, and its own over-time fields say why: ` +
+              fromOverTime
+            : 'the stored entry is marked incomplete and records no reason, which is itself a gap ' +
               'in the harvested data rather than a fact about the ability',
       );
       continue;
@@ -551,11 +588,7 @@ export function resolveDefences(args: {
     //                     and refused on a kind whose occurrences do not add up.
     let occurrences = 1;
     if (effect.overTime) {
-      if (effect.overTime.figureIs === undefined) {
-        refuse(effect, recurringRefusal(effect.overTime));
-        continue;
-      }
-      const refusal = figureIsRefusal(effect.kind, effect.overTime);
+      const refusal = overTimeRefusal(effect.kind, effect.overTime);
       if (refusal !== undefined) {
         refuse(effect, refusal);
         continue;

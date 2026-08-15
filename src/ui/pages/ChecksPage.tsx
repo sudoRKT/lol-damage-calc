@@ -286,12 +286,17 @@ export function ChecksPage() {
           <strong>{CAPABILITY.defensiveApplied} actually change a figure</strong>, measured by
           switching each on alone against a level-11 defender. The{' '}
           {CAPABILITY.defensiveReadyToApply - CAPABILITY.defensiveApplied} between those two counts
-          are refused for a reason the shape alone could not show, and one reason is most of them:{' '}
-          <strong>18 recur over a duration</strong>, and until the entry says whether the figure it
-          stores is one occurrence or the whole of it, multiplying could count it eight times over.
-          17 of those are heals and one is a shield — and the difference matters, because health
-          adds up while a shield is a state: a 60-point shield reapplied eight times is either one
-          pool refreshed or a 480-point pool, and the source has to say which. The rest read a share of damage the defender deals, which cannot exist because the
+          are refused for a reason the shape alone could not show, and none of them is fixable by
+          us: three restore a share of the damage the defender deals, which cannot exist because
+          the defender does not act; one amplifies other healing, which no step models; and one
+          reads “the target”, which on a defensive effect is ambiguous.{' '}
+          <strong>
+            The largest cause used to be recurrence and it is now cleared entirely.
+          </strong>{' '}
+          Eighteen effects spread a figure over a duration and the engine could not tell one
+          occurrence from the whole channel. Nine now say which, and apply. The other nine say
+          they are one occurrence and state no count of them, so they are honestly not shown —
+          and that is a sentence somebody can still supply, not a fact no source states. The rest read a share of damage the defender deals, which cannot exist because the
           defender does not act; amplify other healing, which has no step; or read “the target”,
           which on a defensive effect is ambiguous. Every one is conditional — it
           depends on whether the defender had it up when the combo landed, and you state that.

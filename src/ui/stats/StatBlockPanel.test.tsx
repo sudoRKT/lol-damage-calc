@@ -146,6 +146,44 @@ describe('stat block/the nameplate (DESIGN.md §9)', () => {
   });
 });
 
+describe('stat block/attack speed prints THREE decimals (added 2026-08-15)', () => {
+  // The rule and its reasoning are `ATTACK_SPEED_DECIMALS` in primitives/readout.ts. It shipped
+  // on 2026-08-15 with no test anywhere in this area, and these four are that test. Every figure
+  // below is arithmetic on the published champion statistics, not engine output.
+
+  it('keeps the third decimal, where two would round it away', () => {
+    // Katarina at level 18, no items: 0.658 + 0.658 × (2.74% × 17) = 0.964496. Two decimals give
+    // 0.96, which is the figure the fix exists to stop being printed.
+    const stats = { ...DEFENDER, attackSpeed: 0.9644960000000001 };
+    mount('Defender', stats);
+    const row = screen.getByRole('row', { name: /^Attack speed/ });
+    expect(within(row).getByText('0.964', { ignore: '.u-visually-hidden' })).toBeTruthy();
+  });
+
+  it('prints the cap as 3.003, never as "3" — a figure the game does not use', () => {
+    // Reachable: Kalista at 18 holding the six highest attack-speed items resolves to 3.3069
+    // uncapped, which the engine caps. At two decimals this row reads "3".
+    mount('Defender', { ...DEFENDER, attackSpeed: 3.003 });
+    const row = screen.getByRole('row', { name: /^Attack speed/ });
+    expect(within(row).getByText('3.003', { ignore: '.u-visually-hidden' })).toBeTruthy();
+    expect(row.textContent).not.toMatch(/(^|[^.\d])3([^.\d]|$)/);
+  });
+
+  it('SPEAKS the same figure it prints — rounding only the visible value is the older defect', () => {
+    mount('Defender', { ...DEFENDER, attackSpeed: 0.9644960000000001 });
+    // The accessible name is the whole row, so this asserts the spoken cell, not the visible one.
+    expect(screen.getByRole('row', { name: 'Attack speed 0.964' })).toBeTruthy();
+  });
+
+  it('is the ONLY row with a third decimal — the exception is named, not a widening', () => {
+    // Lux's armor at level 18 is 100.7405 and her health 2263.2065; both stay at two places.
+    const stats = { ...DEFENDER, attackSpeed: 0.9644960000000001, armor: 100.7405, armorBase: 100.7405, armorBonus: 0 };
+    mount('Defender', stats);
+    const withThree = statRows(stats).filter((r) => /\.\d{3}(?!\d)/.test(r.value));
+    expect(withThree.map((r) => r.label)).toEqual(['Attack speed']);
+  });
+});
+
 describe('stat block/mana and the bonus-health split (added 2026-08-13)', () => {
   it('prints the base + bonus split of MAXIMUM health beside the current figure', () => {
     // Bonus health is not derivable from a total, and an ability scaling on it is unmodellable

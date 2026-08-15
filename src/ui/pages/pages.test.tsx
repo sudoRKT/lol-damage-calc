@@ -151,7 +151,7 @@ describe('pages/how the numbers are checked', () => {
     );
     expect(CAPABILITY.runesModelled).toBe(1); // was 0 until Scorch landed, 2026-08-15
     // The same tripwire, and it fired the same day. See Landing.test.tsx.
-    expect(CAPABILITY.defensiveApplied).toBe(77);
+    expect(CAPABILITY.defensiveApplied).toBe(86) // 77 until 2026-08-15: nine full-duration rows became applicable when figureIs said what their figure meant;
   });
 
   it('NEVER STATES A COUNT WITHOUT SAYING WHAT IT COUNTS', () => {
