@@ -318,3 +318,285 @@ export function findRedundantAdditions(abilities: CuratedAbility[]): AggregateAu
 
   return { findings, compared, notComparable };
 }
+
+// =========================================================================================
+// APPLYING THE READING — A CONFIRMED AGGREGATE ROW IS DROPPED, NOT RE-RELATED.
+//
+// THIS PASS RE-RELATED THE ROW TO `alternativeTo` UNTIL 2026-08-15 AND THAT WAS WRONG IN TWO
+// WAYS. It is recorded here rather than quietly replaced, because the reasoning is the part
+// worth keeping.
+//
+//   1. IT STORED A CLAIM THAT IS FALSE ABOUT THE WORLD. `alternativeTo` says "this row applies
+//      INSTEAD of that one". An aggregate does not replace the row it aggregates — it CONTAINS
+//      it. "Maximum Mixed Damage" is the bubble damage plus the sleep bonus; it is not a
+//      different outcome of the same cast, the way a charge-up ability's Minimum and Maximum
+//      genuinely are. Those 38 pairs are real alternatives. These twelve rows are not.
+//
+//   2. IT COST TWO ABILITIES THEIR WHOLE FIGURE. The engine refuses any instance holding an
+//      unchosen alternative and returns zero with a reason (combo.ts, `resolveDamage`), so
+//      marking the aggregate `alternativeTo` took Zoe E from a wrong 436 to 0, and Yasuo E
+//      from a wrong 328 to 0. Dropping the row instead leaves the parts to sum on their own:
+//      145 and 164, and Yasuo's 164 is what its source's own "Total Combined Damage" row
+//      states.
+//
+// SO A CONFIRMED AGGREGATE IS TREATED AS WHAT IT IS: A DERIVED ROW. This project already has
+// one way of treating a derived row and has had it since harvest — it does not store it.
+// `DERIVED_ROW` in src/types/validate-curated.ts drops a "Total" row at harvest for exactly
+// this reason. THAT PATTERN IS NOT TOUCHED HERE and must never be widened to catch these: it
+// is `/\btotal\b/i` and excludes "Minimum"/"Maximum" deliberately, because on a charge-up
+// ability the Maximum row IS the damage. Including them would have shipped 32 abilities at
+// zero damage. What happens below is not a pattern catching more rows. It is twelve entries a
+// person read, one sentence at a time.
+//
+// THE POPULATION IS `READ_POPULATION` AND NOTHING ELSE. Gate 8's tier-1 list is a DETECTOR: it
+// proposes. An entry outside the set is untouched however loudly it trips the arithmetic.
+//
+// NO VALUE IS EDITED, AND EVERY DROPPED ROW IS RECORDED — its label, its numbers, the
+// arithmetic showing which siblings it restates, and the source sentence the verdict rests on.
+// A row that vanishes without a record is worse than one stored wrongly.
+// =========================================================================================
+
+/** A component this pass removed, with everything needed to audit or reverse the removal. */
+export interface AggregateDrop {
+  entry: string;
+  componentId: string;
+  label: string;
+  /**
+   * The arithmetic showing which siblings this row restates, in the same words gate 8 reports.
+   * `null` where NO stored sibling reproduces it — the row it aggregates was never harvested,
+   * so the reading is the only evidence. Katarina R's physical side is that case.
+   */
+  basis: string | null;
+  /** The whole component as it was stored, so nothing is lost by dropping it. */
+  removed: AbilityComponent;
+  /** The source sentence the verdict rests on. Quoted so it can be re-checked. */
+  sentence: string;
+}
+
+/** A hit count corrected because the SOURCE SENTENCE READ FOR THE AGGREGATE also states it. */
+export interface AggregateHitCountChange {
+  entry: string;
+  componentId: string;
+  label: string;
+  before: number | undefined;
+  after: number;
+  sentence: string;
+}
+
+export interface AggregateApplication {
+  dropped: AggregateDrop[];
+  hitCounts: AggregateHitCountChange[];
+  /** Every confirmed aggregate this pass did NOT change, with why. Never silent. */
+  refused: Array<{ entry: string; componentId: string; why: string }>;
+  /** Entries in READ_POPULATION that the file does not contain, or contains twice. */
+  unmatchedReadEntries: string[];
+  /**
+   * Per entry, what the change did, in two figures rather than one.
+   *
+   * `rank1BaseBefore` / `rank1BaseAfter` — the sum over components marked `adds` of the base term
+   * at rank 1 times the stated hit count (1 where none is stated). Ratios are excluded because
+   * they are zero for a champion with no ability power and no bonus attack damage.
+   *
+   * `componentsBefore` / `componentsAfter` — how many rows the entry holds. IT IS HERE BECAUSE
+   * THE FIRST FIGURE CAN BE BLIND: an entry whose damage is entirely a ratio, such as Varus W
+   * (a percentage of the target's maximum health, base 0), shows no movement in a base-only
+   * figure while two of its rows have gone.
+   */
+  perEntry: Array<{
+    entry: string;
+    rank1BaseBefore: number;
+    rank1BaseAfter: number;
+    componentsBefore: number;
+    componentsAfter: number;
+  }>;
+}
+
+/** The base term at rank 1 times the stated hit count. Ratios contribute nothing at zero stats. */
+function rank1BaseOnly(components: readonly AbilityComponent[]): number {
+  let sum = 0;
+  for (const c of components) {
+    if (c.relation?.kind !== 'adds') continue;
+    const base = expand(c.base, 1);
+    if (!base) continue;
+    sum += base[0] * (c.hits ?? 1);
+  }
+  return sum;
+}
+
+/**
+ * The sibling whose value series reproduces this aggregate. Returns the component id to point
+ * at and the arithmetic that found it, or null when no sibling reproduces it at all.
+ *
+ * Other CONFIRMED AGGREGATES of the same entry are excluded as candidates: an aggregate must
+ * point at a part, and pointing one aggregate at another would leave the pair meaningless.
+ */
+export function aggregateTargetOf(
+  target: { k: AbilityComponent; sig: Signature },
+  candidates: Array<{ k: AbilityComponent; sig: Signature }>,
+): { componentId: string; basis: string } | null {
+  for (const s of candidates) {
+    for (const m of MULTIPLES) {
+      if (reproduces(target.sig, [{ sig: s.sig, times: m }])) {
+        return { componentId: s.k.id, basis: `${m} x "${s.k.label}"` };
+      }
+    }
+  }
+  for (const a of candidates) {
+    for (const b of candidates) {
+      if (a.k.id === b.k.id) continue;
+      for (const m of MULTIPLES) {
+        if (reproduces(target.sig, [{ sig: a.sig, times: 1 }, { sig: b.sig, times: m }])) {
+          return { componentId: a.k.id, basis: `"${a.k.label}" + ${m} x "${b.k.label}"` };
+        }
+      }
+    }
+  }
+  return null;
+}
+
+/**
+ * Drop every confirmed aggregate row, IN PLACE, and record what was dropped.
+ *
+ * Also applies the one hit count recorded in the same reading (`alsoWrong`), and only when the
+ * component still holds the number that reading saw — if the harvest has moved underneath the
+ * reading, the correction is refused rather than applied to a figure nobody read.
+ *
+ * THREE THINGS IT REFUSES TO DO, each stated rather than assumed:
+ *   - drop a row the entry does not hold, or that some other pass has already re-related;
+ *   - drop the LAST row of an entry. An entry with no components reads as "nothing was
+ *     harvested for this slot", which is a different and false statement from "its only stored
+ *     row was a summary of rows nobody harvested". None of the twelve is in that position
+ *     today; the guard exists so a future harvest cannot put one there silently;
+ *   - touch anything outside `READ_POPULATION`.
+ */
+export function applyReadAggregates(abilities: CuratedAbility[]): AggregateApplication {
+  const dropped: AggregateDrop[] = [];
+  const hitCounts: AggregateHitCountChange[] = [];
+  const refused: AggregateApplication['refused'] = [];
+  const perEntry: AggregateApplication['perEntry'] = [];
+
+  const matches = new Map<string, CuratedAbility[]>();
+  for (const a of abilities) {
+    const key = `${a.champion}/${a.slot}/${a.abilityName}`;
+    if (!READ_POPULATION.has(key)) continue;
+    matches.set(key, [...(matches.get(key) ?? []), a]);
+  }
+
+  const unmatchedReadEntries: string[] = [];
+  for (const key of READ_POPULATION.keys()) {
+    const found = matches.get(key) ?? [];
+    if (found.length === 0) unmatchedReadEntries.push(`${key}: not in the file`);
+    // Two entries under one read key would let a sentence read about one form decide another.
+    else if (found.length > 1) unmatchedReadEntries.push(`${key}: ${found.length} entries share this key — none changed`);
+  }
+
+  for (const [key, found] of matches) {
+    if (found.length !== 1) continue;
+    const entry = found[0]!;
+    const read = READ_POPULATION.get(key)!;
+    const maxRank = entry.maxRank || 1;
+    const rank1BaseBefore = rank1BaseOnly(entry.components);
+    const componentsBefore = entry.components.length;
+
+    // Signatures are taken ONCE, before anything is dropped, so the arithmetic recorded for the
+    // second aggregate on an entry is the same arithmetic gate 8 reported for it. Kassadin R
+    // holds two, and reading the second against a list the first had already left would change
+    // what the record says without changing what was decided.
+    const withSig = entry.components
+      .map((k) => ({ k, sig: signatureOf(k, maxRank) }))
+      .filter((x): x is { k: AbilityComponent; sig: Signature } => !!x.sig);
+
+    for (const id of read.aggregates) {
+      const component = entry.components.find((c) => c.id === id);
+      if (!component) {
+        refused.push({
+          entry: key,
+          componentId: id,
+          why: 'no component with this id is on the entry — the reading names a row the file does not hold',
+        });
+        continue;
+      }
+      if (component.relation?.kind === 'alternativeTo') {
+        refused.push({
+          entry: key,
+          componentId: id,
+          why:
+            `stored alternativeTo '${component.relation.componentId}' rather than 'adds'. Some ` +
+            'other pass has already decided what this row is, and two passes deciding one row is ' +
+            'how they end up disagreeing. Left alone and reported.',
+        });
+        continue;
+      }
+      if (entry.components.length <= 1) {
+        refused.push({
+          entry: key,
+          componentId: id,
+          why:
+            'it is the last row on the entry. An entry with no components reads as "nothing was ' +
+            'harvested for this slot", which is false here — what is true is that its only stored ' +
+            'row was a summary of parts nobody harvested. Dropping it would replace one wrong ' +
+            'statement with another.',
+        });
+        continue;
+      }
+
+      // The arithmetic is EVIDENCE, not permission. The verdict comes from the sentence a person
+      // read; where no sibling reproduces the row, `basis` is null and the drop still happens,
+      // because "the part was never harvested" is exactly the case the reading covers and the
+      // arithmetic cannot see (DATA-SOURCES §61.3).
+      const target = withSig.find((x) => x.k.id === id);
+      const candidates = withSig.filter((x) => x.k.id !== id && !read.aggregates.includes(x.k.id));
+      const resolved = target ? aggregateTargetOf(target, candidates) : null;
+
+      dropped.push({
+        entry: key,
+        componentId: id,
+        label: component.label ?? '',
+        basis: resolved?.basis ?? null,
+        removed: JSON.parse(JSON.stringify(component)) as AbilityComponent,
+        sentence: read.sentence,
+      });
+      entry.components = entry.components.filter((c) => c.id !== id);
+    }
+
+    if (read.alsoWrong) {
+      const c = entry.components.find((x) => x.id === read.alsoWrong!.componentId);
+      if (!c) {
+        refused.push({
+          entry: key,
+          componentId: read.alsoWrong.componentId,
+          why: 'the hit count read from the source names a component the entry does not hold',
+        });
+      } else if (c.hits !== read.alsoWrong.storedHits) {
+        refused.push({
+          entry: key,
+          componentId: read.alsoWrong.componentId,
+          why:
+            `the reading recorded a stored hit count of ${read.alsoWrong.storedHits} and the entry ` +
+            `now holds ${String(c.hits)} — the data moved under the reading, so the correction is ` +
+            'refused rather than applied to a number nobody read',
+        });
+      } else {
+        hitCounts.push({
+          entry: key,
+          componentId: c.id,
+          label: c.label ?? '',
+          before: c.hits,
+          after: read.alsoWrong.hits,
+          sentence: read.sentence,
+        });
+        c.hits = read.alsoWrong.hits;
+      }
+    }
+
+    perEntry.push({
+      entry: key,
+      rank1BaseBefore,
+      rank1BaseAfter: rank1BaseOnly(entry.components),
+      componentsBefore,
+      componentsAfter: entry.components.length,
+    });
+  }
+
+  return { dropped, hitCounts, refused, unmatchedReadEntries, perEntry };
+}

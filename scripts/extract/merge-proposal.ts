@@ -58,6 +58,7 @@ import {
   type GateReport,
 } from '../../src/types/validate-curated.ts';
 import { PER_TICK_READS, capturedHitCounts, markedOverTime } from './per-tick-read.ts';
+import { applyReadAggregates, READ_POPULATION as AGGREGATES_READ } from './aggregate-rows.ts';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, '..', '..');
@@ -710,6 +711,20 @@ async function main(): Promise<void> {
   const overTime = classifyOverTime(abilityFile.abilities);
   const capturedCounts = overTime.captured;
 
+  // AGGREGATE ROWS, BEFORE ANY GATE RUNS (DATA-SOURCES §60, §61). Twelve entries store a
+  // "Maximum"/"at Max Stacks" row — arithmetic on their own other rows — marked `adds`, so the
+  // ability publishes more damage than its own source says it can deal. Zoe E published 210 at
+  // rank 1 against a stated cap of 140.
+  //
+  // The relation is corrected to `alternativeTo` so the row is STORED but never SUMMED, which is
+  // the same shape the 38 charge-up Minimum/Maximum pairs already use. No value is edited, no row
+  // is dropped, and `DERIVED_ROW` is not touched — widening that pattern would drop every damage
+  // row from 32 charge-up abilities.
+  //
+  // It runs after the per-tick pass so the before/after damage figures it records describe the
+  // file as it will actually be written, not an intermediate state.
+  const aggregates = applyReadAggregates(abilityFile.abilities);
+
   const abilityPass = refuseSchemaInvalidAbilities(
     abilityFile.abilities,
     defensive.defensiveEffects,
@@ -1109,10 +1124,92 @@ async function main(): Promise<void> {
     runes: compare(merged.runes, existing?.runes, (r) => String(r.runeId)),
     shards: { added: 0, changed: 0, untouched: 0, changedKeys: [] },
     whatTheSiteServesToday:
-      'the site serves harvester drafts from public/data/abilities/, not /curated/. The ability ' +
-      'half of this proposal is the same 937 entries with the same numbers (the served copies ' +
-      'carry one extra field, the Data Dragon icon filename), so merging changes no figure a ' +
-      'user currently sees; it changes where those figures live and who may overwrite them.',
+      'the site serves per-champion files in public/data/abilities/, which scripts/build-ability-' +
+      'files.ts builds FROM curated/curated-data.json. So a figure corrected here reaches a user ' +
+      'in two steps, neither of them this script\'s: the curated file is merged behind the ' +
+      'owner\'s unlock, and then that builder is re-run. Until both happen the old figure is ' +
+      'still what the site serves.',
+  };
+
+  // -------------------------------------------------------------------------------------
+  // WHICH CHANGED ENTRIES BELONG TO WHICH PIECE OF WORK.
+  //
+  // The merge carries more than one session's work, and at merge time the two must not be
+  // confused with each other. Every changed ability entry is attributed by MEASURING what
+  // differs between the curated file and this proposal — never by assuming that everything
+  // changed today was changed by today's pass.
+  // -------------------------------------------------------------------------------------
+  const existingAbilityByKey = new Map((existing?.abilities ?? []).map((a) => [abilityKey(a), a]));
+  const aggregateEntryKeys = new Set(
+    merged.abilities
+      .filter((a) => AGGREGATES_READ.has(`${a.champion}/${a.slot}/${a.abilityName}`))
+      .map(abilityKey),
+  );
+  const changedEntries = diff.abilities.changedKeys.map((key) => {
+    const now = merged.abilities.find((a) => abilityKey(a) === key)!;
+    const was = existingAbilityByKey.get(key)!;
+    const wasById = new Map(was.components.map((c) => [c.id, c]));
+    const nowById = new Map(now.components.map((c) => [c.id, c]));
+    return {
+      entry: key,
+      population: aggregateEntryKeys.has(key)
+        ? ('aggregate-row correction (this session, DATA-SOURCES §60/§61)' as const)
+        : ('carried from earlier sessions — not touched by this session' as const),
+      verification:
+        was.verification === now.verification
+          ? was.verification
+          : `${was.verification} -> ${now.verification}`,
+      rowsRemoved: [...wasById.keys()].filter((id) => !nowById.has(id)),
+      rowsAdded: [...nowById.keys()].filter((id) => !wasById.has(id)),
+      rowsGainingOverTime: [...nowById.values()]
+        .filter((c) => c.overTime && !wasById.get(c.id)?.overTime)
+        .map((c) => c.id),
+      hitCountsChanged: [...nowById.values()]
+        .filter((c) => wasById.has(c.id) && wasById.get(c.id)!.hits !== c.hits)
+        .map((c) => `${c.id}: ${String(wasById.get(c.id)!.hits)} -> ${String(c.hits)}`),
+      relationsChanged: [...nowById.values()]
+        .filter(
+          (c) =>
+            wasById.has(c.id) &&
+            JSON.stringify(wasById.get(c.id)!.relation) !== JSON.stringify(c.relation),
+        )
+        .map((c) => c.id),
+    };
+  });
+  const changedByPopulation = {
+    what:
+      'every ability entry whose JSON differs from the one in curated/curated-data.json, split by ' +
+      'which piece of work changed it. Measured field by field, not assumed.',
+    attributionCaveat:
+      'AN ENTRY IS ATTRIBUTED WHOLE, and one of them carries both kinds of change. Rumble R sits ' +
+      'in the aggregate population because two of its rows were dropped there, and its overTime ' +
+      "mark and its 1 -> 20 tick count come from the earlier per-tick work, not from this " +
+      "session. Read its own row below rather than the population heading.",
+    totalChanged: changedEntries.length,
+    thisSessionAggregateRows: {
+      entries: changedEntries.filter((c) => c.population.startsWith('aggregate-row')).length,
+      what:
+        'the twelve READ_POPULATION entries of DATA-SOURCES §61. A confirmed aggregate row is ' +
+        'dropped, and one hit count the same source sentence states is corrected (Yasuo E, 8 -> 4).',
+    },
+    carriedFromEarlierSessions: {
+      entries: changedEntries.filter((c) => !c.population.startsWith('aggregate-row')).length,
+      what:
+        'damage-over-time work from earlier sessions that never reached /curated/: components ' +
+        'marked as recurring, tick counts captured from the number the source itself prints, and ' +
+        'the status changes that follow. NOT produced by this session and NOT to be stripped out ' +
+        'of the merge — listed separately only so the two are not confused at merge time.',
+      componentsMarkedOverTime: changedEntries
+        .filter((c) => !c.population.startsWith('aggregate-row'))
+        .reduce((n, c) => n + c.rowsGainingOverTime.length, 0),
+      hitCountsChanged: changedEntries
+        .filter((c) => !c.population.startsWith('aggregate-row'))
+        .flatMap((c) => c.hitCountsChanged.map((h) => `${c.entry} ${h}`)),
+      statusChanges: changedEntries
+        .filter((c) => !c.population.startsWith('aggregate-row') && c.verification.includes('->'))
+        .map((c) => `${c.entry}: ${c.verification}`),
+    },
+    entries: changedEntries,
   };
 
   // -------------------------------------------------------------------------------------
@@ -1268,8 +1365,56 @@ async function main(): Promise<void> {
         refused: overTime.captureRefused,
       },
     },
+    aggregateRows: {
+      what:
+        'DATA-SOURCES §60 and §61. An aggregate row — "Maximum Magic Damage", "Bonus Magic Damage ' +
+        'at Max Stacks" — is arithmetic on the entry\'s own other rows, not independent damage. ' +
+        'Stored `adds` it is summed with the very rows it aggregates, and the ability publishes ' +
+        'more damage than its own source says it can deal. THE ROW IS DROPPED, exactly as ' +
+        'DERIVED_ROW already drops a "Total" row at harvest. No stored VALUE is edited, and every ' +
+        'dropped row is recorded below in full so nothing is lost by dropping it.',
+      whyDroppedRatherThanReRelated:
+        'This pass marked the row `alternativeTo` until 2026-08-15 and that was wrong twice over. ' +
+        "First, `alternativeTo` says \"this row applies INSTEAD of that one\", and an aggregate " +
+        'does not replace the row it aggregates — it CONTAINS it, so the file would have stored a ' +
+        'claim that is false about the world. The 38 charge-up Minimum/Maximum pairs ARE real ' +
+        'alternatives; these twelve rows are not. Second, it cost two abilities their whole ' +
+        'figure: the engine refuses an instance holding an unchosen alternative, so Zoe E went ' +
+        'from a wrong 436 to 0 and Yasuo E from a wrong 328 to 0. Dropping leaves the parts to ' +
+        "sum on their own. DERIVED_ROW itself is UNTOUCHED and must stay so: it is /\\btotal\\b/i " +
+        'and excludes "Minimum"/"Maximum" deliberately, because widening it would have shipped 32 ' +
+        'charge-up abilities at zero damage.',
+      population:
+        `${AGGREGATES_READ.size} entries whose source sentences a person read one at a time ` +
+        '(READ_POPULATION in scripts/extract/aggregate-rows.ts), holding ' +
+        `${[...AGGREGATES_READ.values()].reduce((n, r) => n + r.aggregates.length, 0)} confirmed ` +
+        'aggregate components. Gate 8 tier 1 is a DETECTOR over all 919 entries and proposes; ' +
+        'nothing outside the read population is changed by this pass, and gate 8 also reports 36 ' +
+        'tier-2 findings that are a different cause each time and are NOT acted on here.',
+      definitions: {
+        dropped: 'a confirmed aggregate component removed from the entry, recorded here in full',
+        basis:
+          'the arithmetic showing which siblings the dropped row restates, in the same words gate ' +
+          '8 reports. NULL where no stored sibling reproduces it — the part it aggregates was ' +
+          'never harvested, so the read sentence is the only evidence and the arithmetic is blind.',
+        rank1BaseBefore_rank1BaseAfter:
+          "the sum over components marked 'adds' of the base term at rank 1 times the stated hit " +
+          'count (1 where none is stated). Ratios are excluded because they contribute nothing to ' +
+          'a champion with no ability power and no bonus attack damage. IT IS BLIND to an entry ' +
+          'whose damage is entirely a ratio, which is why the row count is beside it.',
+        componentsBefore_componentsAfter: 'how many damage rows the entry holds',
+      },
+      rowsDropped: aggregates.dropped.length,
+      dropped: aggregates.dropped,
+      hitCountsCorrected: aggregates.hitCounts.length,
+      hitCounts: aggregates.hitCounts,
+      refused: aggregates.refused,
+      unmatchedReadEntries: aggregates.unmatchedReadEntries,
+      perEntry: aggregates.perEntry,
+    },
     sweeps,
     diffAgainstCurated: diff,
+    changedEntriesByPopulation: changedByPopulation,
     absent,
   };
   await writeFile(join(OUT_DIR, 'merge-report.json'), `${JSON.stringify(reportOut, null, 1)}\n`);
@@ -1310,6 +1455,28 @@ async function main(): Promise<void> {
   );
   for (const k of overTime.refused) console.log(`    ${k}`);
   console.log('');
+  console.log('--- aggregate rows stored as additions (DATA-SOURCES §60, §61) ---');
+  console.log(
+    `  aggregate rows dropped: ${aggregates.dropped.length}` +
+      `   hit counts corrected: ${aggregates.hitCounts.length}`,
+  );
+  for (const r of aggregates.dropped) {
+    console.log(`    ${r.entry} DROPPED "${r.label}"  (${r.basis ?? 'no stored sibling reproduces it'})`);
+  }
+  for (const h of aggregates.hitCounts) {
+    console.log(`    ${h.entry} "${h.label}" hits ${String(h.before)} -> ${h.after}`);
+  }
+  for (const r of aggregates.refused) console.log(`    REFUSED ${r.entry} [${r.componentId}] — ${r.why}`);
+  for (const u of aggregates.unmatchedReadEntries) console.log(`    UNMATCHED ${u}`);
+  console.log('  per entry: damage at rank 1 (base terms only) and row count:');
+  for (const r of aggregates.perEntry) {
+    console.log(
+      `    ${r.entry.padEnd(34)} ${String(Math.round(r.rank1BaseBefore * 10) / 10).padStart(7)} -> ` +
+        `${String(Math.round(r.rank1BaseAfter * 10) / 10).padStart(7)}   ` +
+        `rows ${r.componentsBefore} -> ${r.componentsAfter}`,
+    );
+  }
+  console.log('');
   console.log(
     `merged: ${merged.abilities.length} abilities, ${merged.itemEffects.length} item effects, ` +
       `${merged.defensiveEffects!.length} defensive entries, ${merged.runes.length} runes, ` +
@@ -1329,6 +1496,17 @@ async function main(): Promise<void> {
   console.log(
     `  gate 7 ${'total-reconcile'.padEnd(17)} carried from harvest: ${gate7Failures.length} failures, ` +
       `${gate7Failures.filter((f) => f.status !== 'incomplete').length} of them not already incomplete`,
+  );
+  console.log('\n--- changed entries against /curated/, by which work changed them ---');
+  console.log(`  total changed: ${changedByPopulation.totalChanged}`);
+  console.log(
+    `    ${changedByPopulation.thisSessionAggregateRows.entries} aggregate-row corrections (this session)`,
+  );
+  console.log(
+    `    ${changedByPopulation.carriedFromEarlierSessions.entries} carried from earlier sessions — ` +
+      `${changedByPopulation.carriedFromEarlierSessions.componentsMarkedOverTime} components marked overTime, ` +
+      `${changedByPopulation.carriedFromEarlierSessions.hitCountsChanged.length} tick counts, ` +
+      `${changedByPopulation.carriedFromEarlierSessions.statusChanges.length} status changes`,
   );
   console.log('\n--- area sweeps ---');
   for (const s of sweeps) console.log(`  ${s.id.padEnd(44)} found ${String(s.found).padStart(3)}`);

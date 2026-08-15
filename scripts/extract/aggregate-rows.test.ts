@@ -10,7 +10,7 @@ import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 
 import type { CuratedAbility } from '../../src/types/data.ts';
-import { findRedundantAdditions, READ_POPULATION } from './aggregate-rows.ts';
+import { applyReadAggregates, findRedundantAdditions, READ_POPULATION } from './aggregate-rows.ts';
 
 function entry(components: CuratedAbility['components'], maxRank = 5): CuratedAbility {
   return {
@@ -316,5 +316,354 @@ describe('the read population is anchored to entries that actually exist', () =>
         .map((f) => `${f.champion}/${f.slot}/${f.abilityName}`),
     );
     expect(entries.size).toBe(12);
+  });
+});
+
+// =========================================================================================
+// APPLYING THE READING — the relation change, and the four things it must refuse to do.
+// =========================================================================================
+
+describe('applyReadAggregates relates a confirmed aggregate to the part it aggregates', () => {
+  it('Zoe E: the Maximum row is DROPPED, and rank 1 falls from 210 to 70', () => {
+    // The wiki: Magic Damage 70 to 230 (+45% AP); Maximum Mixed Damage 140 to 460 (+90% AP),
+    // and its own text makes the second the SUM of the bubble and the sleep bonus.
+    const zoe = entry(
+      [
+        {
+          id: 'magic-damage',
+          label: 'Magic Damage',
+          damageType: 'magic',
+          base: linear(70, 230),
+          ratios: [{ stat: 'AP', ...linear(45, 45) }],
+          relation: { kind: 'adds' },
+        },
+        {
+          id: 'maximum-mixed-damage',
+          label: 'Maximum Mixed Damage',
+          damageType: 'magic',
+          base: linear(140, 460),
+          ratios: [{ stat: 'AP', ...linear(90, 90) }],
+          relation: { kind: 'adds' },
+        },
+      ] as CuratedAbility['components'],
+    );
+    zoe.champion = 'Zoe';
+    zoe.slot = 'E';
+    zoe.abilityName = 'Sleepy Trouble Bubble';
+
+    const out = applyReadAggregates([zoe]);
+
+    expect(out.dropped).toHaveLength(1);
+    expect(out.dropped[0].componentId).toBe('maximum-mixed-damage');
+    expect(out.dropped[0].basis).toBe('2 x "Magic Damage"');
+    expect(out.perEntry).toEqual([
+      {
+        entry: 'Zoe/E/Sleepy Trouble Bubble',
+        rank1BaseBefore: 210,
+        rank1BaseAfter: 70,
+        componentsBefore: 2,
+        componentsAfter: 1,
+      },
+    ]);
+    // The row is GONE from the entry, and kept in full in the record so nothing is lost.
+    expect(zoe.components.map((c) => c.id)).toEqual(['magic-damage']);
+    expect(out.dropped[0].removed.base).toEqual(linear(140, 460));
+    expect(out.dropped[0].sentence).toContain('capped at Sleepy Trouble Bubble');
+  });
+
+  it('Yasuo E: the hit count the same sentence states is applied, 8 to 4', () => {
+    // Source (Template:Data Yasuo/Sweeping Blade, revid 4008638): "stacks up to 4 times", and
+    // "damage is increased by 25% per stack, up to 25*4% at maximum stacks".
+    const yasuo = entry(
+      [
+        {
+          id: 'magic-damage',
+          label: 'Magic Damage',
+          damageType: 'magic',
+          base: linear(70, 130),
+          relation: { kind: 'adds' },
+        },
+        {
+          id: 'bonus-damage-per-stack',
+          label: 'Bonus Damage per Stack',
+          damageType: 'magic',
+          base: linear(17.5, 32.5),
+          hits: 8,
+          relation: { kind: 'adds' },
+        },
+        {
+          id: 'maximum-bonus-damage',
+          label: 'Maximum Bonus Damage',
+          damageType: 'magic',
+          base: linear(70, 130),
+          relation: { kind: 'adds' },
+        },
+      ] as CuratedAbility['components'],
+    );
+    yasuo.champion = 'Yasuo';
+    yasuo.slot = 'E';
+    yasuo.abilityName = 'Sweeping Blade';
+
+    const out = applyReadAggregates([yasuo]);
+
+    expect(out.hitCounts).toHaveLength(1);
+    expect(out.hitCounts[0]).toMatchObject({
+      componentId: 'bonus-damage-per-stack',
+      before: 8,
+      after: 4,
+    });
+    // 70 + 17.5x8 + 70 = 280 before; 70 + 17.5x4 = 140 after, which is the source's own
+    // "Total Combined Damage" row (70x2 to 130x2) at rank 1.
+    expect(out.perEntry).toEqual([
+      {
+        entry: 'Yasuo/E/Sweeping Blade',
+        rank1BaseBefore: 280,
+        rank1BaseAfter: 140,
+        componentsBefore: 3,
+        componentsAfter: 2,
+      },
+    ]);
+  });
+
+  it('DROPS an aggregate whose part was never harvested, and records that no sibling reproduces it', () => {
+    // Katarina R's physical side: the Maximum row is 15 daggers of a per-dagger row that is not
+    // stored at all. The reading confirmed it is an aggregate; the arithmetic cannot corroborate
+    // that, because the part is absent (DATA-SOURCES §61.3). It is dropped on the reading alone
+    // and `basis` records that the arithmetic was blind — which is also the honest statement of
+    // what is left: the physical side of this ability now has NO stored figure.
+    const kat = entry(
+      [
+        {
+          id: 'maximum-physical-damage',
+          label: 'Maximum Physical Damage',
+          damageType: 'physical',
+          base: { scaling: 'explicit', perRank: [0, 0, 0] },
+          ratios: [{ stat: 'bonusAD', scaling: 'explicit', perRank: [240, 240, 240] }],
+          relation: { kind: 'adds' },
+        },
+        {
+          id: 'magic-damage-per-dagger',
+          label: 'Magic Damage Per Dagger',
+          damageType: 'magic',
+          base: linear(25, 50),
+          ratios: [{ stat: 'AP', ...linear(19, 19) }],
+          hits: 1,
+          relation: { kind: 'adds' },
+        },
+        {
+          id: 'maximum-magic-damage',
+          label: 'Maximum Magic Damage',
+          damageType: 'magic',
+          base: linear(375, 750),
+          ratios: [{ stat: 'AP', ...linear(285, 285) }],
+          relation: { kind: 'adds' },
+        },
+      ] as CuratedAbility['components'],
+      3,
+    );
+    kat.champion = 'Katarina';
+    kat.slot = 'R';
+    kat.abilityName = 'Death Lotus';
+
+    const out = applyReadAggregates([kat]);
+
+    expect(out.dropped.map((r) => r.componentId)).toEqual([
+      'maximum-physical-damage',
+      'maximum-magic-damage',
+    ]);
+    expect(out.dropped[0].basis).toBeNull();
+    expect(out.dropped[1].basis).toBe('15 x "Magic Damage Per Dagger"');
+    expect(out.refused).toEqual([]);
+    expect(kat.components.map((c) => c.id)).toEqual(['magic-damage-per-dagger']);
+    // The dropped row is kept whole, including the coefficient multiplier, so the harvest gap it
+    // leaves behind can be filled from the record rather than from a fresh fetch.
+    expect(out.dropped[0].removed.damageType).toBe('physical');
+  });
+
+  it('REFUSES to drop the last row on an entry', () => {
+    // An entry with no components reads as "nothing was harvested for this slot". That is a
+    // different and false statement from "its only stored row was a summary of parts nobody
+    // harvested". None of the twelve is in this position today; the guard is here so a future
+    // harvest cannot put one there silently.
+    const kat = entry(
+      [
+        {
+          id: 'maximum-physical-damage',
+          label: 'Maximum Physical Damage',
+          damageType: 'physical',
+          base: { scaling: 'explicit', perRank: [0, 0, 0] },
+          ratios: [{ stat: 'bonusAD', scaling: 'explicit', perRank: [240, 240, 240] }],
+          relation: { kind: 'adds' },
+        },
+      ] as CuratedAbility['components'],
+      3,
+    );
+    kat.champion = 'Katarina';
+    kat.slot = 'R';
+    kat.abilityName = 'Death Lotus';
+
+    const out = applyReadAggregates([kat]);
+
+    expect(out.dropped).toEqual([]);
+    expect(kat.components).toHaveLength(1);
+    // Two refusals, and they are different refusals. The first is the last-row guard. The second
+    // is the reading's other confirmed aggregate, which this cut-down fixture does not hold —
+    // a row named by a reading and absent from the file is reported, never searched for by label.
+    expect(out.refused.map((r) => r.componentId)).toEqual([
+      'maximum-physical-damage',
+      'maximum-magic-damage',
+    ]);
+    expect(out.refused[0].why).toContain('last row on the entry');
+    expect(out.refused[1].why).toContain('the file does not hold');
+  });
+
+  it('REFUSES the hit-count correction when the stored count is not the one that was read', () => {
+    const yasuo = entry(
+      [
+        {
+          id: 'magic-damage',
+          label: 'Magic Damage',
+          damageType: 'magic',
+          base: linear(70, 130),
+          relation: { kind: 'adds' },
+        },
+        {
+          id: 'bonus-damage-per-stack',
+          label: 'Bonus Damage per Stack',
+          damageType: 'magic',
+          base: linear(17.5, 32.5),
+          hits: 3,
+          relation: { kind: 'adds' },
+        },
+        {
+          id: 'maximum-bonus-damage',
+          label: 'Maximum Bonus Damage',
+          damageType: 'magic',
+          base: linear(70, 130),
+          relation: { kind: 'adds' },
+        },
+      ] as CuratedAbility['components'],
+    );
+    yasuo.champion = 'Yasuo';
+    yasuo.slot = 'E';
+    yasuo.abilityName = 'Sweeping Blade';
+
+    const out = applyReadAggregates([yasuo]);
+
+    expect(out.hitCounts).toEqual([]);
+    expect(yasuo.components[1].hits).toBe(3);
+    expect(out.refused.some((r) => r.componentId === 'bonus-damage-per-stack')).toBe(true);
+  });
+
+  it('CHANGES NOTHING on an entry outside the read population, however loudly it trips gate 8', () => {
+    // The identical Zoe shape under a champion nobody has read. Gate 8 reports it; this does not
+    // touch it. Widening the population means reading a sentence, not relaxing this test.
+    const stranger = entry([
+      {
+        id: 'magic-damage',
+        label: 'Magic Damage',
+        damageType: 'magic',
+        base: linear(70, 230),
+        relation: { kind: 'adds' },
+      },
+      {
+        id: 'maximum-mixed-damage',
+        label: 'Maximum Mixed Damage',
+        damageType: 'magic',
+        base: linear(140, 460),
+        relation: { kind: 'adds' },
+      },
+    ] as CuratedAbility['components']);
+
+    const out = applyReadAggregates([stranger]);
+
+    expect(out.dropped).toEqual([]);
+    expect(out.hitCounts).toEqual([]);
+    expect(stranger.components).toHaveLength(2);
+    expect(findRedundantAdditions([stranger]).findings).toHaveLength(1);
+  });
+
+  it('an aggregate is never explained by another aggregate on the same entry', () => {
+    // Kassadin R holds two: Maximum Bonus Damage (4x the per-stack row) and Maximum Magic Damage
+    // (the base plus that). Both are dropped, and the arithmetic recorded for each names PARTS —
+    // never the other aggregate, which would leave the record circular.
+    //
+    // THE RATIOS ARE THE WIKI'S OWN AND THEY ARE WHAT DISCRIMINATES. Maximum Bonus Damage's base
+    // (140) is coincidentally twice the base row's (70); its 28% AP is four times the per-stack
+    // row's 7% and nothing like twice the base row's 50%. A fixture stripped of its ratios would
+    // pass this test for the wrong reason.
+    const kass = entry(
+      [
+        {
+          id: 'magic-damage',
+          label: 'Magic Damage',
+          damageType: 'magic',
+          base: linear(70, 110),
+          ratios: [{ stat: 'AP', ...linear(50, 50) }],
+          relation: { kind: 'adds' },
+        },
+        {
+          id: 'bonus-damage-per-stack',
+          label: 'Bonus Damage Per Stack',
+          damageType: 'magic',
+          base: linear(35, 55),
+          ratios: [{ stat: 'AP', ...linear(7, 7) }],
+          hits: 1,
+          relation: { kind: 'adds' },
+        },
+        {
+          id: 'maximum-bonus-damage',
+          label: 'Maximum Bonus Damage',
+          damageType: 'magic',
+          base: linear(140, 220),
+          ratios: [{ stat: 'AP', scaling: 'explicit', perRank: [28, 28, 28] }],
+          relation: { kind: 'adds' },
+        },
+        {
+          id: 'maximum-magic-damage',
+          label: 'Maximum Magic Damage',
+          damageType: 'magic',
+          base: linear(210, 330),
+          ratios: [{ stat: 'AP', scaling: 'explicit', perRank: [78, 78, 78] }],
+          relation: { kind: 'adds' },
+        },
+      ] as CuratedAbility['components'],
+      3,
+    );
+    kass.champion = 'Kassadin';
+    kass.slot = 'R';
+    kass.abilityName = 'Riftwalk';
+
+    const out = applyReadAggregates([kass]);
+
+    expect(out.dropped).toHaveLength(2);
+    const byId = new Map(out.dropped.map((r) => [r.componentId, r.basis]));
+    expect(byId.get('maximum-bonus-damage')).toBe('4 x "Bonus Damage Per Stack"');
+    expect(byId.get('maximum-magic-damage')).toBe('"Magic Damage" + 4 x "Bonus Damage Per Stack"');
+    expect(kass.components.map((c) => c.id)).toEqual(['magic-damage', 'bonus-damage-per-stack']);
+    // 70 + 35 + 140 + 210 = 455 before; 70 + 35 = 105 after.
+    expect(out.perEntry).toEqual([
+      {
+        entry: 'Kassadin/R/Riftwalk',
+        rank1BaseBefore: 455,
+        rank1BaseAfter: 105,
+        componentsBefore: 4,
+        componentsAfter: 2,
+      },
+    ]);
+  });
+
+  it('gate 8 finds nothing left in the read population once the pass has run', () => {
+    const file = JSON.parse(readFileSync('curated/curated-data.json', 'utf8')) as {
+      abilities: CuratedAbility[];
+    };
+    const copy = JSON.parse(JSON.stringify(file.abilities)) as CuratedAbility[];
+    const out = applyReadAggregates(copy);
+    expect(out.dropped.length).toBeGreaterThan(0);
+
+    const stillFiring = findRedundantAdditions(copy)
+      .findings.filter((f) => f.tier === 1)
+      .map((f) => `${f.champion}/${f.slot}/${f.abilityName} [${f.componentId}]`);
+    expect(stillFiring).toEqual([]);
   });
 });
