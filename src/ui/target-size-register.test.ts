@@ -26,6 +26,22 @@
 // What it enforces mechanically is narrower and still useful: the token is referenced by something,
 // every control in the interface is accounted for, and no entry claims to pass by spacing without
 // stating the separation it was measured at.
+//
+// ═══ THIS FILE IS THE RECORD, AND ON 2026-08-15 SIX MEASUREMENTS WENT SOMEWHERE ELSE ═══
+//
+// Commit `b323e9b` measured all six then-unmeasured controls in a real browser at 375px and 320px,
+// and stated its findings — including that the defence toggle is 22.5px on the block axis and
+// passes by spacing at 78.34px — **in its commit message and in no file.** `git log -S "78.34"`
+// finds no commit that ever added that figure to the tree.
+//
+// The cost was immediate and it was not hypothetical: this register still said "unmeasured" for all
+// six, so two agents were dispatched hours later to measure controls that had already been
+// measured. One of them reproduced the shelf figures to the pixel, which is a useful independent
+// confirmation and was not what it was sent to do.
+//
+// **A measurement that lives only in a commit message is a measurement the project has lost.** No
+// test reads it, no reader finds it, and the next person re-does it. If you measure a control, the
+// figure belongs HERE, in the same commit as the measuring.
 
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { dirname, join, relative } from 'node:path';
@@ -75,12 +91,27 @@ const CONTROLS: Record<string, Pass> = {
     measured: '35.22 x 25.39px at 375px, 2026-08-15. Centres 46.84px from the nearest arrow.',
   },
   'combo/combo.css .combo__shelf-button': {
-    how: 'unmeasured',
-    why: 'an ability icon on the shelf. Icon chips are larger than 24px by construction, but nobody has measured one.',
+    how: 'size',
+    measured:
+      '34.00 x 49.19px at 375px, 2026-08-15, on /calculator/ with Lux as the attacker. Nearest ' +
+      "other target 42.00px centre-to-centre, so it would pass by spacing as well; it is recorded " +
+      "as passing by SIZE because the box is the chip's and the chip is a token — " +
+      '--art-chip-combo (32px) plus 1px of border each side. Identical at 1440px, where the shelf ' +
+      'is one row rather than two, and identical again with the lane squeezed to 238px: the shelf ' +
+      'WRAPS rather than shrinking, so no width takes it under the minimum. NOTHING WAS GROWN.',
   },
   'combo/combo.css .combo__shelf-button--text': {
-    how: 'unmeasured',
-    why: 'the basic-attack button, which is text rather than an icon and therefore the one on this shelf most likely to be short.',
+    how: 'size',
+    measured:
+      '96.91 x 36.84px at 375px, 2026-08-15, on /calculator/ with Lux as the attacker. Nearest ' +
+      'other target 52.09px centre-to-centre (73.71px at 1440px, where the shelf is one row). ' +
+      "The register's suspicion that the basic attack was the short one is REFUTED: it is the " +
+      "TALLEST control on the shelf, because --lh-body-m gives it a line box the icon buttons' " +
+      'line-height: 0 does not, and --space-2 pads it twice. NOTHING WAS GROWN; both variants ' +
+      'now name --target-min on the base class so the arithmetic cannot quietly stop clearing it. ' +
+      'Independently reproduced to the pixel by two sessions four hours apart (b323e9b, then a ' +
+      'measurement pass that did not read it) — which is the only reason this entry says REFUTED ' +
+      'rather than "one person once said".',
   },
   'items/items.css .items__remove': {
     how: 'size',
@@ -113,11 +144,13 @@ const CONTROLS: Record<string, Pass> = {
   'picker/runes.css .runes__remove': {
     how: 'unmeasured',
     why:
-      'the rune picker\'s remove control, added 2026-08-15. NOBODY CAN MEASURE IT YET: the picker ' +
-      'is built and its own tests pass, but it is not mounted — `src/ui/app/` composes the page ' +
-      'and no area mounts its own component — so no page renders this control. It is registered ' +
+      "the rune picker's remove control, added 2026-08-15. THE PICKER IS NOW MOUNTED — this entry " +
+      'said "NOBODY CAN MEASURE IT YET" until 2026-08-15 23:2x and that stopped being true when ' +
+      'the lead wired the picker into `src/ui/app/`. A measurement is in flight. `b323e9b` also ' +
+      'claims to have measured it and to have found it passing by size, but recorded the figure ' +
+      'only in its commit message, so nothing here can be taken from that. It is registered ' +
       'rather than left out because the tripwire that caught it is the point: a new control may ' +
-      'not ship unmeasured AND unnamed. Measure it the moment the lead wires the picker. Its ' +
+      'not ship unmeasured AND unnamed. Its ' +
       'sibling `.items__remove` failed by 3.16px on the block axis and always passed on the ' +
       'inline one, so expect the same shape of answer if it is built from the same type.',
   },
