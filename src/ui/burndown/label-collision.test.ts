@@ -61,8 +61,13 @@
 // Not whether any damage figure is right — that is the engine's suite. Not what the page LOOKS
 // like: a collision here is two boxes overlapping in the model, which on screen is two numbers
 // printed across each other. Not the heal label against a heal label in a scenario with several
-// heals, because no population above produces one. Not the x-axis labels underneath, which are a
-// different element with a different rule — counted below, never collision-checked.
+// heals, because no population above produces one.
+//
+// THE X-AXIS NAMES UNDERNEATH ARE CHECKED TOO, in their own census at the foot of this file. This
+// paragraph used to say they were "counted below, never collision-checked" — and they were
+// colliding all along: `inst 1inst 2inst 3+DoT` from six columns on, measured in Chrome on
+// 2026-08-15. They are a different element with a different rule, so they get their own census
+// over the same three populations rather than being folded into the ones above.
 
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
@@ -82,6 +87,8 @@ import { startingCombo, startingConfig } from '../app/App';
 import { buildBurndownModel, type BurndownModel } from './geometry';
 import type { LabelBox } from './label-geometry';
 import {
+  AXIS_LABEL_MIN_GAP_PX,
+  AXIS_MODEL_VALIDATION,
   BREAK_PHONE_PX,
   COLS_INLINE_AT_320,
   COLS_INLINE_AT_375,
@@ -91,7 +98,13 @@ import {
   STACK_INLINE_AT_320,
   STACK_INLINE_AT_375,
   STACK_NAME_MAX_PX,
+  axisEndOverhangPx,
+  axisLabelInlinePx,
+  axisLabelSeparations,
+  axisNameIsKnown,
+  axisRequiredPitchPx,
   collisions,
+  planAxisLabels,
   damageValueInlinePx,
   labelBoxes,
   labelsAreInPlot,
@@ -906,5 +919,408 @@ describe('riser labels/the row beneath the plot', () => {
     // Chrome, 320px, the same scenario: the entry is 152.92px and its name 25.89px, so the
     // figures measure 127.03px. The model is the browser's to a hundredth of a pixel.
     expect(Math.abs(widest - 127.03)).toBeLessThan(0.05);
+  });
+});
+
+// ═══════════════════════════════════════════════════════════════════════════════════════════
+// THE X-AXIS NAMES — MEASURED, THEN THINNED (added 2026-08-15)
+//
+// The file header used to say the axis labels were "counted below, never collision-checked".
+// They are checked now, over the same three populations, because they were colliding: read off
+// Chrome at a 320px viewport on 2026-08-15, the separation between adjacent names is +0.42px on a
+// four-column chart in the preview harness and NEGATIVE from six columns on — `inst 1inst 2inst
+// 3+DoT`, the string `tests/clipped-and-offscreen.test.ts` reported and declined to exempt. On the
+// calculator's wider 148px axis the first overlap is at eight columns and the worst case a reader
+// can build is sixteen.
+//
+// The names survived as long as they did only by WRAPPING: at five columns Chrome reports the
+// labels 31px tall against 15px at four — two lines of axis under a one-line chart — and even
+// wrapped they overlap, because the widest unbreakable word (`inst`, 18.67px) is wider than a
+// column from eight columns on.
+//
+// WHAT IS ASSERTED HERE. The same shape as the riser-label censuses above: BEFORE (one name per
+// column, what the axis did) and AFTER (the thinning rule), over P1/P2/P3 at both axis widths this
+// product actually draws. The AFTER census requires every printed pair to clear
+// `AXIS_LABEL_MIN_GAP_PX`, and asserts the column count is untouched — a "fix" that dropped
+// columns to reach zero overlaps would fail rather than pass.
+// ═══════════════════════════════════════════════════════════════════════════════════════════
+
+/**
+ * THE TWO AXIS WIDTHS, both measured in Chrome at a 320px viewport on 2026-08-15.
+ *
+ * `.burn__xaxis` is inset from the plot's content box by `--space-7 + --space-2` (56px) for the
+ * y-axis rail, so it is exactly as wide as `.burn__cols` — 148px on the calculator. The PREVIEW
+ * HARNESS draws the same chart 32px narrower at 116px, and that difference is the whole reason the
+ * rule takes a measured width rather than a viewport: at one viewport this product draws two
+ * different axis widths, and a breakpoint could only ever be right about one of them.
+ */
+const AXIS_INLINE_CALCULATOR_AT_320 = 148;
+const AXIS_INLINE_PREVIEW_AT_320 = 116;
+
+/**
+ * The measurements below were read off Chrome with a `Range` over each label's own TEXT NODE, so
+ * every figure is the text's advance width rather than the width of the flex box holding it. The
+ * two are not the same thing here — a name is wider than its column — and measuring the box would
+ * have reported 29px for every label on a 116px axis, which is the column and not the name.
+ */
+
+interface AxisCensus {
+  scenarios: number;
+  /** Charts with at least one adjacent pair of printed names closer than the minimum gap. */
+  scenariosWithACollision: number;
+  collidingPairs: number;
+  /** The worst overlap a reader sees, in px. Positive numbers are overlaps. */
+  worstOverlapPx: number;
+  worstOverlapWhere: string;
+  /** The smallest gap between two printed names anywhere in the population. */
+  smallestGapPx: number;
+  maxColumns: number;
+  /** How many names the widest chart in the population prints. */
+  namesOnTheWidestChart: number;
+  /** How far the end names reach past the two ends of the axis. */
+  worstEndOverhangPx: number;
+}
+
+/** Which columns the GROUPING rule already leaves a name on — this rule thins what is left. */
+function axisCandidates(model: BurndownModel): boolean[] {
+  return model.columns.map((c) => !c.groupId || c.groupIndex === 1);
+}
+
+function axisCensus(
+  population: { name: string; result: Result }[],
+  axisInlinePx: number,
+  thinned: boolean,
+): AxisCensus {
+  let scenariosWithACollision = 0;
+  let collidingPairs = 0;
+  let worstOverlapPx = 0;
+  let worstOverlapWhere = '';
+  let smallestGapPx = Number.POSITIVE_INFINITY;
+  let maxColumns = 0;
+  let namesOnTheWidestChart = 0;
+  let worstEndOverhangPx = 0;
+
+  for (const { name, result } of population) {
+    const model = buildBurndownModel(result);
+    const labels = model.columns.map((c) => c.axisLabel);
+    const candidate = axisCandidates(model);
+    const printed = thinned
+      ? planAxisLabels(labels, candidate, axisInlinePx).printed
+      : candidate;
+    const gaps = axisLabelSeparations(labels, printed, axisInlinePx);
+    const shown = printed.filter(Boolean).length;
+    if (model.columns.length > maxColumns) {
+      maxColumns = model.columns.length;
+      namesOnTheWidestChart = shown;
+    }
+    const ends = axisEndOverhangPx(labels, printed, axisInlinePx);
+    worstEndOverhangPx = Math.max(worstEndOverhangPx, ends.leadingPx, ends.trailingPx);
+    let collided = false;
+    gaps.forEach((gap, k) => {
+      smallestGapPx = Math.min(smallestGapPx, gap);
+      if (gap >= AXIS_LABEL_MIN_GAP_PX) return;
+      collided = true;
+      collidingPairs += 1;
+      if (-gap > worstOverlapPx) {
+        worstOverlapPx = -gap;
+        const shownIdx = labels.map((_, i) => i).filter((i) => printed[i] === true);
+        worstOverlapWhere = `${name}: "${labels[shownIdx[k]!]}" then "${labels[shownIdx[k + 1]!]}"`;
+      }
+    });
+    if (collided) scenariosWithACollision += 1;
+  }
+  const round = (n: number) => Math.round(n * 100) / 100;
+  return {
+    scenarios: population.length,
+    scenariosWithACollision,
+    collidingPairs,
+    worstOverlapPx: round(worstOverlapPx),
+    worstOverlapWhere,
+    smallestGapPx: round(smallestGapPx),
+    maxColumns,
+    namesOnTheWidestChart,
+    worstEndOverhangPx: round(worstEndOverhangPx),
+  };
+}
+
+describe('axis names/the width model is the browser’s, not a guess', () => {
+  it('reproduces five axis names read off a real browser to within 0.05px', () => {
+    for (const { text, renderedPx } of AXIS_MODEL_VALIDATION) {
+      expect(Math.abs(axisLabelInlinePx(text) - renderedPx)).toBeLessThan(0.05);
+    }
+  });
+
+  it('reproduces what Chrome drew on the CALCULATOR, where the product’s fonts are loaded', () => {
+    // Chrome, 320px, the calculator page: four columns of 37px, each name 27.88px, so 9.12px
+    // between them. That is the page's own default scenario and the reading the model is pinned
+    // to, because it is the one rendered in IBM Plex Sans.
+    const gapsFor = (labels: string[], axisPx: number) =>
+      axisLabelSeparations(labels, labels.map(() => true), axisPx).map(
+        (g) => Math.round(g * 100) / 100,
+      );
+    expect(gapsFor(['inst 1', 'inst 2', 'inst 3', 'inst 4'], AXIS_INLINE_CALCULATOR_AT_320)).toEqual(
+      [9.12, 9.12, 9.12],
+    );
+  });
+
+  it('AND SAYS WHY THE PREVIEW HARNESS MEASURES WIDER — it loads none of the fonts', () => {
+    // ═══ A DISCREPANCY WORTH KEEPING, BECAUSE IT HAS ALREADY MISLED ONE SESSION ═══
+    //
+    // The same four-column chart on `/src/ui/burndown-preview.html` at the same 320px viewport
+    // measures +0.42px between names where this model says +1.12px. The cause is not the model:
+    // `document.fonts.size` is **0** on that page and **42** on the calculator, so the harness
+    // renders the fallback (`system-ui`) at the same 11px, and every string comes out wider:
+    //
+    //   "inst 1"  27.88 → 28.58     "+DoT"  25.89 → 27.25
+    //   "inst 16" 34.47 → 34.88     "heal"  21.67 → 22.48     "inst"  18.67 → 19.44
+    //
+    // The ratios differ per string (1.012 to 1.053), so there is no correction factor — which is
+    // why the model is pinned to the SHIPPING face and the harness reading is recorded rather than
+    // fitted. An earlier session's `+DoT` overhang figures were taken on that page and are 1.35px
+    // wide per label for this reason.
+    //
+    // THE MARGIN SURVIVES IT ANYWAY, which is the part that matters: the widest fallback name is
+    // 0.41px wider than the widest real one, so a pair the rule places 8px apart in the shipping
+    // face is at worst ~6.6px apart in the fallback. Still a gap, still legible, and no name is
+    // dropped or added by which font loaded.
+    const FALLBACK: Record<string, number> = {
+      'inst 1': 28.58,
+      'inst 16': 34.88,
+      '+DoT': 27.25,
+      heal: 22.48,
+    };
+    for (const [text, fallbackPx] of Object.entries(FALLBACK)) {
+      const shipping = axisLabelInlinePx(text);
+      expect({ text, wider: fallbackPx > shipping, byUnder: fallbackPx - shipping < 1.5 }).toEqual({
+        text,
+        wider: true,
+        byUnder: true,
+      });
+    }
+  });
+
+  it('the vocabulary is closed — every axis name in the roster is one of three shapes', () => {
+    // THE WHOLE MODEL RESTS ON THIS. The widths above are browser measurements of three strings,
+    // which measures every string the axis can print only for as long as `geometry.ts` writes no
+    // fourth shape. A fourth would be sized as `inst NN` and drawn as something else.
+    const unknown = new Set<string>();
+    for (const { result } of [...P1, ...P2, ...P3]) {
+      for (const column of buildBurndownModel(result).columns) {
+        if (!axisNameIsKnown(column.axisLabel)) unknown.add(column.axisLabel);
+      }
+    }
+    expect([...unknown]).toEqual([]);
+  });
+});
+
+/**
+ * ═══ BEFORE — ONE NAME PER COLUMN, WHICH IS WHAT THE AXIS DID ═══
+ *
+ * Every figure below is still computed, from the same populations, by the same functions. It is
+ * the counterfactual: what comes back if `planAxisLabels` stops being called. `collidingPairs`
+ * counts adjacent printed pairs closer than `AXIS_LABEL_MIN_GAP_PX` (8px), so a pair 2px apart is
+ * counted even though its two names do not literally touch — two names 2px apart read as one.
+ */
+const AXIS_BEFORE: Record<string, AxisCensus> = {};
+const AXIS_AFTER: Record<string, AxisCensus> = {};
+
+describe('axis names/BEFORE — what one name per column does', () => {
+  for (const [label, population, axisPx] of [
+    ['P1 on the calculator', P1, AXIS_INLINE_CALCULATOR_AT_320],
+    ['P1 on the preview harness', P1, AXIS_INLINE_PREVIEW_AT_320],
+    ['P3 on the calculator', P3, AXIS_INLINE_CALCULATOR_AT_320],
+    ['P3 on the preview harness', P3, AXIS_INLINE_PREVIEW_AT_320],
+  ] as const) {
+    it(`${label}: the census`, () => {
+      const c = axisCensus(population, axisPx, false);
+      AXIS_BEFORE[label] = c;
+      // Reported, not asserted against a pinned number: these are what the fix is measured
+      // against, and the assertions that matter are in the AFTER block.
+      expect(c.scenarios).toBeGreaterThan(0);
+      console.warn(`  BEFORE ${label}: ${JSON.stringify(c)}`);
+    });
+  }
+});
+
+describe('axis names/AFTER — first, last and every nth', () => {
+  for (const [label, population, axisPx] of [
+    ['P1 on the calculator', P1, AXIS_INLINE_CALCULATOR_AT_320],
+    ['P1 on the preview harness', P1, AXIS_INLINE_PREVIEW_AT_320],
+    ['P2 on the calculator', P2, AXIS_INLINE_CALCULATOR_AT_320],
+    ['P2 on the preview harness', P2, AXIS_INLINE_PREVIEW_AT_320],
+    ['P3 on the calculator', P3, AXIS_INLINE_CALCULATOR_AT_320],
+    ['P3 on the preview harness', P3, AXIS_INLINE_PREVIEW_AT_320],
+  ] as const) {
+    it(`${label}: no two printed names are closer than 8px`, () => {
+      const c = axisCensus(population, axisPx, true);
+      AXIS_AFTER[label] = c;
+      console.warn(`  AFTER  ${label}: ${JSON.stringify(c)}`);
+      expect({ label, pairs: c.collidingPairs, scenarios: c.scenariosWithACollision }).toEqual({
+        label,
+        pairs: 0,
+        scenarios: 0,
+      });
+    });
+  }
+
+  it('the chart is not thinned — the column count is identical either way', () => {
+    // The one way a label rule could reach zero collisions dishonestly is by drawing fewer
+    // columns. Both censuses see the same charts, so both report the same maxima.
+    for (const label of Object.keys(AXIS_BEFORE)) {
+      expect({ label, columns: AXIS_AFTER[label]!.maxColumns }).toEqual({
+        label,
+        columns: AXIS_BEFORE[label]!.maxColumns,
+      });
+    }
+  });
+
+  it('an end name never reaches past the plot’s own padding', () => {
+    // The first and last names are centred on columns 9.25px wide, so they overhang the axis.
+    // `.burn__plot` pads `--space-4` (16px) on both sides and the axis is inset 56px from the
+    // leading edge for the y-axis rail, so an overhang under 16px cannot reach the panel edge.
+    for (const [label, c] of Object.entries(AXIS_AFTER)) {
+      expect({ label, fits: c.worstEndOverhangPx < 16 }).toEqual({ label, fits: true });
+    }
+  });
+
+  it('THE DEFAULT SCENARIO KEEPS ALL FOUR OF ITS NAMES at the narrowest width', () => {
+    // The rule must not thin a chart that has room. Four columns of 37px against names of
+    // 27.88px: 35.88px of pitch required, 37px available, 1.12px of headroom.
+    const model = buildBurndownModel(P1[0]!.result);
+    const labels = model.columns.map((c) => c.axisLabel);
+    const plan = planAxisLabels(labels, axisCandidates(model), AXIS_INLINE_CALCULATOR_AT_320);
+    expect(labels).toEqual(['inst 1', 'inst 2', 'inst 3', 'inst 4']);
+    expect(plan.stride).toBe(1);
+    expect(plan.printed).toEqual([true, true, true, true]);
+  });
+
+  it('and thins the same scenario on the 32px-narrower preview harness — n comes from width', () => {
+    // THE SAME CHART, THE SAME VIEWPORT, A DIFFERENT ANSWER. This is the case a breakpoint cannot
+    // reach: 116px of axis leaves 29px per column against the same 35.88px requirement, so n is 2
+    // and the middle names go. Nothing about the viewport changed between this test and the one
+    // above.
+    const model = buildBurndownModel(P1[0]!.result);
+    const labels = model.columns.map((c) => c.axisLabel);
+    const plan = planAxisLabels(labels, axisCandidates(model), AXIS_INLINE_PREVIEW_AT_320);
+    expect(plan.stride).toBe(2);
+    expect(labels.filter((_, i) => plan.printed[i])).toEqual(['inst 1', 'inst 4']);
+  });
+
+  it('THE `+DoT` NAME IS NEVER THE ONE DROPPED, on any chart in the roster', () => {
+    // SPECIFICATION §3.8's second verdict hangs on a reader seeing where the burst ends and the
+    // tail begins. It is anchored by NAME rather than by position, so this holds however the
+    // column is ordered — and the same clause anchors `heal`.
+    let charts = 0;
+    for (const { name, result } of [...P2, ...P3]) {
+      const model = buildBurndownModel(result);
+      const labels = model.columns.map((c) => c.axisLabel);
+      const dot = labels.indexOf('+DoT');
+      if (dot === -1) continue;
+      charts += 1;
+      for (const axisPx of [AXIS_INLINE_CALCULATOR_AT_320, AXIS_INLINE_PREVIEW_AT_320]) {
+        const plan = planAxisLabels(labels, axisCandidates(model), axisPx);
+        expect({ name, axisPx, dotPrinted: plan.printed[dot] }).toEqual({
+          name,
+          axisPx,
+          dotPrinted: true,
+        });
+      }
+    }
+    // The population is real: 27 ability components carry `overTime`, so this is not vacuous.
+    expect(charts).toBeGreaterThan(20);
+  });
+
+  it('THE LAST NAME IS NEVER DROPPED — and "last" means the last NAME, not the last column', () => {
+    // A basic attack's riders are columns with no name of their own, so a chart can end with
+    // three columns the grouping rule has already blanked. Anchoring the last COLUMN would anchor
+    // a column that prints nothing and leave the final moment's name free to be dropped. Measured
+    // over the roster: charts whose last column is not a candidate are the ordinary case in P3.
+    let endsOnABlankedColumn = 0;
+    for (const { name, result } of [...P2, ...P3]) {
+      const model = buildBurndownModel(result);
+      const labels = model.columns.map((c) => c.axisLabel);
+      const candidate = axisCandidates(model);
+      const last = candidate.lastIndexOf(true);
+      if (last !== labels.length - 1) endsOnABlankedColumn += 1;
+      for (const axisPx of [AXIS_INLINE_CALCULATOR_AT_320, AXIS_INLINE_PREVIEW_AT_320]) {
+        const plan = planAxisLabels(labels, candidate, axisPx);
+        expect({ name, axisPx, lastPrinted: plan.printed[last] }).toEqual({
+          name,
+          axisPx,
+          lastPrinted: true,
+        });
+      }
+    }
+    expect(endsOnABlankedColumn).toBeGreaterThan(0);
+  });
+
+  it('and the difference between the two readings of "last", stated as a case', () => {
+    // THE ROSTER DOES NOT DISCRIMINATE BETWEEN THEM TODAY — the assertion above passes under both
+    // readings, which is worth saying rather than leaving a test that looks stronger than it is.
+    // The two part only when the last CANDIDATE is crowded by the name before it, so that case is
+    // written out: six columns of 20px, names 27.88px wide, and the last two columns blanked by a
+    // group. Anchoring the last COLUMN anchors a column that prints nothing, and `inst 5` — the
+    // final moment on the chart — is dropped for sitting 20px from `inst 4`.
+    const labels = ['inst 1', 'inst 2', 'inst 3', 'inst 4', 'inst 5', 'inst 6'];
+    const candidate = [true, false, false, true, true, false];
+    const plan = planAxisLabels(labels, candidate, 120);
+    expect(labels.filter((_, i) => plan.printed[i])).toEqual(['inst 1', 'inst 5']);
+  });
+
+  it('the worst chart a reader can build: 16 columns, and what it prints', () => {
+    const worst = P3.map(({ result }) => buildBurndownModel(result)).sort(
+      (a, b) => b.columns.length - a.columns.length,
+    )[0]!;
+    const labels = worst.columns.map((c) => c.axisLabel);
+    expect(labels).toHaveLength(16);
+    const plan = planAxisLabels(
+      labels,
+      axisCandidates(worst),
+      AXIS_INLINE_CALCULATOR_AT_320,
+    );
+    // 148px / 16 = 9.25px a column; the widest name is `inst 16` at 34.47px, so 42.47px of pitch
+    // is required and n is 5. The grouping rule has already blanked 9 of the 16, and the thinning
+    // takes what is left down to names that clear 8px of each other.
+    expect(plan.stride).toBe(5);
+    expect(axisCensus([{ name: 'worst', result: P3[0]!.result }], 148, true).collidingPairs).toBe(0);
+    // WHAT IT ACTUALLY PRINTS, AND WHY IT IS THREE NAMES RATHER THAN FOUR. The grouping rule
+    // leaves candidates at 0,1,2,3,4,10,15 — the first five instances stand alone and the rest are
+    // bracketed under three basic attacks — so the positions are clumped rather than evenly
+    // spread. From `inst 1` the next candidate that clears 42.47px is `inst 11` at 92.5px;
+    // `inst 5` sits 37px along and misses by 5.47px. 148px of axis has room for at most
+    // ⌊148 / 42.47⌋ = 3 names of this width, so three is the room rather than a shortfall.
+    expect(labels.filter((_, i) => plan.printed[i])).toEqual(['inst 1', 'inst 11', '+DoT']);
+  });
+
+  it('IT REALLY IS "EVERY nth" — the rule and the stride agree where every column is a candidate', () => {
+    // The ruling's own words are "the first, the last, and every nth in between". The rule is
+    // implemented as a pitch test rather than a modulo, so this is what says the two are the same
+    // thing wherever the grouping rule has not blanked anything: over every column count from 2 to
+    // 16 and both axis widths, the printed set is exactly `0, n, 2n, …` plus the last column.
+    for (const axisPx of [AXIS_INLINE_CALCULATOR_AT_320, AXIS_INLINE_PREVIEW_AT_320]) {
+      for (let columns = 2; columns <= 16; columns += 1) {
+        const labels = Array.from({ length: columns }, (_, i) => `inst ${i + 1}`);
+        const plan = planAxisLabels(labels, labels.map(() => true), axisPx);
+        const printed = labels.map((_, i) => i).filter((i) => plan.printed[i]);
+        const strided = labels
+          .map((_, i) => i)
+          .filter((i) => i % plan.stride === 0 || i === columns - 1);
+        // The one permitted difference is the tail: a strided name too close to the LAST column is
+        // dropped, because the last is an anchor and never yields. Everything before it matches.
+        expect({ axisPx, columns, printed: printed.filter((i) => i !== columns - 1) }).toEqual({
+          axisPx,
+          columns,
+          printed: strided
+            .filter((i) => i !== columns - 1)
+            .filter((i) => (columns - 1 - i) * (axisPx / columns) >= axisRequiredPitchPx(labels)),
+        });
+      }
+    }
+  });
+
+  it('an unmeasured axis prints every name — a chart nobody has measured is never thinned', () => {
+    const labels = ['inst 1', 'inst 2', 'inst 3', '+DoT'];
+    const plan = planAxisLabels(labels, labels.map(() => true), 0);
+    expect(plan.printed).toEqual([true, true, true, true]);
   });
 });

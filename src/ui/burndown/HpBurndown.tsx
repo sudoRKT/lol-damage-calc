@@ -21,8 +21,16 @@
 // two-row table of text. There is no information in the picture that is not in the
 // accessibility tree.
 
-import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import type { CSSProperties } from 'react';
+import {
+  Fragment,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
+import type { CSSProperties, RefObject } from 'react';
 import type { DamageByType, DamageType, ReportedDamageType, Result } from '../../types';
 import {
   AggregateTotal,
@@ -42,6 +50,7 @@ import {
   STEP_MS,
   type BurndownColumn,
 } from './geometry';
+import { planAxisLabels } from './label-geometry';
 import './burndown.css';
 
 const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)';
@@ -314,6 +323,46 @@ export function riserName(column: BurndownColumn, maxHp: number, statusLabel: st
   return parts.join('. ') + '.';
 }
 
+/**
+ * HOW WIDE THE X AXIS ACTUALLY IS, measured from the element itself.
+ *
+ * ═══ WHY THIS IS MEASURED AND NOT DERIVED FROM A WIDTH QUERY ═══
+ *
+ * A name needs 35.88px of column and sixteen columns leave 9.25px, so the axis has to print fewer
+ * names than it has columns (DESIGN.md §7's axis; the ruling of 2026-08-15). How many fewer
+ * depends on the width one column HAS — and a viewport does not say what that is. Measured in
+ * Chrome at one 320px viewport on 2026-08-15: the calculator gives this axis 148px and the preview
+ * harness gives it 116px, a 27% difference at the same viewport, because the two pages nest it in
+ * different padding. A `@media` threshold would have to be wrong about one of them, and
+ * DESIGN.md §4b spends this product's one width query on the riser labels in any case.
+ *
+ * SO IT IS READ OFF THE BOX. `useLayoutEffect` runs after the DOM is written and BEFORE the
+ * browser paints, so the first frame a reader sees already carries the right number of names —
+ * there is no flash of a crowded axis. A `ResizeObserver` keeps it right through a rotation, a
+ * window drag, or the ad rails appearing at 1280px.
+ *
+ * ZERO MEANS "NOT MEASURED", AND NOT "NO ROOM". jsdom computes no layout and returns zeroes, and
+ * so would a server render; `planAxisLabels` prints every name at zero, which is the behaviour
+ * this replaces. A chart nobody has measured is never a thinned chart.
+ */
+function useMeasuredInlineSize(): [RefObject<HTMLOListElement>, number] {
+  const ref = useRef<HTMLOListElement>(null);
+  const [inlinePx, setInlinePx] = useState(0);
+
+  useLayoutEffect(() => {
+    const element = ref.current;
+    if (!element) return undefined;
+    const measure = () => setInlinePx(element.getBoundingClientRect().width);
+    measure();
+    if (typeof ResizeObserver !== 'function') return undefined;
+    const observer = new ResizeObserver(measure);
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, []);
+
+  return [ref, inlinePx];
+}
+
 export interface HpBurndownProps {
   result: Result;
   /** Heading text. The chart is a figure and needs a name; the page supplies the wording. */
@@ -338,8 +387,23 @@ export function HpBurndown({ result, title = 'HP burndown' }: HpBurndownProps) {
   const rolling = useOdometer(model.cumulativeByType, reduced);
   const settled = useSettled(reduced, model.cumulativeByType.length);
   const [open, setOpen] = useState<number | null>(null);
+  const [axisRef, axisInlinePx] = useMeasuredInlineSize();
 
   const close = useCallback(() => setOpen(null), []);
+
+  // WHICH COLUMNS PRINT THEIR NAME. Two thinnings compose here and they answer different
+  // questions. The GROUPING rule (`geometry.ts`) blanks the riders of a basic attack because four
+  // columns were one moment; this rule thins what is left because a name is wider than a column.
+  // The first is about meaning, the second about width, and neither can do the other's job.
+  const axisPlan = useMemo(
+    () =>
+      planAxisLabels(
+        model.columns.map((c) => c.axisLabel),
+        model.columns.map((c) => !c.groupId || c.groupIndex === 1),
+        axisInlinePx,
+      ),
+    [model.columns, axisInlinePx],
+  );
 
   // WHICH COLUMN IS OPEN, and how much plot lies to the RIGHT of it. The popover is rendered
   // here rather than inside the column so that the box it cannot leave is the plot — see the
@@ -525,14 +589,36 @@ export function HpBurndown({ result, title = 'HP burndown' }: HpBurndownProps) {
             non-colour cue is its SHAPE — a rule with turned-up ends, which nothing else here has.
 
             Only the first column of a group prints a label; the rest print nothing, so the group
-            reads as one labelled moment rather than as N labelled columns. */}
-        <ol className="burn__xaxis" aria-hidden="true">
-          {model.columns.map((c) => (
+            reads as one labelled moment rather than as N labelled columns.
+
+            ═══ AND THE NAMES ARE THINNED BY WIDTH (added 2026-08-15) ═══
+
+            A name is 27.88px wide and a column in the worst chart a reader can build is 9.25px,
+            so the axis printed `inst 1inst 2inst 3+DoT` — measured in Chrome at 320px, +0.42px
+            between names on a four-column chart and negative from six columns on. There is no
+            type size DESIGN.md §3 permits that closes a gap of that size, so the names thin:
+            the first, the last, `+DoT`, and every nth in between, with n derived from the width
+            each column actually has (`planAxisLabels`).
+
+            EVERY COLUMN KEEPS A TICK, and that is what makes it a thinning rather than a loss:
+            sixteen columns read as sixteen divisions with three of them named. The tick under a
+            printed name is the taller steel one, the rest are hairlines — brightness and weight,
+            never hue (DESIGN.md §1, §6). An axis that silently dropped labels would be a table
+            silently dropping rows.
+
+            NOTHING HERE REACHES THE ACCESSIBILITY TREE. The axis is `aria-hidden` at every width
+            and always was; each riser's own `aria-label` names its instance, all sixteen of
+            them. Same standing as §4b's riser labels: a visual answer to a visual problem. */}
+        <ol className="burn__xaxis" aria-hidden="true" ref={axisRef}>
+          {model.columns.map((c, i) => (
             <li
               className={`burn__xlabel${c.groupId ? ' burn__xlabel--grouped' : ''}`}
               key={`${c.kind}-${c.position}`}
             >
-              {c.groupId && c.groupIndex > 1 ? null : c.axisLabel}
+              <span
+                className={`burn__xtick${axisPlan.printed[i] ? ' burn__xtick--named' : ''}`}
+              />
+              {axisPlan.printed[i] ? <span className="burn__xname">{c.axisLabel}</span> : null}
               {c.groupId && c.groupIndex === 1 ? (
                 <span
                   className="burn__bracket"
@@ -541,7 +627,11 @@ export function HpBurndown({ result, title = 'HP burndown' }: HpBurndownProps) {
               ) : null}
             </li>
           ))}
-          {model.columns.length === 0 ? <li className="burn__xlabel">—</li> : null}
+          {model.columns.length === 0 ? (
+            <li className="burn__xlabel">
+              <span className="burn__xname">—</span>
+            </li>
+          ) : null}
         </ol>
         <p className="burn__caption">sequence — not elapsed time</p>
 

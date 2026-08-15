@@ -494,20 +494,80 @@
 .burn__xaxis {
   display: flex;
   margin-inline-start: calc(var(--space-7) + var(--space-2));
-  margin-block-start: var(--space-2);
+  /* NO TOP MARGIN ANY MORE: the tick below is what holds the names off the plot, and it is the
+   * same 8px the margin was. The axis is no taller than it was — and at narrow widths it is one
+   * line SHORTER, because the names no longer wrap. */
   list-style: none;
   padding: 0;
 }
 
+/* --------------------------------------------------------------------------
+ * ONE SLOT PER COLUMN, WHETHER OR NOT IT PRINTS A NAME (changed 2026-08-15).
+ *
+ * A column flex box, centred: the tick sits over the middle of its column and the name — when
+ * there is one — sits under the tick. The `li` keeps its `flex: 1 1 0` share of the same axis the
+ * plot's columns divide, so tick N is over column N by construction rather than by an offset.
+ * -------------------------------------------------------------------------- */
+
 .burn__xlabel {
   flex: 1 1 0;
   min-inline-size: 0;
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   font-family: var(--font-body);
   font-size: var(--type-body-s);
   line-height: var(--lh-body-s);
   font-weight: var(--weight-body-medium);
   color: var(--text-secondary);
+}
+
+/* --------------------------------------------------------------------------
+ * THE TICKS — HOW A READER SEES THAT NAMES WERE SKIPPED (added 2026-08-15).
+ *
+ * The axis prints the first name, the last, `+DoT`, and every nth in between, because a name is
+ * 27.88px wide and a column in the worst chart is 9.25px (`label-geometry.ts`). Sixteen columns
+ * can therefore carry three names — and three names under sixteen risers would read as a chart
+ * with three instances if nothing else were drawn. The tick is what stops that: EVERY column
+ * keeps one, so the divisions are all still there and only their labelling is thinned.
+ *
+ * NAMED VERSUS UNNAMED IS BRIGHTNESS AND LENGTH, NEVER HUE. DESIGN.md §1 reserves colour for the
+ * three damage types, lethal magenta and the recent-damage gold; an axis division is not damage
+ * data. A named tick is `--space-2` of `--border-steel`, an unnamed one `--space-1` of
+ * `--border-hair` — the major/minor pair every measuring instrument uses, and both survive
+ * greyscale.
+ * -------------------------------------------------------------------------- */
+
+.burn__xtick {
+  inline-size: 0;
+  block-size: var(--space-1);
+  border-inline-start: var(--border-hair);
+}
+
+.burn__xtick--named {
+  block-size: var(--space-2);
+  border-inline-start: var(--border-steel);
+}
+
+/* --------------------------------------------------------------------------
+ * THE NAME ITSELF, ON ONE LINE (added 2026-08-15).
+ *
+ * `nowrap` is the point rather than a detail. Before the thinning the names survived narrow
+ * columns by BREAKING: Chrome reported the labels 31px tall at five columns against 15px at four
+ * — two lines of axis under a one-line chart — and they overlapped anyway, because `inst` on its
+ * own is 18.67px and a column at eight columns is 18.5px. Now that only names with room are
+ * printed, each one is drawn as it is measured.
+ *
+ * It cannot escape its panel. The name is centred on a column, so it overhangs by at most
+ * (34.47 − 9.25) / 2 = 12.61px, and `.burn__plot` pads `--space-4` (16px) on both sides — the
+ * leading side has a further 56px of y-axis rail. `axisEndOverhangPx` asserts that over the whole
+ * roster, and this rule is `position: static`, so it is not the nowrap-plus-absolute construction
+ * that put LETHAL off the screen (`tests/clipped-and-offscreen.test.ts`).
+ * -------------------------------------------------------------------------- */
+
+.burn__xname {
+  flex: 0 0 auto;
+  white-space: nowrap;
 }
 
 /* --------------------------------------------------------------------------

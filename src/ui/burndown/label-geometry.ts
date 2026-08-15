@@ -343,6 +343,297 @@ function labelText(column: BurndownColumn): string {
   return `${formatDamage(column.damage)}${THIN_SPACE}${TAG_TEXT[column.damageType]}`;
 }
 
+// ---------------------------------------------------------------------------
+// THE X AXIS — WHICH COLUMNS PRINT A NAME (added 2026-08-15)
+// ---------------------------------------------------------------------------
+//
+// ═══ THE DEFECT, MEASURED IN CHROME BEFORE ANYTHING WAS CHANGED ═══
+//
+// The axis printed one name per column, and a name does not fit in a column. Read off the live
+// pages at a 320px viewport on 2026-08-15, separation being the gap between one name's trailing
+// edge and the next one's leading edge:
+//
+//   preview harness, 116px axis   4 columns  +0.42px   5 columns  WRAPS to two lines
+//                                 6 columns  −0.10px   7 columns  −2.87px, and −6.77px at `+DoT`
+//   calculator,      148px axis   8 columns  −0.17px  16 columns  −9.42px
+//
+// A negative separation is `inst 1inst 2inst 3+DoT` — the string the cross-area sweep in
+// `tests/clipped-and-offscreen.test.ts` reported and declined to exempt. Sixteen columns is
+// 9.25px each and no type size DESIGN.md §3 permits fits a name into that, so there is no fluid
+// answer: the LABELS THIN. The ruling (2026-08-15) is first, last, and every nth in between, with
+// `n` derived from the width each column actually has.
+//
+// ═══ WHY THE NAMES ARE MEASURED AND NOT COMPUTED ═══
+//
+// A riser label is JetBrains Mono, monospace, so the model above is a character count times a
+// constant. An axis name is IBM Plex Sans — PROPORTIONAL — and no arithmetic over the type scale
+// gives its width. So the constants below are READ OFF A REAL BROWSER, which is honest for one
+// reason only: **the vocabulary is closed**. `geometry.ts` writes exactly three shapes of axis
+// name — `inst N`, `+DoT`, `heal` — and nothing else, so measuring three strings measures every
+// string the axis can ever print. `axisNameIsKnown` is what keeps that true: a fourth shape is
+// REPORTED by the census rather than silently measured as something it is not.
+//
+// Measured in Chrome, `.burn__xlabel` (`--font-body`, `--type-body-s`, `--weight-body-medium` —
+// 500 11px/15.4px IBM Plex Sans), with a Range over the text node so the figure is the text's own
+// advance width and not its flex box:
+//
+//   "inst"  18.67   " "  2.60   any digit  6.61   "+DoT"  25.89   "heal"  21.67
+//
+// Every digit measures 6.61 — the face's figures are the same width as each other — so `inst 9`
+// and `inst 1` are the same 27.88px and only the DIGIT COUNT moves the number.
+
+/** `"inst"`, the word every burst column's name starts with. Browser-measured. */
+export const AXIS_INST_WORD_PX = 18.67;
+
+/** The space inside `inst N`. Browser-measured, and much narrower than a monospace space. */
+export const AXIS_SPACE_PX = 2.6;
+
+/** One digit. Every digit 0–9 measures the same, which is why only the count matters. */
+export const AXIS_DIGIT_PX = 6.61;
+
+/** `"+DoT"` — the damage-over-time column's name. */
+export const AXIS_DOT_PX = 25.89;
+
+/** `"heal"` — the unplaced-healing column's name. */
+export const AXIS_HEAL_PX = 21.67;
+
+/**
+ * THE MINIMUM GAP BETWEEN TWO PRINTED NAMES: `--space-2`, 8px.
+ *
+ * DESIGN.md §4 gives `--space-2` as "gaps between related controls", which is what two adjacent
+ * axis names are. It is a decision with a measured consequence, so it is stated rather than tuned:
+ * the calculator's DEFAULT scenario is four columns of 37px at 320px carrying `inst 1`..`inst 4`
+ * at 27.88px, so it needs 35.88px of pitch and has 37px — **1.12px of headroom, and all four
+ * names keep printing.** At `--space-3` (12px) that scenario would need 39.88px and would start
+ * dropping names on a page where nothing is wrong, which is why the next step up is not taken.
+ * Below `--space-2` the gap stops being a gap: at 0 the four names sit 1.12px apart and read as
+ * one string, which is the defect this whole rule exists to remove.
+ */
+export const AXIS_LABEL_MIN_GAP_PX = 8;
+
+/**
+ * Four names read off the live page, against what this model predicts for them. Asserted before
+ * any count below is believed, exactly as `MODEL_VALIDATION` is for the riser labels.
+ */
+export const AXIS_MODEL_VALIDATION: { text: string; renderedPx: number }[] = [
+  { text: 'inst 1', renderedPx: 27.88 },
+  { text: 'inst 9', renderedPx: 27.88 },
+  { text: 'inst 16', renderedPx: 34.47 },
+  { text: '+DoT', renderedPx: 25.89 },
+  { text: 'heal', renderedPx: 21.67 },
+];
+
+/** Is this one of the three shapes `geometry.ts` writes? Anything else is reported, never sized. */
+export function axisNameIsKnown(text: string): boolean {
+  return text === '+DoT' || text === 'heal' || /^inst \d+$/.test(text);
+}
+
+/**
+ * The rendered width of one axis name, ON ONE LINE.
+ *
+ * On one line is the point: the axis used to let `inst 4` WRAP to two lines to survive a 23px
+ * column, which is how a chart ends up with a two-line axis under a one-line label. The names are
+ * `white-space: nowrap` now, so this width is what the browser draws.
+ *
+ * An unknown name answers the widest known one rather than a guess — an upper bound used as one.
+ * It cannot happen silently: `axisNameIsKnown` is asserted over the whole roster.
+ */
+export function axisLabelInlinePx(text: string): number {
+  if (text === '+DoT') return AXIS_DOT_PX;
+  if (text === 'heal') return AXIS_HEAL_PX;
+  const digits = /^inst (\d+)$/.exec(text)?.[1];
+  if (digits) return AXIS_INST_WORD_PX + AXIS_SPACE_PX + digits.length * AXIS_DIGIT_PX;
+  return AXIS_INST_WORD_PX + AXIS_SPACE_PX + 2 * AXIS_DIGIT_PX;
+}
+
+/**
+ * The pitch two printed names need between them: the widest name IN THIS CHART, plus the gap.
+ *
+ * THE WIDEST NAME IN THIS CHART, NOT THE WIDEST NAME POSSIBLE. Sizing every axis against
+ * `inst 16` would thin a four-column chart that has room for all four of its names — the rule
+ * would then be answering the worst case the product can produce rather than the case on screen.
+ * It is an upper bound over the names actually present, so it holds for every pair in that chart
+ * including the pair of widest ones.
+ */
+export function axisRequiredPitchPx(labels: readonly string[]): number {
+  const widest = labels.reduce((w, t) => Math.max(w, axisLabelInlinePx(t)), 0);
+  return widest + AXIS_LABEL_MIN_GAP_PX;
+}
+
+/**
+ * `n` — how many columns apart two printed names must be, derived from the width one column has.
+ *
+ * This is the ruling's own number, and it comes from the axis's measured width rather than from a
+ * column count or a viewport threshold: `columnPx = axisInlinePx / columns`, and `n` is the
+ * smallest whole number of columns whose pitch clears `axisRequiredPitchPx`. The same arithmetic
+ * gives 1 at a desktop width, 2 on the preview harness's four-column chart, and 5 on the
+ * calculator's sixteen — with nothing in it that knows what a phone is.
+ */
+export function axisLabelStride(labels: readonly string[], axisInlinePx: number): number {
+  const columns = labels.length;
+  if (columns === 0 || !(axisInlinePx > 0)) return 1;
+  const columnPx = axisInlinePx / columns;
+  return Math.max(1, Math.ceil(axisRequiredPitchPx(labels) / columnPx));
+}
+
+/** One column's standing on the axis: may it be dropped, and does it print a name? */
+export interface AxisLabelPlan {
+  /** Columns whose name may never be dropped: the first, the last, and any non-`inst` name. */
+  anchors: boolean[];
+  /** Whether each column prints its name. */
+  printed: boolean[];
+  /** `n`, reported so a test and a comment can state it rather than infer it. */
+  stride: number;
+}
+
+/**
+ * WHICH COLUMNS PRINT THEIR NAME. The whole rule, in one function, with no width query in it.
+ *
+ * `candidate` is the set the GROUPING rule already leaves — a basic attack carrying three on-hit
+ * riders is four columns and one printed name, and that thinning predates this one. This rule
+ * thins what is left; it never revives a name grouping removed.
+ *
+ * ═══ THE THREE THINGS THE RULING LEFT TO SETTLE, SETTLED ═══
+ *
+ * **1. Available width is the axis element's own measured inline size**, passed in by the
+ * component from a live measurement, divided by the number of columns. Not a viewport, not a
+ * breakpoint, not a constant: the burndown draws at 148px of axis on the calculator at 320px and
+ * at 116px on the preview harness at the same viewport, and a rule keyed to the viewport would be
+ * wrong on one of them. `axisInlinePx <= 0` means NOT YET MEASURED and prints every name, which is
+ * the behaviour this replaces — a chart that has not been measured is never a thinned chart.
+ *
+ * **2. First, last, AND `+DoT` — and the third is not redundant.** `geometry.ts` puts `+DoT` last
+ * and `heal` first, so on today's data "first and last" already keeps both. They are anchored BY
+ * NAME anyway, because what makes `+DoT` unloseable is not its position: SPECIFICATION §3.8's
+ * second verdict is the reason the column exists, and a reader who cannot see where the burst ends
+ * and the tail begins cannot read either verdict. Anchoring it by name means a future change to
+ * where the column sits cannot quietly take the label with it. It is also the one name that CANNOT
+ * WRAP — one word — so it was already overhanging its column before any of this.
+ *
+ * **3. A thinned axis is drawn with a tick per column** (`burndown.css`, `.burn__xtick`): every
+ * column keeps a mark, and only the mark under a printed name is the taller steel one. So sixteen
+ * columns still read as sixteen divisions with four of them named, rather than as a chart with
+ * four instances — an axis that silently dropped its labels would be a table silently dropping
+ * rows. The names themselves carry the step: `inst 1 · inst 6 · inst 11 · inst 16` says what `n`
+ * is without a legend.
+ *
+ * **THE ACCESSIBLE NAME IS NOT TOUCHED BY ANY OF THIS.** The axis is `aria-hidden` at every width
+ * and always was; every instance is announced by its riser's own `aria-label` (`riserName`), which
+ * names `Instance N` for all sixteen. Same standing as the riser labels below `--break-phone`:
+ * moving or thinning a label is a visual answer to a visual problem.
+ */
+export function planAxisLabels(
+  labels: readonly string[],
+  candidate: readonly boolean[],
+  axisInlinePx: number,
+): AxisLabelPlan {
+  const columns = labels.length;
+  const stride = axisLabelStride(labels, axisInlinePx);
+  // THE FIRST AND LAST **CANDIDATE**, NOT THE FIRST AND LAST COLUMN. A basic attack's riders are
+  // columns with no name of their own, and a chart can end with three of them — so the last column
+  // and the last NAME are not the same thing, and anchoring the column would anchor nothing while
+  // leaving the final moment's name droppable.
+  const firstCandidate = candidate.indexOf(true);
+  const lastCandidate = candidate.lastIndexOf(true);
+  const anchors = labels.map(
+    (text, i) =>
+      candidate[i] === true &&
+      (i === firstCandidate || i === lastCandidate || !text.startsWith('inst ')),
+  );
+  const printed = labels.map(() => false);
+  if (columns === 0) return { anchors, printed, stride };
+  if (!(axisInlinePx > 0)) {
+    // NOT MEASURED. Print what the grouping rule leaves and nothing is thinned.
+    return { anchors, printed: candidate.map((c) => c === true), stride };
+  }
+
+  const columnPx = axisInlinePx / columns;
+  const required = axisRequiredPitchPx(labels);
+  const kept: number[] = [];
+
+  for (let i = 0; i < columns; i += 1) {
+    if (candidate[i] !== true) continue;
+
+    // ═══ WHY THIS IS A GREEDY PITCH RULE AND NOT A LITERAL `i % n === 0` ═══
+    //
+    // The two are the SAME THING when every column is a candidate: the first index at least
+    // `required` px from the last printed name is exactly `ceil(required / columnPx)` columns
+    // along, which is `n`. `axisLabelStride` reports that number and a test asserts the identity.
+    //
+    // They differ where the GROUPING rule has already blanked columns, and there the modulo is
+    // strictly worse. A basic attack carrying three riders leaves candidates at irregular
+    // positions, and a candidate 6 columns along is refused by `6 % 5` even though it clears the
+    // pitch by 13px. Measured on the 16-column worst case: the modulo prints 3 names where the
+    // pitch rule prints 5, having thrown away two that fitted.
+    let drop = false;
+    while (kept.length > 0) {
+      const prev = kept[kept.length - 1]!;
+      if ((i - prev) * columnPx >= required) break;
+      // TOO CLOSE. An anchor evicts a strided neighbour; a strided name yields to anything.
+      if (anchors[i] && !anchors[prev]) {
+        kept.pop();
+        continue;
+      }
+      if (!anchors[i]) drop = true;
+      // Two anchors too close for each other keep BOTH: the first and last name of a chart are
+      // never dropped, and an axis narrow enough for that is narrower than any this product draws.
+      break;
+    }
+    if (!drop) kept.push(i);
+  }
+
+  for (const i of kept) printed[i] = true;
+  return { anchors, printed, stride };
+}
+
+/** The gap between each adjacent pair of PRINTED names, in px. Negative is an overlap. */
+export function axisLabelSeparations(
+  labels: readonly string[],
+  printed: readonly boolean[],
+  axisInlinePx: number,
+): number[] {
+  const columns = labels.length;
+  const columnPx = axisInlinePx / columns;
+  const at = labels.map((_, i) => (i + 0.5) * columnPx);
+  const shown = labels.map((_, i) => i).filter((i) => printed[i] === true);
+  const out: number[] = [];
+  for (let k = 1; k < shown.length; k += 1) {
+    const a = shown[k - 1]!;
+    const b = shown[k]!;
+    out.push(
+      at[b]! -
+        axisLabelInlinePx(labels[b]!) / 2 -
+        (at[a]! + axisLabelInlinePx(labels[a]!) / 2),
+    );
+  }
+  return out;
+}
+
+/**
+ * How far the FIRST and LAST printed names reach past the two ends of the axis, in px.
+ *
+ * A name is centred on its column and is wider than one, so it overhangs — and the two that
+ * overhang past the axis itself are the ones at the ends. `.burn__plot` pads `--space-4` (16px)
+ * on both sides and the axis is inset from the leading edge by a further `--space-7 + --space-2`
+ * (56px) for the y-axis rail, so an overhang inside 16px cannot reach either edge of the panel.
+ */
+export function axisEndOverhangPx(
+  labels: readonly string[],
+  printed: readonly boolean[],
+  axisInlinePx: number,
+): { leadingPx: number; trailingPx: number } {
+  const columns = labels.length;
+  const shown = labels.map((_, i) => i).filter((i) => printed[i] === true);
+  if (columns === 0 || shown.length === 0) return { leadingPx: 0, trailingPx: 0 };
+  const columnPx = axisInlinePx / columns;
+  const first = shown[0]!;
+  const last = shown[shown.length - 1]!;
+  const leading = axisLabelInlinePx(labels[first]!) / 2 - (first + 0.5) * columnPx;
+  const trailing =
+    (last + 0.5) * columnPx + axisLabelInlinePx(labels[last]!) / 2 - axisInlinePx;
+  return { leadingPx: Math.max(0, leading), trailingPx: Math.max(0, trailing) };
+}
+
 export interface Collision {
   a: LabelBox;
   b: LabelBox;

@@ -45,6 +45,8 @@ interface Case {
   defender: string;
   /** Ability slots and `basic`, in order. */
   combo: string[];
+  /** Item ids the ATTACKER holds. Only the rider case needs any. */
+  items?: number[];
 }
 
 const CASES: Case[] = [
@@ -88,14 +90,28 @@ const CASES: Case[] = [
     defender: 'Garen',
     combo: ['E', 'basic'],
   },
+  {
+    // THE WORST CHART A READER CAN BUILD, and the reason it is on this page: until 2026-08-15 the
+    // sixteen-column case existed only as arithmetic in `label-collision.test.ts`, so nobody had
+    // ever LOOKED at the axis it produces. It is what the x-axis thinning rule was written for —
+    // sixteen columns of 9.25px, three of them named, and a tick under every one.
+    what:
+      'REAL DATA — Alistar Q, W, E, R and TWO basic attacks, holding the five items whose ' +
+      'effects ride on a basic attack. Sixteen columns: each rider is its own column, bracketed ' +
+      'under the attack it rode on. The axis prints three names and sixteen ticks.',
+    attacker: 'Alistar',
+    defender: 'Garen',
+    combo: ['Q', 'W', 'E', 'R', 'basic', 'basic'],
+    items: [3115, 3124, 3091, 3153, 3078],
+  },
 ];
 
-function config(apiname: string): ChampionConfig {
+function config(apiname: string, items: number[] = []): ChampionConfig {
   return {
     apiname,
     level: 18,
     abilityRanks: { Q: 5, W: 5, E: 5, R: 3 },
-    items: [],
+    items,
     runes: { keystone: null, primary: [], secondary: [], shards: [] },
     persistent: {},
     entryState: {},
@@ -138,7 +154,7 @@ async function runCases(): Promise<Loaded[]> {
   return CASES.map((c) => {
     const scenario: Scenario = {
       version: 2,
-      attacker: config(c.attacker),
+      attacker: config(c.attacker, c.items),
       defender: config(c.defender),
       combo: comboSteps(c.combo),
     };
