@@ -5265,7 +5265,15 @@ one — the sweep that looks for duplicate labels cannot see it, because the lab
 
 **DEFINITION: entries holding an aggregate row (a "Maximum" or "Total") stored as an ADDITIVE
 component beside the very parts it aggregates, over the 919 stored entries at patch 16.16.1.
-12 entries, 4 of them `derived` and therefore ON SCREEN — Zoe E, Yasuo E, Hwei W, Kled Q.**
+12 entries, 4 of them `derived`.**
+
+**CORRECTED 2026-08-15: "therefore ON SCREEN" did not follow, and only TWO of the four ever
+published a number.** Measured through `simulate` at level 18 against Garen: Zoe E resolved to 436
+and Yasuo E to 328; **Hwei W and Kled Q resolved to 0 both before and after the fix.** Each already
+carried a separate `alternativeTo` component — "Reduced Bonus Damage", "Reduced Damage" — and
+`resolveDamage` refuses any instance holding an unchosen alternative, returning zero with a reason.
+They carry the defect in the data and it never reaches a reader. `derived` is a claim about
+evidence, not about visibility, and the two must be measured separately.
 
 **Zoe E is unambiguous from its own source.** It stores `Magic Damage` 70 to 230 and
 `Maximum Mixed Damage` 140 to 460, BOTH marked `adds`, and the wiki's own text makes the second
@@ -5369,3 +5377,105 @@ ability files are built from, and it is protected three ways — the hook, read-
 permissions, and `permissions.deny`, which refuses the `chmod` that `curated/README.md` names as the
 unlock. **No session can correct these four without the owner unlocking first**, and that is the
 guard working rather than a problem to route around.
+
+---
+
+## 62. Seven areas in parallel — and four stale documents (2026-08-15)
+
+### 62.1 The aggregate rows: dropped, not re-related
+
+§61 read the twelve. The correction was first built as `adds` → `alternativeTo`, and **measuring it
+through the real engine showed that was the wrong shape**: an unchosen alternative makes
+`resolveDamage` refuse the whole instance, so Zoe E and Yasuo E went from a wrong number to NO
+number.
+
+**An aggregate is not an alternative.** "Maximum Mixed Damage" does not replace the bubble damage,
+it contains it. `alternativeTo` therefore stores a claim that is false about the world, and it
+costs the ability its entire figure to store it. A confirmed aggregate is a DERIVED ROW, and this
+project already has one treatment for a derived row: it is not stored. `DERIVED_ROW` drops "Total"
+rows at harvest for exactly this reason.
+
+**16 rows dropped across the 12 entries, plus Yasuo E's hit count 8 → 4.** Components 878 → 862.
+Gate 8 now returns 0 tier-1 findings and still reports its 32 tier-2 ones.
+
+| | before | after |
+|---|---:|---:|
+| **Zoe E** (level 18 vs Garen) | **436** | **145** |
+| **Yasuo E** | **328** | **164** |
+
+Yasuo's 164 is the source's own stated total — its "Total Combined Damage" row is base plus four
+stacks, which is what the remaining components sum to.
+
+**Two properties make dropping safe rather than lossy**, and both are the point:
+- every dropped row is kept WHOLE in `merge-report.json` with its arithmetic and its source
+  sentence, so the removal is reversible from the record alone;
+- a guard refuses to drop an aggregate that is the LAST row on its entry. An entry with no
+  components reads as "nothing was harvested here", which is a different and false statement from
+  "its only stored row summarised parts nobody harvested". Nothing is in that position today.
+
+**Katarina R's physical side now has no stored figure at all.** What was there was fifteen daggers
+presented as one instance. That is a harvest gap, named rather than filled.
+
+### 62.2 THE SESSION'S REAL FINDING: FOUR STALE DOCUMENTS IN ONE DAY
+
+Four separate claims in this project's own documents were false when acted on. **Three of them sent
+an agent to do work that was already finished**, and the pattern is the same one that made an
+engine session refuse 53 damage rows over the coefficient-shape paragraph.
+
+| claim | said | actually |
+|---|---|---|
+| CLAUDE.md's interface headline | burndown 309px BELOW the fold | fixed 2026-08-14 — 350px ABOVE it |
+| CLAUDE.md §44 | the URL drift is open, "a wire-format decision, raised not made" | closed 2026-08-14 in `c6a6754`; `KNOWN_DRIFT` empty since |
+| DESIGN-AUDIT §2 | three SPECIFICATION requirements absent | built in `1e3ba36`, about a MINUTE after the audit was written |
+| DESIGN-AUDIT §6.5 | 579px of horizontal overflow | fixed in `fdb482d`; does not reproduce |
+
+**The rule now in CLAUDE.md: before acting on any sentence in these documents that says something
+is missing, absent, open or undecided, check the commit log.** A briefing is a measurement with a
+date on it, not a standing fact. §6.5's stated CAUSE was also wrong — a clipped overflow container
+does NOT contribute to `documentElement.scrollWidth`; the residual figure is a stale root value
+that never recomputes downward, and believing the old explanation would wave away a real overflow
+later.
+
+### 62.3 Three defects that only existed once areas were composed
+
+Each area was correct alone. This is the class §44 was built for, and none of the three was found
+by a test that existed.
+
+1. **The ledger row's prose column resolved to 0px**, not the 11.3px its own note claimed, because
+   a grid `auto` track is sized on MAX-content and the status mark's longest label took every
+   pixel. Text in a 0px box still paints: `<main>` reached **401px against a 375px viewport on two
+   pages** — the same SPECIFICATION §10 breach §6.5 records against the calculator, on pages §6.5
+   never measured.
+2. **Confining the table scroll cost the reader row identity.** At 320px scrolled right, the
+   breakdown showed Damage, Running total and Evidence with nothing saying which ability. Not
+   solvable by fitting the columns: all six hold a nowrap element and the five fixed ones total
+   465px against 238px available.
+3. **Mounting the two curves gave the page three regions named "Excluded from these totals".** A
+   reader navigating by region heard the same name three times with no way to tell which totals
+   were meant.
+
+### 62.4 What the parallel run also produced
+
+- **A form is addressable at last.** `public/data/ability-index.json`, 937 entries keyed champion +
+  slot + ability name, zero collisions. 58 slots hold more than one ability, covering 130 entries.
+  9 abilities rank on another ability's axis, each corroborated by a sentence on its own page;
+  3 stated counts were refused for want of corroboration.
+- **The inherited rank reader was NOT sound.** It matched any trailing number, so Lux Q's ordinary
+  `80 to 240` reported 240 ranks — firing on **708 of 937 pages** and burying the 9 genuine
+  statements under 699 fictional ones. Now 27.
+- **A build no champion level can hold is refused rather than lowered.** Udyr's Q6 W6 E6 R6 was
+  drawn at level 18 as Q5 W5 E5 R3 under a note claiming the top was the user's build. Roster
+  points 1,039 → 996 computed, 2,075 → 2,118 refused — the fall is honesty arriving.
+- **A hit count of negative zero encoded and decoded as positive zero.** `Number.isInteger(-0)` is
+  true and `-0 < 0` is false. It survived because the 4,000-scenario fuzz test predates the field
+  and had never generated a hit count.
+- **Seven runes read, five stored.** Every value produced twice and stored only where the two
+  agreed. Hail of Blades is `incomplete` because its two sources disagree on how many attacks carry
+  the damage — storing 3 or 4 would be §60's aggregate error in a new place. Bone Plating cannot be
+  expressed: the shape that fits it is keyed by champion and ability, which a rune has none of.
+
+### 62.5 Still not on screen
+
+Everything in 62.1 is a PROPOSAL. `curated/curated-data.json` is guarded three ways and the unlock
+needs `chmod`, which `permissions.deny` refuses to every session. **Until the owner merges,
+Zoe E still serves 436.**
