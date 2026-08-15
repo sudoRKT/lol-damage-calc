@@ -79,30 +79,47 @@ describe('defences/key-provenance', () => {
   });
 
   it('writes a key for every statable entry and for no incomplete one', () => {
-    // DEFINITION: statable = conditional AND not `incomplete`. 116 of the 152.
+    // DEFINITION: statable = conditional AND not `incomplete`. 123 of the 152.
     //
-    // ═══ 125 / 27 UNTIL 2026-08-15. NINE ENTRIES MOVED, AND THAT IS EVIDENCE ARRIVING ═══
+    // ═══ 125 → 116 → 123 IN ONE DAY, AND BOTH MOVES ARE THE SAME SYSTEM WORKING ═══
     //
-    // The nine are every per-tick HEAL row among the eighteen over-time defensive entries:
-    // Master Yi W (minimum and maximum), Lissandra R (minimum and maximum), Fiora R, Janna R,
-    // Milio W, Soraka Q and Swain R.
+    // **125 → 116, earlier on 2026-08-15.** `CuratedDefensiveEffect.overTime.figureIs` was added to
+    // the contract, and reading their sources marked nine per-tick HEAL rows `per-instance` — the
+    // stored figure is ONE occurrence. Forming a whole-duration total from a per-instance figure
+    // needs a count of occurrences, and none of the nine stated one, so each became honestly
+    // `incomplete` rather than applying one tick of healing as though it were the whole channel.
+    // The nine, measured against the pre-merge file rather than recalled: Master Yi W (minimum and
+    // maximum), Lissandra R (minimum and maximum), Trundle R, Fiora R, Janna R, Milio W, Soraka Q.
+    // Swain R is NOT among them — see the correction in the wording test below.
     //
-    // THE CAUSE. `CuratedDefensiveEffect.overTime.figureIs` was added to the contract, and reading
-    // their sources marked each of these `per-instance` — the stored figure is ONE occurrence.
-    // Forming a whole-duration total from a per-instance figure needs a count of occurrences, and
-    // none of the nine states one. So each is honestly `incomplete` rather than applying one tick
-    // of healing as though it were the whole channel.
+    // **116 → 123, later the same day.** Seven of those nine sentences were then read, and each
+    // count rests on TWO statements of the page that agree — the ability's own duration over its
+    // own interval, and the multiplier its own leveling row prints. Briar E 4, Master Yi W 8 (both
+    // rows), Lissandra R 10 (both rows), Fiora R 20, Janna R 12.
     //
-    // A FALLING STATABLE COUNT HERE IS THE SYSTEM WORKING (CLAUDE.md). Before the field existed
-    // these nine looked complete because nothing could ask the question that makes them not.
-    expect(CONDITIONAL.filter((e) => e.verification !== 'incomplete').length).toBe(116);
-    expect(CONDITIONAL.filter((e) => e.verification === 'incomplete').length).toBe(36);
+    // **The two that did not come back are the reason to trust the seven that did.** Milio W is
+    // CONTESTED: six seconds every quarter-second is 24, and its own leveling row divides by 25.
+    // That one-instance difference has the shape of an occurrence at summoning, which is a rule two
+    // other abilities apply in opposite directions, so neither reading was adopted. Swain R can
+    // never have a count — the channel is fed faster than it drains while he is on a champion, so
+    // no duration exists to divide. Soraka Q is a third and separate case: its twelve ticks come in
+    // three different sizes, so the stored even twelfth is the amount of no occurrence at all, and
+    // a count would not fix it.
+    //
+    // Trundle R Total Healing moved with them and is the one entry here that received NO count: its
+    // figure is `full-duration`, so it never needed one, and reading the sentence is what
+    // established that.
+    //
+    // A FALLING statable count is the system working; a RISING one is evidence arriving. Neither
+    // direction is good news on its own, which is why both moves are written down with their cause.
+    expect(CONDITIONAL.filter((e) => e.verification !== 'incomplete').length).toBe(123);
+    expect(CONDITIONAL.filter((e) => e.verification === 'incomplete').length).toBe(29);
 
     let keys = 0;
     for (const champion of new Set(CONDITIONAL.map((e) => e.champion))) {
       for (const g of groupDefences(forChampion(champion))) keys += g.toggleKeys.length;
     }
-    expect(keys).toBe(116);
+    expect(keys).toBe(123);
   });
 
   it('every key this area writes is namespaced and URL-safe', () => {
@@ -222,25 +239,43 @@ describe('defences/wording', () => {
   });
 
   it('an unresolvable entry is PERMANENT, and one without is pending', () => {
-    // DEFINITION: of the 36 incomplete conditional entries, 27 carry `unresolvable` — facts no
-    // source states. Those read "Cannot be completed"; the other 9 read "Not yet modelled".
+    // DEFINITION: of the 29 incomplete conditional entries, 27 carry `unresolvable` — facts no
+    // source states. Those read "Cannot be completed"; the other 2 read "Not yet modelled".
     //
-    // ═══ 27 / 26 UNTIL 2026-08-15, AND THE SPLIT IS THE POINT ═══
+    // ═══ PENDING WENT 26 → 9 → 2 IN ONE DAY. PERMANENT HAS NOT MOVED FROM 27 ═══
     //
-    // The nine per-tick heal rows that became incomplete when `figureIs` marked them
-    // `per-instance` are PENDING, not permanent — a count of occurrences is a fact a source could
-    // state and nobody has read yet. They must read "Not yet modelled".
+    // **That the permanent count did not move is the check on the other two.** Reading a sentence
+    // can only ever clear a PENDING entry; it cannot turn a fact no source states into one that is
+    // stated. If reading nine sentences had moved the permanent count in either direction, the
+    // classifier would be sorting on something other than what the source says.
+    //
+    // The nine per-tick heal rows that `figureIs` made incomplete were PENDING, not permanent — a
+    // count of occurrences is a fact a source COULD state and nobody had read yet. Seven have now
+    // been read and are gone from this list entirely. The two that remain are still pending and
+    // still correct as pending: Milio W is contested between two readings of its own page (24
+    // against 25), and Soraka Q's twelve ticks come in three different sizes. Both are questions a
+    // source could settle. Neither is "cannot be completed".
     //
     // Getting that backwards would be the worse error in the direction this product cares about:
     // "Cannot be completed" tells a reader to stop looking, and SPECIFICATION §8 reserves it for
-    // facts NO source states. Nine entries waiting on a sentence somebody has not read yet are
-    // not that.
+    // facts NO source states. An entry waiting on a sentence somebody has not read yet is not that.
+    //
+    // ═══ A CORRECTION TO THE PREVIOUS VERSION OF THIS COMMENT, MEASURED NOT ARGUED ═══
+    //
+    // It named the nine as "Master Yi W (×2), Lissandra R (×2), Fiora R, Janna R, Milio W, Soraka Q
+    // and Swain R". **Swain R was never on this list.** Measured against the pre-merge file, it was
+    // already PERMANENT — it carries `unresolvable`, because its channel is fed faster than it
+    // drains while he is on a champion, so no duration exists to divide and no source can supply
+    // one. The ninth was **Trundle R Total Healing**, which is also the one that cleared without
+    // receiving a count: its figure is `full-duration` and never needed one.
+    //
+    // The wrong name survived because the count was right. Nine was nine either way.
     const incomplete = CONDITIONAL.filter((e) => e.verification === 'incomplete');
     const permanent = incomplete.filter((e) => incompleteReasonFor(e).kind === 'permanent');
     const pending = incomplete.filter((e) => incompleteReasonFor(e).kind === 'pending');
-    expect(incomplete.length).toBe(36);
+    expect(incomplete.length).toBe(29);
     expect(permanent.length).toBe(27);
-    expect(pending.length).toBe(9);
+    expect(pending.length).toBe(2);
   });
 });
 

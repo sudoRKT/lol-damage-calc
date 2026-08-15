@@ -176,7 +176,7 @@
         "fetched": "2026-08-14"
       },
       "sourceRevision": 4006729,
-      "notes": "how many times this lands could not be read (2 repeating components; a total row cannot be attributed to one of them); this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). The source was read: it recurs, but states no duration — so no number of ticks exists to multiply, and a full-duration total cannot be stated at all. No figure is published rather than one published in the wrong place.",
+      "notes": "how many times this lands could not be read (2 repeating components; a total row cannot be attributed to one of them); this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). The source was read: it recurs, but states no duration — so no number of ticks exists to multiply, and a full-duration total cannot be stated at all. NO COUNT CAN EVER BE STATED FOR IT, and this is permanent rather than outstanding: the page calls it a Toggle and states no duration: it is \"toggled off automatically if Anivia moves too far away from the blizzard or becomes unable to pay the mana cost\", at 35 to 55 mana per second. A SECOND count is missing on top of the first and is just as unstateable — the empowered tick only begins once the blizzard reaches full size over 1.5 seconds, so how the run splits between the two components depends on when it was cast. No figure is published rather than one published in the wrong place.",
       "icon": "GlacialStorm.png"
     },
     {

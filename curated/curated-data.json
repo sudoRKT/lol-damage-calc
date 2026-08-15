@@ -1542,7 +1542,7 @@
     "fetched": "2026-08-14"
    },
    "sourceRevision": 4006735,
-   "notes": "how many times this lands could not be read (\"Magic Damage Per Tick\" lands more than once and nothing in the template states how many); this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). The source was read: it recurs, but states no duration — so no number of ticks exists to multiply, and a full-duration total cannot be stated at all. No figure is published rather than one published in the wrong place."
+   "notes": "how many times this lands could not be read (\"Magic Damage Per Tick\" lands more than once and nothing in the template states how many); this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). The source was read: it recurs, but states no duration — so no number of ticks exists to multiply, and a full-duration total cannot be stated at all. NO COUNT CAN EVER BE STATED FOR IT, and this is permanent rather than outstanding: the page calls it a Toggle and states no duration anywhere: it \"cries a continuous pool of tears\" and is \"toggled off automatically if Amumu becomes unable to pay its mana cost\", at 8 mana per second. How long it runs is a property of his mana pool and of when the player toggles it off, not of the ability, so no number of ticks exists to state. Computing one from a mana pool would be deriving a duration nobody stated — the move §59.3 refused on Nasus E. No figure is published rather than one published in the wrong place."
   },
   {
    "champion": "Amumu",
@@ -1786,7 +1786,7 @@
     "fetched": "2026-08-14"
    },
    "sourceRevision": 4006729,
-   "notes": "how many times this lands could not be read (2 repeating components; a total row cannot be attributed to one of them); this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). The source was read: it recurs, but states no duration — so no number of ticks exists to multiply, and a full-duration total cannot be stated at all. No figure is published rather than one published in the wrong place."
+   "notes": "how many times this lands could not be read (2 repeating components; a total row cannot be attributed to one of them); this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). The source was read: it recurs, but states no duration — so no number of ticks exists to multiply, and a full-duration total cannot be stated at all. NO COUNT CAN EVER BE STATED FOR IT, and this is permanent rather than outstanding: the page calls it a Toggle and states no duration: it is \"toggled off automatically if Anivia moves too far away from the blizzard or becomes unable to pay the mana cost\", at 35 to 55 mana per second. A SECOND count is missing on top of the first and is just as unstateable — the empowered tick only begins once the blizzard reaches full size over 1.5 seconds, so how the run splits between the two components depends on when it was cast. No figure is published rather than one published in the wrong place."
   },
   {
    "champion": "Annie",
@@ -2783,7 +2783,7 @@
     "fetched": "2026-08-14"
    },
    "sourceRevision": 4028021,
-   "notes": "how many times this lands could not be read (4 repeating components; a total row cannot be attributed to one of them); ; one expression is split across several {{as}} blocks (unbalanced parentheses), so the stat and its percentage were read separately and what is stored is not the ability: {{ap|60 to 100}} {{as|(+ 30% AP)}} {{ai|Cosmic Creator|Aurelion Sol|{{as|(+|hp}} {{as|({{fd|3.1}}% Stardust)}}; this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). The source was read: it recurs, and the source states how many times it lands, but that count was never captured into the data — the entry holds one tick where it needs all of them. No figure is published rather than one published in the wrong place."
+   "notes": "how many times this lands could not be read (4 repeating components; a total row cannot be attributed to one of them); ; one expression is split across several {{as}} blocks (unbalanced parentheses), so the stat and its percentage were read separately and what is stored is not the ability: {{ap|60 to 100}} {{as|(+ 30% AP)}} {{ai|Cosmic Creator|Aurelion Sol|{{as|(+|hp}} {{as|({{fd|3.1}}% Stardust)}}; this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). The source was read: it recurs, and both the source's own arithmetic and its own printed rows put the count at 26. It is still not written, and the reason is not in the source: THE COUNT IS RANK-DEPENDENT AND `hits` IS ONE NUMBER PER COMPONENT. The blocker is in our shape, not in the source: the page states 26 for ranks 1-4 and labels its own total row \"Ranks 1-4\" to say so, and then states that \"at rank 5, Breath of Light's channel duration is increased to 160 seconds\" — 1,280 ticks at the same 0.125-second interval, which its own blurb calls lasting \"indefinitely\". Writing 26 would understate rank 5 by a factor of 49; writing 1,280 would overstate ranks 1-4 by the same. A rank-axis hit count is a contract change and is RAISED for the lead, not made here. No figure is published rather than one published in the wrong place."
   },
   {
    "champion": "Aurelion Sol",
@@ -13742,7 +13742,7 @@
     "fetched": "2026-08-14"
    },
    "sourceRevision": 4006733,
-   "notes": "how many times this lands could not be read (2 repeating components; a total row cannot be attributed to one of them); this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). The source was read: it recurs, but states no duration — so no number of ticks exists to multiply, and a full-duration total cannot be stated at all. No figure is published rather than one published in the wrong place."
+   "notes": "how many times this lands could not be read (2 repeating components; a total row cannot be attributed to one of them); this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). The source was read: it recurs, but states no duration — so no number of ticks exists to multiply, and a full-duration total cannot be stated at all. NO COUNT CAN EVER BE STATED FOR IT, and this is permanent rather than outstanding: the page calls it a Toggle and states no duration: it is \"toggled off automatically if Karthus becomes unable to pay its mana cost\", at 30 to 78 mana per second. Its own rows give a per-tick figure and a per-second figure and no third one, because the third would need a length of time the ability does not have. No figure is published rather than one published in the wrong place."
   },
   {
    "champion": "Karthus",
@@ -20093,7 +20093,7 @@
     "fetched": "2026-08-14"
    },
    "sourceRevision": 4035787,
-   "notes": "the parts do not add up to the total the source itself states (the wiki states a total of 100 at rank 1 and our additive components sum to 150 — something is counted twice); this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). The source was read: it recurs, but the page contradicts itself about how many times — its description and its own leveling row give different tick counts, and neither is taken silently. Where outside evidence has since settled which half is stale the entry is corrected instead; this one has none, so no count exists to publish. No figure is published rather than one published in the wrong place."
+   "notes": "the parts do not add up to the total the source itself states (the wiki states a total of 100 at rank 1 and our additive components sum to 150 — something is counted twice); this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). The source was read: it recurs, but the page contradicts itself about how many times — its description and its own leveling row give different tick counts, and neither is taken silently. Where outside evidence has since settled which half is stale the entry is corrected instead; this one has none, so no count exists to publish. NO COUNT CAN EVER BE STATED FOR IT, and this is permanent rather than outstanding: THE INTERVAL IS STATED BY NOTHING ANYWHERE. This is not the page contradicting itself about a number both halves know — that part is settled, and Riot's V14.18 patch notes fix the TOTAL as a per-second figure over 5 seconds. What no source states is how many instances that total is delivered in: the wiki's damage-over-time article gives no interval, the game data carries no tick rate for this ability, and the buff object is an empty stub. \"5 ticks of 10-34\" and \"10 ticks of 5-17\" are both consistent with everything reachable, and a count cannot be computed from a duration alone. Settling it needs a frame-counted in-client observation or a spell script nobody publishes — so it is not pending on anyone here. No figure is published rather than one published in the wrong place."
   },
   {
    "champion": "Nasus",
@@ -25326,7 +25326,7 @@
     "fetched": "2026-08-14"
    },
    "sourceRevision": 4034705,
-   "notes": "how many times this lands could not be read (4 repeating components; a total row cannot be attributed to one of them); this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). The source was read: it recurs, and the source states how many times it lands, but that count was never captured into the data — the entry holds one tick where it needs all of them. No figure is published rather than one published in the wrong place."
+   "notes": "how many times this lands could not be read (4 repeating components; a total row cannot be attributed to one of them); this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). The source was read: it recurs, and the source states how many times it lands, but that count was never captured into the data — the entry holds one tick where it needs all of them. NO COUNT CAN EVER BE STATED FOR IT, and this is permanent rather than outstanding: NO SINGLE COUNT IS A PROPERTY OF THIS ABILITY. The page states three — 3, 12 and 15 — and every one is right for a different situation: 3 for a target clipped once by the cone, 12 for the flamethrower's own 3 seconds at 0.25-second intervals, and 15 for a target that stands in it throughout. Which applies depends on how long the target remains in the cone, which is a fact about the fight and not about the ability, so no source can state it. The entry is not waiting on a reading: it has had one. No figure is published rather than one published in the wrong place."
   },
   {
    "champion": "Rumble",
@@ -29002,7 +29002,7 @@
     "fetched": "2026-08-14"
    },
    "sourceRevision": 4020887,
-   "notes": "how many times this lands could not be read (\"Magic Damage per Tick\" lands more than once and nothing in the template states how many); this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). The source was read: it recurs, but states no duration — so no number of ticks exists to multiply, and a full-duration total cannot be stated at all. No figure is published rather than one published in the wrong place."
+   "notes": "how many times this lands could not be read (\"Magic Damage per Tick\" lands more than once and nothing in the template states how many); this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). The source was read: it recurs, but states no duration — so no number of ticks exists to multiply, and a full-duration total cannot be stated at all. NO COUNT CAN EVER BE STATED FOR IT, and this is permanent rather than outstanding: the source states no duration for Demonic Ascension at all: it is maintained with Demonic Energy, which decays by 5 every 0.5 seconds, while Swain GENERATES 10 every 0.5 seconds while draining a champion — a net gain, so the ability runs indefinitely in the situation it is cast in, and a takedown refills the resource. How long it runs is a property of the fight, so no number of ticks exists to state. This is the same conclusion the defensive reading reached for the same ability's heal row (defensive-shapes.ts, countUnresolvable). No figure is published rather than one published in the wrong place."
   },
   {
    "champion": "Swain",
@@ -38018,6 +38018,7 @@
    "condition": "Active; \"while charging\"",
    "overTime": {
     "sourceSays": "Briar prepares to unleash a scream ... charging for up to 1 second, during which she ... heals herself every 0.25 seconds.",
+    "totalInstances": 4,
     "figureIs": "per-instance"
    },
    "ratios": [
@@ -38342,6 +38343,7 @@
    "condition": "Active channel; \"while channeling\"",
    "overTime": {
     "sourceSays": "Master Yi channels for up to 4 seconds, healing himself every 0.5 seconds, increased by 1% per 1% missing health.",
+    "totalInstances": 8,
     "figureIs": "per-instance"
    },
    "unit": "flat",
@@ -38368,7 +38370,7 @@
      ]
     }
    ],
-   "verification": "incomplete",
+   "verification": "derived",
    "provenance": {
     "source": "Template:Data Master Yi/Meditate — leveling row \"Minimum Heal Per Tick\"",
     "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Master%20Yi/Meditate",
@@ -38390,6 +38392,7 @@
    "condition": "Active channel; \"while channeling\"",
    "overTime": {
     "sourceSays": "Master Yi channels for up to 4 seconds, healing himself every 0.5 seconds, increased by 1% per 1% missing health.",
+    "totalInstances": 8,
     "figureIs": "per-instance"
    },
    "unit": "flat",
@@ -38416,7 +38419,7 @@
      ]
     }
    ],
-   "verification": "incomplete",
+   "verification": "derived",
    "provenance": {
     "source": "Template:Data Master Yi/Meditate — leveling row \"Maximum Heal Per Tick\"",
     "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Master%20Yi/Meditate",
@@ -39512,7 +39515,7 @@
      ]
     }
    ],
-   "verification": "incomplete",
+   "verification": "derived",
    "provenance": {
     "source": "Template:Data Trundle/Subjugate — leveling row \"Total Healing\"",
     "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Trundle/Subjugate",
@@ -41626,6 +41629,7 @@
    "condition": "Self-cast Active; \"entering stasis for 2.5 seconds\"",
    "overTime": {
     "sourceSays": "Lissandra instantly entombs herself in ice, entering stasis for 2.5 seconds and healing herself every 0.25 seconds over the duration.",
+    "totalInstances": 10,
     "figureIs": "per-instance"
    },
    "unit": "flat",
@@ -41648,7 +41652,7 @@
      ]
     }
    ],
-   "verification": "incomplete",
+   "verification": "derived",
    "provenance": {
     "source": "Template:Data Lissandra/Frozen Tomb — leveling row \"Minimum Heal per Tick\"",
     "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lissandra/Frozen%20Tomb",
@@ -41670,6 +41674,7 @@
    "condition": "Self-cast Active; \"entering stasis for 2.5 seconds\"",
    "overTime": {
     "sourceSays": "Lissandra instantly entombs herself in ice, entering stasis for 2.5 seconds and healing herself every 0.25 seconds over the duration.",
+    "totalInstances": 10,
     "figureIs": "per-instance"
    },
    "unit": "flat",
@@ -41692,7 +41697,7 @@
      ]
     }
    ],
-   "verification": "incomplete",
+   "verification": "derived",
    "provenance": {
     "source": "Template:Data Lissandra/Frozen Tomb — leveling row \"Maximum Heal per Tick\"",
     "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lissandra/Frozen%20Tomb",
@@ -42294,6 +42299,7 @@
    "condition": "The Victory Zone appears only on the target's death",
    "overTime": {
     "sourceSays": "a Grand Challenge Victory Zone is created on their death location for 5 seconds, which heals Fiora and all allies within the area every 0.25 seconds.",
+    "totalInstances": 20,
     "figureIs": "per-instance"
    },
    "unit": "flat",
@@ -42316,7 +42322,7 @@
      ]
     }
    ],
-   "verification": "incomplete",
+   "verification": "derived",
    "provenance": {
     "source": "Template:Data Fiora/Grand Challenge — leveling row \"Heal per Tick\"",
     "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Fiora/Grand%20Challenge",
@@ -42470,6 +42476,7 @@
    "condition": "Active channel; \"for up to 3 seconds\"",
    "overTime": {
     "sourceSays": "Janna also channels for up to 3 seconds, healing herself and nearby allies every 0.25 seconds.",
+    "totalInstances": 12,
     "figureIs": "per-instance"
    },
    "unit": "flat",
@@ -42492,7 +42499,7 @@
      ]
     }
    ],
-   "verification": "incomplete",
+   "verification": "derived",
    "provenance": {
     "source": "Template:Data Janna/Monsoon — leveling row \"Heal Per Tick\"",
     "url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Janna/Monsoon",

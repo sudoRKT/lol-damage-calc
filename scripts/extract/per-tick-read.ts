@@ -343,7 +343,21 @@ export const PER_TICK_READS: readonly PerTickRead[] = [
       'duration is increased to 160 seconds" — 1,280 ticks at the same 0.125-second interval, ' +
       'which its own blurb calls lasting "indefinitely". Writing 26 would understate rank 5 by a ' +
       'factor of 49; writing 1,280 would overstate ranks 1-4 by the same. A rank-axis hit count ' +
-      'is a contract change and is RAISED for the lead, not made here.',
+      'is a contract change and was RAISED for the lead. ' +
+      '=== CLOSED 2026-08-15: THE SHAPE THE SOURCE HAS THAT THIS PRODUCT DOES NOT MODEL. === ' +
+      'The lead sized the population before deciding, because one entry is not a shape. Two ' +
+      'measurements: across the 82 entries that store a hit count, a structured rank-varying ' +
+      'duration field fires ZERO times — which disproved that proxy rather than emptying the ' +
+      'population, since this entry is a known member. The signal is prose in a rank-specific ' +
+      'description field, and across ALL 937 pages a rank-conditional sentence that moves a ' +
+      'duration or interval fires 8 times, of which 7 are false positives on reading (Kha\'Zix R ' +
+      'is about evolutions, Kindred W is a cooldown note, Shyvana R is fury regeneration, ' +
+      'Pantheon R is a fixed 0.8 seconds). ONE REAL MEMBER: this one. ' +
+      'So the contract is unchanged and this ability publishes no tick count, deliberately. It is ' +
+      'not incomplete for want of reading — every sentence has been read and they agree. It is a ' +
+      'shape the wiki expresses and `hits: number` cannot: a count that changes with rank. If a ' +
+      'second member is ever found, that is the point to revisit the contract, and finding one is ' +
+      'the trigger rather than anybody\'s judgement that it would be tidier.',
     marked: false,
     note: "RE-READ 2026-08-15 AND THE REFUSAL IS NOW STATED AS A BLOCKED CAPTURE RATHER THAN AS AN UNREAD COUNT. Three statements agree on 26 for ranks 1-4 — 3.25s / 0.125s, the total row's own '*26' on the base, and the same '*26' on the AP coefficient — so nothing about the source is missing. What cannot be done is store it: one component carries one `hits`, and this ability's count changes by a factor of 49 at rank 5. The entry is also refused by gate 1 for four repeating components sharing one total row, which is a separate defect",
   },

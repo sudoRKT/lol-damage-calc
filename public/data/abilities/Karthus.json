@@ -171,7 +171,7 @@
         "fetched": "2026-08-14"
       },
       "sourceRevision": 4006733,
-      "notes": "how many times this lands could not be read (2 repeating components; a total row cannot be attributed to one of them); this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). The source was read: it recurs, but states no duration — so no number of ticks exists to multiply, and a full-duration total cannot be stated at all. No figure is published rather than one published in the wrong place.",
+      "notes": "how many times this lands could not be read (2 repeating components; a total row cannot be attributed to one of them); this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). The source was read: it recurs, but states no duration — so no number of ticks exists to multiply, and a full-duration total cannot be stated at all. NO COUNT CAN EVER BE STATED FOR IT, and this is permanent rather than outstanding: the page calls it a Toggle and states no duration: it is \"toggled off automatically if Karthus becomes unable to pay its mana cost\", at 30 to 78 mana per second. Its own rows give a per-tick figure and a per-second figure and no third one, because the third would need a length of time the ability does not have. No figure is published rather than one published in the wrong place.",
       "icon": "KarthusDefile.png"
     },
     {

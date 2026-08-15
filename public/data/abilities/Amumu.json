@@ -133,7 +133,7 @@
         "fetched": "2026-08-14"
       },
       "sourceRevision": 4006735,
-      "notes": "how many times this lands could not be read (\"Magic Damage Per Tick\" lands more than once and nothing in the template states how many); this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). The source was read: it recurs, but states no duration — so no number of ticks exists to multiply, and a full-duration total cannot be stated at all. No figure is published rather than one published in the wrong place.",
+      "notes": "how many times this lands could not be read (\"Magic Damage Per Tick\" lands more than once and nothing in the template states how many); this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). The source was read: it recurs, but states no duration — so no number of ticks exists to multiply, and a full-duration total cannot be stated at all. NO COUNT CAN EVER BE STATED FOR IT, and this is permanent rather than outstanding: the page calls it a Toggle and states no duration anywhere: it \"cries a continuous pool of tears\" and is \"toggled off automatically if Amumu becomes unable to pay its mana cost\", at 8 mana per second. How long it runs is a property of his mana pool and of when the player toggles it off, not of the ability, so no number of ticks exists to state. Computing one from a mana pool would be deriving a duration nobody stated — the move §59.3 refused on Nasus E. No figure is published rather than one published in the wrong place.",
       "icon": "AuraofDespair.png"
     },
     {

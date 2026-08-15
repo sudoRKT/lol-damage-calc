@@ -108,6 +108,24 @@ describe('capability/the committed figures match the data and the engine', () =>
     //
     // The consequence a reader sees: SPECIFICATION §3.8's damage-over-time line carries a figure
     // for the first time. DATA-SOURCES §56 measured it at zero across all 173 champions.
+    //
+    // ═══ A FOURTH MOVE, LATE ON 2026-08-15, AND THE FIGURE THAT DID *NOT* MOVE IS THE FINDING ═══
+    //
+    //   defensiveReadyToApply      91 -> 98
+    //   defensiveApplied           86 -> 86   (RE-MEASURED, not retyped — it genuinely did not move)
+    //
+    // Seven per-tick heal rows received a tick count read from their own page and became statable,
+    // so `defensiveReadyToApply` rose by exactly seven. **`defensiveApplied` is the engine's own
+    // measurement — a defence switched on ONE AT A TIME that changes a result — and it was re-run,
+    // not assumed. It returned 86 again.**
+    //
+    // So the gap between "ready to apply" and "actually applies" widened from 5 to 12, and all
+    // seven of the newly-ready entries are on the wrong side of it. Being statable is not the same
+    // as reaching a number, and this is the clearest measurement of that distance the project has.
+    // **It is recorded as an open question, not explained away**: nobody has yet established
+    // whether these seven do not reach the engine's defensive path because healing travels the
+    // sustain path instead (§42.2), or for some other reason. Whoever picks that up should measure
+    // it before theorising, as this figure was.
     expect(fresh, `capability.json is stale. Current:\n${JSON.stringify(fresh, null, 2)}`).toEqual(
       committed,
     );
