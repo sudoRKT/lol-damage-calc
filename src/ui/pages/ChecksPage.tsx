@@ -287,9 +287,11 @@ export function ChecksPage() {
           switching each on alone against a level-11 defender. The{' '}
           {CAPABILITY.defensiveReadyToApply - CAPABILITY.defensiveApplied} between those two counts
           are refused for a reason the shape alone could not show, and one reason is most of them:{' '}
-          <strong>18 recur over a duration</strong> and the entry never says whether the figure it
-          stores is one occurrence or the whole of it, so multiplying it could count it eight times
-          over. The rest read a share of damage the defender deals, which cannot exist because the
+          <strong>18 recur over a duration</strong>, and until the entry says whether the figure it
+          stores is one occurrence or the whole of it, multiplying could count it eight times over.
+          17 of those are heals and one is a shield — and the difference matters, because health
+          adds up while a shield is a state: a 60-point shield reapplied eight times is either one
+          pool refreshed or a 480-point pool, and the source has to say which. The rest read a share of damage the defender deals, which cannot exist because the
           defender does not act; amplify other healing, which has no step; or read “the target”,
           which on a defensive effect is ambiguous. Every one is conditional — it
           depends on whether the defender had it up when the combo landed, and you state that.
