@@ -16,6 +16,7 @@ import {
   MULTI_HIT_FORMS,
   NOT_A_COUNT_FORMS,
   READ,
+  SOURCE_HEADER_CENSUS,
   RECURRENCE_FORMS,
   census,
   classify,
@@ -110,5 +111,43 @@ describe('recurrence labels/what is live and what is dormant', () => {
 
   it('the read population is exactly what a person has read, and no more', () => {
     expect(Object.keys(READ)).toEqual(['Cassiopeia/W/Magic Damage Per Second']);
+  });
+});
+
+describe('recurrence labels/the SOURCE vocabulary, not ours', () => {
+  it('pins the source-header sweep, so a re-fetch that moves it is visible', () => {
+    // DEFINITION: distinct `{{st|Header|…}}` leveling-row headers across all 937 fetched ability
+    // pages, 2026-08-16. These are figures about the WIKI, so they move when the wiki moves — which
+    // is exactly why they are pinned rather than remembered. A patch that adds a recurrence header
+    // in a new wording will change `namingARecurrence` and this will say so.
+    expect(SOURCE_HEADER_CENSUS.distinctHeaders).toBe(977);
+    expect(SOURCE_HEADER_CENSUS.namingARecurrence).toBe(26);
+    expect(SOURCE_HEADER_CENSUS.usingTrailingPerX).toBe(25);
+  });
+
+  it('THE VOCABULARY IS NARROW — 25 of the 26 use the trailing per-X form', () => {
+    // This is the finding that decides whether the pattern is adequate. After Cassiopeia W the
+    // pattern looked like the wrong SHAPE; the sweep says it is the right shape and was missing one
+    // WORD in it. The single exception is Fiddlesticks W's "Last Tick of Damage", which names a
+    // tick without "per" and which no trailing-form pattern can ever see.
+    const exceptions =
+      SOURCE_HEADER_CENSUS.namingARecurrence - SOURCE_HEADER_CENSUS.usingTrailingPerX;
+    expect(exceptions).toBe(1);
+  });
+
+  it('hands three entries to a person and acts on none of them', () => {
+    // The rule this obeys: a detector proposes, a person confirms. None of these three is written,
+    // marked, or pattern-matched into the store — they are named here so somebody reads the
+    // sentence. Growing this list by widening a pattern is the move CLAUDE.md forbids.
+    expect(SOURCE_HEADER_CENSUS.forAPersonToRead).toHaveLength(3);
+    expect(Object.keys(READ)).toHaveLength(1);
+  });
+
+  it('the broad net found 41 non-per-X headers and 38 are state durations, not recurrences', () => {
+    // Recorded because the EXCLUSIONS are the substance of a sweep like this. "Stun Duration" and
+    // "Root Duration" say how long a STATE lasts; "Second Cast Damage" uses second as an ORDINAL.
+    // A sweep that counted those as recurrences would report 41 findings and be useless.
+    expect(SOURCE_HEADER_CENSUS.broadNetNotTrailingPerX).toBe(41);
+    expect(SOURCE_HEADER_CENSUS.ofWhichStateDuration).toBe(38);
   });
 });

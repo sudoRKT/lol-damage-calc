@@ -99,6 +99,57 @@ export const READ: Record<string, string> = {
     'ratio. Destination changes from burst to the damage-over-time line (SPECIFICATION §3.8).',
 };
 
+/**
+ * ═══ THE SOURCE'S OWN VOCABULARY, SWEPT 2026-08-16 ═══
+ *
+ * The census above reads OUR labels. This records a sweep of the WIKI'S, because "what words does
+ * the source use for recurrence" is the question that decides whether our pattern is adequate, and
+ * it cannot be answered from our own output.
+ *
+ * DEFINITION: every distinct leveling-row header in `{{st|Header|values|…}}` across all 937 fetched
+ * ability pages. **977 distinct headers.**
+ *
+ * **26 of the 977 name a recurrence, and 25 of the 26 use the trailing "per X" form** — per tick,
+ * per second, per wave, per instance. So the vocabulary really is that narrow, and the `per X`
+ * pattern is not the weak shape it looked like after Cassiopeia W. **What it missed was one WORD in
+ * that form (`second`), not a whole form.**
+ *
+ * A deliberately broader net was then run — any header containing tick, second, sec, pulse, wave,
+ * instance, interval, duration, over, each, every, repeat, recurring, dot, burn, poison or per —
+ * which matched 120 headers, 41 of them not a trailing `per X`. **38 of those 41 are "X Duration"**
+ * (stun, root, slow, stealth, blind): how long a STATE lasts, never a damage recurrence. Two more
+ * are "Second Cast Damage" and "Second Cast Total Damage", where "second" is an ORDINAL — the exact
+ * two-wordings-that-read-alike trap §38 warns about, and the reason this sweep classifies by hand.
+ *
+ * **THREE ARE FOR A PERSON TO READ. They are handed over, not acted on:**
+ *
+ *   1. **Fiddlesticks W** — the source header is `"Last Tick of Damage"`. It names a tick WITHOUT
+ *      the word "per", so no trailing-form pattern can ever see it. This is the one genuine gap in
+ *      the vocabulary. Our stored label is "Damage per second", entry is `incomplete`.
+ *   2. **Naafiri R** — the source header is `"Physical Damage per ''{{ai"`, truncated because the X
+ *      is a wiki TEMPLATE rather than a word. **We stored it as flat "Physical Damage": the per-X
+ *      was lost in harvesting, not mis-classified.** That is a different defect shape from
+ *      Cassiopeia W's and it deserves its own reading. Entry is `incomplete`.
+ *   3. **Shyvana R** — `derived` and PUBLISHING. Its page carries a `"Dragon Fury Generation per 0.5
+ *      Seconds"` header, which is a resource row and not the damage row, and its damage row is a
+ *      plain "Magic Damage". Almost certainly correct; flagged only because it is the one
+ *      publishing entry anywhere near this class, and "almost certainly" is not this project's bar.
+ *
+ * Note two forms the trailing pattern also cannot read for a mechanical reason rather than a
+ * vocabulary one: `per 0.5 Seconds` (a DIGIT in the X) and `per {{fd` (a template in the X). Both
+ * live on resource rows today, so neither is a damage defect — but a damage row in either shape
+ * would be invisible, which is why Naafiri R is on the list above.
+ */
+export const SOURCE_HEADER_CENSUS = {
+  distinctHeaders: 977,
+  namingARecurrence: 26,
+  usingTrailingPerX: 25,
+  broadNetMatches: 120,
+  broadNetNotTrailingPerX: 41,
+  ofWhichStateDuration: 38,
+  forAPersonToRead: ['Fiddlesticks/W: Last Tick of Damage', 'Naafiri/R: per-X lost to a template', 'Shyvana/R: publishing, confirm not recurring'],
+} as const;
+
 export interface LabelForm {
   form: string;
   count: number;
