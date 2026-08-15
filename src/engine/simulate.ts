@@ -691,27 +691,76 @@ export const RUNE_DELIVERY: ReadonlyMap<number, 'ability-hit'> = new Map([
  * Runes with a stored value that this engine still cannot deliver, and what each waits on.
  *
  * Named rather than silently skipped, because "the file has seven runes" and "the calculator
- * applies one" are different facts and a reader is entitled to both.
+ * applies one" are different facts and a reader is entitled to both. These sentences reach the
+ * reader on `Result.excludedMechanics`.
+ *
+ * ═══ THE ENGINE-SIDE HALF OF EACH SENTENCE WAS RE-CHECKED ON 2026-08-15, AND THREE OF FOUR WERE
+ *     WRONG OR INCOMPLETE ═══
+ *
+ * Each of these has two halves: WHAT TRIGGERS THE RUNE, read from the curated entry's own notes,
+ * and WHY THIS ENGINE CANNOT DELIVER IT. The first half is unchanged and untouched below — it is a
+ * claim about a rune, and establishing it means reading the rune's own sentence. **The second half
+ * is a claim about this engine, checkable against this file, and three of the four did not hold:**
+ *
+ * - **Cheap Shot** said it waits on the interface. It does not. `entryState` is read by the
+ *   engine and an absent key means NOT UP, which is exactly how all 90 defensive toggles already
+ *   work — `resolveDefences` read them for a long time before any control existed. An engine
+ *   never waits on an interface to read a key that is simply false.
+ * - **Sudden Impact** said "nothing in a scenario can satisfy it". SPECIFICATION §3.3's entry
+ *   state is precisely "what was true when the combo began", and entering on a dash is that. The
+ *   engine cannot DERIVE the fact; that is not the same as the fact having nowhere to live.
+ * - **Grasp** said its four-second interval is elapsed time and therefore a blocker. Scorch states
+ *   a TEN-second cooldown and is delivered anyway, by firing once — see `RUNE_DELIVERY`, "the
+ *   reading that cannot overstate". The same reading covers Grasp, so the interval is not what
+ *   blocks it.
+ *
+ * All four CONCLUSIONS stand: none of these is delivered. Only Aftershock's stated reason was
+ * already sound, and it turned out to be the strongest of the four.
+ *
+ * ═══ WHAT IS COMMON TO ALL FOUR, AND IS THE REAL GATE ═══
+ *
+ * `RUNE_DELIVERY` is a READ POPULATION. Its members are runes whose trigger sentence a PERSON has
+ * read, and the value in it — what the rune rides on — is exactly the thing a person must confirm.
+ * None of these four has had its sentence read against a source. Widening the map without that is
+ * the move CLAUDE.md forbids for anything that multiplies a damage number.
  */
 export const RUNES_READ_BUT_NOT_DELIVERABLE: ReadonlyMap<number, string> = new Map([
   [
     8126,
-    'Cheap Shot — fires only against a target that is impaired. The condition is a fact the ' +
-      'engine cannot know and the user must state, and no rune toggle exists in the interface yet.',
+    'Cheap Shot — fires only against a target that is impaired. Two things are missing, and the ' +
+      'interface is not one of them: nobody has read whether it rides on an ability, a basic ' +
+      'attack or any damaging instance, which is what decides where its damage lands; and while ' +
+      'the target being impaired is a debuff on the DEFENDER, and entry state is where the ' +
+      'defender’s already-applied debuffs live, nothing states that a rune worn by the attacker ' +
+      'should read a key off the defender’s configuration. A toggle by itself would be safe — an ' +
+      'absent key means not up — but a carrier chosen without reading the sentence would not be.',
   ],
   [
     8143,
-    'Sudden Impact — fires after a dash, blink or stealth exit. The engine models a sequence of ' +
-      'damage instances and has no notion of movement, so nothing in a scenario can satisfy it.',
+    'Sudden Impact — fires after a dash, blink or stealth exit. The engine has no notion of ' +
+      'movement so it can never work this out for itself, but the fact is about how the combo ' +
+      'was entered, which is what entry state is for (§3.3), and it is about the attacker’s own ' +
+      'action so there is no question whose configuration would hold it. What is missing is that ' +
+      'nobody has read which instance it rides on, and nothing writes the key yet.',
   ],
   [
     8437,
-    'Grasp of the Undying — rides on a basic attack every four seconds, which is elapsed time ' +
-      '(§3.2), and also grants permanent bonus health, which no step can express.',
+    'Grasp of the Undying — rides on a basic attack every four seconds, and also grants permanent ' +
+      'bonus health. The four seconds is not what stops it: Scorch states a ten-second cooldown ' +
+      'and is delivered by firing once, which is the reading that cannot overstate, and the same ' +
+      'reading would cover this. What stops it is the permanent bonus health, which changes the ' +
+      'size of a health pool part-way through the sequence — the same step this engine does not ' +
+      'have on the defensive side. Its damage could ride on the first basic attack; whether a ' +
+      'rune may be delivered in part, with the rest named as missing, is a decision nobody has ' +
+      'taken.',
   ],
   [
     8439,
-    'Aftershock — fires on immobilising a champion. The engine has no notion of immobilising.',
+    'Aftershock — fires on immobilising a champion. This is the one of the four a user-stated ' +
+      'condition would not settle: the rune fires on the instance that immobilised, and nothing ' +
+      'in the harvested data records which abilities immobilise — the contract has no field for ' +
+      'it anywhere — so even told that an immobilise happened, the engine could not say which ' +
+      'row of the combo carried it.',
   ],
 ]);
 
@@ -1241,17 +1290,30 @@ export const SIMULATION_EXCLUSIONS: readonly string[] = [
     'before it lands, or changing the size of a health pool mid-sequence. A scenario switching ' +
     'one on is told, by name, that it was not applied',
 
-  // A DEFENCE THAT RECURS. Measured over the file at patch 16.16.1 on 2026-08-15: 21 entries
-  // carry `overTime`, NOT ONE states `totalInstances`, and — the part this sentence used to get
-  // wrong — NOT ONE says whether the figure it stores covers one occurrence or the whole
-  // duration. The old wording ended "so no total can be formed", which is contradicted by the
-  // file: Master Yi W stores 15 per tick AND 120 for the channel, and eight rows elsewhere carry
-  // the same pairing. See `recurringRefusal` in defences.ts for the full arithmetic and for the
-  // contract field this is waiting on.
-  'Defensive effects that recur over a duration — 21 stored entries, chiefly channelled heals. ' +
-    'None states how many times it occurs, and none says whether the figure it stores covers ' +
-    'one occurrence or the whole duration, so applying it would mean choosing between ' +
-    'understating the defender and overstating them',
+  // A DEFENCE THAT RECURS. 21 entries carry `overTime`, measured over the file at patch 16.16.1
+  // on 2026-08-15.
+  //
+  // ═══ THIS SENTENCE STATED A FACT ABOUT THE FILE THAT THE CONTRACT CHANGE PUT AN EXPIRY ON ═══
+  //
+  // It used to end: "None states how many times it occurs, and none says whether the figure it
+  // stores covers one occurrence or the whole duration." Both clauses were true when measured and
+  // BOTH ARE CLAIMS ABOUT THE DATA, not about the engine — so both expire the moment an entry
+  // carries `overTime.figureIs`, which the contract gained on 2026-08-15 for exactly these
+  // entries. A standing disclosure that describes yesterday's file is the stale-paragraph failure
+  // CLAUDE.md records twice over, so this now describes THE RULE, which does not expire.
+  //
+  // It also caught a live defect: the old wording appears on EVERY result, so a test asserting a
+  // refusal by searching `excludedMechanics` for "one occurrence or the whole duration" passed
+  // whether or not the entry was refused for that reason.
+  //
+  // See `figureIsRefusal` and `ACCUMULATES_OVER_OCCURRENCES` in defences.ts for the arithmetic.
+  'Defensive effects that recur over a duration — 21 stored entries at patch 16.16.1, chiefly ' +
+    'channelled heals. One is applied only where its entry states what its figure covers: a ' +
+    'whole-duration figure is applied as it stands, and a one-occurrence figure is multiplied by ' +
+    'the number of occurrences the source states. An entry that says neither, or that states one ' +
+    'occurrence with no count, is named as not applied rather than guessed at — and a reapplied ' +
+    'shield, resistance grant or damage reduction is not applied even with a count, because ' +
+    'nothing states whether a reapplication adds to what is already there or replaces it',
 ];
 
 /**
@@ -1382,6 +1444,20 @@ export function planScenario(
       // A DEFENCE THE READER SWITCHED ON AND THE ENGINE COULD NOT TAKE IS NAMED. Silence here
       // would show a toggle that visibly does nothing, which is worse than a stated refusal.
       ...defences.notes,
+      // ═══ A RUNE THE BUILD WEARS, WITH A STORED VALUE, THAT THIS ENGINE CANNOT DELIVER ═══
+      //
+      // FOUND BY THE FIRST TEST EVER WRITTEN AGAINST THE RUNE PATH, 2026-08-15. `withRuneRows`
+      // has computed `notDelivered` since it was built and NOTHING READ IT — the value was
+      // assigned to a local and dropped. Every sentence in `RUNES_READ_BUT_NOT_DELIVERABLE`, and
+      // the "it fires on an ability and this combo has none" case, were written to reach the
+      // reader and reached nobody.
+      //
+      // No damage figure moves: these runes contributed nothing before and contribute nothing
+      // now. What moves is that a reader wearing Cheap Shot is told it was not applied instead of
+      // seeing a total that is quietly smaller than their build. That is the mild direction of
+      // this project's one fatal failure and the harder one to notice, because a missing number
+      // looks exactly like a correct one.
+      ...withRunes.notDelivered,
       // A STAT KEY NOBODY MAPPED IS NAMED, not dropped quietly. A patch adding one would
       // otherwise remove a stat from the build with nothing on screen to say so.
       ...(unknownStats.length > 0

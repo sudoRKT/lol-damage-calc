@@ -98,6 +98,26 @@ function excluded(result: Result, fragment: string): boolean {
   return result.excludedMechanics.some((line) => line.includes(fragment));
 }
 
+/**
+ * The refusal sentence for the ONE defensive entry a scenario switched on.
+ *
+ * `excludedMechanics` carries two different things: the standing disclosures every result gets
+ * (`SIMULATION_EXCLUSIONS`) and the per-entry refusals this file produces. Searching the whole
+ * list for a phrase cannot tell them apart — and a standing disclosure about recurring defences
+ * happens to contain the phrase "one occurrence or the whole duration", so an assertion written
+ * that way passes whether or not the entry was refused for that reason. This narrows to the
+ * refusal line, and fails loudly if the scenario produced none or more than one.
+ */
+function soleRefusal(result: Result): string {
+  const lines = result.excludedMechanics.filter((l) =>
+    l.includes('was switched on and was NOT applied'),
+  );
+  if (lines.length !== 1) {
+    throw new Error(`expected exactly one refusal, got ${lines.length}: ${JSON.stringify(lines)}`);
+  }
+  return lines[0]!;
+}
+
 const SHIELD_60 = defence({
   kind: 'shield',
   label: 'Shield Strength',
@@ -712,8 +732,10 @@ describe('a recurring defence names the fact that is actually missing', () => {
     const result = resultOf(
       run([WHOLE_DURATION_HEAL], { ...HALF_HEALTH, [defensiveToggleKey(WHOLE_DURATION_HEAL)]: true }),
     );
-    expect(excluded(result, 'one occurrence or the whole duration')).toBe(true);
-    expect(excluded(result, 'channels for up to 4 seconds')).toBe(true);
+    // Narrowed to the entry's own refusal on 2026-08-15: the standing disclosure about recurring
+    // defences carried this same phrase, so a search of the whole list proved nothing.
+    expect(soleRefusal(result)).toContain('one occurrence or the whole duration');
+    expect(soleRefusal(result)).toContain('channels for up to 4 seconds');
   });
 
   it('a stated occurrence count does not by itself release the entry', () => {
@@ -729,7 +751,7 @@ describe('a recurring defence names the fact that is actually missing', () => {
     });
     const result = resultOf(run([counted], { ...HALF_HEALTH, [defensiveToggleKey(counted)]: true }));
     expect(result.verdict.burstOnly.healingApplied).toBe(0);
-    expect(excluded(result, 'one occurrence or the whole duration')).toBe(true);
+    expect(soleRefusal(result)).toContain('one occurrence or the whole duration');
   });
 
   it('a stated occurrence count is quoted back, and the entry no longer says the count is absent', () => {
@@ -741,7 +763,7 @@ describe('a recurring defence names the fact that is actually missing', () => {
       },
     });
     const result = resultOf(run([counted], { ...HALF_HEALTH, [defensiveToggleKey(counted)]: true }));
-    expect(excluded(result, 'it lands 8 times')).toBe(true);
+    expect(soleRefusal(result)).toContain('it lands 8 times');
     // The old sentence would have told the reader the source states no count while the entry
     // states one. Saying a false thing about the data is the defect this block exists for.
     expect(excluded(result, 'states no number of occurrences')).toBe(false);
@@ -768,5 +790,303 @@ describe('a recurring defence names the fact that is actually missing', () => {
     expect(result.verdict.burstOnly.healingApplied).toBe(0);
     expect(excluded(result, 'Minimum Heal Per Tick')).toBe(true);
     expect(excluded(result, 'Minimum Total Heal')).toBe(true);
+  });
+});
+
+// ---------------------------------------------------------------------------------------
+// `figureIs` — A RECURRING DEFENCE THAT SAYS WHAT ITS FIGURE MEANS
+// ---------------------------------------------------------------------------------------
+//
+// `CuratedDefensiveEffect.overTime.figureIs` was added to the frozen contract on 2026-08-15. Its
+// two values, quoted from `src/types/data.ts` lines 938–941:
+//
+//   'per-instance'  — the figure is one occurrence; the whole-duration total is it times
+//                     `totalInstances`, and without a count the entry stays incomplete.
+//   'full-duration' — the figure already covers the whole duration and must never be multiplied.
+//                     A count may still be present and is then descriptive only.
+//
+// EVERY EXPECTED NUMBER BELOW IS THAT SENTENCE DONE BY HAND. Nothing was read back out of the
+// engine: a per-occurrence figure of 15 with a stated count of 8 is 15 × 8 = 120, and a
+// whole-duration figure of 120 is 120 whatever count sits beside it. Those are the two halves of
+// Master Yi W, whose stored rows are 15 per tick and 120 for the channel — the pair DATA-SOURCES
+// records as the proof that the distinction is real and not a pedantry.
+//
+// The absent case is asserted UNCHANGED in the block above and is not repeated here.
+
+describe('figureIs: full-duration — the figure stands, and is never multiplied', () => {
+  const TOTAL_HEAL = defence({
+    kind: 'heal',
+    id: 'minimum-total-heal',
+    label: 'Minimum Total Heal',
+    unit: 'flat',
+    value: { scaling: 'explicit', perRank: [120, 120, 120, 120, 120] },
+    overTime: {
+      sourceSays: 'channels for up to 4 seconds, healing every 0.5 seconds',
+      figureIs: 'full-duration',
+    },
+  });
+
+  it('a whole-duration heal restores its stored figure', () => {
+    const result = resultOf(run([TOTAL_HEAL], { ...HALF_HEALTH, [defensiveToggleKey(TOTAL_HEAL)]: true }));
+    expect(result.verdict.burstOnly.healingApplied).toBe(120);
+    expect(result.sustain.defenderHealing).toBe(120);
+    // Healing never changes the damage dealt — it changes what the defender has left.
+    expect(result.burst.total).toBe(200);
+  });
+
+  it('a stated count beside a whole-duration figure is DESCRIPTIVE and changes nothing', () => {
+    // The failure this test exists for: 120 × 8 = 960, which would restore the channel's health
+    // eight times over and is exactly the overstatement `figureIs` was added to prevent.
+    const counted = defence({
+      ...TOTAL_HEAL,
+      overTime: {
+        totalInstances: 8,
+        sourceSays: 'channels for up to 4 seconds, healing every 0.5 seconds',
+        figureIs: 'full-duration',
+      },
+    });
+    const result = resultOf(run([counted], { ...HALF_HEALTH, [defensiveToggleKey(counted)]: true }));
+    expect(result.verdict.burstOnly.healingApplied).toBe(120);
+  });
+
+  it('the count makes no difference at all — with and without it are the same number', () => {
+    const withCount = defence({
+      ...TOTAL_HEAL,
+      overTime: {
+        totalInstances: 8,
+        sourceSays: 'channels for up to 4 seconds, healing every 0.5 seconds',
+        figureIs: 'full-duration',
+      },
+    });
+    const a = resultOf(run([TOTAL_HEAL], { ...HALF_HEALTH, [defensiveToggleKey(TOTAL_HEAL)]: true }));
+    const b = resultOf(run([withCount], { ...HALF_HEALTH, [defensiveToggleKey(withCount)]: true }));
+    expect(a.verdict.burstOnly.healingApplied).toBe(b.verdict.burstOnly.healingApplied);
+  });
+
+  it('a whole-duration shield absorbs its stored strength and no more', () => {
+    const shield = defence({
+      ...SHIELD_60,
+      overTime: {
+        totalInstances: 8,
+        sourceSays: 'shields herself every 0.25 seconds',
+        figureIs: 'full-duration',
+      },
+    });
+    // 200 damage − a 60-point shield = 140. Had the count been read, 60 × 8 = 480 would have
+    // absorbed the whole instance and reported 0.
+    const result = resultOf(run([shield], { [defensiveToggleKey(shield)]: true }));
+    expect(result.burst.total).toBe(140);
+  });
+
+  it('a whole-duration percentage reduction is applied once, not once per tick', () => {
+    const reduction = defence({
+      kind: 'damage-reduction',
+      label: 'Damage Reduction',
+      unit: 'percent',
+      value: { scaling: 'explicit', perRank: [55, 55, 55, 55, 55] },
+      overTime: {
+        totalInstances: 8,
+        sourceSays: 'reduces damage for 4 seconds',
+        figureIs: 'full-duration',
+      },
+    });
+    // 200 × (1 − 0.55) = 90. 55 × 8 = 440% is not a number that means anything.
+    const result = resultOf(run([reduction], { [defensiveToggleKey(reduction)]: true }));
+    expect(result.burst.total).toBe(90);
+  });
+
+  it('nothing is refused, so no exclusion sentence is produced for it', () => {
+    const result = resultOf(run([TOTAL_HEAL], { ...HALF_HEALTH, [defensiveToggleKey(TOTAL_HEAL)]: true }));
+    expect(excluded(result, 'was switched on and was NOT applied')).toBe(false);
+  });
+});
+
+describe('figureIs: per-instance — the total is the figure times the stated count', () => {
+  /** Master Yi W's per-tick row: 15 a tick, eight ticks over a 4-second channel at 0.5s each. */
+  const PER_TICK_HEAL = defence({
+    kind: 'heal',
+    id: 'minimum-heal-per-tick',
+    label: 'Minimum Heal Per Tick',
+    unit: 'flat',
+    // Rank-varying on purpose: rank 1 is 15, so a total of 120 can only have come from 15 × 8 and
+    // not from summing the list (170) or from taking the top rank (55 × 8 = 440).
+    value: { scaling: 'explicit', perRank: [15, 25, 35, 45, 55] },
+    overTime: {
+      totalInstances: 8,
+      sourceSays: 'channels for up to 4 seconds, healing every 0.5 seconds',
+      figureIs: 'per-instance',
+    },
+  });
+
+  it('a per-occurrence heal of 15 over 8 occurrences restores 120', () => {
+    const result = resultOf(run([PER_TICK_HEAL], { ...HALF_HEALTH, [defensiveToggleKey(PER_TICK_HEAL)]: true }));
+    expect(result.verdict.burstOnly.healingApplied).toBe(120);
+    expect(result.sustain.defenderHealing).toBe(120);
+    expect(result.burst.total).toBe(200);
+  });
+
+  it('a count of 1 restores exactly one occurrence', () => {
+    const once = defence({
+      ...PER_TICK_HEAL,
+      overTime: {
+        totalInstances: 1,
+        sourceSays: 'heals once at the end of the channel',
+        figureIs: 'per-instance',
+      },
+    });
+    const result = resultOf(run([once], { ...HALF_HEALTH, [defensiveToggleKey(once)]: true }));
+    expect(result.verdict.burstOnly.healingApplied).toBe(15);
+  });
+
+  it("Master Yi W's two stored rows agree: 15 × 8 and 120 are the same health", () => {
+    // The pair the contract cites. If the engine ever reads one of them the other way, these two
+    // numbers separate by a factor of eight and this is the test that says so.
+    const perTick = defence({
+      kind: 'heal',
+      id: 'minimum-heal-per-tick',
+      label: 'Minimum Heal Per Tick',
+      unit: 'flat',
+      value: { scaling: 'explicit', perRank: [15, 15, 15, 15, 15] },
+      overTime: {
+        totalInstances: 8,
+        sourceSays: 'channels for up to 4 seconds, healing every 0.5 seconds',
+        figureIs: 'per-instance',
+      },
+    });
+    const total = defence({
+      kind: 'heal',
+      id: 'minimum-total-heal',
+      label: 'Minimum Total Heal',
+      unit: 'flat',
+      value: { scaling: 'explicit', perRank: [120, 120, 120, 120, 120] },
+      overTime: {
+        sourceSays: 'channels for up to 4 seconds, healing every 0.5 seconds',
+        figureIs: 'full-duration',
+      },
+    });
+    const a = resultOf(run([perTick], { ...HALF_HEALTH, [defensiveToggleKey(perTick)]: true }));
+    const b = resultOf(run([total], { ...HALF_HEALTH, [defensiveToggleKey(total)]: true }));
+    expect(a.verdict.burstOnly.healingApplied).toBe(120);
+    expect(b.verdict.burstOnly.healingApplied).toBe(120);
+  });
+
+  it('without a count the entry stays incomplete and restores nothing', () => {
+    const noCount = defence({
+      ...PER_TICK_HEAL,
+      overTime: {
+        sourceSays: 'channels for up to 4 seconds, healing every 0.5 seconds',
+        figureIs: 'per-instance',
+      },
+    });
+    const result = resultOf(run([noCount], { ...HALF_HEALTH, [defensiveToggleKey(noCount)]: true }));
+    expect(result.verdict.burstOnly.healingApplied).toBe(0);
+    expect(result.burst.total).toBe(200);
+  });
+
+  it('the refusal without a count says what is missing, and no longer says the meaning is', () => {
+    const noCount = defence({
+      ...PER_TICK_HEAL,
+      overTime: {
+        sourceSays: 'channels for up to 4 seconds, healing every 0.5 seconds',
+        figureIs: 'per-instance',
+      },
+    });
+    const result = resultOf(run([noCount], { ...HALF_HEALTH, [defensiveToggleKey(noCount)]: true }));
+    const refusal = soleRefusal(result);
+    expect(refusal).toContain('states no number of occurrences');
+    expect(refusal).toContain('channels for up to 4 seconds');
+    // The entry DOES now say what its figure covers. Repeating the old sentence would tell the
+    // reader something false about their own data, which is the defect the previous pass fixed.
+    expect(refusal).not.toContain('one occurrence or the whole duration');
+    expect(refusal).toContain('covers ONE occurrence');
+  });
+});
+
+describe('per-instance is multiplied only where occurrences ADD UP', () => {
+  // RAISED, AND IMPLEMENTED ON THE SAFE SIDE. The contract states the arithmetic — figure times
+  // count — and that arithmetic is sound for HEALTH RESTORED, which accumulates: eight ticks of 15
+  // health is 120 health and the engine's sustain model already takes a total.
+  //
+  // It is NOT sound for a shield, a resistance grant or a damage reduction. Those are STATES, not
+  // quantities: a shield reapplied eight times is either one 60-point pool refreshed eight times or
+  // a 480-point pool, and NOTHING ON THE ENTRY SAYS WHICH — the two differ by the whole count.
+  // 55% reduction applied eight times is not 440%. Multiplying any of them would hand the defender
+  // mitigation the source never stated, so each is refused with the ambiguity named.
+  //
+  // These four tests are what that decision looks like from the outside. If the decision is later
+  // taken the other way, they are the tests that must be argued with.
+
+  function perInstance(parts: Partial<CuratedDefensiveEffect> & { kind: DefensiveKind }) {
+    return defence({
+      ...parts,
+      overTime: {
+        totalInstances: 8,
+        sourceSays: 'reapplies every 0.5 seconds for 4 seconds',
+        figureIs: 'per-instance',
+      },
+    });
+  }
+
+  it('a per-occurrence SHIELD is refused rather than summed into one pool', () => {
+    const entry = perInstance({
+      kind: 'shield',
+      label: 'Shield Strength',
+      unit: 'flat',
+      value: { scaling: 'explicit', perRank: [60, 60, 60, 60, 60] },
+    });
+    const result = resultOf(run([entry], { [defensiveToggleKey(entry)]: true }));
+    // Neither 140 (one pool) nor 0 (an eight-fold pool absorbing everything) is asserted here,
+    // because neither is established. Nothing is applied and the reader is told why.
+    expect(result.burst.total).toBe(200);
+    expect(excluded(result, 'do not add into one whole-duration figure')).toBe(true);
+    expect(excluded(result, 'reapplies every 0.5 seconds')).toBe(true);
+  });
+
+  it('a per-occurrence RESISTANCE GRANT is refused', () => {
+    const entry = perInstance({
+      kind: 'resistance-grant',
+      label: 'Bonus Armor',
+      grantedStat: 'armor',
+      unit: 'flat',
+      value: { scaling: 'explicit', perRank: [50, 50, 50, 50, 50] },
+    });
+    const result = resultOf(run([entry], { [defensiveToggleKey(entry)]: true }));
+    expect(result.burst.total).toBe(200);
+    expect(excluded(result, 'do not add into one whole-duration figure')).toBe(true);
+  });
+
+  it('a per-occurrence PERCENTAGE REDUCTION is refused — 55% eight times is not 440%', () => {
+    const entry = perInstance({
+      kind: 'damage-reduction',
+      label: 'Damage Reduction',
+      unit: 'percent',
+      value: { scaling: 'explicit', perRank: [55, 55, 55, 55, 55] },
+    });
+    const result = resultOf(run([entry], { [defensiveToggleKey(entry)]: true }));
+    expect(result.burst.total).toBe(200);
+    expect(excluded(result, 'do not add into one whole-duration figure')).toBe(true);
+  });
+
+  it('a per-occurrence FLAT REDUCTION is refused', () => {
+    const entry = perInstance({
+      kind: 'damage-reduction',
+      label: 'Minimum Damage Reduction',
+      unit: 'flat',
+      value: { scaling: 'explicit', perRank: [30, 30, 30, 30, 30] },
+    });
+    const result = resultOf(run([entry], { [defensiveToggleKey(entry)]: true }));
+    expect(result.burst.total).toBe(200);
+    expect(excluded(result, 'do not add into one whole-duration figure')).toBe(true);
+  });
+
+  it('the refusal names the factor the two readings differ by', () => {
+    const entry = perInstance({
+      kind: 'shield',
+      label: 'Shield Strength',
+      unit: 'flat',
+      value: { scaling: 'explicit', perRank: [60, 60, 60, 60, 60] },
+    });
+    const result = resultOf(run([entry], { [defensiveToggleKey(entry)]: true }));
+    expect(excluded(result, 'differ by a factor of 8')).toBe(true);
   });
 });

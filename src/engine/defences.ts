@@ -48,6 +48,7 @@ import type {
   CuratedDefensiveEffect,
   DamageType,
   DefensiveKind,
+  OverTimeFigure,
   Ratio,
 } from '../types';
 import { defensiveToggleKey } from '../types';
@@ -341,6 +342,14 @@ function resolveAmount(
  *
  * NO NUMBER MOVED when this changed. Every entry refused before is refused now; only the sentence
  * differs.
+ *
+ * ═══ THE MISSING FIELD NOW EXISTS, AND THIS FUNCTION IS THE `ABSENT` ARM OF IT ═══
+ *
+ * `overTime.figureIs` was added to the frozen contract on 2026-08-15. When it is present the entry
+ * says what its figure means and `figureIsRefusal` / the applying path below take over. **This
+ * function is now reached only when it is ABSENT**, which is unchanged behaviour and unchanged
+ * wording: the source does not say, and picking either reading silently is how a heal gets counted
+ * eight times.
  */
 function recurringRefusal(overTime: { totalInstances?: number; sourceSays: string }): string {
   const quoted = ` The source says: "${overTime.sourceSays}"`;
@@ -359,6 +368,79 @@ function recurringRefusal(overTime: { totalInstances?: number; sourceSays: strin
     `it recurs over a duration, the source states no number of occurrences, and ${missing}. ` +
     `Forming a total needs one of those two facts and the entry carries neither.${quoted}`
   );
+}
+
+/**
+ * THE KINDS WHOSE OCCURRENCES ADD UP INTO ONE WHOLE-DURATION FIGURE.
+ *
+ * ═══ WHY THIS IS NOT SIMPLY "EVERY KIND" ═══
+ *
+ * `figureIs: 'per-instance'` states the arithmetic plainly (src/types/data.ts): the whole-duration
+ * total is the figure times `totalInstances`. That is true **of the figure**, and it is what this
+ * file does — but whether the resulting total is a thing the DEFENDER GETS depends on the kind, and
+ * the two questions are not the same question.
+ *
+ * **HEALTH RESTORED ACCUMULATES.** Eight ticks of 15 health is 120 health: the defender really did
+ * regain all of it, the engine's sustain model already takes one total, and nothing about the
+ * mechanism is in doubt. Master Yi W proves it from the data's own side — its per-tick row is
+ * exactly one eighth of its channel-total row at every rank.
+ *
+ * **A SHIELD, A RESISTANCE GRANT AND A DAMAGE REDUCTION ARE STATES, NOT QUANTITIES.** A 60-point
+ * shield reapplied eight times is either one 60-point pool refreshed eight times or a single
+ * 480-point pool, and **nothing on the entry says which** — the two readings differ by the whole
+ * count. 50 armor reapplied eight times is not 400 armor. A 55% reduction applied eight times is
+ * not a 440% reduction, which is not a number that means anything at all.
+ *
+ * So the multiplication is performed for healing and refused, by name, for the rest. **The refusal
+ * is the safe side of an ambiguity, not a claim that the entry is unreadable**, and if the project
+ * later establishes that reapplications stack, this list is the one line that changes.
+ *
+ * `full-duration` is unaffected: that figure is the SOURCE's own whole-duration statement rather
+ * than a total this engine formed, so it is applied for every kind exactly as it stands.
+ */
+const ACCUMULATES_OVER_OCCURRENCES: readonly DefensiveKind[] = ['heal'];
+
+/**
+ * Why a recurring defence that DOES say what its figure means still contributes nothing.
+ *
+ * Two cases, and only two — a `full-duration` figure is never refused here at all:
+ *
+ * 1. `per-instance` with no `totalInstances`. The entry says its figure is one occurrence and the
+ *    source never says how many there are, so the whole-duration total cannot be formed. Applying
+ *    one occurrence as though it were the whole would understate the defence.
+ * 2. `per-instance` on a kind whose occurrences do not add up. See `ACCUMULATES_OVER_OCCURRENCES`.
+ *
+ * Returns `undefined` when there is nothing to refuse.
+ */
+function figureIsRefusal(
+  kind: DefensiveKind,
+  overTime: { totalInstances?: number; sourceSays: string; figureIs?: OverTimeFigure },
+): string | undefined {
+  if (overTime.figureIs !== 'per-instance') return undefined;
+  const quoted = ` The source says: "${overTime.sourceSays}"`;
+
+  if (overTime.totalInstances === undefined) {
+    return (
+      `it recurs over a duration and the entry states that its figure covers ONE occurrence, but ` +
+      `the source states no number of occurrences — so the whole duration cannot be totalled. ` +
+      `Applying a single occurrence as though it were the whole would understate it, and this ` +
+      `engine models sequence rather than elapsed time, so a duration cannot be turned into a ` +
+      `count.${quoted}`
+    );
+  }
+
+  if (!ACCUMULATES_OVER_OCCURRENCES.includes(kind)) {
+    const n = overTime.totalInstances;
+    return (
+      `it recurs over a duration and the entry states that its figure covers ONE occurrence of ` +
+      `${n}, but occurrences of a '${kind}' do not add into one whole-duration figure: nothing ` +
+      `on the entry says whether a reapplication ADDS to what is already there or REPLACES it, ` +
+      `and those two readings differ by a factor of ${n}. Health restored accumulates and this ` +
+      `does not, so it is refused rather than multiplied.${quoted}`
+    );
+  }
+
+  return undefined;
 }
 
 /** A shield's kind, from the one damage type the source restricted it to. */
@@ -454,17 +536,35 @@ export function resolveDefences(args: {
       continue;
     }
 
-    // ═══ AN OVER-TIME DEFENCE DOES NOT SAY WHAT ITS FIGURE COVERS ═══
+    // ═══ AN OVER-TIME DEFENCE, AND WHAT ITS FIGURE COVERS ═══
     //
     // 21 stored entries recur — a heal spread over a channel, a shield reapplied per tick. 18 of
     // them are otherwise ready to apply, and they split in half: 9 store one occurrence and 9
-    // store the whole duration, with nothing but the row's label to tell them apart. Applying a
-    // per-occurrence figure as though it were the total understates the defender; multiplying a
-    // whole-duration figure by its tick count overstates them. Both are refused, and
-    // `recurringRefusal` says which fact is missing rather than asserting one that is not.
+    // store the whole duration. Applying a per-occurrence figure as though it were the total
+    // understates the defender; multiplying a whole-duration figure by its tick count overstates
+    // them. `overTime.figureIs` is the field that tells the two apart, and it decides three ways:
+    //
+    //   ABSENT          — the source does not say. Refused, unchanged, in `recurringRefusal`.
+    //   'full-duration' — applied AS IT STANDS. Falls straight through; `occurrences` stays 1 and
+    //                     any `totalInstances` beside it is descriptive and is never read.
+    //   'per-instance'  — the total is the figure times `totalInstances`. Refused without a count,
+    //                     and refused on a kind whose occurrences do not add up.
+    let occurrences = 1;
     if (effect.overTime) {
-      refuse(effect, recurringRefusal(effect.overTime));
-      continue;
+      if (effect.overTime.figureIs === undefined) {
+        refuse(effect, recurringRefusal(effect.overTime));
+        continue;
+      }
+      const refusal = figureIsRefusal(effect.kind, effect.overTime);
+      if (refusal !== undefined) {
+        refuse(effect, refusal);
+        continue;
+      }
+      if (effect.overTime.figureIs === 'per-instance') {
+        // Guarded by `figureIsRefusal` immediately above: a per-instance entry that reaches here
+        // has a count and is a kind whose occurrences add up.
+        occurrences = effect.overTime.totalInstances!;
+      }
     }
 
     // ═══ THE ABILITY IS FOUND BY NAME, NOT BY SLOT ALONE ═══
@@ -483,7 +583,9 @@ export function resolveDefences(args: {
       refuse(effect, resolved.reason);
       continue;
     }
-    const amount = resolved.amount;
+    // THE ONE PLACE A RECURRING FIGURE IS MULTIPLIED. `occurrences` is 1 for every entry that does
+    // not recur and for every `full-duration` figure, so this line changes nothing for them.
+    const amount = resolved.amount * occurrences;
 
     switch (effect.kind) {
       case 'shield': {
