@@ -283,14 +283,31 @@ describe('curves/roster — the drawn points are exactly the computed ones', () 
     // AND THE ORDER ITSELF DECIDES MOST OF THE CURVE, which is the second half of the finding.
     // `allocateRanks` spends every point strictly by priority, so Q > W > E maxes Q and W before E
     // is learned at all — E arrives at level 13, and a combo that casts E refuses every level below
-    // it. 1,039 computed against 2,075 refused: SIX levels per champion, not thirteen. The
-    // levelling order is not a cosmetic default and the interface cannot pick one silently.
+    // it. SIX levels per champion, not thirteen. The levelling order is not a cosmetic default and
+    // the interface cannot pick one silently.
+    //
+    // ═══ THE PRIORITY FIGURES FELL ON 2026-08-15 AND THAT IS THE SYSTEM WORKING ═══
+    //
+    // They read 1,039 computed against 2,075 refused until `src/engine/level-sweep.ts` was changed
+    // to refuse a build that can exist at NO champion level, rather than quietly drawing a lower
+    // one. The seven champions named in the test below were the ones being lowered; they now refuse
+    // all 18 levels under `priority` exactly as they already did under `as-configured`.
+    //
+    // 1,039 - 996 = 43 points stopped computing, and the 43 is accounted for champion by champion
+    // rather than asserted: re-deriving the old behaviour with `allocateRanks` + `rankProblems`
+    // gives Aphelios 6, Elise 6, JAYCE 7, Karma 6, Nidalee 6, Udyr 6, Yuumi 6 — 43 exactly, with
+    // nothing left over. Jayce is the odd one because his ultimate has a single rank, so it is
+    // bought at level 6 and his E is learned at 12 rather than 13, giving him a seventh level.
+    // CLAUDE.md: compare a count against a stated definition, never against yesterday's number.
     const asConfigured = of('level/as-configured');
     const priority = of('level/priority');
     expect(sum(asConfigured, 'computed')).toBe(166);
     expect(sum(asConfigured, 'refused')).toBe(2948);
-    expect(sum(priority, 'computed')).toBe(1039);
-    expect(sum(priority, 'refused')).toBe(2075);
+    expect(sum(priority, 'computed')).toBe(996);
+    expect(sum(priority, 'refused')).toBe(2118);
+    // The two policies now agree about which champions can be drawn at all, which is the property
+    // the change installed. Only the LEVELS they draw differ.
+    expect(sum(priority, 'computed') + sum(priority, 'refused')).toBe(roster.length * 18);
   });
 
   it('names the seven champions whose level curve is EMPTY, and why', () => {

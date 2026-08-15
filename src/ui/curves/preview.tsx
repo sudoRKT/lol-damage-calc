@@ -10,8 +10,16 @@
 
 import { createRoot } from 'react-dom/client';
 import { DamageCurve } from './DamageCurve';
-import { MOCK_LEVEL_SERIES, MOCK_RESISTANCE_SERIES } from './mock-series';
+import {
+  MOCK_LEVEL_SERIES,
+  MOCK_RANK_BUILD_REACHABLE,
+  MOCK_RANK_BUILD_UNREACHABLE,
+  MOCK_RANK_LEVEL_SERIES,
+  MOCK_RESISTANCE_SERIES,
+} from './mock-series';
 import './preview.css';
+
+const PRIORITY = { kind: 'priority', order: ['Q', 'W', 'E'] } as const;
 
 function Preview() {
   return (
@@ -29,6 +37,30 @@ function Preview() {
           not others
         </p>
         <DamageCurve series={MOCK_LEVEL_SERIES} />
+      </div>
+      <div className="preview__case">
+        <p className="preview__what">
+          Rank shortfall, the MARKED case — the same curve read against a build of Q6 W6 E6 R6 that
+          it never reaches. Six dotted vertical rules, a strong-bordered rank block, and “never
+          reached” in every rank cell. It also trips the configured-build cross-check, because the
+          curve records that it was drawn against Q5 W5 E5 R3
+        </p>
+        <DamageCurve
+          ranks={{ configured: MOCK_RANK_BUILD_UNREACHABLE, policy: PRIORITY }}
+          series={MOCK_RANK_LEVEL_SERIES}
+          title="Damage versus attacker level — a build this curve never draws"
+        />
+      </div>
+      <div className="preview__case">
+        <p className="preview__what">
+          Rank shortfall, the UNMARKED case — the same curve read against Q5 W5 E5 R3, which its top
+          reaches exactly. No rules on the plot, a steel border, and the lower levels still stated
+        </p>
+        <DamageCurve
+          ranks={{ configured: MOCK_RANK_BUILD_REACHABLE, policy: PRIORITY }}
+          series={MOCK_RANK_LEVEL_SERIES}
+          title="Damage versus attacker level — the build is reached at the top"
+        />
       </div>
       <div className="preview__case">
         <p className="preview__what">

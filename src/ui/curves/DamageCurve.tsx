@@ -34,15 +34,34 @@
 //      continuous, and yet the two ends are not comparable because one includes an ability the
 //      other does not. A step in such a curve is a data-coverage artefact wearing the costume of a
 //      mechanic, so it is called out first, before the plot.
+//
+//   4. A LEVEL CURVE WHOSE TOP IS BELOW THE BUILD THE USER CONFIGURED (added 2026-08-15). This has
+//      the same shape as 3 — a full, continuous, plausible line that is not what the reader asked
+//      for — and until the `ranks` prop existed it had no signature either. `rank-shortfall.ts`
+//      carries the measurement and the wording; this file draws the mark and prints the sentences.
+//      The prop is OPTIONAL because a resistance curve has no ability ranks to be short of, and a
+//      caller that passes it against a series carrying no ranks is told so rather than reassured.
+//
+// ═══ AND ONE THING THIS FILE DELIBERATELY DOES NOT DO YET ═══
+//
+// `src/engine/level-sweep.ts` grew `series.rankReport`, `AppliedLevel.configuredRanks` and
+// `AppliedLevel.rankShortfall` on 2026-08-15, while this was being built. That is a better source
+// than the `ranks` prop — it cannot disagree with the series it describes — and the prop should be
+// retired in favour of it. It is NOT wired here because that work's own suite was failing when this
+// was written, and an interface built on a red contract is an interface that has to be rebuilt.
+// Raised to the lead rather than decided here. `appliedLevelRanks` is a RUNTIME guard rather than a
+// type assertion precisely so this file keeps working across that change in either direction.
 
 import { useId } from 'react';
-import type { SweepSeries } from '../../engine';
+import type { LevelRankPolicy, RankSchedule, Ranks, SweepSeries } from '../../engine';
+import type { SlotShortfall } from './rank-shortfall';
 import {
   AggregateTotal,
   TableScroller,
   VerificationStatusMark,
   formatReadout,
 } from '../primitives';
+import { fractionOf } from '../plot';
 import {
   buildCurveModel,
   curveDescription,
@@ -51,6 +70,20 @@ import {
   refusalText,
   type CurveLineKind,
 } from './geometry';
+import {
+  annotateNotes,
+  appliedLevelRanks,
+  noteConfirmation,
+  noteContradictionText,
+  policyDetail,
+  policyPhrase,
+  rankShortfall,
+  ranksPhrase,
+  shortfallAt,
+  shortfallCellParts,
+  shortfallDescription,
+  shortfallWarnings,
+} from './rank-shortfall';
 import './curves.css';
 
 export interface DamageCurveProps {
@@ -70,12 +103,47 @@ export interface DamageCurveProps {
    * Default true. Turning it off rescales the y axis to the damage alone — see `geometry.ts`.
    */
   showTargetHealth?: boolean;
+  /**
+   * WHAT ABILITY RANKS THIS CURVE WAS DRAWN AT, and what the user actually configured.
+   *
+   * Supply it for a level sweep and the chart prints the rank schedule it ran under, the drawn
+   * ranks on every row, and a mark wherever the line sits below a build no level can reach. Omit
+   * it and the chart is exactly what it was before — which is right for a resistance sweep, where
+   * ranks do not move.
+   *
+   * It is a PROP rather than something read off the series because `AppliedLevel` records the
+   * ranks a point used but not the ranks the Scenario stated, and the type contract is frozen
+   * (CLAUDE.md). A caller holding the Scenario has them, so no contract change is needed.
+   */
+  ranks?: DamageCurveRanks;
+}
+
+export interface DamageCurveRanks {
+  /** The ranks the Scenario states — the build the user configured. */
+  configured: Ranks;
+  /** The policy the caller passed to `damageVsLevel`. Printed, and cross-checked against notes. */
+  policy: LevelRankPolicy;
+  /** The rank schedule the sweep used. Defaults to the engine's own default. */
+  schedule?: RankSchedule;
 }
 
 /** The one damage-free legend entry: the mark left where the engine refused to compute. */
 const REFUSED_LEGEND = 'Refused — nothing computed here';
 
-export function DamageCurve({ series, title, showTargetHealth = true }: DamageCurveProps) {
+/**
+ * The second damage-free legend entry.
+ *
+ * "Never reached" is the same phrase the table cells and the warning sentences use, so the mark,
+ * the cell and the paragraph are recognisably one fact rather than three.
+ */
+const SHORTFALL_LEGEND = 'Never reached — this curve does not draw your rank in that ability';
+
+export function DamageCurve({
+  series,
+  title,
+  showTargetHealth = true,
+  ranks,
+}: DamageCurveProps) {
   const model = buildCurveModel(series, { showTargetHealth });
   const id = useId();
   const titleId = `${id}-title`;
@@ -83,6 +151,25 @@ export function DamageCurve({ series, title, showTargetHealth = true }: DamageCu
 
   const heading = title ?? `Damage versus ${series.axisLabel}`;
   const total = model.computedCount + model.refusedCount;
+
+  // The rank comparison, or null when the caller did not ask for one. Nothing below this line
+  // changes a damage figure, hides a point or softens a refusal — it adds a mark and some words.
+  const shortfall = ranks ? rankShortfall(series, ranks.configured, ranks.schedule) : null;
+  const rankWarnings = shortfall ? shortfallWarnings(shortfall, ranks?.schedule) : [];
+  const rankDescription = shortfall ? shortfallDescription(shortfall) : null;
+  const noteAgreement = ranks ? noteConfirmation(series.notes, ranks.policy) : 'absent';
+  const shownNotes =
+    shortfall && ranks ? annotateNotes(series.notes, shortfall, ranks.schedule) : [...series.notes];
+
+  // Marked points only — see `RankShortfall.markedPoints` for the rule and for the two wrong rules
+  // it replaced. A mark that appears on all 173 curves says nothing.
+  const shortMarks = shortfall
+    ? shortfall.markedPoints.map((point) => ({
+        x: point.x,
+        label: point.label,
+        fraction: fractionOf(point.x, model.x),
+      }))
+    : [];
 
   // Contributors missing at SOME points but not all — the ones that make the curve incomparable
   // with itself. `incompleteEverywhere` is a floor on every point equally, which is a different
@@ -110,6 +197,56 @@ export function DamageCurve({ series, title, showTargetHealth = true }: DamageCu
             the line may be a gap in the data rather than a change in the game. What varies:{' '}
             {varying.join(', ')}.
           </p>
+        </section>
+      ) : null}
+
+      {/* THE RANK SCHEDULE, ALWAYS PRINTED WHEN ONE WAS SUPPLIED. A reader cannot judge a curve
+          whose levelling order is invisible: the same champion drawn Q-first and E-first is two
+          different lines, and neither is wrong. The block takes a STRONGER BORDER when something
+          is short — brightness and weight, never a hue (DESIGN.md §1, §6). */}
+      {ranks && shortfall ? (
+        <section
+          aria-label="Ability ranks along this curve"
+          /* THE STRONGER BORDER TRACKS THE MARK, NOT "ARE THERE ANY SENTENCES".
+             Keyed on `rankWarnings.length` it fired on almost every curve — MEASURED in a browser:
+             the reachable-build preview case carries no mark at all and still took the strong
+             border, because "5 further points are below your build only because the level has not
+             bought those ranks yet" is a sentence and not a warning. An emphasis that is always on
+             is not an emphasis. */
+          className={
+            shortfall.markedPoints.length > 0 || shortfall.unreadableCount > 0
+              ? 'curve-panel__ranks curve-panel__ranks--short'
+              : 'curve-panel__ranks'
+          }
+        >
+          <h3 className="curve-panel__eyebrow">Ability ranks along this curve</h3>
+          <p className="curve-panel__policy">{policyPhrase(ranks.policy)}</p>
+          <p className="curve-panel__note">{policyDetail(ranks.policy)}</p>
+          <p className="curve-panel__note">
+            Your build: <span className="curve-panel__ranks-figure">{ranksPhrase(ranks.configured)}</span>
+            {shortfall.top ? (
+              <>
+                {' · '}drawn at {shortfall.top.label}:{' '}
+                <span className="curve-panel__ranks-figure">
+                  {ranksPhrase(drawnAt(series, shortfall.top.x) ?? ranks.configured)}
+                </span>
+              </>
+            ) : null}
+          </p>
+          {noteAgreement === 'contradicted' ? (
+            <p className="curve-panel__note">{noteContradictionText(series.notes)}</p>
+          ) : null}
+          {rankWarnings.length > 0 ? (
+            <ul className="curve-panel__list">
+              {rankWarnings.map((line) => (
+                <li key={line}>{line}</li>
+              ))}
+            </ul>
+          ) : (
+            <p className="curve-panel__note">
+              Every point this curve draws is at the ability ranks your build states.
+            </p>
+          )}
         </section>
       ) : null}
 
@@ -158,6 +295,21 @@ export function DamageCurve({ series, title, showTargetHealth = true }: DamageCu
                 style={{ insetInlineStart: pct(mark.fraction) }}
               >
                 <span className="curve__refused-band" />
+              </div>
+            ))}
+
+            {/* A marked point: a DOTTED vertical rule, neutral. The cue is the PATTERN, never a
+                colour — DESIGN.md §1 reserves hue for the three damage types, and §7's healing
+                riser is the precedent: a neutral stroke made distinct by being dotted. It is
+                visually unlike the refused band beside it (45° hatch) so the two never merge. */}
+            {shortMarks.map((mark) => (
+              <div
+                aria-hidden="true"
+                className="curve__short"
+                key={`s${mark.x}`}
+                style={{ insetInlineStart: pct(mark.fraction) }}
+              >
+                <span className="curve__short-rule" />
               </div>
             ))}
 
@@ -224,10 +376,17 @@ export function DamageCurve({ series, title, showTargetHealth = true }: DamageCu
               <span>{REFUSED_LEGEND}</span>
             </li>
           ) : null}
+          {shortMarks.length > 0 ? (
+            <li className="curve__legend-item">
+              <span aria-hidden="true" className="curve__legend-short" />
+              <span>{SHORTFALL_LEGEND}</span>
+            </li>
+          ) : null}
         </ul>
 
         <figcaption className="curve__description" id={descId}>
           {curveDescription(model)}
+          {rankDescription ? ` ${rankDescription}` : ''}
         </figcaption>
       </figure>
 
@@ -237,10 +396,15 @@ export function DamageCurve({ series, title, showTargetHealth = true }: DamageCu
             Every point of the sweep: what it was evaluated at, the burst total, damage over time,
             both survival verdicts, and the verification status. A refused point states the engine’s
             reason instead of a figure.
+            {ranks
+              ? ' Each computed point also states the ability ranks it was drawn at, and says so' +
+                ' when they are below the build you configured.'
+              : ''}
           </caption>
           <thead>
             <tr>
               <th scope="col">{series.axisLabel}</th>
+              {ranks ? <th scope="col">Ability ranks</th> : null}
               <th scope="col">Burst</th>
               <th scope="col">Damage over time</th>
               <th scope="col">Verdict — burst</th>
@@ -256,6 +420,14 @@ export function DamageCurve({ series, title, showTargetHealth = true }: DamageCu
                   <th className="curve-table__x" scope="row">
                     {point.label}
                   </th>
+                  {ranks ? (
+                    <RanksCell
+                      configured={ranks.configured}
+                      marked={shortfall?.markedXs.includes(point.x) ?? false}
+                      point={point}
+                      schedule={ranks.schedule}
+                    />
+                  ) : null}
                   <td className="curve-table__figure">
                     <AggregateTotal
                       byType={point.summary.burst.byType}
@@ -297,7 +469,11 @@ export function DamageCurve({ series, title, showTargetHealth = true }: DamageCu
                   <th className="curve-table__x" scope="row">
                     {point.label}
                   </th>
-                  <td className="curve-table__refusal" colSpan={6}>
+                  {/* A REFUSAL STILL READS AS A REFUSAL. The rank column does not get its own cell
+                      here: the row states the engine's reason across the whole width, exactly as
+                      it did before this column existed. Printing ranks beside a refusal would
+                      suggest something was drawn at them, and nothing was. */}
+                  <td className="curve-table__refusal" colSpan={ranks ? 7 : 6}>
                     Refused. {point.refusals.map(refusalText).join(' ')}
                   </td>
                 </tr>
@@ -334,11 +510,14 @@ export function DamageCurve({ series, title, showTargetHealth = true }: DamageCu
         </section>
       ) : null}
 
-      {series.notes.length > 0 ? (
+      {/* The engine's OWN notes, with the one that does not apply to this curve contradicted in
+          place rather than deleted — see `annotateNotes`. Without the `ranks` prop these are the
+          engine's notes verbatim, which is what they always were. */}
+      {shownNotes.length > 0 ? (
         <section className="curve-panel__block" aria-label="How this curve was produced">
           <h3 className="curve-panel__eyebrow">How this curve was produced</h3>
           <ul className="curve-panel__list">
-            {series.notes.map((note) => (
+            {shownNotes.map((note) => (
               <li key={note}>{note}</li>
             ))}
           </ul>
@@ -346,6 +525,69 @@ export function DamageCurve({ series, title, showTargetHealth = true }: DamageCu
       ) : null}
     </section>
   );
+}
+
+/**
+ * The ranks one point was drawn at, plus what is short about them.
+ *
+ * The ranks are printed on EVERY computed row, not only the short ones. A column that appears only
+ * when something is wrong is a column a reader cannot use to check that something is right, and the
+ * whole complaint this feature answers is that the schedule was invisible.
+ */
+function RanksCell({
+  configured,
+  marked,
+  point,
+  schedule,
+}: {
+  configured: Ranks;
+  /** True when this point carries a mark on the plot, so the cell says the same word the mark does. */
+  marked: boolean;
+  point: { applied: unknown; label: string };
+  schedule?: RankSchedule;
+}) {
+  const applied = appliedLevelRanks(point.applied);
+  if (applied === null) {
+    // NOT SILENCE. A point that does not record its ranks is a point this column cannot speak
+    // for, and saying so is the difference between "they match" and "nobody looked".
+    return (
+      <td className="curve-table__ranks">
+        <span className="curve-table__none">
+          <span aria-hidden="true">—</span>
+          <span className="u-visually-hidden">this point does not record its ability ranks</span>
+        </span>
+      </td>
+    );
+  }
+  const short = shortfallAt(configured, applied.ranks, applied.attackerLevel, schedule);
+  return (
+    <td className="curve-table__ranks">
+      {ranksPhrase(applied.ranks)}
+      {short.length > 0 ? <ShortfallLabel marked={marked} short={short} /> : null}
+    </td>
+  );
+}
+
+/**
+ * "below your build, never reached" over "E 1 of 5, R 2 of 3" — TWO LINES, deliberately.
+ *
+ * See `shortfallCellParts` for the measurement that forced the split. Both lines are real text in
+ * the cell, so the whole label copies, is found by browser search, and is read out in order.
+ */
+function ShortfallLabel({ marked, short }: { marked: boolean; short: readonly SlotShortfall[] }) {
+  const { label, figures } = shortfallCellParts(short, marked);
+  return (
+    <span className="curve-table__short">
+      <span className="curve-table__short-line">{label}</span>
+      <span className="curve-table__short-line">{figures}</span>
+    </span>
+  );
+}
+
+/** The ranks recorded at one x of a series, or null when that point records none. */
+function drawnAt(series: SweepSeries<unknown>, x: number): Ranks | null {
+  const point = series.points.find((candidate) => candidate.x === x);
+  return point ? (appliedLevelRanks(point.applied)?.ranks ?? null) : null;
 }
 
 /**

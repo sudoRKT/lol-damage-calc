@@ -14,7 +14,13 @@ import { describe, expect, it, afterEach } from 'vitest';
 import { cleanup, render, screen, within } from '@testing-library/react';
 import { buildSeries, type SweepPoint } from '../../engine';
 import { DamageCurve, verdictText } from './DamageCurve';
-import { MOCK_LEVEL_SERIES, MOCK_RESISTANCE_SERIES } from './mock-series';
+import {
+  MOCK_LEVEL_SERIES,
+  MOCK_RANK_BUILD_REACHABLE,
+  MOCK_RANK_BUILD_UNREACHABLE,
+  MOCK_RANK_LEVEL_SERIES,
+  MOCK_RESISTANCE_SERIES,
+} from './mock-series';
 
 afterEach(cleanup);
 
@@ -252,6 +258,271 @@ describe('DamageCurve — the two canonical mock series render', () => {
     expect(container.querySelectorAll('polyline')).toHaveLength(0);
     expect(container.querySelectorAll('.curve__refused')).toHaveLength(3);
     expect(screen.getAllByRole('row')).toHaveLength(4);
+  });
+});
+
+// ---------------------------------------------------------------------------------------
+// THE RANK SHORTFALL ON SCREEN
+//
+// One series, two builds. `MOCK_RANK_LEVEL_SERIES` draws Q5 W5 E5 R3 at its top. Read against a
+// build of Q6 W6 E6 R6 that top is BELOW what the user asked for and no level can reach it — the
+// defect. Read against Q5 W5 E5 R3 the top is exactly right and only the lower levels are behind,
+// which is what levelling is. The difference between those two readings is the whole feature.
+// ---------------------------------------------------------------------------------------
+
+const PRIORITY = { kind: 'priority', order: ['Q', 'W', 'E'] } as const;
+
+describe('DamageCurve — the rank schedule is printed, because a curve cannot be judged without it', () => {
+  it('names the levelling order in words, never with a greater-than sign', () => {
+    render(
+      <DamageCurve
+        ranks={{ configured: MOCK_RANK_BUILD_REACHABLE, policy: PRIORITY }}
+        series={MOCK_RANK_LEVEL_SERIES}
+      />,
+    );
+    const block = screen.getByRole('region', { name: 'Ability ranks along this curve' });
+    expect(within(block).getByText('Levelling order: Q then W then E')).toBeTruthy();
+    expect(block.textContent).toContain('not a fact about this champion');
+  });
+
+  it('says so when the ranks were held exactly as configured instead', () => {
+    render(
+      <DamageCurve
+        ranks={{ configured: MOCK_RANK_BUILD_REACHABLE, policy: { kind: 'as-configured' } }}
+        series={MOCK_RANK_LEVEL_SERIES}
+      />,
+    );
+    const block = screen.getByRole('region', { name: 'Ability ranks along this curve' });
+    // The series' notes say a levelling order produced it, so the caller's claim is CONTRADICTED
+    // and the chart says which one the engine recorded rather than quietly printing the caller's.
+    expect(block.textContent).toContain('Ability ranks: held exactly as configured');
+    expect(block.textContent).toContain('Q then W then E');
+    expect(block.textContent).toContain('may not be the one that produced this line');
+  });
+
+  it('prints the configured build and the ranks the top of the curve was drawn at', () => {
+    render(
+      <DamageCurve
+        ranks={{ configured: MOCK_RANK_BUILD_UNREACHABLE, policy: PRIORITY }}
+        series={MOCK_RANK_LEVEL_SERIES}
+      />,
+    );
+    const block = screen.getByRole('region', { name: 'Ability ranks along this curve' });
+    expect(within(block).getByText('Q6 W6 E6 R6')).toBeTruthy();
+    expect(within(block).getByText('Q5 W5 E5 R3')).toBeTruthy();
+  });
+
+  it('is absent entirely when no ranks were supplied — a resistance curve grows nothing', () => {
+    render(<DamageCurve series={MOCK_RESISTANCE_SERIES} />);
+    expect(screen.queryByRole('region', { name: 'Ability ranks along this curve' })).toBeNull();
+  });
+});
+
+describe('DamageCurve — a top below the configured build is stated, not drawn over', () => {
+  const unreachable = () =>
+    render(
+      <DamageCurve
+        ranks={{ configured: MOCK_RANK_BUILD_UNREACHABLE, policy: PRIORITY }}
+        series={MOCK_RANK_LEVEL_SERIES}
+      />,
+    );
+
+  it('says the top of the curve is below the build, and names every short slot', () => {
+    unreachable();
+    const block = screen.getByRole('region', { name: 'Ability ranks along this curve' });
+    expect(block.textContent).toContain('BELOW the build you configured');
+    // Q, W and E are all drawn at 5 against a stated 6, so they are ONE sentence, not three.
+    expect(block.textContent).toContain('Q, W and E are drawn at rank 5, and your build states rank 6');
+    expect(block.textContent).toContain('R is drawn at rank 3, and your build states rank 6');
+  });
+
+  it('explains that no level on the curve reaches those ranks', () => {
+    unreachable();
+    const block = screen.getByRole('region', { name: 'Ability ranks along this curve' });
+    expect(block.textContent).toContain('No level on this curve can reach those ranks');
+    expect(block.textContent).toContain('5 ranks for a basic ability and 3 for the ultimate');
+  });
+
+  it('contradicts the engine’s own note IN PLACE, quoting it rather than deleting it', () => {
+    unreachable();
+    const notes = screen.getByRole('region', { name: 'How this curve was produced' });
+    expect(notes.textContent).toContain('THIS DOES NOT APPLY TO THIS CURVE');
+    // The engine's sentence is still on screen, inside the correction, so a reader can audit it.
+    expect(notes.textContent).toContain('No ability is ranked above the build the scenario states');
+    // And the other two notes are untouched.
+    expect(notes.textContent).toContain('Only the attacker levels');
+    expect(within(notes).getAllByRole('listitem')).toHaveLength(3);
+  });
+
+  it('marks every affected point on the plot, with a dotted rule and no colour', () => {
+    const { container } = unreachable();
+    // All six computed points hold a rank the schedule cannot reach.
+    expect(container.querySelectorAll('.curve__short')).toHaveLength(6);
+    expect(container.querySelectorAll('.curve__short-rule')).toHaveLength(6);
+    for (const mark of container.querySelectorAll('.curve__short')) {
+      expect(mark.getAttribute('aria-hidden')).toBe('true');
+      expect((mark as HTMLElement).style.color).toBe('');
+    }
+  });
+
+  it('puts the mark in the legend and in the figure’s spoken description', () => {
+    const { container } = unreachable();
+    const legend = screen.getByRole('list', { name: 'What each line is' });
+    expect(within(legend).getByText(/Never reached/)).toBeTruthy();
+    const description = container.querySelector('figcaption')!.textContent ?? '';
+    expect(description).toContain('dotted vertical rule');
+    expect(description).toContain('never reaches your configured rank in');
+  });
+});
+
+describe('DamageCurve — levelling is not a defect and is not marked as one', () => {
+  const reachable = () =>
+    render(
+      <DamageCurve
+        ranks={{ configured: MOCK_RANK_BUILD_REACHABLE, policy: PRIORITY }}
+        series={MOCK_RANK_LEVEL_SERIES}
+      />,
+    );
+
+  it('draws NO mark when the top of the curve is the configured build', () => {
+    const { container } = reachable();
+    expect(container.querySelectorAll('.curve__short')).toHaveLength(0);
+    const legend = screen.getByRole('list', { name: 'What each line is' });
+    expect(within(legend).queryByText(/Never reached/)).toBeNull();
+  });
+
+  it('still SAYS the lower levels are behind, and says it is not a defect', () => {
+    reachable();
+    const block = screen.getByRole('region', { name: 'Ability ranks along this curve' });
+    expect(block.textContent).toContain('below your build only because the level has not bought');
+    expect(block.textContent).toContain('The curve does reach your build above them, so they are not marked');
+    expect(block.textContent).not.toContain('BELOW the build you configured');
+  });
+
+  it('leaves the engine’s notes exactly as the engine wrote them', () => {
+    reachable();
+    const notes = screen.getByRole('region', { name: 'How this curve was produced' });
+    expect(notes.textContent).not.toContain('THIS DOES NOT APPLY');
+    expect(notes.textContent).toContain('the top of this curve is the configured build');
+  });
+});
+
+describe('DamageCurve — the rank column, and what it does to a refused row', () => {
+  it('prints the ranks on EVERY computed row, short or not', () => {
+    render(
+      <DamageCurve
+        ranks={{ configured: MOCK_RANK_BUILD_REACHABLE, policy: PRIORITY }}
+        series={MOCK_RANK_LEVEL_SERIES}
+      />,
+    );
+    const row = screen.getByRole('row', { name: /attacker level 18/ });
+    expect(within(row).getByText('Q5 W5 E5 R3')).toBeTruthy();
+    // Level 18 meets this build exactly, so the cell carries no shortfall label at all.
+    expect(row.textContent).not.toContain('below your build');
+  });
+
+  it('names the short slots compactly on a row that is behind', () => {
+    render(
+      <DamageCurve
+        ranks={{ configured: MOCK_RANK_BUILD_REACHABLE, policy: PRIORITY }}
+        series={MOCK_RANK_LEVEL_SERIES}
+      />,
+    );
+    const row = screen.getByRole('row', { name: /attacker level 13/ });
+    expect(within(row).getByText('Q5 W5 E1 R2')).toBeTruthy();
+    // TWO LINES, not one string — see `shortfallCellParts` for the 49px of page scroll the
+    // single-line form caused in a real browser.
+    expect(within(row).getByText('below your build')).toBeTruthy();
+    expect(within(row).getByText('E 1 of 5, R 2 of 3')).toBeTruthy();
+  });
+
+  it('says "never reached" in the cell wherever the plot carries a mark', () => {
+    render(
+      <DamageCurve
+        ranks={{ configured: MOCK_RANK_BUILD_UNREACHABLE, policy: PRIORITY }}
+        series={MOCK_RANK_LEVEL_SERIES}
+      />,
+    );
+    const row = screen.getByRole('row', { name: /attacker level 18/ });
+    expect(within(row).getByText('below your build, never reached')).toBeTruthy();
+    expect(within(row).getByText('Q 5 of 6, W 5 of 6, E 5 of 6, R 3 of 6')).toBeTruthy();
+    // The cell's two lines are real text in one cell, so the whole label still copies as one run.
+    expect(within(row).getAllByRole('cell')[0]!.textContent).toContain(
+      'below your build, never reachedQ 5 of 6, W 5 of 6, E 5 of 6, R 3 of 6',
+    );
+  });
+
+  it('renders the label as TWO BLOCK LINES, which is what keeps the page from scrolling', () => {
+    // jsdom computes no layout, so this pins the MECHANISM rather than the width. The measurement
+    // is in a real browser and is recorded on `shortfallCellParts`: as one line the cell was 387px,
+    // the table 1,335px against a 1,167px scroller, and the page scrolled sideways by 49px. Putting
+    // the two halves back on one line reproduces that scroll, which is how the fix was confirmed.
+    render(
+      <DamageCurve
+        ranks={{ configured: MOCK_RANK_BUILD_UNREACHABLE, policy: PRIORITY }}
+        series={MOCK_RANK_LEVEL_SERIES}
+      />,
+    );
+    const row = screen.getByRole('row', { name: /attacker level 18/ });
+    const lines = within(row).getAllByRole('cell')[0]!.querySelectorAll('.curve-table__short-line');
+    expect(lines).toHaveLength(2);
+    expect(lines[0]!.textContent).toBe('below your build, never reached');
+    expect(lines[1]!.textContent).toBe('Q 5 of 6, W 5 of 6, E 5 of 6, R 3 of 6');
+  });
+
+  it('A REFUSED ROW STILL READS AS REFUSED — no rank cell, no mark, the engine’s reason intact', () => {
+    const { container } = render(
+      <DamageCurve
+        ranks={{ configured: MOCK_RANK_BUILD_UNREACHABLE, policy: PRIORITY }}
+        series={MOCK_RANK_LEVEL_SERIES}
+      />,
+    );
+    const row = screen.getByRole('row', { name: /attacker level 4/ });
+    expect(row.textContent).toContain('Refused.');
+    expect(row.textContent).toContain('an unlearned ability cannot be cast');
+    expect(row.textContent).not.toContain('below your build');
+    // One header cell + one spanning refusal cell, so the refusal keeps the full width it had.
+    expect(within(row).getAllByRole('cell')).toHaveLength(1);
+    expect(within(row).getByRole('cell').getAttribute('colspan')).toBe('7');
+    // And the twelve refused levels are still hatched on the plot, none of them re-marked.
+    expect(container.querySelectorAll('.curve__refused')).toHaveLength(12);
+    expect(container.querySelectorAll('.curve__short')).toHaveLength(6);
+  });
+
+  it('adds no column at all when no ranks were supplied', () => {
+    render(<DamageCurve series={MOCK_RANK_LEVEL_SERIES} />);
+    expect(screen.queryByRole('columnheader', { name: 'Ability ranks' })).toBeNull();
+    const row = screen.getByRole('row', { name: /attacker level 4/ });
+    expect(within(row).getByRole('cell').getAttribute('colspan')).toBe('6');
+  });
+});
+
+describe('DamageCurve — a series with no ranks in it is reported, not reassured about', () => {
+  it('says how many points could not be compared, and marks nothing', () => {
+    const { container } = render(
+      <DamageCurve
+        ranks={{ configured: MOCK_RANK_BUILD_UNREACHABLE, policy: PRIORITY }}
+        series={MOCK_RESISTANCE_SERIES}
+      />,
+    );
+    const block = screen.getByRole('region', { name: 'Ability ranks along this curve' });
+    expect(block.textContent).toContain(
+      '6 of the 6 computed points do not record the ability ranks they were drawn at',
+    );
+    expect(block.textContent).toContain('Nothing here says they match it');
+    expect(container.querySelectorAll('.curve__short')).toHaveLength(0);
+  });
+
+  it('marks each such row with an en dash rather than an invented rank', () => {
+    render(
+      <DamageCurve
+        ranks={{ configured: MOCK_RANK_BUILD_UNREACHABLE, policy: PRIORITY }}
+        series={MOCK_RESISTANCE_SERIES}
+      />,
+    );
+    // One per computed row — all six of them. The refused row keeps its spanning refusal cell and
+    // gets no rank cell at all, which is why this is 6 and not 7.
+    expect(screen.getAllByText('this point does not record its ability ranks')).toHaveLength(6);
   });
 });
 
