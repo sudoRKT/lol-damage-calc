@@ -149,8 +149,33 @@
   line-height: var(--lh-num-s);
 }
 
+/* WCAG 2.2 AA 2.5.8 — MEASURED ON THE LIVE PAGE, NOT COMPUTED FROM THE TOKENS.
+   This control rendered at 28.91 x 20.84px at a 375px viewport on 2026-08-15, with one item in
+   the attacker's build. 13px type at a 1.45 line-height plus two 1px borders is 20.84px on the
+   block axis, against the 24px minimum; the inline axis already passed at 28.91px. The
+   measurement AGREED with the computation that reported it, which is the outcome worth recording.
+
+   FIXED BY SIZE, AND THE REASON FIRST GIVEN FOR THAT WAS WRONG — corrected 2026-08-15 after
+   measuring rather than reasoning. The claim was that a remove control inside a build row leaves
+   no spacing pass available. **Measured, two item remove controls are 45.84px centre to centre**,
+   and 2.5.8 measures centre to centre rather than edge to edge, so a SPACING pass was available
+   all along. Growing it was still the better fix — a spacing pass would have made this control's
+   compliance depend on how many items happen to be in the build, and it evaporates the moment two
+   rows sit closer together — but it was a choice between two passes, not a forced move. The
+   corrected reason is recorded here because an argument nobody checked is how a guard gets
+   weakened later by someone who believes it.
+
+   `--target-min` is DESIGN.md §4a's stated minimum; naming the token rather than writing 24px is
+   what keeps this stylesheet and `../target-size-register.test.ts` the same fact.
+
+   The flex box is what keeps the glyph centred once the box is taller than its own line box. */
 .items__remove {
   margin-inline-start: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-inline-size: var(--target-min);
+  min-block-size: var(--target-min);
   background: var(--bg-panel);
   border: var(--border-steel);
   border-radius: var(--radius-control);

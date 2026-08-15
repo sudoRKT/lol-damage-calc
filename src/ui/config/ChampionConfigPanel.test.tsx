@@ -164,6 +164,24 @@ describe('config/runes are stated, never promised', () => {
     expect(CAPABILITY.runesPublished).toBeGreaterThan(0);
   });
 
+  it('MAKES NO CLAIM ABOUT WHERE RUNES ARE CHOSEN — only about what they do to a total', () => {
+    // CHANGED 2026-08-15 with the rune picker, and the reason is the same one that produced this
+    // whole sentence. It used to read "There is no rune control here yet, so a rune that does have
+    // a modelled effect reaches a result only through a shared link." That was measured and true
+    // when written, and it becomes FALSE the moment `RunePicker` is mounted — which is the lead's
+    // change, in the lead's file, on the lead's timing.
+    //
+    // A sentence whose truth depends on another area's next commit is a sentence that goes stale
+    // without anyone touching it, and four documents in this project went stale in one day by
+    // exactly that mechanism. So the panel now states only what is true in both worlds: what a
+    // rune does to a number. WHERE a rune page is chosen is not this panel's claim to make.
+    mount();
+    const text = runeSentence()!.textContent ?? '';
+    expect(text).not.toMatch(/no rune control/i);
+    expect(text).not.toMatch(/only through a shared link/i);
+    expect(text).toContain('named as changing nothing rather than dropped');
+  });
+
   it('refuses a caller’s rune list entry rather than printing a claim it knows is false', () => {
     mount(AATROX, CONFIG, [SUPERSEDED_RUNE_ENTRY, 'Entry state']);
     expect(screen.queryByText(SUPERSEDED_RUNE_ENTRY)).toBeNull();

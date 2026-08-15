@@ -192,10 +192,11 @@ export function ChampionConfigPanel({
         <strong className="config__runes-claim">
           {CAPABILITY.runesModelled} of {CAPABILITY.runesPublished} runes change a number.
         </strong>{' '}
-        The whole pool is published; almost none of it is applied. There is no rune control here
-        yet, so a rune that does have a modelled effect reaches a result only through a shared
-        link. Read a total on this page as a total with {CAPABILITY.runesModelled === 0 ? 'no' : 'almost no'}{' '}
-        runes in it.
+        The whole pool is published; almost none of it is applied. Wherever a rune page is chosen,
+        the runes with no modelled effect are named as changing nothing rather than dropped — so a
+        page can be built in full, and reads as full, while adding{' '}
+        {CAPABILITY.runesModelled === 0 ? 'nothing' : 'almost nothing'} to a total. Read a total on
+        this page as a total with {CAPABILITY.runesModelled === 0 ? 'no' : 'almost no'} runes in it.
       </p>
     </section>
   );

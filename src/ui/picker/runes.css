@@ -1,0 +1,293 @@
+/*
+ * The rune page. Every value traces to DESIGN.md; `../primitives/token-audit.test.ts` re-checks
+ * that across the whole area on every run.
+ *
+ * NO HUE — a rune control is not damage data (DESIGN.md §1). Selection, hover, "already worn" and
+ * "changes no number" are brightness, border, glyph and label only. That last one matters most
+ * here: the whole panel is a statement about what is and is not modelled, and colouring it would
+ * be the "success / error" pattern §1 exists to forbid.
+ *
+ * NOTHING ANIMATES, so there is no `prefers-reduced-motion` block to write. Rune selection is in
+ * DESIGN.md §10's "changes instantly" list, and the one motion this panel could have had — the
+ * pool appearing — is a layout change, not a transition.
+ *
+ * IT IS THE ITEM PANEL'S STYLESHEET IN SHAPE ON PURPOSE. Two pickers that read as two different
+ * kinds of object teach a user that they behave differently. Where a rule here is identical to
+ * `../items/items.css`, that is the point rather than a copy waiting to be factored out: the two
+ * panels are separate areas' work and a shared file would be a contract between them.
+ */
+
+@import '../tokens.css';
+
+.runes {
+  background: var(--bg-panel);
+  border: var(--border-steel);
+  border-radius: var(--radius-panel);
+  padding: var(--space-4);
+  font-family: var(--font-body);
+  color: var(--text-primary);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2); /* DESIGN.md §4 — "gaps between related controls" */
+}
+
+.runes__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.runes__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: var(--weight-display-medium);
+  font-size: var(--type-display-m);
+  line-height: var(--lh-display-m);
+}
+
+/* Every secondary line in the panel is the same kind of line — a fact about the pool or the page —
+   so they share one type role rather than each inventing an emphasis. DESIGN.md holds no "notice"
+   style and inventing one locally is what its preamble forbids. */
+.runes__count,
+.runes__status,
+.runes__full,
+.runes__empty,
+.runes__composition,
+.runes__marker,
+.runes__where,
+.runes__gap-why,
+.runes__gap-names {
+  margin: 0;
+  font-size: var(--type-body-s);
+  line-height: var(--lh-body-s);
+  font-weight: var(--weight-body-medium);
+  color: var(--text-secondary);
+}
+
+/* The modelling statement is body copy, not a caption: it is the sentence a reader calibrates
+   every total on this page against. Capped at the paragraph measure so it does not run the full
+   width of a desktop panel (DESIGN.md §4a). */
+.runes__modelled {
+  margin: 0;
+  max-inline-size: var(--measure-prose-max);
+  font-size: var(--type-body-m);
+  line-height: var(--lh-body-m);
+  color: var(--text-secondary);
+}
+
+.runes__modelled-claim {
+  font-weight: var(--weight-body-strong);
+  color: var(--text-primary);
+}
+
+.runes__page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.runes__slot-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+/* The destination's name and its count, as one eyebrow — the same construction the item panel
+   uses for "0 of 6 item slots used", and the same reason: the label and the count are one
+   statement, so they share one line. */
+.runes__slot-label {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: var(--weight-display-medium);
+  font-size: var(--type-eyebrow);
+  line-height: var(--lh-eyebrow);
+  letter-spacing: var(--ls-eyebrow);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.runes__worn,
+.runes__pool,
+.runes__gap-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+/* The drawn pool is short by DESIGN rather than scrolled: DESIGN.md defines no height for a
+   scrolling list region, and `RUNE_VISIBLE_MATCHES` caps the list instead — the panel prints both
+   the cap and the number of matches, so nothing is hidden silently. */
+.runes__pool {
+  border: var(--border-hair);
+  border-radius: var(--radius-control);
+  padding: var(--space-1);
+}
+
+/* A worn rune and an offered rune are the same shape, so a reader recognises one as the other.
+   They differ only in what sits at the end: a remove control, or the add controls. */
+.runes__row,
+.runes__match {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  min-inline-size: 0;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-2);
+  background: var(--bg-well);
+  border: var(--border-steel);
+  border-radius: var(--radius-control);
+  font-size: var(--type-body-m);
+  line-height: var(--lh-body-m);
+  color: var(--text-primary);
+}
+
+/* The chip, the name and where the source says the rune sits. `min-inline-size: 0` and the wrap
+   are what let this cell be narrower than its longest line, so a 375px phone does not gain a
+   horizontal scroll (`../responsive-overflow.test.tsx` sweeps for exactly that). */
+.runes__ident {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  min-inline-size: 0;
+  gap: var(--space-2);
+}
+
+.runes__name {
+  font-weight: var(--weight-body-medium);
+  min-inline-size: 0;
+}
+
+.runes__effect {
+  min-inline-size: 0;
+}
+
+/* The short marker — "changes a number" / "no stored value" — pushed to the end of the row so the
+   same fact sits in the same place on every line and the column can be read down. */
+.runes__marker {
+  margin-inline-start: auto;
+}
+
+.runes__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+}
+
+.runes__add {
+  background: var(--bg-panel);
+  border: var(--border-steel);
+  border-radius: var(--radius-control);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: var(--type-body-s);
+  line-height: var(--lh-body-s);
+  padding: var(--space-1) var(--space-2);
+  /* WCAG 2.2 AA 2.5.8, PASSED BY SIZE. Measured in a real browser on 2026-08-15 with the pool
+     open: 64.38 x 25.39px at 375px and the same at 320px, 96.78px and 79.54px between the nearest
+     centres respectively — so it passes both ways and the size is what these declarations
+     guarantee. Size is the stronger of the two here because the separation depends on how the
+     labels wrap, and a control whose compliance moves with its text is one nobody can rely on.
+     `--target-min` is DESIGN.md §4a's; naming the token is what keeps this and
+     `../target-size-register.test.ts` the same fact. */
+  min-inline-size: var(--target-min);
+  min-block-size: var(--target-min);
+}
+
+.runes__add:hover:enabled {
+  background: var(--bg-panel-raised);
+  border: var(--border-strong);
+}
+
+.runes__add:disabled {
+  color: var(--text-muted);
+  opacity: 0.5;
+}
+
+.runes__remove {
+  margin-inline-start: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Same 2.5.8 fix as `../items/items.css .items__remove`, written in from the start rather than
+     found later: 13px type at a 1.45 line-height plus two 1px borders is 20.84px, under the 24px
+     minimum. MEASURED HERE in a real browser on 2026-08-15: 28.91 x 24.00px at both 375px and
+     320px, with 64.19px between the nearest two centres at 375px and 97.19px at 320px. It passes
+     by size, and would also pass by spacing — but the separation is a function of how many runes
+     are worn and how their rows wrap, so size is the guarantee this file makes. */
+  min-inline-size: var(--target-min);
+  min-block-size: var(--target-min);
+  background: var(--bg-panel);
+  border: var(--border-steel);
+  border-radius: var(--radius-control);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: var(--type-body-m);
+  line-height: var(--lh-body-m);
+  padding: 0 var(--space-2);
+}
+
+.runes__remove:hover {
+  background: var(--bg-panel-raised);
+  border: var(--border-strong);
+}
+
+/* One focus scope: the search field and the pool it opens. */
+.runes__find {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+/* The label sits beside the field, not above it. Still the field's own <label>. */
+.runes__search {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.runes__search input {
+  flex: 1 1 0;
+  min-inline-size: 0;
+  background: var(--bg-well);
+  border: var(--border-steel);
+  border-radius: var(--radius-control);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: var(--type-body-l);
+  line-height: var(--lh-body-l);
+  padding: var(--space-2) var(--space-3);
+}
+
+.runes__search-label {
+  white-space: nowrap;
+  font-family: var(--font-display);
+  font-weight: var(--weight-display-medium);
+  font-size: var(--type-eyebrow);
+  line-height: var(--lh-eyebrow);
+  letter-spacing: var(--ls-eyebrow);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+/* The two collapsed lists naming the gap. Their toggle is the primitive's, so it is already
+   styled; this only gives the open body a measure so 55 names do not run the width of a desktop. */
+.runes__gap-names,
+.runes__gap-why {
+  max-inline-size: var(--measure-prose-max);
+  padding-block: var(--space-1);
+}
+
+/* DESIGN.md §6 states the focus ring verbatim: a 2px bone outline offset 2px. Written as the two
+   tokens that already carry those values, so no literal appears here. */
+.runes__search input:focus-visible,
+.runes__add:focus-visible,
+.runes__remove:focus-visible {
+  outline: var(--border-active);
+  outline-offset: var(--space-0);
+}

@@ -45,6 +45,7 @@ import type {
   CuratedDefensiveEffect,
   CuratedItemEffect,
   CuratedRune,
+  Rune,
   Item,
   Scenario,
   VerificationStatus,
@@ -60,9 +61,10 @@ import {
   type SimulationResult,
 } from '../../engine';
 import { CURRENT_URL_VERSION } from '../../url';
-import { ChampionConfigPanel } from '../config';
+import { ChampionConfigPanel, DefenderDefences } from '../config';
 import { ComboBuilder, type ShelfAbility } from '../combo';
 import { ItemPicker } from '../items';
+import { RunePicker } from '../picker';
 import { StatBlockPanel } from '../stats';
 import { InstanceBreakdown } from '../breakdown';
 import { BuildComparisonPanel } from '../compare';
@@ -81,6 +83,7 @@ import {
   loadDefensiveEffects,
   defensiveEffectsByChampion,
   loadRuneEffects,
+  loadRunes,
   loadOverrides,
   rosterPatch,
   type AbilitiesFile,
@@ -130,6 +133,8 @@ interface LoadedData {
   itemEffects: CuratedItemEffect[];
   /** The curated rune effects, keyed by rune id. Empty is a real answer. */
   runeEffects: Map<number, CuratedRune[]>;
+  /** The published rune pool — all 62, whether or not anyone has read their values. */
+  runes: Rune[];
   /** The defender's own defences. Empty is a real answer — see `loadDefensiveEffects`. */
   defensiveEffects: CuratedDefensiveEffect[];
   patch: string;
@@ -201,8 +206,9 @@ export function App({
       loadItemEffects(fetchImpl),
       loadDefensiveEffects(fetchImpl),
       loadRuneEffects(fetchImpl),
+      loadRunes(fetchImpl),
     ])
-      .then(([roster, items, overrides, itemEffects, defensiveEffects, runeEffects]) => {
+      .then(([roster, items, overrides, itemEffects, defensiveEffects, runeEffects, runes]) => {
         if (!live) return;
         setData({
           roster,
@@ -211,6 +217,7 @@ export function App({
           itemEffects,
           defensiveEffects,
           runeEffects,
+          runes,
           patch: rosterPatch(roster),
         });
       })
@@ -443,6 +450,17 @@ export function App({
             selected={attackerConfig.items}
             onChange={(items) => setAttackerConfig({ ...attackerConfig, items })}
           />
+          {/* MOUNTED 2026-08-15. The picker was built, tested and reachable by nobody — an area
+              exports a component and this file wires it, so an unmounted panel is a lead failure
+              rather than an area's. `effects` is REQUIRED with no default: defaulting to "none"
+              would print "no stored value" against Scorch, the one rune that does move a figure. */}
+          <RunePicker
+            role="attacker"
+            runes={data.runes}
+            page={attackerConfig.runes}
+            effects={data.runeEffects}
+            onChange={(runes) => setAttackerConfig({ ...attackerConfig, runes })}
+          />
         </div>
         <div className="app__col">
           <ChampionConfigPanel
@@ -459,6 +477,23 @@ export function App({
             items={data.items}
             selected={defenderConfig.items}
             onChange={(items) => setDefenderConfig({ ...defenderConfig, items })}
+          />
+          <RunePicker
+            role="defender"
+            runes={data.runes}
+            page={defenderConfig.runes}
+            effects={data.runeEffects}
+            onChange={(runes) => setDefenderConfig({ ...defenderConfig, runes })}
+          />
+          {/* THE DEFENDER'S OWN DEFENCES, mounted 2026-08-15 for the same reason. Ninety
+              conditional defences had nowhere to be stated, and this panel had been built and
+              tested for a page that never rendered it. `applied` stays at its default of false
+              until the engine consumes them, which the panel says on screen. */}
+          <DefenderDefences
+            championName={defenderConfig.apiname}
+            entries={defensiveEffectsByChampion(data.defensiveEffects).get(defenderConfig.apiname) ?? []}
+            entryState={defenderConfig.entryState}
+            onChange={(entryState) => setDefenderConfig({ ...defenderConfig, entryState })}
           />
         </div>
       </div>

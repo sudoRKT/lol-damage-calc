@@ -39,6 +39,7 @@ import type {
   CuratedItemEffect,
   Item,
   CuratedRune,
+  Rune,
 } from '../../types';
 import type { Catalogue } from '../../engine';
 
@@ -51,6 +52,7 @@ export const OVERRIDES_URL = '/data/overrides.json';
 /** Where the curated item effects are published (`scripts/build-item-effects.ts`). */
 export const ITEM_EFFECTS_URL = '/data/item-effects.json';
 export const RUNE_EFFECTS_URL = '/data/rune-effects.json';
+export const RUNES_URL = '/data/runes.json';
 
 /** Where the curated defensive effects are published (`scripts/build-defensive-effects.ts`). */
 export const DEFENSIVE_EFFECTS_URL = '/data/defensive-effects.json';
@@ -144,6 +146,27 @@ export async function loadOverrides(
  * else, and `simulate` already names every rune it cannot apply, so a missing file degrades to
  * "no rune changes a number" — which was true until today and is the safe direction to fail in.
  */
+/**
+ * The published rune POOL — 62 runes across 5 trees, the list the picker offers.
+ *
+ * Distinct from `loadRuneEffects`, which loads the seven curated VALUES. A rune exists in the
+ * pool whether or not anyone has read its damage, and the picker must offer all 62: a rune page
+ * that silently drops the ones with no modelled effect is worse than one that names them.
+ *
+ * Does NOT fail soft. An absent pool is not "no runes" — it is a picker with nothing in it, which
+ * would look exactly like a rune page a user had emptied. `loadItems` throws for the same reason.
+ */
+export async function loadRunes(
+  fetchImpl: typeof fetch = fetch,
+  url: string = RUNES_URL,
+): Promise<Rune[]> {
+  const response = await fetchImpl(url);
+  if (!response.ok) throw new Error(`Runes: ${url} returned ${response.status}`);
+  const file = (await response.json()) as { runes?: Rune[] };
+  if (!Array.isArray(file?.runes)) throw new Error(`Runes: ${url} carried no runes list`);
+  return file.runes;
+}
+
 export async function loadRuneEffects(
   fetchImpl: typeof fetch = fetch,
   url: string = RUNE_EFFECTS_URL,
