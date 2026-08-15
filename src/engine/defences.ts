@@ -294,6 +294,73 @@ function resolveAmount(
 // The pass
 // ---------------------------------------------------------------------------------------
 
+/**
+ * Why a recurring defence contributes nothing, in the words the reader gets.
+ *
+ * ═══ THIS SENTENCE USED TO STATE A FALSE CONCLUSION, AND HALF THE TIME IT FIRED ═══
+ *
+ * It read: "it recurs over a duration and the source states no number of occurrences, so no total
+ * can be formed." The first clause is true of every stored entry. **The second is contradicted by
+ * arithmetic over the stored file itself**, measured over `curated/curated-data.json` at patch
+ * 16.16.1 on 2026-08-15.
+ *
+ * Master Yi W is the clearest case and it is checkable on paper. The ability stores four rows.
+ * "Minimum Heal Per Tick" is 15 (+12.5% AP) at rank 1; "Minimum Total Heal" is 120 (+100% AP) —
+ * exactly eight times it, on the base AND on the ratio, at every one of the five ranks. The
+ * source sentence stored on both rows says the channel runs up to 4 seconds healing every 0.5
+ * seconds, and 4 / 0.5 is eight. A total can plainly be formed for the second row: it is already
+ * formed, and stored.
+ *
+ * FOUR ABILITIES CARRY THAT SAME ARITHMETIC — one row an exact integer multiple of another, on
+ * every term at every rank, with the multiple equal to the duration / interval the source's own
+ * stored sentence states: Master Yi W (x8, on two separate pairs), Lissandra R (x10, two pairs),
+ * Fiora R (x20) and Janna R (x12). Three more carry the multiple with no duration in the stored
+ * sentence to check it against: Milio W (x25), Soraka Q (x12) and Hwei W (x2 over its initial
+ * shield). Nine rows in all look like whole-duration figures; the engine is refusing every one of
+ * them with a sentence saying no such figure can exist.
+ *
+ * ═══ WHAT IS ACTUALLY MISSING ═══
+ *
+ * Nothing on the entry says whether its figure covers ONE OCCURRENCE or the WHOLE DURATION.
+ * `CuratedDefensiveEffect.overTime` carries `totalInstances` and `sourceSays` and no third field,
+ * so the only thing separating "Minimum Heal Per Tick" from "Minimum Total Heal" is the row's own
+ * label — and deciding something that multiplies a number by reading a label is exactly the move
+ * this project forbids (CLAUDE.md: a detector proposes, a person confirms). DATA-SOURCES §48.3
+ * records a stored "Maximum Total Heal" where "total" means across every target hit rather than
+ * across a duration, so the word does not settle it even when it is present.
+ *
+ * That missing field is RAISED, not invented here. Until it exists the entry is refused, and the
+ * refusal names the gap instead of asserting something untrue about the data.
+ *
+ * ═══ A STATED COUNT IS NOT ENOUGH EITHER ═══
+ *
+ * `totalInstances` is in the frozen contract and NO stored entry uses it — 0 of 21 recurring
+ * entries, measured the same day. If one ever does, a count alone still does not release the
+ * entry: multiplying a figure that is already the whole duration double-counts it. The refusal
+ * quotes the count back so the reader can see the engine read it, and says what is still absent.
+ *
+ * NO NUMBER MOVED when this changed. Every entry refused before is refused now; only the sentence
+ * differs.
+ */
+function recurringRefusal(overTime: { totalInstances?: number; sourceSays: string }): string {
+  const quoted = ` The source says: "${overTime.sourceSays}"`;
+  const missing =
+    `the entry does not state whether the figure it stores covers one occurrence or the whole ` +
+    `duration`;
+  if (overTime.totalInstances !== undefined) {
+    return (
+      `it recurs over a duration, and although the source states that it lands ` +
+      `${overTime.totalInstances} times, ${missing}. Multiplying a figure that is already the ` +
+      `whole duration would count it ${overTime.totalInstances} times over, so neither reading ` +
+      `is taken.${quoted}`
+    );
+  }
+  return (
+    `it recurs over a duration, the source states no number of occurrences, and ${missing}. ` +
+    `Forming a total needs one of those two facts and the entry carries neither.${quoted}`
+  );
+}
+
 /** A shield's kind, from the one damage type the source restricted it to. */
 function shieldKind(type: DamageType | undefined): ShieldPool['kind'] {
   if (type === 'physical') return 'physical';
@@ -387,19 +454,16 @@ export function resolveDefences(args: {
       continue;
     }
 
-    // ═══ AN OVER-TIME DEFENCE HAS NO COUNT ═══
+    // ═══ AN OVER-TIME DEFENCE DOES NOT SAY WHAT ITS FIGURE COVERS ═══
     //
-    // 21 stored entries recur — a heal spread over a channel, a shield reapplied per tick — and
-    // measured over the file, NOT ONE states `overTime.totalInstances`. A per-tick figure with no
-    // count cannot become a whole-channel figure, and this engine has no time axis to derive one
-    // from (§3.2). Applying the tick as though it were the total understates the defender;
-    // applying it once per instance invents a count. Both are refused.
+    // 21 stored entries recur — a heal spread over a channel, a shield reapplied per tick. 18 of
+    // them are otherwise ready to apply, and they split in half: 9 store one occurrence and 9
+    // store the whole duration, with nothing but the row's label to tell them apart. Applying a
+    // per-occurrence figure as though it were the total understates the defender; multiplying a
+    // whole-duration figure by its tick count overstates them. Both are refused, and
+    // `recurringRefusal` says which fact is missing rather than asserting one that is not.
     if (effect.overTime) {
-      refuse(
-        effect,
-        `it recurs over a duration and the source states no number of occurrences, so no total ` +
-          `can be formed. The source says: "${effect.overTime.sourceSays}"`,
-      );
+      refuse(effect, recurringRefusal(effect.overTime));
       continue;
     }
 

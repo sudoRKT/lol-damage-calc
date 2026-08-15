@@ -666,3 +666,107 @@ describe('several defences at once', () => {
     expect(excluded(result, 'says WHICH resistance it grants')).toBe(true);
   });
 });
+
+// ---------------------------------------------------------------------------------------
+// A RECURRING DEFENCE — the refusal must name the fact that is actually missing
+// ---------------------------------------------------------------------------------------
+//
+// The refusal for a recurring defence used to end "...so no total can be formed", and that clause
+// is FALSE for half the entries it fires on. Measured over `curated/curated-data.json` (patch
+// 16.16.1) on 2026-08-15: 18 stored entries reach this refusal, and 9 of them store the WHOLE
+// DURATION figure rather than one occurrence. Master Yi W is the clearest — "Minimum Heal Per
+// Tick" is 15 at rank 1 and "Minimum Total Heal" is 120, exactly eight times it, and the source
+// sentence stored on both says the channel runs 4 seconds at one tick every 0.5 seconds. A total
+// can plainly be formed for that entry; it is already formed and stored.
+//
+// The fact that is actually missing is a different one: nothing on the entry says whether its
+// figure covers ONE OCCURRENCE or the WHOLE DURATION. Only the row's label distinguishes them,
+// and reading a label to decide something that multiplies a number is the move this project
+// forbids — DATA-SOURCES §48.3 records a "Maximum Total Heal" where "total" means across every
+// target hit rather than across a duration, so the word does not settle it.
+//
+// NOTHING BELOW CHANGES A NUMBER. Every one of these entries was refused before and is refused
+// now; what changed is the sentence the user is shown. The tests assert the sentence, because the
+// sentence is the whole deliverable.
+
+describe('a recurring defence names the fact that is actually missing', () => {
+  /** The shape 9 stored entries have: a figure that IS the whole duration, marked as recurring. */
+  const WHOLE_DURATION_HEAL = defence({
+    kind: 'heal',
+    id: 'minimum-total-heal',
+    label: 'Minimum Total Heal',
+    unit: 'flat',
+    value: { scaling: 'explicit', perRank: [120, 120, 120, 120, 120] },
+    overTime: { sourceSays: 'channels for up to 4 seconds, healing every 0.5 seconds' },
+  });
+
+  it('the refusal does not claim that no total can be formed', () => {
+    const result = resultOf(
+      run([WHOLE_DURATION_HEAL], { ...HALF_HEALTH, [defensiveToggleKey(WHOLE_DURATION_HEAL)]: true }),
+    );
+    expect(result.verdict.burstOnly.healingApplied).toBe(0);
+    expect(excluded(result, 'no total can be formed')).toBe(false);
+  });
+
+  it('the refusal names the missing fact: one occurrence, or the whole duration', () => {
+    const result = resultOf(
+      run([WHOLE_DURATION_HEAL], { ...HALF_HEALTH, [defensiveToggleKey(WHOLE_DURATION_HEAL)]: true }),
+    );
+    expect(excluded(result, 'one occurrence or the whole duration')).toBe(true);
+    expect(excluded(result, 'channels for up to 4 seconds')).toBe(true);
+  });
+
+  it('a stated occurrence count does not by itself release the entry', () => {
+    // `overTime.totalInstances` is in the frozen contract and NO stored entry uses it (measured
+    // over all 21 recurring entries, 2026-08-15). If one ever does, a count alone is still not
+    // enough: multiplying a figure that is already the whole duration double-counts it.
+    const counted = defence({
+      ...WHOLE_DURATION_HEAL,
+      overTime: {
+        totalInstances: 8,
+        sourceSays: 'channels for up to 4 seconds, healing every 0.5 seconds',
+      },
+    });
+    const result = resultOf(run([counted], { ...HALF_HEALTH, [defensiveToggleKey(counted)]: true }));
+    expect(result.verdict.burstOnly.healingApplied).toBe(0);
+    expect(excluded(result, 'one occurrence or the whole duration')).toBe(true);
+  });
+
+  it('a stated occurrence count is quoted back, and the entry no longer says the count is absent', () => {
+    const counted = defence({
+      ...WHOLE_DURATION_HEAL,
+      overTime: {
+        totalInstances: 8,
+        sourceSays: 'channels for up to 4 seconds, healing every 0.5 seconds',
+      },
+    });
+    const result = resultOf(run([counted], { ...HALF_HEALTH, [defensiveToggleKey(counted)]: true }));
+    expect(excluded(result, 'it lands 8 times')).toBe(true);
+    // The old sentence would have told the reader the source states no count while the entry
+    // states one. Saying a false thing about the data is the defect this block exists for.
+    expect(excluded(result, 'states no number of occurrences')).toBe(false);
+  });
+
+  it('a per-occurrence row and a whole-duration row each get their own sentence', () => {
+    // Master Yi W's real shape: both rows carry `overTime`, both are switched on separately, and
+    // the reader must be told about each rather than about "a defence".
+    const perTick = defence({
+      kind: 'heal',
+      id: 'minimum-heal-per-tick',
+      label: 'Minimum Heal Per Tick',
+      unit: 'flat',
+      value: { scaling: 'explicit', perRank: [15, 15, 15, 15, 15] },
+      overTime: { sourceSays: 'channels for up to 4 seconds, healing every 0.5 seconds' },
+    });
+    const result = resultOf(
+      run([perTick, WHOLE_DURATION_HEAL], {
+        ...HALF_HEALTH,
+        [defensiveToggleKey(perTick)]: true,
+        [defensiveToggleKey(WHOLE_DURATION_HEAL)]: true,
+      }),
+    );
+    expect(result.verdict.burstOnly.healingApplied).toBe(0);
+    expect(excluded(result, 'Minimum Heal Per Tick')).toBe(true);
+    expect(excluded(result, 'Minimum Total Heal')).toBe(true);
+  });
+});

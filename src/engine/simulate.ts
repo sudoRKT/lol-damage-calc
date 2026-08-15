@@ -1043,11 +1043,17 @@ export const SIMULATION_EXCLUSIONS: readonly string[] = [
     'before it lands, or changing the size of a health pool mid-sequence. A scenario switching ' +
     'one on is told, by name, that it was not applied',
 
-  // A DEFENCE THAT RECURS. Measured over the file: 21 entries carry `overTime` and NOT ONE states
-  // how many times it occurs, so no whole-duration figure exists to apply.
+  // A DEFENCE THAT RECURS. Measured over the file at patch 16.16.1 on 2026-08-15: 21 entries
+  // carry `overTime`, NOT ONE states `totalInstances`, and — the part this sentence used to get
+  // wrong — NOT ONE says whether the figure it stores covers one occurrence or the whole
+  // duration. The old wording ended "so no total can be formed", which is contradicted by the
+  // file: Master Yi W stores 15 per tick AND 120 for the channel, and eight rows elsewhere carry
+  // the same pairing. See `recurringRefusal` in defences.ts for the full arithmetic and for the
+  // contract field this is waiting on.
   'Defensive effects that recur over a duration — 21 stored entries, chiefly channelled heals. ' +
-    'None states how many times it occurs, and the engine has no time axis to derive a count ' +
-    'from, so no total can be formed',
+    'None states how many times it occurs, and none says whether the figure it stores covers ' +
+    'one occurrence or the whole duration, so applying it would mean choosing between ' +
+    'understating the defender and overstating them',
 ];
 
 /**
