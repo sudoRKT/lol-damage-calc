@@ -32,9 +32,10 @@ import {
 import {
   ddragonAttributes,
   ddragonEffectProse,
+  ddragonPossessiveNearStat,
   ddragonRestatesNumbers,
 } from './effect-owner-crosscheck.ts';
-import { gateEffect } from './effect-values-gate.ts';
+import { DATA_DRAGON_ATTRIBUTIONS, gateEffect } from './effect-values-gate.ts';
 import { READ_POPULATION, readingFor } from './effect-values-read.ts';
 
 function item(ownerName: string, id: number, key: string, text: string): EffectRecord {
@@ -736,6 +737,104 @@ describe('the second source: Data Dragon item prose', () => {
   it('does not read "its" as an owner, on either source', () => {
     // World Atlas: "a minion below 30% of its maximum health" is neither champion.
     expect(ddragonAttributes('a minion below 30% of its maximum Health', 'maxHP')).toBeNull();
+  });
+});
+
+// ---------------------------------------------------------------------------------------------
+// OVERLORD'S BLOODMAIL — §42.7's precedent applied to a second item, 2026-08-15.
+//
+// Both strings below are VERBATIM from the live sources, re-fetched before this was written:
+// Data Dragon item.json 16.16.1 item 2501, and Module:ItemData/data revision 2026-08-12T12:53:43Z.
+// ---------------------------------------------------------------------------------------------
+
+/** Data Dragon 2501, tags stripped by `ddragonEffectProse`. BOTH passives, so the test can tell
+ *  them apart rather than assuming the file contains only the one being read. */
+const BLOODMAIL_DDRAGON =
+  'Tyranny Gain 2.5% of your bonus Health as Attack Damage. Retribution Gain up to 12% ' +
+  'increased Attack Damage based on your percent missing Health.';
+
+describe("Overlord's Bloodmail: the Data Dragon attribution, applied to a second item", () => {
+  it('the strict detector CANNOT see it — which is why a hand-read row exists at all', () => {
+    // One word, "percent", between the possessive and the stat. The source says "your" as
+    // plainly as Heartsteel's does; the pattern simply does not reach across it.
+    expect(ddragonAttributes(BLOODMAIL_DDRAGON, 'missingHP')).toBeNull();
+  });
+
+  it('the loose detector finds it, and reports it as a candidate rather than an owner', () => {
+    const hit = ddragonPossessiveNearStat(BLOODMAIL_DDRAGON, 'missingHP');
+    expect(hit).not.toBeNull();
+    expect(hit!.says).toBe('your percent missing Health');
+    expect(hit!.wordsBetween).toBe('percent');
+    // It returns no owner verdict. A person supplies that, and the adopted table records it.
+    expect(Object.keys(hit!).sort()).toEqual(['says', 'stat', 'wordsBetween']);
+  });
+
+  it('refuses to join a possessive to a stat across a SECOND possessive', () => {
+    // The failure this loosening could have caused: one champion's stat attributed to another.
+    expect(
+      ddragonPossessiveNearStat('deal damage equal to your AD plus their missing Health', 'missingHP'),
+    ).toBeNull();
+  });
+
+  it('reads the same item\'s OTHER passive as a different clause, not the same one', () => {
+    // THE CHECK THIS COULD HAVE FAILED. Tyranny and Retribution are two passives on one item,
+    // and they read different stats. If the two were run together, the missing-health
+    // attribution would be resting on the sentence about bonus health.
+    expect(ddragonAttributes(BLOODMAIL_DDRAGON, 'bonusHP')!.says).toBe('your bonus Health');
+    expect(ddragonPossessiveNearStat(BLOODMAIL_DDRAGON, 'missingHP')!.says).toBe(
+      'your percent missing Health',
+    );
+  });
+
+  it('is in the adopted table, quoting both sources, and records that it reaches no stored ratio', () => {
+    const row = DATA_DRAGON_ATTRIBUTIONS.find((a) => a.itemId === 2501 && a.key === 'pass2');
+    expect(row).toBeDefined();
+    expect(row!.stat).toBe('missingHP');
+    expect(row!.owner).toBe('holder');
+    expect(row!.quotingDataDragon).toBe('your percent missing Health');
+    // NOT a promise that a number moved. This item deals no damage: both passives GRANT attack
+    // damage, so the extraction stores no ratio for it and there is no owner field to upgrade.
+    expect(row!.reachesAStoredRatio).toBe(false);
+  });
+
+  it('the gate stores nothing for either Bloodmail passive, so no verification status moved', () => {
+    // Verbatim wikitext for both effects. Neither states a damage type with a value, which is
+    // what the extraction requires; both are stat grants.
+    const tyranny = gateEffect(
+      item(
+        "Overlord's Bloodmail",
+        2501,
+        'pass',
+        "Gain {{as|'''bonus''' attack damage}} equal to {{as|{{fd|2.5}}% '''bonus''' health}}.",
+      ),
+    );
+    const retribution = gateEffect(
+      item(
+        "Overlord's Bloodmail",
+        2501,
+        'pass2',
+        "Gain {{as|'''bonus''' attack damage}} equal to {{pp|0 to 12 by 1|0 to 70|key=%|key1=%|" +
+          "type='''missing''' health|color=health}} of your {{as|'''total''' attack damage}} " +
+          'from other sources.',
+      ),
+    );
+    expect(tyranny.outcome).toBe('refused');
+    expect(retribution.outcome).toBe('refused');
+    expect(tyranny.components).toBeUndefined();
+    expect(retribution.components).toBeUndefined();
+  });
+
+  it('does NOT attribute the same wording under a key the table does not name', () => {
+    // The paired negative, exactly as Heartsteel has one. Without it, an implementation that
+    // resolved every unattributed missingHP reference to the holder would pass — the convention
+    // argument DATA-SOURCES §16 rejects.
+    const named = DATA_DRAGON_ATTRIBUTIONS.filter(
+      (a) => a.itemId === 2501 && a.stat === 'missingHP',
+    );
+    expect(named.map((a) => a.key)).toEqual(['pass2']);
+    expect(
+      DATA_DRAGON_ATTRIBUTIONS.some((a) => a.itemId === 2501 && a.key === 'pass'),
+    ).toBe(false);
   });
 });
 

@@ -26,10 +26,16 @@ import {
 import {
   ddragonAttributes,
   ddragonEffectProse,
+  ddragonPossessiveNearStat,
   ddragonRestatesNumbers,
 } from './effect-owner-crosscheck.ts';
 import { extractItemEffect, type RefusalReason } from './effect-values.ts';
-import { gateEffect, proposedItemEffect, type GateResult } from './effect-values-gate.ts';
+import {
+  DATA_DRAGON_ATTRIBUTIONS,
+  gateEffect,
+  proposedItemEffect,
+  type GateResult,
+} from './effect-values-gate.ts';
 import { READ_POPULATION, readingFor } from './effect-values-read.ts';
 import { REACH_READ_POPULATION, reachReadingFor } from './effect-values-read-reach.ts';
 import {
@@ -361,6 +367,20 @@ export async function run(): Promise<void> {
     ddragonSays: string;
     quotingDataDragon: string;
     quotingTheWiki: string;
+    /** 'strict-detector' = the possessive sits against the stat. 'hand-read' = a person read it. */
+    foundBy: 'strict-detector' | 'hand-read';
+  }[] = [];
+  /**
+   * Hits of the LOOSE detector that neither the strict one found nor a person has adopted.
+   * Reported for reading, never counted as an attribution (CLAUDE.md, detect-then-read).
+   */
+  const attributionCandidates: {
+    ownerName: string;
+    key: string;
+    stat: string;
+    quotingDataDragon: string;
+    wordsBetween: string;
+    quotingTheWiki: string;
   }[] = [];
   let unstatedItemRefs = 0;
   for (const row of rows) {
@@ -380,23 +400,66 @@ export async function run(): Promise<void> {
           ddragonSays: hit.ddragonSays,
           quotingDataDragon: hit.says,
           quotingTheWiki: ref.quote,
+          foundBy: 'strict-detector',
+        });
+        continue;
+      }
+      // THE STRICT DETECTOR IS NOT THE WHOLE ANSWER, and Overlord's Bloodmail is the proof: it
+      // reads "your percent missing Health", and one interposed word is enough for the strict
+      // pattern to report nothing. A row of the hand-read table counts as the attribution it is;
+      // any other loose hit is an unread candidate and is reported as one.
+      const loose = ddragonPossessiveNearStat(prose, ref.stat);
+      if (!loose) continue;
+      const adopted = DATA_DRAGON_ATTRIBUTIONS.find(
+        (a) => a.itemId === row.id && a.key === row.key && a.stat === ref.stat,
+      );
+      if (adopted) {
+        ownerCrossChecks.push({
+          ownerName: row.ownerName,
+          key: row.key,
+          stat: ref.stat,
+          wikiSays: 'unstated',
+          ddragonSays: adopted.owner === 'holder' ? 'holder' : 'other champion',
+          quotingDataDragon: adopted.quotingDataDragon,
+          quotingTheWiki: ref.quote,
+          foundBy: 'hand-read',
+        });
+      } else {
+        attributionCandidates.push({
+          ownerName: row.ownerName,
+          key: row.key,
+          stat: ref.stat,
+          quotingDataDragon: loose.says,
+          wordsBetween: loose.wordsBetween,
+          quotingTheWiki: ref.quote,
         });
       }
     }
   }
+  const strictCrossChecks = ownerCrossChecks.filter((c) => c.foundBy === 'strict-detector');
+  const handReadCrossChecks = ownerCrossChecks.filter((c) => c.foundBy === 'hand-read');
   const crossCheckedEffects = new Set(ownerCrossChecks.map((c) => `${c.ownerName}|${c.key}`));
   console.log('\n--- WHOSE STAT: DOES THE OTHER SOURCE SAY? (measured here; APPLIED where a row of DATA_DRAGON_ATTRIBUTIONS names it) ---');
   console.log(
     table([
       ['item owner references the WIKI leaves unstated', unstatedItemRefs],
-      ['  of those, Data Dragon attributes the same stat outright', ownerCrossChecks.length],
+      ['  of those, the strict detector finds Data Dragon attributing the stat', strictCrossChecks.length],
+      ['  plus references a person read and adopted, which it cannot see', handReadCrossChecks.length],
+      ['  attributed by either route', ownerCrossChecks.length],
       ['  distinct effects that covers', crossCheckedEffects.size],
+      ['  loose hits nobody has read yet — REPORTED, never applied', attributionCandidates.length],
     ]),
   );
   for (const c of ownerCrossChecks) {
     console.log(
-      `    ${c.ownerName} [${c.key}] ${c.stat}: Data Dragon says "${c.quotingDataDragon}" ` +
-        `(${c.ddragonSays}); the wiki says "${c.quotingTheWiki.trim()}"`,
+      `    ${c.ownerName} [${c.key}] ${c.stat} (${c.foundBy}): Data Dragon says ` +
+        `"${c.quotingDataDragon}" (${c.ddragonSays}); the wiki says "${c.quotingTheWiki.trim()}"`,
+    );
+  }
+  for (const c of attributionCandidates) {
+    console.log(
+      `    UNREAD CANDIDATE — ${c.ownerName} [${c.key}] ${c.stat}: Data Dragon says ` +
+        `"${c.quotingDataDragon}" with "${c.wordsBetween}" in between. Someone must read it.`,
     );
   }
 
@@ -513,15 +576,58 @@ export async function run(): Promise<void> {
         'stat? DATA-SOURCES §41.1 ADOPTED the answer as a source stating a fact rather than an ' +
         'inference from convention, and §42.7 applied it: the rows below are the whole ' +
         'measurement, and the ones that reach a STORED damage ratio are applied through the ' +
-        'hand-read table `DATA_DRAGON_ATTRIBUTIONS` in effect-values-gate.ts. That is one row ' +
-        'today — Heartsteel maxHP, now owner `holder`. The other four attribute stats this ' +
-        'extraction does not store as damage ratios, so adopting them changes no stored number. ' +
-        'A measurement is never applied wholesale: every applied row quotes the words it rests ' +
-        'on, because a pattern that finds candidates is not a pattern that can decide them.',
+        'hand-read table `DATA_DRAGON_ATTRIBUTIONS` in effect-values-gate.ts. A measurement is ' +
+        'never applied wholesale: every applied row quotes the words it rests on, because a ' +
+        'pattern that finds candidates is not a pattern that can decide them.',
+      whatChangedOn20260815:
+        "OVERLORD'S BLOODMAIL [pass2] joined the adopted table, on the owner's ruling that " +
+        '§42.7\'s settled precedent applies to it. The wiki writes `type=missing health` and ' +
+        'names nobody; Data Dragon writes "based on your percent missing Health" for the same ' +
+        'passive — same name (Retribution), same granted stat, same 12% ceiling, same axis. ' +
+        'NOTHING STORED MOVED, and that is the honest result rather than a disappointment: this ' +
+        'item deals no damage at all — both passives GRANT attack damage — so the extraction ' +
+        'stores no ratio for it and there was no owner field to upgrade. The attribution is ' +
+        'adopted, and the item leaves the population of references attributed by neither source.',
+      definitions: {
+        itemOwnerReferencesTheWikiLeavesUnstated:
+          'Owner-required stat references in the WIKI item module whose owner the wiki does not ' +
+          'state. Counted over every item effect, including references stated only in a `type=` ' +
+          'argument, which the census has read since 2026-08-15.',
+        attributedByTheStrictDetector:
+          '`ddragonAttributes`: a possessive sitting directly against the stat phrase in Data ' +
+          "Dragon's own prose, give or take one of five qualifiers. It DECIDES nothing; it finds.",
+        attributedByHandReading:
+          'A row of `DATA_DRAGON_ATTRIBUTIONS` whose reference the strict detector cannot see. ' +
+          'One today: Overlord\'s Bloodmail, where the word "percent" sits between the ' +
+          'possessive and the stat.',
+        attributedByEitherRoute: 'The union of the two. This is the figure §41.1 re-measures against.',
+        distinctEffects: 'Distinct item+key effects covered by the union.',
+        looseHitsNobodyHasReadYet:
+          '`ddragonPossessiveNearStat` hits that are neither strict hits nor adopted rows. These ' +
+          'are CANDIDATES for someone to read and are never counted as attributions. Zero today, ' +
+          'which is what makes the Bloodmail application complete rather than one of a batch.',
+      },
       itemOwnerReferencesTheWikiLeavesUnstated: unstatedItemRefs,
-      ofThoseDataDragonAttributes: ownerCrossChecks.length,
+      attributedByTheStrictDetector: strictCrossChecks.length,
+      attributedByHandReading: handReadCrossChecks.length,
+      attributedByEitherRoute: ownerCrossChecks.length,
+      // KEPT UNDER ITS OLD NAME so nothing downstream silently reinterprets it, and equal to the
+      // strict figure it has always meant.
+      ofThoseDataDragonAttributes: strictCrossChecks.length,
       distinctEffects: crossCheckedEffects.size,
+      looseHitsNobodyHasReadYet: attributionCandidates.length,
       rows: ownerCrossChecks,
+      candidatesForReading: attributionCandidates,
+      adoptedTable: DATA_DRAGON_ATTRIBUTIONS.map((a) => ({
+        itemId: a.itemId,
+        key: a.key,
+        stat: a.stat,
+        owner: a.owner,
+        quotingDataDragon: a.quotingDataDragon,
+        quotingTheWiki: a.quotingTheWiki,
+        reachesAStoredRatio: a.reachesAStoredRatio,
+        readOn: a.readOn,
+      })),
     },
     /** One row per effect, refusals included, each carrying the sentence it was read from. */
     effects: gated,

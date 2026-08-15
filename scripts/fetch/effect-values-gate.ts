@@ -42,17 +42,20 @@ import { readingFor, type AppliesAs, type Reading } from './effect-values-read.t
 /**
  * Owner attributions Data Dragon states and the wiki does not, hand-read and quoted.
  *
- * MEASURED, NOT PATTERN-MATCHED. `effect-owner-crosscheck.ts` compared both sources over all 209
- * items and found **7 unattributed item references that Data Dragon attributes, across 5
- * effects** (DATA-SOURCES §39.2). This table is that measurement, filtered to the references
- * that reach a STORED damage ratio — which is one effect, Heartsteel. The other four
- * (Black Cleaver and Bloodletter's Curse shred, Overlord's Bloodmail and Riftmaker's stat
- * grants) attribute stats this extraction does not store as damage ratios, so adopting them
- * changes no stored number; they are recorded in DATA-SOURCES §42.7 rather than applied here.
+ * MEASURED, NOT PATTERN-MATCHED. `effect-owner-crosscheck.ts` compares both sources over all 209
+ * items. Its strict detector found 7 unattributed item references Data Dragon attributes, across
+ * 5 effects (DATA-SOURCES §39.2), and 8 across 6 once the census learned to read the wiki's
+ * `type=` argument on 2026-08-15.
  *
  * IT IS A TABLE AND NOT A RULE, deliberately — CLAUDE.md's "a detector proposes, a person
  * confirms, and storage is gated on the confirmed population". A regex over Data Dragon's prose
  * would decide references nobody has read; every row here quotes the words it rests on.
+ *
+ * A ROW IS AN ADOPTED READING, NOT A PROMISE THAT SOMETHING MOVES. `reachesAStoredRatio` records
+ * whether this extraction currently stores a damage ratio the row can upgrade, because the two
+ * facts are separate and running them together is what §41.1 got wrong about Heartsteel. Today
+ * one row of the two reaches one; the other is adopted so that the attribution is already read
+ * if the shape ever becomes storable, and so the record shows it was not overlooked.
  */
 export const DATA_DRAGON_ATTRIBUTIONS: ReadonlyArray<{
   itemId: number;
@@ -60,6 +63,9 @@ export const DATA_DRAGON_ATTRIBUTIONS: ReadonlyArray<{
   stat: RatioStat;
   owner: RatioOwner;
   quotingDataDragon: string;
+  quotingTheWiki: string;
+  reachesAStoredRatio: boolean;
+  readOn: string;
 }> = [
   {
     itemId: 3084,
@@ -69,6 +75,43 @@ export const DATA_DRAGON_ATTRIBUTIONS: ReadonlyArray<{
     // defender reads off the defender (data.ts, RatioOwner).
     owner: 'holder',
     quotingDataDragon: 'your max Health',
+    quotingTheWiki: "{{as|(+ 6% '''maximum''' health)}} — a share of maximum health, whose nowhere",
+    reachesAStoredRatio: true,
+    readOn: '2026-08-13',
+  },
+  {
+    // OVERLORD'S BLOODMAIL [pass2] "Retribution". The owner ruled on 2026-08-15 that §42.7's
+    // settled precedent applies here too, and both sources were re-fetched and read verbatim
+    // before this row was written.
+    //
+    //   wiki Module:ItemData/data, revision 2026-08-12T12:53:43Z, effects.pass2.description:
+    //     ["name"] = "Retribution",
+    //     "Gain {{as|'''bonus''' attack damage}} equal to {{pp|0 to 12 by 1|0 to 70|key=%|
+    //      key1=%|type='''missing''' health|color=health}} of your {{as|'''total''' attack
+    //      damage}} from other sources."
+    //   Data Dragon item.json 16.16.1, item 2501, description:
+    //     "<passive>Retribution</passive><br>Gain up to 12% increased <scaleAD>Attack
+    //      Damage</scaleAD> based on your percent missing Health."
+    //
+    // THEY ARE ONE EFFECT AND NOT TWO ON ONE ITEM — the check this row could have failed. Same
+    // passive NAME ("Retribution"), same granted stat (attack damage), same ceiling (12%), same
+    // axis (missing health). The item's OTHER passive, "Tyranny", is a different clause with a
+    // different axis (2.5% bonus health) and is not what this row is about.
+    //
+    // The wiki's `type='''missing''' health` carries no possessive and names nobody; Data
+    // Dragon says "your". `holder` and not `caster`, for the reason the Heartsteel row gives.
+    itemId: 2501,
+    key: 'pass2',
+    stat: 'missingHP',
+    owner: 'holder',
+    quotingDataDragon: 'your percent missing Health',
+    quotingTheWiki: "type='''missing''' health",
+    // NOTHING MOVES TODAY, AND THAT IS REPORTED RATHER THAN QUIETLY ASSUMED. Overlord's
+    // Bloodmail deals no damage: both its passives GRANT attack damage, so the extraction
+    // refuses them under `stat-grant-is-a-share-of-another-stat` and stores no ratio for this
+    // item at all. The attribution is adopted; the stored population is unchanged.
+    reachesAStoredRatio: false,
+    readOn: '2026-08-15',
   },
 ];
 

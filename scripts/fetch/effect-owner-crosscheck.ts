@@ -78,6 +78,9 @@ const POOL_PHRASING: Record<string, string> = {
 const HOLDER_WORDS = /^(your|his|her|yours)$/i;
 const OTHER_WORDS = /^(their|the target's|target's|enemy's|enemies')$/i;
 
+/** Every possessive either detector recognises, in one place so the two cannot drift apart. */
+const POSSESSIVES = "(your|yours|his|her|their|the target's|target's|enemy's|enemies')";
+
 export interface OwnerCrossCheck {
   stat: string;
   /** What Data Dragon says, quoted — e.g. "the target's Armor". */
@@ -112,8 +115,7 @@ export function ddragonAttributes(prose: string, stat: string): OwnerCrossCheck 
   const phrasing = POOL_PHRASING[stat];
   if (!phrasing) return null;
   const re = new RegExp(
-    `\\b(your|yours|his|her|their|the target's|target's|enemy's|enemies')\\s+` +
-      `(?:current |max(?:imum)? |bonus |missing |total )?(?:${phrasing})\\b`,
+    `\\b${POSSESSIVES}\\s+` + `(?:current |max(?:imum)? |bonus |missing |total )?(?:${phrasing})\\b`,
     'i',
   );
   const match = re.exec(prose);
@@ -132,4 +134,40 @@ export function ddragonAttributes(prose: string, stat: string): OwnerCrossCheck 
         ? 'other champion'
         : 'other champion',
   };
+}
+
+/**
+ * THE SAME QUESTION ASKED LOOSELY, AND ITS ANSWER IS A CANDIDATE, NEVER AN ATTRIBUTION.
+ *
+ * `ddragonAttributes` requires the possessive to sit directly against the stat phrase, give or
+ * take one of five qualifiers. That is the right rule for something that DECIDES an owner — but
+ * it means a single interposed word hides a reference the source really does attribute, and one
+ * did: Overlord's Bloodmail reads **"based on your percent missing Health"**, and "percent" was
+ * enough for the strict detector to report nothing while the source plainly says "your".
+ *
+ * So this reports what the strict one cannot see: a possessive, then one to three words that are
+ * not themselves a possessive, then the stat. **It resolves nothing.** Its output is a list of
+ * sentences for a person to read, exactly as CLAUDE.md requires — widening the strict detector
+ * instead would have decided references nobody had read, which is the move that rule forbids.
+ *
+ * MEASURED OVER ALL 209 ITEMS on 2026-08-15: it finds ONE reference the strict detector misses,
+ * and that one is Overlord's Bloodmail [pass2], now read and adopted. A hit that is not in the
+ * adopted table is an unread candidate and is published as one.
+ */
+export function ddragonPossessiveNearStat(
+  prose: string,
+  stat: string,
+): { stat: string; says: string; wordsBetween: string } | null {
+  const phrasing = POOL_PHRASING[stat];
+  if (!phrasing) return null;
+  // `\w+` three times at most: far enough to cross "percent", short enough that the possessive
+  // and the stat are still recognisably in one phrase rather than two clauses.
+  const re = new RegExp(`\\b${POSSESSIVES}\\s+((?:\\w+\\s+){1,3})(?:${phrasing})\\b`, 'i');
+  const match = re.exec(prose);
+  if (!match) return null;
+  // A second possessive in between means the phrase has moved on to a different champion's
+  // stat, and joining them would attribute one champion's stat to another.
+  const between = match[2]!.trim();
+  if (new RegExp(`\\b${POSSESSIVES}\\b`, 'i').test(between)) return null;
+  return { stat, says: match[0].replace(/\s+/g, ' ').trim(), wordsBetween: between };
 }

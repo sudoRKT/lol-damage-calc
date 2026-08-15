@@ -3,7 +3,7 @@
     "source": "Riot Data Dragon runesReforged.json and item.json (raw markup, tags intact); wiki Module:ItemData/data effect text as already stored verbatim in public/data/effect-census.json",
     "url": "https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/item.json",
     "patch": "16.16.1",
-    "fetched": "2026-08-15T21:06:58.480Z"
+    "fetched": "2026-08-15T22:35:34.304Z"
   },
   "whatThisIs": "Every place in scripts/fetch/ where text or a value is altered before something is compared against it, with what the alteration removes, whether that can carry meaning, what the comparison is between, and BOTH failure directions — a disagreement invented, and a disagreement hidden. Written after the First Strike finding of 2026-08-15, where the pipeline stripped the tag that carried the damage type and then reported a conflict it had created itself.",
   "membershipRule": "A site is counted when a value is altered — markup stripped, case folded, whitespace collapsed, templates peeled, a number rounded or parsed — AND the altered value is then an operand of an equality test, a substring or regex test, or a numeric tolerance test. A normaliser whose output is only ever printed is not a site.",
@@ -16,7 +16,7 @@
     "withALiveDefect": 0,
     "withADefectSinceFIXED": 3,
     "couldInventADisagreement": 4,
-    "couldHideADisagreement": 8
+    "couldHideADisagreement": 7
   },
   "byVerdict": {
     "dangerous": [
@@ -154,14 +154,14 @@
     {
       "id": "rune-endpoint-crosscheck-tolerance",
       "where": "rune-census.ts:1058 evalFormula strips whitespace; :1177 strips a trailing \"for N\" clause",
-      "comparedAt": "rune-census.ts:1193 — Math.abs(low - ddLow) < 0.51 && Math.abs(high - ddHigh) < 0.51",
-      "removes": "whitespace and a duration clause — neither carries a value. The risk here is the TOLERANCE, not the text: half a point of genuine disagreement between the two sources reads as agreement",
+      "comparedAt": "rune-census.ts — Math.abs(low - ddLow) < ENDPOINT_TOLERANCE && Math.abs(high - ddHigh) < ENDPOINT_TOLERANCE, where ENDPOINT_TOLERANCE is 1e-9 (it was 0.51 until 2026-08-15)",
+      "removes": "whitespace and a duration clause — neither carries a value. The risk here WAS the TOLERANCE, not the text: at 0.51, half a point of genuine disagreement between the two sources read as agreement. At 1e-9 no difference either source can express survives the comparison",
       "removalCanCarryMeaning": false,
       "comparison": "source-vs-source",
-      "strictComparisonFirst": false,
+      "strictComparisonFirst": true,
       "canInventADisagreement": false,
-      "canHideADisagreement": true,
-      "measured": "The tolerance is 0.51, chosen to absorb the wiki rounding its own displayed endpoints. Any real difference below 0.51 is reported as \"endpoints-agree\".",
+      "canHideADisagreement": false,
+      "measured": "THIS SWEEP'S FINDING WAS ACTED ON. The tolerance was 0.51, chosen to absorb Data Dragon rounding its own printed endpoints, and it was absorbing nothing: all 10 agreeing runes agree at a raw gap of exactly 0, and the 1 disagreeing rune is out by 1.5 and 6. It is now 1e-9 and no verdict moved. Not 0, because the wiki side is arithmetic this pipeline performs: over 25,000,000 one-decimal linear progressions, 16.78% carry a non-zero IEEE 754 error, largest 7.99e-14 — so exact equality would INVENT a disagreement in about one case in six. 1e-9 is ~12,500x that error and ~1,000,000x below the finest difference either source can state.",
       "liveDefect": null,
       "verdict": "safe"
     },
