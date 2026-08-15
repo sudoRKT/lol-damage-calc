@@ -139,14 +139,16 @@ describe('classifyOverTime — the per-tick split', () => {
     expect(a.verification).toBe('derived');
   });
 
-  // DEFINITION of the 27: the 4 entries read on 2026-08-14 plus every row of per-tick-read.ts
+  // DEFINITION of the 29: the 4 entries read on 2026-08-14 plus every row of per-tick-read.ts
   // whose sentence says the damage recurs AND whose number of ticks equals the source's own
   // duration divided by its own interval. It read 23 until 2026-08-15, when four rows reached that
   // arithmetic for the first time — two because the page prints the count and the harvest had
   // stored 1, two because Riot's patch notes settled which half of a self-contradicting page is
-  // stale (DATA-SOURCES §59). The definition did not move; the evidence did.
-  it('marks 27 entries in all — the 4 read in §58 and the 23 whose counts the source establishes', () => {
-    expect(READ_AS_OVER_TIME.size).toBe(27);
+  // stale (DATA-SOURCES §59). It read 27 until the re-read later the same day added Nasus R (30)
+  // and Wukong R (8), whose pages print the count in their own leveling rows on the base term AND
+  // on the ratio. The definition has not moved once; the evidence did, three times.
+  it('marks 29 entries in all — the 4 read in §58 and the 25 whose counts the source establishes', () => {
+    expect(READ_AS_OVER_TIME.size).toBe(29);
     for (const [, why] of READ_AS_OVER_TIME) expect(why.length).toBeGreaterThan(20);
   });
 
@@ -190,8 +192,27 @@ describe('classifyOverTime — the per-tick split', () => {
 });
 
 describe('withdrawalReason — a withdrawn entry says what is actually missing', () => {
+  // WAS NASUS R UNTIL 2026-08-15. That entry's count was captured at 30 in the re-read, so it is
+  // no longer withdrawn at all and no longer an example of this reason. Rumble Q is: its page
+  // states three counts — 3, 12 and 15, one per situation — so a count exists in the source and
+  // none of them is the ability's.
   it('names the missing count for an entry whose source states one nobody captured', () => {
-    expect(withdrawalReason('Nasus/R/Fury of the Sands')).toContain('never captured');
+    expect(withdrawalReason('Rumble/Q/Flamespitter')).toContain('never captured');
+  });
+
+  // THE BLOCKED CASE, ADDED 2026-08-15. Two entries reconcile at a count the source prints and are
+  // still not written, and the generic sentence above would tell a reader the reading is
+  // unfinished. It is finished; what stops it is outside the source, and the reason has to travel
+  // with the entry or the next person redoes the work and hits the same wall.
+  it('names what BLOCKS a count that does reconcile, rather than implying nobody read it', () => {
+    const ornn = withdrawalReason('Ornn/W/Bellows Breath');
+    expect(ornn).toContain('put the count at 5');
+    expect(ornn).toContain('the reason is not in the source');
+    expect(ornn).toContain('DESTINATION');
+
+    const malzahar = withdrawalReason('Malzahar/R/Nether Grasp');
+    expect(malzahar).toContain('put the count at 10');
+    expect(malzahar).toContain('component id');
   });
 
   it('says no count can exist for a toggle, rather than implying somebody could go and find one', () => {

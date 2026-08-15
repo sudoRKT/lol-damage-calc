@@ -345,6 +345,25 @@ export function isMultiplierGroup(body: string): boolean {
 /**
  * Read one `(+ N% per 100 X)` group into a multiplier. Returns null when the stat is not one
  * this project models, so the caller can raise an issue rather than store a silent guess.
+ *
+ * THE STAT IS READ FROM THE WORDS AFTER "per 100" AND FROM NOWHERE ELSE (fixed 2026-08-15).
+ *
+ * It used to fall back to the WHOLE group when that tail could not be matched, and the fallback
+ * fabricated an attribution: the wiki writes a rank progression as `{{ap|...}}`, so a group like
+ * `(+ {{ap|50*15}}% per 100% bonus attack speed)` handed `ratioStatOf` the letters "ap" from the
+ * TEMPLATE NAME and came back with ability power. The stored multiplier then read "750% per 100
+ * AP" for a coefficient the source attributes to attack speed — a number with a real magnitude
+ * and the wrong stat, which is the exact shape of wrong number nobody can see.
+ *
+ * MEASURED BEFORE THE CHANGE, over every `{{as}}` group in all 937 cached pages, nested groups
+ * included: 174 multiplier groups, 145 of which parsed. Under the strict rule 144 parse
+ * identically and exactly ONE refuses — Katarina R's "per 100% bonus attack speed", which
+ * `RatioStat` has no arm for and which therefore SHOULD refuse. A refused group makes its row
+ * raise `unparsed-ratio` and the row is not stored, which is the correct outcome for a
+ * coefficient this contract cannot name.
+ *
+ * The tail is matched with an optional '%' after the 100, because the wiki writes both
+ * "per 100 AP" and "per 100% bonus attack speed" and the old pattern silently missed the second.
  */
 export function parseMultiplier(
   body: string,
@@ -352,8 +371,9 @@ export function parseMultiplier(
   vars: Record<string, string>,
 ): RatioMultiplier | null {
   const text = body.replace(/^\s*\(\s*\+\s*/, '').replace(/\)\s*$/, '');
-  const after = /per\s+100\s+(.*)$/i.exec(plainText(text) || text);
-  const per = ratioStatOf(after?.[1] ?? text);
+  const after = /per\s+100\s*%?\s*(.*)$/i.exec(plainText(text) || text);
+  if (!after) return null;
+  const per = ratioStatOf(after[1] ?? '');
   if (!per) return null;
 
   // The magnitude is whatever percentage sits BEFORE "per 100".
@@ -374,6 +394,9 @@ export function parseMultiplier(
   }
   return {
     per,
+    // THE OWNER IS STILL READ FROM THE WHOLE GROUP, deliberately, and it is not the same question
+    // as the stat. "per 100 Poppy's bonus health" names the champion before the stat, so a tail-
+    // only read would lose the attribution and store `unresolved` where the source is explicit.
     ...(requiresOwner(per) ? { owner: ratioOwnerOf(plainText(text) || text) } : {}),
     per100,
   };

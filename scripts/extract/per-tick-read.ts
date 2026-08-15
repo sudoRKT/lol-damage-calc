@@ -24,13 +24,14 @@
  *   1. IS IT RECURRING? Decided by the sentence. All 37 are — every one states an interval in
  *      seconds. Not one turned out to be the `per Arrow` shape. That is the finding.
  *   2. IS THE STORED COUNT A FULL-DURATION COUNT? A separate, stored fact. 18 of the 37 failed it
- *      when this table was written on 2026-08-14. **4 of those 18 were corrected on 2026-08-15**,
- *      so 14 fail it today. `marked` is true only when BOTH hold.
+ *      when this table was written on 2026-08-14. **4 were corrected on 2026-08-15 and 2 more in
+ *      the re-read the same day**, so 12 fail it today. `marked` is true only when BOTH hold.
  *
- * THE FOUR CORRECTED ON 2026-08-15, and they are two different things:
+ * THE SIX CORRECTED ON 2026-08-15, and they are two different things:
  *
- *   - CAPTURED — Rumble R (20) and Viktor R (6). The harvest stored 1; the page PRINTS the count,
- *     in words or in its own total-row multiplier, and the printed count equals the arithmetic.
+ *   - CAPTURED — Rumble R (20), Viktor R (6), and from the re-read Nasus R (30) and Wukong R (8).
+ *     The harvest stored 1; the page PRINTS the count, in words or in its own total-row
+ *     multiplier, and the printed count equals the arithmetic.
  *   - SETTLED — Hecarim W (4, not the stored 5) and Dr. Mundo W (12, not the stored 16). The page
  *     contradicts ITSELF, and Riot's own patch notes — outside the wiki entirely — say which half
  *     is stale. DATA-SOURCES §59.
@@ -40,6 +41,21 @@
  * notes as firmly as Hecarim's is. Its INTERVAL is stated by nothing anywhere, so "5 ticks of
  * 10–34" and "10 ticks of 5–17" are both consistent with every reachable source, and a count
  * cannot be computed from a duration alone. It stays `contested` and unmarked BY DECISION.
+ *
+ * THE RE-READ OF 2026-08-15 FOUND FOUR THINGS BEYOND THE TWO CAPTURES, and three of them are
+ * refusals rather than additions — which is the shape this work usually takes:
+ *
+ *   - Singed Q moved from `count-not-stored` to `contested`. Its page states 8 in its own minimum
+ *     row and 9 in its description and notes together, and the same page's twin — Rumble Q, which
+ *     carries the identical "one additional instance on application" note — DOES count that
+ *     instance in its minimum row. So the two pages apply one rule two ways.
+ *   - Ornn W and Malzahar R reconcile at 5 and at 10 and are still not captured. Neither blocker
+ *     is in the source: Ornn W's is SPECIFICATION §3.8 (five gouts inside one 0.75-second lunge
+ *     are not damage "following the combo") and Malzahar R's is our own harvest storing its two
+ *     per-tick rows under one component id. `reconcilesAt` and `captureBlockedBy` record both.
+ *   - Rumble Q states three counts — 3, 12 and 15 — and every one of them is right for a
+ *     different situation. Its full-duration figure is 15 where its duration over its interval is
+ *     12, so the capture rule refuses it, correctly.
  *
  * Why the second question gates the first. Marking a component moves its figure out of the burst
  * line and into the damage-over-time line — where the engine multiplies it by `hits` and states it
@@ -115,7 +131,16 @@ export type CountVerdict =
   | 'settled'
   /** The source states no duration at all — a toggle, an aura, a resource-fed channel. */
   | 'no-duration-stated'
-  /** A duration and interval are stated, so a count exists, but `hits` is 1: it was never stored. */
+  /**
+   * A duration and interval are stated, so a count exists, but `hits` is 1: it was never stored.
+   *
+   * IT IS A STATEMENT ABOUT OUR DATA, NOT ABOUT THE SOURCE. A row here may sit anywhere on a
+   * range: the source may print the count plainly (Ornn W divides three separate rows by 5) or
+   * merely make it derivable. What separates such a row from `captured` is whether anything
+   * BLOCKS acting on it — and where the count does reconcile and the row is still not captured,
+   * `reconcilesAt` and `captureBlockedBy` must both be filled in, so the refusal is a stated
+   * fact rather than an omission a later reader mistakes for unread work.
+   */
   | 'count-not-stored'
   /** The source's own description and its own leveling row imply DIFFERENT counts. */
   | 'contested';
@@ -172,6 +197,27 @@ export interface PerTickRead {
   storedHits: number[];
   /** Present only on a `captured` or `settled` row: the corrected count and where it comes from. */
   statedTotal?: StatedTotal;
+  /**
+   * THE COUNT A ROW RECONCILES AT WHILE STILL NOT BEING CAPTURED (2026-08-15).
+   *
+   * Added because two rows reached the same arithmetic as Rumble R and Viktor R — the source's
+   * own duration over its own interval, printed by the page as well — and are still not written.
+   * Recording them as plain `count-not-stored` said "a count exists somewhere in the source",
+   * which reads as unread work and would send the next person to redo the reading.
+   *
+   * It must equal `impliedTicks`, and it may not appear without `captureBlockedBy`. A number
+   * with no stated blocker is a capture somebody forgot to finish.
+   */
+  reconcilesAt?: number;
+  /**
+   * WHY A RECONCILING COUNT IS NOT WRITTEN. Required whenever `reconcilesAt` is present.
+   *
+   * Both current blockers are outside the source: one is a defect in our own harvest (two rows
+   * sharing a component id, so no count can be attached to one of them), and one is a question
+   * SPECIFICATION §3.8 does not answer (whether damage that lands entirely inside a 0.75-second
+   * cast is "delivered following the combo"). Neither is a fact the wiki can supply.
+   */
+  captureBlockedBy?: string;
   /**
    * True only when verdict is 'recurring' AND countVerdict is 'corroborated', 'captured' or
    * 'settled'.
@@ -480,13 +526,22 @@ export const PER_TICK_READS: readonly PerTickRead[] = [
     verbatim: [
       'dealing them {{as|magic damage}} every {{fd|0.25}} seconds, {{tip|sight|revealing}} himself in the process',
       'that lasts 5 seconds, dealing {{as|magic damage}} every {{fd|0.5}} seconds to enemies within',
+      '{{st|Total Magic Damage|{{ap|125 to 275}} {{as|(+ 80% AP)}}|Magic Damage Per Tick|{{ap|125/10 to 275/10}} {{as|(+ 8% AP)}}}}',
+      "|Magic Damage Per Tick|{{as|{{ap|10/10 to 20/10}}% {{as|(+ {{fd|0.25}}% per 100 AP)}} of target's '''maximum''' health}}",
     ],
     durationSeconds: 2.5,
     intervalSeconds: 0.25,
     impliedTicks: 10,
     storedHits: [1, 1],
+    reconcilesAt: 10,
+    captureBlockedBy:
+      "a defect in our own harvest, not a gap in the source: this entry's two per-tick rows are " +
+      "stored under one component id ('magic-damage-per-tick'), so a captured count names two " +
+      'rows at once and can be attached to neither. Gate 1 rejects the entry for the same reason ' +
+      'and it is refused from the merged file entirely. It becomes capturable the moment the ' +
+      'harvester gives each row a distinct id and a fresh full-roster run lands.',
     marked: false,
-    note: 'both components imply 10 ticks (2.5s/0.25s for the tether, 5s/0.5s for the Null Zone) and both store 1. The entry is refused from the merged file for a separate reason — its two rows share one component id — so marking it would change nothing today',
+    note: 'RE-READ 2026-08-15. BOTH halves state 10 and the page prints it for both: the tether is 2.5s / 0.25s and its own Total row divides by 10 on the base and on the AP ratio, and the Null Zone is 5s / 0.5s with its own Total row dividing by 10 the same way. So the source is not short of anything — our storage is. Both components hold 1',
   },
   {
     key: 'Mel/E/Solar Snare',
@@ -577,19 +632,31 @@ export const PER_TICK_READS: readonly PerTickRead[] = [
   {
     key: 'Nasus/R/Fury of the Sands',
     verdict: 'recurring',
-    countVerdict: 'count-not-stored',
+    countVerdict: 'captured',
     quote:
       'Nasus empowers himself for 15 seconds, and while empowered he deals magic damage every 0.5 seconds to nearby enemies',
     verbatim: [
       'empowers himself for 15 seconds',
       'he deals {{as|magic damage}} every {{fd|0.5}} seconds to nearby enemies, capped at 240 per second',
+      "|Total Magic Damage|{{as|{{ap|1.5*30 to 2.5*30}}% {{as|(+ {{ap|0.5*30}}% per 100 AP)}} of target's '''maximum''' health}}",
     ],
     durationSeconds: 15,
     intervalSeconds: 0.5,
     impliedTicks: 30,
     storedHits: [1],
-    marked: false,
-    note: 'the source states 30 ticks in its own total row and the entry stores 1, so marking it would publish a thirtieth of the burn. The per-second cap of 240 is a further modifier nothing models yet',
+    statedTotal: {
+      instances: 30,
+      componentIds: ['magic-damage-per-tick'],
+      statedBy:
+        'the description states the duration and the interval — 15 seconds, every 0.5 seconds — ' +
+        "which is 30 instances, and the page's own Total row writes the multiplier out twice: " +
+        "'1.5*30 to 2.5*30' on the health percentage and '0.5*30' on the per-100-AP term, so the " +
+        'count of 30 is printed at every rank and on the coefficient as well',
+      verbatim:
+        "|Total Magic Damage|{{as|{{ap|1.5*30 to 2.5*30}}% {{as|(+ {{ap|0.5*30}}% per 100 AP)}} of target's '''maximum''' health}}",
+    },
+    marked: true,
+    note: "CAPTURED 2026-08-15: three statements agree on 30 — 15s / 0.5s, the Total row's own '*30' on the base, and the same '*30' on the AP coefficient. A FOURTH agreement is worth recording because it is not from this page at all: Renekton R is the same shape to the second — a 15-second self-empowerment aura ticking every 0.5 seconds — and this project already reads it at 30, corroborated. THE ENTRY STAYS `incomplete` IN THE HARVEST and publishes nothing today; the capture stops a thirtieth of the burn being published as the whole of it if it ever ceases to be. NOT MODELLED and stated rather than hidden: the source caps the aura at 240 damage per second, which binds only against a target above roughly 8,000 maximum health at rank 1, and nothing in the contract can express a per-second cap on a sequence engine",
   },
   {
     key: 'Nidalee/W/Bushwhack',
@@ -635,8 +702,16 @@ export const PER_TICK_READS: readonly PerTickRead[] = [
     intervalSeconds: 0.15,
     impliedTicks: 5,
     storedHits: [1],
+    reconcilesAt: 5,
+    captureBlockedBy:
+      'not the count — the DESTINATION. Capturing a count marks the component as recurring, ' +
+      'which moves its whole figure out of the burst total and into the damage-over-time line, ' +
+      'and SPECIFICATION §3.8 defines that line as damage "delivered over the effect\'s full ' +
+      'duration FOLLOWING the combo". All five gouts land inside the 0.75-second lunge itself, ' +
+      'so nothing follows the combo at all. Marking it would show 0 burst damage for an ability ' +
+      'that resolves inside one cast. RAISED for the lead rather than decided here.',
     marked: false,
-    note: "BORDERLINE AND WORTH A DECISION: the five ticks land inside a single 0.75-second lunge, which is a sweep rather than a burn, and the wiki tags the ability 'aoe' where every other entry in this population is tagged 'aoedot'. It stays withdrawn on the count alone, so the borderline never had to be resolved here",
+    note: "RE-READ 2026-08-15. THE COUNT IS NOT THE PROBLEM AND THIS ROW USED TO IMPLY IT WAS. Three statements agree on 5 — 0.75s / 0.15s, and the page divides its total by 5 in three separate rows (champion damage 12/5 to 16/5, minion 80/5 to 280/5, monster cap 260/5 to 500/5). What is unresolved is where the figure belongs: five gouts inside a single 0.75-second lunge is a sweep, this is the ONLY member of this population the wiki tags 'aoe' rather than 'aoedot', and §3.8's damage-over-time line is defined as damage following the combo. The shortest marked burn is Yunara W at 1 second, so 0.75 seconds is not far outside it and the question is genuinely close — which is why it is raised rather than settled by preference",
   },
   {
     key: 'Rell/R/Magnet Storm',
@@ -679,13 +754,16 @@ export const PER_TICK_READS: readonly PerTickRead[] = [
     verbatim: [
       'activate his flamethrower for 3 seconds, spewing forth flames in a {{tt|frontal|In his facing direction}} cone every {{fd|0.25}} seconds',
       'Values are defined OVER 3 SECONDS',
+      "Enemies hit by the flame are scorched for {{ap|0.5<!-- Primary debuff duration (2 instances) --> + 0.1<!-- Offset -->}} seconds, taking {{as|magic damage}} every {{fd|0.25}} seconds as well as upon being hit if not currently scorched",
+      '{{st|Minimum Magic Damage|{{ap|({{#var:q_b1}}/12)*3 to ({{#var:q_b5}}/12)*3|round=2}}',
+      '|Maximum Magic Damage|{{ap|{{#var:q_b1}}*(15/12) to {{#var:q_b5}}*(15/12)|round=2}}',
     ],
     durationSeconds: 3,
     intervalSeconds: 0.25,
     impliedTicks: 12,
     storedHits: [1, 1],
     marked: false,
-    note: "the page's own editing note says its values are defined over 3 seconds and its rows divide by 12, but it also states a MAXIMUM of 15/12 — the scorch outlives the cast. Both the normal and the Danger Zone component store 1",
+    note: "RE-READ 2026-08-15, AND THE PAGE TURNS OUT TO BE ENTIRELY SELF-CONSISTENT — WHICH IS WHY NO COUNT CAN BE CAPTURED. It states THREE counts for three different situations and every one of them reconciles: 3 for a target clipped once (a 0.5-second scorch ticks twice, plus one instance on application, which is the note this page shares with Singed Q), 12 for the flamethrower's own 3 seconds at 0.25-second intervals, and 15 as the maximum — twelve emissions, two trailing ticks after the last refresh, and the application instance. The capture rule requires the corrected count to EQUAL the source's duration over its interval, and the full-duration figure here is 15 against an arithmetic of 12, so the rule refuses it and is right to: which number applies is a property of how long the target stands in the cone, not of the ability. Both the normal and the Danger Zone component store 1",
   },
   {
     key: 'Rumble/R/The Equalizer',
@@ -720,18 +798,24 @@ export const PER_TICK_READS: readonly PerTickRead[] = [
   {
     key: 'Singed/Q/Poison Trail',
     verdict: 'recurring',
-    countVerdict: 'count-not-stored',
+    // RE-READ 2026-08-15 AND MOVED FROM 'count-not-stored' TO 'contested'. The page states two
+    // counts for one application, not one: its own Minimum row multiplies by 8, while its
+    // description and its notes together describe 9 — eight ticks over the two-second poison plus
+    // one instance dealt at the moment of application. Neither is taken silently (§32.2).
+    countVerdict: 'contested',
     quote:
-      'the poisoned target takes magic damage every 0.25 seconds over 2 seconds as well as upon being hit if not currently affected',
+      'the poisoned target takes magic damage every 0.25 seconds over 2 seconds as well as upon being hit if not currently affected, and the page own notes add that a fresh application deals one additional instance at the same time, while its own minimum row multiplies the per-tick figure by 8',
     verbatim: [
       'The target takes {{as|magic damage}} every {{fd|0.25}} seconds over 2 seconds as well as upon being hit if not currently affected.',
+      "When ''Poison Trail's'' debuff is applied instead of refreshed, the target is dealt one additional instance of the debuff at the same time as the application.",
+      '|Minimum Magic Damage|{{ap|({{#var:q_b1}}/4)*8 to ({{#var:q_b5}}/4)*8}}',
     ],
     durationSeconds: 2,
     intervalSeconds: 0.25,
     impliedTicks: 8,
     storedHits: [1],
     marked: false,
-    note: "the source's own minimum-damage row multiplies the per-tick figure by 8, so the count exists and was not stored. The cloud refreshes the poison while Singed keeps walking, so 8 is a floor rather than a fixed total",
+    note: "THE PAGE STATES TWO COUNTS FOR ONE FRESH APPLICATION AND NOTHING SETTLES WHICH. Its Minimum row multiplies the per-tick figure by 8, which is 2 seconds / 0.25 seconds exactly. Its description says the poison lands 'as well as upon being hit if not currently affected', and its notes say so in the arithmetic's own words — 'the target is dealt one additional instance of the debuff at the same time as the application' — which is 9. The difference is 12.5% of the ability. THE PAGE IS INTERNALLY CONSISTENT ABOUT THE SAME RULE ELSEWHERE, which is what makes this a contradiction rather than a nuance: Rumble Q carries the identical note and ITS minimum row does count the application instance, multiplying by 3 for a 0.5-second debuff that ticks twice. Nothing outside the page settles Singed's, so neither 8 nor 9 is adopted. A separate fact travels with it and no count fixes it: the cloud refreshes the poison while Singed keeps walking, so any single number is a floor",
   },
   {
     key: 'Swain/R/Demonic Ascension',
@@ -741,13 +825,14 @@ export const PER_TICK_READS: readonly PerTickRead[] = [
       'Swain drains the lifeforce of nearby enemies, both dealing magic damage and healing himself every 0.5 seconds per target affected',
     verbatim: [
       'drains the lifeforce of nearby enemies, both dealing {{as|magic damage}} and {{tip|healing}} himself every {{fd|0.5}} seconds per target affected',
+      'which decays by {{as|5|azakana}} every {{fd|0.5}} seconds, increased to {{as|{{fd|7.5}}|azakana}} after 5 seconds have elapsed',
     ],
     durationSeconds: null,
     intervalSeconds: 0.5,
     impliedTicks: null,
     storedHits: [1],
     marked: false,
-    note: 'the duration is fed by Demonic Energy, which decays at one rate, then faster after 5 seconds, and refills on a takedown. No fixed duration exists to divide — this is the one entry where the count is not merely unstored but unstatable from the source',
+    note: "RE-READ 2026-08-15 AND STILL REFUSED, now with the arithmetic that was tempting stated rather than left implicit. The source gives no duration; it gives a resource. Demonic Energy starts at 50 and decays by 5 every 0.5 seconds, which empties it in exactly 5 seconds and looks like a 10-tick answer. It is not one: the same sentence says Swain GENERATES 10 every 0.5 seconds while draining a champion, a net gain, so the ability runs indefinitely in the situation it is cast in, and a takedown refills it to full. The 5-second figure is the duration of a cast that hits nothing, which is the one case where the count does not matter. NO DURATION IS INFERRED FROM A DECAY RATE",
   },
   {
     key: 'Udyr/R/Wingborne Storm',
@@ -813,19 +898,31 @@ export const PER_TICK_READS: readonly PerTickRead[] = [
   {
     key: 'Wukong/R/Cyclone',
     verdict: 'recurring',
-    countVerdict: 'count-not-stored',
+    countVerdict: 'captured',
     quote:
       'Wukong spins his staff around for up to 2 seconds, and the staff deals physical damage every 0.25 seconds to enemies hit',
     verbatim: [
       'spins his staff around for up to 2 seconds',
       'The staff deals {{as|physical damage}} every {{fd|0.25}} seconds to enemies hit',
+      "|Total Physical Damage|{{as|{{ap|8 to 16}}% of target's '''maximum''' health}} {{as|(+ 275% AD)}}",
     ],
     durationSeconds: 2,
     intervalSeconds: 0.25,
     impliedTicks: 8,
     storedHits: [1],
-    marked: false,
-    note: "the source's total row divides by 8, so the count exists and was not stored. Like Ornn W this is a spin rather than a burn, and whether a 2-second channel belongs in the damage-over-time line is a decision for the lead rather than this reading",
+    statedTotal: {
+      instances: 8,
+      componentIds: ['physical-damage-per-tick'],
+      statedBy:
+        'the description states the duration and the interval — up to 2 seconds, every 0.25 ' +
+        "seconds — which is 8 instances, and the page's own leveling row divides the total by 8 " +
+        "on both terms: '8/8 to 16/8' of the health percentage against a total of '8 to 16', and " +
+        "'275/8' of the AD ratio against a total of 275",
+      verbatim:
+        "|Total Physical Damage|{{as|{{ap|8 to 16}}% of target's '''maximum''' health}} {{as|(+ 275% AD)}}",
+    },
+    marked: true,
+    note: "CAPTURED 2026-08-15: three statements agree on 8 — 2s / 0.25s, the leveling row's '/8' on the health percentage, and the same '/8' on the AD ratio. THE 2-SECOND SPIN QUESTION IS NOT REOPENED BY THIS and is not decided by it either: the count is what is captured. Two entries already marked recur over exactly 2 seconds — Nocturne E and Vladimir W — and the wiki tags this ability 'aoedot' as it tags them, so nothing here is a new reading of the destination. CAVEATS, none modelled: 'up to 2 seconds' means the spin can be interrupted, so 8 is a maximum; the recast doubles the total, which the page states as a separate Maximum row and is not stored; and the per-second cap against monsters is out of scope for champion damage. THE ENTRY STAYS `incomplete` in the harvest and publishes nothing today",
   },
   {
     key: 'Yunara/W/Arc of Judgment',
@@ -943,6 +1040,39 @@ export function checkMarkRule(reads: readonly PerTickRead[] = PER_TICK_READS): s
     if (!corrects && r.statedTotal) {
       wrong.push(`${r.key}: carries a corrected count while its verdict is '${r.countVerdict}'`);
     }
+    // A RECONCILING COUNT THAT IS NOT WRITTEN MUST SAY WHY IT IS NOT WRITTEN (2026-08-15).
+    //
+    // The failure guarded against is the quiet one: a row whose count was established, whose
+    // blocker was fixed later somewhere else, and which nobody ever came back to. Pairing the
+    // number with a stated blocker makes the two move together — remove the blocker and the
+    // check below demands the row become `captured` rather than sit at a number nothing uses.
+    if (r.reconcilesAt !== undefined) {
+      if (!r.captureBlockedBy) {
+        wrong.push(
+          `${r.key}: states the count reconciles at ${r.reconcilesAt} and does not say what ` +
+            `stops it being captured. A reconciling count with no stated blocker is a capture ` +
+            `left half-finished`,
+        );
+      }
+      if (r.reconcilesAt !== r.impliedTicks) {
+        wrong.push(
+          `${r.key}: says the count reconciles at ${r.reconcilesAt}, but ${r.durationSeconds}s / ` +
+            `${r.intervalSeconds}s = ${r.impliedTicks}. "Reconciles" means those two agree`,
+        );
+      }
+      if (corrects) {
+        wrong.push(
+          `${r.key}: is ${r.countVerdict} — the count IS written — and also claims a blocker ` +
+            `stopping it being written`,
+        );
+      }
+    }
+    if (r.captureBlockedBy !== undefined && r.reconcilesAt === undefined) {
+      wrong.push(
+        `${r.key}: names something blocking a capture without stating the count that would be ` +
+          `captured. A blocker with no number behind it cannot be checked when it is removed`,
+      );
+    }
   }
   return wrong;
 }
@@ -954,7 +1084,7 @@ export function checkMarkRule(reads: readonly PerTickRead[] = PER_TICK_READS): s
  * number that equals the source's own duration divided by its own interval:
  *
  *   - `captured` — the harvest holds 1 because its division rule could not reach the number, and
- *     the page prints it (Rumble R, Viktor R).
+ *     the page prints it (Rumble R, Viktor R, Nasus R, Wukong R).
  *   - `settled` — the harvest holds the page's own leveling-row multiplier, that multiplier is
  *     stale, and outside evidence says so (Hecarim W, Dr. Mundo W).
  *

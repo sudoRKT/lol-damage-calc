@@ -191,6 +191,60 @@ describe('checkMarkRule — a corrected count carries more conditions, not fewer
   });
 });
 
+// A COUNT THAT RECONCILES AND IS STILL NOT WRITTEN (2026-08-15). Ornn W and Malzahar R are both
+// blocked by something outside the source, and the danger is that the blocker gets fixed
+// elsewhere and nobody comes back. Each half is shown failing on its own before the real table is
+// asked, because a pair of fields that may drift apart is worth exactly as much as the check that
+// says they have.
+describe('checkMarkRule — a reconciling count that is not captured must say what stops it', () => {
+  const blocked = (over: Partial<PerTickRead> = {}): PerTickRead =>
+    read({
+      countVerdict: 'count-not-stored',
+      storedHits: [1],
+      marked: false,
+      reconcilesAt: 4,
+      captureBlockedBy: 'two rows share one component id, so the count names both',
+      ...over,
+    });
+
+  it('accepts a blocked row that states both the count and the blocker', () => {
+    expect(checkMarkRule([blocked()])).toEqual([]);
+  });
+
+  it('refuses a reconciling count with no stated blocker — a half-finished capture', () => {
+    const wrong = checkMarkRule([blocked({ captureBlockedBy: undefined })]);
+    expect(wrong.some((w) => w.includes('left half-finished'))).toBe(true);
+  });
+
+  it('refuses a blocker with no count behind it, which nothing could check later', () => {
+    const wrong = checkMarkRule([blocked({ reconcilesAt: undefined })]);
+    expect(wrong.some((w) => w.includes('cannot be checked when it is removed'))).toBe(true);
+  });
+
+  it('refuses a count that does not actually reconcile with the duration and interval', () => {
+    const wrong = checkMarkRule([blocked({ reconcilesAt: 7 })]);
+    expect(wrong.some((w) => w.includes('"Reconciles" means those two agree'))).toBe(true);
+  });
+
+  it('refuses a captured row that also claims something blocks the capture', () => {
+    const wrong = checkMarkRule([
+      read({
+        countVerdict: 'captured',
+        storedHits: [1],
+        statedTotal: {
+          instances: 4,
+          componentIds: ['magic-damage-per-tick'],
+          statedBy: 'the page prints it',
+          verbatim: 'deals {{as|magic damage}} every second',
+        },
+        reconcilesAt: 4,
+        captureBlockedBy: 'something',
+      }),
+    ]);
+    expect(wrong.some((w) => w.includes('also claims a blocker'))).toBe(true);
+  });
+});
+
 describe('checkAgainstHarvest — the table describes the real population, not a remembered one', () => {
   const ability = (champion: string, slot: string, name: string, hits: number) => ({
     champion,
@@ -236,19 +290,30 @@ describe('the table itself, against the real cached source', () => {
     expect(new Set(PER_TICK_READS.map((r) => r.key)).size).toBe(37);
   });
 
-  // THE COUNT MOVED ON 2026-08-15, 19 -> 23, AND A RISING COUNT IS THE DANGEROUS DIRECTION.
+  // THE COUNT MOVED TWICE ON 2026-08-15, 19 -> 23 -> 25, AND RISING IS THE DANGEROUS DIRECTION.
   //
-  // DEFINITION of the 23: rows where the sentence says the damage recurs AND the number of times
-  // it lands equals the source's own duration divided by its own interval. That definition did not
-  // change. What changed is that four rows reached that arithmetic where they previously could
-  // not — Rumble R and Viktor R because the page prints the count and the harvest had stored 1,
-  // Hecarim W and Dr. Mundo W because Riot's patch notes settled which of two self-contradicting
-  // halves of the page is stale (DATA-SOURCES §59). The tests below pin all four individually, so
-  // the total cannot rise again without a named row rising with it.
-  it('marks 23 and leaves 14 withdrawn, every mark carrying its sentence', () => {
+  // DEFINITION of the 25: rows where the sentence says the damage recurs AND the number of times
+  // it lands equals the source's own duration divided by its own interval. That definition has not
+  // changed once. What changes is which rows reach that arithmetic.
+  //
+  // 19 -> 23: Rumble R and Viktor R because the page prints the count and the harvest had stored
+  // 1; Hecarim W and Dr. Mundo W because Riot's patch notes settled which of two
+  // self-contradicting halves of the page is stale (DATA-SOURCES §59).
+  //
+  // 23 -> 25, in the re-read of the entries held back on their counts: Nasus R at 30 and Wukong R
+  // at 8. Neither is a new reading of the arithmetic — both were already recorded as reconciling.
+  // What was missing was that each page PRINTS the count as well: Nasus R's Total row multiplies
+  // by 30 on the base and again on the AP coefficient, and Wukong R's leveling row divides by 8 on
+  // the health percentage and again on the AD ratio. Both entries are `incomplete` in the harvest
+  // and publish nothing either way; the capture stops a thirtieth and an eighth of a burn being
+  // published as the whole of it if that ever changes.
+  //
+  // The tests below pin all six individually, so the total cannot rise again without a named row
+  // rising with it.
+  it('marks 25 and leaves 12 withdrawn, every mark carrying its sentence', () => {
     const marked = markedOverTime();
-    expect(marked.size).toBe(23);
-    expect(PER_TICK_READS.filter((r) => !r.marked)).toHaveLength(14);
+    expect(marked.size).toBe(25);
+    expect(PER_TICK_READS.filter((r) => !r.marked)).toHaveLength(12);
     for (const [, why] of marked) expect(why.length).toBeGreaterThan(20);
   });
 
@@ -256,13 +321,15 @@ describe('the table itself, against the real cached source', () => {
     expect(checkMarkRule()).toEqual([]);
   });
 
-  it('corrects exactly four counts, and every one equals the source own duration over interval', () => {
+  it('corrects exactly six counts, and every one equals the source own duration over interval', () => {
     const corrected = [...capturedHitCounts()];
     expect(corrected.map(([k]) => k).sort()).toEqual([
       'Dr. Mundo/W/Heart Zapper',
       'Hecarim/W/Spirit of Dread',
+      'Nasus/R/Fury of the Sands',
       'Rumble/R/The Equalizer',
       'Viktor/R/Arcane Storm',
+      'Wukong/R/Cyclone',
     ]);
     for (const [key, stated] of corrected) {
       const row = PER_TICK_READS.find((r) => r.key === key)!;
@@ -271,12 +338,49 @@ describe('the table itself, against the real cached source', () => {
     }
   });
 
-  it('states the four corrected counts by name, so none can drift silently', () => {
+  it('states the six corrected counts by name, so none can drift silently', () => {
     const at = (key: string) => capturedHitCounts().get(key)!.instances;
     expect(at('Rumble/R/The Equalizer')).toBe(20);
     expect(at('Viktor/R/Arcane Storm')).toBe(6);
     expect(at('Hecarim/W/Spirit of Dread')).toBe(4);
     expect(at('Dr. Mundo/W/Heart Zapper')).toBe(12);
+    expect(at('Nasus/R/Fury of the Sands')).toBe(30);
+    expect(at('Wukong/R/Cyclone')).toBe(8);
+  });
+
+  // THE RE-READ OF 2026-08-15, PINNED ROW BY ROW. Each of these is a REFUSAL that survived a
+  // second reading, and each is easier to erode than to defend: the counts are right there in the
+  // page in three of the four cases.
+  it('leaves Ornn W and Malzahar R reconciling but uncaptured, each naming its blocker', () => {
+    const ornn = PER_TICK_READS.find((r) => r.key === 'Ornn/W/Bellows Breath')!;
+    expect(ornn.reconcilesAt).toBe(5);
+    expect(ornn.marked).toBe(false);
+    expect(capturedHitCounts().has(ornn.key)).toBe(false);
+    // The blocker is the destination, not the arithmetic — §3.8's "following the combo".
+    expect(ornn.captureBlockedBy).toMatch(/3\.8/);
+
+    const malz = PER_TICK_READS.find((r) => r.key === 'Malzahar/R/Nether Grasp')!;
+    expect(malz.reconcilesAt).toBe(10);
+    expect(malz.marked).toBe(false);
+    expect(capturedHitCounts().has(malz.key)).toBe(false);
+    // The blocker is our own harvest: two rows under one component id.
+    expect(malz.captureBlockedBy).toMatch(/component id/);
+  });
+
+  it('leaves Singed Q contested — its own minimum row says 8 and its own notes say 9', () => {
+    const singed = PER_TICK_READS.find((r) => r.key === 'Singed/Q/Poison Trail')!;
+    expect(singed.countVerdict).toBe('contested');
+    expect(singed.marked).toBe(false);
+    expect(singed.statedTotal).toBeUndefined();
+    expect(singed.reconcilesAt).toBeUndefined();
+  });
+
+  it('leaves Rumble Q uncaptured — its full-duration count is 15 where 3s / 0.25s is 12', () => {
+    const rumble = PER_TICK_READS.find((r) => r.key === 'Rumble/Q/Flamespitter')!;
+    expect(rumble.impliedTicks).toBe(12);
+    expect(rumble.marked).toBe(false);
+    expect(rumble.reconcilesAt).toBeUndefined();
+    expect(capturedHitCounts().has(rumble.key)).toBe(false);
   });
 
   it('leaves Nasus E unmarked and uncorrected — no source states its interval', () => {
@@ -287,7 +391,7 @@ describe('the table itself, against the real cached source', () => {
     expect(capturedHitCounts().has('Nasus/E/Spirit Fire')).toBe(false);
   });
 
-  it('quotes 58 fragments and every one is literally in the cached wikitext', async () => {
+  it('quotes 68 fragments and every one is literally in the cached wikitext', async () => {
     // 57 UNTIL 2026-08-15, AND HERE IS THE ONE THAT MOVED IT. Morgana W was re-read and its
     // `countVerdict` went from `count-not-stored` to `contested`: the count is not missing from
     // the source, the source states TWO of them — its description reads as 11 instances (one on
@@ -295,10 +399,18 @@ describe('the table itself, against the real cached source', () => {
     // per-tick figure by 10. Establishing that needed the total row quoted as well as the
     // sentence, so the entry's `verbatim` list gained one fragment. Nothing was captured; §32.2
     // holds that a source contradicting itself is contested rather than silently resolved.
+    //
+    // 58 -> 68 IN THE RE-READ LATER THE SAME DAY, and every one of the ten is a row's OWN
+    // leveling row or notes quoted alongside its description, because that is where the counts
+    // turned out to be printed: Nasus R and Wukong R gained their Total rows (captured), Singed Q
+    // gained its notes and its minimum row (contested, 8 against 9), Rumble Q gained three (its
+    // scorch sentence and its minimum and maximum rows, which state 3 and 15), Malzahar R gained
+    // both its Total rows, and Swain R gained the Demonic Energy decay sentence that looks like a
+    // duration and is not one.
     const checks = verifyQuotes(PER_TICK_READS, await loadPages());
     const failed = checks.filter((c) => c.pageMissing || c.missing.length > 0);
     expect(failed).toEqual([]);
-    expect(checks.reduce((s, c) => s + c.found, 0)).toBe(58);
+    expect(checks.reduce((s, c) => s + c.found, 0)).toBe(68);
   });
 
   it('proves every corrected sentence is one of the checked fragments, not a summary', async () => {

@@ -351,10 +351,16 @@ async function main(): Promise<void> {
     },
     outcomes,
     contractGaps: CONTRACT_GAPS,
-    notMerged:
-      'These runes are NOT written into build/proposed-curated/merged-proposal.json. That file is ' +
-      'queued for a hand-merge into /curated/ and must not move underneath it, so the runes are ' +
-      'proposed on their own and can be merged as a second, separate step.',
+    // WAS 'notMerged' UNTIL 2026-08-15, AND THE SENTENCE OUTLIVED THE SITUATION IT DESCRIBED.
+    // It said these runes were deliberately kept out of merged-proposal.json so that a queued
+    // hand-merge would not move underneath itself. That merge landed, and the file was regenerated
+    // afterwards with `runes: []` and a report still saying "no rune value has been extracted at
+    // all" — so the separation stopped protecting anything and started hiding five stored values.
+    whereTheseAreMerged:
+      'merge-proposal.ts reads this file and writes all 7 into the `runes` array of ' +
+      'build/proposed-curated/merged-proposal.json. That file is a DECISION PACKAGE, not a merge: ' +
+      'nothing here writes /curated/, which stays behind the human unlock in curated/README.md. ' +
+      'Run `npm run premerge:check` before handing over any merge command.',
     runes,
   };
 

@@ -7,6 +7,7 @@ import { expandByRank } from '../../src/types/scaling.ts';
 import {
   classifyRow,
   isDamageRow,
+  parseMultiplier,
   parseRatio,
   proposeRelations,
   hasCoefficientShape,
@@ -171,6 +172,38 @@ describe('the coefficient shape the library does not have', () => {
         per100: { scaling: 'linear', from: 0.4, to: 0.4 },
       },
     ]);
+  });
+
+  // KATARINA R, AND THE ONE PLACE THIS PARSER FABRICATED AN ATTRIBUTION (found 2026-08-15).
+  //
+  // The row is literal wikitext from the cached template. Its coefficient is "per 100% BONUS
+  // ATTACK SPEED", a stat `RatioStat` has no arm for, so the only correct outcome is a refusal.
+  // What happened instead: the tail after "per 100" failed to match (the wiki writes "per 100%"
+  // with the percent sign attached), the parser fell back to scanning the WHOLE group, and the
+  // letters "ap" in the wiki's own `{{ap|...}}` rank-progression template matched the ability-
+  // power pattern. The stored multiplier read 750% per 100 AP for a coefficient the source
+  // attributes to attack speed.
+  //
+  // Measured over every {{as}} group in all 937 cached pages, nested groups included: 174 groups,
+  // 145 parsed before the fix, 144 after. This is the only one that changed.
+  it('refuses a coefficient stated per bonus attack speed rather than calling it AP', () => {
+    const KATARINA_R_MAX =
+      "{{as|{{ap|16*15}}% {{as|(+ {{ap|50*15}}% per 100% '''bonus''' attack speed)}} '''bonus''' AD}}";
+    expect(parseMultiplier(
+      "(+ {{ap|50*15}}% per 100% '''bonus''' attack speed)",
+      3,
+      NO_VARS,
+    )).toBeNull();
+    const r = row('Maximum Physical Damage', KATARINA_R_MAX, 3, 'physical');
+    expect(r.component?.ratios ?? []).toEqual([]);
+    expect(r.issues.map((i) => i.detail).join(' ')).toContain('bonus');
+  });
+
+  it('still reads an ordinary "per 100 AP" group, which the strict tail must not break', () => {
+    expect(parseMultiplier('(+ {{fd|2.5}}% per 100 AP)', 3, NO_VARS)).toEqual({
+      per: 'AP',
+      per100: { scaling: 'linear', from: 2.5, to: 2.5 },
+    });
   });
 
   it('still raises the issue when the multiplier cannot be read', () => {

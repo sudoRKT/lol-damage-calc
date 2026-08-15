@@ -73,6 +73,7 @@ export const SOURCES = {
   abilityReport: 'build/proposed-curated/abilities/batch-01.report.json',
   itemEffects: 'public/data/effect-values.json',
   defensive: 'build/proposed-curated/defensive-proposals.json',
+  runes: 'build/proposed-curated/rune-proposals.json',
   items: 'public/data/items.json',
   manifest: 'public/data/manifest.json',
   gate5: 'verification/gate5-passes.json',
@@ -117,6 +118,24 @@ interface DefensiveProposalFile {
 interface EffectValuesFile {
   provenance: { patch: string; fetched: string };
   proposedItemEffects: CuratedItemEffect[];
+}
+
+/**
+ * The rune half, produced by `scripts/extract/rune-propose.ts` from the hand reading in
+ * `runes-read.ts`. Every value in it was produced twice — once by this project's progression
+ * parser over the wiki's formula, once by a person reading Data Dragon's printed sentence — and
+ * stored only where the two agreed (DATA-SOURCES §62.4).
+ *
+ * `counts.gate1FindingsOverTheseRunes` is that file's own run of the lead's component checker.
+ * It is read and REPORTED rather than trusted: sweep S1 here runs the same checker over the
+ * merged file, so a rune that passed upstream and fails here is a disagreement worth seeing.
+ */
+interface RuneProposalFile {
+  generatedOn: string;
+  patch: string;
+  counts: { read: number; proposed: number; withDamageComponents: number; byStatus: Record<string, number>; gate1FindingsOverTheseRunes: number };
+  contractGaps: Array<{ blocks: string; fact: string; whatExistsAlready: string; ifNotAdded: string }>;
+  runes: CuratedRune[];
 }
 
 // ---------------------------------------------------------------------------------------
@@ -456,6 +475,17 @@ export function withdrawalReason(key: string): string {
         'to multiply, and a full-duration total cannot be stated at all.'
       );
     case 'count-not-stored':
+      // A BLOCKED ROW SAYS WHAT BLOCKS IT (2026-08-15). Two entries reconcile at a number the
+      // source prints and are still not written, and the general sentence below would read to
+      // anyone downstream as "nobody has finished the reading" — which would send the next person
+      // to redo work that is done, and leave the actual obstacle unnamed.
+      if (read.reconcilesAt !== undefined) {
+        return (
+          `The source was read: it recurs, and both the source's own arithmetic and its own ` +
+          `printed rows put the count at ${read.reconcilesAt}. It is still not written, and the ` +
+          `reason is not in the source: ${read.captureBlockedBy}`
+        );
+      }
       return (
         'The source was read: it recurs, and the source states how many times it lands, but that ' +
         'count was never captured into the data — the entry holds one tick where it needs all of ' +
@@ -568,6 +598,21 @@ export function classifyOverTime(abilities: CuratedAbility[]): {
           c.overTime = { sourceSays: why };
           marked += 1;
         }
+        // THE HARVEST'S OWN NOTE IS NOW FALSE ON THIS ENTRY, AND SAYING NOTHING WOULD LEAVE IT
+        // (2026-08-15). Every entry whose count was captured or settled carries a harvester note
+        // reading "how many times this lands could not be read" — written before anyone had read
+        // it. It is the entry's user-facing gap reason, so leaving it says the opposite of what
+        // the data now holds. The harvester's words are kept and the correction is appended to
+        // them, because which of the two was written first is part of the record.
+        if (stated) {
+          const correction =
+            `THE COUNT HAS SINCE BEEN READ FROM THE SOURCE AND APPLIED: ${stated.instances} ` +
+            `instances. ${stated.statedBy}.` +
+            (stated.settledBy
+              ? ` The page contradicts itself and this was settled outside it: ${stated.settledBy}.`
+              : '');
+          a.notes = a.notes ? `${a.notes}; ${correction}` : correction;
+        }
         continue;
       }
       capture.refused.push(
@@ -584,11 +629,16 @@ export function classifyOverTime(abilities: CuratedAbility[]): {
     refused.push(abilityKey(a));
     a.verification = 'incomplete';
     const reason = withdrawalReason(abilityKey(a));
-    a.notes =
-      a.notes ??
+    const withdrawal =
       `this ability states a per-tick figure, so its damage recurs over time — and damage over ` +
-        `time is never part of a burst total (SPECIFICATION §3.8). ${reason} No figure is ` +
-        `published rather than one published in the wrong place.`;
+      `time is never part of a burst total (SPECIFICATION §3.8). ${reason} No figure is ` +
+      `published rather than one published in the wrong place.`;
+    // APPENDED, NOT DISCARDED (2026-08-15). This was `a.notes ?? withdrawal`, so on every entry
+    // the harvester had already annotated — which is most of them — the reading's specific reason
+    // was computed and thrown away, and the reader was left with the harvester's generic "how many
+    // times this lands could not be read". That is exactly wrong for the two entries whose count
+    // DOES reconcile and is blocked by something outside the source.
+    a.notes = a.notes ? `${a.notes}; ${withdrawal}` : withdrawal;
   }
   return { marked, refused, captured: capture.applied, captureRefused: capture.refused };
 }
@@ -701,6 +751,7 @@ async function main(): Promise<void> {
   const report = await readJson<AbilityReport>(SOURCES.abilityReport);
   const effects = await readJson<EffectValuesFile>(SOURCES.itemEffects);
   const defensive = await readJson<DefensiveProposalFile>(SOURCES.defensive);
+  const runeFile = await readJson<RuneProposalFile>(SOURCES.runes);
   const items = await readJson<Item[]>(SOURCES.items);
   const manifest = await readJson<{ patch: string }>(SOURCES.manifest);
   const gate5 = await readJson<Array<{ entry: string }>>(SOURCES.gate5);
@@ -739,7 +790,16 @@ async function main(): Promise<void> {
     abilities: abilityPass.kept,
     defensiveEffects: defensive.defensiveEffects,
     itemEffects: itemPass.kept,
-    runes: [],
+    // ALL SEVEN, INCLUDING THE TWO THAT CLAIM NOTHING (2026-08-15). Five carry a damage value and
+    // are `derived`; Hail of Blades carries its per-instance value and is `incomplete` because two
+    // sources disagree about how many attacks carry it; Bone Plating carries no components at all
+    // and is `incomplete` because `CuratedRune` cannot express a flat reduction on damage RECEIVED.
+    //
+    // The two incomplete ones are merged rather than dropped for the reason SPECIFICATION §8 gives:
+    // an entry that is present and says what is missing is a different statement from an entry
+    // that is absent, and only the first can be shown to a reader as a named gap. `simulate`
+    // contributes no damage for either.
+    runes: runeFile.runes,
     shards: [],
     exclusions: abilityFile.exclusions,
   };
@@ -1216,15 +1276,33 @@ async function main(): Promise<void> {
   // WHAT IS ABSENT ENTIRELY — counted, so the absence is visible rather than assumed
   // -------------------------------------------------------------------------------------
   const absent = {
+    // CORRECTED 2026-08-15. This entry said "no rune value has been extracted at all", which
+    // stopped being true when seven runes were read and five stored (DATA-SOURCES §62.4) — and it
+    // stayed here saying so, because the runes were proposed in their own file and nothing
+    // carried them into the merge. What follows is a count of what is still missing, not a claim
+    // that nothing exists.
     runes: {
-      merged: 0,
+      merged: merged.runes.length,
+      carryingAtLeastOneDamageComponent: merged.runes.filter((r) => (r.components?.length ?? 0) > 0)
+        .length,
+      derived: merged.runes.filter((r) => r.verification === 'derived').length,
+      incomplete: merged.runes.filter((r) => r.verification === 'incomplete').length,
       populationOfRecord: 62,
+      stillAbsent: 62 - merged.runes.length,
       why:
-        'no rune value has been extracted at all. Of the 5 damaging runes that state a value ' +
-        'structurally, 3 deal damage the source calls "adaptive" — a type DamageType has no arm ' +
-        'for — and 2 state a range whose axis is never named (DATA-SOURCES §39). The rest need a ' +
-        'person to read the sentence. Merging this proposal leaves EVERY rune unmodelled, and the ' +
-        'interface must keep saying so.',
+        `${merged.runes.length} of the 62 runes are merged. 6 carry a damage component and 5 of ` +
+        'those are derived; the sixth, Hail of Blades, holds its per-instance value and is ' +
+        'incomplete because its two sources disagree about how many attacks carry the bonus. The ' +
+        'seventh, Bone Plating, carries no component at all and is incomplete because CuratedRune ' +
+        'has no field for a flat reduction on damage RECEIVED. THE OTHER 55 ARE UNTOUCHED, and ' +
+        'the largest named blocker is the damage type: of the 16 runes the wiki says deal damage, ' +
+        'it calls 7 adaptive or variable (Data Dragon calls 6), and DamageType has no arm for ' +
+        'either — a conflict no source resolves, which is what incomplete is for (DATA-SOURCES ' +
+        '§39, §62.4). The rest need a person to read the sentence. MERGING IS NECESSARY AND NOT ' +
+        'SUFFICIENT even for these 7: nothing in the engine reads a rune yet, so the interface ' +
+        'must keep saying runes are unmodelled until a lookup exists, which is a contract change ' +
+        "and the lead's.",
+      contractGapsRaisedByTheRuneReading: runeFile.contractGaps.map((g) => g.blocks),
     },
     shards: {
       merged: 0,
@@ -1280,10 +1358,10 @@ async function main(): Promise<void> {
       abilities: `${abilityFile.abilities.length} entries harvested over the 937-page roster, patch ${abilityFile.patch}, fetched ${abilityFile.fetched}`,
       itemEffects: `${effects.proposedItemEffects.length} effects, each produced twice — once by a parser and once by a person reading the item's own sentence — and stored only where the two agreed (DATA-SOURCES §39)`,
       defensiveEffects: `${defensive.defensiveEffects.length} entries over ${defensive.population.confirmedPages ?? '?'} confirmed pages, generated ${defensive.generatedOn}; gate D2 ${defensive.gateD2.ran ? 'RAN' : 'DID NOT RUN'} — ${JSON.stringify(defensive.gateD2.outcomes)}`,
-      runes: 'nothing proposed',
+      runes: `${runeFile.runes.length} runes read on ${runeFile.generatedOn.slice(0, 10)} at patch ${runeFile.patch}, each value produced twice — once by this project's progression parser over the wiki's formula, once by a person reading Data Dragon's printed sentence — and stored only where the two agreed; ${runeFile.counts.gate1FindingsOverTheseRunes} gate-1 findings over them upstream`,
     },
     definitions: {
-      proposed: 'an entry present in one of the three proposal files before this script ran',
+      proposed: 'an entry present in one of the four proposal files before this script ran',
       merged: 'an entry this script recommends writing into /curated/',
       refused: 'a proposed entry this script does NOT recommend, listed with its reason in merge-refusals.json',
       derived: 'extracted from a source, not independently re-derived (SPECIFICATION §8)',
@@ -1297,7 +1375,7 @@ async function main(): Promise<void> {
         abilities: abilityFile.abilities.length,
         itemEffects: effects.proposedItemEffects.length,
         defensiveEffects: defensive.defensiveEffects.length,
-        runes: 0,
+        runes: runeFile.runes.length,
         shards: 0,
       },
       merged: {
@@ -1319,6 +1397,7 @@ async function main(): Promise<void> {
         abilities: statusCount(merged.abilities),
         itemEffects: statusCount(merged.itemEffects),
         defensiveEffects: statusCount(merged.defensiveEffects!),
+        runes: statusCount(merged.runes),
       },
     },
     gates: gates.map((g) => ({

@@ -84,7 +84,10 @@ async function main(): Promise<void> {
         "'settled' — the page contradicts ITSELF about the count and evidence from outside the " +
         'page (Riot patch notes) says which half is stale, so the merge corrects `hits` to the ' +
         'half that survives. ' +
-        "'count-not-stored' — a count exists in the source and `hits` holds 1. " +
+        "'count-not-stored' — a count exists in the source and `hits` holds 1. Two of these go " +
+        'further and say so: where the count RECONCILES — the source\'s own duration over its own ' +
+        'interval, printed by the page too — and is still not written, the row carries ' +
+        '`reconcilesAt` and `blockedBy`, and the blocker is never in the source. ' +
         "'no-duration-stated' — a toggle or aura, so no count can exist. " +
         "'contested' — the source's description and its own leveling row disagree and nothing " +
         'reachable settles it.',
@@ -146,6 +149,9 @@ async function main(): Promise<void> {
               ...(r.statedTotal.settledBy ? { settledBy: r.statedTotal.settledBy } : {}),
             },
           }
+        : {}),
+      ...(r.reconcilesAt !== undefined
+        ? { reconcilesAt: r.reconcilesAt, blockedBy: r.captureBlockedBy }
         : {}),
       ...(r.note ? { note: r.note } : {}),
       verbatim: r.verbatim,
