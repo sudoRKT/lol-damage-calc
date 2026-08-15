@@ -144,23 +144,29 @@ export function ComboBuilder({
         <ol className="combo__sequence" aria-labelledby="combo-sequence-label">
           {views.map((view, index) => (
             <li className="combo__step" key={view.step.id}>
-              <span className="combo__position" aria-hidden="true">
-                {view.position}
-              </span>
-
-              {view.ability ? (
-                <AbilityChip
-                  src={abilityIconUrl(patch, view.ability.slot, view.ability.icon)}
-                  slot={view.ability.slot}
-                  abilityName={view.ability.abilityName}
-                  damageType={view.ability.damageType ?? null}
-                  size="combo"
-                />
-              ) : (
-                <span className="combo__marker" aria-hidden="true">
-                  {view.marker}
+              {/* The step is one row and the controls that act on it are the next. The two
+                  are wrapped rather than left as siblings so the card's width is set by the
+                  controls alone — see `.combo__step-head` in combo.css for the measurement
+                  that made the wrapper necessary. */}
+              <span className="combo__step-head">
+                <span className="combo__position" aria-hidden="true">
+                  {view.position}
                 </span>
-              )}
+
+                {view.ability ? (
+                  <AbilityChip
+                    src={abilityIconUrl(patch, view.ability.slot, view.ability.icon)}
+                    slot={view.ability.slot}
+                    abilityName={view.ability.abilityName}
+                    damageType={view.ability.damageType ?? null}
+                    size="combo"
+                  />
+                ) : (
+                  <span className="combo__marker" aria-hidden="true">
+                    {view.marker}
+                  </span>
+                )}
+              </span>
 
               {/* The step's own words, in one text node, for assistive technology. */}
               <span className="u-visually-hidden">{stepName(view, total)}</span>
@@ -194,9 +200,12 @@ export function ComboBuilder({
                 >
                   <span aria-hidden="true">▶</span>
                 </button>
+                {/* The one control here that cannot be undone, and it used to sit 22.47px
+                    from "move later". It keeps its own modifier so the stylesheet can hold
+                    it away from the pair — see `.combo__control--remove` in combo.css. */}
                 <button
                   type="button"
-                  className="combo__control"
+                  className="combo__control combo__control--remove"
                   aria-label={removeName(view, total)}
                   onClick={() =>
                     apply(

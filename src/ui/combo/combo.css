@@ -117,14 +117,58 @@
   padding: 0;
 }
 
+/*
+ * THE STEP CARD IS TWO ROWS: the step on top, the controls it acts on beneath.
+ *
+ * ═══ WHY, MEASURED 2026-08-15 IN A REAL BROWSER AT 375px ═══
+ *
+ * The card was one row — position, chip, then three 18.47 x 21.39px controls. WCAG 2.2 AA
+ * (2.5.8 Target Size, Minimum) asks for 24 x 24 CSS px, and rescues a smaller control only
+ * when a 24px circle centred on it touches no other target: the centres here were 22.47px
+ * apart, so 16 ordered pairs failed both the size rule and the spacing rescue. Worse than
+ * the audit number: the target 22.47px from "move later" is REMOVE. A missed tap deleted
+ * the step rather than doing nothing.
+ *
+ * The card had 3.46px of slack — two cards plus their 12px gap came to 289.54px in a 293px
+ * lane — so ANY widening of that one row costs the two-column layout. Measured: adding
+ * 4px of gap alone (the cheapest way to pass by the spacing rescue) drops the sequence to
+ * one card per row and adds 158px of height to a four-step combo, while leaving the
+ * controls at 18.47px — passing the audit without helping a thumb.
+ *
+ * Giving the controls their own row spends the card's HEIGHT instead of its width, which
+ * is the dimension it has to spare. Grid rather than flex-wrap because a wrapping flex
+ * container breaks lines on each item's UNSHRUNK width, so the controls never wrapped —
+ * the card just grew to 162.77px and took the whole lane. Measured after: card
+ * 138.16 x 100.58px (no wider than the 138.77px it was), still two per row at 375px,
+ * controls 34.47 x 25.39px, zero undersized, zero pairs under 24px.
+ *
+ * NO WIDTH QUERY. This shape is the same at every width — DESIGN.md §4b's one breakpoint
+ * is the burndown's to spend, not this area's.
+ */
+/*
+ * A COLUMN OF TWO ROWS, and it is a column rather than a two-track grid for a measured
+ * reason. The first build made the card a grid and let the control row span both columns.
+ * CSS Grid then distributes a spanning item's extra width BACK across the tracks it spans
+ * (§12.5), so the 116.16px control row pushed the position number's track from 6.61px to
+ * 42.38px and the chip's from 34px to 69.78px — the number drifted away from the chip it
+ * numbers. `justify-content: start` does not prevent that; nothing does, short of not
+ * spanning. A flex column takes its width from the widest row and leaves both rows alone.
+ */
 .combo__step {
   display: flex;
-  align-items: center;
+  flex-direction: column;
   gap: var(--space-2);
   background: var(--bg-well);
   border: var(--border-steel);
   border-radius: var(--radius-control);
   padding: var(--space-2);
+}
+
+/* Row one: the step itself — its position, then its chip. */
+.combo__step-head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
 }
 
 .combo__position {
@@ -154,22 +198,53 @@
   color: var(--text-secondary);
 }
 
+/* Row two of the card, and the row that sets its width. */
 .combo__controls {
-  display: inline-flex;
-  gap: var(--space-1);
+  display: flex;
+  gap: var(--space-1); /* the two arrows are one pair — DESIGN.md §4's tightest step */
 }
 
+/*
+ * PADDING IS WHAT MAKES THE TARGET, and both axes are derived from the tokens rather than
+ * from the glyph:
+ *
+ *   inline  2 x --space-3 (12px) + 2 x 1px border = 26px BEFORE the glyph is drawn — so the
+ *           24px minimum holds whatever the arrow measures in whatever font resolves it.
+ *           §4 names --space-3 "control inner padding", which is exactly this use.
+ *   block   --lh-body-s (11px x 1.4 = 15.4px) + 2 x --space-1 (4px) + 2 x 1px = 25.4px.
+ *
+ * Measured in the browser: 34.47 x 25.39px for an arrow, 35.22 x 25.39px for the remove.
+ * `./target-size.test.ts` re-derives both numbers from tokens.css on every run, because a
+ * padding step edited back down here is the one change that silently reopens the defect.
+ *
+ * NO NEW DESIGN VALUE. DESIGN.md has no token for a minimum target size and this does not
+ * invent one; it reaches 24px out of the existing spacing scale. That gap is raised with the
+ * lead rather than filled locally.
+ */
 .combo__control {
   background: var(--bg-panel);
   color: var(--text-primary);
   border: var(--border-steel);
   border-radius: var(--radius-control);
-  padding: var(--space-0) var(--space-1);
+  padding: var(--space-1) var(--space-3);
   font-family: var(--font-body);
   font-size: var(--type-body-s);
   line-height: var(--lh-body-s);
   font-weight: var(--weight-body-medium);
   cursor: pointer;
+}
+
+/*
+ * The destructive control is held off from the pair it sits beside. The old layout put
+ * REMOVE 22.47px from MOVE LATER — the two controls a reader alternates between while
+ * ordering a combo, one of which cannot be undone. --space-2 is DESIGN.md §4's "gap between
+ * related controls"; the arrows keep the tighter --space-1 because they ARE one control in
+ * two directions. The margin sits ON TOP of the row's gap, so the separation is 4 + 8 = 12px
+ * against the arrows' 4px. Measured centre-to-centre: 38.47px arrow-to-arrow, 46.84px
+ * arrow-to-remove.
+ */
+.combo__control--remove {
+  margin-inline-start: var(--space-2);
 }
 
 .combo__control:hover:not(:disabled) {
