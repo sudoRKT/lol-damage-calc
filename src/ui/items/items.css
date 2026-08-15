@@ -40,7 +40,12 @@
 }
 
 .items__count,
+/* `.items__full` states why nothing can be added. It reads as the same kind of line as the
+   pool status it sits under, so it shares that line's type and colour rather than inventing
+   an emphasis of its own — DESIGN.md holds no "notice" style, and inventing one locally is
+   the move its preamble forbids. */
 .items__status,
+.items__full,
 .items__empty {
   margin: 0;
   font-size: var(--type-body-s);

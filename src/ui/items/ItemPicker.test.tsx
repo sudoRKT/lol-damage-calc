@@ -6,12 +6,19 @@
 // distinct stat keys. Every count below is measured over that file, never over a fixture.
 
 import { describe, expect, it, afterEach } from 'vitest';
-import { cleanup, fireEvent, render, screen, within } from '@testing-library/react';
+import { useState } from 'react';
+import { act, cleanup, fireEvent, render, screen, within } from '@testing-library/react';
 import { readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import type { Item } from '../../types';
-import { ItemPicker, ITEM_SLOTS, VISIBLE_MATCHES, statusLine } from './ItemPicker';
+import {
+  ItemPicker,
+  ITEM_SLOTS,
+  VISIBLE_MATCHES,
+  statusLine,
+  FULL_BUILD_NOTICE,
+} from './ItemPicker';
 import { filterItems } from './filter';
 import { KNOWN_STAT_KEYS, itemGrantsText, statGrantText } from './stat-labels';
 
@@ -194,30 +201,34 @@ describe('items/the status line says one true thing in every state', () => {
   const total = POOL.length;
 
   it('collapsed: the pool size and how to open it', () => {
-    expect(statusLine({ full: false, showPool: false, matched: total, total })).toBe(
+    expect(statusLine({ showPool: false, matched: total, total })).toBe(
       '209 items — search to add',
     );
   });
 
   it('open and capped: what matched AND that only some are drawn', () => {
-    expect(statusLine({ full: false, showPool: true, matched: total, total })).toBe(
+    expect(statusLine({ showPool: true, matched: total, total })).toBe(
       `209 of 209 items match. Showing the first ${VISIBLE_MATCHES} — keep typing to narrow.`,
     );
   });
 
   it('open and uncapped: no dangling promise to keep typing', () => {
-    expect(statusLine({ full: false, showPool: true, matched: 3, total })).toBe(
+    expect(statusLine({ showPool: true, matched: 3, total })).toBe(
       '3 of 209 items match.',
     );
   });
 
-  it('a full build overrides every other state, open or collapsed', () => {
-    // The fact a user needs at six items is why they cannot add, not how many items exist.
-    for (const showPool of [true, false]) {
-      expect(statusLine({ full: true, showPool, matched: total, total })).toBe(
-        `All ${ITEM_SLOTS} slots are full. Remove an item to add another.`,
-      );
-    }
+  it('a full build no longer overrides it — the sentence has its own line now', () => {
+    // CHANGED DELIBERATELY, 2026-08-15, and this test was rewritten to state the new contract
+    // rather than deleted. It used to assert that `full` overrode every other state HERE.
+    // That made this live region change whenever the BUILD changed, which is what collided
+    // with the announcement region — see "two live regions" below for the measurement. The
+    // sentence is not gone: it is `FULL_BUILD_NOTICE`, on screen, in a line that is not live.
+    expect(FULL_BUILD_NOTICE).toBe('All 6 slots are full. Remove an item to add another.');
+    expect(statusLine({ showPool: true, matched: total, total })).toMatch(/items match/);
+    expect(statusLine({ showPool: false, matched: total, total })).toBe(
+      '209 items — search to add',
+    );
   });
 });
 
@@ -288,6 +299,212 @@ describe('items/adding and removing', () => {
     // row would leave a user unable to find what caused the refusal.
     mount([999999]);
     expect(screen.getByText(/Item id 999999 is not in this patch/)).toBeTruthy();
+  });
+});
+
+// =========================================================================================
+// WHERE FOCUS GOES WHEN AN ITEM IS REMOVED. Added 2026-08-15.
+//
+// MEASURED BEFORE THE FIX: pressing an item's remove control left
+// `document.activeElement === document.body`, on the attacker and the defender alike. The
+// removal was announced correctly, so a screen reader user was told the item had gone and
+// then had nowhere to stand, and a keyboard user restarted tabbing from the top of the page.
+//
+// THE RULE IS NOT THIS COMPONENT'S OWN. It is `focusAfterRemoval` in `../primitives`, shared
+// with the combo builder, which is the other of the product's two removal sites.
+//
+// TWO THINGS THESE TESTS DO ON PURPOSE:
+//   • They mount a STATEFUL harness. `ItemPicker` is controlled, so a test that never feeds
+//     the new build back never re-renders the list — and a focus rule that runs after the
+//     re-render would have nothing to measure.
+//   • They FOCUS a control before pressing it. `fireEvent.click` does not focus its target,
+//     so an assertion written on a bare click measures jsdom rather than the component.
+// =========================================================================================
+
+/** The controlled component, driven by state, the way `App` drives it. */
+function StatefulItems({ initial }: { initial: number[] }) {
+  const [ids, setIds] = useState(initial);
+  return <ItemPicker role="attacker" items={POOL} selected={ids} onChange={setIds} />;
+}
+
+function mountStateful(initial: number[]) {
+  render(<StatefulItems initial={initial} />);
+}
+
+const removes = () => screen.getAllByRole('button', { name: /^Remove / });
+
+/**
+ * Activate a control the way a person does: focus first, THEN press.
+ *
+ * The focus goes through `act` because focusing a control INSIDE the find area opens the pool,
+ * which is a state change — without it React warns, and the warning is the honest one.
+ */
+function press(control: HTMLElement) {
+  act(() => control.focus());
+  fireEvent.click(control);
+}
+
+describe('items/where focus goes when an item is removed', () => {
+  const build = [POOL[0]!, POOL[1]!, POOL[2]!];
+
+  it('never leaves focus on the document body — the measured defect, at every position', () => {
+    for (const position of [0, 1, 2]) {
+      cleanup();
+      mountStateful(build.map((i) => i.id));
+      press(removes()[position]!);
+      expect(document.activeElement).not.toBe(document.body);
+    }
+  });
+
+  it('lands on the remove control of the item that took the removed one’s place', () => {
+    mountStateful(build.map((i) => i.id));
+    press(removes()[0]!);
+    // The build is now [1, 2]; the row at index 0 is the item that was second.
+    expect(document.activeElement).toBe(removes()[0]!);
+    expect(document.activeElement?.getAttribute('aria-label')).toContain(build[1]!.name);
+  });
+
+  it('lands on the new LAST control when the removed item was last', () => {
+    mountStateful(build.map((i) => i.id));
+    press(removes()[2]!);
+    expect(removes()).toHaveLength(2);
+    expect(document.activeElement).toBe(removes()[1]!);
+    expect(document.activeElement?.getAttribute('aria-label')).toContain(build[1]!.name);
+  });
+
+  it('lands on the search field when the last item leaves and no row remains', () => {
+    // The same place adding sends focus, so the two paths agree rather than each having
+    // their own idea of where a user is next.
+    mountStateful([build[0]!.id]);
+    press(removes()[0]!);
+    expect(screen.queryAllByRole('button', { name: /^Remove / })).toHaveLength(0);
+    expect(document.activeElement).toBe(field());
+  });
+
+  it('moves focus on the SECOND and THIRD removal too, not only the first', () => {
+    // The regression this guards is a dependency array on the layout effect: with one, the
+    // intent is armed but the effect never runs again.
+    mountStateful(build.map((i) => i.id));
+    press(removes()[0]!);
+    expect(document.activeElement).toBe(removes()[0]!);
+    press(removes()[0]!);
+    expect(document.activeElement).toBe(removes()[0]!);
+    press(removes()[0]!);
+    expect(document.activeElement).toBe(field());
+  });
+
+  it('counts rows that HAVE a remove control, not rows — an unknown id carries none', () => {
+    // `[unknown, a, b]` draws three rows and two remove controls. Handing the rule the row
+    // index would step past the end of the controls it can actually focus.
+    mountStateful([999999, build[0]!.id, build[1]!.id]);
+    expect(removes()).toHaveLength(2);
+    press(removes()[0]!);
+    expect(removes()).toHaveLength(1);
+    expect(document.activeElement).toBe(removes()[0]!);
+    expect(document.activeElement?.getAttribute('aria-label')).toContain(build[1]!.name);
+  });
+});
+
+// =========================================================================================
+// THE TWO LIVE REGIONS, AND WHAT EACH IS FOR. Added 2026-08-15.
+//
+// MEASURED BEFORE THE FIX, on one user action each:
+//   • Filling the sixth slot moved BOTH regions, and both carried the slot count.
+//   • Removing from a full build moved BOTH regions, and the visible one reverted to a
+//     sentence about the SEARCH POOL — "155 of 209 items match…" — at the instant the user
+//     removed an item, which is not what they did.
+//
+// STATED HONESTLY: this measures DOM text changing in response to one user action. It is not
+// screen reader output; nobody has run a screen reader here. Two polite regions changing at
+// once MAY be coalesced, reordered or dropped, and that risk is the reason for the split
+// below rather than a confirmed behaviour.
+//
+// THE SPLIT: the visible line states POOL facts (how many items, how many match, how many are
+// drawn) and changes only when the user searches. The hidden announcement states BUILD facts
+// (what was added or removed, and how many slots are used) and changes only when the user
+// adds or removes. Neither carries the other's fact.
+// =========================================================================================
+
+/** Every live region on the page, as nodes that stay mounted across a re-render. */
+const regions = () => [...document.querySelectorAll<HTMLElement>('[role="status"]')];
+
+/**
+ * Run one user action and report the live regions whose text CHANGED because of it.
+ * Returns the text each changed region ended up holding.
+ */
+function regionsMovedBy(action: () => void): string[] {
+  const nodes = regions();
+  const before = nodes.map((n) => n.textContent ?? '');
+  action();
+  return nodes
+    .map((n, i) => ({ text: n.textContent ?? '', changed: (n.textContent ?? '') !== before[i] }))
+    .filter((r) => r.changed)
+    .map((r) => r.text);
+}
+
+describe('items/two live regions, never the same fact twice', () => {
+  const sixIds = filterItems(POOL, '').slice(0, ITEM_SLOTS).map((i) => i.id);
+
+  it('filling the sixth slot moves exactly ONE region — the announcement', () => {
+    mountStateful(sixIds.slice(0, ITEM_SLOTS - 1));
+    openPool();
+    const add = screen.getAllByRole('button', { name: /^Add / }).find((b) => !b.hasAttribute('disabled'))!;
+    const moved = regionsMovedBy(() => press(add));
+    expect(moved).toHaveLength(1);
+    expect(moved[0]).toMatch(/added\. 6 of 6 slots used\./);
+  });
+
+  it('removing from a full build moves exactly ONE region, and it is the announcement', () => {
+    mountStateful(sixIds);
+    openPool();
+    const moved = regionsMovedBy(() => press(removes()[0]!));
+    expect(moved).toHaveLength(1);
+    expect(moved[0]).toMatch(/removed\. 5 of 6 slots used\./);
+    // The sentence that used to arrive here instead. It is about the search pool, and a
+    // removal is not a search.
+    expect(moved[0]).not.toMatch(/items match/);
+  });
+
+  it('the visible pool line never states a slot count, in any state', () => {
+    // The mechanical version of "never the same fact twice": the slot count is the build's
+    // fact and belongs to the announcement alone.
+    for (const showPool of [true, false]) {
+      for (const matched of [0, 3, POOL.length]) {
+        expect(statusLine({ showPool, matched, total: POOL.length })).not.toMatch(/slot/i);
+      }
+    }
+  });
+
+  it('typing moves only the pool line, and says nothing about the build', () => {
+    // The control case: this one was already correct and must stay correct.
+    mountStateful([]);
+    openPool();
+    const moved = regionsMovedBy(() => fireEvent.change(field(), { target: { value: 'deathcap' } }));
+    expect(moved).toHaveLength(1);
+    expect(moved[0]).toMatch(/items match/);
+  });
+
+  it('a full build still SAYS so on screen — the sentence moved, it was not dropped', () => {
+    mountStateful(sixIds);
+    expect(screen.getByText(/All 6 slots are full\. Remove an item to add another\./)).toBeTruthy();
+  });
+
+  it('the full-build sentence is NOT in a live region, so an add cannot fire it', () => {
+    mountStateful(sixIds);
+    const notice = screen.getByText(/All 6 slots are full/);
+    expect(notice.closest('[role="status"]')).toBeNull();
+    expect(notice.closest('[aria-live]')).toBeNull();
+  });
+
+  it('RESIDUAL, stated rather than hidden: emptying the build moves two regions', () => {
+    // Removing the LAST item sends focus to the search field, which opens the pool — so the
+    // pool line changes because the pool really did open. The two sentences describe two
+    // different things and neither repeats the other, which is the bar set above.
+    mountStateful([POOL[0]!.id]);
+    const moved = regionsMovedBy(() => press(removes()[0]!));
+    expect(moved).toHaveLength(2);
+    expect(moved.filter((t) => /removed\. 0 of 6 slots used\./.test(t))).toHaveLength(1);
+    expect(moved.filter((t) => /items match/.test(t))).toHaveLength(1);
   });
 });
 

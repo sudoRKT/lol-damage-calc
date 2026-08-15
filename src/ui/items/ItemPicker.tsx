@@ -20,9 +20,10 @@
 // WHAT IT DOES NOT MODEL, and the engine says so on every result rather than this panel guessing:
 // item PASSIVES and ACTIVES. Only an item's structured statistics reach the calculation.
 
-import { useMemo, useRef, useState } from 'react';
+import { useLayoutEffect, useMemo, useRef, useState } from 'react';
 import type { Item } from '../../types';
 import { ItemChip } from '../art/ItemChip';
+import { focusAfterRemoval } from '../primitives';
 import { filterItems } from './filter';
 import { itemGrantsText } from './stat-labels';
 import './items.css';
@@ -41,6 +42,13 @@ export const ITEM_SLOTS = 6;
 export const VISIBLE_MATCHES = 8;
 
 /**
+ * The one sentence that states the build is full. VISIBLE, and deliberately NOT in a live
+ * region — see `statusLine` for the measurement that moved it out of one.
+ */
+const REMOVE_TO_ADD = 'Remove an item to add another.';
+export const FULL_BUILD_NOTICE = `All ${ITEM_SLOTS} slots are full. ${REMOVE_TO_ADD}`;
+
+/**
  * THE POOL IS NOT DRAWN AT REST. It appears on focus or on typing, and collapses to one line.
  *
  * WHY. At rest the pool drew the first eight items of the pool alphabetically — Abyssal Mask,
@@ -53,17 +61,29 @@ export const VISIBLE_MATCHES = 8;
  * away rather than being left to guess that a search field has anything behind it. Browsing is
  * one interaction away, not thinned: the cap is still eight and it is still stated on screen.
  *
- * A FULL BUILD OVERRIDES IT. When six slots are used there is nothing to add, so the collapsed
- * line says that instead — the state a user needs is why they cannot add, not how many items
- * exist.
+ * ═══ THIS LINE STATES POOL FACTS ONLY, AND THAT IS A CHANGE — 2026-08-15 ═══
+ *
+ * A FULL BUILD USED TO OVERRIDE IT, so the sentence "All 6 slots are full…" arrived here. That
+ * made this live region change when the BUILD changed, and it collided with the announcement
+ * region twice, measured on one user action each:
+ *
+ *   • Filling the sixth slot moved both regions, and BOTH carried the slot count.
+ *   • Removing from a full build moved both, and this one reverted to "155 of 209 items
+ *     match…" — a sentence about the search pool, delivered at the moment the user removed an
+ *     item. Not duplication: an interruption carrying unrelated content.
+ *
+ * The fix is a split by ownership, not a deletion. This line owns the POOL (how many items,
+ * how many match, how many are drawn) and moves only when the user searches. The hidden
+ * announcement owns the BUILD (what was added or removed, how many slots are used) and moves
+ * only when the user adds or removes. `FULL_BUILD_NOTICE` is still on screen, in its own
+ * non-live line, so a user browsing the pool still reads why nothing can be added.
+ *
+ * STATED HONESTLY: the collision was measured as DOM text changing on one user action, not as
+ * screen reader output. Nobody has run a screen reader here. That two polite regions changing
+ * at once MAY be coalesced, reordered or dropped is the risk this answers, not a confirmed
+ * behaviour.
  */
-export function statusLine(state: {
-  full: boolean;
-  showPool: boolean;
-  matched: number;
-  total: number;
-}): string {
-  if (state.full) return `All ${ITEM_SLOTS} slots are full. Remove an item to add another.`;
+export function statusLine(state: { showPool: boolean; matched: number; total: number }): string {
   if (!state.showPool) return `${state.total} items — search to add`;
   const capped =
     state.matched > VISIBLE_MATCHES
@@ -97,6 +117,35 @@ export function ItemPicker({ role, items, selected, onChange }: ItemPickerProps)
   const [announcement, setAnnouncement] = useState('');
   const [focused, setFocused] = useState(false);
   const searchRef = useRef<HTMLInputElement>(null);
+  const buildRef = useRef<HTMLUListElement>(null);
+  /**
+   * The position among the REMOVE CONTROLS that was just removed, or null. Armed by a removal
+   * and consumed by the layout effect below.
+   *
+   * AMONG THE CONTROLS, NOT AMONG THE ROWS. A build can hold an id this patch's pool does not
+   * carry; that row is drawn but has no remove control, so a row index would step past the end
+   * of the controls the rule can actually focus.
+   */
+  const removedControl = useRef<number | null>(null);
+
+  // A LAYOUT effect, not a plain one: focus lands before the browser paints, so it never
+  // visibly sits on the body for a frame. No dependency array, on purpose — with one, the
+  // second and third removals do not fire. Both rules are `focusAfterRemoval`'s, not this
+  // component's; the combo builder's remove control obeys the same one.
+  useLayoutEffect(() => {
+    const index = removedControl.current;
+    if (index === null) return;
+    removedControl.current = null;
+    focusAfterRemoval(
+      buildRef.current,
+      '.items__remove',
+      index,
+      // Nothing is left to stand on, so focus goes where ADDING also sends it: the search
+      // field. A user who has just emptied the build is going there next, and the two paths
+      // agreeing is worth more than either being individually clever.
+      searchRef.current,
+    );
+  });
 
   const byId = useMemo(() => new Map(items.map((i) => [i.id, i])), [items]);
   const matches = useMemo(() => filterItems(items, query), [items, query]);
@@ -111,7 +160,14 @@ export function ItemPicker({ role, items, selected, onChange }: ItemPickerProps)
   const add = (item: Item) => {
     if (full || selected.includes(item.id)) return;
     onChange([...selected, item.id]);
-    setAnnouncement(`${item.name} added. ${selected.length + 1} of ${ITEM_SLOTS} slots used.`);
+    const used = selected.length + 1;
+    // The add that fills the last slot carries the reason as well as the count. The visible
+    // `FULL_BUILD_NOTICE` appears at the same moment but is not announced — it is not a live
+    // region — so without this clause the instruction would reach only a sighted reader.
+    setAnnouncement(
+      `${item.name} added. ${used} of ${ITEM_SLOTS} slots used.` +
+        (used >= ITEM_SLOTS ? ` ${REMOVE_TO_ADD}` : ''),
+    );
     // FOCUS RETURNS TO THE SEARCH FIELD, and this is load-bearing rather than a nicety. The
     // control just clicked becomes `disabled` (the item is now in the build), and a disabled
     // element cannot hold focus — so the browser drops focus to the document body, the pool
@@ -121,7 +177,10 @@ export function ItemPicker({ role, items, selected, onChange }: ItemPickerProps)
     searchRef.current?.focus();
   };
 
-  const remove = (item: Item, index: number) => {
+  const remove = (item: Item, index: number, controlIndex: number) => {
+    // Arm the focus rule BEFORE the state change, so the layout effect that runs after the
+    // re-render knows which control vanished.
+    removedControl.current = controlIndex;
     onChange(selected.filter((_, i) => i !== index));
     setAnnouncement(`${item.name} removed. ${selected.length - 1} of ${ITEM_SLOTS} slots used.`);
   };
@@ -141,7 +200,7 @@ export function ItemPicker({ role, items, selected, onChange }: ItemPickerProps)
       {build.length === 0 ? (
         <p className="items__empty">No items. The build is base statistics only.</p>
       ) : (
-        <ul className="items__build">
+        <ul className="items__build" ref={buildRef}>
           {build.map(({ id, item }, index) => (
             <li className="items__slot" key={`${id}-${index}`}>
               {item ? (
@@ -153,7 +212,11 @@ export function ItemPicker({ role, items, selected, onChange }: ItemPickerProps)
                     type="button"
                     className="items__remove"
                     aria-label={removeItemName(item, role, index + 1, build.length)}
-                    onClick={() => remove(item, index)}
+                    onClick={() =>
+                      // The second index is this control's position among the remove controls,
+                      // which is the count of DRAWABLE items before it — see `removedControl`.
+                      remove(item, index, build.slice(0, index).filter((b) => b.item).length)
+                    }
                   >
                     <span aria-hidden="true">✕</span>
                   </button>
@@ -202,10 +265,21 @@ export function ItemPicker({ role, items, selected, onChange }: ItemPickerProps)
         {/* A LIVE REGION, so the pool opening is not a visual-only event. A sighted user sees
             the results appear on focus; without this a screen reader user would be told only
             that a search field has focus. It is polite, so it never interrupts, and it carries
-            the sentence the reader actually needs — how many matched and how many are drawn. */}
+            the sentence the reader actually needs — how many matched and how many are drawn.
+
+            IT STATES POOL FACTS ONLY. The full-build sentence used to override it from here,
+            which made this region fire on a BUILD change and collide with the announcement
+            below. See `statusLine` for the measurement. */}
         <p className="items__status" role="status" aria-live="polite">
-          {statusLine({ full, showPool, matched: matches.length, total: items.length })}
+          {statusLine({ showPool, matched: matches.length, total: items.length })}
         </p>
+
+        {/* The build fact, VISIBLE and NOT LIVE, standing next to the pool it constrains — a
+            reader browsing the disabled add controls needs to know why they are disabled, and
+            a disabled control cannot be tabbed to to find out. The announcement region says
+            the same thing at the moment the sixth slot fills; this line says it for as long
+            as it is true. */}
+        {full ? <p className="items__full">{FULL_BUILD_NOTICE}</p> : null}
 
         {showPool ? (
           <ul className="items__pool">
