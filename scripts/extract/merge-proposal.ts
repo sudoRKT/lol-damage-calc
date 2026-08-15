@@ -467,11 +467,20 @@ export function withdrawalReason(key: string): string {
       'Nobody has yet read the source sentence to establish its full-duration shape.'
     );
   }
+  // A GAP NOBODY CAN EVER CLOSE READS EXACTLY LIKE ONE NOBODY HAS CLOSED YET (2026-08-15), and
+  // SPECIFICATION §8 requires the interface to say "cannot be completed" rather than "not yet
+  // modelled". Six entries are in that position — four toggles with no duration, Nasus E whose
+  // interval no source states, and Rumble Q whose count is a property of the fight — so where the
+  // reading recorded permanence, it travels with the withdrawal instead of being lost here.
+  const permanent = read.countUnresolvable
+    ? ` NO COUNT CAN EVER BE STATED FOR IT, and this is permanent rather than outstanding: ${read.countUnresolvable}`
+    : '';
   switch (read.countVerdict) {
     case 'no-duration-stated':
       return (
         'The source was read: it recurs, but states no duration — so no number of ticks exists ' +
-        'to multiply, and a full-duration total cannot be stated at all.'
+        'to multiply, and a full-duration total cannot be stated at all.' +
+        permanent
       );
     case 'count-not-stored':
       // A BLOCKED ROW SAYS WHAT BLOCKS IT (2026-08-15). Two entries reconcile at a number the
@@ -488,14 +497,14 @@ export function withdrawalReason(key: string): string {
       return (
         'The source was read: it recurs, and the source states how many times it lands, but that ' +
         'count was never captured into the data — the entry holds one tick where it needs all of ' +
-        'them.'
+        'them.' + permanent
       );
     case 'contested':
       return (
         "The source was read: it recurs, but the page contradicts itself about how many times — " +
         'its description and its own leveling row give different tick counts, and neither is ' +
         'taken silently. Where outside evidence has since settled which half is stale the entry ' +
-        'is corrected instead; this one has none, so no count exists to publish.'
+        'is corrected instead; this one has none, so no count exists to publish.' + permanent
       );
     case 'corroborated':
     case 'captured':

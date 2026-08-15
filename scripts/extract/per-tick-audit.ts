@@ -95,6 +95,13 @@ async function main(): Promise<void> {
         'True only when the entry is recurring AND its count is established — corroborated, ' +
         'captured or settled. A marked component moves to the DoT line; everything else stays ' +
         'withdrawn to incomplete.',
+      countUnresolvable:
+        'PRESENT MEANS PERMANENT, NOT OUTSTANDING. No count can ever be stated for this entry, ' +
+        'and the reason is given. Two shapes reach it: the ability has no duration at all (a ' +
+        'toggle, a resource-fed channel, or a count that is a property of the fight), or the ' +
+        'figure is a real number that no reachable source states. An entry carrying this is NOT ' +
+        'a worklist item — SPECIFICATION §8 requires it to read "cannot be completed" rather ' +
+        'than "not yet modelled".',
       correctedCount:
         'Present on a captured or settled row only. `instances` is the number the merge writes ' +
         'over the stored `hits`, `statedBy` is how the source states it, and `settledBy` — on a ' +
@@ -123,6 +130,11 @@ async function main(): Promise<void> {
       countsCorrectedAtMerge: PER_TICK_READS.filter((r) => r.statedTotal).length,
       marked: markedOverTime().size,
       stillWithdrawn: PER_TICK_READS.filter((r) => !r.marked).length,
+      // OF THE WITHDRAWN, HOW MANY ARE PERMANENT. A falling worklist and a rising unresolvable
+      // count are the same evidence arriving, and separating them stops the second being read as
+      // the first (CLAUDE.md).
+      countCanNeverBeStated: PER_TICK_READS.filter((r) => r.countUnresolvable).length,
+      countReconcilesButIsBlocked: PER_TICK_READS.filter((r) => r.reconcilesAt !== undefined).length,
       quoteFragmentsChecked: PER_TICK_READS.reduce((s, r) => s + r.verbatim.length, 0),
     },
     theFinding:
@@ -153,6 +165,7 @@ async function main(): Promise<void> {
       ...(r.reconcilesAt !== undefined
         ? { reconcilesAt: r.reconcilesAt, blockedBy: r.captureBlockedBy }
         : {}),
+      ...(r.countUnresolvable ? { countCanNeverBeStated: r.countUnresolvable } : {}),
       ...(r.note ? { note: r.note } : {}),
       verbatim: r.verbatim,
     })),

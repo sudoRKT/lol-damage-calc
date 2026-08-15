@@ -39,6 +39,32 @@
 import type { CuratedDefensiveEffect, DamageType, OverTimeFigure } from '../../src/types/data.ts';
 import type { Kind } from './defensive.ts';
 
+/**
+ * THE COUNT OF OCCURRENCES A PER-INSTANCE ROW NEEDS, and the two statements it rests on.
+ *
+ * Deliberately NOT a single number. A count on its own is unfalsifiable: it reads identically
+ * whether it came from the page or from a reader's arithmetic on a duration they inferred, and
+ * §3.2 gives this project no clock to infer one with. Every field here exists so a later reader
+ * can re-derive the number without trusting the person who wrote it down.
+ */
+export interface CountRead {
+  /** The duration the ability's own description states, in seconds. */
+  durationSeconds: number;
+  /** The interval the same description states, in seconds. */
+  intervalSeconds: number;
+  /** duration / interval. Must equal `totalInstances` wherever one is written. */
+  impliedInstances: number;
+  /**
+   * How the page's OWN leveling row writes the same multiple, quoted as arithmetic. This is the
+   * second, independent statement: the wikitext for Master Yi's Total row is `15*8 to 55*8`
+   * against a per-tick row of `15 to 55`, so the page prints the 8 whether or not anyone divides
+   * a duration by an interval.
+   */
+  rowArithmetic: string;
+  /** The same two statements as literal substrings of the cached wikitext. Checked, not trusted. */
+  verbatim: string[];
+}
+
 /** One row of one ability, as a person read it. */
 export interface RowReading {
   /** The source's own row label, verbatim. Must still be present on the page — see `staleReadings`. */
@@ -79,6 +105,40 @@ export interface RowReading {
     sourceSays: string;
     totalInstances?: number;
     figureIs?: OverTimeFigure;
+    /**
+     * THE COUNT, READ (2026-08-15). Present only on a `per-instance` row.
+     *
+     * A per-instance figure needs a number of occurrences before a whole-duration total can be
+     * formed, and until today none of the nine per-instance heal rows carried one — so every one
+     * of them was `incomplete` on a fact its own page states. This is that reading, built to the
+     * same discipline `per-tick-read.ts` applies to a damage row, because the failure is the same
+     * one: a count nobody checked multiplies a heal by itself.
+     *
+     * THREE STATEMENTS MUST AGREE BEFORE A COUNT IS WRITTEN, and `checkCountRule` refuses the row
+     * otherwise:
+     *
+     *   1. the description's own duration divided by its own interval (`impliedInstances`);
+     *   2. the multiplier the page's own leveling row writes between this row and its
+     *      whole-duration sibling (`rowArithmetic` — Master Yi's Total row is literally `15*8`,
+     *      Janna's per-tick row is literally `300/12`);
+     *   3. and they must be the same number.
+     *
+     * `verbatim` carries both sentences as literal substrings of the cached wikitext, so a quote
+     * cannot be paraphrased into saying something the page does not. `defensive-counts.test.ts`
+     * proves every fragment is really there.
+     *
+     * NO COUNT IS EVER DERIVED FROM A DURATION ALONE. Where the page's row arithmetic disagrees
+     * with the description — Milio W divides by 25 over a 6-second, 0.25-second effect, which is
+     * 24 — the row is left WITHOUT a count and `countContested` records both readings
+     * (DATA-SOURCES §32.2).
+     */
+    countRead?: CountRead;
+    /**
+     * THE PAGE STATES TWO COUNTS AND NOTHING SETTLES WHICH. Required whenever `countRead` is
+     * present and `totalInstances` is not, so a read count that was deliberately not written
+     * cannot be mistaken for a reading nobody finished.
+     */
+    countContested?: string;
     /**
      * REQUIRED WHEN `figureIs` IS ABSENT ON A ROW SOMEBODY READ. The sentence or the
      * contradiction that stopped the reading, so "unread" and "unreadable" are distinguishable.
@@ -179,6 +239,38 @@ export const REFUSED_ON_READING: ReadRefusal[] = [
       'no row and a different unit.',
   },
 ];
+
+// TWO PAGES STATE ONE COUNT FOR TWO ROWS, so the reading is written once and shared rather than
+// copied. A copy that drifts by a digit is exactly the defect `checkCountRule` exists to catch,
+// and the cheapest way to make a drift impossible is to have one object.
+const MASTER_YI_MEDITATE_COUNT: CountRead = {
+  durationSeconds: 4,
+  intervalSeconds: 0.5,
+  impliedInstances: 8,
+  rowArithmetic:
+    'the Total rows are written `{{ap|15*8 to 55*8}}` and `{{ap|15*8*2 to 55*8*2}}` against ' +
+    'per-tick rows of `{{ap|15 to 55}}` and `{{ap|15*2 to 55*2}}`, so the page prints the 8 on ' +
+    'both the minimum and the maximum reading, and the AP ratio agrees (12.5% per tick against ' +
+    '100% for the channel is the same 8)',
+  verbatim: [
+    "'''Master Yi''' {{tip|channels}} for up to 4 seconds, {{tip|healing}} himself every {{fd|0.5}} seconds",
+    '{{st|Minimum Total Heal|{{ap|15*8 to 55*8}} {{as|(+ 100% AP)}}|Maximum Total Heal|{{ap|15*8*2 to 55*8*2}} {{as|(+ 200% AP)}}}}',
+  ],
+};
+
+const LISSANDRA_FROZEN_TOMB_COUNT: CountRead = {
+  durationSeconds: 2.5,
+  intervalSeconds: 0.25,
+  impliedInstances: 10,
+  rowArithmetic:
+    'the per-tick rows are written `{{ap|100/10 to 200/10}}` and `{{ap|100*2/10 to 200*2/10}}` ' +
+    'against Total rows of `{{ap|100 to 200}}` and `{{ap|100*2 to 200*2}}`, and the AP ratios ' +
+    'divide by the same 10 (`{{ap|55/10}}%` against 55%)',
+  verbatim: [
+    "entering {{tip|stasis (buff)|stasis}} for {{fd|2.5}} seconds and {{tip|healing}} herself every {{fd|0.25}} seconds over the duration",
+    '{{st|Minimum Heal per Tick|{{ap|100/10 to 200/10}} {{as|(+ {{ap|55/10}}% AP)}}|Maximum Heal per Tick|{{ap|100*2/10 to 200*2/10}} {{as|(+ {{ap|55*2/10}}% AP)}}}}',
+  ],
+};
 
 /**
  * THE READ POPULATION. 44 (page, kind) pairs, read 2026-08-14 against the cached wikitext of all
@@ -422,6 +514,22 @@ export const SHAPES_READ: ShapeReading[] = [
             'Briar prepares to unleash a scream ... charging for up to 1 second, during which ' +
             'she ... heals herself every 0.25 seconds.',
           figureIs: 'per-instance',
+          // COUNT READ 2026-08-15 at 4. 1 second / 0.25 seconds, and the page's own row writes
+          // the per-tick figure as the Maximum divided by 4 — `10/4` against `10`.
+          totalInstances: 4,
+          countRead: {
+            durationSeconds: 1,
+            intervalSeconds: 0.25,
+            impliedInstances: 4,
+            rowArithmetic:
+              "the row is written `{{ap|10/4 to 16/4}}% '''maximum''' health` against a Maximum " +
+              "Heal row of `{{ap|10 to 16}}% '''maximum''' health`, so the page divides the whole " +
+              'charge by 4 at both ends of the rank axis',
+            verbatim: [
+              "{{tip|channel|charging}} for up to 1 second, during which she increases ''Chilling Scream's'' damage and range, and gains 35% damage reduction and {{tip|heal|heals}} herself every {{fd|0.25}} seconds.",
+              "{{st|Heal Per Tick|{{as|{{ap|10/4 to 16/4}}% '''maximum''' health}}|Maximum Heal|{{as|{{ap|10 to 16}}% '''maximum''' health}}}}",
+            ],
+          },
         },
       },
       {
@@ -474,6 +582,10 @@ export const SHAPES_READ: ShapeReading[] = [
             'Master Yi channels for up to 4 seconds, healing himself every 0.5 seconds, increased ' +
             'by 1% per 1% missing health.',
           figureIs: 'per-instance',
+          // COUNT READ 2026-08-15 at 8. 4 seconds / 0.5 seconds, and the page's own Total rows are
+          // written `15*8 to 55*8` — the multiplier is printed, not inferred.
+          totalInstances: 8,
+          countRead: MASTER_YI_MEDITATE_COUNT,
         },
       },
       {
@@ -484,6 +596,10 @@ export const SHAPES_READ: ShapeReading[] = [
             'Master Yi channels for up to 4 seconds, healing himself every 0.5 seconds, increased ' +
             'by 1% per 1% missing health.',
           figureIs: 'per-instance',
+          // The same 8, printed a second time on the maximum pair: `15*2` per tick against
+          // `15*8*2` for the channel.
+          totalInstances: 8,
+          countRead: MASTER_YI_MEDITATE_COUNT,
         },
       },
       {
@@ -577,6 +693,10 @@ export const SHAPES_READ: ShapeReading[] = [
             'Lissandra instantly entombs herself in ice, entering stasis for 2.5 seconds and ' +
             'healing herself every 0.25 seconds over the duration.',
           figureIs: 'per-instance',
+          // COUNT READ 2026-08-15 at 10. 2.5 seconds / 0.25 seconds, and the page writes the
+          // per-tick rows as the Total rows divided by ten on both the base and the AP ratio.
+          totalInstances: 10,
+          countRead: LISSANDRA_FROZEN_TOMB_COUNT,
         },
       },
       {
@@ -587,6 +707,8 @@ export const SHAPES_READ: ShapeReading[] = [
             'Lissandra instantly entombs herself in ice, entering stasis for 2.5 seconds and ' +
             'healing herself every 0.25 seconds over the duration.',
           figureIs: 'per-instance',
+          totalInstances: 10,
+          countRead: LISSANDRA_FROZEN_TOMB_COUNT,
         },
       },
       {
@@ -638,6 +760,24 @@ export const SHAPES_READ: ShapeReading[] = [
             'a Grand Challenge Victory Zone is created on their death location for 5 seconds, ' +
             'which heals Fiora and all allies within the area every 0.25 seconds.',
           figureIs: 'per-instance',
+          // COUNT READ 2026-08-15 at 20. 5 seconds / 0.25 seconds, and the page's three rows say
+          // the same: per tick is the per-second row / 4 and the Maximum is the per-second row x 5.
+          totalInstances: 20,
+          countRead: {
+            durationSeconds: 5,
+            intervalSeconds: 0.25,
+            impliedInstances: 20,
+            rowArithmetic:
+              'the page carries THREE rows and the outer two fix the count between them: the ' +
+              'per-tick row is `{{ap|75/4 to 125/4}}` of a per-second row of `{{ap|75 to 125}}`, ' +
+              'and the Maximum row is `{{ap|75*5 to 125*5}}` of the same per-second row — 4 x 5 ' +
+              'ticks. The bonus-AD ratio states it directly: 60/4 = 15% per tick against 300% for ' +
+              'the whole zone, which is exactly 20',
+            verbatim: [
+              "is created on their death location for 5 seconds, which {{tip|heal|heals}} '''Fiora''' and all allies within the area every {{fd|0.25}} seconds",
+              "{{st|Heal per Tick|{{ap|75/4 to 125/4}} {{as|(+ {{ap|60/4}}% '''bonus''' AD)}}|Heal per Second|{{ap|75 to 125}} {{as|(+ 60% '''bonus''' AD)}}|Maximum Heal|{{ap|75*5 to 125*5}} {{as|(+ 300% '''bonus''' AD)}}}}",
+            ],
+          },
         },
       },
       {
@@ -667,6 +807,22 @@ export const SHAPES_READ: ShapeReading[] = [
             'Janna also channels for up to 3 seconds, healing herself and nearby allies every ' +
             '0.25 seconds.',
           figureIs: 'per-instance',
+          // COUNT READ 2026-08-15 at 12. 3 seconds / 0.25 seconds, and the row is written as the
+          // Total divided by twelve on the base and on the AP ratio alike.
+          totalInstances: 12,
+          countRead: {
+            durationSeconds: 3,
+            intervalSeconds: 0.25,
+            impliedInstances: 12,
+            rowArithmetic:
+              'the per-tick row is written `{{ap|300/12 to 600/12}}` against a Total row of ' +
+              '`{{ap|300 to 600}}`, and the AP ratio divides by the same twelve ' +
+              '(`{{ap|150/12}}%` against 150%)',
+            verbatim: [
+              "'''Janna''' also {{tip|channel|channels}} for up to 3 seconds, {{tip|heal|healing}} herself and nearby allies every {{fd|0.25}} seconds.",
+              '{{st|Heal Per Tick|{{ap|300/12 to 600/12}} {{as|(+ {{ap|150/12}}% AP)}}|Total Heal|{{ap|300 to 600}} {{as|(+ 150% AP)}}}}',
+            ],
+          },
         },
       },
       {
@@ -699,6 +855,30 @@ export const SHAPES_READ: ShapeReading[] = [
             'Allied champions near the fuemigo gain bonus attack range ... and heal every 0.25 ' +
             'over the duration.',
           figureIs: 'per-instance',
+          // NO COUNT WRITTEN, AND THE READING IS RECORDED RATHER THAN LEFT BLANK (2026-08-15).
+          // This is the one member of the nine where the page's two statements disagree, so it is
+          // the one that keeps the shape §32.2 requires: both readings recorded, neither adopted.
+          countRead: {
+            durationSeconds: 6,
+            intervalSeconds: 0.25,
+            impliedInstances: 24,
+            rowArithmetic:
+              'the per-tick row is written `{{ap|70/25 to 150/25}}` against a Total row of ' +
+              '`{{ap|70 to 150}}`, and the AP ratio divides by the same 25 (`{{ap|15/25}}%` ' +
+              'against 15%) — so the page prints TWENTY-FIVE where its own duration and interval ' +
+              'give twenty-four',
+            verbatim: [
+              "'''Milio''' summons a fuemigo at the target location or upon the target allied champion for 6 seconds",
+              '{{st|Heal per Tick|{{ap|70/25 to 150/25}} {{as|(+ {{ap|15/25}}% AP)}}|Total Heal|{{ap|70 to 150}} {{as|(+ 15% AP)}}}}',
+            ],
+          },
+          countContested:
+            'the fuemigo lasts 6 seconds and heals every 0.25 seconds, which is TWENTY-FOUR, and ' +
+            'the page divides its own Total row by TWENTY-FIVE on both the base and the AP ratio. ' +
+            'The difference is one instance — 4% of the heal — and the shape of it is familiar: a ' +
+            'twenty-fifth instance is what an occurrence at the moment of summoning would add, ' +
+            'which is the rule Singed Q and Rumble Q apply to a damage row in two opposite ways. ' +
+            'Nothing outside the page settles it, and neither 24 nor 25 is adopted.',
         },
       },
       {
@@ -828,4 +1008,116 @@ export const SHAPES_READ: ShapeReading[] = [
 /** Look a reading up by the pair it belongs to. */
 export function readingFor(key: string, kind: Kind): ShapeReading | undefined {
   return SHAPES_READ.find((s) => s.key === key && s.kind === kind);
+}
+
+/**
+ * A COUNT MUST RECONCILE WITH THE SOURCE'S OWN ARITHMETIC, OR IT IS NOT WRITTEN (2026-08-15).
+ *
+ * The mirror of `checkMarkRule` in `per-tick-read.ts`, for heals rather than damage. Every clause
+ * below is a refusal, and each names a way of writing a number nobody checked:
+ *
+ *   - a count with no reading behind it — unfalsifiable, and indistinguishable from arithmetic on
+ *     a duration somebody inferred;
+ *   - a count that does not equal the source's own duration over its own interval;
+ *   - a reading on a row whose figure is not per-instance, which would be a count of occurrences
+ *     attached to a figure that already covers all of them;
+ *   - a per-instance row with no count and no stated reason, which reads as unfinished work when
+ *     it may be a refusal;
+ *   - and a row claiming BOTH that a count exists and that none can ever exist.
+ *
+ * It decides nothing. It refuses.
+ */
+export function checkCountRule(readings: readonly ShapeReading[] = SHAPES_READ): string[] {
+  const wrong: string[] = [];
+  for (const s of readings) {
+    for (const r of s.rows) {
+      const ot = r.overTime;
+      if (!ot) continue;
+      const where = `${s.key} "${r.label}"`;
+      const perInstance = ot.figureIs === 'per-instance';
+
+      if (ot.countRead && !perInstance) {
+        wrong.push(
+          `${where}: carries a count reading while its figure is '${ot.figureIs ?? 'unstated'}'. ` +
+            `A number of occurrences belongs only to a figure that is ONE occurrence`,
+        );
+      }
+      if (ot.countRead) {
+        const c = ot.countRead;
+        if (Math.abs(c.durationSeconds / c.intervalSeconds - c.impliedInstances) > 1e-9) {
+          wrong.push(
+            `${where}: says ${c.durationSeconds}s / ${c.intervalSeconds}s is ` +
+              `${c.impliedInstances}, and it is ${c.durationSeconds / c.intervalSeconds}`,
+          );
+        }
+        if (c.verbatim.length < 2) {
+          wrong.push(
+            `${where}: a count rests on TWO statements — the description's duration and interval, ` +
+              `and the page's own row arithmetic — and only ${c.verbatim.length} sentence(s) are ` +
+              `quoted, so one of them cannot be checked against the source`,
+          );
+        }
+        if (!c.rowArithmetic) {
+          wrong.push(`${where}: quotes no row arithmetic, so the count rests on one statement only`);
+        }
+      }
+      if (ot.totalInstances !== undefined && perInstance) {
+        if (!ot.countRead) {
+          wrong.push(
+            `${where}: writes a count of ${ot.totalInstances} onto a per-occurrence figure with ` +
+              `no reading behind it. A bare number cannot be re-derived by anyone`,
+          );
+        } else if (ot.countRead.impliedInstances !== ot.totalInstances) {
+          wrong.push(
+            `${where}: writes ${ot.totalInstances} while its own reading implies ` +
+              `${ot.countRead.impliedInstances}`,
+          );
+        }
+        if (ot.countContested) {
+          wrong.push(`${where}: writes a count and also says the page contradicts itself about it`);
+        }
+        if (ot.countUnresolvable) {
+          wrong.push(`${where}: writes a count and also says no count can ever exist`);
+        }
+      }
+      if (perInstance && ot.totalInstances === undefined) {
+        const stated = [ot.countContested, ot.countUnresolvable].filter(Boolean).length;
+        if (stated === 0) {
+          wrong.push(
+            `${where}: is one occurrence with no count of occurrences and no stated reason. ` +
+              `A row here is either contested, permanently unresolvable, or finished`,
+          );
+        }
+        if (stated > 1) {
+          wrong.push(
+            `${where}: says both that the page contradicts itself about the count and that no ` +
+              `count can ever exist. Those are different refusals and only one can be true`,
+          );
+        }
+        if (ot.countUnresolvable && ot.countRead) {
+          wrong.push(
+            `${where}: says no count can ever exist while quoting the arithmetic for one`,
+          );
+        }
+        if (ot.countContested && !ot.countRead) {
+          wrong.push(
+            `${where}: calls the count contested without quoting the two statements that ` +
+              `disagree, so nothing records what was contested`,
+          );
+        }
+      }
+    }
+  }
+  return wrong;
+}
+
+/** Every quoted count fragment, for checking against the cached wikitext. */
+export function countReadFragments(
+  readings: readonly ShapeReading[] = SHAPES_READ,
+): Array<{ key: string; label: string; verbatim: string[] }> {
+  return readings.flatMap((s) =>
+    s.rows
+      .filter((r) => r.overTime?.countRead)
+      .map((r) => ({ key: s.key, label: r.label, verbatim: r.overTime!.countRead!.verbatim })),
+  );
 }

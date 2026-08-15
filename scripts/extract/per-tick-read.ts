@@ -212,12 +212,43 @@ export interface PerTickRead {
   /**
    * WHY A RECONCILING COUNT IS NOT WRITTEN. Required whenever `reconcilesAt` is present.
    *
-   * Both current blockers are outside the source: one is a defect in our own harvest (two rows
-   * sharing a component id, so no count can be attached to one of them), and one is a question
+   * All three current blockers are outside the source: a defect in our own harvest (two rows
+   * sharing a component id, so no count can be attached to one of them), a question
    * SPECIFICATION §3.8 does not answer (whether damage that lands entirely inside a 0.75-second
-   * cast is "delivered following the combo"). Neither is a fact the wiki can supply.
+   * cast is "delivered following the combo"), and a limit of the contract itself (Aurelion Sol Q's
+   * count is 26 at ranks 1-4 and 1,280 at rank 5, and `hits` is one number per component). None is
+   * a fact the wiki can supply, and each would be removed somewhere other than here.
    */
   captureBlockedBy?: string;
+  /**
+   * NO COUNT CAN EVER EXIST FOR THIS ENTRY, and why — PERMANENT, not pending (2026-08-15).
+   *
+   * The distinction this field exists to make is the one CLAUDE.md draws between `incomplete` and
+   * `unresolvable`: an entry waiting for work and an entry waiting for a fact nobody can supply
+   * look identical from outside, and putting the second on a worklist wastes the reading twice
+   * over. `count-not-stored` and `no-duration-stated` both read as "somebody should finish this".
+   * For six entries that is false.
+   *
+   * TWO SHAPES REACH IT, and the field is careful to say which, because they are not equally
+   * permanent and pretending otherwise would be its own overclaim:
+   *
+   *   1. THE ABILITY HAS NO DURATION. A toggle or a resource-fed channel runs for as long as the
+   *      fight lets it, so the number of ticks is a property of the situation and no source can
+   *      state it. Amumu W, Anivia R, Karthus E, Swain R — and Rumble Q, where three counts are
+   *      each right for a different situation.
+   *   2. THE FIGURE EXISTS AND NO REACHABLE SOURCE STATES IT. Nasus E's interval and Mel E's
+   *      field lifetime are real numbers inside the game that the wiki, the game data and the
+   *      buff objects are all silent about. Nobody here can supply them; a frame-counted
+   *      in-client observation could.
+   *
+   * REQUIRED on every `no-duration-stated` row. Deriving a duration from a mana pool, or a count
+   * from a duration, is the exact move §59.3 refused on Nasus E.
+   *
+   * FORBIDDEN wherever a count IS established (`corroborated`, `captured`, `settled`) and
+   * wherever `reconcilesAt` names a number the source does reach. A row cannot both have a count
+   * and claim none can exist.
+   */
+  countUnresolvable?: string;
   /**
    * True only when verdict is 'recurring' AND countVerdict is 'corroborated', 'captured' or
    * 'settled'.
@@ -258,6 +289,13 @@ export const PER_TICK_READS: readonly PerTickRead[] = [
     intervalSeconds: 0.5,
     impliedTicks: null,
     storedHits: [1],
+    countUnresolvable:
+      'the page calls it a Toggle and states no duration anywhere: it "cries a continuous pool ' +
+      'of tears" and is "toggled off automatically if Amumu becomes unable to pay its mana ' +
+      'cost", at 8 mana per second. How long it runs is a property of his mana pool and of when ' +
+      'the player toggles it off, not of the ability, so no number of ticks exists to state. ' +
+      'Computing one from a mana pool would be deriving a duration nobody stated — the move §59.3 ' +
+      'refused on Nasus E.',
     marked: false,
     note: 'a toggle. It runs until the mana runs out, so no duration exists to divide and no full-duration total can be stated',
   },
@@ -274,6 +312,12 @@ export const PER_TICK_READS: readonly PerTickRead[] = [
     intervalSeconds: 0.5,
     impliedTicks: null,
     storedHits: [1, 1],
+    countUnresolvable:
+      'the page calls it a Toggle and states no duration: it is "toggled off automatically if ' +
+      'Anivia moves too far away from the blizzard or becomes unable to pay the mana cost", at ' +
+      '35 to 55 mana per second. A SECOND count is missing on top of the first and is just as ' +
+      'unstateable — the empowered tick only begins once the blizzard reaches full size over 1.5 ' +
+      'seconds, so how the run splits between the two components depends on when it was cast.',
     marked: false,
     note: 'a toggle, so no duration. Both components — the normal tick and the 300% empowered tick — recur, and the empowered one only begins once the blizzard reaches full size',
   },
@@ -291,8 +335,17 @@ export const PER_TICK_READS: readonly PerTickRead[] = [
     intervalSeconds: 0.125,
     impliedTicks: 26,
     storedHits: [1, 1],
+    reconcilesAt: 26,
+    captureBlockedBy:
+      'THE COUNT IS RANK-DEPENDENT AND `hits` IS ONE NUMBER PER COMPONENT. The blocker is in our ' +
+      'shape, not in the source: the page states 26 for ranks 1-4 and labels its own total row ' +
+      '"Ranks 1-4" to say so, and then states that "at rank 5, Breath of Light\'s channel ' +
+      'duration is increased to 160 seconds" — 1,280 ticks at the same 0.125-second interval, ' +
+      'which its own blurb calls lasting "indefinitely". Writing 26 would understate rank 5 by a ' +
+      'factor of 49; writing 1,280 would overstate ranks 1-4 by the same. A rank-axis hit count ' +
+      'is a contract change and is RAISED for the lead, not made here.',
     marked: false,
-    note: "THE COUNT IS RANK-DEPENDENT and cannot be one number: the source's own total row is labelled 'Ranks 1-4' and uses 26 ticks, while at rank 5 the channel duration is increased to 160 seconds. A single `hits` value would be wrong at one rank or the other",
+    note: "RE-READ 2026-08-15 AND THE REFUSAL IS NOW STATED AS A BLOCKED CAPTURE RATHER THAN AS AN UNREAD COUNT. Three statements agree on 26 for ranks 1-4 — 3.25s / 0.125s, the total row's own '*26' on the base, and the same '*26' on the AP coefficient — so nothing about the source is missing. What cannot be done is store it: one component carries one `hits`, and this ability's count changes by a factor of 49 at rank 5. The entry is also refused by gate 1 for four repeating components sharing one total row, which is a separate defect",
   },
   {
     key: 'Aurelion Sol/E/Singularity',
@@ -498,6 +551,11 @@ export const PER_TICK_READS: readonly PerTickRead[] = [
     intervalSeconds: 0.25,
     impliedTicks: null,
     storedHits: [1],
+    countUnresolvable:
+      'the page calls it a Toggle and states no duration: it is "toggled off automatically if ' +
+      'Karthus becomes unable to pay its mana cost", at 30 to 78 mana per second. Its own rows ' +
+      'give a per-tick figure and a per-second figure and no third one, because the third would ' +
+      'need a length of time the ability does not have.',
     marked: false,
     note: 'a toggle held up by mana. The source gives a per-second figure and no duration, so there is no full-duration total to state',
   },
@@ -556,6 +614,15 @@ export const PER_TICK_READS: readonly PerTickRead[] = [
     intervalSeconds: 0.125,
     impliedTicks: null,
     storedHits: [1],
+    countUnresolvable:
+      "THE FIELD'S LIFETIME IS A REAL NUMBER THAT NO REACHABLE SOURCE STATES — the second shape " +
+      'of unresolvable, not the toggle one. The page gives the orb\'s travel (1,000 units at ' +
+      '1,100 speed), a 0.5-second delay before the field expands, a 1.5-second root and a ' +
+      '0.125-second tick rate, and never once says how long the field itself persists. Its own ' +
+      'rows stop at a per-tick and a per-second figure for the same reason. Every candidate on ' +
+      'the page is a duration of something else, and taking one would be inventing the count from ' +
+      'a number that measures a different thing. Settling it needs an in-client observation ' +
+      'nobody publishes.',
     marked: false,
     note: "the field's own lifetime is never stated — the source gives a per-second figure (8 ticks) and the orb's 1.5-second root, neither of which is a field duration. Also refused from the merged file for two same-label rows",
   },
@@ -626,6 +693,16 @@ export const PER_TICK_READS: readonly PerTickRead[] = [
     intervalSeconds: 1,
     impliedTicks: 5,
     storedHits: [10],
+    countUnresolvable:
+      'THE INTERVAL IS STATED BY NOTHING ANYWHERE. This is not the page contradicting itself ' +
+      "about a number both halves know — that part is settled, and Riot's V14.18 patch notes fix " +
+      'the TOTAL as a per-second figure over 5 seconds. What no source states is how many ' +
+      "instances that total is delivered in: the wiki's damage-over-time article gives no " +
+      'interval, the game data carries no tick rate for this ability, and the buff object is an ' +
+      'empty stub. "5 ticks of 10-34" and "10 ticks of 5-17" are both consistent with everything ' +
+      'reachable, and a count cannot be computed from a duration alone. Settling it needs a ' +
+      'frame-counted in-client observation or a spell script nobody publishes — so it is not ' +
+      'pending on anyone here.',
     marked: false,
     note: "THE SOURCE DISAGREES WITH ITSELF BY A FACTOR OF TWO: the description says each second for 5 seconds, which is 5 ticks; its own total row multiplies the per-tick figure by 10. INVESTIGATED AND STILL REFUSED 2026-08-15 (DATA-SOURCES §59.3). The TOTAL is settled — Riot's V14.18 patch notes state the figure verbatim as 'Damage per Second' and the game multiplies it by the duration, so the product is 50-170 (+60% AP) over 5 seconds and the row's x10 doubles it. But NO SOURCE STATES THE INTERVAL: the wiki's damage-over-time article gives none, the game data carries no tick rate, and the buff object is an empty stub, so '5 ticks of 10-34' and '10 ticks of 5-17' are both consistent with everything reachable. A count cannot be computed from a duration alone. This row stays `contested` and unmarked BY DECISION, not by omission — settling it needs a frame-counted in-client observation or a spell script nobody publishes",
   },
@@ -762,6 +839,13 @@ export const PER_TICK_READS: readonly PerTickRead[] = [
     intervalSeconds: 0.25,
     impliedTicks: 12,
     storedHits: [1, 1],
+    countUnresolvable:
+      'NO SINGLE COUNT IS A PROPERTY OF THIS ABILITY. The page states three — 3, 12 and 15 — and ' +
+      'every one is right for a different situation: 3 for a target clipped once by the cone, 12 ' +
+      "for the flamethrower's own 3 seconds at 0.25-second intervals, and 15 for a target that " +
+      'stands in it throughout. Which applies depends on how long the target remains in the cone, ' +
+      'which is a fact about the fight and not about the ability, so no source can state it. The ' +
+      'entry is not waiting on a reading: it has had one.',
     marked: false,
     note: "RE-READ 2026-08-15, AND THE PAGE TURNS OUT TO BE ENTIRELY SELF-CONSISTENT — WHICH IS WHY NO COUNT CAN BE CAPTURED. It states THREE counts for three different situations and every one of them reconciles: 3 for a target clipped once (a 0.5-second scorch ticks twice, plus one instance on application, which is the note this page shares with Singed Q), 12 for the flamethrower's own 3 seconds at 0.25-second intervals, and 15 as the maximum — twelve emissions, two trailing ticks after the last refresh, and the application instance. The capture rule requires the corrected count to EQUAL the source's duration over its interval, and the full-duration figure here is 15 against an arithmetic of 12, so the rule refuses it and is right to: which number applies is a property of how long the target stands in the cone, not of the ability. Both the normal and the Danger Zone component store 1",
   },
@@ -831,6 +915,13 @@ export const PER_TICK_READS: readonly PerTickRead[] = [
     intervalSeconds: 0.5,
     impliedTicks: null,
     storedHits: [1],
+    countUnresolvable:
+      'the source states no duration for Demonic Ascension at all: it is maintained with Demonic ' +
+      'Energy, which decays by 5 every 0.5 seconds, while Swain GENERATES 10 every 0.5 seconds ' +
+      'while draining a champion — a net gain, so the ability runs indefinitely in the situation ' +
+      'it is cast in, and a takedown refills the resource. How long it runs is a property of the ' +
+      'fight, so no number of ticks exists to state. This is the same conclusion the defensive ' +
+      "reading reached for the same ability's heal row (defensive-shapes.ts, countUnresolvable).",
     marked: false,
     note: "RE-READ 2026-08-15 AND STILL REFUSED, now with the arithmetic that was tempting stated rather than left implicit. The source gives no duration; it gives a resource. Demonic Energy starts at 50 and decays by 5 every 0.5 seconds, which empties it in exactly 5 seconds and looks like a 10-tick answer. It is not one: the same sentence says Swain GENERATES 10 every 0.5 seconds while draining a champion, a net gain, so the ability runs indefinitely in the situation it is cast in, and a takedown refills it to full. The 5-second figure is the duration of a cast that hits nothing, which is the one case where the count does not matter. NO DURATION IS INFERRED FROM A DECAY RATE",
   },
@@ -1143,6 +1234,29 @@ export function checkMarkRule(reads: readonly PerTickRead[] = PER_TICK_READS): s
         `${r.key}: names something blocking a capture without stating the count that would be ` +
           `captured. A blocker with no number behind it cannot be checked when it is removed`,
       );
+    }
+    // PERMANENT AND PENDING MUST NOT BE CONFUSABLE (2026-08-15). A row with no duration can never
+    // acquire a count, and saying so is what keeps it off a worklist; a row that HAS a count
+    // cannot also claim none exists.
+    if (r.countVerdict === 'no-duration-stated' && !r.countUnresolvable) {
+      wrong.push(
+        `${r.key}: states no duration, so no count can ever be derived from it — and does not ` +
+          `say so. Left unstated it reads as work outstanding rather than as a fact no source ` +
+          `will ever supply`,
+      );
+    }
+    if (r.countUnresolvable !== undefined) {
+      if (MARKABLE_COUNT_VERDICTS.includes(r.countVerdict)) {
+        wrong.push(
+          `${r.key}: has a ${r.countVerdict} count and also claims no count can ever exist`,
+        );
+      }
+      if (r.reconcilesAt !== undefined) {
+        wrong.push(
+          `${r.key}: says the count reconciles at ${r.reconcilesAt} and also that no count can ` +
+            `ever exist. A blocked capture is pending; an unresolvable count is permanent`,
+        );
+      }
     }
   }
   return wrong;

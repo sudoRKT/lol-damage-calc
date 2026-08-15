@@ -566,12 +566,56 @@ describe('proposing an entry', () => {
     const total = byLabel.get('Minimum Total Heal')!.value as { perRank: number[] };
     expect(total.perRank).toEqual(tick.perRank.map((v) => v * 8));
 
-    // AND THE CONSEQUENCE. The whole-duration rows are usable; the per-tick rows state one
-    // occurrence with no count of occurrences, so they may claim no better than 'incomplete'.
+    // AND THE CONSEQUENCE — RE-PINNED 2026-08-15, AND THE RULE BEHIND IT DID NOT MOVE.
+    //
+    // This block asserted `incomplete` on the two per-tick rows until today, and the reason it
+    // gave was "one occurrence with no count of occurrences". That reason is still the rule; what
+    // changed is that this page's count HAS since been read — 4 seconds / 0.5 seconds, and the
+    // Total rows are literally `15*8`, so `defensive-shapes.ts` now writes 8 onto both per-tick
+    // rows. A row with a count is usable, which is the whole point of the field.
+    //
+    // THE RULE ITSELF IS PINNED IN THE NEXT TEST, on the two rows that still have no count. If
+    // this assertion were changed without that one, "per-instance without a count is incomplete"
+    // would have nothing asserting it anywhere.
     expect(byLabel.get('Minimum Total Heal')!.verification).toBe('derived');
     expect(byLabel.get('Maximum Total Heal')!.verification).toBe('derived');
-    expect(byLabel.get('Minimum Heal Per Tick')!.verification).toBe('incomplete');
-    expect(byLabel.get('Maximum Heal Per Tick')!.verification).toBe('incomplete');
+    expect(byLabel.get('Minimum Heal Per Tick')!.overTime?.totalInstances).toBe(8);
+    expect(byLabel.get('Maximum Heal Per Tick')!.overTime?.totalInstances).toBe(8);
+    expect(byLabel.get('Minimum Heal Per Tick')!.verification).toBe('derived');
+    expect(byLabel.get('Maximum Heal Per Tick')!.verification).toBe('derived');
+  });
+
+  // THE NEGATIVE CONTROL FOR THE ABOVE. Milio W is the one page of the nine whose two statements
+  // disagree — 6 seconds every 0.25 is twenty-four, and its own row divides by twenty-five — so
+  // no count is written and the row may claim no better than `incomplete`. If a future reading
+  // ever settles Milio, this test has to be replaced by one over another uncounted row, never
+  // deleted: it is the only thing asserting that a per-occurrence figure with no count is refused.
+  it('refuses a per-occurrence heal whose count the page contradicts itself about', () => {
+    const milio = page(
+      'Milio',
+      'W',
+      'Cozy Campfire',
+      '{{Ability data\n|description = Milio summons a fuemigo at the target location for 6 ' +
+        'seconds ... and heal every 0.25 over the duration.\n' +
+        '|leveling = {{st|Heal per Tick|{{ap|70/25 to 150/25}} {{as|(+ {{ap|15/25}}% AP)}}' +
+        '|Total Heal|{{ap|70 to 150}} {{as|(+ 15% AP)}}}}\n}}',
+    );
+    const run = proposeForPage(
+      milio,
+      {
+        key: 'Milio/W/Cozy Campfire',
+        kinds: ['heal'],
+        activation: 'conditional',
+        activationEvidence: 'Active; while near the fuemigo',
+      },
+      OPTS,
+    );
+    const byLabel = new Map(run.proposals.map((p) => [p.label, p]));
+    expect(byLabel.get('Heal per Tick')!.overTime?.figureIs).toBe('per-instance');
+    expect(byLabel.get('Heal per Tick')!.overTime?.totalInstances).toBeUndefined();
+    expect(byLabel.get('Heal per Tick')!.verification).toBe('incomplete');
+    // The whole-duration row is unaffected: it needs no count and never did.
+    expect(byLabel.get('Total Heal')!.verification).toBe('derived');
   });
 
   it('leaves the figure unstated where the page contradicts its own per-tick row', () => {

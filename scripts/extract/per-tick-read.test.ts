@@ -245,6 +245,59 @@ describe('checkMarkRule — a reconciling count that is not captured must say wh
   });
 });
 
+// PERMANENT AND PENDING MUST NOT BE CONFUSABLE (2026-08-15). An entry nobody can ever finish and
+// an entry nobody has finished look identical from outside, and SPECIFICATION §8 requires the
+// interface to tell them apart. Each half of the rule is shown failing before the real table is
+// asked.
+describe('checkMarkRule — a count that can never exist says so, and only where it is true', () => {
+  it('accepts a no-duration row that states why no count can ever exist', () => {
+    expect(
+      checkMarkRule([
+        read({
+          countVerdict: 'no-duration-stated',
+          durationSeconds: null,
+          impliedTicks: null,
+          storedHits: [1],
+          marked: false,
+          countUnresolvable: 'it is a toggle and the page states no duration anywhere',
+        }),
+      ]),
+    ).toEqual([]);
+  });
+
+  it('refuses a no-duration row that leaves it unsaid, which reads as work outstanding', () => {
+    const wrong = checkMarkRule([
+      read({
+        countVerdict: 'no-duration-stated',
+        durationSeconds: null,
+        impliedTicks: null,
+        storedHits: [1],
+        marked: false,
+      }),
+    ]);
+    expect(wrong.some((w) => w.includes('will ever supply'))).toBe(true);
+  });
+
+  it('refuses an entry claiming both an established count and that none can exist', () => {
+    const wrong = checkMarkRule([read({ countUnresolvable: 'nothing states it' })]);
+    expect(wrong.some((w) => w.includes('also claims no count can ever exist'))).toBe(true);
+  });
+
+  it('refuses an entry that is both blocked at a reconciling count and unresolvable', () => {
+    const wrong = checkMarkRule([
+      read({
+        countVerdict: 'count-not-stored',
+        storedHits: [1],
+        marked: false,
+        reconcilesAt: 4,
+        captureBlockedBy: 'the contract holds one hit count per component',
+        countUnresolvable: 'nothing states it',
+      }),
+    ]);
+    expect(wrong.some((w) => w.includes('permanent'))).toBe(true);
+  });
+});
+
 describe('checkAgainstHarvest — the table describes the real population, not a remembered one', () => {
   const ability = (champion: string, slot: string, name: string, hits: number) => ({
     champion,
@@ -433,6 +486,51 @@ describe('the table itself, against the real cached source', () => {
     const failed = checks.filter((c) => c.pageMissing || c.missing.length > 0);
     expect(failed).toEqual([]);
     expect(checks.reduce((s, c) => s + c.found, 0)).toBe(75);
+  });
+
+  // ═══ PERMANENT, NOT OUTSTANDING (2026-08-15) ═══
+  //
+  // DEFINITION of the 7: withdrawn entries where no count can ever be stated, and the reason is
+  // recorded on the row. Two shapes reach it — the ability has no duration at all (Amumu W,
+  // Anivia R, Karthus E, Swain R, and Rumble Q, whose three counts are each right for a different
+  // situation), or the figure is a real number no reachable source states (Nasus E's interval,
+  // Mel E's field lifetime).
+  //
+  // WHY IT IS PINNED: this number RISING is evidence arriving, and it would be trivially easy to
+  // raise it by relabelling an entry somebody simply has not read. Naming all seven means a rise
+  // has to name its eighth.
+  it('records 7 counts that can never be stated, and names every one', () => {
+    const permanent = PER_TICK_READS.filter((r) => r.countUnresolvable).map((r) => r.key).sort();
+    expect(permanent).toEqual([
+      'Amumu/W/Despair',
+      'Anivia/R/Glacial Storm',
+      'Karthus/E/Defile',
+      'Mel/E/Solar Snare',
+      'Nasus/E/Spirit Fire',
+      'Rumble/Q/Flamespitter',
+      'Swain/R/Demonic Ascension',
+    ]);
+    // None of the seven is marked, and none carries a count anywhere.
+    for (const key of permanent) {
+      const row = PER_TICK_READS.find((r) => r.key === key)!;
+      expect(row.marked).toBe(false);
+      expect(row.statedTotal).toBeUndefined();
+      expect(row.reconcilesAt).toBeUndefined();
+      expect(row.countUnresolvable!.length).toBeGreaterThan(60);
+    }
+  });
+
+  it('leaves Aurelion Sol Q reconciling at 26 and blocked by our own shape, not the source', () => {
+    // RE-READ 2026-08-15. The source is not short of anything: 3.25s / 0.125s is 26 and the page's
+    // own total row prints '*26' on the base and on the AP coefficient. What cannot hold it is
+    // `hits` — one number per component against a count of 26 at ranks 1-4 and 1,280 at rank 5.
+    const asol = PER_TICK_READS.find((r) => r.key === 'Aurelion Sol/Q/Breath of Light')!;
+    expect(asol.reconcilesAt).toBe(26);
+    expect(asol.impliedTicks).toBe(26);
+    expect(asol.marked).toBe(false);
+    expect(asol.countUnresolvable).toBeUndefined();
+    expect(asol.captureBlockedBy).toMatch(/rank 5/);
+    expect(capturedHitCounts().has(asol.key)).toBe(false);
   });
 
   it('proves every corrected sentence is one of the checked fragments, not a summary', async () => {
