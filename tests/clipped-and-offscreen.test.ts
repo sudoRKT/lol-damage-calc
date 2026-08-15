@@ -20,6 +20,20 @@
 // scroll container, creates no scrollable area at all**, so every width measure reads exactly as
 // it does on a clean page and a reader cannot even pan to the missing part.
 //
+// ═══ ONE OF THE THREE IS ANSWERED, AND HOW IS WORTH RECORDING (2026-08-15) ═══
+//
+// A fourth defect of the same family sat in the burndown's x-axis: it read as
+// `inst 1inst 2inst 3+DoT`, with 692 adjacent label pairs closer than 8px across all 173
+// scenarios, worst -18.63px. It had been surviving only because `inst N` wraps to two lines while
+// `+DoT` — the one label with no space in it — cannot.
+//
+// **It was NOT fixed with a width query.** The axis now names the first, the last and `+DoT` plus
+// every nth in between, with n derived from its OWN MEASURED WIDTH divided by its column count.
+// The reason a threshold could not work is worth carrying: at one 320px viewport this product
+// draws a 148px axis on the calculator and a 116px one on the preview harness, so any breakpoint
+// would have to be wrong about one of them. Worst separation is now +10.09px, every column still
+// draws a tick, and every instance stays in the spoken name. DESIGN.md §7 carries the rule.
+//
 // `responsive-overflow.test.tsx` refuses the CONSTRUCTIONS that cause page-level sideways scroll.
 // It is a good sweep and it is blind to all three of these, because none of them makes the page
 // scroll. "It fits" and "the reader can read it" are different questions and only the second

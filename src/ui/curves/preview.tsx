@@ -8,6 +8,20 @@
 // It is not decoration. Two defects in this area were found in a real browser and by nothing else:
 // a chart is a thing whose failure modes are visual, and jsdom computes no layout at all.
 
+// LOADS THE PRODUCT'S TYPEFACES. Added 2026-08-15 to every preview entry at once.
+//
+// `fonts.css` was imported by `shell/PageShell.tsx` and by nothing else, and no harness renders
+// the shell — so every preview page rendered in system faces. Measured: `document.fonts.size` was
+// **0** on a harness against **42** on the calculator, and strings came out 1–5% wide.
+//
+// **That is not cosmetic on a page whose job is measuring.** It misled a session: overhang figures
+// taken here implied an axis label the shipping face does not produce, and a second agent spent
+// time reconciling two correct measurements of two different typefaces.
+//
+// `fonts.css`'s own header records the identical defect in the product itself on 2026-08-14 —
+// the whole site rendering in two system faces with nothing checking. This is that defect's
+// second home, found the same way: by measuring rather than by reading.
+import '../fonts.css';
 import { createRoot } from 'react-dom/client';
 import { DamageCurve } from './DamageCurve';
 import {

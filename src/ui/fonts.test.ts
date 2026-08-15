@@ -20,8 +20,8 @@
 // bold or a wrong face without any visible error.
 
 import { describe, expect, it } from 'vitest';
-import { existsSync, readFileSync } from 'node:fs';
-import { dirname, join } from 'node:path';
+import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
+import { dirname, join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const UI = dirname(fileURLToPath(import.meta.url));
@@ -109,5 +109,42 @@ describe('fonts/every page actually gets them', () => {
     for (const family of ['Saira', 'IBM Plex Sans', 'JetBrains Mono']) {
       expect(TOKENS).toContain(family);
     }
+  });
+});
+
+const UI_ROOT = dirname(fileURLToPath(import.meta.url));
+
+function everyFile(dir: string): string[] {
+  const out: string[] = [];
+  for (const entry of readdirSync(dir)) {
+    const full = join(dir, entry);
+    if (statSync(full).isDirectory()) out.push(...everyFile(full));
+    else out.push(full);
+  }
+  return out;
+}
+
+describe('fonts/every page a person can look at loads them', () => {
+  // ═══ THE HARNESSES WERE MEASURING IN SYSTEM FACES ═══
+  //
+  // `fonts.css` was imported by `shell/PageShell.tsx` and nothing else, and no preview harness
+  // renders the shell — so every one of them rendered in the fallback stack. Measured 2026-08-15:
+  // `document.fonts.size` was 0 on a harness against 42 on the calculator, and strings came out
+  // 1–5% wide.
+  //
+  // **A preview harness is not a toy — it is where this project takes measurements**, and a wide
+  // string there has already cost a session: overhang figures taken on a harness implied an axis
+  // label the shipping face does not produce, and a second agent spent its run reconciling two
+  // correct measurements of two different typefaces.
+  //
+  // This is the same defect `fonts.css`'s own header records against the product on 2026-08-14,
+  // in a second home, found the same way: by measuring rather than by reading.
+  it('every preview entry point imports fonts.css', () => {
+    const entries = everyFile(UI_ROOT).filter((f) => /(^|\/)preview\.tsx$/.test(f));
+    expect(entries.length).toBeGreaterThanOrEqual(5);
+    const missing = entries
+      .filter((f) => !/fonts\.css/.test(readFileSync(f, 'utf8')))
+      .map((f) => relative(UI_ROOT, f));
+    expect(missing).toEqual([]);
   });
 });

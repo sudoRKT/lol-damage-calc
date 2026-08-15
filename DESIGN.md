@@ -497,6 +497,33 @@ decisions.
   A caption under the axis reads "sequence — not elapsed time" (SPECIFICATION §3.2). X
   labels in `--type-body-s`.
 
+#### THE AXIS NAMES SOME COLUMNS AND TICKS ALL OF THEM — added 2026-08-15
+
+**One label per column is not achievable and this section used to imply it was.** A sixteen-column
+rider build gives each column about 9px on a phone, and the narrowest label the closed vocabulary
+can produce is 25.89px. **No type size §3 permits fits, so the choice is which columns are named,
+not whether they all are.**
+
+**The rule: name the first, the last, and the `+DoT` column, plus every nth in between, where `n`
+is derived from the axis's own MEASURED width divided by its column count.**
+
+**Not from the viewport, and not from a breakpoint.** Measured: at one 320px viewport this product
+draws a **148px** axis on the calculator and a **116px** one on the preview harness. A threshold
+would have to be wrong about one of them, and §4b's single width query is not spent here.
+
+**`+DoT` is anchored by name, never dropped.** SPECIFICATION §3.8 gives the survival verdict twice,
+and a reader cannot tell burst from tail without seeing where one ends.
+
+**Every column keeps a tick, and that is what stops thinning from becoming lying.** An unnamed
+column gets `--space-1` of `--border-hair`; a named one `--space-2` of `--border-steel`. Brightness
+and length carry the distinction — no hue, which is reserved for the three damage types, and no new
+token. Sixteen columns must read as sixteen divisions with three named, never as a chart with three
+instances.
+
+**THE SPOKEN NAME IS NOT THINNED.** Every instance stays in the accessibility tree, exactly as the
+riser labels do below §4b's breakpoint. This is a visual thinning of a crowded axis, not a removal
+of information, and the two must never be confused.
+
 ### The trace and the coloured steps
 
 For each instance *i*, with remaining-HP-before `Rᵢ` and this instance's damage `dᵢ`:
