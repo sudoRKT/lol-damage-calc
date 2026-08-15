@@ -67,6 +67,20 @@ const STEP_ALL_KEYS = ['id', 'kind', 'ref', 'options', 'hitCounts'] as const;
 function checkHitCounts(value: unknown, path: string): Complaint | null {
   if (!isPlainObject(value)) return { path, reason: 'must be a set of hit counts' };
   for (const [componentId, count] of Object.entries(value)) {
+    // NEGATIVE ZERO IS REFUSED, not accepted as zero. Added 2026-08-15, after this check was read
+    // against the rule the rest of the format follows: `Number.isInteger(-0)` is true and
+    // `-0 < 0` is false, so -0 was the ONE value in this slot that encoded happily and came back
+    // DIFFERENT — JSON writes it as `0`. Measured before the fix: a -0 count produced a 431-character
+    // link that decoded to +0. Everywhere else a link refuses -0 rather than change it
+    // (FORMAT.md §7, `isCarriableNumber` in v1.ts); this slot now does too. The wire format is
+    // untouched — nothing that encoded before encodes differently now, one value simply stops
+    // encoding at all.
+    if (Object.is(count, -0)) {
+      return {
+        path: `${path}.${componentId}`,
+        reason: 'is a negative zero, which a link writes as 0 and so cannot carry back unchanged',
+      };
+    }
     if (typeof count !== 'number' || !Number.isInteger(count) || count < 0) {
       return {
         path: `${path}.${componentId}`,

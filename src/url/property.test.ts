@@ -19,6 +19,8 @@
 //     - entryState maps of 0..4 entries, values integer / fractional / negative / true / false
 //     - combos of length 0..12, every step drawing uniformly from all five kinds, each step
 //       independently carrying no options, an empty options bag, or a nested options bag
+//     - hit counts on about three steps in ten, 1..3 entries each, keyed by the REAL component
+//       ids of the 7 abilities that carry `variableHits`, with values including 0 and -0
 //   Nothing is filtered out: every scenario the generator produces is asserted on. The
 //   generator is seeded, so a failure names a reproducible seed rather than a lucky draw.
 //
@@ -54,6 +56,15 @@ function makeRandom(seed: number): () => number {
 
 const NAME_POOL = ['Aatrox', 'Kaisa', "Kha'Zix", 'Nunu&Willump', '', 'Ünïcode', '日本語', 'A-B_C.D'];
 const KEY_POOL = ['conquerorStacks', 'veigarStacks', 'bonePlating', 'a', 'ключ', 'plasma·stacks', '0', 'x y z'];
+/** Real component ids from the 7 abilities that carry `variableHits`, plus two awkward strings. */
+const COMPONENT_ID_POOL = [
+  'physical-damage-per-missile',
+  'magic-damage',
+  'magic-damage-per-hit',
+  'magic-damage-per-mine',
+  '',
+  'a·b',
+];
 
 function build(random: () => number): Scenario {
   const int = (max: number) => Math.floor(random() * (max + 1));
@@ -93,15 +104,34 @@ function build(random: () => number): Scenario {
     };
   };
 
+  // HIT COUNTS ARE DRAWN TOO, since 2026-08-15. The generator predated version 2's fifth
+  // positional slot, so 4,000 scenarios roamed the whole Scenario type EXCEPT the newest field —
+  // and the one value that slot carried wrongly (a negative zero, which encoded and decoded back
+  // as +0) was therefore invisible to the very check built to find that class of defect. The
+  // draw includes -0 deliberately: it is the arm the refusal count below is measured on.
+  const hitCounts = (): Record<string, number> => {
+    const counts: Record<string, number> = {};
+    for (let i = 0; i < 1 + int(2); i++) {
+      // -0 is drawn at 1 in 100 rather than uniformly: often enough that the refusal arm fires
+      // in every run, rare enough that the great majority of scenarios still exercise the ROUND
+      // TRIP, which is what this population is for. A uniform draw refused 1,244 of 4,000.
+      counts[pick(COMPONENT_ID_POOL)] = random() < 0.01 ? -0 : pick([0, 1, 2, 5, 10, int(99)]);
+    }
+    return counts;
+  };
+
   const step = (index: number): ComboStep => {
     const base: ComboStep = {
       id: `s${index}-${int(9)}`,
       kind: pick(V1_STEP_KINDS) as ComboStepKind,
       ref: pick(['Q', 'W', 'E', 'R', 'basic', '3153', '', 'lich~bane']),
     };
+    // Drawn independently of the options roll, so all four combinations occur: neither, options
+    // only, hit counts only (the case that writes `null` into slot 4), and both.
+    const hits = random() < 0.3 ? { hitCounts: hitCounts() } : {};
     const roll = int(2);
-    if (roll === 0) return base;
-    if (roll === 1) return { ...base, options: {} };
+    if (roll === 0) return { ...base, ...hits };
+    if (roll === 1) return { ...base, options: {}, ...hits };
     return {
       ...base,
       options: {
@@ -111,6 +141,7 @@ function build(random: () => number): Scenario {
         nested: { list: [int(5), null, random() < 0.5], depth: { n: number() } },
         nothing: null,
       },
+      ...hits,
     };
   };
 
@@ -139,9 +170,14 @@ describe('property: every generated scenario round-trips identically', () => {
     const failures: { index: number; why: string }[] = [];
     let roundTripped = 0;
     let refusedForNegativeZero = 0;
+    // Counted so the newest field cannot quietly stop being generated: a future edit that dropped
+    // hit counts from the draw would leave this at 0 and fail the assertion below, rather than
+    // leaving 4,000 scenarios that all pass while testing nothing about slot 5.
+    let carriedHitCounts = 0;
 
     for (let index = 0; index < POPULATION_SIZE; index++) {
       const scenario = build(random);
+      const hasHitCounts = scenario.combo.some((step) => step.hitCounts !== undefined);
       let link: string;
       try {
         link = encodeScenario(scenario);
@@ -161,6 +197,7 @@ describe('property: every generated scenario round-trips identically', () => {
       try {
         expect(result.scenario).toStrictEqual(scenario);
         roundTripped++;
+        if (hasHitCounts) carriedHitCounts++;
       } catch {
         failures.push({ index, why: 'decoded scenario differs from the original' });
       }
@@ -168,7 +205,8 @@ describe('property: every generated scenario round-trips identically', () => {
 
     // Printed so the split is a figure quoted from a real run, not one recalled from memory.
     console.log(
-      `[url] population ${POPULATION_SIZE}: ${roundTripped} round-tripped exactly, ` +
+      `[url] population ${POPULATION_SIZE}: ${roundTripped} round-tripped exactly ` +
+        `(${carriedHitCounts} of them carrying hit counts), ` +
         `${refusedForNegativeZero} refused at encode for negative zero, ${failures.length} unexplained.`,
     );
 
@@ -176,12 +214,14 @@ describe('property: every generated scenario round-trips identically', () => {
       population: POPULATION_SIZE,
       accountedFor: roundTripped + refusedForNegativeZero,
       negativeZeroArmExercised: refusedForNegativeZero > 0,
+      hitCountsExercised: carriedHitCounts > POPULATION_SIZE / 10,
       failures: failures.length,
       first: failures.slice(0, 3),
     }).toStrictEqual({
       population: POPULATION_SIZE,
       accountedFor: POPULATION_SIZE,
       negativeZeroArmExercised: true,
+      hitCountsExercised: true,
       failures: 0,
       first: [],
     });

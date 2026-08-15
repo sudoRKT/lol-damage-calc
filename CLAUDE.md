@@ -404,10 +404,23 @@ green. `tests/cross-area-seams.test.ts` runs each consumer's own assertions over
 real output — `tests/` belongs to no area, which is the only place a file may import from five
 areas at once. **Five seams checked, one defect found:** `ComboStep.hitCounts` was added to the
 contract and the URL encoder was never told, so a scenario using any of the 7 abilities that store
-`variableHits` cannot be shared at all (SPECIFICATION §12). It fails loudly rather than silently
-and is pinned in `KNOWN_DRIFT`; closing it is a wire-format decision, raised not made. **The check
-was proved to fail rather than assumed to work** — reintroducing the original defect turns it red
-and names all three places the figure appears.
+`variableHits` could not be shared at all (SPECIFICATION §12). **The check was proved to fail
+rather than assumed to work** — reintroducing the original defect turns it red and names all three
+places the figure appears.
+
+**THAT DRIFT IS CLOSED, AND THIS PARAGRAPH SAID OTHERWISE UNTIL 2026-08-15.** It read *"is pinned
+in `KNOWN_DRIFT`; closing it is a wire-format decision, raised not made"*, which stopped being true
+on 2026-08-14 in commit `c6a6754` — version 2 of the link format carries hit counts additively in a
+fifth positional slot, no version 3 was needed, and `KNOWN_DRIFT` has been EMPTY since. The stale
+sentence cost real work: it was copied verbatim into a `src/url/` brief on 2026-08-15, sending an
+agent to make a decision that had already been made. **This is the second time a stale paragraph in
+this file has done that** — the first was the coefficient-shape text that made an engine session
+refuse 53 damage rows. When a paragraph here describes something as open, check the commit log
+before acting on it.
+
+The list itself is deliberately kept rather than deleted with its entry: a red suite blocks every
+merge, so a found-but-unfixed seam needs somewhere honest to sit, and a test asserts every entry
+still in it is still real.
 
 **A SEVENTH, forced by the fourth and worth knowing about: a per-type split now ALWAYS sums to its
 own total.** The engine and the interface had encoded opposite rules for one figure and both suites
