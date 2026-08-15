@@ -236,16 +236,21 @@
 /* The riser's value, placed beside it (DESIGN.md §7). It sits INSIDE its own column, to the
  * left of the riser, in the empty space under that column's tread — so it can never overlap
  * the next column's label and never spills outside the plot. */
-/* ON A PHONE THIS LABEL IS WIDER THAN ITS OWN COLUMN, and no value in this rule fixes that.
+/* ON A PHONE THIS LABEL IS WIDER THAN ITS OWN COLUMN. FIXED 2026-08-14 — SEE THE 30rem QUERY
+   AT THE FOOT OF THIS FILE, where the labels leave the plot entirely.
 
-   ═══ THE DEFECT IS NOW MEASURED RATHER THAN ASSERTED (2026-08-14) ═══
+   ═══ THE DEFECT AS IT WAS MEASURED (2026-08-14), KEPT BECAUSE IT IS THE ARGUMENT ═══
 
-   `label-collision.test.ts` counts it over three stated populations at 375px and 320px, and
-   `label-geometry.ts` holds the arithmetic. The counts are pinned there so a change reports.
-   The headline, at 375px: the scenario the page opens on has ZERO collisions; the roster on a
-   six-step combo has 153 colliding pairs across 98 of 173 champions; and a build carrying five
-   basic-attack riders has 4,296 pairs across 173 of 173, because riders turn a six-step combo
-   into as many as SIXTEEN columns — 12.69px each, for labels that need 76.96px.
+   `label-collision.test.ts` counted it over three stated populations at 375px and 320px, and
+   `label-geometry.ts` holds the arithmetic. The headline, at 375px, WITH THE LABELS IN THE PLOT:
+   the scenario the page opens on had ZERO collisions; the roster on a six-step combo had 153
+   colliding pairs across 98 of 173 champions; and a build carrying five basic-attack riders had
+   4,296 pairs across 173 of 173, because riders turn a six-step combo into as many as SIXTEEN
+   columns — 12.69px each, for labels that need 76.96px. The worst overlap was 22.09px, a full
+   line box: one damage figure printed directly on another.
+
+   Those figures are still asserted, as the IN_PLOT table in that test: they are what the fix is
+   measured against, and they are also what comes back if the query below is deleted.
 
    TWO CORRECTIONS TO WHAT THIS COMMENT USED TO SAY, both from that measurement:
 
@@ -260,23 +265,22 @@
       trace descends, so most horizontally-overlapping pairs are a line-height apart and do not
       touch. That is exactly why the default scenario is clean at 375px and collides at 320px.
 
-   STILL OPEN, AND STILL NOT A VALUE TO TUNE HERE. Both honest fixes need a length DESIGN.md does
-   not define, and the design file is the lead's. Re-costed against the measurement:
-     (a) a minimum column width, then scroll the plot as `.u-scroll-x` already scrolls the tables.
-         The measured requirement is 76.96px — the widest label in any population is 64.96px
-         ("1 240 mag") plus this 12px inset. On §4a's rule that a layout measure is --space-8 × n,
-         the smallest conforming value is 128px, which is the figure this comment already carried
-         by a different route. NEW COST, from the measurement: 203px of plot then shows ONE column
-         and part of a second, and a 16-column chart becomes 2,048px of scrolling. NEW HAZARD, not
-         previously noted: `overflow-x: auto` also clips the vertical, and the resistance-math
-         popover is drawn inside a column — a scroller would cut it off or add a second scrollbar.
-     (b) the labels leave the plot for a row beneath it, in sequence order, each keeping its tag
-         and its hue — §8's general form, "when a mandatory cue will not fit, move the cue — never
-         resize the data to accommodate it". Needs a threshold, i.e. a phone breakpoint, which
-         DESIGN.md does not have. The measurement ARGUES FOR THIS ONE: at 12.69px a column the
-         3px riser and its tread are still perfectly legible, so it is only the labels that have
-         run out of room, and only they need moving.
-   DO NOT pick one of these locally, and do not narrow the inset. */
+   WHICH OF THE TWO COSTED FIXES WAS TAKEN, AND WHY THE OTHER WAS NOT. This comment costed both
+   and could pick neither, because both needed a length DESIGN.md did not define. DESIGN.md §4b
+   now defines it — `--break-phone: 30rem` — and chose (b). The measurement is the reason.
+     (a) NOT TAKEN — a minimum column width, then scroll the plot as `.u-scroll-x` already scrolls
+         the tables. It needs 76.96px per column (the widest label in any population is 64.96px,
+         "1 240 mag", plus this 12px inset), which rounds to 128px on §4a's --space-8 × n rule.
+         203px of plot then shows ONE column and part of a second, and a 16-column chart becomes
+         2,048px of scrolling. It also breaks the resistance popover: `overflow-x: auto` clips the
+         vertical too, and the popover is drawn inside a column.
+     (b) TAKEN — the labels leave the plot for a row beneath it, in instance order, each naming
+         its instance and keeping its tag and its hue. §8's general form: "when a mandatory cue
+         will not fit, move the cue — never resize the data to accommodate it". At 12.69px a
+         column the 3px riser and its tread are still perfectly legible, so it was only ever the
+         labels that ran out of room, and only they move.
+   Do not narrow the inset, and do not add a second width query — §4b governs this and nothing
+   else. */
 .burn__label {
   position: absolute;
   inset-inline-end: var(--space-3);
@@ -325,17 +329,25 @@
 }
 
 /* The heal's figure. NO P/M/T TAG — a heal is not damage, and tagging it would make it read as
- * one. The leading "+" is the cue, and it survives greyscale, copy-paste and a screen reader. */
-.burn__heal-label {
-  position: absolute;
-  inset-inline-end: var(--space-3);
-  white-space: nowrap;
-  text-align: right;
+ * one. The leading "+" is the cue, and it survives greyscale, copy-paste and a screen reader.
+ *
+ * SPLIT IN TWO ON 2026-08-14. `--heal-figure` is what the figure LOOKS like and `--heal-label` is
+ * where the in-plot one SITS, because the same figure is now printed in two places: inside the
+ * plot above 30rem, and in the row beneath the plot below it (DESIGN.md §4b). Restating the four
+ * type declarations in a second rule is how the two would come to differ. */
+.burn__heal-figure {
   font-family: var(--font-mono);
   font-size: var(--type-num-l);
   font-weight: var(--weight-num-medium);
   line-height: var(--lh-num-l);
   color: var(--text-secondary);
+}
+
+.burn__heal-label {
+  position: absolute;
+  inset-inline-end: var(--space-3);
+  white-space: nowrap;
+  text-align: right;
   animation: burn-fade-in 120ms cubic-bezier(0.2, 0, 0, 1) backwards;
 }
 
@@ -532,6 +544,56 @@
 }
 
 /* --------------------------------------------------------------------------
+ * THE RISER LABELS, OUT OF THE PLOT (DESIGN.md §4b, added 2026-08-14).
+ *
+ * HIDDEN AT EVERY WIDTH EXCEPT ONE. `display: none` here and `display: flex` in the single
+ * 30rem query at the foot of this file — the labels are in the plot everywhere else, which is
+ * where §7 puts them and where they fit.
+ *
+ * IT WRAPS, AND THAT IS THE WHOLE OVERFLOW ARGUMENT. A sixteen-column chart is sixteen entries;
+ * as a wrapping flex row they run onto as many lines as they need. Nothing here can push the
+ * page sideways unless a SINGLE entry is wider than the row, which is a 320px measurement and
+ * not something this file can assert — it is measured in a real browser and asserted against
+ * `.burn__stack` in `label-collision.test.ts`.
+ *
+ * NO NEW COLOUR, SIZE OR SPACE. The figures are the same `DamageValue` markup as in the plot and
+ * carry their own hue and their own P/M/T tag; the instance name takes the x axis's own type
+ * role, because it is the x axis's own word.
+ * -------------------------------------------------------------------------- */
+
+.burn__stack {
+  display: none;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-2) var(--space-4);
+  margin: var(--space-3) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.burn__stack-item {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  /* Same fade, same per-column delay as the in-plot label it replaces, so the row resolves with
+   * the chart rather than appearing whole against a chart that is still drawing. Declared HERE
+   * rather than inside the query on purpose: the reduced-motion sweep in
+   * `../primitives/token-audit.test.ts` parses top-level rules, and an animation declared inside
+   * a media block would slip past it. */
+  animation: burn-fade-in 120ms cubic-bezier(0.2, 0, 0, 1) backwards;
+}
+
+/* The instance's name — "inst 3", "+DoT", "heal" — in the x axis's own type role, because it is
+ * the x axis's own label. Out of the plot a figure has lost the column that identified it. */
+.burn__stack-name {
+  font-family: var(--font-body);
+  font-size: var(--type-body-s);
+  line-height: var(--lh-body-s);
+  font-weight: var(--weight-body-medium);
+  color: var(--text-secondary);
+}
+
+/* --------------------------------------------------------------------------
  * Both verdicts, always printed as text (DESIGN.md §7). A two-row readout: scope, verdict.
  * -------------------------------------------------------------------------- */
 
@@ -713,10 +775,41 @@
 .burn--settled .burn__heal-label,
 .burn--settled .burn__hatch,
 .burn--settled .burn__label,
+.burn--settled .burn__stack-item,
 .burn--settled .burn__ghost,
 .burn--settled .burn__rule-stroke,
 .burn--settled .burn__callout {
   animation: none;
+}
+
+/* =========================================================================================
+ * THE ONE BREAKPOINT (DESIGN.md §4b, added 2026-08-14). It governs the burndown's riser
+ * labels and NOTHING ELSE — that is not a style preference, it is §4b's second rule, and a
+ * second use of this width needs its own entry in DESIGN.md and its own measurement.
+ *
+ * WHY A LITERAL AND NOT `var(--break-phone)`. CSS does not resolve custom properties in a media
+ * query's prelude; `@media (max-width: var(--break-phone))` never matches anything. So the
+ * literal is repeated here, exactly once in the whole product, and `label-collision.test.ts`
+ * asserts that it equals `--break-phone` in tokens.css so the two cannot drift apart.
+ *
+ * WHAT IT DOES. Below 30rem the labels leave the plot; the row beneath the plot, which is
+ * `display: none` everywhere else, takes their place. Exactly one of the two is ever displayed.
+ * Nothing else moves: risers, treads, trace, x axis, group bracket, verdicts, popover — all
+ * unchanged, because at 12.69px a column every one of them is still legible and it was only the
+ * labels that ran out of room.
+ *
+ * IT DOES NOT TOUCH THE ACCESSIBILITY TREE. Both label sets are `aria-hidden`; the sentence a
+ * screen reader hears is on the riser <button> and is identical at every width.
+ * ========================================================================================= */
+@media (max-width: 30rem) {
+  .burn__label,
+  .burn__heal-label {
+    display: none;
+  }
+
+  .burn__stack {
+    display: flex;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -726,6 +819,7 @@
   .burn__heal-label,
   .burn__hatch,
   .burn__label,
+  .burn__stack-item,
   .burn__ghost,
   .burn__rule-stroke,
   .burn__callout,

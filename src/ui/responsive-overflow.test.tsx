@@ -463,12 +463,23 @@ describe('responsive-overflow/no minimum width is wider than a phone', () => {
 // =========================================================================================
 
 describe('responsive-overflow/no locally invented breakpoint', () => {
-  // DESIGN.md contains exactly one viewport width: §7a's "roughly a 1280px viewport", written
-  // as 80rem. Everything else responsive in this product is intrinsic — `overflow-x: auto`,
-  // `minmax(0, 1fr)`, `min(measure, 100%)`, `repeat(auto-fit, …)` — and needs no threshold at
-  // all. That is not a coincidence and it is not thrift: a breakpoint is a design value, and
-  // DESIGN.md's preamble says to raise one rather than invent it. This is that rule, mechanised.
-  const PERMITTED = ['80rem'];
+  // DESIGN.md states TWO viewport widths, and no more. §7a's "roughly a 1280px viewport",
+  // written as 80rem; and §4b's `--break-phone`, 30rem, added 2026-08-14. Everything else
+  // responsive in this product is intrinsic — `overflow-x: auto`, `minmax(0, 1fr)`,
+  // `min(measure, 100%)`, `repeat(auto-fit, …)` — and needs no threshold at all. That is not a
+  // coincidence and it is not thrift: a breakpoint is a design value, and DESIGN.md's preamble
+  // says to raise one rather than invent it. This is that rule, mechanised.
+  //
+  // THE SECOND ENTRY WAS ADDED LATE, AND THE LAG IS THE POINT. §4b was written on 2026-08-14 and
+  // this list was not told, so the first area to use the new breakpoint went red on a query
+  // DESIGN.md explicitly permits. The agent that hit it raised it rather than editing this file,
+  // which is correct — this file is lead-only precisely so a new threshold cannot be waved
+  // through by whoever needs it.
+  //
+  // §4b permits `burndown.css` to repeat the literal because CSS does not resolve `var()` in a
+  // media-query prelude. That is the ONLY reason a literal is allowed here; a third width needs
+  // its own section in DESIGN.md and its own measurement before it may join this list.
+  const PERMITTED = ['80rem', '30rem'];
 
   it('every media-query width in a stylesheet is a width DESIGN.md states', () => {
     const offenders: string[] = [];
@@ -494,7 +505,7 @@ describe('responsive-overflow/no locally invented breakpoint', () => {
     expect(offenders).toEqual([]);
   });
 
-  it('finds the one breakpoint that does exist — the sweep is not looking at nothing', () => {
+  it('finds the breakpoints that do exist — the sweep is not looking at nothing', () => {
     const all = [...STYLESHEETS, ...COMPONENTS].flatMap((f) => [
       ...read(f).matchAll(/\((?:min|max)-width:\s*([^)]+)\)/g),
     ]);

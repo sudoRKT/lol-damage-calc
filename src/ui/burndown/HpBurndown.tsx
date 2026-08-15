@@ -415,6 +415,51 @@ export function HpBurndown({ result, title = 'HP burndown' }: HpBurndownProps) {
           {model.columns.length === 0 ? <li className="burn__xlabel">—</li> : null}
         </ol>
         <p className="burn__caption">sequence — not elapsed time</p>
+
+        {/* ═══ THE RISER LABELS, BELOW `--break-phone` (DESIGN.md §4b, added 2026-08-14) ═══
+
+            WHY THIS EXISTS. A riser label needs 76.96px of column, and the worst build a reader
+            can assemble — five basic-attack riders spread over sixteen columns — leaves it
+            12.69px. Measured over three populations in `label-collision.test.ts`: 4,296 pairs of
+            labels overlapping at 375px, the worst by 22.09px. That is a full line box: one damage
+            figure printed directly on top of another, which is the plausible wrong number this
+            product exists to prevent. There is no type size or inset that closes a gap that size,
+            so the labels move.
+
+            WHAT MOVES AND WHAT DOES NOT. Only the labels. Risers, treads, the trace, the x axis
+            and its group bracket are untouched — at 12.69px a column the 3px riser is still
+            perfectly legible, and the axis still shows which columns were one moment.
+
+            THE SAME MARKUP, NOT A SECOND RENDERING. Both this row and the in-plot label call
+            `DamageFigures`, so a figure cannot lose its P/M/T tag on one side and keep it on the
+            other. Exactly one of the two is displayed at any width; `burndown.css` switches them
+            at the single 30rem query, and NOTHING ELSE is switched there.
+
+            BOTH ARE `aria-hidden`. The whole sentence a screen reader hears is on the riser
+            <button>, and it does not change with width — §4b: "moving a label is a visual answer
+            to a visual problem."
+
+            Each entry names its instance, because out of the plot a figure has lost the column
+            that identified it. The name is the x axis's own word for it, so the two agree. */}
+        <ol className="burn__stack" aria-hidden="true">
+          {model.columns.map((column, i) =>
+            hasPrintedFigure(column) ? (
+              <li
+                className="burn__stack-item"
+                key={`${column.kind}-${column.position}`}
+                style={{ animationDelay: `${i * STEP_MS}ms` }}
+              >
+                <span className="burn__stack-name">{column.axisLabel}</span>
+                <DamageFigures column={column} />
+                {column.healing > 0 ? (
+                  <span className="burn__heal-figure">
+                    <HealFigure column={column} />
+                  </span>
+                ) : null}
+              </li>
+            ) : null,
+          )}
+        </ol>
       </div>
 
       {/* THE RULE IS EVERY TABLE, NOT THE ONE THAT WAS MEASURED TOO WIDE. This one is two rows
@@ -556,35 +601,18 @@ function Column({ column, index, maxHp, open, onOpen, onClose }: ColumnProps) {
         aria-hidden="true"
         style={{ bottom: pct(column.riserBottom), ...delay }}
       >
-        {column.kind === 'dot' ? (
-          // THE HATCH IS THE NON-COLOUR CUE (DESIGN.md §7). It rides beside the figure as
-          // well as filling the riser, because a burst that already reached zero leaves the
-          // riser no height to draw and the cue must not disappear with it.
-          <>
-            {column.segments.map((s) => (
-              <Fragment key={s.damageType}>
-                <span className={`burn__hatch burn__hatch--swatch burn__hatch--${s.damageType}`} />
-                <DamageValue value={s.damage} damageType={s.damageType} size="l" />
-              </Fragment>
-            ))}
-          </>
-        ) : column.damageType ? (
-          <DamageValue value={column.damage} damageType={column.damageType} size="l" />
-        ) : null}
+        <DamageFigures column={column} />
       </span>
 
       {/* THE HEAL'S FIGURE, and it carries NO P/M/T tag: a heal is not damage, and tagging it
           would make it read as one. The `+` sign is the cue that survives greyscale and copy. */}
       {column.healing > 0 ? (
         <span
-          className="burn__heal-label"
+          className="burn__heal-label burn__heal-figure"
           aria-hidden="true"
           style={{ bottom: pct(column.healRiserTop), ...delay }}
         >
-          +{column.healing}
-          {column.healingWasted > 0 ? (
-            <span className="burn__heal-waste"> ({column.healingWasted} wasted)</span>
-          ) : null}
+          <HealFigure column={column} />
         </span>
       ) : null}
 
@@ -605,6 +633,59 @@ function Column({ column, index, maxHp, open, onOpen, onClose }: ColumnProps) {
 
       {open ? <ResistancePopover id={popId} column={column} /> : null}
     </li>
+  );
+}
+
+/**
+ * THE FIGURES A COLUMN PRINTS, in ONE place, used by BOTH the in-plot label and the row beneath
+ * the plot (DESIGN.md §4b). Written out twice, these two could drift — one keeping the DoT hatch
+ * swatch or the P/M/T tag and the other losing it — and only one of them is on screen at any
+ * width, so the drift would be invisible to whoever made it.
+ */
+function DamageFigures({ column }: { column: BurndownColumn }) {
+  if (column.kind === 'dot') {
+    // THE HATCH IS THE NON-COLOUR CUE (DESIGN.md §7). It rides beside the figure as well as
+    // filling the riser, because a burst that already reached zero leaves the riser no height
+    // to draw and the cue must not disappear with it.
+    return (
+      <>
+        {column.segments.map((s) => (
+          <Fragment key={s.damageType}>
+            <span className={`burn__hatch burn__hatch--swatch burn__hatch--${s.damageType}`} />
+            <DamageValue value={s.damage} damageType={s.damageType} size="l" />
+          </Fragment>
+        ))}
+      </>
+    );
+  }
+  if (!column.damageType) return null;
+  return <DamageValue value={column.damage} damageType={column.damageType} size="l" />;
+}
+
+/** The heal's figure and its overhealing note. No P/M/T tag — the `+` is the cue. */
+function HealFigure({ column }: { column: BurndownColumn }) {
+  return (
+    <>
+      +{column.healing}
+      {column.healingWasted > 0 ? (
+        <span className="burn__heal-waste"> ({column.healingWasted} wasted)</span>
+      ) : null}
+    </>
+  );
+}
+
+/**
+ * Does this column PRINT a figure at all?
+ *
+ * The row beneath the plot carries exactly what the plot would have carried and nothing more: a
+ * column with no damage type and no healing draws no label inside the plot, so it gets no entry
+ * outside it either. Inventing an entry — a dash, a zero — for a column the chart says nothing
+ * about would be new content arriving with a breakpoint, which is not what §4b decided.
+ */
+function hasPrintedFigure(column: BurndownColumn): boolean {
+  return (
+    column.healing > 0 ||
+    (column.kind === 'dot' ? column.segments.length > 0 : column.damageType !== null)
   );
 }
 

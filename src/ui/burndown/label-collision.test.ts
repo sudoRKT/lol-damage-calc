@@ -1,6 +1,21 @@
 // @vitest-environment node
 //
-// DO THE RISER LABELS LAND ON TOP OF EACH OTHER ON A PHONE? — MEASURED, 2026-08-14.
+// DO THE RISER LABELS LAND ON TOP OF EACH OTHER ON A PHONE? — MEASURED, THEN FIXED, 2026-08-14.
+//
+// ═══ WHAT CHANGED, AND WHAT THIS FILE NOW HOLDS ═══
+//
+// They did: 4,296 overlapping pairs at 375px on the worst build a reader can assemble, the worst
+// of them by 22.09px, which is a full line box — one damage figure printed directly on another.
+// DESIGN.md §4b answered it with the product's one breakpoint: below `--break-phone` the labels
+// leave the plot and stack in a row beneath it. Nothing else moves.
+//
+// So there are TWO censuses here over the SAME populations, and the pair is the point:
+//
+//   IN_PLOT — what the labels do when they are in the plot. Still computed, still asserted. It is
+//             the counterfactual: what comes back if the 30rem query is deleted.
+//   PINNED  — what the page actually draws. Every `collidingPairs` is 0, and the column counts and
+//             column widths are asserted IDENTICAL to IN_PLOT, so a "fix" that quietly dropped or
+//             merged columns to reach zero would fail rather than pass.
 //
 // ═══ WHAT THIS TEST MEASURES. READ THIS BEFORE BELIEVING A NUMBER OUT OF IT. ═══
 //
@@ -49,6 +64,7 @@
 // heals, because no population above produces one. Not the x-axis labels underneath, which are a
 // different element with a different rule — counted below, never collision-checked.
 
+import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import type { Champion, ChampionConfig, ComboStep, Scenario } from '../../types';
 import type { Result } from '../../types/result';
@@ -63,18 +79,25 @@ import {
 import { loadRoster } from '../data/roster';
 import { fetchPublished } from '../data/published-files';
 import { startingCombo, startingConfig } from '../app/App';
-import { buildBurndownModel } from './geometry';
+import { buildBurndownModel, type BurndownModel } from './geometry';
+import type { LabelBox } from './label-geometry';
 import {
+  BREAK_PHONE_PX,
   COLS_INLINE_AT_320,
   COLS_INLINE_AT_375,
   LABEL_INSET_PX,
   MODEL_VALIDATION,
   PLOT_BLOCK_PX,
+  STACK_INLINE_AT_320,
+  STACK_INLINE_AT_375,
   collisions,
   damageValueInlinePx,
   labelBoxes,
+  labelsAreInPlot,
+  plotLabelBoxes,
   requiredColumnInlinePx,
   spillPastLeadingEdgePx,
+  stackedFigureInlinePx,
 } from './label-geometry';
 
 const roster = await loadRoster(fetchPublished);
@@ -180,7 +203,22 @@ interface Census {
   actualColumnPx: number;
 }
 
-function census(population: { name: string; result: Result }[], colsInlinePx: number): Census {
+/**
+ * WHERE THE BOXES COME FROM IS A PARAMETER, and that is the whole shape of this file after the
+ * fix. The same census runs twice over the same populations:
+ *
+ *   • `plotLabelBoxes(model, cols, viewport)` — WHAT THE PAGE DOES. Below `--break-phone` it
+ *     returns nothing, because the labels are not in the plot.
+ *   • `labelBoxes(model, cols)` — WHAT THE PAGE DID, and what it would do again if the query in
+ *     `burndown.css` were deleted. This is the counterfactual the fix is measured against.
+ */
+type BoxesOf = (model: BurndownModel, colsInlinePx: number) => LabelBox[];
+
+function census(
+  population: { name: string; result: Result }[],
+  colsInlinePx: number,
+  boxesOf: BoxesOf,
+): Census {
   let scenariosWithACollision = 0;
   let collidingPairs = 0;
   let worstOverlapPx = 0;
@@ -192,7 +230,7 @@ function census(population: { name: string; result: Result }[], colsInlinePx: nu
 
   for (const { name, result } of population) {
     const model = buildBurndownModel(result);
-    const boxes = labelBoxes(model, colsInlinePx);
+    const boxes = boxesOf(model, colsInlinePx);
     const found = collisions(boxes);
     maxColumns = Math.max(maxColumns, model.columns.length);
     worstSpillPx = Math.max(worstSpillPx, spillPastLeadingEdgePx(boxes));
@@ -238,8 +276,13 @@ describe('riser labels/the width model is the browser’s, not a guess', () => {
   it('predicts what Chrome actually did at 320px, pair for pair and to a hundredth of a pixel', () => {
     // THE ONE CASE WHERE THIS FILE AND A REAL BROWSER CAN BE COMPARED DIRECTLY, because it is the
     // scenario the page opens on and needs no interaction to reach. Chrome, 320×812, the
-    // calculator page: `.burn__cols` 148 × 320, two colliding pairs, the worse of them
-    // "47 mag" over "43 phys" — 12.27px of horizontal overlap and 9.71px of vertical.
+    // calculator page BEFORE the fix: `.burn__cols` 148 × 320, two colliding pairs, the worse of
+    // them "47 mag" over "43 phys" — 12.27px of horizontal overlap and 9.71px of vertical.
+    //
+    // IT IS STILL THE VALIDATION OF THE WIDTH MODEL after the fix, and it is not stale: the page
+    // no longer PUTS labels in the plot at 320px, but `labelBoxes` still computes where they
+    // would land, and that arithmetic is what both censuses below rest on. If the type scale, the
+    // font or the tag size moves, this is what says so.
     const model = buildBurndownModel(P1[0]!.result);
     const boxes = labelBoxes(model, COLS_INLINE_AT_320);
     const found = collisions(boxes);
@@ -312,23 +355,23 @@ describe('riser labels/the populations are the ones this test claims', () => {
 });
 
 /**
- * THE CENSUS — THE SIZE OF THE DEFECT, PINNED.
+ * ═══ THE BEFORE FIGURES — WHAT THE LABELS DID WHILE THEY WERE IN THE PLOT ═══
  *
- * A red suite blocks every merge (SPECIFICATION §14), so a measured-but-unfixed defect is pinned
- * here rather than left failing, in the same device `tests/cross-area-seams.test.ts` uses for
- * known drift: pin the number so that a CHANGE in it is what reports.
+ * These are the numbers this fix was built against, and they are NOT history: every one of them
+ * is still computed, from the same populations, by `labelBoxes` — the in-plot arithmetic, which
+ * is untouched. What changed is that the page no longer USES it below `--break-phone`.
  *
- * EVERY `collidingPairs` HERE MUST BECOME 0. They are the before-figures for a fix that has not
- * been made: it needs either a horizontally scrolling plot with a minimum column width, or the
- * labels moved out of the plot below some width — both of which need a length DESIGN.md does not
- * define, and DESIGN.md is the lead's file. `burndown.css` carries the costing.
+ * So this table is the counterfactual, and it is deliberately kept: it is what comes back if the
+ * 30rem query in `burndown.css` is deleted, and it is the only thing that makes the after table
+ * below mean anything. A row of zeroes with nothing beside it proves only that something was
+ * switched off — it cannot tell you whether it was the defect or the chart.
  *
  * These counts are data-dependent: they are a property of patch 16.16.1 as published, and a patch
  * that changes damage figures will move them. That movement is the report, not a fault — but read
  * `requiredColumnPx` against `actualColumnPx` before concluding anything from a count alone,
  * because those two are pure layout arithmetic and do not move with the data.
  */
-const PINNED: Record<string, Census> = {
+const IN_PLOT: Record<string, Census> = {
   'P1 at 375px': {
     scenarios: 1,
     scenariosWithACollision: 0,
@@ -397,31 +440,300 @@ const PINNED: Record<string, Census> = {
   },
 };
 
-describe('riser labels/how big the defect is', () => {
-  const cases: [string, { name: string; result: Result }[], number][] = [
-    ['P1 at 375px', P1, COLS_INLINE_AT_375],
-    ['P1 at 320px', P1, COLS_INLINE_AT_320],
-    ['P2 at 375px', P2, COLS_INLINE_AT_375],
-    ['P2 at 320px', P2, COLS_INLINE_AT_320],
-    ['P3 at 375px', P3, COLS_INLINE_AT_375],
-    ['P3 at 320px', P3, COLS_INLINE_AT_320],
-  ];
+/**
+ * ═══ THE AFTER FIGURES — WHAT THE PAGE ACTUALLY DRAWS ═══
+ *
+ * Every phone viewport is below `--break-phone`, so the plot holds NO labels at either width and
+ * every collision figure is 0. Not "fewer": none, and it is none for a structural reason rather
+ * than a lucky arrangement of this patch's numbers — there is no box to overlap another box.
+ *
+ * `maxColumns` and `actualColumnPx` are unchanged from the table above ON PURPOSE, and they are
+ * the assertion that the CHART did not move. Nothing was made narrower, nothing was dropped and
+ * no column was merged: a 16-column scenario is still 16 columns of 12.69px, still drawn, still
+ * clickable. Only the labels left.
+ *
+ * `worstSpillPx` and `requiredColumnPx` fall to 0 because both are properties of a label that is
+ * in the plot, and there are none.
+ */
+const PINNED: Record<string, Census> = {
+  'P1 at 375px': {
+    scenarios: 1,
+    scenariosWithACollision: 0,
+    collidingPairs: 0,
+    worstOverlapPx: 0,
+    worstOverlapWhere: '',
+    maxColumns: 4,
+    worstSpillPx: 0,
+    requiredColumnPx: 0,
+    actualColumnPx: 50.75,
+  },
+  'P1 at 320px': {
+    scenarios: 1,
+    scenariosWithACollision: 0,
+    collidingPairs: 0,
+    worstOverlapPx: 0,
+    worstOverlapWhere: '',
+    maxColumns: 4,
+    worstSpillPx: 0,
+    requiredColumnPx: 0,
+    actualColumnPx: 37,
+  },
+  'P2 at 375px': {
+    scenarios: 173,
+    scenariosWithACollision: 0,
+    collidingPairs: 0,
+    worstOverlapPx: 0,
+    worstOverlapWhere: '',
+    maxColumns: 7,
+    worstSpillPx: 0,
+    requiredColumnPx: 0,
+    actualColumnPx: 29,
+  },
+  'P2 at 320px': {
+    scenarios: 173,
+    scenariosWithACollision: 0,
+    collidingPairs: 0,
+    worstOverlapPx: 0,
+    worstOverlapWhere: '',
+    maxColumns: 7,
+    worstSpillPx: 0,
+    requiredColumnPx: 0,
+    actualColumnPx: 21.14,
+  },
+  'P3 at 375px': {
+    scenarios: 173,
+    scenariosWithACollision: 0,
+    collidingPairs: 0,
+    worstOverlapPx: 0,
+    worstOverlapWhere: '',
+    maxColumns: 16,
+    worstSpillPx: 0,
+    requiredColumnPx: 0,
+    actualColumnPx: 12.69,
+  },
+  'P3 at 320px': {
+    scenarios: 173,
+    scenariosWithACollision: 0,
+    collidingPairs: 0,
+    worstOverlapPx: 0,
+    worstOverlapWhere: '',
+    maxColumns: 16,
+    worstSpillPx: 0,
+    requiredColumnPx: 0,
+    actualColumnPx: 9.25,
+  },
+};
 
-  for (const [label, population, cols] of cases) {
-    it(`${label}: matches the pinned measurement`, () => {
-      expect({ label, ...census(population, cols) }).toEqual({ label, ...PINNED[label]! });
+/** The viewport each population is censused at, and the two lengths that follow from it. */
+const CASES: {
+  label: string;
+  population: { name: string; result: Result }[];
+  viewportPx: number;
+  colsInlinePx: number;
+  stackInlinePx: number;
+}[] = [
+  // prettier-ignore-style: one row per case, the two lengths lined up, because the point of this
+  // table is that 375 and 320 differ ONLY in the two widths that follow from the viewport.
+  { label: 'P1 at 375px', population: P1, viewportPx: 375,
+    colsInlinePx: COLS_INLINE_AT_375, stackInlinePx: STACK_INLINE_AT_375 },
+  { label: 'P1 at 320px', population: P1, viewportPx: 320,
+    colsInlinePx: COLS_INLINE_AT_320, stackInlinePx: STACK_INLINE_AT_320 },
+  { label: 'P2 at 375px', population: P2, viewportPx: 375,
+    colsInlinePx: COLS_INLINE_AT_375, stackInlinePx: STACK_INLINE_AT_375 },
+  { label: 'P2 at 320px', population: P2, viewportPx: 320,
+    colsInlinePx: COLS_INLINE_AT_320, stackInlinePx: STACK_INLINE_AT_320 },
+  { label: 'P3 at 375px', population: P3, viewportPx: 375,
+    colsInlinePx: COLS_INLINE_AT_375, stackInlinePx: STACK_INLINE_AT_375 },
+  { label: 'P3 at 320px', population: P3, viewportPx: 320,
+    colsInlinePx: COLS_INLINE_AT_320, stackInlinePx: STACK_INLINE_AT_320 },
+];
+
+describe('riser labels/what the page draws now', () => {
+  for (const { label, population, viewportPx, colsInlinePx } of CASES) {
+    it(`${label}: no label is in the plot, so nothing can collide`, () => {
+      const boxes: BoxesOf = (model, cols) => plotLabelBoxes(model, cols, viewportPx);
+      expect({ label, ...census(population, colsInlinePx, boxes) }).toEqual({
+        label,
+        ...PINNED[label]!,
+      });
+    });
+  }
+
+  it('the chart itself did not move — same columns, same widths, in every population', () => {
+    // THE HALF THAT WOULD CATCH A FIX THAT CHEATED. Zero collisions is trivially achievable by
+    // dropping columns, merging them or hiding the chart on a phone; §4b permits none of those.
+    // Every column count and every column width is asserted UNCHANGED against the before table.
+    for (const { label } of CASES) {
+      expect([label, PINNED[label]!.maxColumns, PINNED[label]!.actualColumnPx]).toEqual([
+        label,
+        IN_PLOT[label]!.maxColumns,
+        IN_PLOT[label]!.actualColumnPx,
+      ]);
+    }
+  });
+});
+
+describe('riser labels/the defect the fix answers, still measured', () => {
+  for (const { label, population, colsInlinePx } of CASES) {
+    it(`${label}: in the plot, it would still be this bad`, () => {
+      expect({ label, ...census(population, colsInlinePx, labelBoxes) }).toEqual({
+        label,
+        ...IN_PLOT[label]!,
+      });
     });
   }
 
   it('a label needs 76.96px of column and the worst case gives it 9.25px', () => {
-    // THE FIGURE A FIX HAS TO CLEAR, measured rather than picked: the widest label in any
+    // THE FIGURE THE FIX HAD TO CLEAR, measured rather than picked: the widest label in any
     // population is 64.96px ("1 240 mag") and it sits 12px in from its column's trailing edge, so
     // no two labels can touch only if every column is at least 76.96px wide. On DESIGN.md §4a's
     // rule that a layout measure is `--space-8 × n`, the smallest conforming value is 128px.
-    // At 375px the plot has 203px, so it would then show ONE full column and part of a second.
-    expect(PINNED['P3 at 320px']!.requiredColumnPx).toBeGreaterThan(
-      PINNED['P3 at 320px']!.actualColumnPx * 8,
+    // At 375px the plot has 203px, so it would then show ONE full column and part of a second —
+    // which is why DESIGN.md §4b moved the labels instead of widening the columns.
+    expect(IN_PLOT['P3 at 320px']!.requiredColumnPx).toBeGreaterThan(
+      IN_PLOT['P3 at 320px']!.actualColumnPx * 8,
     );
-    expect(Math.ceil(PINNED['P3 at 375px']!.requiredColumnPx / 64) * 64).toBe(128);
+    expect(Math.ceil(IN_PLOT['P3 at 375px']!.requiredColumnPx / 64) * 64).toBe(128);
   });
+
+  it('the two tables differ ONLY in the label figures — 4,296 pairs against 0', () => {
+    // The one-line statement of the whole change, so a reader does not have to diff two tables.
+    expect(IN_PLOT['P3 at 375px']!.collidingPairs).toBe(4296);
+    expect(PINNED['P3 at 375px']!.collidingPairs).toBe(0);
+    expect(IN_PLOT['P3 at 375px']!.worstOverlapPx).toBe(22.09);
+    expect(PINNED['P3 at 375px']!.worstOverlapPx).toBe(0);
+    expect(Object.values(PINNED).map((c) => c.collidingPairs)).toEqual([0, 0, 0, 0, 0, 0]);
+  });
+});
+
+/**
+ * ═══ THE BREAKPOINT ITSELF: THREE COPIES OF ONE NUMBER, HELD TOGETHER ═══
+ *
+ * CSS cannot resolve `var()` in a media query prelude, so the width exists three times — as
+ * `--break-phone` in tokens.css, as the literal `30rem` in burndown.css, and as `BREAK_PHONE_PX`
+ * in the model. Two of them silently disagreeing is the obvious way this fix rots, and none of
+ * the three can see the others. These assertions are the only thing that can.
+ *
+ * DESIGN.md §4b's second rule is also mechanical here: ONE query, for ONE job. A width query
+ * added for anything else fails this, by name, with the selector it tried to govern.
+ */
+describe('riser labels/the one breakpoint', () => {
+  // COMMENTS ARE STRIPPED FIRST, and this was not caution — the first version of the check below
+  // failed on this file's own prose. The comment above the query explains why the literal cannot
+  // be `var(--break-phone)`, and by writing that out it contained a second "@media (max-width:"
+  // which the scan then counted as a second query. The same trap `token-audit.test.ts` records
+  // for `.md` inside "DESIGN.md". A stylesheet is what it declares, never what it says about it.
+  const css = readFileSync(new URL('./burndown.css', import.meta.url), 'utf8').replace(
+    /\/\*[\s\S]*?\*\//g,
+    '',
+  );
+  const tokens = readFileSync(new URL('../tokens.css', import.meta.url), 'utf8');
+
+  it('the token, the query and the model all say 30rem / 480px', () => {
+    expect(tokens).toMatch(/--break-phone:\s*30rem;/);
+    expect(BREAK_PHONE_PX).toBe(480);
+    expect(BREAK_PHONE_PX / 16).toBe(30);
+  });
+
+  it('burndown.css contains exactly ONE width query, and it is the phone one', () => {
+    const widthQueries = [...css.matchAll(/@media[^{]*\((?:max|min)-width:[^)]*\)/g)].map((m) =>
+      m[0].replace(/\s+/g, ' ').trim(),
+    );
+    expect(widthQueries).toEqual(['@media (max-width: 30rem)']);
+  });
+
+  it('that query governs the labels and NOTHING else — §4b, checked rather than promised', () => {
+    // Every selector inside the block, listed. If a future change hides the y axis or shrinks the
+    // plot in here, this fails and names it — which is exactly the "general phone stylesheet"
+    // §4b forbids, caught at the moment it starts rather than after five more rules arrive.
+    const block = /@media\s*\(max-width:\s*30rem\)\s*\{([\s\S]*?)\n\}/.exec(css);
+    expect(block, 'the 30rem block was not found').not.toBeNull();
+    const selectors = [...block![1]!.matchAll(/([^{}]+)\{/g)]
+      .flatMap((m) => m[1]!.split(','))
+      .map((s) => s.trim())
+      .filter(Boolean)
+      .sort();
+    expect(selectors).toEqual(['.burn__heal-label', '.burn__label', '.burn__stack']);
+  });
+
+  it('the labels are in the plot above it and out of it below — 480px is the edge', () => {
+    expect(labelsAreInPlot(481)).toBe(true);
+    expect(labelsAreInPlot(480)).toBe(false);
+    expect(labelsAreInPlot(375)).toBe(false);
+    expect(labelsAreInPlot(320)).toBe(false);
+  });
+
+  it('the row beneath the plot is `display:none` by default, so it exists at ONE width only', () => {
+    const stack = /\.burn__stack\s*\{([^}]*)\}/.exec(css);
+    expect(stack![1]).toMatch(/display:\s*none/);
+    expect(stack![1]).toMatch(/flex-wrap:\s*wrap/);
+  });
+});
+
+/**
+ * ═══ CAN THE ROW ITSELF PUSH THE PAGE SIDEWAYS? ═══
+ *
+ * The row wraps, so the only way it can is a SINGLE entry wider than the row. This is the model's
+ * half of that question and it is a LOWER BOUND, not a width: the instance name is set in a
+ * proportional face this file does not model (`label-geometry.ts`, `stackedFigureInlinePx`). The
+ * other half is a browser measurement, because jsdom computes no layout and could not honestly
+ * assert it.
+ *
+ * ═══ THE BROWSER HALF, RE-DERIVED IN CHROME ON 2026-08-15 ═══
+ *
+ * It is written down here rather than left in a session, because a measurement nobody can find
+ * again is a claim. Chrome, the calculator page, `document.documentElement.clientWidth` as the
+ * layout viewport (the pane's `innerWidth` is a device-emulation artifact and is NOT the width
+ * the query sees):
+ *
+ *   width  | `.burn__stack`      | `.burn__label`  | `.burn__cols` | scrollX after (9999,0)
+ *   -------|---------------------|-----------------|---------------|-----------------------
+ *   320px  | flex, 204 × 44.78   | display: none   | 148 × 320     | 0, scrollWidth === client
+ *   375px  | flex, 259 × 44.78   | display: none   | 203 × 320     | 0, scrollWidth === client
+ *   480px  | flex                | display: none   | —             | —
+ *   481px  | display: none       | block           | —             | —
+ *   1265px | display: none       | block           | —             | —
+ *
+ * 204 and 259 are `STACK_INLINE_AT_320`/`_375` exactly, and 148/203 are `COLS_INLINE_AT_320`/
+ * `_375` exactly, so the arithmetic in `label-geometry.ts` is the browser's and not a guess.
+ * 480 against 481 is `labelsAreInPlot`'s edge, confirmed in the browser rather than assumed from
+ * the query text.
+ *
+ * NOTHING OUTSIDE A SCROLLER EXCEEDED THE VIEWPORT at either phone width: every element whose
+ * right edge passed it was inside an `overflow-x` ancestor — the breakdown tables, which scroll
+ * on purpose. Counted by walking `body *`, not by eye.
+ *
+ * THE 16-ENTRY CASE, which no fixture on the page can reach: the row was cloned to 16 entries in
+ * the live DOM at 320px. It wrapped to 203.13px tall, stayed 204px wide, and `scrollX` was still
+ * 0 with `body.scrollWidth === body.clientWidth`. Wrapping is what stops a rider build pushing
+ * the page sideways, and that is the measurement of it.
+ *
+ * THE ACCESSIBLE NAMES WERE IDENTICAL AT 320px, 375px AND 1265px — the same four strings, to the
+ * character, e.g. "Instance 1. Q — Light Binding. 58 magic damage. Health 1077.1 down to 1019.1
+ * of 1077.1. Verified." That is §4b's first rule, checked at the two widths that differ.
+ */
+describe('riser labels/the row beneath the plot', () => {
+  for (const { label, population, stackInlinePx } of CASES) {
+    it(`${label}: the widest entry's figures fit the row with room for its name`, () => {
+      let widest = 0;
+      let where = '';
+      for (const { name, result } of population) {
+        for (const column of buildBurndownModel(result).columns) {
+          const px = stackedFigureInlinePx(column);
+          if (px > widest) {
+            widest = px;
+            where = name;
+          }
+        }
+      }
+      expect({ label, fits: widest < stackInlinePx, where: where !== '' }).toEqual({
+        label,
+        fits: true,
+        where: true,
+      });
+      // The margin left for the proportional name, stated rather than implied: at 320px the row
+      // is 204px and the widest run of figures in the whole roster is under half of it.
+      expect(widest).toBeLessThan(stackInlinePx / 2);
+    });
+  }
 });

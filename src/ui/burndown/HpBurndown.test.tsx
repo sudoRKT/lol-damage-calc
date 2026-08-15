@@ -295,9 +295,21 @@ describe('burndown/visual-cues', () => {
     const { container } = render(<HpBurndown result={MOCK_RESULT} />);
     // The burst reached zero, so the DoT riser has no height left to draw — the swatch is
     // what keeps the non-colour cue present. Both must exist.
-    expect(container.querySelectorAll('.burn__hatch--riser').length).toBe(1);
-    expect(container.querySelectorAll('.burn__hatch--swatch').length).toBe(1);
-    expect(container.querySelectorAll('.burn__hatch--magic').length).toBe(2);
+    //
+    // SCOPED TO THE PLOT ON 2026-08-14, and the narrowing is the assertion getting SHARPER rather
+    // than being relaxed to pass. DESIGN.md §4b puts a second copy of every figure in the row
+    // beneath the plot, for the width where the labels leave it, so a bare document-wide count
+    // now reads 2 swatches where it means "the DoT column's label carries one". The rule this
+    // guards — the hatch rides beside the figure wherever the figure is — is asserted on BOTH
+    // copies below, which is strictly more than the original count checked.
+    const plot = container.querySelector('.burn__cols')!;
+    expect(plot.querySelectorAll('.burn__hatch--riser').length).toBe(1);
+    expect(plot.querySelectorAll('.burn__hatch--swatch').length).toBe(1);
+    expect(plot.querySelectorAll('.burn__hatch--magic').length).toBe(2);
+    // The same cue, in the row that replaces those labels below --break-phone.
+    const beneath = container.querySelector('.burn__stack')!;
+    expect(beneath.querySelectorAll('.burn__hatch--swatch').length).toBe(1);
+    expect(beneath.querySelectorAll('.burn__hatch--magic').length).toBe(1);
   });
 
   it('draws one solid lethal rule when the burst kills, and no dashed one', () => {
@@ -343,5 +355,72 @@ describe('burndown/visual-cues', () => {
     expect(cols.length).toBe(6);
     // No column carries a width of its own; they all take `flex: 1 1 0` from the stylesheet.
     expect(cols.filter((c) => (c as HTMLElement).style.width !== '')).toEqual([]);
+  });
+});
+
+// ═══════════════════════════════════════════════════════════════════════════════════════════
+// THE RISER LABELS OUT OF THE PLOT (DESIGN.md §4b).
+//
+// WHAT JSDOM CAN AND CANNOT SAY HERE, because it is easy to over-claim. jsdom loads no stylesheet
+// and evaluates no media query, so NOTHING below is evidence about which of the two label sets is
+// visible at 375px. What it CAN prove is the part that must hold at every width at once: that the
+// row exists, that it carries the same figures with the same tags as the plot does, that both are
+// out of the accessibility tree, and — the one §4b calls a rule rather than a preference — that
+// the sentence a screen reader hears is untouched by any of it.
+//
+// The visible half was measured in Chrome at 320px, 375px, 480px, 481px and 1265px; the readings
+// are written down in `label-collision.test.ts`, above "riser labels/the row beneath the plot".
+// ═══════════════════════════════════════════════════════════════════════════════════════════
+
+describe('burndown/labels below the breakpoint', () => {
+  it('the row beneath the plot exists, in instance order, each entry naming its instance', () => {
+    const { container } = render(<HpBurndown result={MOCK_RESULT} />);
+    const names = [...container.querySelectorAll('.burn__stack-name')].map((n) => n.textContent);
+    // ONE ENTRY PER PRINTED FIGURE, and my first version of this assertion had it wrong: I
+    // expected instance 4 — the `incomplete` one, which contributes 0 damage — to be absent.
+    // It is not, because the PLOT prints a figure for it too: the in-plot label is drawn for any
+    // column with a damage type, whatever its value. The row mirrors the plot exactly, which is
+    // the rule, so the fixture's six columns give six entries. Left recorded rather than quietly
+    // corrected, because "the row shows what the plot shows" is the only thing keeping the two
+    // from drifting, and a wrong expectation here would have hidden the first divergence.
+    expect(names).toEqual(['inst 1', 'inst 2', 'inst 3', 'inst 4', 'inst 5', '+DoT']);
+    const axis = [...container.querySelectorAll('.burn__xlabel')].map((n) => n.textContent);
+    // Every name in the row is a name the x axis already uses. The two never invent wordings.
+    expect(names.every((n) => axis.some((a) => a?.includes(n!)))).toBe(true);
+  });
+
+  it('the row carries the SAME figures as the plot, with their P/M/T tags intact', () => {
+    const { container } = render(<HpBurndown result={MOCK_RESULT} />);
+    const text = (root: Element) =>
+      [...root.querySelectorAll('.dmg')].map((d) => d.textContent).join(' | ');
+    const inPlot = [...container.querySelectorAll('.burn__label')].map(text).join(' || ');
+    const beneath = [...container.querySelectorAll('.burn__stack-item')].map(text).join(' || ');
+    expect(beneath).toBe(inPlot.split(' || ').filter(Boolean).join(' || '));
+    // The tag is present on both sides. A figure that lost its tag on the phone would be a
+    // colour-only damage type, which SPECIFICATION §10.1 forbids outright.
+    expect(container.querySelectorAll('.burn__stack .dmg__tag').length).toBeGreaterThan(0);
+  });
+
+  it('neither label set is in the accessibility tree — the risers carry the whole sentence', () => {
+    const { container } = render(<HpBurndown result={MOCK_RESULT} />);
+    expect(container.querySelector('.burn__stack')!.getAttribute('aria-hidden')).toBe('true');
+    for (const label of container.querySelectorAll('.burn__label')) {
+      expect(label.getAttribute('aria-hidden')).toBe('true');
+    }
+  });
+
+  it('THE ACCESSIBLE NAME IS IDENTICAL WITH THE ROW PRESENT — §4b’s first rule', () => {
+    // The strongest form jsdom can state: the row is in the DOM at every width, so if it changed
+    // what a screen reader hears, it would change it HERE. The names are the ones the
+    // accessible-names suite above asserts, unchanged, and no riser name gained a duplicate
+    // figure from the second copy of the label.
+    render(<HpBurndown result={MOCK_RESULT} />);
+    const names = screen.getAllByRole('button').map((b) => b.getAttribute('aria-label')!);
+    expect(names).toHaveLength(6);
+    expect(names[0]).toContain('Instance 1');
+    expect(names[0]).toContain('240 physical damage');
+    // One figure per name, not two: a name that had absorbed the stacked copy would repeat it.
+    expect(names[0]!.match(/physical damage/g)).toHaveLength(1);
+    expect(names.some((n) => n.includes('inst 1'))).toBe(false);
   });
 });

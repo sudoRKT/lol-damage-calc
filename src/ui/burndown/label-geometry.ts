@@ -17,6 +17,13 @@
 //
 // It still models a STATIC LAYOUT. Font loading failure (fallback to `ui-monospace`), a user's
 // minimum-font-size setting, or browser zoom would all move the real thing and are outside it.
+//
+// ═══ IT NOW MODELS A BREAKPOINT TOO (2026-08-14) ═══
+//
+// Below `--break-phone` the labels are not in the plot at all — DESIGN.md §4b moves them to a row
+// beneath it. `plotLabelBoxes` is the function that knows this and `labelBoxes` is the in-plot
+// arithmetic it calls above the breakpoint, kept whole and still asserted: it is what the fix is
+// measured AGAINST, and it is what would come back if the query were deleted.
 
 import { formatDamage, THIN_SPACE } from '../primitives';
 import type { BurndownColumn, BurndownModel } from './geometry';
@@ -56,6 +63,9 @@ export const LABEL_INSET_PX = 12;
 /** `.burn__hatch--swatch { inline-size: var(--space-3) }` — the DoT column's hatch swatch. */
 export const SWATCH_PX = 12;
 
+/** `.burn__stack-item { gap: var(--space-2) }` — between the instance name and its figures. */
+export const STACK_GAP_PX = 8;
+
 /**
  * THE WIDTH AVAILABLE TO THE COLUMNS AT A 375px VIEWPORT, and how it is arrived at.
  *
@@ -78,6 +88,39 @@ export const COLS_INLINE_AT_375 = 203;
 
 /** The same arithmetic at the narrowest viewport SPECIFICATION §10 has to hold at. */
 export const COLS_INLINE_AT_320 = 148;
+
+/**
+ * THE ROW BENEATH THE PLOT is wider than the columns are, by exactly the y-axis rail and the gap
+ * beside it: it starts at the plot's own padding box rather than after the axis.
+ *
+ *   375 − 48 (.app) − 32 (.burn padding) − 2 (.burn border) − 32 (.burn__plot padding)
+ *       − 2 (.burn__plot border) = 259, which is COLS_INLINE_AT_375 + 48 + 8.
+ *
+ * MEASURED IN CHROME at 375×812 and 320×812 on 2026-08-14, after the fix: `.burn__stack` reports
+ * 259px and 204px.
+ */
+export const STACK_INLINE_AT_375 = 259;
+export const STACK_INLINE_AT_320 = 204;
+
+/**
+ * `--break-phone` (DESIGN.md §4b), in px at the 16px root §3 assumes: 30rem.
+ *
+ * CSS cannot resolve a custom property inside a media query, so `burndown.css` repeats the
+ * literal `30rem` — once, by §4b's permission — and this constant is the model's copy of it.
+ * `label-collision.test.ts` asserts all three agree: the token, the query, and this number.
+ */
+export const BREAK_PHONE_PX = 480;
+
+/**
+ * Are the riser labels drawn INSIDE the plot at this viewport width?
+ *
+ * `@media (max-width: 30rem)` matches at exactly 480px, so the labels are in the plot only
+ * ABOVE it. Below and at it they are printed in the row beneath the plot, where they are in
+ * normal flow and cannot overlap anything.
+ */
+export function labelsAreInPlot(viewportPx: number): boolean {
+  return viewportPx > BREAK_PHONE_PX;
+}
 
 /**
  * Four labels read off the live page at a 375px viewport, against what this model predicts for
@@ -203,6 +246,41 @@ export function labelBoxes(model: BurndownModel, colsInlinePx: number): LabelBox
     }
   });
   return boxes;
+}
+
+/**
+ * WHERE THE LABELS ACTUALLY ARE at a given viewport width — the whole fix, expressed in the
+ * model (DESIGN.md §4b).
+ *
+ * Above the breakpoint this is `labelBoxes` unchanged. At or below it the plot holds NO labels,
+ * so there are no boxes and there is nothing that can collide. That is not an assumption the
+ * model makes about the CSS: the query, the token and `BREAK_PHONE_PX` are asserted to agree in
+ * `label-collision.test.ts`, and the row itself is measured in a real browser, because jsdom
+ * computes no layout and a media query it never evaluates could not tell us anything.
+ */
+export function plotLabelBoxes(
+  model: BurndownModel,
+  colsInlinePx: number,
+  viewportPx: number,
+): LabelBox[] {
+  return labelsAreInPlot(viewportPx) ? labelBoxes(model, colsInlinePx) : [];
+}
+
+/**
+ * The MONOSPACE part of one entry in the row beneath the plot: its figures, plus the gap between
+ * the instance name and the first of them.
+ *
+ * HONEST SCOPE, and it is the reason this is not called a width. The instance name — "inst 12",
+ * "+DoT" — is set in `--font-body`, a PROPORTIONAL face, and this file models monospace advance
+ * widths only. So this is a LOWER BOUND on the entry, exact in its mono part and silent about
+ * the name. The row's real behaviour at 320px is a browser measurement, not this.
+ *
+ * It is still worth having: the figures are the part that grows with the data, and the row wraps,
+ * so the only way the page can be pushed sideways is a SINGLE entry exceeding the row.
+ */
+export function stackedFigureInlinePx(column: BurndownColumn): number {
+  const heal = healLabelInlinePx(column);
+  return STACK_GAP_PX + riserLabelInlinePx(column) + (heal > 0 ? STACK_GAP_PX + heal : 0);
 }
 
 function labelText(column: BurndownColumn): string {
