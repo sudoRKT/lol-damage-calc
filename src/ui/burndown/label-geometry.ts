@@ -63,8 +63,27 @@ export const LABEL_INSET_PX = 12;
 /** `.burn__hatch--swatch { inline-size: var(--space-3) }` — the DoT column's hatch swatch. */
 export const SWATCH_PX = 12;
 
-/** `.burn__stack-item { gap: var(--space-2) }` — between the instance name and its figures. */
+/** `.burn__stack-item { gap: var(--space-2) }` — in front of EVERY child, name and figures alike. */
 export const STACK_GAP_PX = 8;
+
+/**
+ * THE WIDEST INSTANCE NAME THE ROW CAN EVER PRINT, in `--font-body` at `--type-body-s`.
+ *
+ * The name is the one part of an entry this file cannot compute: IBM Plex Sans is proportional
+ * and the model is monospace-only. So it is MEASURED instead, in Chrome on the live calculator
+ * page at 320px, over the whole vocabulary of names the chart can produce — `column.axisLabel`
+ * is `inst N`, `+DoT` or `heal`, and nothing else:
+ *
+ *   "heal"     21.67px      "+DoT"     25.89px
+ *   "inst 1"   27.88px      "inst 16"  34.47px   ← the widest, and 16 columns is the worst
+ *                                                  case a user can build (`P3`)
+ *
+ * IT IS AN UPPER BOUND USED AS ONE. The entry with the widest FIGURES is always the `+DoT`
+ * column, whose name is 25.89px, so pairing the worst name with the worst figures describes an
+ * entry that cannot occur. That is the point: the row assertion should not have to reason about
+ * which name lands on which entry.
+ */
+export const STACK_NAME_MAX_PX = 34.47;
 
 /**
  * THE WIDTH AVAILABLE TO THE COLUMNS AT A 375px VIEWPORT, and how it is arrived at.
@@ -267,20 +286,51 @@ export function plotLabelBoxes(
 }
 
 /**
- * The MONOSPACE part of one entry in the row beneath the plot: its figures, plus the gap between
- * the instance name and the first of them.
+ * The MONOSPACE part of one entry in the row beneath the plot: its figures, plus one flex gap
+ * before each of them.
+ *
+ * ═══ THIS WAS WRONG UNTIL 2026-08-15, AND THE CURATED MERGE IS WHAT EXPOSED IT ═══
+ *
+ * It used to be `STACK_GAP + riserLabelInlinePx(column)` — the IN-PLOT label's width plus one
+ * gap. That is right for a burst column and wrong for a `+DoT` column, because the two are laid
+ * out by different boxes: `.burn__label` is `display: block`, so its swatches and figures sit
+ * flush, while `.burn__stack-item` is `display: flex; gap: var(--space-2)`, so EVERY child gets
+ * 8px in front of it. A two-segment DoT entry has four children and therefore four gaps, of
+ * which the old arithmetic counted one — understating the entry by 24px.
+ *
+ * It went unnoticed because no column in the roster carried more than one DoT segment until the
+ * curated data landed. Corki's `+DoT` (W — Valkyrie physical, E — Gatling Gun magic) is the
+ * first, and it is still the only one: 2 of 3,667 columns across P2 and P3.
+ *
+ * BOTH SHAPES ARE NOW BROWSER-MEASURED, so this is not a second guess replacing a first:
+ *   • in the plot, Chrome reports `.burn__label` 135.03px for that column; `riserLabelInlinePx`
+ *     says 135.04. The block layout was right all along and is untouched.
+ *   • in the row, Chrome reports 167.03px from the name's trailing edge to the entry's, against
+ *     143.04 from the old arithmetic. This function now returns the browser's figure.
+ *
+ * ═══ THE SWATCH IS NOT IN THE ROW ANY MORE (`burndown.css`, same date) ═══
+ *
+ * `.burn__stack .burn__hatch--swatch { display: none }`, so the swatches and the gaps that
+ * belong to them leave the layout entirely — `display: none` removes a flex item and its gap
+ * together, which Chrome confirms. So an entry is one gap per FIGURE and nothing else.
  *
  * HONEST SCOPE, and it is the reason this is not called a width. The instance name — "inst 12",
  * "+DoT" — is set in `--font-body`, a PROPORTIONAL face, and this file models monospace advance
- * widths only. So this is a LOWER BOUND on the entry, exact in its mono part and silent about
- * the name. The row's real behaviour at 320px is a browser measurement, not this.
- *
- * It is still worth having: the figures are the part that grows with the data, and the row wraps,
- * so the only way the page can be pushed sideways is a SINGLE entry exceeding the row.
+ * widths only. So this is the entry MINUS its name. `STACK_NAME_MAX_PX` is the browser
+ * measurement that closes the gap, and the two are added in `label-collision.test.ts`.
  */
 export function stackedFigureInlinePx(column: BurndownColumn): number {
+  const figures =
+    column.kind === 'dot'
+      ? column.segments.reduce(
+          (w, s) => w + STACK_GAP_PX + damageValueInlinePx(s.damage, s.damageType),
+          0,
+        )
+      : column.damageType
+        ? STACK_GAP_PX + damageValueInlinePx(column.damage, column.damageType)
+        : 0;
   const heal = healLabelInlinePx(column);
-  return STACK_GAP_PX + riserLabelInlinePx(column) + (heal > 0 ? STACK_GAP_PX + heal : 0);
+  return figures + (heal > 0 ? STACK_GAP_PX + heal : 0);
 }
 
 function labelText(column: BurndownColumn): string {

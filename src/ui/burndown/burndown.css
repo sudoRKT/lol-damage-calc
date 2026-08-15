@@ -575,12 +575,53 @@
   display: flex;
   align-items: baseline;
   gap: var(--space-2);
+  /* AN ENTRY WRAPS INSIDE ITSELF, so no figure width can ever push it out of the row
+   * (added 2026-08-15). The row above wraps BETWEEN entries, which is what stops sixteen
+   * columns pushing the page sideways; it does nothing about ONE entry being wider than the
+   * row, and that is exactly what the curated merge produced. Corki's `+DoT` column carries a
+   * figure per damage type, and with a six-item build it measured 205.72px in Chrome against a
+   * 204px row at 320px — out of the row by 1.72px, on a scenario a user can assemble.
+   *
+   * `flex-wrap: wrap` alone is enough: measured in Chrome, an over-wide entry is held at
+   * exactly the row's 204px and breaks onto a second line instead of escaping. No
+   * `max-inline-size: 100%` is needed, which also keeps this rule off the token audit's
+   * length allowlist — a file this area does not own.
+   *
+   * THIS IS THE GUARANTEE, and the swatch rule below is the headroom. Together the widest
+   * entry in the roster is 165.72px in that 204px row, so the wrap is a backstop that today's
+   * data never reaches rather than a layout the reader meets. */
+  flex-wrap: wrap;
   /* Same fade, same per-column delay as the in-plot label it replaces, so the row resolves with
    * the chart rather than appearing whole against a chart that is still drawing. Declared HERE
    * rather than inside the query on purpose: the reduced-motion sweep in
    * `../primitives/token-audit.test.ts` parses top-level rules, and an animation declared inside
    * a media block would slip past it. */
   animation: burn-fade-in 120ms cubic-bezier(0.2, 0, 0, 1) backwards;
+}
+
+/* --------------------------------------------------------------------------
+ * THE DoT HATCH SWATCH IS DROPPED IN THE ROW, AND ONLY IN THE ROW (added 2026-08-15).
+ *
+ * In the plot, `DamageFigures` puts a 12px hatch swatch beside each `+DoT` figure because the
+ * riser may have no height left to carry the hatch (see `HpBurndown.tsx`). That reasoning is
+ * about a label with no name beside it. THE ROW ENTRY HAS A NAME, and the name is the word
+ * `+DoT` — which by DESIGN.md §8's own argument ("a word is a stronger non-colour channel")
+ * is a better cue than the texture it replaces, and it is present on every entry at every
+ * width. Each figure also still carries its own hue AND its own `phys`/`mag`/`true` word, so
+ * nothing here is left to colour alone and §7's hatch is untouched everywhere it is the cue.
+ *
+ * WHAT IT BUYS, measured in Chrome at 320px on Corki with six ability-power items: the widest
+ * entry in the product falls from 205.72px to 165.72px in a 204px row — from 1.72px OUT of the
+ * row to 38.28px inside it. 40px, of which 24 is the swatches and 16 is the flex gaps beside
+ * them that go with them.
+ *
+ * IT IS NOT IN THE 30rem QUERY, and that is deliberate. `.burn__stack` is `display: none` at
+ * every other width, so this rule can only ever have an effect below the breakpoint — and
+ * DESIGN.md §4b's second rule caps that query at the three selectors it already governs.
+ * -------------------------------------------------------------------------- */
+
+.burn__stack .burn__hatch--swatch {
+  display: none;
 }
 
 /* The instance's name — "inst 3", "+DoT", "heal" — in the x axis's own type role, because it is
