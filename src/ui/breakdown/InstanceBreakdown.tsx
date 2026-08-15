@@ -263,6 +263,15 @@ export function InstanceBreakdown({ result, patch }: InstanceBreakdownProps) {
           than silently omitted." */}
       {result.excludedMechanics.length > 0 ? (
         <section className="breakdown-panel__block" aria-label="Mechanics this result excludes">
+          {/* THIS ONE STAYS OPEN, AND THE TWO SWEEP CURVES' COPIES DO NOT — decided 2026-08-15
+              rather than applied uniformly, because SPECIFICATION §11 names one surface:
+              "Every excluded mechanic is stated visibly in the RESULT rather than silently
+              omitted." This is that result. Collapsing it would need a ruling on whether a
+              22-count on a button is "stated visibly", and that is a question to raise, not to
+              answer by writing code that assumes an answer.
+              The curves are a different surface printing a near-identical copy of the same list,
+              which is where the page length actually came from: 5,386px of the 7,997px this list
+              occupied three times over. */}
           <h3 className="breakdown-panel__eyebrow">Mechanics this result excludes</h3>
           <ul className="breakdown-panel__list breakdown-panel__list--plain">
             {result.excludedMechanics.map((m) => (

@@ -57,6 +57,7 @@ import type { LevelRankPolicy, RankSchedule, Ranks, SweepSeries } from '../../en
 import type { SlotShortfall } from './rank-shortfall';
 import {
   AggregateTotal,
+  Disclosure,
   TableScroller,
   VerificationStatusMark,
   formatReadout,
@@ -390,6 +391,20 @@ export function DamageCurve({
         </figcaption>
       </figure>
 
+      {/* THE CHART IS THE POINT; THE TABLE IS NOT. Collapsed by default since 2026-08-15.
+          Measured at 375px: the level curve's table is 1,004px over 18 rows and the resistance
+          curve's is 825px over 13, on a page that was 19,442px tall.
+          NOTHING IS LOST AND THAT IS THE CONDITION. The table is the only place a reader can read
+          an exact figure off a curve rather than eyeball it, and it is the only place a REFUSED
+          point states the engine's reason — so it is one click away with its row count on the
+          control, never absent. The chart above it is untouched and still draws every point,
+          including the refused ones as hatched bands. */}
+      <Disclosure
+        label={`${heading}, point by point`}
+        count={series.points.length}
+        noun="point"
+        className="curve-panel__table-disclosure"
+      >
       <TableScroller label={`${heading}, point by point`}>
         <table className="curve-table">
           <caption className="u-visually-hidden">
@@ -482,6 +497,7 @@ export function DamageCurve({
           </tbody>
         </table>
       </TableScroller>
+      </Disclosure>
 
       {/* THE REGION NAME BELOW CARRIES THE CHART'S TITLE, and that is not decoration.
           `InstanceBreakdown` names a region "Excluded from these totals" too, and the calculator
@@ -513,12 +529,18 @@ export function DamageCurve({
 
       {series.excludedMechanics.length > 0 ? (
         <section className="curve-panel__block" aria-label="Mechanics this curve excludes">
-          <h3 className="curve-panel__eyebrow">Mechanics this curve excludes</h3>
+          {/* COLLAPSED, NOT REMOVED — see the same note in `InstanceBreakdown.tsx`. This block is
+              2,693px at 375px and the page carries two of these curves, so the two together were
+              5,386px of a 19,442px page. The list is kept whole and per-curve: a curve excludes
+              something a single result does not, and a reader judging THIS curve must be able to
+              read what THIS curve leaves out. */}
+          <Disclosure label="Mechanics this curve excludes" count={series.excludedMechanics.length} noun="mechanic">
           <ul className="curve-panel__list">
             {series.excludedMechanics.map((mechanic) => (
               <li key={mechanic}>{mechanic}</li>
             ))}
           </ul>
+          </Disclosure>
         </section>
       ) : null}
 
@@ -527,12 +549,13 @@ export function DamageCurve({
           engine's notes verbatim, which is what they always were. */}
       {shownNotes.length > 0 ? (
         <section className="curve-panel__block" aria-label="How this curve was produced">
-          <h3 className="curve-panel__eyebrow">How this curve was produced</h3>
+          <Disclosure label="How this curve was produced" count={shownNotes.length} noun="note">
           <ul className="curve-panel__list">
             {shownNotes.map((note) => (
               <li key={note}>{note}</li>
             ))}
           </ul>
+          </Disclosure>
         </section>
       ) : null}
     </section>

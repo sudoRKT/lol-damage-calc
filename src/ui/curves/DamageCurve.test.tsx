@@ -11,7 +11,7 @@
 // exercised at roster scale in `roster-curves.test.ts`.
 
 import { describe, expect, it, afterEach } from 'vitest';
-import { cleanup, render, screen, within } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen, within } from '@testing-library/react';
 import { buildSeries, type SweepPoint } from '../../engine';
 import { DamageCurve, verdictText } from './DamageCurve';
 import {
@@ -88,9 +88,26 @@ const BASIC = buildSeries<null>({
   notes: ['Only the target’s resistance moves along this curve.'],
 });
 
+
+/**
+ * Open every collapsed section, then assert.
+ *
+ * THE TABLE AND THE TWO NOTE LISTS ARE COLLAPSED BY DEFAULT since 2026-08-15 — the two curves on
+ * the calculator page were printing 5,386px of near-identical exclusions plus 1,829px of table on
+ * a 19,442px page at 375px. Nothing was removed; it is one click away with its count on the
+ * control. So a test that asserts the CONTENT must click first, which is also a stronger test than
+ * it was: it now proves the content is reachable, not merely that it was rendered.
+ */
+function openAll() {
+  for (const button of screen.queryAllByRole('button', { expanded: false })) {
+    fireEvent.click(button);
+  }
+}
+
 describe('DamageCurve — every point is in the accessibility tree', () => {
   it('renders one table row per point, refused points included', () => {
     render(<DamageCurve series={BASIC} />);
+    openAll();
     // 1 header row + 4 point rows.
     expect(screen.getAllByRole('row')).toHaveLength(5);
     expect(screen.getByRole('rowheader', { name: '100 armor' })).toBeTruthy();
@@ -98,6 +115,7 @@ describe('DamageCurve — every point is in the accessibility tree', () => {
 
   it('states the engine’s own reason for a refused point, in visible text', () => {
     render(<DamageCurve series={BASIC} />);
+    openAll();
     const cell = screen.getByText(/percentage bonus armor penetration/);
     expect(cell.textContent).toContain('Refused');
     expect(cell.textContent).toContain('defender.armor');
@@ -105,12 +123,14 @@ describe('DamageCurve — every point is in the accessibility tree', () => {
 
   it('speaks every damage figure’s type in full', () => {
     render(<DamageCurve series={BASIC} />);
+    openAll();
     // 900 = 800 physical + 100 magic. AggregateTotal builds the whole sentence as one text node.
     expect(screen.getByText('900 total damage — 800 physical, 100 magic')).toBeTruthy();
   });
 
   it('gives both verdicts, on every computed row (SPECIFICATION §3.8)', () => {
     render(<DamageCurve series={BASIC} />);
+    openAll();
     // Two verdict columns per row, so each row's wording appears twice — and with no damage over
     // time the two verdicts agree, which is the correct answer rather than a duplicate.
     expect(screen.getAllByText('Lethal at instance 3')).toHaveLength(2);
@@ -120,6 +140,7 @@ describe('DamageCurve — every point is in the accessibility tree', () => {
 
   it('names the scroll region and says that it scrolls', () => {
     render(<DamageCurve series={BASIC} title="Damage versus armor" />);
+    openAll();
     const region = screen.getByRole('region', { name: /Damage versus armor, point by point/ });
     expect(region.getAttribute('aria-label')).toContain('scrolls sideways');
     expect((region as HTMLElement).tabIndex).toBe(0);
@@ -127,6 +148,7 @@ describe('DamageCurve — every point is in the accessibility tree', () => {
 
   it('puts every table it renders inside that region', () => {
     const { container } = render(<DamageCurve series={BASIC} />);
+    openAll();
     for (const table of container.querySelectorAll('table')) {
       expect(table.closest('.u-scroll-x')).not.toBeNull();
     }
@@ -135,6 +157,7 @@ describe('DamageCurve — every point is in the accessibility tree', () => {
 
   it('describes the picture in words, since the picture itself is hidden', () => {
     const { container } = render(<DamageCurve series={BASIC} />);
+    openAll();
     const figure = container.querySelector('figure')!;
     const description = figure.querySelector('figcaption')!.textContent ?? '';
     expect(description).toContain('target armor');
@@ -149,6 +172,7 @@ describe('DamageCurve — every point is in the accessibility tree', () => {
 describe('DamageCurve — the plot draws what the model says and no more', () => {
   it('draws one polyline per contiguous run, so the refused point is a gap', () => {
     const { container } = render(<DamageCurve series={BASIC} showTargetHealth={false} />);
+    openAll();
     // burst: runs [0,50] and [150] -> 2 polylines. No DoT anywhere, health switched off.
     expect(container.querySelectorAll('polyline.curve__line--burst')).toHaveLength(2);
     expect(container.querySelectorAll('polyline.curve__line--dot')).toHaveLength(0);
@@ -157,11 +181,13 @@ describe('DamageCurve — the plot draws what the model says and no more', () =>
 
   it('draws the target-health line by default, so the crossing is visible', () => {
     const { container } = render(<DamageCurve series={BASIC} />);
+    openAll();
     expect(container.querySelectorAll('polyline.curve__line--targetHealth')).toHaveLength(2);
   });
 
   it('marks the refused point on the axis', () => {
     const { container } = render(<DamageCurve series={BASIC} />);
+    openAll();
     const marks = container.querySelectorAll('.curve__refused');
     expect(marks).toHaveLength(1);
     expect((marks[0] as HTMLElement).style.insetInlineStart).toBe('66.6667%');
@@ -169,6 +195,7 @@ describe('DamageCurve — the plot draws what the model says and no more', () =>
 
   it('every stroke keeps its width in real pixels rather than stretching with the plot', () => {
     const { container } = render(<DamageCurve series={BASIC} />);
+    openAll();
     for (const line of container.querySelectorAll('polyline, line')) {
       expect(line.getAttribute('vector-effect')).toBe('non-scaling-stroke');
     }
@@ -176,6 +203,7 @@ describe('DamageCurve — the plot draws what the model says and no more', () =>
 
   it('carries a legend entry for every line it drew, plus one for the refusals', () => {
     render(<DamageCurve series={BASIC} />);
+    openAll();
     const legend = screen.getByRole('list', { name: 'What each line is' });
     expect(within(legend).getByText('Burst total')).toBeTruthy();
     expect(within(legend).getByText('Target health')).toBeTruthy();
@@ -186,6 +214,7 @@ describe('DamageCurve — the plot draws what the model says and no more', () =>
 describe('DamageCurve — the honesty fields are shown, not logged', () => {
   it('says how much of the range computed', () => {
     render(<DamageCurve series={BASIC} />);
+    openAll();
     expect(screen.getByText('4 points · 3 computed · 1 refused')).toBeTruthy();
   });
 
@@ -196,6 +225,7 @@ describe('DamageCurve — the honesty fields are shown, not logged', () => {
       points: [computed(0, 900, { contributors: ['W — Infernal Chains'] }), computed(50, 700)],
     });
     render(<DamageCurve series={varying} />);
+    openAll();
     const alarm = screen.getByRole('region', { name: 'These points are not comparable' });
     expect(alarm.textContent).toContain('W — Infernal Chains');
     expect(alarm.textContent).toContain('a gap in the data rather than a change in the game');
@@ -208,6 +238,7 @@ describe('DamageCurve — the honesty fields are shown, not logged', () => {
       points: [computed(0, 900, { contributors: ['E — Chain'] }), computed(50, 700, { contributors: ['E — Chain'] })],
     });
     render(<DamageCurve series={partial} />);
+    openAll();
     expect(screen.getByText(/floor on the damage, not the damage/).textContent).toContain(
       'E — Chain',
     );
@@ -217,6 +248,7 @@ describe('DamageCurve — the honesty fields are shown, not logged', () => {
 
   it('lists the mechanics the engine excluded and the conventions it applied', () => {
     render(<DamageCurve series={BASIC} />);
+    openAll();
     const mechanics = screen.getByRole('region', { name: 'Mechanics this curve excludes' });
     expect(within(mechanics).getByText('shields')).toBeTruthy();
     const notes = screen.getByRole('region', { name: 'How this curve was produced' });
@@ -225,6 +257,7 @@ describe('DamageCurve — the honesty fields are shown, not logged', () => {
 
   it('shows a verification status on every computed row', () => {
     render(<DamageCurve series={BASIC} />);
+    openAll();
     expect(screen.getAllByText('Derived')).toHaveLength(3);
   });
 });
@@ -232,6 +265,7 @@ describe('DamageCurve — the honesty fields are shown, not logged', () => {
 describe('DamageCurve — the two canonical mock series render', () => {
   it('draws the resistance curve, with its one refused point left as a gap', () => {
     const { container } = render(<DamageCurve series={MOCK_RESISTANCE_SERIES} />);
+    openAll();
     // 7 points, 6 computed and consecutive, so ONE segment per line — and the refusal at the start
     // of the range is a mark rather than a line reaching back to it.
     expect(container.querySelectorAll('polyline.curve__line--burst')).toHaveLength(1);
@@ -242,6 +276,7 @@ describe('DamageCurve — the two canonical mock series render', () => {
 
   it('draws the level curve and calls out that its points are not comparable', () => {
     const { container } = render(<DamageCurve series={MOCK_LEVEL_SERIES} />);
+    openAll();
     expect(container.querySelectorAll('.curve__refused')).toHaveLength(5);
     expect(container.querySelectorAll('polyline.curve__line--burst')).toHaveLength(1);
     const alarm = screen.getByRole('region', { name: 'These points are not comparable' });
@@ -255,6 +290,7 @@ describe('DamageCurve — the two canonical mock series render', () => {
       points: [refused(1), refused(2), refused(3)],
     });
     const { container } = render(<DamageCurve series={allRefused} />);
+    openAll();
     expect(container.querySelectorAll('polyline')).toHaveLength(0);
     expect(container.querySelectorAll('.curve__refused')).toHaveLength(3);
     expect(screen.getAllByRole('row')).toHaveLength(4);
@@ -280,6 +316,7 @@ describe('DamageCurve — the rank schedule is printed, because a curve cannot b
         series={MOCK_RANK_LEVEL_SERIES}
       />,
     );
+    openAll();
     const block = screen.getByRole('region', { name: 'Ability ranks along this curve' });
     expect(within(block).getByText('Levelling order: Q then W then E')).toBeTruthy();
     expect(block.textContent).toContain('not a fact about this champion');
@@ -292,6 +329,7 @@ describe('DamageCurve — the rank schedule is printed, because a curve cannot b
         series={MOCK_RANK_LEVEL_SERIES}
       />,
     );
+    openAll();
     const block = screen.getByRole('region', { name: 'Ability ranks along this curve' });
     // The series' notes say a levelling order produced it, so the caller's claim is CONTRADICTED
     // and the chart says which one the engine recorded rather than quietly printing the caller's.
@@ -307,6 +345,7 @@ describe('DamageCurve — the rank schedule is printed, because a curve cannot b
         series={MOCK_RANK_LEVEL_SERIES}
       />,
     );
+    openAll();
     const block = screen.getByRole('region', { name: 'Ability ranks along this curve' });
     expect(within(block).getByText('Q6 W6 E6 R6')).toBeTruthy();
     expect(within(block).getByText('Q5 W5 E5 R3')).toBeTruthy();
@@ -314,18 +353,24 @@ describe('DamageCurve — the rank schedule is printed, because a curve cannot b
 
   it('is absent entirely when no ranks were supplied — a resistance curve grows nothing', () => {
     render(<DamageCurve series={MOCK_RESISTANCE_SERIES} />);
+    openAll();
     expect(screen.queryByRole('region', { name: 'Ability ranks along this curve' })).toBeNull();
   });
 });
 
 describe('DamageCurve — a top below the configured build is stated, not drawn over', () => {
-  const unreachable = () =>
-    render(
+  // The helper opens the collapsed sections itself, so every caller asserts against the content
+  // rather than against a closed control.
+  const unreachable = () => {
+    const r = render(
       <DamageCurve
         ranks={{ configured: MOCK_RANK_BUILD_UNREACHABLE, policy: PRIORITY }}
         series={MOCK_RANK_LEVEL_SERIES}
       />,
     );
+    openAll();
+    return r;
+  };
 
   it('says the top of the curve is below the build, and names every short slot', () => {
     unreachable();
@@ -376,13 +421,16 @@ describe('DamageCurve — a top below the configured build is stated, not drawn 
 });
 
 describe('DamageCurve — levelling is not a defect and is not marked as one', () => {
-  const reachable = () =>
-    render(
+  const reachable = () => {
+    const r = render(
       <DamageCurve
         ranks={{ configured: MOCK_RANK_BUILD_REACHABLE, policy: PRIORITY }}
         series={MOCK_RANK_LEVEL_SERIES}
       />,
     );
+    openAll();
+    return r;
+  };
 
   it('draws NO mark when the top of the curve is the configured build', () => {
     const { container } = reachable();
@@ -415,6 +463,7 @@ describe('DamageCurve — the rank column, and what it does to a refused row', (
         series={MOCK_RANK_LEVEL_SERIES}
       />,
     );
+    openAll();
     const row = screen.getByRole('row', { name: /attacker level 18/ });
     expect(within(row).getByText('Q5 W5 E5 R3')).toBeTruthy();
     // Level 18 meets this build exactly, so the cell carries no shortfall label at all.
@@ -428,6 +477,7 @@ describe('DamageCurve — the rank column, and what it does to a refused row', (
         series={MOCK_RANK_LEVEL_SERIES}
       />,
     );
+    openAll();
     const row = screen.getByRole('row', { name: /attacker level 13/ });
     expect(within(row).getByText('Q5 W5 E1 R2')).toBeTruthy();
     // TWO LINES, not one string — see `shortfallCellParts` for the 49px of page scroll the
@@ -443,6 +493,7 @@ describe('DamageCurve — the rank column, and what it does to a refused row', (
         series={MOCK_RANK_LEVEL_SERIES}
       />,
     );
+    openAll();
     const row = screen.getByRole('row', { name: /attacker level 18/ });
     expect(within(row).getByText('below your build, never reached')).toBeTruthy();
     expect(within(row).getByText('Q 5 of 6, W 5 of 6, E 5 of 6, R 3 of 6')).toBeTruthy();
@@ -463,6 +514,7 @@ describe('DamageCurve — the rank column, and what it does to a refused row', (
         series={MOCK_RANK_LEVEL_SERIES}
       />,
     );
+    openAll();
     const row = screen.getByRole('row', { name: /attacker level 18/ });
     const lines = within(row).getAllByRole('cell')[0]!.querySelectorAll('.curve-table__short-line');
     expect(lines).toHaveLength(2);
@@ -477,6 +529,7 @@ describe('DamageCurve — the rank column, and what it does to a refused row', (
         series={MOCK_RANK_LEVEL_SERIES}
       />,
     );
+    openAll();
     const row = screen.getByRole('row', { name: /attacker level 4/ });
     expect(row.textContent).toContain('Refused.');
     expect(row.textContent).toContain('an unlearned ability cannot be cast');
@@ -491,6 +544,7 @@ describe('DamageCurve — the rank column, and what it does to a refused row', (
 
   it('adds no column at all when no ranks were supplied', () => {
     render(<DamageCurve series={MOCK_RANK_LEVEL_SERIES} />);
+    openAll();
     expect(screen.queryByRole('columnheader', { name: 'Ability ranks' })).toBeNull();
     const row = screen.getByRole('row', { name: /attacker level 4/ });
     expect(within(row).getByRole('cell').getAttribute('colspan')).toBe('6');
@@ -505,6 +559,7 @@ describe('DamageCurve — a series with no ranks in it is reported, not reassure
         series={MOCK_RESISTANCE_SERIES}
       />,
     );
+    openAll();
     const block = screen.getByRole('region', { name: 'Ability ranks along this curve' });
     expect(block.textContent).toContain(
       '6 of the 6 computed points do not record the ability ranks they were drawn at',
@@ -520,6 +575,7 @@ describe('DamageCurve — a series with no ranks in it is reported, not reassure
         series={MOCK_RESISTANCE_SERIES}
       />,
     );
+    openAll();
     // One per computed row — all six of them. The refused row keeps its spanning refusal cell and
     // gets no rank cell at all, which is why this is 6 and not 7.
     expect(screen.getAllByText('this point does not record its ability ranks')).toHaveLength(6);

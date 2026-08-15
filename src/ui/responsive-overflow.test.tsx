@@ -47,7 +47,7 @@
 // anchored to a 47px column on a phone.
 
 import { describe, expect, it, afterEach } from 'vitest';
-import { cleanup, render, screen } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import type { ReactNode } from 'react';
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { dirname, join, relative } from 'node:path';
@@ -163,6 +163,24 @@ const FIXTURES: Fixture[] = [
   },
 ];
 
+
+/**
+ * Render a fixture with every collapsed section OPENED.
+ *
+ * `DamageCurve` collapses its point-by-point table by default since 2026-08-15, to stop two
+ * curves adding 1,829px of table to a page that was 19,442px tall at 375px. A collapsed table
+ * cannot overflow, so a sweep that rendered the default state would pass by finding nothing —
+ * which is exactly the failure the population check below exists to catch. Opening first makes
+ * this sweep STRONGER than it was: it now measures the state a reader actually puts the table in.
+ */
+function renderOpened(node: ReactNode) {
+  const r = render(<>{node}</>);
+  for (const button of screen.queryAllByRole('button', { expanded: false })) {
+    fireEvent.click(button);
+  }
+  return r;
+}
+
 describe('responsive-overflow/population', () => {
   it('knows every file in the area that renders a table', () => {
     const found = COMPONENTS.filter((f) => /<table[\s>]/.test(stripJs(read(f)))).map(rel).sort();
@@ -184,7 +202,7 @@ describe('responsive-overflow/population', () => {
     let tables = 0;
     for (const fixture of FIXTURES) {
       cleanup();
-      render(<>{fixture.node}</>);
+      renderOpened(fixture.node);
       const here = document.querySelectorAll('table').length;
       expect(here, `${fixture.id} rendered ${here} tables, expected ${fixture.tables}`).toBe(
         fixture.tables,
@@ -205,7 +223,7 @@ describe('responsive-overflow/every table scrolls inside its own region', () => 
     const offenders: string[] = [];
     for (const fixture of FIXTURES) {
       cleanup();
-      render(<>{fixture.node}</>);
+      renderOpened(fixture.node);
       for (const table of document.querySelectorAll('table')) {
         if (!table.closest('.u-scroll-x')) {
           offenders.push(
@@ -224,7 +242,7 @@ describe('responsive-overflow/every table scrolls inside its own region', () => 
     const offenders: string[] = [];
     for (const fixture of FIXTURES) {
       cleanup();
-      render(<>{fixture.node}</>);
+      renderOpened(fixture.node);
       for (const region of document.querySelectorAll('.u-scroll-x')) {
         if ((region as HTMLElement).tabIndex !== 0) {
           offenders.push(`${fixture.id}: a scroll region is not focusable`);
@@ -238,7 +256,7 @@ describe('responsive-overflow/every table scrolls inside its own region', () => 
     const offenders: string[] = [];
     for (const fixture of FIXTURES) {
       cleanup();
-      render(<>{fixture.node}</>);
+      renderOpened(fixture.node);
       // Asked of the accessibility tree, not of the markup: this is the same engine a
       // `getByRole(…, { name })` query uses, so it is what a screen reader would say.
       const named = screen.queryAllByRole('region', { name: /\S/ });

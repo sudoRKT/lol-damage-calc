@@ -287,3 +287,59 @@
   font-weight: var(--weight-body-medium);
   color: var(--text-secondary);
 }
+
+/* ═══ THE DISCLOSURE ═══
+ *
+ * A collapsed section that states its own size. See `Disclosure.tsx` for the measurement that
+ * made it necessary — the same 22-item exclusions list printed three times was 41.1% of the
+ * calculator page.
+ *
+ * The toggle is styled as the eyebrow heading it replaces, so a closed disclosure reads as a
+ * section heading with a count rather than as a new kind of control. Every value here is already
+ * in DESIGN.md: no new colour, size, spacing step, radius or border. Nothing animates, so no
+ * `prefers-reduced-motion` block is required and the token audit passes. */
+.disclosure__toggle {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  inline-size: 100%;
+  padding: var(--space-2) 0;
+  background: none;
+  border: 0;
+  border-block-end: var(--border-steel);
+  cursor: pointer;
+  text-align: start;
+  color: var(--text-secondary);
+}
+
+.disclosure__label {
+  font-size: var(--type-eyebrow);
+  line-height: var(--lh-eyebrow);
+  letter-spacing: var(--ls-eyebrow);
+  text-transform: uppercase;
+}
+
+/* THE COUNT IS THE POINT OF THE CLOSED STATE. It is monospace and a shade brighter than the
+   label, because a reader deciding whether to open something is entitled to know how much is
+   behind it — a collapsed section that conceals its own size is what makes collapsing feel like
+   hiding. It is not damage data, so it takes no reserved hue. */
+.disclosure__count {
+  margin-inline-start: auto;
+  font-family: var(--font-mono);
+  font-size: var(--type-num-s);
+  font-weight: var(--weight-num-medium);
+  color: var(--text-primary);
+}
+
+.disclosure__glyph {
+  font-size: var(--type-body-s);
+}
+
+.disclosure__body {
+  padding-block-start: var(--space-3);
+}
+
+.disclosure__toggle:focus-visible {
+  outline: 2px solid var(--text-primary);
+  outline-offset: 2px;
+}

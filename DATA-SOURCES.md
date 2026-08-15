@@ -5549,3 +5549,58 @@ Neither would have been caught by reading it.
 - **It crashed on the first real run**, because skipping `build/` from the copy removed
   `merge-refusals.json`, which `build-ability-files.ts` needs to carry the 18 gate-1 refusals into
   the served files as named gaps (§53.2).
+
+---
+
+## 64. The calculator page was 24 screens on a phone (2026-08-15)
+
+### 64.1 The measurement, and the cause it was NOT
+
+**DEFINITION: `documentElement.scrollHeight` over `clientHeight`, default Lux vs Garen scenario,
+measured on the live page.** At 375×812: **19,442px, 23.94 screens.** At 1440×1100: 10,151px, 9.23
+screens — against 2.99 after the August layout pass. **Mounting the two sweep curves did this, and
+the session that mounted them never re-measured the page.**
+
+The obvious cause was the data tables. **It was wrong.** The curve tables are 1,004px and 825px.
+
+**The cause is that the same 22-item exclusions list is printed THREE times on one page** — once by
+the per-instance breakdown and once by each curve — at 2,611px, 2,693px and 2,693px. **7,997px,
+41.1% of the whole page, is one list repeated.** The three texts are 5,971–5,972 characters and 21
+of their 22 items are identical.
+
+### 64.2 What was done, and the one thing that was NOT
+
+`src/ui/primitives/Disclosure.tsx`: a collapsed section that states its own size. **The count is on
+the button on purpose** — a collapsed section that conceals how much it hides is what makes
+collapsing feel like hiding. It reuses the `aria-expanded` pattern `InstanceBreakdown` has had
+since it was built, so the page has one disclosure idiom rather than two. No new token, no
+animation.
+
+Collapsed by default: each curve's exclusions, each curve's notes, each curve's point-by-point
+table. **Nothing is removed.** The table is the only place a reader can read an exact figure off a
+curve rather than eyeball it, and the only place a refused point states the engine's reason.
+
+**THE RESULT'S OWN EXCLUSIONS BLOCK STAYS OPEN, and that is a decision rather than an oversight.**
+SPECIFICATION §11 names one surface: *"Every excluded mechanic is stated visibly in the RESULT
+rather than silently omitted."* Whether a 22-count on a button is "stated visibly" is a genuine
+ambiguity, and CLAUDE.md says to raise such a thing rather than answer it by writing code that
+assumes an answer. **It is raised, not resolved.** Merging the three lists into one page-level list
+was the other option and is wrong: a curve excludes something a single result does not, so merging
+would silently drop a real exclusion.
+
+### 64.3 The result, and what is NOT achievable
+
+| | before | after |
+|---|---:|---:|
+| 1440×1100 | 10,151px · **9.23 screens** | 5,505px · **5.00 screens** |
+| 375×812 | 19,442px · **23.94 screens** | 11,564px · **14.24 screens** |
+
+The two curves fell from 9,781px to 1,903px at 375px.
+
+**The targets of 4 screens at 1440 and 8 at 375 are NOT reachable by collapsing anything else, and
+here is exactly what stands in the way.** What remains at 375px: the result's exclusions 2,611px,
+the items panel 2,033px, the configuration panel 1,539px, the two curves 1,903px, the burndown
+838px, the combo 370px. Reaching 8 screens means removing a further 5,068px, and every candidate is
+either information §11 requires or a control the reader configures the scenario with. **So the
+remaining distance is two decisions — the §11 ruling above, and whether the input panels collapse
+once configured — not an implementation.**

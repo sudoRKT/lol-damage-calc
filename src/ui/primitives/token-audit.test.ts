@@ -141,6 +141,21 @@ const LENGTH_ALLOWLIST: Array<{ value: string; rule: string; reason: string }> =
   },
   {
     value: '2px',
+    rule: '.disclosure__toggle:focus-visible',
+    reason:
+      'DESIGN.md §6 states the focus ring verbatim: a 2px bone outline offset 2px. The ' +
+      'disclosure toggle is a button and must show focus like every other button.',
+  },
+  {
+    value: '100%',
+    rule: '.disclosure__toggle',
+    reason:
+      'a full-width hit area, not a measured length. The toggle replaces a block-level heading, ' +
+      'so it spans its container exactly as that heading did — there is no width here to take ' +
+      'from a token, and DESIGN.md defines no measure for "as wide as the thing it is inside".',
+  },
+  {
+    value: '2px',
     rule: '.u-scroll-x:focus-visible',
     reason:
       'DESIGN.md §6 states the focus ring verbatim: a 2px bone outline offset 2px. The scroll ' +

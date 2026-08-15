@@ -48,3 +48,6 @@ export type {
   VerificationStatusMarkProps,
   VerificationDisplayState,
 } from './VerificationStatusMark';
+
+export { Disclosure, disclosureName } from './Disclosure';
+export type { DisclosureProps } from './Disclosure';
