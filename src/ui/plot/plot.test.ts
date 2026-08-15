@@ -33,6 +33,27 @@ describe('niceTicks — a zero-origin axis', () => {
 });
 
 describe('domainTicks — an axis that does not start at zero', () => {
+  it('never puts a tick on top of the MIN endpoint — the guard the max end always had', () => {
+    // FOUND 2026-08-15 by the curves area, by importing this module into a live page rather than
+    // by reading it. Both endpoints are pinned, so an interior tick landing beside one collides
+    // with it — and the min end had no mirror of the loop's `v < max - step / 2`.
+    //
+    // The measured case: this returned [99, 100, 150, 200, 250, 300]. The first pair sat 0.5% of
+    // the span apart, about 0.9px of pitch against a 16.5px label — -15.6px of separation at
+    // 320px and -15.3px at 375px. It overlaps at EVERY width; it is not a phone problem.
+    //
+    // It was unreachable because App.tsx hard-codes the resistance sweep at 0 to 300 by 25. It
+    // becomes reachable the moment a caller sweeps from a champion's current armor, which
+    // SPECIFICATION §11 invites — so this is pinned before that caller exists.
+    expect(domainTicks({ min: 99, max: 300 }, 5)).toEqual([99, 150, 200, 250, 300]);
+  });
+
+  it('and still refuses one crowding the MAX endpoint, which is what it always did', () => {
+    const ticks = domainTicks({ min: 0, max: 301 }, 5);
+    expect(ticks[ticks.length - 1]).toBe(301);
+    expect(ticks[ticks.length - 2]! <= 301 - 50 / 2).toBe(true);
+  });
+
   it('always includes both ends, because a curve missing its own endpoints is unreadable', () => {
     const ticks = domainTicks({ min: 1, max: 18 });
     expect(ticks[0]).toBe(1);

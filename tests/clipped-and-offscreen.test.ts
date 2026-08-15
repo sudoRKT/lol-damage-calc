@@ -239,10 +239,16 @@ const DRAWS_INSIDE_ITS_OWN_BOX: Record<string, string> = {
   'compare/compare.css .cmp__tick':
     'an axis value under the comparison track — a short number in a box the panel sizes.',
   'curves/curves.css .curve__xtick':
-    'an axis label under the plot. **NOT a clean bill of health**: measured at 320px on ' +
-    '2026-08-15 these have 0.42px of separation on a four-column chart and NEGATIVE separation ' +
-    'on six and seven columns, reading as `inst 1inst 2inst 3+DoT`. That is overlap rather than ' +
-    'escape, it is real, and it is DESIGN.md §4b\'s to answer.',
+    'an axis value under the plot — a short NUMBER, in monospace, in the plot\'s own rail. ' +
+    'MEASURED 2026-08-15 at 320px across seven chart instances: 0 collisions, smallest separation ' +
+    '+9.48px, and about 70px of axis to spare before it would reach zero. ' +
+    '**THIS ENTRY CARRIED THE WRONG DEFECT UNTIL 2026-08-15 AND IT COST AN AGENT A SESSION.** It ' +
+    'said these labels read as `inst 1inst 2inst 3+DoT` — but this axis only ever prints numbers, ' +
+    'and those strings are written by `burndown/geometry.ts` and rendered as `.burn__xlabel`. The ' +
+    'file header 90 lines below always attributed the finding to the burndown correctly; the ' +
+    'lead attached it to the wrong selector here. Three things disproved it independently: the ' +
+    'font (this renders JetBrains Mono, whose 6.6047px advance the reported 28.6px is not a ' +
+    'multiple of), the provenance of the strings, and the header\'s own wording.',
   'curves/curves.css .curve__refused':
     'a zero-width anchor for the hatched refused band; the band inside it is a fixed flex basis, ' +
     'so neither can grow with content.',

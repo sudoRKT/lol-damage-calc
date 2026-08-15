@@ -73,7 +73,22 @@ export function domainTicks(domain: Domain, maxIntervals = 5): number[] {
   const first = Math.ceil(min / step) * step;
   for (let v = first; v < max - step / 2; v += step) {
     const rounded = Number(v.toFixed(6));
-    if (rounded > min) out.push(rounded);
+    // ═══ BOTH ENDS ARE GUARDED. THE MIN END WAS NOT, UNTIL 2026-08-15 ═══
+    //
+    // Both endpoints are PINNED — a reader must see the domain's actual limits — so an interior
+    // tick landing next to one of them collides with it. The max end was guarded by the loop's
+    // own `v < max - step / 2`; the min end had no mirror, and `rounded > min` only refused a tick
+    // sitting exactly ON it.
+    //
+    // MEASURED: `domainTicks({ min: 99, max: 300 }, 5)` returned `[99, 100, 150, 200, 250, 300]`.
+    // The first pair sits 0.5% of the span apart — about 0.9px of pitch against a 16.5px label —
+    // giving **-15.6px of separation at 320px and -15.3px at 375px**. Not a phone problem: the
+    // labels overlap at every width.
+    //
+    // NOT REACHABLE TODAY, which is why nobody had seen it: `App.tsx` hard-codes the resistance
+    // sweep at 0 to 300 by 25, and levels are fixed 1 to 18. It becomes reachable the first time a
+    // caller sweeps from a champion's CURRENT armor, which SPECIFICATION §11 invites.
+    if (rounded > min + step / 2) out.push(rounded);
   }
   out.push(max);
   return out;
