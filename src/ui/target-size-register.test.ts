@@ -42,6 +42,18 @@
 // **A measurement that lives only in a commit message is a measurement the project has lost.** No
 // test reads it, no reader finds it, and the next person re-does it. If you measure a control, the
 // figure belongs HERE, in the same commit as the measuring.
+//
+// ═══ THIS REGISTER'S OWN WEAKNESS, NAMED 2026-08-16 ═══
+//
+// **A figure from `getBoundingClientRect` is true of any element, interactive or not.** What this
+// file cannot ask is what `elementFromPoint` RETURNS at those coordinates — and on 2026-08-15 that
+// turned out to be the difference between a control and a decoration. `.defences__control` was
+// registered, measured, and was a `<div>` that accepted no pointer anywhere: the published 22.5px
+// belonged to a different box, and the real target was an unrecorded 13x13px checkbox.
+//
+// So a `measured` figure means "this box is big enough", never "this box is the one that is
+// clicked". Entries that have had the second question asked say so explicitly — `combo/` has, via
+// `combo/pointer-targets.test.ts`, over 43,412 grid samples. **The other areas have not.**
 
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { dirname, join, relative } from 'node:path';
@@ -84,11 +96,13 @@ type Pass =
 const CONTROLS: Record<string, Pass> = {
   'combo/combo.css .combo__control': {
     how: 'size',
-    measured: '34.47 x 25.39px at 375px, 2026-08-15. Was 18.47 x 21.39 with 22.47px centres — 12 of 12 undersized, 16 violating pairs — and is the defect that produced --target-min.',
+    measured: '34.47 x 25.39px at 375px, 2026-08-15. Was 18.47 x 21.39 with 22.47px centres — 12 of 12 undersized, 16 violating pairs — and is the defect that produced --target-min. '+
+      "Confirmed 2026-08-16 to be the element that RECEIVES the click, not merely the box that measures: a 1px grid over all 8 instances resolved 850/850 points each to that control at both 375px and 1440px, via elementFromPoint(...).closest('button'). A 24x24px square on its centre is 576/576.",
   },
   'combo/combo.css .combo__control--remove': {
     how: 'size',
-    measured: '35.22 x 25.39px at 375px, 2026-08-15. Centres 46.84px from the nearest arrow.',
+    measured: '35.22 x 25.39px at 375px, 2026-08-15. Centres 46.84px from the nearest arrow. '+
+      "Confirmed 2026-08-16 as the click recipient: 875/875 grid points on three of four instances, 874/875 on one (the miss at (34.5, 24.5), the final sub-pixel corner of a fractional box). NO sample anywhere in the area's sweep resolved to a remove control from OUTSIDE its own box, so a mis-aimed tap near it does nothing rather than deleting a step.",
   },
   'combo/combo.css .combo__shelf-button': {
     how: 'size',
@@ -98,7 +112,8 @@ const CONTROLS: Record<string, Pass> = {
       "as passing by SIZE because the box is the chip's and the chip is a token — " +
       '--art-chip-combo (32px) plus 1px of border each side. Identical at 1440px, where the shelf ' +
       'is one row rather than two, and identical again with the lane squeezed to 238px: the shelf ' +
-      'WRAPS rather than shrinking, so no width takes it under the minimum. NOTHING WAS GROWN.',
+      'WRAPS rather than shrinking, so no width takes it under the minimum. NOTHING WAS GROWN. '+
+      "Confirmed 2026-08-16 as the click recipient: 1666/1666 grid points on all 5 instances at both widths. The chip's damage-type word beneath the art is INSIDE the button, so the whole 49.19px column is one contiguous target.",
   },
   'combo/combo.css .combo__shelf-button--text': {
     how: 'size',
@@ -111,7 +126,8 @@ const CONTROLS: Record<string, Pass> = {
       'now name --target-min on the base class so the arithmetic cannot quietly stop clearing it. ' +
       'Independently reproduced to the pixel by two sessions four hours apart (b323e9b, then a ' +
       'measurement pass that did not read it) — which is the only reason this entry says REFUTED ' +
-      'rather than "one person once said".',
+      'rather than "one person once said". '+
+      "Confirmed 2026-08-16 as the click recipient: 3492/3589 grid points at 375px and 3588/3589 at 1440px. The 97 misses are the single final row of a 36.84px box — device-pixel rounding of a fractional height, and the count moves with the box's sub-pixel offset. A 24x24px square on its centre is 576/576.",
   },
   'items/items.css .items__remove': {
     how: 'size',
