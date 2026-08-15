@@ -23,6 +23,7 @@ import { useLayoutEffect, useRef, useState } from 'react';
 import type { ComboStep } from '../../types';
 import { AbilityChip } from '../art/AbilityChip';
 import { abilityIconUrl } from '../data/roster';
+import { focusAfterRemoval } from '../primitives';
 import {
   BASIC_ATTACK_REF,
   appendStep,
@@ -48,48 +49,6 @@ export interface ComboBuilderProps {
   patch: string;
   /** Named in the section heading, e.g. "Lux". */
   championName: string;
-}
-
-/**
- * WHERE FOCUS GOES WHEN A ROW IS REMOVED. One rule, stated once.
- *
- * **Focus moves to the same control on the row that takes the removed row's place; if the
- * removed row was the last, to that control on the new last row; and if the list is now empty,
- * to the control that adds a new row.**
- *
- * WHY THIS EXISTS. Measured on the live calculator on 2026-08-15: pressing a step's remove
- * control left `document.activeElement === document.body`. The removal was announced correctly,
- * so a screen reader user was told the step had gone and then had nowhere to stand, and a
- * keyboard user restarted tabbing from the top of the document. The same measurement found the
- * identical defect on the item picker's remove control, in both the attacker and defender
- * panels — so this is a general rule about removal, not a quirk of the combo.
- *
- * THIS BELONGS IN A SHARED HELPER AND IS RAISED RATHER THAN REACHED FOR. `src/ui/items/` is
- * another agent's area and `src/ui/primitives/` is the lead's, so this is implemented here in
- * the shape a shared helper would take, ready to be lifted without changing its behaviour.
- *
- * WHAT IT MUST NOT COST. Reordering a step keeps focus on the moved card, because the list is
- * keyed by step id and React therefore moves the existing DOM node rather than rebuilding it.
- * Nothing here touches the reorder path: the intent below is armed only by a removal.
- */
-function focusAfterRemoval(
-  list: HTMLElement | null,
-  controlSelector: string,
-  removedIndex: number,
-  fallback: HTMLElement | null,
-): 'row' | 'fallback' | 'nowhere' {
-  const controls = list ? [...list.querySelectorAll<HTMLElement>(controlSelector)] : [];
-  if (controls.length > 0) {
-    // The row that slid into the removed row's index. When the removed row was the last there
-    // is no such row, so `Math.min` steps back to the new last row instead.
-    controls[Math.min(removedIndex, controls.length - 1)]!.focus();
-    return 'row';
-  }
-  if (fallback) {
-    fallback.focus();
-    return 'fallback';
-  }
-  return 'nowhere';
 }
 
 export function ComboBuilder({

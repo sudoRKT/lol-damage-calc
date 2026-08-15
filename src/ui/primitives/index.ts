@@ -51,3 +51,6 @@ export type {
 
 export { Disclosure, disclosureName } from './Disclosure';
 export type { DisclosureProps } from './Disclosure';
+
+export { focusAfterRemoval } from './focus-after-removal';
+export type { FocusAfterRemovalOutcome } from './focus-after-removal';
