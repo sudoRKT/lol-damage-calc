@@ -29,7 +29,8 @@ export type {
   DamageNumberSize,
 } from './DamageValue';
 
-export { READOUT_DECIMALS, formatReadout, roundReadout } from './readout';
+export { ATTACK_SPEED_DECIMALS,
+  READOUT_DECIMALS, formatReadout, roundReadout } from './readout';
 
 export { TableScroller, SCROLL_REGION_SUFFIX } from './TableScroller';
 export type { TableScrollerProps } from './TableScroller';

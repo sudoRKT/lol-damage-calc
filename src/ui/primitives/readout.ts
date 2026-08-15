@@ -56,9 +56,32 @@
  */
 export const READOUT_DECIMALS = 2;
 
+/**
+ * ═══ ATTACK SPEED IS THE ONE EXCEPTION, AND IT IS NAMED RATHER THAN A WIDENING ═══
+ *
+ * Ruled 2026-08-15. **The blanket rule stays at two decimals for every other figure** — it exists
+ * to stop floating-point noise reaching a reader, and a third decimal on a damage total or a
+ * resistance would be noise.
+ *
+ * Attack speed is different for a reason that is checkable rather than a matter of taste:
+ *
+ * - **The game's own client shows three.** The cap is stated as precisely **3.003**, and at two
+ *   decimals a capped build prints "3" — a figure the game does not use, which is exactly what
+ *   `READOUT_DECIMALS` was set to 2 to avoid for growth statistics in the first place.
+ * - **The second decimal is not noise here, it is the signal.** Attack speed climbs about 0.017
+ *   per level, so at two decimals a champion's climb from level 1 to 18 compresses and several
+ *   adjacent levels print the same number. A reader stepping the level control would see nothing
+ *   move — the shape of the defect fixed today, in a smaller form.
+ *
+ * This is deliberately a NAMED constant used at named call sites, not a parameter with a default:
+ * a third decimal must be asked for by a caller that knows why, and the sweep asserting no figure
+ * carries more than two decimals stays otherwise intact.
+ */
+export const ATTACK_SPEED_DECIMALS = 3;
+
 /** The value a readout should print, as a number. */
-export function roundReadout(value: number): number {
-  const factor = 10 ** READOUT_DECIMALS;
+export function roundReadout(value: number, decimals: number = READOUT_DECIMALS): number {
+  const factor = 10 ** decimals;
   return Math.round(value * factor) / factor;
 }
 
@@ -70,6 +93,6 @@ export function roundReadout(value: number): number {
  * separate numbers. A visible readout composes `formatDamage(roundReadout(v))` instead, so the
  * grouping rule still has exactly one implementation.
  */
-export function formatReadout(value: number): string {
-  return String(roundReadout(value));
+export function formatReadout(value: number, decimals: number = READOUT_DECIMALS): string {
+  return String(roundReadout(value, decimals));
 }

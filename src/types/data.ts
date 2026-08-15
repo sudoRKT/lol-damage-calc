@@ -313,7 +313,20 @@ export type RatioStat =
    * **THE UNIT IS PERCENTAGE POINTS OF THE STACK COUNT, EXACTLY AS EVERY OTHER RATIO.
    * "+1 damage per stack" is stored as `100`, NOT as `1`. Decided 2026-08-13; see `Ratio`.**
    */
-  | 'stacks';
+  | 'stacks'
+  /**
+   * THE CHAMPION'S LEVEL, 1 to 18. Added 2026-08-15.
+   *
+   * **It is here because it carries the same ownership question the other ten do, and three item
+   * effects prove it.** The wiki's item module states, in a named template argument, that Locket
+   * of the Iron Solari, Mikael's Blessing and Redemption scale on **the TARGET's level** rather
+   * than the holder's. Nothing counted that, because level was not an owner-bearing stat and so
+   * no census looked for an owner on it.
+   *
+   * A progression reading the holder's level and one reading the target's differ by the whole
+   * gap between two champions' levels, which in a real matchup is routinely five or more.
+   */
+  | 'level';
 
 /**
  * WHOSE stat a ratio reads.
@@ -390,6 +403,12 @@ export const OWNER_REQUIRED_STATS = [
   'bonusMagicResist',
   'maxMana',
   'currentMana',
+  // LEVEL, added 2026-08-15 — the eleventh. Three item effects state in the wiki's own named
+  // template argument that they scale on the TARGET's level: Locket of the Iron Solari,
+  // Mikael's Blessing and Redemption. Nothing counted them, because level was not owner-bearing
+  // and so no census looked for an owner on it. It is exactly the ambiguity the other ten exist
+  // to answer, and the gap between two champions' levels in a real matchup is routinely five.
+  'level',
 ] as const;
 export type OwnerRequiredStat = (typeof OWNER_REQUIRED_STATS)[number];
 
@@ -413,6 +432,31 @@ export function requiresOwner(stat: RatioStat): stat is OwnerRequiredStat {
  * bonus health, and each says whose it is.
  *
  * Measured 2026-08-13: 34 abilities, 53 damage rows. See DATA-SOURCES §17.
+ */
+/**
+ * ═══ IF AN ATTACK-SPEED ARM IS EVER ADDED TO `RatioStat`, IT MEANS THE PERCENTAGE ═══
+ *
+ * Written down 2026-08-15, BEFORE anyone wires it, because getting it wrong is wrong in the
+ * direction of MORE DAMAGE — and that is the direction that ships.
+ *
+ * Katarina R's physical row reads `16% (+ 50% per 100% bonus attack speed) bonus AD`, and it is
+ * the reason the arm would be added. **"Bonus attack speed" is the PERCENTAGE — the `x` in the
+ * game's own `y = mx + b` — and NOT `total attack speed − base attack speed`.**
+ *
+ * The two are not the same and never were. From the wiki's Attack speed article, read 2026-08-15
+ * and implemented in `src/engine/attack-speed.ts`: total = base + **ratio ×** bonus%. So
+ * `total − base` is the bonus percentage multiplied by the champion's attack-speed ratio, which
+ * is below 1 for most of the roster and **exactly 0 for the champion whose attack speed is fixed
+ * by his kit**. Reading the difference would understate some champions, silently zero one, and
+ * for any champion whose ratio exceeds 1 it would overstate — a plausible wrong damage number.
+ *
+ * `resolveAttackSpeed(...)` in the engine already returns that percentage as `.bonus`, documented
+ * and currently unused, so whoever wires this does not have to decide what the phrase means.
+ *
+ * **What is still missing is a route to it: `StatBlock` carries only the total.** That is a second
+ * contract change and it is deliberately not made here — see DATA-SOURCES for the sizing, which
+ * establishes it is NOT the same shape as `armorBase`/`armorBonus`, because base attack speed is
+ * in attacks per second while the bonus is a percentage and the two do not sum.
  */
 export interface RatioMultiplier {
   /** The stat that drives the increase, e.g. 'AP' for "per 100 AP". */

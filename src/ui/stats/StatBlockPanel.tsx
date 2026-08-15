@@ -19,7 +19,13 @@
 // not used in this file; the one place a tag belongs in a stat block is nowhere.
 
 import type { StatBlock } from '../../types';
-import { TableScroller, formatDamage, formatReadout, roundReadout } from '../primitives';
+import {
+  ATTACK_SPEED_DECIMALS,
+  TableScroller,
+  formatDamage,
+  formatReadout,
+  roundReadout,
+} from '../primitives';
 import { ChampionPortrait } from '../art/ChampionPortrait';
 import './stats.css';
 
@@ -171,7 +177,17 @@ export function statRows(stats: StatBlock): Row[] {
       value: `×${stats.critDamage}`,
       spoken: `${stats.critDamage} times normal damage`,
     },
-    { label: 'Attack speed', value: formatStat(stats.attackSpeed) },
+    {
+      // THREE DECIMALS, and the only row in this panel with an exception. The cap is precisely
+      // 3.003, so two decimals print "3" — a figure the game does not use — and the climb of about
+      // 0.017 per level compresses so that adjacent levels read the same. See ATTACK_SPEED_DECIMALS
+      // in `primitives/readout.ts` for the ruling and the reason it is named rather than a widening.
+      // The SPOKEN form takes it too: rounding only the visible value is the defect this panel
+      // already carries a note about.
+      label: 'Attack speed',
+      value: formatDamage(roundReadout(stats.attackSpeed, ATTACK_SPEED_DECIMALS)),
+      spoken: formatReadout(stats.attackSpeed, ATTACK_SPEED_DECIMALS),
+    },
     {
       label: 'Adaptive force',
       value: stats.adaptiveType === 'physical' ? 'Physical' : 'Magic',
