@@ -57,7 +57,13 @@ import {
   type Finding,
   type GateReport,
 } from '../../src/types/validate-curated.ts';
-import { PER_TICK_READS, capturedHitCounts, markedOverTime } from './per-tick-read.ts';
+import {
+  PER_TICK_READS,
+  READ_RECURRENCE_BEYOND_PER_TICK,
+  READ_RECURRENCE_QUOTES,
+  capturedHitCounts,
+  markedOverTime,
+} from './per-tick-read.ts';
 import { applyReadAggregates, READ_POPULATION as AGGREGATES_READ } from './aggregate-rows.ts';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -644,9 +650,22 @@ export function classifyOverTime(abilities: CuratedAbility[]): {
   // the caller means there is one entry point and no order for a later caller to get wrong.
   const capture = applyCapturedCounts(abilities);
   for (const a of abilities) {
-    const perTick = a.components.filter((c) => PER_TICK_LABEL.test(c.label ?? ''));
+    // TWO WAYS IN, AND ONLY ONE OF THEM IS A PATTERN.
+    //
+    // `PER_TICK_LABEL` finds components whose label says "per tick". It is NOT widened to reach
+    // other recurrence words: 10 components say "per second" and a person has read one of them, so
+    // widening would mark nine entries on the strength of a word (CLAUDE.md, §38).
+    //
+    // `READ_RECURRENCE_BEYOND_PER_TICK` is the other way in — a table naming ENTRIES and the exact
+    // COMPONENT IDS inside them, which cannot match anything nobody has typed into it. It exists
+    // because Cassiopeia W published 126 damage in the burst line that belonged on the
+    // damage-over-time line, and its label says "Per Second".
+    const named = READ_RECURRENCE_BEYOND_PER_TICK[abilityKey(a)] ?? [];
+    const perTick = a.components.filter(
+      (c) => PER_TICK_LABEL.test(c.label ?? '') || named.includes(c.id),
+    );
     if (perTick.length === 0) continue;
-    const why = READ_AS_OVER_TIME.get(abilityKey(a));
+    const why = READ_AS_OVER_TIME.get(abilityKey(a)) ?? READ_RECURRENCE_QUOTES[abilityKey(a)];
     if (why) {
       // THE INTERLOCK. A read entry whose count the source PRINTS may only be marked once that
       // count is on the component. If the capture did not land — a renamed component id, an entry

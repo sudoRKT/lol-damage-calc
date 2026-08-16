@@ -1314,6 +1314,55 @@ export const ALREADY_READ: ReadonlySet<string> = new Set([
 /** The same test merge-proposal.ts uses to find a per-tick component. */
 export const PER_TICK_LABEL = /per\s*tick/i;
 
+/**
+ * ═══ RECURRENCE A PERSON READ, WHOSE LABEL `PER_TICK_LABEL` CANNOT SEE ═══
+ *
+ * **This is deliberately NOT a widening of `PER_TICK_LABEL`, and the difference is the whole
+ * point.** Widening that regular expression to `per (tick|second|wave|instance)` would mark every
+ * entry the new word happens to match — 10 components say "per second" and nobody has read nine of
+ * them. The rule this project runs on (CLAUDE.md, §38) is that a detector proposes and a PERSON
+ * confirms, and that adding a member means reading its sentence rather than widening the pattern.
+ *
+ * So this table names ENTRIES and the exact COMPONENT IDS within them. It cannot match anything
+ * nobody has typed into it. `recurrence-labels.ts` is the detector that finds candidates for this
+ * table; it never writes to it.
+ *
+ * ═══ THE ONE MEMBER, AND WHY IT IS SAFE ═══
+ *
+ * **Cassiopeia W — Miasma.** Read 2026-08-16 from `Template:Data Cassiopeia/Miasma` rev 3936292.
+ * It was publishing 126 damage in the BURST line that belongs on the damage-over-time line
+ * (SPECIFICATION §3.8), on a `derived` entry, so a reader was being shown a wrong figure with no
+ * sign that anything was wrong — the magnitude was right and only the destination was not.
+ *
+ * The page states it twice and the two agree, which is what makes this a reading:
+ *
+ *   description   "creating toxic clouds at the area for 5 seconds"
+ *   description2  "Enemies within the clouds are poisoned to take magic damage every 5/19 seconds"
+ *   leveling2     "Magic Damage Per Second   20 to 40 (+ 10% AP)"
+ *                 "Total Magic Damage       100 to 200 (+ 50% AP)"
+ *
+ * 20 x 5 = 100, 40 x 5 = 200, and 10% x 5 = 50%. **The identity holds at both endpoints AND on the
+ * ratio**, which is what corroborates the stored `hits: 5` rather than anyone assuming it: five
+ * one-second instances over a five-second cloud.
+ *
+ * **DO NOT "CORRECT" `hits` FROM 5 TO 19.** The tick interval is 5/19 seconds, so there really are
+ * 19 ticks — but the stored figure is per SECOND, and the source's own Total row is what makes
+ * counting seconds legitimate. Writing 19 would multiply this ability's damage by 3.8 and turn a
+ * wrong destination into a wrong number, which is far worse.
+ */
+export const READ_RECURRENCE_BEYOND_PER_TICK: Readonly<Record<string, readonly string[]>> = {
+  'Cassiopeia/W/Miasma': ['magic-damage-per-second'],
+};
+
+/** The sentence each entry above rests on, quoted from its own page. */
+export const READ_RECURRENCE_QUOTES: Readonly<Record<string, string>> = {
+  'Cassiopeia/W/Miasma':
+    'Enemies within the clouds are poisoned to take magic damage every 5/19 seconds, over clouds ' +
+    'that last 5 seconds. The stored figure is per second and its own leveling row prints the ' +
+    'five-second total (100 to 200 against 20 to 40, and 50% AP against 10%), so five one-second ' +
+    'instances reconcile at both endpoints and on the ratio.',
+};
+
 /** The shape this table needs from a harvested ability. Narrower than `CuratedAbility` on purpose:
  *  the reading depends on identity, the component labels and the hit counts, and on nothing else. */
 export interface HarvestedShape {
