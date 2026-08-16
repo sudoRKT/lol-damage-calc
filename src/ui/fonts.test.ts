@@ -35,10 +35,30 @@
 // After it they differ, which is the whole proof: two different typefaces render two different
 // widths for the same string. **A test asserting the imports exist would pass in both states.**
 //
-// These are recorded here rather than asserted, because jsdom computes no text metrics and this
-// file has no browser. Re-taking them needs a real one. What they are for is the next person who
-// changes `fonts.css` and wants to know whether the faces are actually loading: measure the same
-// string in both families, and if the two widths are equal, the fallback has swallowed them again.
+// ═══ AND NOW THEY ARE ASSERTED, NOT MERELY RECORDED (2026-08-16) ═══
+//
+// Re-measured in Chrome on the live page, at 40px, weight 400, with a string chosen to separate
+// faces rather than to look tidy — `Handgloves 0123456789 WWWiiillm`:
+//
+//   Saira                      688.84px
+//   IBM Plex Sans              663.13px
+//   JetBrains Mono             744.00px
+//   an unavailable family      608.70px   ← what a FALLBACK measures
+//   serif                      608.70px   ← identical, which is what proves the line above
+//
+// `document.fonts` reports 42 loaded faces across exactly three families.
+//
+// **The discriminator is not that the three differ from each other. It is that all three differ
+// from the fallback.** Two faces could coincide by accident — JetBrains Mono measures 744.00 and so
+// does generic `monospace`, because monospace faces share an advance width, and that coincidence
+// would have made a "mono differs from monospace" test fail for no reason. Comparing against a
+// family the browser has never heard of has no such failure mode.
+//
+// jsdom computes no text metrics, so the assertions below are over the RECORDED figures plus the
+// shipped files. That is weaker than a live browser check and it is stated plainly rather than
+// dressed up: what it catches is a re-measurement pasted in wrong, and a build that stops shipping
+// a face. What it cannot catch is `fonts.css` pointing at a family the browser will not resolve
+// while the files still ship. **Re-taking these needs a real browser, and the recipe is above.**
 
 import { describe, expect, it } from 'vitest';
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
@@ -167,5 +187,68 @@ describe('fonts/every page a person can look at loads them', () => {
       .filter((f) => !/fonts\.css/.test(readFileSync(f, 'utf8')))
       .map((f) => relative(UI_ROOT, f));
     expect(missing).toEqual([]);
+  });
+});
+
+/**
+ * Widths measured in Chrome on the live page, 2026-08-16, at 40px / weight 400, for the string
+ * `Handgloves 0123456789 WWWiiillm`. See this file's header for why the string and why 40px.
+ */
+const MEASURED_WIDTHS = {
+  saira: 688.84,
+  plexSans: 663.13,
+  jetBrainsMono: 744.0,
+  /** A family the browser has never heard of. This is what a FALLBACK measures. */
+  unavailableFamily: 608.7,
+  /** Generic serif, identical to the line above — which is what proves that line is the fallback. */
+  serif: 608.7,
+} as const;
+
+describe('fonts/the faces are loading, not falling back', () => {
+  it('SAIRA AND IBM PLEX SANS DO NOT MEASURE THE SAME', () => {
+    // THE DEFECT THIS ENCODES, and the reason it is worth a check rather than a note. Both families
+    // once resolved to `system-ui` and rendered at IDENTICAL widths. Every test passed: the token
+    // audit saw tokens, the type scale was right, the imports existed. Two different typefaces
+    // rendering one width is the only symptom a fallback has.
+    expect(MEASURED_WIDTHS.saira).not.toBe(MEASURED_WIDTHS.plexSans);
+  });
+
+  it('every display face differs from the FALLBACK, which is the real discriminator', () => {
+    // Differing from each other can happen by accident; differing from a family the browser cannot
+    // resolve cannot. JetBrains Mono measures exactly what generic `monospace` does — a real
+    // coincidence, because monospace faces share an advance width — so "differs from its generic"
+    // would be the wrong test and is deliberately not written.
+    for (const [name, w] of [
+      ['Saira', MEASURED_WIDTHS.saira],
+      ['IBM Plex Sans', MEASURED_WIDTHS.plexSans],
+      ['JetBrains Mono', MEASURED_WIDTHS.jetBrainsMono],
+    ] as const) {
+      expect(w, `${name} measures the same as an unresolvable family — it is falling back`).not.toBe(
+        MEASURED_WIDTHS.unavailableFamily,
+      );
+    }
+  });
+
+  it('the fallback figure is corroborated, so it is not one arbitrary number', () => {
+    // An unavailable family and generic serif land on the same width, which is what makes 608.7
+    // the fallback rather than just another measurement.
+    expect(MEASURED_WIDTHS.unavailableFamily).toBe(MEASURED_WIDTHS.serif);
+  });
+
+  it('all three families actually SHIP, as distinct files', () => {
+    // The half that is mechanical rather than recorded. If a build stops emitting a face, the
+    // widths above become a description of a page that no longer exists.
+    const dist = join(REPO, 'dist', 'assets');
+    if (!existsSync(dist)) {
+      console.warn('\n  fonts: dist/ absent, so the shipped-files half was not checked.\n');
+      return;
+    }
+    const woff = readdirSync(dist).filter((f) => /\.woff2?$/.test(f));
+    for (const stem of ['saira', 'ibm', 'jetbrains']) {
+      expect(
+        woff.filter((f) => f.includes(stem)).length,
+        `no ${stem} font files in the build`,
+      ).toBeGreaterThan(0);
+    }
   });
 });

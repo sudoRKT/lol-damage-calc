@@ -81,9 +81,25 @@ interface PageLength {
  * exclusions list was **41.1%** of the page; this column is **2.6%** of it. Reporting the shape
  * without the size pointed a page-length pass at something that cannot move a page.
  *
+ * ═══ THE 275px WAS AUTHORISED AND IS NOT TAKEN. A RULING WOULD BE NEEDED FIRST ═══
+ *
+ * The breakdown's state column can be reduced to a count on its control, with the values in the
+ * "Full state" disclosure that already holds them — `changed` is a subset of `everything` by
+ * construction, so nothing would be absent. It was built, measured at 275px, and REVERTED.
+ *
+ * **Because it is not the same sentence the owner ruled on.** The 2026-08-15 ruling that "a count
+ * on the control satisfies stated visibly" was about SPECIFICATION §11's *"Every excluded mechanic
+ * is stated visibly"*. The per-instance requirement is a different sentence in the same section —
+ * *"showing the state that applied at that point in the sequence"* — and a test asserts a screen
+ * reader can read that state in the ROW (`getByRole('row', { name: /Conqueror stacks 6/ })`).
+ *
+ * Applying the ruling to the second sentence would be extending it to something it was not about,
+ * to buy 2.6% of the page. **Raised rather than taken.**
+ *
  * **What is achievable, stated as arithmetic rather than as a promise.** 11.07 screens at 375px is
  * 8,989px. The page is 10,375px. That is **1,386px to remove**, and every cause identified above
- * put together comes to **297px — 21% of it**. The remaining 1,089px is not a defect anybody can
+ * put together comes to **297px — 21% of it — and only 22px of that is taken**, because the 275px
+ * needs the ruling described above. The remaining 1,089px is not a defect anybody can
  * find; it is four detail panels each of which a reader may want. **Closing that gap is a design
  * decision about collapsing detail panels on a phone, not a bug to fix**, and it belongs to the
  * project owner rather than to a measurement pass.

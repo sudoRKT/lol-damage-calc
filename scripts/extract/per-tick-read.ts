@@ -1352,10 +1352,42 @@ export const PER_TICK_LABEL = /per\s*tick/i;
  */
 export const READ_RECURRENCE_BEYOND_PER_TICK: Readonly<Record<string, readonly string[]>> = {
   'Cassiopeia/W/Miasma': ['magic-damage-per-second'],
+  /**
+   * **Fiddlesticks W — Bountiful Harvest.** Read 2026-08-16 from
+   * `Template:Data Fiddlesticks/Bountiful Harvest` rev 3936351. Its `description2`, verbatim:
+   * *"While Fiddlesticks is channeling, the tethered enemies are dealt magic damage every
+   * {channel_tickrate} seconds."* A recurrence, stored as "Damage per second" with no mark —
+   * the same defect as Cassiopeia W and invisible to `PER_TICK_LABEL` for the same reason.
+   *
+   * ═══ MARKED WHILE DORMANT, DELIBERATELY, AND THAT IS THE POINT OF DOING IT NOW ═══
+   *
+   * This entry is `incomplete`, so it publishes nothing and shows no reader a wrong number today.
+   * **A defect that is waiting for a completion to become a wrong number is worse than one that is
+   * already wrong, because nobody is looking when it fires.** Whoever completes this entry will be
+   * working on its damage figures, not on which line those figures land in.
+   *
+   * The mark costs nothing while the entry is incomplete and is already correct when it is not.
+   *
+   * ═══ WHAT IS *NOT* MARKED HERE, AND WHY THE COMPONENT IS NAMED RATHER THAN THE ENTRY ═══
+   *
+   * The same page carries a second leveling header, `"Last Tick of Damage"`, and `description2`
+   * continues: *"The final tick at the end of the channel deals additional magic damage."* **That
+   * is ONE specific instance, not a rate**, and it belongs in the burst. It is not stored as a
+   * component today; if it ever is, it must NOT be added to this list.
+   *
+   * That is exactly why this table names component ids and not entries. An entry-level table would
+   * have swept the final tick in with the recurrence the moment somebody stored it.
+   */
+  'Fiddlesticks/W/Bountiful Harvest': ['damage-per-second'],
 };
 
 /** The sentence each entry above rests on, quoted from its own page. */
 export const READ_RECURRENCE_QUOTES: Readonly<Record<string, string>> = {
+  'Fiddlesticks/W/Bountiful Harvest':
+    'While Fiddlesticks is channeling, the tethered enemies are dealt magic damage every ' +
+    'channel_tickrate seconds. The stored figure is per second over a channel of ' +
+    'channel_duration seconds. The ability\'s SECOND leveling row, "Last Tick of Damage", is a ' +
+    'single final instance and is deliberately not covered by this mark.',
   'Cassiopeia/W/Miasma':
     'Enemies within the clouds are poisoned to take magic damage every 5/19 seconds, over clouds ' +
     'that last 5 seconds. The stored figure is per second and its own leveling row prints the ' +
