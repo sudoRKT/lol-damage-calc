@@ -72,8 +72,9 @@ interface PageLength {
  * Two candidate causes were then measured by toggling them live and re-reading `scrollHeight`:
  *
  *   the burndown's `<ol>` axis carrying an unset `margin-block: 1em`      22px   TAKEN
- *   the breakdown's four repeated label stems, shortened                 215px
- *   the same column's state moved into the disclosure already in it      275px
+ *   the breakdown's four repeated label stems, shortened                 215px  (superseded)
+ *   the same column's state reduced to a count on its control            198px  TAKEN
+ *                                                                               (simulated at 275)
  *
  * **A CORRECTION TO THE FRAMING THAT JUSTIFIED THIS PASS, which was mine.** The breakdown column
  * was described as "the same shape as the exclusions list printed three times". It is the same
@@ -81,26 +82,28 @@ interface PageLength {
  * exclusions list was **41.1%** of the page; this column is **2.6%** of it. Reporting the shape
  * without the size pointed a page-length pass at something that cannot move a page.
  *
- * ═══ THE 275px WAS AUTHORISED AND IS NOT TAKEN. A RULING WOULD BE NEEDED FIRST ═══
+ * ═══ THE STATE COLUMN: BUILT, REVERTED, RULED ON, THEN TAKEN — AND IT IS 198px, NOT 275 ═══
  *
- * The breakdown's state column can be reduced to a count on its control, with the values in the
- * "Full state" disclosure that already holds them — `changed` is a subset of `everything` by
- * construction, so nothing would be absent. It was built, measured at 275px, and REVERTED.
+ * The breakdown's state column now shows a COUNT on its control, with the values in the "Full
+ * state" disclosure that already held them: `changed` is a subset of `everything` by construction,
+ * so nothing moved out of reach.
  *
- * **Because it is not the same sentence the owner ruled on.** The 2026-08-15 ruling that "a count
- * on the control satisfies stated visibly" was about SPECIFICATION §11's *"Every excluded mechanic
- * is stated visibly"*. The per-instance requirement is a different sentence in the same section —
- * *"showing the state that applied at that point in the sequence"* — and a test asserts a screen
- * reader can read that state in the ROW (`getByRole('row', { name: /Conqueror stacks 6/ })`).
+ * **It was built and REVERTED first**, because the 2026-08-15 count-on-control ruling was about
+ * SPECIFICATION §11's *"Every excluded mechanic is stated visibly"* — a different sentence from the
+ * per-instance *"showing the state that applied at that point in the sequence"*. The project owner
+ * then ruled on the SECOND sentence explicitly, on the same reasoning and with the same condition,
+ * and recorded it as a separate ruling so the distinction survives. Only then was it taken.
  *
- * Applying the ruling to the second sentence would be extending it to something it was not about,
- * to buy 2.6% of the page. **Raised rather than taken.**
+ * **AND THE SAVING IS 198px, NOT THE 275px THE SIMULATION PREDICTED.** The 275 came from emptying
+ * the cell in the live DOM, which removed the toggle along with the prose. The real change keeps a
+ * control and a short phrase, so it recovers less. **A simulated saving is an upper bound, and this
+ * one was 39% optimistic** — measured 10,375px → 10,177px at 375, and 5,619px → 5,619px at 1440,
+ * because at desktop width that column already has room and there was never anything to recover.
  *
  * **What is achievable, stated as arithmetic rather than as a promise.** 11.07 screens at 375px is
  * 8,989px. The page is 10,375px. That is **1,386px to remove**, and every cause identified above
- * put together comes to **297px — 21% of it — and only 22px of that is taken**, because the 275px
- * needs the ruling described above. The remaining 1,089px is not a defect anybody can
- * find; it is four detail panels each of which a reader may want. **Closing that gap is a design
+ * put together comes to **220px — 16% of it, all of it now taken**. The remaining 1,166px is not a
+ * defect anybody can find; it is four detail panels each of which a reader may want. **Closing that gap is a design
  * decision about collapsing detail panels on a phone, not a bug to fix**, and it belongs to the
  * project owner rather than to a measurement pass.
  */
@@ -123,9 +126,9 @@ const PAGES: PageLength[] = [
     path: '/calculator/',
     width: 375,
     height: 812,
-    scrollHeight: 10375,
-    screens: 12.78,
-    budget: 12.78,
+    scrollHeight: 10177,
+    screens: 12.53,
+    budget: 12.53,
     measured:
       'Lead, 2026-08-15, dev server, default scenario. Was 23.94 screens before the length pass, ' +
       '11.07 after it, 12.79 now. THE PHONE FIGURE HAS NEVER MET ITS TARGET — 8 screens was ' +

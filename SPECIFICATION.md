@@ -588,6 +588,32 @@ does not.
 complete list, because a curve excludes something a single result does not, and one merged
 page-level list would silently drop it.
 
+### What "showing the state that applied" means — RULED 2026-08-16 by the project owner
+
+**THIS IS A SEPARATE RULING ON A SEPARATE SENTENCE. It is deliberately not written as an extension
+of the one above, and the distinction is the point.** The ruling above governs *"Every excluded
+mechanic is stated visibly"*. This one governs the per-instance bullet — *"showing the state that
+applied at that point in the sequence"*. Two sentences, two rulings, and neither reaches the other.
+
+The distinction was drawn by a build session that had authorisation to make the change and stopped
+anyway: it built the change, measured it at 275px of page height, and reverted it rather than apply
+the first ruling to a sentence that ruling was not about. **That is the behaviour this section is
+recording, as much as the decision.**
+
+**The ruling: a count on the control satisfies this sentence too**, on the same reasoning — a reader
+can see that state exists and reach it without leaving the page.
+
+**The condition is identical and it is what the permission depends on:**
+
+- **the count must be on the control**, so a reader deciding whether to open something knows how
+  much is behind it; and
+- **the state must remain readable in full one interaction away** — collapsed, never absent.
+
+In the per-instance breakdown this is already structurally true: the "Full state" row carries every
+field, and the changed fields are a subset of it by construction, so nothing moves out of reach.
+A row where nothing changed still says so rather than rendering empty, because an empty cell cannot
+be told apart from a cell that failed to render.
+
 **Input panels are not covered by this and do not collapse.** They are controls, not output, and a
 reader adjusting a build should not pay a click per change.
 

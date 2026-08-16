@@ -140,8 +140,17 @@ export function changedState(
 }
 
 /** The whole spoken sentence for a row's state-expand control. */
-export function fullStateName(index: number, expanded: boolean): string {
-  return `${expanded ? 'Hide' : 'Show'} the full state at instance ${index}`;
+export function fullStateName(index: number, expanded: boolean, changedCount?: number): string {
+  // SPECIFICATION §11, "What 'showing the state that applied' means" — RULED 2026-08-16. A count on
+  // the control satisfies the sentence, on condition that the count IS on the control and the state
+  // stays readable in full one interaction away. So the spoken name says how many fields moved.
+  const n =
+    changedCount === undefined
+      ? ''
+      : changedCount === 0
+        ? ', nothing changed from the entry state'
+        : `, ${changedCount} field${changedCount === 1 ? '' : 's'} changed since the combo began`;
+  return `${expanded ? 'Hide' : 'Show'} the full state at instance ${index}${n}`;
 }
 
 /** The whole spoken sentence for the running-total cell. One text node (see ../primitives). */
@@ -379,15 +388,34 @@ function InstanceRow({
       <td className="breakdown__state">
         {/* A ROW WHERE NOTHING MOVED SAYS SO. An empty cell cannot be told apart from a cell
             that failed to render, and instance 1 is always such a row — it is the baseline. */}
+        {/* ═══ THE COUNT, NOT THE LIST — AND THE RULING THAT PERMITS IT IS ITS OWN ═══
+
+            This cell printed every changed field in full: four label stems repeated verbatim on
+            every row. At 375px the column is 111px wide and wrapped to EIGHT line boxes on rows 2
+            to 4, setting the height of each — 249 of its 316 characters were the stems.
+
+            NOTHING IS ABSENT. The "Full state" row below has always carried EVERY field including
+            these: `changed` is a subset of `everything` by construction, so the values are one
+            interaction away and were already there before this change.
+
+            THE PERMISSION IS A SEPARATE RULING FROM THE EXCLUSIONS ONE, and that matters. This
+            change was built and REVERTED on 2026-08-16 because §11's count-on-control ruling was
+            about "every excluded mechanic is stated visibly" — a different sentence. The owner then
+            ruled on THIS sentence, "showing the state that applied at that point in the sequence",
+            on the same reasoning and with the same condition. See SPECIFICATION §11.
+
+            A row where nothing moved still SAYS so rather than rendering empty: an empty cell
+            cannot be told apart from a cell that failed to render, and instance 1 is always such a
+            row, being the baseline. */}
         <span className="breakdown__state-changed">
-          {changed.length === 0 ? 'No change from the entry state' : changed.join(' · ')}
+          {changed.length === 0 ? 'No change from the entry state' : `${changed.length} changed`}
         </span>
         <button
           type="button"
           className="breakdown__state-toggle"
           aria-expanded={expanded}
           aria-controls={detailId}
-          aria-label={fullStateName(instance.index, expanded)}
+          aria-label={fullStateName(instance.index, expanded, changed.length)}
           onClick={() => setExpanded((open) => !open)}
         >
           <span aria-hidden="true">{expanded ? 'Full state ▴' : 'Full state ▾'}</span>

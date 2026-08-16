@@ -46,9 +46,38 @@ describe('breakdown/every instance, in order', () => {
 
   it('shows the state that applied at that point in the sequence (§11)', () => {
     mount();
-    // The mock's Conqueror stacks are 4 at instance 1 and 6 at instance 2. Instance 2's row
-    // carries the CHANGE; instance 1's value is the baseline and is printed above the table.
-    expect(screen.getByRole('row', { name: /Conqueror stacks 6/ })).toBeTruthy();
+    // ═══ RE-WRITTEN 2026-08-16 TO ENCODE THE RULING'S CONDITION, NOT ONLY ITS PERMISSION ═══
+    //
+    // This asserted `getByRole('row', { name: /Conqueror stacks 6/ })` — the changed VALUE readable
+    // in the row itself. §11's per-instance sentence was then ruled on by the project owner: a
+    // COUNT on the control satisfies it, on condition that the count is on the control and the
+    // state stays readable in full one interaction away.
+    //
+    // **That is a separate ruling from the exclusions one, on a separate sentence.** The change was
+    // built, measured at 275px of page height, and REVERTED once, because applying the exclusions
+    // ruling here would have extended it to a sentence it was not about.
+    //
+    // So the assertion moves to the two halves the ruling actually depends on. If either fails,
+    // the permission has been taken without its condition.
+    //
+    // HALF ONE: the count is on the control, in the SPOKEN name and not only in pixels.
+    // The mock changes two fields at instance 2 — Conqueror stacks 4 → 6 among them — so the
+    // control for that row must say two. A count that did not follow the data would pass a
+    // hard-coded assertion and fail this one.
+    const control = screen.getByRole('button', {
+      name: /full state at instance 2, 2 fields changed since the combo began/,
+    });
+    expect(control, 'the count must be on the control — §11, ruled 2026-08-16').toBeTruthy();
+    // And a row where nothing moved says so rather than claiming a count.
+    expect(
+      screen.getByRole('button', { name: /instance 1, nothing changed from the entry state/ }),
+    ).toBeTruthy();
+    // HALF TWO: the value is reachable in full, one interaction away.
+    fireEvent.click(control);
+    expect(
+      screen.getByRole('row', { name: /Conqueror stacks 6/ }),
+      'the state must remain readable IN FULL one interaction away — collapsed, never absent',
+    ).toBeTruthy();
     const entry = screen.getByRole('region', { name: 'The state the combo begins in' });
     expect(entry.textContent).toContain('Conqueror stacks 4');
     expect(humanizeKey('blackCleaverStacks')).toBe('Black cleaver stacks');
@@ -107,7 +136,9 @@ describe('breakdown/every instance, in order', () => {
 
   it('opening a row reveals the whole snapshot, including what the filter removed', () => {
     mount();
-    const first = screen.getByRole('button', { name: fullStateName(1, false) });
+    // The count is part of the control's name now (§11, ruled 2026-08-16), so the lookup must
+    // pass it. Instance 1 is the baseline and changes nothing, hence 0.
+    const first = screen.getByRole('button', { name: fullStateName(1, false, 0) });
     fireEvent.click(first);
     expect(first.getAttribute('aria-expanded')).toBe('true');
     // Every phrase of instance 1's snapshot — the ones the inline cell filtered out — is now
@@ -116,14 +147,25 @@ describe('breakdown/every instance, in order', () => {
     for (const phrase of formatState(MOCK_RESULT.perInstance[0]!.stateSnapshot)) {
       expect(within(opened).getByText(new RegExp(escapeForRegExp(phrase)))).toBeTruthy();
     }
-    fireEvent.click(screen.getByRole('button', { name: fullStateName(1, true) }));
+    fireEvent.click(screen.getByRole('button', { name: fullStateName(1, true, 0) }));
     expect(document.getElementById('s1-full-state')).toBeNull();
   });
 
   it('the expand control is named in words, never by a bare arrow', () => {
     // `../interactive-names.test.tsx` sweeps for this across the area; this pins the sentence.
+    // Without a count the name is unchanged, which is what keeps every other caller working.
     expect(fullStateName(3, false)).toBe('Show the full state at instance 3');
     expect(fullStateName(3, true)).toBe('Hide the full state at instance 3');
+    // With one, the count is IN THE SPOKEN NAME — the condition §11's 2026-08-16 ruling depends on.
+    expect(fullStateName(3, false, 2)).toBe(
+      'Show the full state at instance 3, 2 fields changed since the combo began',
+    );
+    expect(fullStateName(3, false, 1)).toBe(
+      'Show the full state at instance 3, 1 field changed since the combo began',
+    );
+    expect(fullStateName(3, false, 0)).toBe(
+      'Show the full state at instance 3, nothing changed from the entry state',
+    );
   });
 
   it('marks a critical strike in words, not by a colour', () => {
