@@ -40,7 +40,7 @@ export function PrivacyPage() {
             <a href={pageById('cookies').path}>cookie policy</a>, which is equally short.
           </li>
           <li>
-            <strong>No fonts or assets from third parties.</strong> The typefaces are served from
+            <strong>No fonts from third parties.</strong> The typefaces are served from
             this site rather than from a font network, so opening a page tells nobody else that you
             did.
           </li>
