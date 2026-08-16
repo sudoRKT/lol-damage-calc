@@ -419,9 +419,46 @@ buys the least, and requires reversing a written argument to get it.
    **THE THREE REQUIREMENTS ARE DONE** — commit `1e3ba36`, confirmed on the live page 2026-08-15;
    see the corrected table in §2. **Ad slots remain**, and they are gated: PLAN.md §6 fixes that
    advertising cannot be switched on before the privacy and cookie policies exist.
-5. **The mobile horizontal overflow** (section 6.5). A SPECIFICATION §10 violation, pre-existing,
-   and the only item on this list that is a spec breach rather than a design shortfall.
+5. ~~**The mobile horizontal overflow** (section 6.5). A SPECIFICATION §10 violation, pre-existing,
+   and the only item on this list that is a spec breach rather than a design shortfall.~~
+   **CLOSED 2026-08-16 — and §6.5's NUMBER and its stated CAUSE are both refuted while the item it
+   tracked was real. That combination is why this note is long.**
+
+   - **The 579px does not reproduce.** The default scenario at 375px reads **0px** today, closed by
+     commit `fdb482d`. §6.5 named the breakdown table as the cause; that sentence is stale too.
+   - **The violation was still live, by a different mechanism, in denser states.** Measured at
+     **702px at 320px, 647px at 375px** with ten combo instances and every disclosure open, and 12px
+     with the instances alone. **A sweep of the page at rest read 0px** — which is why it survived.
+   - **The cause was containment, not width.** `.u-scroll-x` was `overflow-x: auto` and
+     `position: static`. An overflow container clips an absolutely positioned descendant *only*
+     when it is that descendant's containing block, and a static element never is — so every
+     `.u-visually-hidden` span inside a scrolling table escaped its region and extended the
+     document. 151 spans across 5 regions, the furthest reaching x = 1,042.4 in a 375px viewport;
+     1,042.4 − 375 = 667.4, which was the overflow.
+   - **Fixed by one declaration** — `position: relative` on `.u-scroll-x`, commit `5fdd61e`.
+     Verified live: 702 / 647 / 12 → **0 / 0 / 0**, with the six scroll regions scrolling by
+     identical amounts either side, and zero absolutely positioned elements inside any region other
+     than those spans.
+   - **Two overflows remain and neither is this item.** `.combo__step` is 138.2px and cannot shrink
+     while `.combo__lanes` starves its lane, giving **70px at 440 and 90px at 520** in a band of
+     roughly 441–640px; below 400 the lanes stack and it vanishes. And the **open** nav panel runs
+     114.64px off the right edge from 446 to 1264 — the mirror of a defect fixed on 2026-08-15, and
+     caused by that fix. Both are recorded where their owners will find them.
+   - **The lesson worth more than the fix:** `responsive-overflow.test.tsx` sweeps four documented
+     overflow classes and "a scroll container that is not a containing block" was not one of them.
+     Nineteen widths from 320 to 1440 are now measured in the dense state.
 6. **§9's portrait tint** — cool toward `--bg-panel` rather than plain greyscale. Smallest item.
+   **BLOCKED 2026-08-16 ON A CONTRADICTION BETWEEN TWO OF THIS PROJECT'S OWN DOCUMENTS, and it
+   cannot be built by anyone until the project owner rules.** DESIGN.md §9 asks for portraits
+   *"desaturated and tinted toward `--bg-panel` (low chroma)"* and calls that *"a display filter,
+   not an edit to the asset (§15)"*. `src/ui/art/art-usage.test.ts` refuses **every tint CSS
+   `filter` can express** — checked mechanically against its regex, not assumed: every
+   sepia/hue-rotate recipe fails — and its comment calls a tint *"an edit to Riot's asset, which
+   the licence does not permit"*. Both cannot be right. Two further facts for pricing it:
+   `.portrait` is the `<img>` itself, so the two routes that avoid `filter` need a wrapper in
+   `ChampionPortrait.tsx`; and `--bg-panel`'s chroma is R −7, G +1, B +11 on 0–255, so a
+   full-strength tint is a **7% blue-minus-red spread** — that is the entire visual delta this item
+   asks for.
 
 > **One caution worth carrying forward.** Items 1 and 3 are where "Bench Test" actually lives, and
 > they are the two most tempting to defer, because nothing is *broken*. The interface is correct

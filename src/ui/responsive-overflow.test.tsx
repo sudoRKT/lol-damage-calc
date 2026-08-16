@@ -441,10 +441,29 @@ const MIN_WIDTH_ALLOWLIST: Array<{ rule: string; reason: string }> = [
   {
     rule: '.nav__panel',
     reason:
-      'the navigation menu: 256px (--measure-list-column-min) anchored to the right edge of a ' +
-      'full-width nav bar, so it grows LEFTWARDS into the page rather than off it. 256px inside ' +
-      'the 375px phone this was measured at, and inside 320px, the narrowest phone in service. ' +
-      'A min(…, 100%) guard would be WRONG here: 100% would resolve against the positioned ' +
+      '═══ THIS EXEMPTION\'S ARITHMETIC WAS REFUTED ON 2026-08-16 AND THE ENTRY IS KEPT ANYWAY. ' +
+      'READ ALL OF IT BEFORE TRUSTING ANY OF IT. ═══ ' +
+      'It read: "256px (--measure-list-column-min) anchored to the RIGHT edge of a full-width nav ' +
+      'bar, so it grows LEFTWARDS into the page rather than off it. 256px inside the 375px phone ' +
+      'this was measured at, and inside 320px, the narrowest phone in service." ' +
+      'THAT IS NO LONGER TRUE OF THE CODE. The panel was re-anchored to `inset-inline-start` on ' +
+      '2026-08-15, to fix a defect where the old right-edge anchoring threw it to a LEFT edge of ' +
+      '-114.6px on a phone. But `.shell__head` is `justify-content: space-between`, so once the ' +
+      'wordmark and the button fit on one line the button moves to the END of the header — and a ' +
+      'panel pinned to its start edge then runs off the RIGHT. ' +
+      'MEASURED BY TWO AREAS INDEPENDENTLY, agreeing exactly: the OPEN panel extends 114.64px ' +
+      'past the viewport at every client width from 446 to 1264 — constant, because it is ' +
+      'arithmetic (258px panel - 24px header padding - 119.36px open button) and not layout. ' +
+      '`documentElement.scrollWidth` reads 1379 against a client width of 1264, so the document ' +
+      'scrolls sideways whenever the menu is open. The lower bracket holds: at 426 and 440 the ' +
+      'header still wraps and the panel sits inside the viewport. 375px and 320px are clean, ' +
+      'which is why the sentence above was true when it was written and is true of nothing else. ' +
+      'IT IS KEPT RATHER THAN DELETED because deleting it would turn this sweep red on a rule ' +
+      'that is genuinely exempt at the widths this sweep tests, and hide the finding in a diff. ' +
+      'The fix is a layout decision, not a typo — neither edge works at both ends, because the ' +
+      'BUTTON moves from one end of the header to the other — and the three options are written ' +
+      'up in `src/ui/shell/pointer-target-register.test.tsx`. **This entry goes when that lands.** ' +
+      'A min(…, 100%) guard would still be wrong here: 100% resolves against the positioned ' +
       'ancestor, not the viewport.',
   },
 ];
