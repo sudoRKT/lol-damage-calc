@@ -23,28 +23,40 @@ corrected content-security policy, and the calculator renders with **zero consol
 
 ## 0. §14's CI claim is PARTLY FALSE, by a measured amount
 
-**CI runs 2,944 of the project's 3,127 tests. The other 183 run on the project owner's machine
+**CI runs 2,877 of the project's 3,127 tests. The other 250 run on the project owner's machine
 only** — not in CI, not on a fresh clone, nowhere else.
 
-Seven test files read the harvester's output from `build/proposed-curated/`: about 4.3 MB across
+Nine test files read the harvester's output from `build/proposed-curated/`: about 4.3 MB across
 six files, the largest `ability-wikitext.json` at 3.1 MB. That directory is in `.gitignore` by
 deliberate policy — *"Draft curated entries produced by scripts/extract. Proposals only"* — so it
 is absent from every clone, and it cannot be regenerated in CI because it comes from harvesting
 the wiki over the network (~20 minutes, PLAN.md §2).
 
-**This was not introduced by the deployment work. It was revealed by it.** The first CI run, on
-2026-08-16, failed on all seven with a file-not-found error. The suite had been green on one
-machine since it was written, because the files were sitting on that machine. Nothing had ever
-run it anywhere else, so nothing had said so.
+**This was not introduced by the deployment work. It was revealed by it.** The first CI run ever,
+on 2026-08-16, failed on seven of the nine. The suite had been green on one machine since it was
+written, because the files were sitting on that machine. Nothing had ever run it anywhere else,
+so nothing had said so.
+
+**The list was wrong the first time, and how it was wrong is worth keeping.** It was built by
+searching test files for the artifact's path, which found seven. The next CI run failed on two
+more — `defensive-counts.test.ts` and `per-tick-read.test.ts` — which reach the same file through
+a helper and so never name it themselves. A search over source text cannot see that.
+
+**So the check is now made by observation rather than by pattern.** CI runs each of the nine and
+requires it to fail *for the missing artifact*. A file that quietly stops needing the exclusion is
+caught by the guard finding it passing; a file that starts needing one is caught by the main run
+failing and naming it, which is exactly how the two extra files surfaced. **Verified by hiding the
+artifact directory on this machine and running both steps against it: all nine failed only for the
+missing file, and the remaining 2,877 passed.**
 
 **What is and is not covered.** A green CI run is evidence about the engine, the interface, the
 URL encoder and the site. **It is not evidence about the ability harvester or the fetch
-pipeline** — which PLAN.md §3 calls "the area where a defect costs the most". Those 183 tests are
-not unrun; they are run by one person on one machine, and nobody else can reproduce them.
+pipeline** — which PLAN.md §3 calls "the area where a defect costs the most". One of the nine is
+`tests/cross-area-seams.test.ts`, so the sweep that exists to catch two areas holding opposite
+rules is itself a check CI does not run. Those 250 tests are not unrun; they are run by one person
+on one machine, and nobody else can reproduce them.
 
-The seven files are named in `.github/workflows/ci.yml`, and a CI step compares that list against
-the files that actually read the directory, so it cannot quietly grow. **That guard was proved by
-adding an eighth file and watching it fail**, then removing it. The real fix is PLAN.md §7.
+The real fix is PLAN.md §7.
 
 ---
 
@@ -100,7 +112,7 @@ Six files. All are new; none changed how the calculator works.
 
 | File | What it does |
 |---|---|
-| `.github/workflows/ci.yml` | Runs typecheck, the full suite and a production build on every push and every pull request |
+| `.github/workflows/ci.yml` | Runs typecheck, **2,877 of the 3,127 tests** (§0 says which 250 are missing and why) and a production build, on every push and every pull request |
 | `.node-version` | Names the Node version — read by BOTH the CI workflow and Cloudflare Pages, so the runtime that proves the build green is the runtime that performs the deploy |
 | `public/_headers` | The CDN's header rules: the content-security policy, four other security headers, and how long each kind of file may be cached |
 | `public/404.html` | The page served for an address that is not a page |

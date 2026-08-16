@@ -197,14 +197,14 @@ placeholder cannot quietly become permanent.
 
 ---
 
-## 7. The 183 tests that run on one machine (added 2026-08-16)
+## 7. The 250 tests that run on one machine (added 2026-08-16)
 
 **This is plan-mode work and it is not scheduled. It is written down because it was found, and a
 finding nobody records is a finding that gets found again.**
 
 ### What is true
 
-CI runs **2,944** of the project's **3,127** tests. Seven test files read the harvester's output
+CI runs **2,877** of the project's **3,127** tests. Nine test files read the harvester's output
 from `build/proposed-curated/` — 4.3 MB across six files, the largest `ability-wikitext.json` at
 3.1 MB — and that directory is `.gitignore`d on purpose as draft output. It is therefore absent
 from every clone, and it cannot be rebuilt in CI: it is harvested from the wiki over the network,
@@ -212,12 +212,13 @@ which §2 measures at ~20 minutes.
 
 | | |
 |---|---:|
-| Tests CI runs | 2,944 |
-| Tests run on the owner's machine only | **183** |
-| Test files involved | 7 |
+| Tests CI runs | 2,877 |
+| Tests run on the owner's machine only | **250** |
+| Test files involved | 9 |
 | Areas they belong to | `scripts/extract/`, `scripts/fetch/`, and `tests/` |
 
-The seven: `scripts/extract/rank-varying-count.test.ts`, `scripts/extract/rune-propose.test.ts`,
+The nine: `scripts/extract/defensive-counts.test.ts`, `scripts/extract/per-tick-read.test.ts`,
+`scripts/extract/rank-varying-count.test.ts`, `scripts/extract/rune-propose.test.ts`,
 `scripts/fetch/ability-index.test.ts`, `scripts/fetch/defender-toggles.test.ts`,
 `scripts/fetch/rank-shape.test.ts`, `tests/ability-files.test.ts`,
 `tests/cross-area-seams.test.ts`.
@@ -229,16 +230,27 @@ means **the seam sweep §44 exists to run — the one check that catches two are
 rules — is itself one of the checks CI does not run.**
 
 **How it was found, because the shape recurs.** The first CI run ever, on 2026-08-16, failed on
-all seven with file-not-found. The suite had been green since it was written, on one machine,
-because the files were sitting on it. This is the same class as the stale-paragraph failures
-CLAUDE.md records: a true statement about one context, read as a standing fact.
+seven of the nine with file-not-found. The suite had been green since it was written, on one
+machine, because the files were sitting on it. This is the same class as the stale-paragraph
+failures CLAUDE.md records: a true statement about one context, read as a standing fact.
+
+**AND THE FIRST ATTEMPT AT THE LIST WAS WRONG, WHICH IS THE MORE USEFUL HALF.** The seven were
+found by searching test files for the artifact's path. The next CI run failed on two more —
+`defensive-counts.test.ts` and `per-tick-read.test.ts` — which reach the same file through
+`scripts/extract/per-tick-read.ts` and never name it themselves. **A search over source text
+cannot see a transitive import**, and a guard that looks precise while missing two files is worse
+than one that admits what it does. Worth remembering the next time a list of affected files is
+built by grepping for a string.
 
 ### What was done instead, and why it is not the answer
 
-CI names the seven files and skips them, and a CI step compares that list against the files that
-actually read the directory so it cannot quietly grow — proved by adding an eighth file and
-watching it fail. `.github/workflows/ci.yml` and DEPLOY.md §0 both carry the count and the
-definition.
+CI names the nine files and skips them. The check that the list is still right is made **by
+observation, not by pattern**: CI runs each excluded file and requires it to fail *for the missing
+artifact*. A file that no longer needs excluding is caught passing; a file that starts needing one
+is caught by the main run failing and naming it, which is how the two extra files surfaced.
+**Verified by hiding `build/proposed-curated/` on the owner's machine and running both steps
+against it — all nine failed only for the missing file, and the remaining 2,877 passed.**
+`.github/workflows/ci.yml` and DEPLOY.md §0 both carry the count and its definition.
 
 **A list of exclusions is a worse instrument than a count of skips**, for the reason CLAUDE.md
 already gives about published figures: the list says which files are excluded, not how many tests
@@ -247,10 +259,10 @@ would fail.
 
 ### The fix, and what it would take
 
-**Make each of the seven report a missing artifact as a NAMED SKIP rather than crash**, so what
-is not covered is *counted* and printed by the runner, not inferred from a list in a YAML file.
-Then delete the exclusions and let CI run everything, reporting `2,944 passed, 183 skipped
-(artifact absent)`.
+**Make each of the nine report a missing artifact as a NAMED SKIP rather than crash**, so what is
+not covered is *counted* and printed by the runner, not inferred from a list in a YAML file. Then
+delete the exclusions and let CI run everything, reporting `2,877 passed, 250 skipped (artifact
+absent)`.
 
 What it touches, and why it is not a quick change:
 
@@ -259,9 +271,10 @@ What it touches, and why it is not a quick change:
 - **It changes test behaviour**, which CLAUDE.md's rule that matters most constrains: a test that
   can skip is a test that can pass by finding nothing. Each skip must state the artifact it wants
   and be impossible to satisfy accidentally.
-- **The count becomes a published figure** and inherits the naming rule: *"183 skipped"* must mean
-  183 tests skipped for the artifact reason and no other, or the name is a wrong number with no
-  digits in it.
+- **The count becomes a published figure** and inherits the naming rule: *"250 skipped"* must mean
+  250 tests skipped for the artifact reason and no other, or the name is a wrong number with no
+  digits in it. The exclusion guard already enforces exactly that distinction and would be the
+  place to keep it.
 
 **Estimate: 4–6 agent-hours**, most of it in the third bullet rather than the first.
 

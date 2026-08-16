@@ -39,6 +39,20 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
 
+    # THE EXCLUSION LIST LIVES HERE AND NOWHERE ELSE, so the step that checks it and the step
+    # that applies it cannot disagree. See the long note further down for what it is and why.
+    env:
+      EXCLUDED: >-
+        scripts/extract/defensive-counts.test.ts
+        scripts/extract/per-tick-read.test.ts
+        scripts/extract/rank-varying-count.test.ts
+        scripts/extract/rune-propose.test.ts
+        scripts/fetch/ability-index.test.ts
+        scripts/fetch/defender-toggles.test.ts
+        scripts/fetch/rank-shape.test.ts
+        tests/ability-files.test.ts
+        tests/cross-area-seams.test.ts
+
     steps:
       - name: Check out the commit under test
         uses: actions/checkout@v4
@@ -62,78 +76,79 @@ jobs:
       # SPECIFICATION §14 SAYS CI "RUNS THE KNOWN-ANSWER TEST SUITE". THAT IS PARTLY FALSE HERE,
       # AND THIS IS THE RECORD OF BY HOW MUCH.
       #
-      # CI runs 2,944 of the project's 3,127 tests. THE OTHER 183 RUN ON THE PROJECT OWNER'S
+      # CI runs 2,877 of the project's 3,127 tests. THE OTHER 250 RUN ON THE PROJECT OWNER'S
       # MACHINE ONLY, and nowhere else, including here.
       #
-      # WHY. Seven test files read the harvester's output from `build/proposed-curated/` — about
+      # WHY. Nine test files read the harvester's output from `build/proposed-curated/` — about
       # 4.3 MB across six files, the largest being `ability-wikitext.json` at 3.1 MB. That
       # directory is in `.gitignore` on purpose ("Draft curated entries produced by
       # scripts/extract. Proposals only"), so it is not in the repository and is absent from
       # every fresh clone. The files cannot be regenerated here either: they come from harvesting
       # the wiki over the network, which PLAN.md §2 measures at ~20 minutes.
       #
-      # HOW IT WAS FOUND: the first CI run on 2026-08-16 failed on all seven with ENOENT. The
-      # suite had been green on one machine since it was written because the files were sitting
-      # there. Nothing had ever run it anywhere else, so nothing had said so.
+      # HOW IT WAS FOUND, TWICE, AND THE SECOND TIME IS THE INSTRUCTIVE ONE. The first CI run
+      # ever, on 2026-08-16, failed on seven files with ENOENT: the suite had been green on one
+      # machine since it was written, because the files were sitting on it, and nothing had ever
+      # run it anywhere else. The list of seven was built by grepping test files for the artifact
+      # path — and the NEXT run failed on two more, `defensive-counts.test.ts` and
+      # `per-tick-read.test.ts`, which reach the same file through a helper
+      # (`scripts/extract/per-tick-read.ts`) and so never mention it themselves.
+      #
+      # SO THE GUARD BELOW NO LONGER USES A PATTERN. A pattern over source text cannot see a
+      # transitive import, and a guard that looks precise while missing two files is worse than
+      # one that admits what it does. It now checks the list BY OBSERVATION: it runs each excluded
+      # file and requires it to fail for the missing artifact. Both directions of drift are then
+      # caught by something that ran rather than something that matched:
+      #
+      #   • A file that needs excluding and is not on the list — the main test step fails with
+      #     ENOENT and names it. That is how the two above were found.
+      #   • A file on the list that no longer needs to be — the guard finds it PASSING without the
+      #     artifact and fails, so the list cannot outlive its reason.
       #
       # WHAT IS ACTUALLY UNCHECKED. These are the tests over the ability harvester and the fetch
-      # pipeline — PLAN.md §3 calls Area C "the area where a defect costs the most". They are not
-      # unrun; they are run by one person on one machine, and a second party has no way to
-      # reproduce them. Treat a green run here as evidence about the ENGINE, THE INTERFACE AND
-      # THE SITE, and not as evidence about the harvester.
+      # pipeline — PLAN.md §3 calls Area C "the area where a defect costs the most", and
+      # `tests/cross-area-seams.test.ts` is among them, so the sweep that exists to catch two
+      # areas holding opposite rules is itself one of the checks CI does not run. Treat a green
+      # run here as evidence about THE ENGINE, THE INTERFACE, THE URL ENCODER AND THE SITE, and
+      # not as evidence about the harvester.
       #
-      # THE FIX IS KNOWN AND IS NOT THIS. PLAN.md §7 carries it: make the seven files report a
-      # missing artifact as a named skip rather than an ENOENT stack, so what is not covered is
-      # counted rather than excluded by a list. That is plan-mode work touching three partitioned
+      # THE FIX IS KNOWN AND IS NOT THIS. PLAN.md §7 carries it: make these files report a missing
+      # artifact as a NAMED SKIP rather than an ENOENT stack, so what is not covered is counted by
+      # the runner instead of listed in a YAML file. Plan-mode work across three partitioned
       # areas. This list is the honest interim, not the answer.
-      #
-      # THE LIST BELOW IS CHECKED AGAINST REALITY BY THE STEP THAT FOLLOWS, so it cannot quietly
-      # grow. Adding an eighth file that reads `build/` fails CI and names it.
       # ═══════════════════════════════════════════════════════════════════════════════════════
-      - name: The exclusion list is still exactly the files that need the missing artifacts
+      - name: Every excluded file is still excluded for the right reason
+        # NOTE: this step is meaningful only where the artifact is ABSENT, which is every machine
+        # except the project owner's. Run locally it reports all nine as no longer needing
+        # exclusion, correctly — they pass there.
         run: |
-          set -euo pipefail
-          expected="scripts/extract/rank-varying-count.test.ts
-          scripts/extract/rune-propose.test.ts
-          scripts/fetch/ability-index.test.ts
-          scripts/fetch/defender-toggles.test.ts
-          scripts/fetch/rank-shape.test.ts
-          tests/ability-files.test.ts
-          tests/cross-area-seams.test.ts"
-          expected=$(echo "$expected" | sed 's/^ *//' | sort)
-          actual=$(grep -rl 'proposed-curated' --include='*.test.ts' --include='*.test.tsx' . \
-                     --exclude-dir=node_modules | sed 's|^\./||' | sort)
-          if [ "$expected" != "$actual" ]; then
-            echo "The list of test files that read build/proposed-curated/ has CHANGED."
-            echo
-            echo "Excluded by this workflow:"; echo "$expected"
-            echo
-            echo "Actually reading that directory:"; echo "$actual"
-            echo
-            echo "A file ADDED to the second list is a file CI would silently stop covering."
-            echo "A file REMOVED from it is one CI could start covering again."
-            echo "Either way this workflow and PLAN.md §7 need updating in the same commit."
-            exit 1
-          fi
-          echo "Unchanged: 7 files, excluded deliberately and counted."
+          set -uo pipefail
+          wrong=0
+          for f in $EXCLUDED; do
+            if out=$(npx vitest run "$f" 2>&1); then
+              echo "NO LONGER NEEDS EXCLUDING: $f passed without build/proposed-curated/."
+              echo "  Remove it from EXCLUDED below and from PLAN.md §7, and the count rises."
+              wrong=1
+            elif ! echo "$out" | grep -q 'proposed-curated'; then
+              echo "EXCLUDED FOR THE WRONG REASON: $f failed, but not for the missing artifact."
+              echo "  This is a real failure hiding behind an exclusion. Last 20 lines:"
+              echo "$out" | tail -20
+              wrong=1
+            else
+              echo "ok (absent artifact): $f"
+            fi
+          done
+          if [ "$wrong" -ne 0 ]; then exit 1; fi
+          echo "All nine excluded files fail only for the missing artifact. List is honest."
 
       # Vitest exits non-zero on a single failing test, which is what fails the job and, once
       # branch protection is on, what blocks the merge.
-      #
-      # Known limit of the guard above: it finds test files that MENTION the artifact path. A
-      # test reaching it through a helper that does not would not be listed — and would fail
-      # here with ENOENT, loudly, rather than pass while covering nothing. That is the right way
-      # round for this to break.
-      - name: Known-answer test suite (2,944 of 3,127 — see the exclusion note above)
+      - name: Known-answer test suite (2,877 of 3,127 — see the exclusion note above)
         run: |
-          npx vitest run \
-            --exclude "scripts/extract/rank-varying-count.test.ts" \
-            --exclude "scripts/extract/rune-propose.test.ts" \
-            --exclude "scripts/fetch/ability-index.test.ts" \
-            --exclude "scripts/fetch/defender-toggles.test.ts" \
-            --exclude "scripts/fetch/rank-shape.test.ts" \
-            --exclude "tests/ability-files.test.ts" \
-            --exclude "tests/cross-area-seams.test.ts"
+          set -euo pipefail
+          args=""
+          for f in $EXCLUDED; do args="$args --exclude $f"; done
+          npx vitest run $args
 
       # Building in CI is not redundant with the typecheck. `npm run build` also regenerates the
       # landing page's coverage figures and runs Rollup over eight entry points; either can fail
