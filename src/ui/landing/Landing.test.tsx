@@ -108,7 +108,7 @@ describe('landing/it names the gaps a reader would otherwise assume away', () =>
     // WAS 0 UNTIL THE WIRING LANDED, hours after this test was written, and it was placed as a
     // tripwire for exactly that. 77 of 155 now change a figure — the engine's own measurement,
     // not the 90 that merely LOOK ready.
-    expect(capability.defensiveApplied).toBe(86) // 77 until 2026-08-15: nine full-duration rows became applicable when figureIs said what their figure meant;
+    expect(capability.defensiveApplied).toBe(92) // 77 until 2026-08-15: nine full-duration rows became applicable when figureIs said what their figure meant; 86 until 2026-08-16, when six per-tick heal rows gained tick counts and began to apply. THE 86 WAS STALE FOR A DAY AND NOTHING COULD SAY SO: the constant behind it is hand-typed and capability.test.ts feeds it back into its own derivation, so that check compares it against itself. These two assertions are the only places the figure is pinned independently, which is why they are worth keeping.
   });
 });
 

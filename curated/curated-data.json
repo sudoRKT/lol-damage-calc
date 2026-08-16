@@ -1,7 +1,7 @@
 {
  "version": 1,
  "patch": "16.16.1",
- "fetched": "2026-08-15",
+ "fetched": "2026-08-16",
  "abilities": [
   {
    "champion": "Aatrox",
@@ -2783,7 +2783,7 @@
     "fetched": "2026-08-14"
    },
    "sourceRevision": 4028021,
-   "notes": "how many times this lands could not be read (4 repeating components; a total row cannot be attributed to one of them); ; one expression is split across several {{as}} blocks (unbalanced parentheses), so the stat and its percentage were read separately and what is stored is not the ability: {{ap|60 to 100}} {{as|(+ 30% AP)}} {{ai|Cosmic Creator|Aurelion Sol|{{as|(+|hp}} {{as|({{fd|3.1}}% Stardust)}}; this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). The source was read: it recurs, and both the source's own arithmetic and its own printed rows put the count at 26. It is still not written, and the reason is not in the source: THE COUNT IS RANK-DEPENDENT AND `hits` IS ONE NUMBER PER COMPONENT. The blocker is in our shape, not in the source: the page states 26 for ranks 1-4 and labels its own total row \"Ranks 1-4\" to say so, and then states that \"at rank 5, Breath of Light's channel duration is increased to 160 seconds\" — 1,280 ticks at the same 0.125-second interval, which its own blurb calls lasting \"indefinitely\". Writing 26 would understate rank 5 by a factor of 49; writing 1,280 would overstate ranks 1-4 by the same. A rank-axis hit count is a contract change and is RAISED for the lead, not made here. No figure is published rather than one published in the wrong place."
+   "notes": "how many times this lands could not be read (4 repeating components; a total row cannot be attributed to one of them); ; one expression is split across several {{as}} blocks (unbalanced parentheses), so the stat and its percentage were read separately and what is stored is not the ability: {{ap|60 to 100}} {{as|(+ 30% AP)}} {{ai|Cosmic Creator|Aurelion Sol|{{as|(+|hp}} {{as|({{fd|3.1}}% Stardust)}}; this ability states a per-tick figure, so its damage recurs over time — and damage over time is never part of a burst total (SPECIFICATION §3.8). The source was read: it recurs, and both the source's own arithmetic and its own printed rows put the count at 26. It is still not written, and the reason is not in the source: THE COUNT IS RANK-DEPENDENT AND `hits` IS ONE NUMBER PER COMPONENT. The blocker is in our shape, not in the source: the page states 26 for ranks 1-4 and labels its own total row \"Ranks 1-4\" to say so, and then states that \"at rank 5, Breath of Light's channel duration is increased to 160 seconds\" — 1,280 ticks at the same 0.125-second interval, which its own blurb calls lasting \"indefinitely\". Writing 26 would understate rank 5 by a factor of 49; writing 1,280 would overstate ranks 1-4 by the same. A rank-axis hit count is a contract change and was RAISED for the lead. === CLOSED 2026-08-15: THE SHAPE THE SOURCE HAS THAT THIS PRODUCT DOES NOT MODEL. === The lead sized the population before deciding, because one entry is not a shape. Two measurements: across the 82 entries that store a hit count, a structured rank-varying duration field fires ZERO times — which disproved that proxy rather than emptying the population, since this entry is a known member. The signal is prose in a rank-specific description field, and across ALL 937 pages a rank-conditional sentence that moves a duration or interval fires 8 times, of which 7 are false positives on reading (Kha'Zix R is about evolutions, Kindred W is a cooldown note, Shyvana R is fury regeneration, Pantheon R is a fixed 0.8 seconds). ONE REAL MEMBER: this one. So the contract is unchanged and this ability publishes no tick count, deliberately. It is not incomplete for want of reading — every sentence has been read and they agree. It is a shape the wiki expresses and `hits: number` cannot: a count that changes with rank. If a second member is ever found, that is the point to revisit the contract, and finding one is the trigger rather than anybody's judgement that it would be tidier. No figure is published rather than one published in the wrong place."
   },
   {
    "champion": "Aurelion Sol",
@@ -5066,7 +5066,10 @@
      "relation": {
       "kind": "adds"
      },
-     "hits": 5
+     "hits": 5,
+     "overTime": {
+      "sourceSays": "Enemies within the clouds are poisoned to take magic damage every 5/19 seconds, over clouds that last 5 seconds. The stored figure is per second and its own leveling row prints the five-second total (100 to 200 against 20 to 40, and 50% AP against 10%), so five one-second instances reconcile at both endpoints and on the ratio."
+     }
     }
    ],
    "verification": "derived",
@@ -43962,7 +43965,7 @@
     "source": "wiki Module:ItemData/data",
     "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
     "patch": "16.16.1",
-    "fetched": "2026-08-14T15:04:08.084Z"
+    "fetched": "2026-08-15T22:33:52.829Z"
    }
   },
   {
@@ -43995,7 +43998,7 @@
     "source": "wiki Module:ItemData/data",
     "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
     "patch": "16.16.1",
-    "fetched": "2026-08-14T15:04:08.084Z"
+    "fetched": "2026-08-15T22:33:52.829Z"
    }
   },
   {
@@ -44037,7 +44040,7 @@
     "source": "wiki Module:ItemData/data",
     "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
     "patch": "16.16.1",
-    "fetched": "2026-08-14T15:04:08.084Z"
+    "fetched": "2026-08-15T22:33:52.829Z"
    }
   },
   {
@@ -44075,7 +44078,7 @@
     "source": "wiki Module:ItemData/data",
     "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
     "patch": "16.16.1",
-    "fetched": "2026-08-14T15:04:08.084Z"
+    "fetched": "2026-08-15T22:33:52.829Z"
    }
   },
   {
@@ -44120,7 +44123,7 @@
     "source": "wiki Module:ItemData/data",
     "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
     "patch": "16.16.1",
-    "fetched": "2026-08-14T15:04:08.084Z"
+    "fetched": "2026-08-15T22:33:52.829Z"
    }
   },
   {
@@ -44147,7 +44150,7 @@
     "source": "wiki Module:ItemData/data",
     "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
     "patch": "16.16.1",
-    "fetched": "2026-08-14T15:04:08.084Z"
+    "fetched": "2026-08-15T22:33:52.829Z"
    }
   },
   {
@@ -44181,7 +44184,7 @@
     "source": "wiki Module:ItemData/data",
     "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
     "patch": "16.16.1",
-    "fetched": "2026-08-14T15:04:08.084Z"
+    "fetched": "2026-08-15T22:33:52.829Z"
    }
   },
   {
@@ -44210,7 +44213,7 @@
     "source": "wiki Module:ItemData/data",
     "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
     "patch": "16.16.1",
-    "fetched": "2026-08-14T15:04:08.084Z"
+    "fetched": "2026-08-15T22:33:52.829Z"
    }
   },
   {
@@ -44249,7 +44252,7 @@
     "source": "wiki Module:ItemData/data",
     "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
     "patch": "16.16.1",
-    "fetched": "2026-08-14T15:04:08.084Z"
+    "fetched": "2026-08-15T22:33:52.829Z"
    }
   },
   {
@@ -44277,7 +44280,7 @@
     "source": "wiki Module:ItemData/data",
     "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
     "patch": "16.16.1",
-    "fetched": "2026-08-14T15:04:08.084Z"
+    "fetched": "2026-08-15T22:33:52.829Z"
    }
   },
   {
@@ -44319,7 +44322,7 @@
     "source": "wiki Module:ItemData/data",
     "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
     "patch": "16.16.1",
-    "fetched": "2026-08-14T15:04:08.084Z"
+    "fetched": "2026-08-15T22:33:52.829Z"
    }
   },
   {
@@ -44356,7 +44359,7 @@
     "source": "wiki Module:ItemData/data",
     "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
     "patch": "16.16.1",
-    "fetched": "2026-08-14T15:04:08.084Z"
+    "fetched": "2026-08-15T22:33:52.829Z"
    }
   },
   {
@@ -44404,7 +44407,7 @@
     "source": "wiki Module:ItemData/data",
     "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
     "patch": "16.16.1",
-    "fetched": "2026-08-14T15:04:08.084Z"
+    "fetched": "2026-08-15T22:33:52.829Z"
    }
   },
   {
@@ -44474,7 +44477,7 @@
     "source": "wiki Module:ItemData/data",
     "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
     "patch": "16.16.1",
-    "fetched": "2026-08-14T15:04:08.084Z"
+    "fetched": "2026-08-15T22:33:52.829Z"
    }
   },
   {
@@ -44512,7 +44515,7 @@
     "source": "wiki Module:ItemData/data",
     "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
     "patch": "16.16.1",
-    "fetched": "2026-08-14T15:04:08.084Z"
+    "fetched": "2026-08-15T22:33:52.829Z"
    }
   },
   {
@@ -44556,7 +44559,7 @@
     "source": "wiki Module:ItemData/data",
     "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
     "patch": "16.16.1",
-    "fetched": "2026-08-14T15:04:08.084Z"
+    "fetched": "2026-08-15T22:33:52.829Z"
    }
   },
   {
@@ -44593,7 +44596,7 @@
     "source": "wiki Module:ItemData/data",
     "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
     "patch": "16.16.1",
-    "fetched": "2026-08-14T15:04:08.084Z"
+    "fetched": "2026-08-15T22:33:52.829Z"
    }
   },
   {
@@ -44630,7 +44633,7 @@
     "source": "wiki Module:ItemData/data",
     "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
     "patch": "16.16.1",
-    "fetched": "2026-08-14T15:04:08.084Z"
+    "fetched": "2026-08-15T22:33:52.829Z"
    }
   },
   {
@@ -44659,7 +44662,7 @@
     "source": "wiki Module:ItemData/data",
     "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
     "patch": "16.16.1",
-    "fetched": "2026-08-14T15:04:08.084Z"
+    "fetched": "2026-08-15T22:33:52.829Z"
    }
   },
   {
@@ -44696,7 +44699,7 @@
     "source": "wiki Module:ItemData/data",
     "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
     "patch": "16.16.1",
-    "fetched": "2026-08-14T15:04:08.084Z"
+    "fetched": "2026-08-15T22:33:52.829Z"
    }
   },
   {
@@ -44725,7 +44728,7 @@
     "source": "wiki Module:ItemData/data",
     "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
     "patch": "16.16.1",
-    "fetched": "2026-08-14T15:04:08.084Z"
+    "fetched": "2026-08-15T22:33:52.829Z"
    }
   },
   {
@@ -44764,7 +44767,7 @@
     "source": "wiki Module:ItemData/data",
     "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
     "patch": "16.16.1",
-    "fetched": "2026-08-14T15:04:08.084Z"
+    "fetched": "2026-08-15T22:33:52.829Z"
    }
   },
   {
@@ -44792,7 +44795,7 @@
     "source": "wiki Module:ItemData/data",
     "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
     "patch": "16.16.1",
-    "fetched": "2026-08-14T15:04:08.084Z"
+    "fetched": "2026-08-15T22:33:52.829Z"
    }
   },
   {
@@ -44829,7 +44832,7 @@
     "source": "wiki Module:ItemData/data",
     "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
     "patch": "16.16.1",
-    "fetched": "2026-08-14T15:04:08.084Z"
+    "fetched": "2026-08-15T22:33:52.829Z"
    }
   },
   {
@@ -44859,7 +44862,7 @@
     "source": "wiki Module:ItemData/data",
     "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
     "patch": "16.16.1",
-    "fetched": "2026-08-14T15:04:08.084Z"
+    "fetched": "2026-08-15T22:33:52.829Z"
    }
   },
   {
@@ -44888,7 +44891,7 @@
     "source": "wiki Module:ItemData/data",
     "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
     "patch": "16.16.1",
-    "fetched": "2026-08-14T15:04:08.084Z"
+    "fetched": "2026-08-15T22:33:52.829Z"
    }
   },
   {
@@ -44925,7 +44928,7 @@
     "source": "wiki Module:ItemData/data",
     "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
     "patch": "16.16.1",
-    "fetched": "2026-08-14T15:04:08.084Z"
+    "fetched": "2026-08-15T22:33:52.829Z"
    }
   },
   {
@@ -44962,7 +44965,7 @@
     "source": "wiki Module:ItemData/data",
     "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
     "patch": "16.16.1",
-    "fetched": "2026-08-14T15:04:08.084Z"
+    "fetched": "2026-08-15T22:33:52.829Z"
    }
   },
   {
@@ -45010,7 +45013,7 @@
     "source": "wiki Module:ItemData/data",
     "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
     "patch": "16.16.1",
-    "fetched": "2026-08-14T15:04:08.084Z"
+    "fetched": "2026-08-15T22:33:52.829Z"
    }
   },
   {
@@ -45054,7 +45057,7 @@
     "source": "wiki Module:ItemData/data",
     "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
     "patch": "16.16.1",
-    "fetched": "2026-08-14T15:04:08.084Z"
+    "fetched": "2026-08-15T22:33:52.829Z"
    }
   },
   {
@@ -45091,7 +45094,7 @@
     "source": "wiki Module:ItemData/data",
     "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
     "patch": "16.16.1",
-    "fetched": "2026-08-14T15:04:08.084Z"
+    "fetched": "2026-08-15T22:33:52.829Z"
    }
   },
   {
@@ -45145,7 +45148,7 @@
     "source": "wiki Module:ItemData/data",
     "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
     "patch": "16.16.1",
-    "fetched": "2026-08-14T15:04:08.084Z"
+    "fetched": "2026-08-15T22:33:52.829Z"
    }
   },
   {
@@ -45199,7 +45202,7 @@
     "source": "wiki Module:ItemData/data",
     "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
     "patch": "16.16.1",
-    "fetched": "2026-08-14T15:04:08.084Z"
+    "fetched": "2026-08-15T22:33:52.829Z"
    }
   },
   {
@@ -45236,7 +45239,7 @@
     "source": "wiki Module:ItemData/data",
     "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
     "patch": "16.16.1",
-    "fetched": "2026-08-14T15:04:08.084Z"
+    "fetched": "2026-08-15T22:33:52.829Z"
    }
   },
   {
@@ -45278,7 +45281,7 @@
     "source": "wiki Module:ItemData/data",
     "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
     "patch": "16.16.1",
-    "fetched": "2026-08-14T15:04:08.084Z"
+    "fetched": "2026-08-15T22:33:52.829Z"
    }
   },
   {
@@ -45326,7 +45329,7 @@
     "source": "wiki Module:ItemData/data",
     "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
     "patch": "16.16.1",
-    "fetched": "2026-08-14T15:04:08.084Z"
+    "fetched": "2026-08-15T22:33:52.829Z"
    }
   },
   {
@@ -45355,7 +45358,7 @@
     "source": "wiki Module:ItemData/data",
     "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
     "patch": "16.16.1",
-    "fetched": "2026-08-14T15:04:08.084Z"
+    "fetched": "2026-08-15T22:33:52.829Z"
    }
   },
   {
@@ -45400,7 +45403,7 @@
     "source": "wiki Module:ItemData/data",
     "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
     "patch": "16.16.1",
-    "fetched": "2026-08-14T15:04:08.084Z"
+    "fetched": "2026-08-15T22:33:52.829Z"
    }
   },
   {
@@ -45448,7 +45451,7 @@
     "source": "wiki Module:ItemData/data",
     "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
     "patch": "16.16.1",
-    "fetched": "2026-08-14T15:04:08.084Z"
+    "fetched": "2026-08-15T22:33:52.829Z"
    }
   },
   {
@@ -45495,7 +45498,7 @@
     "source": "wiki Module:ItemData/data",
     "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
     "patch": "16.16.1",
-    "fetched": "2026-08-14T15:04:08.084Z"
+    "fetched": "2026-08-15T22:33:52.829Z"
    }
   },
   {
@@ -45538,7 +45541,7 @@
     "source": "wiki Module:ItemData/data",
     "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
     "patch": "16.16.1",
-    "fetched": "2026-08-14T15:04:08.084Z"
+    "fetched": "2026-08-15T22:33:52.829Z"
    }
   },
   {
@@ -45580,7 +45583,7 @@
     "source": "wiki Module:ItemData/data",
     "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
     "patch": "16.16.1",
-    "fetched": "2026-08-14T15:04:08.084Z"
+    "fetched": "2026-08-15T22:33:52.829Z"
    }
   },
   {
@@ -45614,7 +45617,7 @@
     "source": "wiki Module:ItemData/data",
     "url": "https://wiki.leagueoflegends.com/en-us/api.php?action=query&prop=revisions&titles=Module:ItemData/data&rvslots=main&rvprop=content&format=json&formatversion=2",
     "patch": "16.16.1",
-    "fetched": "2026-08-14T15:04:08.084Z"
+    "fetched": "2026-08-15T22:33:52.829Z"
    }
   }
  ],

@@ -3,8 +3,8 @@
   "provenance": {
     "source": "curated/curated-data.json (the protected override file), plus the gate-1 refusals from build/proposed-curated/merge-refusals.json carried as named gaps",
     "patch": "16.16.1",
-    "fetched": "2026-08-15",
-    "extractedOn": "2026-08-15",
+    "fetched": "2026-08-16",
+    "extractedOn": "2026-08-16",
     "warning": "These come from the protected override file, which is where this project keeps its hand-authored numbers. Every figure is DERIVED at best unless its entry says otherwise, and each entry states its own verification status — the interface shows that status on screen and must never present a derived figure as settled. An entry marked incomplete contributes NO damage (SPECIFICATION §8). Until 2026-08-14 this warning said these files were harvester drafts; the input moved to the override file and that sentence is deleted rather than softened, because it would now be false.",
     "regenerate": "node --experimental-strip-types scripts/build-ability-files.ts"
   },
@@ -103,7 +103,10 @@
           "relation": {
             "kind": "adds"
           },
-          "hits": 5
+          "hits": 5,
+          "overTime": {
+            "sourceSays": "Enemies within the clouds are poisoned to take magic damage every 5/19 seconds, over clouds that last 5 seconds. The stored figure is per second and its own leveling row prints the five-second total (100 to 200 against 20 to 40, and 50% AP against 10%), so five one-second instances reconcile at both endpoints and on the ratio."
+          }
         }
       ],
       "verification": "derived",

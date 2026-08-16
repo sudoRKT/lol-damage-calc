@@ -86,8 +86,8 @@ export interface CapabilityInputs {
    * from the entry shape. See `DEFENSIVE_APPLIED_MEASURED`.
    *
    * Absent falls back to the ready count, which is what a small fixture wants. The REAL page
-   * must pass it: ready is 91 and applied is 86, and publishing the first as the second would
-   * overstate the product by five defences.
+   * must pass it: ready is 98 and applied is 92, and publishing the first as the second would
+   * overstate the product by six defences.
    */
   defensiveAppliedMeasured?: number;
   abilities: readonly CapabilityAbility[];
@@ -248,7 +248,45 @@ export interface Capability {
  * script run against the PRE-merge file returns 77, matching this constant's old value and its
  * stated three-way split — so the before and after are one definition, not two.
  */
-export const DEFENSIVE_APPLIED_MEASURED = 86;
+export const DEFENSIVE_APPLIED_MEASURED = 92;
+
+/*
+ * ═══ 86 → 92, RE-MEASURED 2026-08-16 — AND THE STALENESS WAS INVISIBLE BY CONSTRUCTION ═══
+ *
+ * **This constant is hand-typed, and `capability.test.ts` feeds it back into its own derivation.**
+ * Every other figure on the coverage page is recomputed from the files and compared against
+ * `capability.json`; this one is compared against ITSELF. It cannot go red however far the data
+ * moves, which is why it sat at 86 through a merge that changed the answer.
+ *
+ * That is the CLAUDE.md rule about a measurement landing where a check can reach it, failing in the
+ * hardest place to notice: the check exists, it runs, it passes, and it is asking nothing.
+ *
+ * **A FALSE RE-MEASUREMENT ON THE RECORD.** On 2026-08-16 the lead reported having "re-measured,
+ * not re-typed" this figure and getting 86 again. It was read out of `capability.test.ts`'s own
+ * output — i.e. through the circular path above. It was re-typed, by a route that looked like
+ * measurement. The conclusion drawn from it — that seven newly-statable heals all failed to reach a
+ * number — was false; six of the seven apply.
+ *
+ * ═══ WHY 92 IS TRUSTED, FROM TWO HARNESSES THAT DISAGREE ON THE ABSOLUTE ═══
+ *
+ * An engine session drove `resolveDefences` over all 155 stored entries one at a time against a
+ * level-11 defender. Run against the PRE-merge file it returned 86 exactly, reproducing this
+ * constant's previous value and its stated five-entry gap — that calibration is what makes its 92
+ * worth anything. It was also insensitive to ability ranks (1/1/1/1, 4/4/4/2, 5/5/5/3) and to
+ * whether the defender's stat block carries mana.
+ *
+ * The lead then wrote an independent harness with a different stat block and got **84 pre-merge and
+ * 90 post-merge** — two low on BOTH files. So the absolute depends on the parameterisation and the
+ * lead's is wrong; **but the DELTA is +6 in both harnesses**, from two people who did not share
+ * code. The figure moved by six and the calibrated harness puts the absolute at 92.
+ *
+ * ═══ WHAT THIS NUMBER SHOULD BECOME, RAISED NOT TAKEN ═══
+ *
+ * A constant that only a person can refresh will go stale again. The engine could export a
+ * data-free counting function returning the applied/refused split, so this area DERIVES the figure
+ * instead of typing it. That means touching the engine's public interface, which CLAUDE.md reserves
+ * to the project owner's decision. Until then, this comment is the guard.
+ */
 
 export function summariseCapability(input: CapabilityInputs): Capability {
   const known = new Set(['on-hit', 'spellblade', 'active', 'periodic']);

@@ -292,8 +292,9 @@ export function ChecksPage() {
           {CAPABILITY.defensiveReadyToApply - CAPABILITY.defensiveApplied} between those two counts
           are refused for a reason the shape alone could not show, and none of them is fixable by
           us: three restore a share of the damage the defender deals, which cannot exist because
-          the defender does not act; one amplifies other healing, which no step models; and one
-          reads “the target”, which on a defensive effect is ambiguous.{' '}
+          the defender does not act; one amplifies other healing, which no step models; and two
+          read “the target”, which on a defensive effect is ambiguous — for one of them the target
+          is the attacker, for the other an ally who is not in the scenario at all.{' '}
           <strong>
             The largest cause used to be recurrence and it is now cleared entirely.
           </strong>{' '}
