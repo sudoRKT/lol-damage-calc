@@ -26,7 +26,13 @@ import {
   capturedHitCounts,
   checkAgainstHarvest,
   checkMarkRule,
+  DECLINED_RECURRENCE,
+  READ_RECURRENCE_BEYOND_PER_TICK,
+  READ_RECURRENCE_QUOTES,
+  READ_RECURRENCE_VERBATIM,
   loadPages,
+  verifyDeclinedQuotes,
+  verifyRecurrenceVerbatim,
   markedOverTime,
   verifyQuotes,
 } from './per-tick-read.ts';
@@ -541,5 +547,83 @@ describe('the table itself, against the real cached source', () => {
       const page = pages.find((p) => `${p.champion}/${p.slot}/${p.abilityName}` === key)!;
       expect(page.wikitext).toContain(stated.verbatim);
     }
+  });
+});
+
+// ═══ THE RECURRENCE TABLES BEYOND "PER TICK" (2026-08-16) ═══
+//
+// Three entries are MARKED and fifteen are DECLINED. Both are hand-written and both are only
+// worth anything if every row rests on a sentence that is really on that ability's page — the
+// same discipline the 37 per-tick rows are held to, for the same reason: a summary cannot be
+// checked and a quote can.
+describe('the recurrence tables, against the real cached source', () => {
+  it('every MARKED entry rests on fragments literally present on its own page', async () => {
+    // DEFINITION: entries in `READ_RECURRENCE_BEYOND_PER_TICK`, each of which moves a component
+    // off the burst line and onto the damage-over-time line (SPECIFICATION §3.8). Three on
+    // 2026-08-16: Cassiopeia W, Fiddlesticks W, Gangplank R.
+    const checks = verifyRecurrenceVerbatim(READ_RECURRENCE_VERBATIM, await loadPages());
+    expect(checks.filter((c) => c.pageMissing || c.missing.length > 0)).toEqual([]);
+    expect(checks.reduce((s, c) => s + c.found, 0)).toBe(7);
+  });
+
+  it('a marked entry cannot exist without a quote AND checked fragments behind it', () => {
+    // The interlock. `classifyOverTime` only marks when a quote exists, so a table entry with no
+    // quote silently WITHDRAWS the entry instead of marking it — which reads like a refusal
+    // nobody wrote. And a quote with no checked fragments is a paraphrase nothing can verify.
+    for (const key of Object.keys(READ_RECURRENCE_BEYOND_PER_TICK)) {
+      expect(READ_RECURRENCE_QUOTES[key], `${key} is marked with no quote`).toBeDefined();
+      expect(READ_RECURRENCE_VERBATIM[key], `${key} is marked with no checked source`).toBeDefined();
+      expect(READ_RECURRENCE_VERBATIM[key]!.length).toBeGreaterThan(0);
+    }
+  });
+
+  it('every DECLINED entry rests on fragments literally present on its own page', async () => {
+    // DEFINITION: entries in `DECLINED_RECURRENCE` — a recurrence-labelled component a person read
+    // and refused to mark, with the reason. 15 entries covering 25 components on 2026-08-16.
+    const checks = verifyDeclinedQuotes(DECLINED_RECURRENCE, await loadPages());
+    expect(checks.filter((c) => c.pageMissing || c.missing.length > 0)).toEqual([]);
+    expect(checks.length).toBe(15);
+    expect(
+      Object.values(DECLINED_RECURRENCE).reduce((s, d) => s + d.componentIds.length, 0),
+    ).toBe(25);
+  });
+
+  it('a refusal must say why, in enough words to be a reason', () => {
+    for (const [key, d] of Object.entries(DECLINED_RECURRENCE)) {
+      expect(d.why.length, `${key} declines with no stated reason`).toBeGreaterThan(80);
+      expect(d.verbatim.length, `${key} declines with no checked sentence`).toBeGreaterThan(0);
+      expect(d.componentIds.length).toBeGreaterThan(0);
+    }
+  });
+
+  it('the ten held by the per-tick reading are really in that reading', () => {
+    // The claim `held-by-the-per-tick-reading` makes is mechanical and checkable: the entry is in
+    // PER_TICK_READS and is deliberately unmarked there. If that ever stops being true the reason
+    // recorded here becomes false, and a false reason is worse than none.
+    const held = Object.entries(DECLINED_RECURRENCE).filter(
+      ([, d]) => d.verdict === 'held-by-the-per-tick-reading',
+    );
+    expect(held).toHaveLength(10);
+    for (const [key] of held) {
+      const row = PER_TICK_READS.find((r) => r.key === key);
+      expect(row, `${key} claims the per-tick reading holds it and is not in that table`).toBeDefined();
+      expect(row!.marked, `${key} is marked in PER_TICK_READS, so it is not held`).toBe(false);
+    }
+  });
+
+  it('the five read for the first time are NOT in the per-tick reading', () => {
+    // The mirror of the check above: a row claiming a fresh reading must not be one the per-tick
+    // table already covers, or two tables hold opposite records of the same entry.
+    const fresh = Object.entries(DECLINED_RECURRENCE).filter(
+      ([, d]) => d.verdict !== 'held-by-the-per-tick-reading',
+    );
+    expect(fresh.map(([k]) => k).sort()).toEqual([
+      'Janna/Q/Howling Gale',
+      'Maokai/E/Sapling Toss',
+      'Miss Fortune/R/Bullet Time',
+      "Nautilus/W/Titan's Wrath",
+      'Trundle/R/Subjugate',
+    ]);
+    for (const [key] of fresh) expect(PER_TICK_READS.find((r) => r.key === key)).toBeUndefined();
   });
 });

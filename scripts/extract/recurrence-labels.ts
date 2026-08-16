@@ -97,6 +97,27 @@ export const READ: Record<string, string> = {
     'Read 2026-08-15. Needs an overTime mark, figureIs per-instance, count 5. Magnitude unchanged: ' +
     '5 x per-second equals the wiki\'s own Total Magic Damage row at both endpoints and on the AP ' +
     'ratio. Destination changes from burst to the damage-over-time line (SPECIFICATION §3.8).',
+  // ADDED 2026-08-16, AND THIS TABLE WAS ALREADY STALE BY ONE WHEN THEY WERE. Fiddlesticks W was
+  // marked on 2026-08-16 and never recorded here; keeping a "what a person has read" list that
+  // does not list what a person read is the failure mode CLAUDE.md names for stale documents.
+  //
+  // THE AUTHORITATIVE TABLES ARE IN `per-tick-read.ts` — `READ_RECURRENCE_BEYOND_PER_TICK` for
+  // what is marked and `DECLINED_RECURRENCE` for what was read and refused, both keyed by entry
+  // and naming COMPONENT IDS. This one is keyed by LABEL because it belongs to the label census
+  // above; it is a summary of those, and `recurrence-labels.test.ts` asserts the accounting over
+  // the real tables rather than over this.
+  'Fiddlesticks/W/Damage per second':
+    'Read 2026-08-16. Marked while DORMANT — the entry is incomplete and publishes nothing, and ' +
+    'that is the point: a defect waiting for a completion is worse than one already wrong. Stored ' +
+    'count 2 against a 2-second channel, which the page states in its own channel_duration ' +
+    'variable. The ability\'s SECOND row, "Last Tick of Damage", is a single final instance and ' +
+    'is deliberately NOT marked.',
+  'Gangplank/R/Magic Damage Per Wave':
+    'Read 2026-08-16. Marked while DORMANT. 12 waves in clusters of 3 every 2 seconds — the ' +
+    'clusters arrive over time, the three waves inside one do not. Stored count 12 already equals ' +
+    'the source\'s own: "12 waves" in the description and "40*12 to 100*12 (+ 10*12% AP)" in the ' +
+    'Total row, agreeing at both endpoints and on the ratio. NO HIT COUNT WAS CHANGED. The ' +
+    '"Magic Damage Per Cluster" row is not marked; a cluster lands in one moment.',
 };
 
 /**
@@ -193,6 +214,7 @@ export function classify(form: string): LabelForm['kind'] {
 }
 
 interface Component {
+  id?: string;
   label?: string;
   hits?: number;
   overTime?: unknown;
@@ -200,6 +222,7 @@ interface Component {
 interface Ability {
   champion: string;
   slot: string;
+  abilityName?: string;
   verification: string;
   components?: Component[];
 }
@@ -249,6 +272,60 @@ export function unmarkedRecurrence(abilities: Ability[]) {
     }
   }
   return { live, dormant };
+}
+
+/**
+ * ═══ THE REAL GATE: EVERY DORMANT MEMBER MUST BE ONE A PERSON HAS READ ═══
+ *
+ * Added 2026-08-16, replacing a pinned count of 27 in `recurrence-labels.test.ts`.
+ *
+ * **This is a TIGHTENING, and the effect was measured before it was applied.** The count it
+ * replaces asserted a total; this asserts membership, component by component. The two are not the
+ * same strength and the pinned number was the weaker of them in both directions:
+ *
+ *   - it could not tell a dormant member somebody had READ from one nobody had looked at, which
+ *     is the only question that matters here;
+ *   - and it FAILED whenever the number legitimately fell. It was already failing against the
+ *     merge proposal on 2026-08-16 — 26 there against 27 in the curated file — because
+ *     Fiddlesticks W had been marked and not yet merged. `premerge:check` runs the suite against
+ *     the proposal, so a pinned total turns every correction into a red test.
+ *
+ * MEASURED BEFORE AND AFTER, both by this function over both files:
+ *
+ *   curated-data.json  2026-08-16   27 dormant · 25 declined + 2 marked · 0 unaccounted
+ *   merged-proposal    2026-08-16   25 dormant · 25 declined + 2 marked · 0 unaccounted
+ *
+ * (The proposal is lower because a marked component is no longer dormant — it has the mark.)
+ *
+ * A NEW dormant component — a fresh harvest, a renamed row, a champion gaining a burn — appears
+ * in `unaccounted` and fails, which is what the pinned number was standing in for. Widening a
+ * pattern cannot satisfy this: the only way to clear an entry is to name its component ids in one
+ * of the two hand-written tables, and both demand the sentence.
+ */
+export function accountForDormant(
+  abilities: Ability[],
+  marked: Readonly<Record<string, readonly string[]>>,
+  declined: Readonly<Record<string, { componentIds: readonly string[] }>>,
+): { dormant: string[]; accounted: string[]; unaccounted: string[] } {
+  const dormant: string[] = [];
+  const accounted: string[] = [];
+  const unaccounted: string[] = [];
+  for (const a of abilities) {
+    const key = `${a.champion}/${a.slot}/${a.abilityName ?? ''}`;
+    const named = new Set([
+      ...(marked[key] ?? []),
+      ...(declined[key]?.componentIds ?? []),
+    ]);
+    for (const c of a.components ?? []) {
+      const form = trailingForm(c.label ?? '');
+      if (!form || classify(form) !== 'recurrence' || c.overTime) continue;
+      if (a.verification !== 'incomplete') continue;
+      const row = `${key}#${c.id ?? c.label ?? '?'}`;
+      dormant.push(row);
+      (named.has(c.id ?? '') ? accounted : unaccounted).push(row);
+    }
+  }
+  return { dormant, accounted, unaccounted };
 }
 
 if (import.meta.url === `file://${process.argv[1]}`) {

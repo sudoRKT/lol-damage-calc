@@ -1379,6 +1379,35 @@ export const READ_RECURRENCE_BEYOND_PER_TICK: Readonly<Record<string, readonly s
    * have swept the final tick in with the recurrence the moment somebody stored it.
    */
   'Fiddlesticks/W/Bountiful Harvest': ['damage-per-second'],
+  /**
+   * **Gangplank R — Cannon Barrage.** Read 2026-08-16 from `Template:Data Gangplank/Cannon
+   * Barrage` rev in `ability-wikitext.json`. Its `description`, verbatim: *"calling down 12 waves
+   * of cannonballs in clusters of 3 every 2 seconds, each wave in a cluster hitting 0.25 seconds
+   * after the other"*. Four clusters two seconds apart is a recurrence over elapsed time, not a
+   * volley landing in one moment — the waves INSIDE a cluster land together, the clusters do not.
+   *
+   * ═══ THE COUNT IS ALREADY STORED AND ALREADY RIGHT, WHICH IS WHY THIS ONE COULD BE MARKED ═══
+   *
+   * The stored `hits` is 12. The source states 12 twice and they agree at both endpoints and on
+   * the AP ratio:
+   *
+   *   description  "calling down 12 waves of cannonballs"
+   *   leveling     "Magic Damage Per Wave    40 to 100 (+ 10% AP)"
+   *                "Total Magic Damage       40*12 to 100*12 (+ 10*12% AP)"
+   *
+   * **Nothing here changes a hit count.** The mark is safe precisely because the count did not
+   * need changing — see `DECLINED_RECURRENCE` for the five entries that failed exactly this test.
+   *
+   * ═══ WHAT IS NOT MARKED ON THIS ENTRY, AND WHY THE COMPONENT IS NAMED ═══
+   *
+   * The same page stores `magic-damage-per-cluster` (three waves 0.25 seconds apart) and
+   * `true-damage-with` (the Death's Daughter upgrade's single cannonball). Neither is marked. A
+   * cluster is three waves landing in one moment, which is a MULTI-HIT form and belongs in the
+   * burst; the upgrade's cannonball lands once. The entry is `incomplete` for a separate defect
+   * that this reading does not touch: per-wave (480 at rank 1) and per-cluster (120) are both
+   * stored as `adds`, so the parts sum to 720 against a stated total of 480.
+   */
+  'Gangplank/R/Cannon Barrage': ['magic-damage-per-wave'],
 };
 
 /** The sentence each entry above rests on, quoted from its own page. */
@@ -1393,7 +1422,334 @@ export const READ_RECURRENCE_QUOTES: Readonly<Record<string, string>> = {
     'that last 5 seconds. The stored figure is per second and its own leveling row prints the ' +
     'five-second total (100 to 200 against 20 to 40, and 50% AP against 10%), so five one-second ' +
     'instances reconcile at both endpoints and on the ratio.',
+  'Gangplank/R/Cannon Barrage':
+    'Gangplank calls down 12 waves of cannonballs in clusters of 3 every 2 seconds, each wave in ' +
+    'a cluster hitting 0.25 seconds after the other. The clusters arrive two seconds apart, so ' +
+    'the barrage is delivered over time; the three waves within one cluster are not. The stored ' +
+    'count of 12 is the source\'s own: its description says "12 waves" and its leveling row ' +
+    'prints "Total Magic Damage 40*12 to 100*12 (+ 10*12% AP)", which agrees at both endpoints ' +
+    'and on the AP ratio. The "Magic Damage Per Cluster" row is deliberately not covered by this ' +
+    'mark — a cluster lands in one moment.',
 };
+
+/**
+ * THE MARK RESTS ON CHECKED TEXT, NOT ON A READER'S SUMMARY.
+ *
+ * `READ_RECURRENCE_QUOTES` above is readable English that lands in `overTime.sourceSays` and is
+ * shown to a user; it is a paraphrase by construction, because the source is wikitext with
+ * template variables in it. These are the SAME statements as literal substrings of the cached
+ * page, so `verifyRecurrenceVerbatim` can prove the paraphrase was made from the right sentences
+ * on the right ability — the same discipline `verifyQuotes` applies to the 37 per-tick rows.
+ *
+ * Every marked entry must appear here. A mark with no checked sentence behind it is the shape
+ * this project refuses.
+ */
+export const READ_RECURRENCE_VERBATIM: Readonly<Record<string, readonly string[]>> = {
+  'Cassiopeia/W/Miasma': [
+    'creating toxic clouds at the area for 5 seconds',
+    '{{st|Magic Damage Per Second|',
+  ],
+  'Fiddlesticks/W/Bountiful Harvest': [
+    'the tethered enemies are dealt {{as|magic damage}} every {{fd|{{#var:channel_tickrate}}}} seconds',
+    '{{#vardefine:channel_duration|2}}',
+  ],
+  'Gangplank/R/Cannon Barrage': [
+    'calling down 12 waves of cannonballs in clusters of 3 every 2 seconds',
+    '{{st|Magic Damage Per Wave|{{ap|40 to 100}} {{as|(+ 10% AP)}}',
+    '{{st|Total Magic Damage|{{ap|40*12 to 100*12}} {{as|(+ {{ap|10*12}}% AP)}}}}',
+  ],
+};
+
+/**
+ * ═══ RECURRENCE-LABELLED COMPONENTS A PERSON READ AND REFUSED TO MARK (2026-08-16) ═══
+ *
+ * `recurrence-labels.ts` reports every stored component whose label ends in a recurrence-bearing
+ * "per X" and which carries no `overTime` mark. On 2026-08-16 that was **27 components across 17
+ * entries, 0 of them live** — every one sits on an entry whose verification is `incomplete`, so
+ * none publishes a figure today.
+ *
+ * Two were marked (`READ_RECURRENCE_BEYOND_PER_TICK` above). **This table is the other 25, and it
+ * exists because "not marked" and "not read" look identical from outside.** Without it the next
+ * reader repeats the reading, or — worse — reads the absence as an oversight and marks them.
+ *
+ * ═══ THE RULE APPLIED, STATED SO IT CAN BE ARGUED WITH ═══
+ *
+ * **A component is marked only when the count it ALREADY HOLDS equals the count the source
+ * states.** `AbilityComponent.hits` is documented as "absent means 1" and the engine computes
+ * `raw = perHit x hits`, so marking a burn whose real count is 4 while it holds 1 publishes a
+ * QUARTER of the burn on a line whose whole meaning (SPECIFICATION §3.8) is "the total across the
+ * full duration". The burst line at least makes no such claim. This is the same interlock
+ * `classifyOverTime` already applies to a captured count, and both entries marked above satisfy
+ * it independently — Cassiopeia W holds 5 against a 5-second cloud, Fiddlesticks W holds 2
+ * against a 2-second channel, Gangplank R holds 12 against 12 stated waves.
+ *
+ * Correcting those counts is NOT done here. Changing a hit count without reading the source's own
+ * total row is how Cassiopeia W nearly gained a 3.8x overstatement, so each row below records the
+ * count the source states and hands it on.
+ */
+export interface DeclinedRecurrence {
+  /** The component ids on this entry that carry a recurrence label and no mark. */
+  componentIds: readonly string[];
+  /** Why the mark is refused, in one phrase, for grouping. */
+  verdict:
+    /** The label says "per X" but the figure does not recur — it is a rate, an ordinal, a growth. */
+    | 'not-a-recurrence'
+    /** It recurs, the source states the count, and the component does not hold it. */
+    | 'count-not-stored'
+    /** It recurs and the count changes with rank; `hits` is one number per component. */
+    | 'count-varies-by-rank'
+    /** One component spans an immediate instance AND a delayed one; one mark cannot serve both. */
+    | 'two-destinations-in-one-component'
+    /** Already read in `PER_TICK_READS` and deliberately unmarked there; nothing new to decide. */
+    | 'held-by-the-per-tick-reading';
+  /** The reason in plain English, including the count the source states where there is one. */
+  why: string;
+  /** Literal substrings of the cached wikitext. Checked by `verifyDeclinedQuotes`. */
+  verbatim: readonly string[];
+}
+
+export const DECLINED_RECURRENCE: Readonly<Record<string, DeclinedRecurrence>> = {
+  // ═══ FIVE ENTRIES READ FOR THE FIRST TIME ON 2026-08-16 ═══
+  'Janna/Q/Howling Gale': {
+    componentIds: ['bonus-damage-per-second'],
+    verdict: 'not-a-recurrence',
+    why:
+      'THE MOST VALUABLE OF THE 27, AND THE ONE THE LABEL GETS BACKWARDS. "Bonus Damage Per ' +
+      'Second" is not damage arriving every second — it is how much the whirlwind\'s SINGLE hit ' +
+      'grows for each second it is charged. The whirlwind deals its damage once, on the recast, ' +
+      'knocking enemies up. The page states the identity itself: Minimum Magic Damage is 55 to ' +
+      '195, the per-second figure is 10 to 30, and Maximum Magic Damage is written "55+10*3 to ' +
+      '195+30*3" — minimum plus three seconds of the bonus. Marking it would move a burst hit ' +
+      'onto the damage-over-time line, which is the Fiddlesticks "Last Tick of Damage" defect in ' +
+      'the other direction. SEPARATELY SUSPECT AND NOT FIXED HERE: the harvest\'s own note says ' +
+      'this component "lands more than once and nothing in the template states how many", which ' +
+      'is false — it lands once — and the component is stored as `adds` beside the minimum, so ' +
+      'the two sum to 65 at rank 1, which is neither the minimum (55) nor the maximum (85).',
+    verbatim: [
+      "'''Janna''' summons a whirlwind at her current location that charges up over 3 seconds, increasing its range, speed, damage, and {{tip|airborne|knock up}} duration every second over the duration.",
+      '{{st|Bonus Damage Per Second|{{ap|10 to 30}} {{as|(+ 10% AP)}}|Maximum Magic Damage|{{ap|55+10*3 to 195+30*3}} {{as|(+ 80% AP)}}}}',
+    ],
+  },
+  'Trundle/R/Subjugate': {
+    componentIds: ['magic-damage-per-second'],
+    verdict: 'count-not-stored',
+    why:
+      'IT DOES RECUR AND THE COUNT IS 4, WHICH THE COMPONENT DOES NOT HOLD. The page: "Half of ' +
+      "the drain's total damage, healing, and resistances reduction is applied on-cast, while the " +
+      'other half is applied every second over the next 4 seconds." The leveling row states the ' +
+      'same 4 a second way — Initial Magic Damage is 20/2 to 30/2% of maximum health and Magic ' +
+      'Damage Per Second is 20/8 to 30/8%, so the per-second figure times 4 is exactly the ' +
+      'initial half. Stored `hits` is 1. Marking it would publish a quarter of the drain as the ' +
+      'whole of it, on the line that claims to state the full-duration total. The count is handed ' +
+      'on rather than written: this task does not change hit counts. The separate ' +
+      '`initial-magic-damage` component is correctly NOT part of this — it lands on cast and ' +
+      'belongs in the burst.',
+    verbatim: [
+      "Half of the drain's '''total''' damage, healing, and resistances reduction is applied on-cast, while the other half is applied every second over the next 4 seconds.",
+      "{{st|Initial Magic Damage|{{as|{{ap|20/2 to 30/2}}% {{as|(+ 1% per 100 AP)}} of the target's '''maximum''' health|health}}|Magic Damage Per Second|{{as|{{ap|20/8 to 30/8}}% {{as|(+ {{fd|0.25}}% per 100 AP)}} of the target's '''maximum''' health|health}}}}",
+    ],
+  },
+  'Maokai/E/Sapling Toss': {
+    componentIds: ['magic-damage-per-instance'],
+    verdict: 'count-not-stored',
+    why:
+      'IT DOES RECUR AND THE COUNT IS 2, WHICH THE COMPONENT DOES NOT HOLD. An empowered Sapling ' +
+      'attaches two Saplings for 1.5 seconds and they "explode on the afflicted target every 0.75 ' +
+      'seconds over the duration, dealing them the same damage each time" — 1.5 / 0.75 = 2, and ' +
+      'the page prints the same 2 in its own "Total Attached Sapling Damage" row, which is the ' +
+      'per-instance figure times 2. Stored `hits` is ABSENT, which the contract reads as 1, so ' +
+      'marking would publish half the attached-Sapling damage as the whole of it. ALSO WORTH ' +
+      'KNOWING BEFORE ANYONE PUTS THIS ON A WORKLIST: this entry can never be completed. Both of ' +
+      'its bonus-health ratios are recorded `unresolvable` — the source names bonus health and ' +
+      'never says whose — so it is in the permanent "cannot be completed" set, not the pending one.',
+    verbatim: [
+      "The attached ''Saplings'' explode on the afflicted target every {{fd|0.75}} seconds over the duration, dealing them the same damage each time.",
+      '{{st|Magic Damage per Instance|{{ap|50*2/3 to 150*2/3|round=2}}',
+      '{{st|Total Attached Sapling Damage|{{ap|(50*2/3 to 150*2/3)*2|round=2}}',
+    ],
+  },
+  'Nautilus/W/Titan\'s Wrath': {
+    componentIds: ['magic-damage-per-instance'],
+    verdict: 'two-destinations-in-one-component',
+    why:
+      'ONE COMPONENT COVERS AN IMMEDIATE INSTANCE AND A DELAYED ONE, AND ONE MARK CANNOT SERVE ' +
+      'BOTH. The page: "The target takes magic damage over time, half dealt immediately and the ' +
+      'other half dealt after 1.25 seconds", with Total Magic Damage 30 to 70 and Magic Damage ' +
+      'per Instance 30/2 to 70/2. The page\'s own notes separate them explicitly — "Pain of ' +
+      "Wrath's first damage instance is tagged as spell damage, while the second damage instance " +
+      'is tagged as persistent damage". Marking the component moves the IMMEDIATE half off the ' +
+      'burst line; leaving it unmarked leaves the DELAYED half in the burst. Both are wrong, and ' +
+      'the fix is to split the component into an on-application instance and a recurring one, ' +
+      'which is harvester work, not a mark. `hits` is absent here too, so the count (2) is not ' +
+      'stored either.',
+    verbatim: [
+      '{{sbc|Pain of Wrath:}} The target takes {{as|magic damage}} over time, half dealt immediately and the other half dealt after {{fd|1.25}} seconds.',
+      "* ''Pain of Wrath's'' first damage instance is tagged as {{tip|spell damage}}, while the second damage instance is tagged as {{tip|persistent damage}}.",
+    ],
+  },
+  'Miss Fortune/R/Bullet Time': {
+    componentIds: ['physical-damage-per-wave'],
+    verdict: 'count-varies-by-rank',
+    why:
+      'THE SECOND KNOWN MEMBER OF A SHAPE THE CONTRACT CANNOT EXPRESS, AND FINDING A SECOND ONE ' +
+      'IS THE STATED TRIGGER TO REVISIT IT. Aurelion Sol Q\'s `captureBlockedBy` above records ' +
+      'that a rank-varying hit count was measured as having exactly ONE real member across all ' +
+      '937 pages, and that "if a second member is ever found, that is the point to revisit the ' +
+      'contract". This is one. Miss Fortune "channels for up to 3 seconds, firing a number of ' +
+      'waves of bullets"; the page states "Total Waves 14 to 18" and "Wave Interval Time ' +
+      '2.85/(14 to 18) seconds", so the count is 14 at rank 1 and 18 at rank 3 while `hits` is ' +
+      'one number per component. Stored `hits` is 1: marking it would publish a fourteenth to an ' +
+      'eighteenth of the ultimate as the whole of it. RAISED for the lead as a contract question, ' +
+      'not decided here. It does recur — 14 to 18 waves spread over 2.85 seconds, and the wiki ' +
+      "tags the ability 'aoedot' — so this is a blocked mark, not a rejected one.",
+    verbatim: [
+      "'''Miss Fortune''' {{tip|channel|channels}} for up to 3 seconds, firing a number of waves of bullets in the target direction.",
+      '{{st|Total Waves|{{ap|14 to 18}}',
+      '{{st|Wave Interval Time|{{ap|2.85/(14 to 18)|round=4}} seconds}}',
+    ],
+  },
+
+  // ═══ TEN ENTRIES ALREADY READ IN `PER_TICK_READS`, RE-CHECKED RATHER THAN RE-READ ═══
+  //
+  // Every one of these carries a component whose label says "per tick", so `classifyOverTime`
+  // FORCES the entry to `incomplete` on every merge until its count is settled through the table
+  // above. They are not defects waiting for a completion: they cannot be completed by someone
+  // working on damage figures without going through that table. That is the difference between
+  // these 20 components and the five above, and it is why the five were the work.
+  //
+  // What was checked today, beyond the existing rows: several of them also carry a "per second"
+  // component the per-tick reading does not name. In every case the per-second row is the SAME
+  // damage restated at a different interval, stored beside the per-tick row as `adds` — a
+  // double-count defect that is real, separate, and not fixed by a mark.
+  'Amumu/W/Despair': {
+    componentIds: ['magic-damage-per-tick'],
+    verdict: 'held-by-the-per-tick-reading',
+    why:
+      'Read 2026-08-14, `countVerdict: no-duration-stated`. A toggle held up by mana: no duration ' +
+      'exists, so no full-duration count can ever be stated and no mark can be safe.',
+    verbatim: ['cries a continuous pool of tears, dealing {{as|magic damage}} every {{fd|0.5}} seconds to nearby enemies'],
+  },
+  'Anivia/R/Glacial Storm': {
+    componentIds: ['magic-damage-per-tick', 'empowered-damage-per-tick'],
+    verdict: 'held-by-the-per-tick-reading',
+    why:
+      'Read 2026-08-14, `countVerdict: no-duration-stated`. A toggle, and a second missing count ' +
+      'on top: how the run splits between the normal and the empowered tick depends on when it ' +
+      'was cast.',
+    verbatim: ['dealing {{as|magic damage}} every {{fd|0.5}} seconds to enemies within and {{tip|slow|slowing}} them for 1 second'],
+  },
+  'Aurelion Sol/Q/Breath of Light': {
+    componentIds: [
+      'magic-damage-per-tick',
+      'magic-damage-per-second',
+      'secondary-target-damage-per-tick',
+      'secondary-magic-damage-per-second',
+    ],
+    verdict: 'held-by-the-per-tick-reading',
+    why:
+      'Read 2026-08-14 and re-read 2026-08-15, `countVerdict: count-not-stored` with ' +
+      '`reconcilesAt: 26`. The count is 26 for ranks 1-4 and 1,280 at rank 5, and `hits` is one ' +
+      'number per component — the original rank-varying member. The two "per second" components ' +
+      'are the same damage restated and are held by the same withdrawal.',
+    verbatim: ['dealing {{as|magic damage}} to them and surrounding enemies every {{fd|0.125}} seconds. Secondary targets are dealt 50% damage.'],
+  },
+  'Karthus/E/Defile': {
+    componentIds: ['magic-damage-per-tick', 'damage-per-second'],
+    verdict: 'held-by-the-per-tick-reading',
+    why:
+      'Read 2026-08-14, `countVerdict: no-duration-stated`. A toggle held up by mana. Its own ' +
+      'rows give a per-tick figure and a per-second figure and no third one, because the third ' +
+      'would need a duration the ability does not have.',
+    verbatim: ['surrounds himself in a necrotic [[aura]] that deals {{as|magic damage}} every {{fd|0.25}} seconds to all nearby enemies'],
+  },
+  'Morgana/W/Tormented Shadow': {
+    componentIds: ['minimum-damage-per-tick', 'maximum-damage-per-tick'],
+    verdict: 'held-by-the-per-tick-reading',
+    why:
+      'Read 2026-08-14 and re-read 2026-08-15, `countVerdict: contested`. The description reads ' +
+      'as 11 instances and the page\'s own total row multiplies by 10; neither is taken silently.',
+    verbatim: ['causing the area to become desecrated for 5 seconds. Enemies within take {{as|magic damage}} on-cast and every {{fd|0.5}} seconds thereafter'],
+  },
+  'Nasus/E/Spirit Fire': {
+    componentIds: ['magic-damage-per-tick'],
+    verdict: 'held-by-the-per-tick-reading',
+    why:
+      'Read 2026-08-14, investigated 2026-08-15, `countVerdict: contested` with an unresolvable ' +
+      'interval. "5 ticks of 10-34" and "10 ticks of 5-17" are both consistent with everything ' +
+      'reachable; the stored 10 is one of the two and nothing settles it.',
+    verbatim: ['The fire then remains for 5 seconds, dealing {{as|magic damage}} each second to enemies within'],
+  },
+  'Ornn/W/Bellows Breath': {
+    componentIds: ['magic-damage-per-tick'],
+    verdict: 'held-by-the-per-tick-reading',
+    why:
+      'Read 2026-08-14 and re-read 2026-08-15, `countVerdict: count-not-stored` with ' +
+      '`reconcilesAt: 5`. The count is not the problem — the DESTINATION is. Five gouts land ' +
+      'inside one 0.75-second lunge, and SPECIFICATION §3.8 defines the damage-over-time line as ' +
+      'damage following the combo. Raised, not decided.',
+    verbatim: ['he belches fire over a cone in front of him, dealing {{as|magic damage}} every {{fd|0.15}} seconds to enemies hit'],
+  },
+  'Rumble/Q/Flamespitter': {
+    componentIds: [
+      'magic-damage-per-second',
+      'magic-damage-per-tick',
+      'enhanced-damage-per-second',
+      'enhanced-damage-per-tick',
+    ],
+    verdict: 'held-by-the-per-tick-reading',
+    why:
+      'Read 2026-08-14 and re-read 2026-08-15, `countVerdict: count-not-stored` with the count ' +
+      'recorded `unresolvable`. The page states three counts — 3, 12 and 15 — and every one is ' +
+      'right for a different situation, so no count is a property of the ability.',
+    verbatim: ["Enemies hit by the flame are scorched for {{ap|0.5<!-- Primary debuff duration (2 instances) --> + 0.1<!-- Offset -->}} seconds, taking {{as|magic damage}} every {{fd|0.25}} seconds as well as upon being hit if not currently scorched"],
+  },
+  'Singed/Q/Poison Trail': {
+    componentIds: ['magic-damage-per-tick', 'magic-damage-per-second'],
+    verdict: 'held-by-the-per-tick-reading',
+    why:
+      'Read 2026-08-14 and re-read 2026-08-15, `countVerdict: contested`. Its own minimum row ' +
+      'multiplies by 8 while its description and notes together describe 9, and the page\'s twin ' +
+      '— Rumble Q, carrying the identical note — applies the rule the other way.',
+    verbatim: ['The target takes {{as|magic damage}} every {{fd|0.25}} seconds over 2 seconds as well as upon being hit if not currently affected.'],
+  },
+  'Swain/R/Demonic Ascension': {
+    componentIds: ['magic-damage-per-tick'],
+    verdict: 'held-by-the-per-tick-reading',
+    why:
+      'Read 2026-08-14, `countVerdict: no-duration-stated`. A resource-fed channel: how long it ' +
+      'runs is a property of the fight, so no full-duration count exists to state. Demonic Energy ' +
+      'decays at a rate the page states and is topped up by hitting things, so the number of ' +
+      'drains is a fact about the fight.',
+    verbatim: [
+      "drains the lifeforce of nearby enemies, both dealing {{as|magic damage}} and {{tip|healing}} himself every {{fd|0.5}} seconds per target affected",
+    ],
+  },
+};
+
+/** Every fragment in a `key -> fragments` table proved to be literally in that ability's page. */
+export function verifyRecurrenceVerbatim(
+  table: Readonly<Record<string, readonly string[]>>,
+  pages: readonly CachedPage[],
+): QuoteCheck[] {
+  const byKey = new Map(pages.map((p) => [`${p.champion}/${p.slot}/${p.abilityName}`, p.wikitext]));
+  return Object.entries(table).map(([key, fragments]) => {
+    const text = byKey.get(key);
+    if (text === undefined) return { key, found: 0, missing: [...fragments], pageMissing: true };
+    const missing = fragments.filter((v) => !text.includes(v));
+    return { key, found: fragments.length - missing.length, missing, pageMissing: false };
+  });
+}
+
+/** Every quote in `DECLINED_RECURRENCE` proved to be a literal substring of the cached wikitext. */
+export function verifyDeclinedQuotes(
+  declined: Readonly<Record<string, DeclinedRecurrence>>,
+  pages: readonly CachedPage[],
+): QuoteCheck[] {
+  return verifyRecurrenceVerbatim(
+    Object.fromEntries(Object.entries(declined).map(([k, d]) => [k, d.verbatim])),
+    pages,
+  );
+}
 
 /** The shape this table needs from a harvested ability. Narrower than `CuratedAbility` on purpose:
  *  the reading depends on identity, the component labels and the hit counts, and on nothing else. */

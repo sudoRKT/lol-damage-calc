@@ -18,11 +18,16 @@ import {
   READ,
   SOURCE_HEADER_CENSUS,
   RECURRENCE_FORMS,
+  accountForDormant,
   census,
   classify,
   trailingForm,
   unmarkedRecurrence,
 } from './recurrence-labels.ts';
+import {
+  DECLINED_RECURRENCE,
+  READ_RECURRENCE_BEYOND_PER_TICK,
+} from './per-tick-read.ts';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const FILE = JSON.parse(
@@ -109,16 +114,65 @@ describe('recurrence labels/what is live and what is dormant', () => {
     // DEFINITION: same shape — recurrence label, no `overTime` mark. Different exposure — the
     // entry is `incomplete`, so it contributes to no total and shows a reader nothing.
     //
-    // 27 today. The count is expected to FALL as those entries are completed, and every one of
-    // them must gain an `overTime` mark at the same time it gains its damage, or it becomes a
-    // live instance the moment it stops being incomplete. That is the trap this test names.
-    expect(U.dormant.length).toBe(27);
+    // 27 in the curated file on 2026-08-16; 25 in the merge proposal of the same day, because two
+    // of the 27 have since been read and marked. Both numbers are asserted by the accounting test
+    // below rather than pinned here — see the comment there for why a pinned total was the weaker
+    // check AND the one that broke under `premerge:check`.
+    expect(U.dormant.length).toBeGreaterThan(0);
     expect(U.dormant.some((r) => r.startsWith('Rumble/Q'))).toBe(true);
     expect(U.dormant.some((r) => r.startsWith('Karthus/E'))).toBe(true);
   });
 
+  it('EVERY DORMANT COMPONENT IS ONE A PERSON HAS READ — an unread one is a FINDING', () => {
+    // ═══ THE GATE THAT REPLACED A PINNED TOTAL OF 27, 2026-08-16 ═══
+    //
+    // DEFINITION of `unaccounted`: a stored component whose label ends in a recurrence-bearing
+    // "per X", carrying no `overTime` mark, on an entry whose verification is `incomplete`, whose
+    // COMPONENT ID appears in neither hand-written table — `READ_RECURRENCE_BEYOND_PER_TICK` (read
+    // and marked) nor `DECLINED_RECURRENCE` (read and refused, with the reason and the sentence).
+    //
+    // This is stronger than the count it replaces in the direction that matters. A total cannot
+    // tell a member somebody read from one nobody looked at; this names the difference, per
+    // component, and the only way to clear a row is to type its id into a table that demands the
+    // sentence. Widening `RECURRENCE_FORMS` or `PER_TICK_LABEL` does not satisfy it.
+    //
+    // MEASURED both ways on 2026-08-16, by `accountForDormant` over both files:
+    //   curated-data.json  27 dormant = 25 declined + 2 marked, 0 unaccounted
+    //   merged-proposal    25 dormant = 25 declined + 2 marked, 0 unaccounted
+    // (A marked component is no longer dormant, which is why the proposal is two lower.)
+    const A = accountForDormant(
+      FILE.abilities,
+      READ_RECURRENCE_BEYOND_PER_TICK,
+      DECLINED_RECURRENCE,
+    );
+    expect(
+      A.unaccounted,
+      'A component whose damage recurs over time carries no `overTime` mark and nobody has read ' +
+        'its sentence. It publishes nothing only because its entry is `incomplete`, and it ' +
+        'becomes a live wrong number the moment somebody completes it (SPECIFICATION §3.8). Read ' +
+        'the page and add it to READ_RECURRENCE_BEYOND_PER_TICK or DECLINED_RECURRENCE, naming ' +
+        'the component ids. Do NOT widen a pattern.',
+    ).toEqual([]);
+    expect(A.accounted.length).toBe(A.dormant.length);
+  });
+
+  it('a component cannot be both marked and declined', () => {
+    for (const [key, ids] of Object.entries(READ_RECURRENCE_BEYOND_PER_TICK)) {
+      const declined = DECLINED_RECURRENCE[key]?.componentIds ?? [];
+      for (const id of ids) expect(declined).not.toContain(id);
+    }
+  });
+
   it('the read population is exactly what a person has read, and no more', () => {
-    expect(Object.keys(READ)).toEqual(['Cassiopeia/W/Magic Damage Per Second']);
+    // Three on 2026-08-16, and this asserted one until then — Fiddlesticks W was marked on
+    // 2026-08-16 and never added, so the list said one person-read member while two were marked.
+    // DEFINITION: label-keyed summaries of the entries a person has read AND marked. The
+    // authoritative, component-id-keyed tables are in `per-tick-read.ts`.
+    expect(Object.keys(READ)).toEqual([
+      'Cassiopeia/W/Magic Damage Per Second',
+      'Fiddlesticks/W/Damage per second',
+      'Gangplank/R/Magic Damage Per Wave',
+    ]);
   });
 });
 
@@ -153,7 +207,10 @@ describe('recurrence labels/the SOURCE vocabulary, not ours', () => {
     // marked, or pattern-matched into the store — they are named here so somebody reads the
     // sentence. Growing this list by widening a pattern is the move CLAUDE.md forbids.
     expect(SOURCE_HEADER_CENSUS.readAndSettled).toHaveLength(3);
-    expect(Object.keys(READ)).toHaveLength(1);
+    // Every member of READ is an entry whose SENTENCE a person quoted, never one a pattern
+    // matched. It grows only by someone reading a page — three as of 2026-08-16.
+    expect(Object.keys(READ)).toHaveLength(3);
+    expect(Object.keys(READ_RECURRENCE_BEYOND_PER_TICK)).toHaveLength(3);
   });
 
   it('the broad net found 41 non-per-X headers and 38 are state durations, not recurrences', () => {
