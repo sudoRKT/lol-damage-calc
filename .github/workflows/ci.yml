@@ -72,6 +72,20 @@ jobs:
       - name: Typecheck
         run: npm run typecheck
 
+      # Building in CI is not redundant with the typecheck. `npm run build` also regenerates the
+      # landing page's coverage figures and runs Rollup over eight entry points; either can fail
+      # while `tsc --noEmit` passes.
+      #
+      # IT RUNS BEFORE THE TESTS, AND THAT ORDER IS LOAD-BEARING. `tests/bundle-size.test.ts`
+      # measures the BUILT output and skips loudly when `dist/` is absent rather than failing —
+      # which is the right behaviour on a fresh clone, and the wrong outcome here. With the build
+      # after the tests, CI reported "2,873 passed | 4 skipped" and the four included the check
+      # that THE LANDING PAGE DOES NOT DRAG THE CALCULATOR'S JAVASCRIPT ALONG, which is
+      # SPECIFICATION §13's low first-load time and the entire reason for eight entry points.
+      # Found by reading CI's own totals rather than its verdict: it was green either way.
+      - name: Production build
+        run: npm run build
+
       # ═══════════════════════════════════════════════════════════════════════════════════════
       # SPECIFICATION §14 SAYS CI "RUNS THE KNOWN-ANSWER TEST SUITE". THAT IS PARTLY FALSE HERE,
       # AND THIS IS THE RECORD OF BY HOW MUCH.
@@ -149,12 +163,6 @@ jobs:
           args=""
           for f in $EXCLUDED; do args="$args --exclude $f"; done
           npx vitest run $args
-
-      # Building in CI is not redundant with the typecheck. `npm run build` also regenerates the
-      # landing page's coverage figures and runs Rollup over eight entry points; either can fail
-      # while `tsc --noEmit` passes.
-      - name: Production build
-        run: npm run build
 
       # THE CHECK THAT CATCHES THE FAILURE THIS PROJECT IS MOST EXPOSED TO. A multi-page build
       # is a set of files at paths; a page that exists in the dev server and not in `dist/` is a
