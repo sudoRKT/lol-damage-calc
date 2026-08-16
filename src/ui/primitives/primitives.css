@@ -57,6 +57,34 @@
  * --------------------------------------------------------------------------- */
 .u-scroll-x {
   overflow-x: auto;
+  /* ═══ THIS `position` IS CONTAINMENT, NOT LAYOUT — added 2026-08-16 ═══
+   *
+   * It closes DESIGN-AUDIT item 5, a SPECIFICATION §10 violation that had survived four
+   * documented overflow classes and every sweep this project owns.
+   *
+   * **An overflow container clips an absolutely positioned descendant only when it is that
+   * descendant's containing block, and a STATIC element never is.** `.u-visually-hidden` is
+   * `position: absolute` (line 26 of this file). So every screen-reader-only span inside a
+   * scrolling table escaped its scroll region and extended the DOCUMENT instead — 53 spans inside
+   * 4 regions on the default scenario, the furthest reaching x = 1,008 in a 375px viewport.
+   *
+   * MEASURED IN A BROWSER, by injecting this one declaration and removing it in the same
+   * expression, at 375px with every disclosure open:
+   *
+   *     as built     clientWidth 375, scrollWidth 1008  →  633px of horizontal overflow
+   *     with this    clientWidth 375, scrollWidth  375  →  0px
+   *     removed      clientWidth 375, scrollWidth 1008  →  633px again
+   *
+   * **And it costs the scroll regions nothing**: the six regions scroll by 0 / 218 / 1217 / 735 /
+   * 45 / 53px with the rule and by exactly the same amounts without it. There are zero absolutely
+   * positioned elements inside any scroll region other than those spans, so nothing can be
+   * occluded or repositioned by giving them a containing block.
+   *
+   * WHY EVERY EXISTING CHECK MISSED IT. `responsive-overflow.test.tsx` sweeps four documented
+   * classes and "a scroll container that is not a containing block" is not one of them. The defect
+   * is also invisible on the default page: it needs the disclosures OPEN, because that is when the
+   * hidden spans exist in quantity. A sweep of the page at rest reads 0px. */
+  position: relative;
 }
 
 .u-scroll-x:focus-visible {

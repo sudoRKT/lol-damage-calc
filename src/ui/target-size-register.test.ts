@@ -13,8 +13,13 @@
 //   - **by SPACING** — it is smaller, but no other target's centre is within 24px of its centre.
 //
 // Several controls here pass by spacing and should not be grown: `.burn__riser` is 16×24 with
-// 52.3px between centres, and making it 24px wide would change the burndown's column geometry to
+// 50.75px between centres, and making it 24px wide would change the burndown's column geometry to
 // satisfy a rule it already meets.
+//
+// **AND A PASS-BY-SPACING IS A MEASUREMENT OF ONE SCENARIO, WHICH THIS FILE LEARNED ON 2026-08-16.**
+// That riser's separation is 50.75px on the DEFAULT scenario and 11.94px on a 17-column combo,
+// where adjacent risers overlap outright. The entry claimed a general pass from a single reading.
+// A spacing claim needs the DENSE case measured, not the one that happened to be on screen.
 //
 // ═══ WHAT THIS FILE CANNOT DO ═══
 //
@@ -160,8 +165,38 @@ const CONTROLS: Record<string, Pass> = {
   },
   'burndown/burndown.css .burn__riser': {
     how: 'spacing',
-    separationPx: 52.3,
-    measured: '16 x 24px at 375px, 2026-08-15. Passes by spacing and MUST NOT be grown: 24px wide would change the burndown column geometry to satisfy a rule it already meets.',
+    separationPx: 50.75,
+    measured:
+      '16 x 24px at 375px, 2026-08-15. Passes by spacing and MUST NOT be grown: 24px wide would ' +
+      'change the burndown column geometry to satisfy a rule it already meets. ' +
+      '═══ POINTER-AUDITED 2026-08-16, AND THE BOX WAS NOT THE TARGET. ═══ ' +
+      'On a 1px grid over the whole border box, the default scenario was 1,598/2,192 live grid ' +
+      'points at BOTH 375px and 1440px — 72.9% — with THREE OF FOUR CENTRES DEAD, returning ' +
+      "li.burn__col. The live area was 8 x 24px of a 16 x 24px box: inset-inline-end: -8px puts " +
+      "half the box in the next column's <li>, a later positioned sibling that painted over it, " +
+      'and the dead half is the one holding the centre. The last column has no successor and was ' +
+      '100% live, which is the tell. On a 17-column LETHAL combo it was 3,182/8,256 (38.5%), 16 ' +
+      'of 17 centres dead, and TWO RISERS FULLY DEAD at 0/384 each — under the LETHAL chip at ' +
+      '375px and under div.burn__callout at 1440px. So on any combo that kills, which is this ' +
+      "product's central case, the first instances took no pointer at all. " +
+      'FIXED BY ONE DECLARATION, z-index: 1 on .burn__riser, which changes no box and paints ' +
+      'nothing new because the button is transparent: 2,192/2,192 and 0 dead centres on the ' +
+      'default scenario at both widths, 8,256/8,256 at 1440px on the 17-column lethal case, and ' +
+      '7,251/8,256 with 0 fully dead at 375px. NOTHING WAS GROWN. pointer-events: none on ' +
+      '.burn__callout was measured as the alternative and rejected — alone it changed nothing. ' +
+      '48 gap probes 3/8/20px outside all four edges hit no control at either width, and an open ' +
+      ".burn__pop steals nothing: .burn__popbar is pointer-events: none and a probe at the " +
+      "popover's own centre returns the element beneath it. " +
+      '═══ TWO THINGS THIS ENTRY NOW CONTRADICTS, RAISED NOT RESOLVED ═══ ' +
+      'Separation is 50.75px on the default scenario at 375px, not the 52.3px this entry recorded, ' +
+      'and NOTHING IN THE TREE SAYS WHICH SCENARIO PRODUCED 52.3 — the figure is corrected here ' +
+      'and its provenance is gone. ' +
+      'And at 17 columns a column is 11.94px against a 16px box, so adjacent risers OVERLAP: ' +
+      '1,005 of 8,256 points inside one box fire its NEIGHBOUR, and centre separation is 11.94px ' +
+      "against the 24px this entry's spacing exception depends on. **SO THE PASS-BY-SPACING DOES " +
+      'NOT HOLD IN THE DENSE CASE.** A single measurement of a separation is a measurement of one ' +
+      'scenario, and this entry claimed a general pass from it. Method and every figure: ' +
+      'src/ui/burndown/hit-target.test.ts.',
   },
   'breakdown/breakdown.css .breakdown__state-toggle': {
     how: 'spacing',
@@ -191,8 +226,23 @@ const CONTROLS: Record<string, Pass> = {
       'ui-config, which renders it but does not own primitives/.',
   },
   'shell/nav.css .nav__toggle': {
-    how: 'unmeasured',
-    why: 'the phone menu button. Its PANEL was measured (and was 114.6px off screen); the toggle itself was not.',
+    how: 'size',
+    measured:
+      '84.47 x 36.84px CLOSED and 119.36 x 36.84px OPEN, at 375px on 2026-08-16, identical at ' +
+      '320px and identical on every page — it is one shell component. THE BOX CHANGES SIZE WITH ' +
+      'ITS OWN LABEL: the accessible name goes from "Menu" to "Close menu", 34.89px wider, and ' +
+      'both states clear 24px on both axes. It is NOT RENDERED at 1425px at all — SiteNav draws ' +
+      'no button above 80rem rather than hiding one — so the widest width at which it exists is a ' +
+      'client width of 1264, where it measures 119.36 x 36.84px. ' +
+      'POINTER-CONFIRMED: all seven interior probes return the button and all four gaps return ' +
+      'the header and no control; a full pointerdown-to-click sequence dispatched at each of ' +
+      'those seven points flipped aria-expanded 7 times out of 7, and at the three ' +
+      'genuinely-outside points changed nothing. Nearest other target 97.91px, 83.30px with the ' +
+      'menu open as the button grows toward the wordmark. Nothing was grown. ' +
+      'MEASURING IT FOUND A SEPARATE DEFECT IN ITS PANEL, recorded in ' +
+      'shell/pointer-target-register.test.tsx: the OPEN panel runs 114.64px off the RIGHT edge at ' +
+      'every client width from 446 to 1264 — the mirror of the -114.6px LEFT-edge defect fixed on ' +
+      '2026-08-15, and CAUSED BY that fix. 375px and 320px are clean.',
   },
   'picker/runes.css .runes__remove': {
     how: 'size',

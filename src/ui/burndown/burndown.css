@@ -258,6 +258,51 @@
  * thin to point at, so the target straddles the column boundary and carries a minimum height
  * from the spacing scale. It is a real <button>, so keyboard focus is native (DESIGN.md §6:
  * "keyboard navigation is required"). */
+
+/* ═══ THE `z-index` IS THE HIT TARGET, NOT A PAINT ORDER (added 2026-08-16) ═══
+ *
+ * WHAT WAS MEASURED, IN CHROME, ON /calculator/. `getBoundingClientRect` reads 16 x 24px and it
+ * always did. `elementFromPoint`, which is the only thing that says what a click actually lands
+ * on, read something else: on the default scenario at BOTH 375px and 1440px, only **1,598 of
+ * 2,192** grid points inside the four risers returned their own button — 72.9% — and **three of
+ * the four CENTRES were dead**, returning `li.burn__col`.
+ *
+ * WHY. This rule straddles the column boundary on purpose: `inset-inline-end: -8px` on a 16px
+ * box puts half of it inside the NEXT column's `<li>`. Every `.burn__col` is `position:
+ * relative` with an automatic z-index, so a later sibling paints over an earlier one — and the
+ * next column's `<li>` painted over exactly the overhanging half. The dead half contained the
+ * centre, which is where a person aims. The last column had no successor and was 100% live,
+ * which is the tell: 3 of 4 failed and the one that passed was the one with nothing after it.
+ *
+ * IT WAS WORSE ON A KILL, WHICH IS THE PRODUCT'S CENTRAL CASE. On a 17-column lethal combo at
+ * 375px only **3,182 of 8,256** points were live (38.5%), **16 of 17 centres were dead**, and
+ * **two risers accepted no pointer anywhere at all** — 0 of 384 points each. The occluders,
+ * counted: `li.burn__col` 2,272 points, the LETHAL chip 1,600, the LETHAL rule stroke 150. The
+ * chip and the rule are drawn after `.burn__cols`, so they sat on top of the first instances'
+ * risers, which are the ones near full health at the top of the plot.
+ *
+ * WHAT THIS ONE DECLARATION DOES. Default scenario: 1,598/2,192 -> **2,192/2,192, and 0 dead
+ * centres**, identical at 375px and 1440px. 17-column lethal at 375px: 3,182/8,256 ->
+ * **7,251/8,256, 0 fully dead risers, 0 dead centres**.
+ *
+ * NOTHING WAS GROWN AND NOTHING MOVED. `../target-size-register.test.ts` records that this
+ * control passes WCAG 2.2 AA 2.5.8 by SPACING and must not be grown, because 24px wide would
+ * change the burndown's column geometry to satisfy a rule it already meets. A z-index changes
+ * no box. The button is `background: transparent` with no border and no content, so raising it
+ * paints nothing new either — the only mark that can now draw above the chip is its own focus
+ * outline, which is where a focus outline belongs.
+ *
+ * `pointer-events: none` on `.burn__callout` was measured as the alternative and is NOT used:
+ * it returned 1,598/2,192 — it fixes nothing the z-index does not, it fixes nothing on its own,
+ * and it would cost the reader the ability to select the chip's text.
+ *
+ * WHAT IT DOES NOT FIX, STATED RATHER THAN LEFT TO BE REDISCOVERED. At 17 columns a column is
+ * 11.94px wide and this box is 16px, so adjacent risers OVERLAP EACH OTHER: 1,005 of 8,256
+ * points inside one riser's box fire its NEIGHBOUR. That is the same fact as the 2.5.8 spacing
+ * measurement at that density — 11.94px between centres against the 24px the exception needs —
+ * and it cannot be answered from this rule without changing the geometry the register forbids
+ * changing. It is raised, not resolved. `hit-target.test.ts` in this directory holds the
+ * figures. */
 .burn__riser {
   position: absolute;
   inset-inline-end: calc(var(--space-2) * -1);
@@ -268,6 +313,7 @@
   border: 0;
   background: transparent;
   cursor: pointer;
+  z-index: 1;
 }
 
 .burn__riser:focus-visible {
