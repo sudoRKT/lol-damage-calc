@@ -137,6 +137,23 @@
 
      at 320px  Source 34–186 → 34–120 · DAMAGE 186–262 → 120–196 · table 578px → 511px
      at 375px  identical column geometry; the table falls 578px → 511px
+
+   ═══ THESE ARE WIDTHS, AND THE COMMIT THAT MADE THEM SAID 528px IN ITS MESSAGE ═══
+
+   Commit 8fc3472 changed this rule and reported the result two ways that disagree. Its message
+   says "at 320px, the table falls from 578px to 528px"; the lines above, added by the SAME commit,
+   say 578px → 511px. Seventeen pixels apart, in one commit, about one measurement.
+
+   RESOLVED BY MEASURING RATHER THAN BY PICKING. In Chrome on /calculator/ at a 375px viewport,
+   2026-08-16, `.breakdown-panel table` reads **511.38px wide**. The lines above are right and the
+   commit message is wrong. The message also called it "the table falls", which reads as a height —
+   it is a WIDTH, and the table's height at that viewport is 586.28px, nothing like either figure.
+
+   This was found by an audit of every commit message in the repository for measurements that never
+   reached a file. Twenty-one such figures exist across six commits, and this is the ONLY one that
+   could have produced a wrong number rather than an absent one — because here the tree and the
+   message both survive and contradict each other, so a reader could have taken either. Every other
+   member is simply gone.
      at 1440px NOTHING CHANGES — columns, row heights and panel height are byte-identical,
                because there the state column absorbs 839px of slack and Source still gets its
                max-content 189px.

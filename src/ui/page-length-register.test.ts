@@ -131,6 +131,42 @@ const PAGES: PageLength[] = [
       'measurement did not cover. DESIGN-AUDIT item 5 (mobile horizontal overflow) remains ' +
       'OPEN, and the next person to chase it should vary the instance count first.',
   },
+  // ═══ THE LANDING PAGE, RESCUED FROM A COMMIT MESSAGE 2026-08-16 ═══
+  //
+  // An audit of every commit message in this repository for measurements that never reached a file
+  // found 21 across 6 commits. `1.44 screens` for the landing page was one of them: this register
+  // existed and covered only `/calculator/`, so a figure with an obvious home had nowhere to go.
+  //
+  // NOT re-typed from that message. Re-measured in a browser, and it does not agree with it — the
+  // page is 1.62 screens at 1440 now, not 1.44. The old figure described a page that has since
+  // changed, which is exactly why a number in a commit message is not a record: nobody could tell
+  // whether it had drifted, because nothing was checking.
+  {
+    path: '/',
+    width: 1440,
+    height: 1100,
+    scrollHeight: 1783,
+    screens: 1.62,
+    budget: 1.62,
+    measured:
+      'Lead, 2026-08-16, dev server. Rescued from commit 18f08e9, which stated 1.44 screens in its ' +
+      'message and in no file; re-measured rather than re-typed, and it had drifted to 1.62. No ' +
+      'horizontal overflow, measured with clientWidth (1425 against 1425).',
+  },
+  {
+    path: '/',
+    width: 375,
+    height: 812,
+    scrollHeight: 3052,
+    screens: 3.76,
+    budget: 3.76,
+    measured:
+      'Lead, 2026-08-16, dev server. The landing page is the first thing a stranger sees and it is ' +
+      'a fifth of the calculator on a phone (3.76 screens against 12.78). No horizontal overflow, ' +
+      'measured with clientWidth. Its bundle claim — 6.2 kB of JavaScript against the calculator\'s ' +
+      '83.9 kB — is a SEPARATE figure from the same commit and is still unrecorded: no bundle-size ' +
+      'check exists anywhere in this project. That is a gap, not an oversight in this file.',
+  },
 ];
 
 describe('page length/the figures are recorded, not remembered', () => {

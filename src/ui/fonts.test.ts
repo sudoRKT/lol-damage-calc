@@ -18,6 +18,27 @@
 // So the check is: the imports exist, and they are the eight weights §3 names — no more, because
 // §3 says "do not add weights", and no fewer, because a missing weight falls back to a synthetic
 // bold or a wrong face without any visible error.
+//
+// ═══ THE MEASUREMENTS THAT PROVED THE FIX, RESCUED FROM A COMMIT MESSAGE 2026-08-16 ═══
+//
+// **This file guards the IMPORTS. It does not guard the OUTCOME, and the only evidence the fix
+// worked was in a commit message.** An audit of every commit message in the repository for figures
+// that never reached a file found 21 across 6 commits; these were among the most valuable, because
+// the defect they describe is invisible to every test that exists.
+//
+// From commit `4d1c69f`, measured in a real browser:
+//
+//   Saira          86px  →  81.1px
+//   IBM Plex Sans  81.3px →  79.4px
+//
+// The two faces measured IDENTICALLY before the fix because both were resolving to `system-ui`.
+// After it they differ, which is the whole proof: two different typefaces render two different
+// widths for the same string. **A test asserting the imports exist would pass in both states.**
+//
+// These are recorded here rather than asserted, because jsdom computes no text metrics and this
+// file has no browser. Re-taking them needs a real one. What they are for is the next person who
+// changes `fonts.css` and wants to know whether the faces are actually loading: measure the same
+// string in both families, and if the two widths are equal, the fallback has swallowed them again.
 
 import { describe, expect, it } from 'vitest';
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
