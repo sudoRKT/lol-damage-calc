@@ -754,3 +754,118 @@ export function resolveDefences(args: {
 
   return { shields, reductions, resistanceGrant, sustain, applied, refused, notes };
 }
+
+/**
+ * ═══ HOW MANY STORED DEFENCES THIS ENGINE ACTUALLY APPLIES — DERIVED, NEVER TYPED ═══
+ *
+ * Added 2026-08-16, and it exists because of a specific failure.
+ *
+ * `src/ui/coverage/capability.ts` published this figure as a HAND-TYPED CONSTANT,
+ * `DEFENSIVE_APPLIED_MEASURED`, and `capability.test.ts` fed that constant back into its own
+ * derivation before comparing the result to the committed JSON. **The check compared the number
+ * against itself.** It could not go red however far the data moved, and it did move: a merge on
+ * 2026-08-16 changed the answer from 86 to 92 and every test stayed green.
+ *
+ * Worse, the lead then reported having "re-measured, not re-typed" it — by reading that same test's
+ * output. It was re-typed through a route that looked like measurement, and a false conclusion was
+ * drawn from it and published.
+ *
+ * **So the figure comes from here now.** The coverage area calls this; nobody types it.
+ *
+ * ═══ WHY THE SCENARIO IS FIXED INSIDE THIS FUNCTION AND NOT A PARAMETER ═══
+ *
+ * "How many defences apply" has no answer without a scenario, and two harnesses that chose
+ * different ones got 92 and 90 for the same data. A caller free to pick would produce a figure that
+ * drifts with the caller. **The scenario is therefore part of the definition**, pinned here:
+ *
+ *   - level 11, the midpoint of the ability-rank range;
+ *   - one entry switched on AT A TIME, so no two defences can mask each other;
+ *   - a defender stat block with a real value in every field an effect might read, because a zero
+ *     makes an effect that applies look like one that does nothing;
+ *   - ability ranks at their maxima, since a rank-gated defence must be reachable.
+ *
+ * The figure was proved insensitive to the choices most likely to be wrong: it is identical at
+ * ranks 1/1/1/1, 4/4/4/2 and 5/5/5/3, and identical with and without mana on the stat block.
+ *
+ * ═══ WHAT "APPLIED" MEANS, BECAUSE THE OBVIOUS DEFINITION IS USELESS ═══
+ *
+ * NOT "changes a Result" — that is true of all 155 stored entries, because `perInstance[]`
+ * echoes the defender's entry state, so flipping any toggle changes the Result object by
+ * construction. Even an immunity the engine refuses outright would count.
+ *
+ * **Applied means `resolveDefences` accepted the entry and returned it in `applied`.** That is the
+ * engine's own verdict on whether it knows what to do with the effect.
+ */
+export interface AppliedDefenceCount {
+  /** Conditional entries that are not `incomplete` — the population a user could switch on. */
+  ready: number;
+  /** Of those, the ones `resolveDefences` accepted. */
+  applied: number;
+  /** Ready and refused, named, so the gap is never an unexplained subtraction. */
+  refused: string[];
+}
+
+/**
+ * Count them. Pure: no file access, no clock, no randomness — the same inputs always give the
+ * same answer, which is what lets a test assert it.
+ */
+export function countAppliedDefences(
+  effects: readonly CuratedDefensiveEffect[],
+  abilities: readonly CuratedAbility[],
+): AppliedDefenceCount {
+  const ready = effects.filter(
+    (e) => e.activation === 'conditional' && e.verification !== 'incomplete',
+  );
+
+  // Every field an effect might read carries a real value. A zero here would make an effect that
+  // APPLIES with an amount of zero indistinguishable from one the engine refused.
+  const defender = {
+    maxHp: 2000,
+    maxHpBase: 1200,
+    maxHpBonus: 800,
+    currentHp: 2000,
+    armor: 80,
+    armorBase: 50,
+    armorBonus: 30,
+    magicResist: 50,
+    magicResistBase: 40,
+    magicResistBonus: 10,
+    attackDamage: 100,
+    totalAD: 100,
+    bonusAD: 40,
+    abilityPower: 100,
+    maxMana: 800,
+    currentMana: 800,
+    level: 11,
+  } as unknown as StatBlock;
+
+  let applied = 0;
+  const refused: string[] = [];
+  for (const e of ready) {
+    const config = {
+      apiname: e.champion,
+      level: 11,
+      items: [],
+      runes: [],
+      abilityRanks: { Q: 5, W: 5, E: 5, R: 3 },
+      entryState: { [defensiveToggleKey(e)]: true },
+    } as unknown as ChampionConfig;
+
+    let accepted = false;
+    try {
+      const out = resolveDefences({
+        effects: [e],
+        abilities: abilities.filter((a) => a.champion === e.champion),
+        config,
+        defender,
+      });
+      accepted = out.applied.length > 0;
+    } catch {
+      accepted = false;
+    }
+    if (accepted) applied += 1;
+    else refused.push(`${e.champion}/${e.slot}/${e.label ?? e.kind}`);
+  }
+
+  return { ready: ready.length, applied, refused };
+}

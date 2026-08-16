@@ -30,9 +30,9 @@ import {
   burnsAddUp,
   statesAPerTickFigure,
   type CapabilityInputs,
-  DEFENSIVE_APPLIED_MEASURED,
 } from './capability';
 import { BURN_TRIGGERS } from '../../engine/simulate';
+import { countAppliedDefences } from '../../engine';
 
 const REPO = join(dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
 const read = (p: string) => JSON.parse(readFileSync(join(REPO, p), 'utf8'));
@@ -71,8 +71,17 @@ function derive(): ReturnType<typeof summariseCapability> {
     runesAppliedByEngine: RUNE_DELIVERY.size,
     defensiveEffects: curated.defensiveEffects,
     defensiveEffectsReachTheCalculator: defensiveEffectsReachTheCalculator(),
-    // The engine's own number, not the ready count — see DEFENSIVE_APPLIED_MEASURED.
-    defensiveAppliedMeasured: DEFENSIVE_APPLIED_MEASURED,
+    // ═══ DERIVED FROM THE ENGINE, NOT READ FROM A CONSTANT — CHANGED 2026-08-16 ═══
+    //
+    // This line used to read `defensiveAppliedMeasured: DEFENSIVE_APPLIED_MEASURED`, a hand-typed
+    // integer, which this test then compared against the committed JSON holding the same integer.
+    // **The check compared the number against itself and could not go red.** It sat at 86 through
+    // a merge that made the answer 92, with every test green, and the lead then certified the stale
+    // figure by reading it out of this very test's output.
+    //
+    // Now the engine counts it. If the data moves, this goes red.
+    defensiveAppliedMeasured: countAppliedDefences(curated.defensiveEffects, curated.abilities)
+      .applied,
     abilities,
   };
   return summariseCapability(input);

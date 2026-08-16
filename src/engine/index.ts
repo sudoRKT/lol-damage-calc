@@ -258,11 +258,17 @@ export {
 
 // The defender's own kit, built from the catalogue and the scenario's toggles (SPECIFICATION §5).
 // `resolveDefences` is exported so the toggle population can be measured without running a combo.
+// `countAppliedDefences` was added to this interface on 2026-08-16 by the project owner's decision,
+// to kill a hand-typed constant that a check was comparing against itself. The coverage page now
+// DERIVES "how many defences the engine applies" instead of typing it. See the function's own
+// comment for why the scenario is fixed inside it rather than passed in.
 export {
+  countAppliedDefences,
   defenceIsUp,
   resolveDefences,
   UNMODELLED_DEFENSIVE_KINDS,
   type AppliedDefence,
+  type AppliedDefenceCount,
   type RefusedDefence,
   type ResolvedDefences,
 } from './defences';

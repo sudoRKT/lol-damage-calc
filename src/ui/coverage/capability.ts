@@ -248,44 +248,41 @@ export interface Capability {
  * script run against the PRE-merge file returns 77, matching this constant's old value and its
  * stated three-way split — so the before and after are one definition, not two.
  */
-export const DEFENSIVE_APPLIED_MEASURED = 92;
-
-/*
- * ═══ 86 → 92, RE-MEASURED 2026-08-16 — AND THE STALENESS WAS INVISIBLE BY CONSTRUCTION ═══
+/**
+ * ═══ THIS CONSTANT IS GONE. THE FIGURE IS DERIVED BY `countAppliedDefences` IN THE ENGINE. ═══
  *
- * **This constant is hand-typed, and `capability.test.ts` feeds it back into its own derivation.**
- * Every other figure on the coverage page is recomputed from the files and compared against
- * `capability.json`; this one is compared against ITSELF. It cannot go red however far the data
- * moves, which is why it sat at 86 through a merge that changed the answer.
+ * It read `export const DEFENSIVE_APPLIED_MEASURED = 86` and then 92, and `capability.test.ts` fed
+ * it back into its own derivation before comparing the result to the committed JSON. **The check
+ * compared the number against itself.** It could not go red however far the data moved — and it
+ * moved: a merge changed the answer and every test stayed green. The lead then certified the stale
+ * figure by reading it out of that same test's output and called it a re-measurement.
  *
- * That is the CLAUDE.md rule about a measurement landing where a check can reach it, failing in the
- * hardest place to notice: the check exists, it runs, it passes, and it is asking nothing.
+ * The project owner ruled on 2026-08-16 that it becomes a derived function, touching the engine's
+ * public interface if that is what it takes. It did.
  *
- * **A FALSE RE-MEASUREMENT ON THE RECORD.** On 2026-08-16 the lead reported having "re-measured,
- * not re-typed" this figure and getting 86 again. It was read out of `capability.test.ts`'s own
- * output — i.e. through the circular path above. It was re-typed, by a route that looked like
- * measurement. The conclusion drawn from it — that seven newly-statable heals all failed to reach a
- * number — was false; six of the seven apply.
+ * ═══ AND THE DERIVED FIGURE IS 90, WHICH MATCHES NEITHER PREVIOUS NUMBER ═══
  *
- * ═══ WHY 92 IS TRUSTED, FROM TWO HARNESSES THAT DISAGREE ON THE ABSOLUTE ═══
+ * Stated rather than smoothed over, because it is the whole reason the constant had to go.
  *
- * An engine session drove `resolveDefences` over all 155 stored entries one at a time against a
- * level-11 defender. Run against the PRE-merge file it returned 86 exactly, reproducing this
- * constant's previous value and its stated five-entry gap — that calibration is what makes its 92
- * worth anything. It was also insensitive to ability ranks (1/1/1/1, 4/4/4/2, 5/5/5/3) and to
- * whether the defender's stat block carries mana.
+ *   86  the constant, pre-merge. From a harness whose parameters were never in the tree.
+ *   92  an engine session's harness, post-merge. Its parameters were never in the tree either,
+ *       though it did reproduce 86 exactly against the pre-merge file, which is real evidence.
+ *   90  what `countAppliedDefences` returns today, from a scenario written down in the engine.
  *
- * The lead then wrote an independent harness with a different stat block and got **84 pre-merge and
- * 90 post-merge** — two low on BOTH files. So the absolute depends on the parameterisation and the
- * lead's is wrong; **but the DELTA is +6 in both harnesses**, from two people who did not share
- * code. The figure moved by six and the calibrated harness puts the absolute at 92.
+ * The lead's independent harness gave 84 pre-merge and 90 post-merge — two below the other one on
+ * both files, so the discrepancy is systematic and belongs to the parameterisation, not to the
+ * data. **The two harnesses also count over different READY populations**: this one takes every
+ * conditional non-`incomplete` entry (123), while `defensiveReadyToApply` filters by kind (98). A
+ * figure counted over 123 came back LOWER than one counted over 98, which means the scenarios
+ * differ in what they refuse, not merely in what they include.
  *
- * ═══ WHAT THIS NUMBER SHOULD BECOME, RAISED NOT TAKEN ═══
+ * **That is not reconciled, and 90 is published anyway** — because the argument for the change was
+ * never that 92 was right. It was that a figure nobody can reproduce is not a measurement. 90 has
+ * its scenario in the tree, in a pure function, checked on every run. The next person who disagrees
+ * with it can point at the line that produced it, which was true of neither 86 nor 92.
  *
- * A constant that only a person can refresh will go stale again. The engine could export a
- * data-free counting function returning the applied/refused split, so this area DERIVES the figure
- * instead of typing it. That means touching the engine's public interface, which CLAUDE.md reserves
- * to the project owner's decision. Until then, this comment is the guard.
+ * **Reconciling the two populations is real outstanding work** and it is named here rather than
+ * left as a discrepancy nobody wrote down.
  */
 
 export function summariseCapability(input: CapabilityInputs): Capability {

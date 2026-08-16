@@ -447,18 +447,26 @@ buys the least, and requires reversing a written argument to get it.
    - **The lesson worth more than the fix:** `responsive-overflow.test.tsx` sweeps four documented
      overflow classes and "a scroll container that is not a containing block" was not one of them.
      Nineteen widths from 320 to 1440 are now measured in the dense state.
-6. **§9's portrait tint** — cool toward `--bg-panel` rather than plain greyscale. Smallest item.
-   **BLOCKED 2026-08-16 ON A CONTRADICTION BETWEEN TWO OF THIS PROJECT'S OWN DOCUMENTS, and it
-   cannot be built by anyone until the project owner rules.** DESIGN.md §9 asks for portraits
-   *"desaturated and tinted toward `--bg-panel` (low chroma)"* and calls that *"a display filter,
-   not an edit to the asset (§15)"*. `src/ui/art/art-usage.test.ts` refuses **every tint CSS
-   `filter` can express** — checked mechanically against its regex, not assumed: every
-   sepia/hue-rotate recipe fails — and its comment calls a tint *"an edit to Riot's asset, which
-   the licence does not permit"*. Both cannot be right. Two further facts for pricing it:
-   `.portrait` is the `<img>` itself, so the two routes that avoid `filter` need a wrapper in
-   `ChampionPortrait.tsx`; and `--bg-panel`'s chroma is R −7, G +1, B +11 on 0–255, so a
-   full-strength tint is a **7% blue-minus-red spread** — that is the entire visual delta this item
-   asks for.
+6. ~~**§9's portrait tint** — cool toward `--bg-panel` rather than plain greyscale. Smallest item.~~
+   **CLOSED 2026-08-16. IT WAS NEVER A SHORTFALL — IT WAS A CONTRADICTION, AND THE OWNER RULED.**
+
+   DESIGN.md §9 asked for a tint and called it a permitted display filter; `art-usage.test.ts`
+   refuses every tint CSS `filter` can express — checked mechanically against its own pattern, every
+   sepia and hue-rotate recipe fails — and calls a tint *"an edit to Riot's asset, which the licence
+   does not permit"*. **Both could not be right, and this item tracked the gap between them as
+   though it were unbuilt work.**
+
+   **The project owner ruled for the sweep**, in their terms: *a 7% chroma delta is not worth a
+   defensible-but-arguable position on Riot's asset licence; desaturation without tint is the safer
+   reading and costs almost nothing visible.* The 7% is measured — `--bg-panel`'s chroma is R −7,
+   G +1, B +11 on 0–255, so a full-strength tint is a blue-minus-red spread of 18/255.
+
+   **DESIGN.md §9 was amended, and its attribution sentence with it.** That sentence read "never
+   recoloured BEYOND the desaturation display filter", which quietly permitted the very thing being
+   removed; it now says the art is never recoloured at all. **No code changed** — `grayscale(1)
+   brightness(0.7)` is what was always shipping, and this is the `--elev-1` precedent a second time:
+   where a design file and a defensible built product disagree, the file records what is true rather
+   than leaving an aspiration nobody is going to build.
 
 > **One caution worth carrying forward.** Items 1 and 3 are where "Bench Test" actually lives, and
 > they are the two most tempting to defer, because nothing is *broken*. The interface is correct

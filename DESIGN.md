@@ -897,13 +897,36 @@ SPECIFICATION §3.4 lists it as its own instance type. The full reasoning is
 DATA-SOURCES §42.6, and the code carries it on `BASIC_ATTACK_MARKER` in
 `src/ui/combo/sequence.ts`.
 
-### Portraits tinted until active
+### Portraits desaturated until active
 
-- Champion portraits are **desaturated and tinted toward `--bg-panel`** (low chroma) while
-  the champion is unselected or inactive — this is a display filter, not an edit to the
-  asset (§15). They resolve to **full colour only for the two active combatants**
-  (attacker and defender), directing the eye to the two champions in play and keeping the
-  dense build/picker lists calm.
+- Champion portraits are **desaturated** while the champion is unselected or inactive —
+  a display filter, not an edit to the asset (§15). They resolve to **full colour only for
+  the two active combatants** (attacker and defender), directing the eye to the two
+  champions in play and keeping the dense build/picker lists calm.
+
+> **RULED 2026-08-16 BY THE PROJECT OWNER: THE TINT IS REMOVED FROM THIS SECTION.**
+>
+> This heading and bullet read *"desaturated and **tinted toward `--bg-panel`** (low chroma)"*
+> from the beginning, and the tint was never built. DESIGN-AUDIT item 6 tracked that as an
+> outstanding shortfall for two days. It was not a shortfall — it was **a contradiction between
+> this file and `src/ui/art/art-usage.test.ts`**, which refuses every tint CSS `filter` can
+> express (checked mechanically against its own pattern: every sepia and hue-rotate recipe fails)
+> and whose comment calls a tint *"an edit to Riot's asset, which the licence does not permit"*.
+> This section called the same thing a permitted display filter. **Both could not be right.**
+>
+> **The owner ruled for the sweep.** In their terms: *a 7% chroma delta is not worth a
+> defensible-but-arguable position on Riot's asset licence; desaturation without tint is the safer
+> reading and costs almost nothing visible.*
+>
+> The 7% is measured, not rhetorical. `--bg-panel`'s chroma is R −7, G +1, B +11 on 0–255, so a
+> portrait tinted *all the way* to its hue carries a blue-minus-red spread of 18/255 — **that was
+> the entire visual delta on offer**, against a licence question nobody wanted to argue.
+>
+> **What was actually shipping all along is what this section now describes**: `grayscale(1)
+> brightness(0.7)`, no hue shift, `--bg-panel` appearing nowhere in the treatment. This is the
+> `--elev-1` precedent applied a second time — where a design file and the built product disagree,
+> and the built product is defensible, the file records what is true rather than leaving an
+> aspiration nobody is going to build.
 - Portrait sizes: **64px** nameplate (the two combatants), **40px** picker/list rows.
   Square, `--border-steel`, `--radius-panel`. The active combatant's portrait takes
   `--border-active` (2px bone) and a circular status dot if a state is attached.
@@ -911,7 +934,11 @@ DATA-SOURCES §42.6, and the code carries it on `BASIC_ATTACK_MARKER` in
 ### Attribution
 
 Data Dragon art is used within the asset usage permitted by SPECIFICATION §15. The art
-itself is never recoloured beyond the desaturation display filter above.
+itself is never recoloured at all — the only treatment is the desaturation display filter
+above, which removes chroma rather than adding any. **This sentence used to read "never
+recoloured BEYOND the desaturation display filter", which quietly permitted the tint the
+ruling of 2026-08-16 removed.** `src/ui/art/art-usage.test.ts` enforces it and is the
+authority; if this file and that sweep ever disagree again, the sweep wins.
 
 ---
 
