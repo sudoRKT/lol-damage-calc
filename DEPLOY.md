@@ -9,6 +9,43 @@ automatic deploys on merge to main, continuous integration that blocks failing m
 monitoring. **Four of the five are ready. The fifth is deliberately not built, and §5 below says
 why.**
 
+**THE SITE IS LIVE.** `limittest.site` and `www.limittest.site` are attached to the Cloudflare
+Pages project, both Active with SSL, since 2026-08-16. Steps 1–5 of §3 are DONE and are kept
+below as the record of what was done rather than as a worklist. **Step 6 — branch protection —
+is the only one outstanding**, and it is gated on CI being green.
+
+Verified against the live site on 2026-08-16: all eight pages 200, an unknown path serves the
+site's own 404, every header in `public/_headers` is applied by Cloudflare including the
+corrected content-security policy, and the calculator renders with **zero console errors, 12 of
+12 Data Dragon images loading and 8 of 8 font faces loaded, none failed.**
+
+---
+
+## 0. §14's CI claim is PARTLY FALSE, by a measured amount
+
+**CI runs 2,944 of the project's 3,127 tests. The other 183 run on the project owner's machine
+only** — not in CI, not on a fresh clone, nowhere else.
+
+Seven test files read the harvester's output from `build/proposed-curated/`: about 4.3 MB across
+six files, the largest `ability-wikitext.json` at 3.1 MB. That directory is in `.gitignore` by
+deliberate policy — *"Draft curated entries produced by scripts/extract. Proposals only"* — so it
+is absent from every clone, and it cannot be regenerated in CI because it comes from harvesting
+the wiki over the network (~20 minutes, PLAN.md §2).
+
+**This was not introduced by the deployment work. It was revealed by it.** The first CI run, on
+2026-08-16, failed on all seven with a file-not-found error. The suite had been green on one
+machine since it was written, because the files were sitting on that machine. Nothing had ever
+run it anywhere else, so nothing had said so.
+
+**What is and is not covered.** A green CI run is evidence about the engine, the interface, the
+URL encoder and the site. **It is not evidence about the ability harvester or the fetch
+pipeline** — which PLAN.md §3 calls "the area where a defect costs the most". Those 183 tests are
+not unrun; they are run by one person on one machine, and nobody else can reproduce them.
+
+The seven files are named in `.github/workflows/ci.yml`, and a CI step compares that list against
+the files that actually read the directory, so it cannot quietly grow. **That guard was proved by
+adding an eighth file and watching it fail**, then removing it. The real fix is PLAN.md §7.
+
 ---
 
 ## 1. What the build produces

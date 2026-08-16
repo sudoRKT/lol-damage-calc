@@ -194,3 +194,78 @@ placeholder cannot quietly become permanent.
 - **A shared scenario link never lands on the landing page.** The scenario lives in the URL
   fragment, which carries no path, so a link can arrive at the root; `index.html` loads a tested
   redirect before its own module and moves it to the calculator with the fragment untouched.
+
+---
+
+## 7. The 183 tests that run on one machine (added 2026-08-16)
+
+**This is plan-mode work and it is not scheduled. It is written down because it was found, and a
+finding nobody records is a finding that gets found again.**
+
+### What is true
+
+CI runs **2,944** of the project's **3,127** tests. Seven test files read the harvester's output
+from `build/proposed-curated/` — 4.3 MB across six files, the largest `ability-wikitext.json` at
+3.1 MB — and that directory is `.gitignore`d on purpose as draft output. It is therefore absent
+from every clone, and it cannot be rebuilt in CI: it is harvested from the wiki over the network,
+which §2 measures at ~20 minutes.
+
+| | |
+|---|---:|
+| Tests CI runs | 2,944 |
+| Tests run on the owner's machine only | **183** |
+| Test files involved | 7 |
+| Areas they belong to | `scripts/extract/`, `scripts/fetch/`, and `tests/` |
+
+The seven: `scripts/extract/rank-varying-count.test.ts`, `scripts/extract/rune-propose.test.ts`,
+`scripts/fetch/ability-index.test.ts`, `scripts/fetch/defender-toggles.test.ts`,
+`scripts/fetch/rank-shape.test.ts`, `tests/ability-files.test.ts`,
+`tests/cross-area-seams.test.ts`.
+
+**Why it matters more than the count suggests.** These are the tests over the harvester and the
+fetch pipeline. §3 calls Area C "the area where a defect costs the most", and it is the area a
+second party currently cannot check at all. `tests/cross-area-seams.test.ts` is on the list, which
+means **the seam sweep §44 exists to run — the one check that catches two areas holding opposite
+rules — is itself one of the checks CI does not run.**
+
+**How it was found, because the shape recurs.** The first CI run ever, on 2026-08-16, failed on
+all seven with file-not-found. The suite had been green since it was written, on one machine,
+because the files were sitting on it. This is the same class as the stale-paragraph failures
+CLAUDE.md records: a true statement about one context, read as a standing fact.
+
+### What was done instead, and why it is not the answer
+
+CI names the seven files and skips them, and a CI step compares that list against the files that
+actually read the directory so it cannot quietly grow — proved by adding an eighth file and
+watching it fail. `.github/workflows/ci.yml` and DEPLOY.md §0 both carry the count and the
+definition.
+
+**A list of exclusions is a worse instrument than a count of skips**, for the reason CLAUDE.md
+already gives about published figures: the list says which files are excluded, not how many tests
+are uncovered, and the two drift the moment a test is added to a file already on the list. Nothing
+would fail.
+
+### The fix, and what it would take
+
+**Make each of the seven report a missing artifact as a NAMED SKIP rather than crash**, so what
+is not covered is *counted* and printed by the runner, not inferred from a list in a YAML file.
+Then delete the exclusions and let CI run everything, reporting `2,944 passed, 183 skipped
+(artifact absent)`.
+
+What it touches, and why it is not a quick change:
+
+- **Three partitioned areas** — `scripts/extract/`, `scripts/fetch/` and `tests/`. Two are agent
+  areas, one belongs to no area. That is a coordination problem before it is a code problem.
+- **It changes test behaviour**, which CLAUDE.md's rule that matters most constrains: a test that
+  can skip is a test that can pass by finding nothing. Each skip must state the artifact it wants
+  and be impossible to satisfy accidentally.
+- **The count becomes a published figure** and inherits the naming rule: *"183 skipped"* must mean
+  183 tests skipped for the artifact reason and no other, or the name is a wrong number with no
+  digits in it.
+
+**Estimate: 4–6 agent-hours**, most of it in the third bullet rather than the first.
+
+**The alternative that was considered and rejected on 2026-08-16** was committing the six files.
+It was rejected by the project owner: 4.3 MB would enter git history and churn on every harvest
+run, against a `.gitignore` comment that deliberately calls them proposals. Recorded so it is not
+re-proposed as though it were new.
