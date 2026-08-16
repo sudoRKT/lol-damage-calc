@@ -41,8 +41,8 @@ export function PrivacyPage() {
           </li>
           <li>
             <strong>No fonts from third parties.</strong> The typefaces are served from
-            this site rather than from a font network, so opening a page tells nobody else that you
-            did.
+            this site rather than from a font network, so opening a page tells no font network that
+            you did.
           </li>
         </ul>
         <p className="prose__p">
