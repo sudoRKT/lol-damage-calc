@@ -109,7 +109,7 @@ export const READ: Record<string, string> = {
  * DEFINITION: every distinct leveling-row header in `{{st|Header|values|…}}` across all 937 fetched
  * ability pages. **977 distinct headers.**
  *
- * **26 of the 977 name a recurrence, and 25 of the 26 use the trailing "per X" form** — per tick,
+ * **26 of the 977 name a recurrence, and ALL 26 use the trailing "per X" form** (this said 25 of 26 until the three sentences below were read; the supposed exception was not a recurrence) — per tick,
  * per second, per wave, per instance. So the vocabulary really is that narrow, and the `per X`
  * pattern is not the weak shape it looked like after Cassiopeia W. **What it missed was one WORD in
  * that form (`second`), not a whole form.**
@@ -123,17 +123,39 @@ export const READ: Record<string, string> = {
  *
  * **THREE ARE FOR A PERSON TO READ. They are handed over, not acted on:**
  *
- *   1. **Fiddlesticks W** — the source header is `"Last Tick of Damage"`. It names a tick WITHOUT
- *      the word "per", so no trailing-form pattern can ever see it. This is the one genuine gap in
- *      the vocabulary. Our stored label is "Damage per second", entry is `incomplete`.
- *   2. **Naafiri R** — the source header is `"Physical Damage per ''{{ai"`, truncated because the X
- *      is a wiki TEMPLATE rather than a word. **We stored it as flat "Physical Damage": the per-X
- *      was lost in harvesting, not mis-classified.** That is a different defect shape from
- *      Cassiopeia W's and it deserves its own reading. Entry is `incomplete`.
- *   3. **Shyvana R** — `derived` and PUBLISHING. Its page carries a `"Dragon Fury Generation per 0.5
- *      Seconds"` header, which is a resource row and not the damage row, and its damage row is a
- *      plain "Magic Damage". Almost certainly correct; flagged only because it is the one
- *      publishing entry anywhere near this class, and "almost certainly" is not this project's bar.
+ *   1. **Fiddlesticks W — THE SAME PROBLEM AS CASSIOPEIA W, and dormant.** Read 2026-08-16 from
+ *      `Template:Data Fiddlesticks/Bountiful Harvest` rev 3936351. Its `description2` says "While
+ *      Fiddlesticks is channeling, the tethered enemies are dealt magic damage every
+ *      {channel_tickrate} seconds" — a recurrence, and its stored label is "Damage per second" with
+ *      no `overTime` mark. Identical shape to Cassiopeia W. It publishes nothing only because the
+ *      entry is `incomplete`; the moment it is completed it becomes a live instance.
+ *
+ *      **AND "Last Tick of Damage" IS NOT A RECURRENCE LABEL AT ALL — this corrects what this file
+ *      said on 2026-08-16.** It was recorded here as "the one genuine gap in the vocabulary", a
+ *      tick named without "per" that no trailing-form pattern could see. Reading the page says
+ *      otherwise: it is a SECOND header on the same ability, and `description2` explains it — "The
+ *      final tick at the end of the channel deals additional magic damage". It names ONE specific
+ *      instance, not a rate. A pattern looking for recurrence is RIGHT to ignore it, and marking it
+ *      as over-time would be the §58 defect in the opposite direction.
+ *
+ *      **So there is no vocabulary gap. All 26 recurrence-naming headers use the trailing per-X
+ *      form, not 25 of 26.** The exception was an error in this file's own reading of a word.
+ *
+ *   2. **Naafiri R — NOT the same problem, and not the problem this file said it was.** The header
+ *      is `Physical Damage per ''{{ai|We Are More|Naafiri|link=*none*|Packmate}}''` — **per
+ *      PACKMATE**. It was recorded here as a per-X "lost in harvesting", which is true of the
+ *      truncation and wrong about the kind: a packmate is an ENTITY, not a unit of time. Naafiri's
+ *      hounds strike together on one dash, so this is a MULTI-HIT form — the same class as "per
+ *      bullet" — and it belongs in the BURST. The stored flat "Physical Damage" is not a
+ *      destination defect. What is worth a reader's eye is whether the per-packmate multiplication
+ *      is applied at all, which is a different question and not this file's.
+ *
+ *   3. **Shyvana R — no problem. Confirmed clear rather than assumed clear.** Read from
+ *      `Template:Data Shyvana/Dragon's Descent` rev 4049822. The "per 0.5 Seconds" and "per Second"
+ *      headers are `Dragon Fury Generation` — a RESOURCE row. The damage row is `leveling2`, a
+ *      plain `Magic Damage 150 to 350 (+100% AP)`, dealt by a cone of fire along one dash. A single
+ *      instance. Nothing to mark, and the reason it was flagged — being the only `derived` and
+ *      PUBLISHING entry near this class — is exactly why it was worth the two minutes.
  *
  * Note two forms the trailing pattern also cannot read for a mechanical reason rather than a
  * vocabulary one: `per 0.5 Seconds` (a DIGIT in the X) and `per {{fd` (a template in the X). Both
@@ -143,11 +165,17 @@ export const READ: Record<string, string> = {
 export const SOURCE_HEADER_CENSUS = {
   distinctHeaders: 977,
   namingARecurrence: 26,
-  usingTrailingPerX: 25,
+  usingTrailingPerX: 26,
   broadNetMatches: 120,
   broadNetNotTrailingPerX: 41,
   ofWhichStateDuration: 38,
-  forAPersonToRead: ['Fiddlesticks/W: Last Tick of Damage', 'Naafiri/R: per-X lost to a template', 'Shyvana/R: publishing, confirm not recurring'],
+  /** All three were READ on 2026-08-16. Kept with their verdicts rather than emptied — the list
+   *  is the record of what was asked, and an empty list would erase two corrections. */
+  readAndSettled: [
+    'Fiddlesticks/W: SAME problem as Cassiopeia (per second, unmarked) — dormant, entry incomplete',
+    'Naafiri/R: NOT a recurrence — "per Packmate" is an entity, a multi-hit form, belongs in burst',
+    'Shyvana/R: CLEAR — the per-Second headers are Dragon Fury, a resource row; its damage is one instance',
+  ],
 } as const;
 
 export interface LabelForm {

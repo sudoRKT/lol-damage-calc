@@ -130,24 +130,29 @@ describe('recurrence labels/the SOURCE vocabulary, not ours', () => {
     // in a new wording will change `namingARecurrence` and this will say so.
     expect(SOURCE_HEADER_CENSUS.distinctHeaders).toBe(977);
     expect(SOURCE_HEADER_CENSUS.namingARecurrence).toBe(26);
-    expect(SOURCE_HEADER_CENSUS.usingTrailingPerX).toBe(25);
+    expect(SOURCE_HEADER_CENSUS.usingTrailingPerX).toBe(26);
   });
 
-  it('THE VOCABULARY IS NARROW — 25 of the 26 use the trailing per-X form', () => {
+  it('THE VOCABULARY IS NARROW — ALL 26 use the trailing per-X form', () => {
     // This is the finding that decides whether the pattern is adequate. After Cassiopeia W the
     // pattern looked like the wrong SHAPE; the sweep says it is the right shape and was missing one
-    // WORD in it. The single exception is Fiddlesticks W's "Last Tick of Damage", which names a
-    // tick without "per" and which no trailing-form pattern can ever see.
+    // WORD in it — "second".
+    //
+    // THIS ASSERTED ONE EXCEPTION UNTIL 2026-08-16, and reading the sentence removed it.
+    // Fiddlesticks W's "Last Tick of Damage" was recorded as a tick named without "per" that no
+    // trailing-form pattern could see. It is a SECOND header on that ability naming ONE specific
+    // instance — its own page says "the final tick at the end of the channel deals additional magic
+    // damage" — not a rate. A recurrence pattern is right to ignore it.
     const exceptions =
       SOURCE_HEADER_CENSUS.namingARecurrence - SOURCE_HEADER_CENSUS.usingTrailingPerX;
-    expect(exceptions).toBe(1);
+    expect(exceptions).toBe(0);
   });
 
-  it('hands three entries to a person and acts on none of them', () => {
+  it('the three handed to a person were read, and none was acted on by pattern', () => {
     // The rule this obeys: a detector proposes, a person confirms. None of these three is written,
     // marked, or pattern-matched into the store — they are named here so somebody reads the
     // sentence. Growing this list by widening a pattern is the move CLAUDE.md forbids.
-    expect(SOURCE_HEADER_CENSUS.forAPersonToRead).toHaveLength(3);
+    expect(SOURCE_HEADER_CENSUS.readAndSettled).toHaveLength(3);
     expect(Object.keys(READ)).toHaveLength(1);
   });
 
