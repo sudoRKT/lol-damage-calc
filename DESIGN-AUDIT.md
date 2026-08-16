@@ -162,12 +162,20 @@ rendered output.
 > **`--elev-0` is also no longer unused** — `src/ui/shell/nav.css` references it twice. One unused
 > token, not two.
 >
-> **What remains of item 3 is `--elev-1` alone**, and it is now applied: `pages.css` (`.ledger`,
-> `.notwritten`), `app.css` (`.app__notice`, `.app__refusal`, `.app__resulthead`) and `notices.css`
-> (`.notices`). The rule is mechanical rather than per-element taste — **a raised panel is
-> `--bg-panel` PLUS `--radius-panel`**, and both halves are required, because `--bg-panel` alone
-> also selects controls, which take `--radius-control` and must never carry a shadow. **13 rules
-> across 7 partitioned areas still owe the one-line declaration**; each area applies its own.
+> **`--elev-1` WAS APPLIED ON 2026-08-15 AND REMOVED ON 2026-08-16. THIS PARAGRAPH DESCRIBED THE
+> APPLICATION AND IS SUPERSEDED — the sentence it replaced said "13 rules across 7 partitioned areas
+> still owe the one-line declaration", and that worklist is VOID.**
+>
+> It was applied to six rules: `pages.css` (`.ledger`, `.notwritten`), `app.css` (`.app__notice`,
+> `.app__refusal`, `.app__resulthead`) and `notices.css` (`.notices`), on the mechanical rule that a
+> raised panel is `--bg-panel` PLUS `--radius-panel`. That rule is still the right way to identify a
+> panel — both halves are required, because `--bg-panel` alone also selects controls, which take
+> `--radius-control` and must never carry a shadow. What changed is what a panel should then GET.
+>
+> **The project owner ruled on 2026-08-16** that `--elev-0` is panels at rest and `--elev-1` is
+> reserved for a surface that must read as sitting above another surface — which nothing on the page
+> is. All six declarations were removed and the test asserting them now asserts the opposite. See the
+> closure note on item 3 in the order of work below.
 >
 > This is the fourth wrong or stale claim found in this project's own documents in two days, which
 > is why CLAUDE.md now says to check the commit log before acting on any sentence here that says
@@ -378,7 +386,34 @@ buys the least, and requires reversing a written argument to get it.
 2. **The tag decision** (Part 2). It changes chips, values and the composition bar together, so it
    is better done once, after the layout settles. **Option A adopted 2026-08-14** by the project
    owner, on the comprehension finding rather than on the cue being wrong.
-3. **The instrument details.** `--elev-1`'s machined edge; the stray asymmetric radius.
+3. ~~**The instrument details.** `--elev-1`'s machined edge; the stray asymmetric radius.~~
+   **CLOSED 2026-08-16. BOTH HALVES OF THIS ITEM TURNED OUT NOT TO BE WORK, and the reason is
+   written here so nobody reopens it from the sentence above.**
+
+   - **The stray asymmetric radius was a false positive.** It is `span.chip__tag` —
+     `border-bottom-left-radius: var(--radius-control)` in `src/ui/art/art.css`. It *does* have a
+     token behind it; this audit read the four-value CSS shorthand, which matches no single token
+     *because it is one token applied to one corner*. Deliberate and correct. See §5's correction box.
+   - **`--elev-1` was applied and then removed, on a ruling.** The audit is right that it was defined
+     and used by nothing. It was applied to six rules across three files on 2026-08-15 — and
+     DESIGN.md §5, which this item rests on, was itself underspecified: it gave `--elev-0` to "panels
+     at rest" and `--elev-1` to "a barely-raised panel" without saying which panels were which, so a
+     literal reading left `--elev-1` with no home at all. **The project owner ruled on 2026-08-16**
+     that `--elev-0` is panels at rest — nearly every surface in the product — and `--elev-1` is
+     reserved for a surface that must read as sitting *above* another surface, **which nothing on the
+     page is today**. An unused token here is correct rather than missing, and DESIGN.md now says so
+     in the file rather than leaving it as an aspiration.
+
+   **Verified rather than asserted.** Four areas were sent to check their own stylesheets and all
+   four returned "confirm and change nothing". `src/ui/elevation-sweep.test.ts` then swept every
+   stylesheet under `src/ui` and found **four** rules setting a shadow product-wide — the phone menu,
+   the same element giving it back as `--elev-0` above 1280px, the burndown's riser popover (granted
+   by DESIGN.md §7 by name), and the champion picker's dropdown list. Every one is granted by §5 or
+   §7 explicitly, and `--elev-1` is declared by nothing.
+
+   **There is no fan-out owed on this item.** Earlier notes in this file spoke of "13 rules across 7
+   areas still owing a one-line declaration"; that worklist was created by the reading the ruling
+   overturned, and it is void.
 4. ~~**Reserved containers and the missing requirements.** Ad slots, both disclaimers, the report
    control — all layout-affecting, so they should land before anything is called finished.~~
    **THE THREE REQUIREMENTS ARE DONE** — commit `1e3ba36`, confirmed on the live page 2026-08-15;

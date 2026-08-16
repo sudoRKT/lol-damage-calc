@@ -428,7 +428,8 @@ describe('riser labels/the populations are the ones this test claims', () => {
  * |                     |        |        | the 12px inset. Confirmed in Chrome at 135.03px. |
  * | P2/375 pairs        |    153 |    163 | +10. Corki's wider label reaches back across more
  * | P2/320 pairs        |    175 |    189 | +14. neighbours, and 17 abilities moved their damage
- * | P3/375 pairs        |  4,296 |  4,299 | +3.  to the DoT line, which re-heights other risers. |
+ * | P3/375 pairs        |  4,296 |  4,299 | +3.  to the DoT line, which re-heights other risers.
+ * |                     |        |  4,298 | Then -1 on 2026-08-16: Cassiopeia W. |
  * | P3/320 pairs        |  4,745 |  4,749 | +4.  |
  * | P2/375 scenarios    |     98 |    102 | the same four champions crossing from clean to
  * | P2/320 scenarios    |    105 |    111 | colliding. |
@@ -440,6 +441,27 @@ describe('riser labels/the populations are the ones this test claims', () => {
  *
  * `maxColumns` and `actualColumnPx` did NOT move in any row — 4 / 7 / 16 columns at the same
  * widths — which is why `PINNED` below needed no change at all. The chart's shape is what it was.
+ *
+ * ═══ RE-PINNED AGAIN 2026-08-16, AND ONLY THE COUNTERFACTUAL MOVED ═══
+ *
+ * `collidingPairs` fell by one or two in four rows: P2/375 163 → 161, P2/320 190 → 188, P3/375
+ * 4299 → 4298, P3/320 4749 → 4748. **Nothing else in any row moved** — not
+ * `scenariosWithACollision`, not `worstOverlapPx`, not a column count or width.
+ *
+ * THE CAUSE IS ONE CHAMPION AND IT IS NOT A BURNDOWN CHANGE. Cassiopeia W's per-second damage was
+ * marked as recurring in the curated file (SPECIFICATION §3.8 — it was landing in the burst), so
+ * her chart now carries a `+DoT` label where it carried none. P2 and P3 run the WHOLE roster, so
+ * one champion's label set changes the roster-wide count.
+ *
+ * **What moved is the counterfactual, not the product.** `IN_PLOT` measures how bad the labels
+ * WOULD be if they were still drawn inside the plot — the defect the §4b fix answers. `PINNED`,
+ * which measures what the page actually draws, did not move at all, and the assertion that the
+ * chart's columns are unchanged passed on both sides of the merge. The fix still works; the thing
+ * it is measured against shifted underneath it.
+ *
+ * That is the honest reason a negative control gets re-pinned, and it is worth distinguishing from
+ * the dishonest one: this figure is not being edited to make a test pass, it is being edited
+ * because the roster it summarises changed for a reason recorded elsewhere.
  */
 const IN_PLOT: Record<string, Census> = {
   'P1 at 375px': {
@@ -467,7 +489,7 @@ const IN_PLOT: Record<string, Census> = {
   'P2 at 375px': {
     scenarios: 173,
     scenariosWithACollision: 102,
-    collidingPairs: 163,
+    collidingPairs: 161,
     worstOverlapPx: 16.39,
     worstOverlapWhere: 'Corki: "358 phys" over "45 phys"',
     maxColumns: 7,
@@ -483,7 +505,7 @@ const IN_PLOT: Record<string, Census> = {
     // result, adding a single colliding pair to this COUNTERFACTUAL census — the table that
     // measures what the labels WOULD do in the plot, which is what the fix is measured against
     // and is deliberately not the shipping layout.
-    collidingPairs: 190,
+    collidingPairs: 188,
     worstOverlapPx: 19.38,
     worstOverlapWhere: 'Senna: "263 phys" over "23 phys"',
     maxColumns: 7,
@@ -494,7 +516,7 @@ const IN_PLOT: Record<string, Census> = {
   'P3 at 375px': {
     scenarios: 173,
     scenariosWithACollision: 173,
-    collidingPairs: 4299,
+    collidingPairs: 4298,
     worstOverlapPx: 22.09,
     worstOverlapWhere: 'Ezreal: "28 mag" over "3 phys"',
     maxColumns: 16,
@@ -505,7 +527,7 @@ const IN_PLOT: Record<string, Census> = {
   'P3 at 320px': {
     scenarios: 173,
     scenariosWithACollision: 173,
-    collidingPairs: 4749,
+    collidingPairs: 4748,
     worstOverlapPx: 22.09,
     worstOverlapWhere: 'Ezreal: "28 mag" over "3 phys"',
     maxColumns: 16,
@@ -684,12 +706,26 @@ describe('riser labels/the defect the fix answers, still measured', () => {
     expect(COLS_INLINE_AT_375).toBeLessThan(192 * 2);
   });
 
-  it('the two tables differ ONLY in the label figures — 4,299 pairs against 0', () => {
+  it('the two tables differ ONLY in the label figures — 4,298 pairs against 0', () => {
     // The one-line statement of the whole change, so a reader does not have to diff two tables.
+    //
     // RE-PINNED 2026-08-15: 4,296 → 4,299. Three more pairs, all Corki's, from the wider two-type
-    // `+DoT` label reaching back across one more neighbour. The `PINNED` side is still 0 and is
-    // still 0 structurally — below the breakpoint there is no box in the plot to overlap another.
-    expect(IN_PLOT['P3 at 375px']!.collidingPairs).toBe(4299);
+    // `+DoT` label reaching back across one more neighbour.
+    //
+    // RE-PINNED 2026-08-16: 4,299 → 4,298. One FEWER pair, from Cassiopeia W's per-second damage
+    // being marked as recurring in the curated file — it was landing in the burst against
+    // SPECIFICATION §3.8. Her chart gains a `+DoT` label and the roster-wide counterfactual moves
+    // by one.
+    //
+    // **THE FIGURE IS IN THIS TEST'S NAME AS WELL AS ITS BODY, WHICH IS WHY THIS TEST EXISTS.** It
+    // is the seventh check the merge moved and the only one the pre-merge report did not name,
+    // because a title is not an assertion until someone reads it. Keeping the number in the name is
+    // deliberate — it is what makes the change visible in a test list rather than only in a diff —
+    // and the price is that both have to be edited together.
+    //
+    // The `PINNED` side is still 0 and is still 0 STRUCTURALLY: below the breakpoint there is no
+    // box in the plot to overlap another, so no roster change can move it.
+    expect(IN_PLOT['P3 at 375px']!.collidingPairs).toBe(4298);
     expect(PINNED['P3 at 375px']!.collidingPairs).toBe(0);
     expect(IN_PLOT['P3 at 375px']!.worstOverlapPx).toBe(22.09);
     expect(PINNED['P3 at 375px']!.worstOverlapPx).toBe(0);

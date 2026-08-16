@@ -425,7 +425,13 @@ border before a shadow.
 No coloured shadows. No glows anywhere except the burndown-specific effects defined in
 §7. If it is not a popover, it does not get `--elev-2`.
 
-**SETTLED 2026-08-15, because this table was underspecified and a build session had to guess.**
+**RULED BY THE PROJECT OWNER, 2026-08-16.** The wording below was drafted by a build session and
+put to the owner as a recommendation rather than applied as a decision; the owner accepted it
+unchanged and directed that this file record who decided. **The distinction it draws — an unused
+token is CORRECT rather than MISSING — is the same one this project draws everywhere between "not
+yet" and "cannot be" (SPECIFICATION §8), and that is why it was accepted.**
+
+**The table was underspecified and a build session had to guess.**
 The two rows above described "panels at rest" and "a barely-raised panel" without saying which
 panels were which, and a literal reading left `--elev-1` with no home at all. It was defined and
 referenced by nothing for the whole life of the project; DESIGN-AUDIT called that "the one genuinely

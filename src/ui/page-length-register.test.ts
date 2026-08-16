@@ -56,15 +56,46 @@ interface PageLength {
  * budget the page already exceeds makes the check red on arrival and it gets disabled within a day.
  * Today's number is the ceiling; getting BACK under 4.37 and 11.07 is separate work, and when it
  * lands these budgets come down with it.
+ *
+ * ═══ WHAT A FOCUSED PASS ON 2026-08-16 ACTUALLY BOUGHT, AND WHERE THE PAGE REALLY IS ═══
+ *
+ * **Measured by structure at 375px before changing anything**, which is the step that decided the
+ * pass:
+ *
+ *   app__head                140px    1.3%
+ *   setup region           3,306px   31.8%   two config panels, items, runes, defences, combo
+ *   result region          1,178px   11.3%   the burndown (853) plus its caption plate and notices
+ *   **detail region        5,060px   48.7%**  breakdown 1,076 · curves 1,089 · curves 814 · row 2,033
+ *
+ * **THE DETAIL REGION IS HALF THE PAGE**, and it is four full panels stacked below the result.
+ *
+ * Two candidate causes were then measured by toggling them live and re-reading `scrollHeight`:
+ *
+ *   the burndown's `<ol>` axis carrying an unset `margin-block: 1em`      22px   TAKEN
+ *   the breakdown's four repeated label stems, shortened                 215px
+ *   the same column's state moved into the disclosure already in it      275px
+ *
+ * **A CORRECTION TO THE FRAMING THAT JUSTIFIED THIS PASS, which was mine.** The breakdown column
+ * was described as "the same shape as the exclusions list printed three times". It is the same
+ * SHAPE — repeated stems, 249 of 316 characters — and it is nothing like the same SIZE. The
+ * exclusions list was **41.1%** of the page; this column is **2.6%** of it. Reporting the shape
+ * without the size pointed a page-length pass at something that cannot move a page.
+ *
+ * **What is achievable, stated as arithmetic rather than as a promise.** 11.07 screens at 375px is
+ * 8,989px. The page is 10,375px. That is **1,386px to remove**, and every cause identified above
+ * put together comes to **297px — 21% of it**. The remaining 1,089px is not a defect anybody can
+ * find; it is four detail panels each of which a reader may want. **Closing that gap is a design
+ * decision about collapsing detail panels on a phone, not a bug to fix**, and it belongs to the
+ * project owner rather than to a measurement pass.
  */
 const PAGES: PageLength[] = [
   {
     path: '/calculator/',
     width: 1440,
     height: 1100,
-    scrollHeight: 5632,
-    screens: 5.12,
-    budget: 5.12,
+    scrollHeight: 5619,
+    screens: 5.11,
+    budget: 5.11,
     measured:
       'Lead, 2026-08-15, dev server, default scenario. Was 9.23 screens before the 2026-08-14 ' +
       'length pass, 4.37 after it, and 5.12 now — drift from eight areas, none of which added a ' +
@@ -76,9 +107,9 @@ const PAGES: PageLength[] = [
     path: '/calculator/',
     width: 375,
     height: 812,
-    scrollHeight: 10386,
-    screens: 12.79,
-    budget: 12.79,
+    scrollHeight: 10375,
+    screens: 12.78,
+    budget: 12.78,
     measured:
       'Lead, 2026-08-15, dev server, default scenario. Was 23.94 screens before the length pass, ' +
       '11.07 after it, 12.79 now. THE PHONE FIGURE HAS NEVER MET ITS TARGET — 8 screens was ' +

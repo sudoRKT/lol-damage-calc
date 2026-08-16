@@ -537,9 +537,16 @@
    * It is also the one vertical space in this panel that is not a §4 spacing step: the scale
    * has no 15px, because 15px is not a design decision anyone took.
    *
-   * DELIBERATELY NOT FIXED HERE. Removing it changes page length, which is being handled
-   * separately by the lead, and `src/ui/page-length-register.test.ts` is lead-only. Raised, not
-   * taken. The fix, when it is wanted, is one declaration: `margin-block: 0`. */
+   * ═══ TAKEN 2026-08-16 BY THE LEAD, AS PART OF THE PAGE-LENGTH PASS ═══
+   *
+   * `margin-block: 0` below. Measured in Chrome on /calculator/ at 375px by toggling it live:
+   * the page falls 10,397px to 10,375px — 22px, exactly the net this comment predicted, which is
+   * the useful part. The prediction was made from a declaration and a computed style and it held
+   * against the rendered page.
+   *
+   * 22px is 0.03 screens on a phone. It is worth taking because it is a value nobody chose, not
+   * because it moves the page: see `src/ui/page-length-register.test.ts` for what actually does. */
+  margin-block: 0;
   list-style: none;
   padding: 0;
 }

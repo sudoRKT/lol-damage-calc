@@ -79,13 +79,21 @@ describe('recurrence labels/what is live and what is dormant', () => {
     // DEFINITION: a stored component whose label ends in a recurrence-bearing "per X", carrying no
     // `overTime` mark, on an entry whose verification is NOT `incomplete` — so it reaches a reader.
     //
-    // ONE, measured over the 919 published entries on 2026-08-15: Cassiopeia W. Every other member
-    // of the shape sits on an entry that publishes nothing.
+    // ═══ ONE ON 2026-08-15. ZERO ON 2026-08-16, AND THE ZERO IS EARNED ═══
     //
-    // THIS ASSERTION IS NOT "EXPECT EMPTY". Emptying it is the goal, but asserting the empty set
-    // today would mean deleting the honest finding. It is pinned to the read population instead:
-    // a live instance nobody has read is a failure, and a live instance someone HAS read is the
-    // state we are in until the curated file carries the mark.
+    // The one was Cassiopeia W — `derived`, publishing 126 damage into the burst line that belongs
+    // on the damage-over-time line. Every other member of the shape sat on an entry publishing
+    // nothing.
+    //
+    // It is zero now because the curated file carries the `overTime` mark, merged 2026-08-16. The
+    // count fell because the defect was FIXED, not because the sweep was narrowed: the detector is
+    // unchanged, the 27 dormant members are still found and still reported, and the read population
+    // is still exactly one entry.
+    //
+    // **The assertion below stays two-part on purpose.** `unread` being empty is the real check and
+    // would have been satisfied yesterday too, when the answer was one — because that one had been
+    // read. `U.live.length` pins the number so a NEW live instance appearing is visible as a moved
+    // figure rather than silently absorbed into "nobody has read it yet".
     const unread = U.live.filter(
       (row) => !Object.keys(READ).some((k) => row.startsWith(k.split('/').slice(0, 2).join('/'))),
     );
@@ -94,7 +102,7 @@ describe('recurrence labels/what is live and what is dormant', () => {
       'A published entry has over-time damage landing in the burst total and nobody has read its ' +
         'sentence. SPECIFICATION §3.8. Read it; do not mark it from the label alone.',
     ).toEqual([]);
-    expect(U.live.length).toBe(1);
+    expect(U.live.length).toBe(0);
   });
 
   it('the dormant members are the SAME SHAPE and a different exposure', () => {
