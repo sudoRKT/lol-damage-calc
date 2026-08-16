@@ -1,0 +1,14 @@
+# Copied verbatim into dist/ by Vite. SPECIFICATION §14 — the site is served from a CDN at
+# https://limittest.site, so a crawler asks this host for this file before anything else.
+#
+# Everything readable is allowed. The one exclusion is /data/, which holds the published
+# champion, item and rune JSON the calculator fetches: several megabytes of machine-readable
+# figures with no prose, no titles and no links. Excluding it keeps a crawler on the eight
+# pages a reader can actually read. It is NOT a secrecy measure — the files stay public, and
+# the repository is public too.
+
+User-agent: *
+Allow: /
+Disallow: /data/
+
+Sitemap: https://limittest.site/sitemap.xml

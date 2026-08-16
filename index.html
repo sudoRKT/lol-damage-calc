@@ -5,6 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="A League of Legends damage calculator whose numbers are checked against the source, and which shows you the ones it will not stand behind." />
     <title>Limit Test — a League of Legends damage calculator that shows its working</title>
+    <!--
+      ═══ IDENTITY AND SHARING TAGS ═══
+
+      SPECIFICATION §12 makes a shared link the primary way a scenario travels, and the places
+      players share them — Discord, Reddit, a group chat — render a preview from these tags and
+      from nothing else. Without them a link to this site unfurls as a bare URL, which reads like
+      something nobody should click.
+
+      They are hand-written per page rather than generated, because the eight HTML files are
+      hand-written per page: there is no template and no router, which is the whole point of the
+      structure (vite.config.ts). `og:title` and `og:description` deliberately repeat the
+      <title> and the description above rather than paraphrasing them — two wordings for one page
+      is two things to keep in step.
+
+      NO og:image. A share image has to be designed, and there is no mark in DESIGN.md to design
+      it from. A missing og:image unfurls as a title-and-description card; a BROKEN one unfurls as
+      a broken image, so pointing at a file that does not exist would be worse than omitting it.
+      This is named in DEPLOY.md as outstanding work rather than left to be noticed.
+
+      The canonical link names one address for each page, so a visit through www., through the
+      *.pages.dev preview host, or with a tracking parameter attached does not read as a separate
+      page with duplicated text.
+    -->
+    <link rel="canonical" href="https://limittest.site/" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Limit Test" />
+    <meta property="og:title" content="Limit Test — a League of Legends damage calculator that shows its working" />
+    <meta property="og:description" content="A League of Legends damage calculator whose numbers are checked against the source, and which shows you the ones it will not stand behind." />
+    <meta property="og:url" content="https://limittest.site/" />
+    <meta name="twitter:card" content="summary" />
   </head>
   <body>
     <div id="root"></div>

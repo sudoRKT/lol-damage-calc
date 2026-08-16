@@ -1,0 +1,99 @@
+# CONTINUOUS INTEGRATION — SPECIFICATION §14.
+#
+# "Continuous integration runs the known-answer test suite on every change, blocking merges
+# that fail."
+#
+# This file is the "runs on every change" half. THE "BLOCKING" HALF IS NOT IN THIS FILE and
+# cannot be: GitHub decides what blocks a merge in the repository's branch-protection settings,
+# which live in the GitHub web interface and not in the tree. Until the rule named `suite` is
+# marked required there, a failing run shows a red cross and merges anyway. DEPLOY.md step 3
+# is that setting.
+#
+# WHY ONE NODE VERSION AND NOT A MATRIX. This project ships a static site to one CDN. There is
+# no supported-runtime surface to test against, so a matrix would only buy longer runs. The
+# version is read from `.node-version`, which is the same file Cloudflare Pages reads — so the
+# runtime that proves the build green and the runtime that performs the deploy cannot drift
+# apart. That matters here more than usual: `npm run build` executes a TypeScript file directly
+# (`scripts/site/build-coverage.ts`), which older Node cannot do at all.
+
+name: CI
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+    branches: [main]
+
+# A second push to the same branch cancels the first. Nothing here has side effects, so the
+# older answer is never the one anybody wants.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  suite:
+    name: Typecheck, test, build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Check out the commit under test
+        uses: actions/checkout@v4
+
+      - name: Install Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: npm
+
+      # `npm ci` and not `npm install`: it installs exactly what package-lock.json pins and
+      # fails if the lock file and package.json disagree, so a dependency cannot change under
+      # the suite without somebody noticing.
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      # The known-answer suite §14 names. Vitest exits non-zero on a single failing test, which
+      # is what fails the job and, once branch protection is on, what blocks the merge.
+      - name: Known-answer test suite
+        run: npm test
+
+      # Building in CI is not redundant with the typecheck. `npm run build` also regenerates the
+      # landing page's coverage figures and runs Rollup over eight entry points; either can fail
+      # while `tsc --noEmit` passes.
+      - name: Production build
+        run: npm run build
+
+      # THE CHECK THAT CATCHES THE FAILURE THIS PROJECT IS MOST EXPOSED TO. A multi-page build
+      # is a set of files at paths; a page that exists in the dev server and not in `dist/` is a
+      # 404 that only appears in production. `tests/site-structure.test.ts` proves the SOURCE
+      # files agree with the page list — this proves the BUILT files do.
+      - name: Every page is really in the build output
+        run: |
+          set -euo pipefail
+          missing=0
+          for page in index.html calculator/index.html checks/index.html changelog/index.html \
+                      report/index.html about/index.html privacy/index.html cookies/index.html; do
+            if [ ! -f "dist/$page" ]; then
+              echo "MISSING from dist/: $page"
+              missing=1
+            fi
+          done
+          # The 404 page and the CDN's header rules are copied verbatim from public/ rather than
+          # compiled, so nothing else would notice if they stopped being copied.
+          for asset in 404.html _headers robots.txt sitemap.xml favicon.svg; do
+            if [ ! -f "dist/$asset" ]; then
+              echo "MISSING from dist/: $asset"
+              missing=1
+            fi
+          done
+          if [ "$missing" -ne 0 ]; then
+            echo "The build did not produce every file the site serves."
+            exit 1
+          fi
+          echo "All eight pages and all five static files are present in dist/."

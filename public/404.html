@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex" />
+    <title>Page not found — Limit Test</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <!--
+      ═══ WHY THIS PAGE IS NOT A NINTH BUILD ENTRY ═══
+
+      The site is eight real HTML files and `tests/site-structure.test.ts` asserts that the build's
+      entry list and `src/ui/shell/pages.ts` agree exactly — a ninth entry would fail it, and
+      editing that test to admit one would weaken the check that stops a page existing in one list
+      and not the other.
+
+      This is not a ninth PAGE. It is what the CDN serves when a reader asks for a path that is not
+      a page at all, and it carries no navigation, no shell and no JavaScript. So it lives in
+      `public/`, which Vite copies verbatim, and the eight-page rule is untouched.
+
+      THE COST, STATED RATHER THAN HIDDEN: it cannot use the compiled stylesheet, because that file
+      is content-hashed and its name changes on every build. Its colours are therefore literals.
+      Every one is a token from src/ui/tokens.css and no hue appears, which is DESIGN.md §1's
+      reserved-hue law — the three damage colours are data, and an error page has no data on it.
+      Its type is the fallback half of the token font stacks (`system-ui`), because the
+      self-hosted faces are content-hashed too. This page will therefore not look identical to the
+      rest of the site, and that is the trade for it not being a ninth entry.
+    -->
+    <style>
+      :root {
+        --bg-base: #1e242c;
+        --bg-panel: #262e38;
+        --line-steel: #3a4551;
+        --text-primary: #ede9de;
+        --text-secondary: #9aa4af;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+        background: var(--bg-base);
+        color: var(--text-primary);
+        font-family: 'IBM Plex Sans', system-ui, sans-serif;
+        font-size: 0.9375rem;
+        line-height: 1.5;
+      }
+      main {
+        max-width: 34rem;
+        background: var(--bg-panel);
+        border: 1px solid var(--line-steel);
+        border-radius: 6px;
+        padding: 32px;
+      }
+      .eyebrow {
+        margin: 0 0 8px;
+        font-family: 'Saira', system-ui, sans-serif;
+        font-size: 0.6875rem;
+        font-weight: 500;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--text-secondary);
+      }
+      h1 {
+        margin: 0 0 16px;
+        font-family: 'Saira', system-ui, sans-serif;
+        font-size: 1.5rem;
+        font-weight: 600;
+        line-height: 1.2;
+      }
+      p { margin: 0 0 16px; color: var(--text-secondary); }
+      ul { margin: 0; padding-left: 20px; }
+      li { margin-bottom: 8px; }
+      a { color: var(--text-primary); }
+      a:focus-visible { outline: 2px solid var(--text-primary); outline-offset: 2px; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <p class="eyebrow">404</p>
+      <h1>There is no page at this address</h1>
+      <p>
+        The link may be mistyped, or it may point at something this site never had. Nothing has
+        gone wrong with the calculator itself.
+      </p>
+      <p>
+        <strong>If you followed a shared scenario link,</strong> the scenario travels in the part
+        of the address after the <code>#</code>, which is not lost by arriving here — going to the
+        calculator below and pasting the whole original link into the address bar will open it.
+      </p>
+      <ul>
+        <li><a href="/calculator/">Open the calculator</a></li>
+        <li><a href="/">Front page</a></li>
+        <li><a href="/report/">Report a wrong number</a></li>
+      </ul>
+    </main>
+  </body>
+</html>

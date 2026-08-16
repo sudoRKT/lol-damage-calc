@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Limit Test">
+  <!--
+    THE TAB ICON. Provisional, and flagged as such: DESIGN.md carries no mark, no wordmark and
+    no favicon, so this is not derived from a specification the way every other visual decision
+    in this product is. It exists because the alternative on day one is a browser's blank
+    document glyph and a 404 on /favicon.ico.
+
+    IT IS NOT INVENTED FROM NOTHING. DESIGN.md §7 describes the burndown — the signature element
+    — in exactly these words: "grey plateaus mark where HP sits; coloured drops are the hits. A
+    combo is a staircase." This is that staircase and nothing else.
+
+    EVERY VALUE HERE IS A TOKEN from src/ui/tokens.css, written as a literal because an SVG file
+    served straight from the CDN cannot read a stylesheet:
+      #1e242c  --bg-base   (graphite, the page canvas)
+      #3a4551  --line-steel (the default 1px border)
+      #c3ccd6  --hp-trace  (the remaining-HP line)
+    No hue appears, which is the reserved-hue law (DESIGN.md §1): the three damage colours are
+    data, and a tab icon is not data.
+
+    The design pass should either confirm this or replace it. It is one file and one <link> tag
+    in eight HTML heads.
+  -->
+  <rect width="32" height="32" rx="6" fill="#1e242c"/>
+  <rect x="0.75" y="0.75" width="30.5" height="30.5" rx="5.25" fill="none" stroke="#3a4551" stroke-width="1.5"/>
+  <path d="M4 8 H13 V17 H22 V26 H28"
+        fill="none" stroke="#c3ccd6" stroke-width="3"
+        stroke-linecap="square" stroke-linejoin="miter"/>
+</svg>

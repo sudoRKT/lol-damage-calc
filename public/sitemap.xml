@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  The eight pages of SPECIFICATION §14's site, in the order src/ui/shell/pages.ts lists them.
+
+  NO <lastmod>. A date here would have to be maintained by hand and would be wrong within a
+  day of the first data correction; a stale lastmod is worse than none, because a crawler
+  trusts it. Nothing generates this file, so nothing can keep such a date honest.
+
+  A NINTH PAGE ADDED TO src/ui/shell/pages.ts MUST BE ADDED HERE, and `tests/deployment-assets.
+  test.ts` fails if it is not: it compares this list against SITE_PAGES in both directions. That
+  check was proved by replay rather than assumed — deleting one <loc> turns it red and names the
+  page that went missing.
+-->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://limittest.site/</loc><priority>1.0</priority></url>
+  <url><loc>https://limittest.site/calculator/</loc><priority>1.0</priority></url>
+  <url><loc>https://limittest.site/checks/</loc><priority>0.8</priority></url>
+  <url><loc>https://limittest.site/changelog/</loc><priority>0.5</priority></url>
+  <url><loc>https://limittest.site/report/</loc><priority>0.5</priority></url>
+  <url><loc>https://limittest.site/about/</loc><priority>0.5</priority></url>
+  <url><loc>https://limittest.site/privacy/</loc><priority>0.3</priority></url>
+  <url><loc>https://limittest.site/cookies/</loc><priority>0.3</priority></url>
+</urlset>

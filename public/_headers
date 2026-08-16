@@ -1,0 +1,54 @@
+# CLOUDFLARE PAGES HEADER RULES. Copied verbatim into dist/ by Vite; Cloudflare Pages reads
+# `_headers` from the root of the deployed output and never serves the file itself.
+#
+# Two jobs, and they are separate: the first block is what the browser is allowed to do, the
+# rest is how long the CDN and the browser may keep each kind of file.
+#
+# ═══ THE CONTENT-SECURITY-POLICY WAS MEASURED, NOT ASSUMED ═══
+#
+# A policy that is one directive too tight breaks the product silently — the page renders and the
+# numbers are simply missing. So the allowed origins below were read out of the BUILT output
+# (`grep` over dist/assets for every https:// host it contains) rather than reasoned about, and
+# the whole policy was then served over the real build and the calculator driven in a browser
+# with the console open. What it needs and why:
+#
+#   img-src   ddragon.leagueoflegends.com — every champion portrait, ability icon, item icon and
+#             rune icon is hotlinked from Data Dragon at a patch-numbered path
+#             (src/ui/data/roster.ts). Remove this host and every icon on the site disappears.
+#   style-src 'unsafe-inline' — React writes `style` attributes for the burndown's geometry, and
+#             CSP treats a style ATTRIBUTE as inline style. Without it the chart loses its
+#             layout. No inline <style> block ships; this is the attribute case only.
+#   script-src 'self' with NO 'unsafe-inline' — Vite emits external module scripts only, so the
+#             strictest useful setting costs nothing here. If a third-party script is ever added
+#             (analytics, advertising, error monitoring), THIS LINE IS WHAT WILL BLOCK IT, and
+#             that is the intended behaviour: it should be a deliberate edit, not a surprise.
+#   connect-src 'self' — the only network calls the app makes are to /data/*.json on its own
+#             origin. Nothing is sent anywhere.
+#   font-src  'self' data: — AND THIS IS THE ONE THE MEASUREMENT CAUGHT. Vite inlines any asset
+#             under 4 KB into the stylesheet as a base64 `data:` URI, and nine of the smaller
+#             font subsets (Saira, IBM Plex Sans and JetBrains Mono) come in under that. With
+#             `font-src 'self'` alone the browser blocked all nine and the page fell back to
+#             system faces — no error a reader would understand, just the wrong typography. A
+#             `data:` font is bytes already inside a stylesheet this policy trusted, so allowing
+#             the scheme grants nothing new.
+#
+# frame-ancestors 'none' does the job X-Frame-Options does, for browsers that honour CSP; the
+# older header is kept for the ones that do not.
+
+/*
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' https://ddragon.leagueoflegends.com; font-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'; frame-ancestors 'none'
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: geolocation=(), camera=(), microphone=(), payment=(), usb=()
+
+# Vite content-hashes every file in /assets/, so a given URL's contents can never change. A year
+# is the conventional maximum and `immutable` tells the browser not even to revalidate.
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# THE PUBLISHED DATA IS NOT HASHED, and it is the one thing here that must never be stale: a
+# corrected damage figure lands in these files under the SAME name. Five minutes at the browser,
+# and `must-revalidate` so the browser asks rather than guesses once that expires.
+/data/*
+  Cache-Control: public, max-age=300, must-revalidate
