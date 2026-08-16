@@ -441,30 +441,27 @@ const MIN_WIDTH_ALLOWLIST: Array<{ rule: string; reason: string }> = [
   {
     rule: '.nav__panel',
     reason:
-      '═══ THIS EXEMPTION\'S ARITHMETIC WAS REFUTED ON 2026-08-16 AND THE ENTRY IS KEPT ANYWAY. ' +
-      'READ ALL OF IT BEFORE TRUSTING ANY OF IT. ═══ ' +
-      'It read: "256px (--measure-list-column-min) anchored to the RIGHT edge of a full-width nav ' +
-      'bar, so it grows LEFTWARDS into the page rather than off it. 256px inside the 375px phone ' +
-      'this was measured at, and inside 320px, the narrowest phone in service." ' +
-      'THAT IS NO LONGER TRUE OF THE CODE. The panel was re-anchored to `inset-inline-start` on ' +
-      '2026-08-15, to fix a defect where the old right-edge anchoring threw it to a LEFT edge of ' +
-      '-114.6px on a phone. But `.shell__head` is `justify-content: space-between`, so once the ' +
-      'wordmark and the button fit on one line the button moves to the END of the header — and a ' +
-      'panel pinned to its start edge then runs off the RIGHT. ' +
-      'MEASURED BY TWO AREAS INDEPENDENTLY, agreeing exactly: the OPEN panel extends 114.64px ' +
-      'past the viewport at every client width from 446 to 1264 — constant, because it is ' +
-      'arithmetic (258px panel - 24px header padding - 119.36px open button) and not layout. ' +
-      '`documentElement.scrollWidth` reads 1379 against a client width of 1264, so the document ' +
-      'scrolls sideways whenever the menu is open. The lower bracket holds: at 426 and 440 the ' +
-      'header still wraps and the panel sits inside the viewport. 375px and 320px are clean, ' +
-      'which is why the sentence above was true when it was written and is true of nothing else. ' +
-      'IT IS KEPT RATHER THAN DELETED because deleting it would turn this sweep red on a rule ' +
-      'that is genuinely exempt at the widths this sweep tests, and hide the finding in a diff. ' +
-      'The fix is a layout decision, not a typo — neither edge works at both ends, because the ' +
-      'BUTTON moves from one end of the header to the other — and the three options are written ' +
-      'up in `src/ui/shell/pointer-target-register.test.tsx`. **This entry goes when that lands.** ' +
-      'A min(…, 100%) guard would still be wrong here: 100% resolves against the positioned ' +
-      'ancestor, not the viewport.',
+      '258px — 256px of --measure-list-column-min plus its two 1px steel borders — anchored by ' +
+      '`inset-inline-end: 0` inside `.nav`, which nav.css holds against the header\'s content end ' +
+      'with `margin-inline-start: auto`. That auto margin absorbs the free space on the nav\'s own ' +
+      'flex line whether or not `.shell__head` has wrapped, so the panel\'s right edge is ' +
+      'clientWidth - 24 and its left edge clientWidth - 282 AT EVERY WIDTH: at or past 0 from a ' +
+      '282px viewport up, and clear of the header\'s own 24px padding from 306px up. Both are ' +
+      'below 320px, the narrowest phone in service, where it measures left 38, right 296. ' +
+      'MEASURED IN CHROMIUM 2026-08-16 on /, /checks/ and /calculator/, menu OPEN and CLOSED, at ' +
+      'client widths 320, 375, 426, 440, 446, 500, 753, 1264 and 1425 — clientWidth read back ' +
+      'inside every call, overflow as scrollWidth minus clientWidth and never innerWidth: ' +
+      'overflow 0 at every one. ' +
+      '═══ THIS ENTRY HAS BEEN WRONG TWICE AND BOTH WORDINGS ARE WHY IT IS LONG ═══ ' +
+      'It first claimed a right-edge anchor on "a full-width nav bar" THAT NEVER EXISTED — `.nav` ' +
+      'is toggle-width. The correction of 2026-08-15 swapped to a start anchor and put the menu ' +
+      '114.64px off the RIGHT edge at every width from 446 to 1279, an 833px band in which the ' +
+      'document scrolled sideways whenever the menu was open. **The fix is not an edge. It is ' +
+      'that the BUTTON no longer changes ends** — `.shell__head` is space-between, so the toggle ' +
+      'used to sit at the start of a wrapped line and the end of an unwrapped one, and no single ' +
+      'anchor can be right for both. ' +
+      'A min(..., 100%) guard would still be wrong here: 100% resolves against `.nav`, the ' +
+      'toggle\'s 84-119px, not the viewport — it would crush the menu rather than protect it.',
   },
 ];
 

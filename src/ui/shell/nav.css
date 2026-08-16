@@ -8,10 +8,35 @@
 
 @import '../tokens.css';
 
+/* THE BUTTON IS PINNED TO THE END OF THE HEADER AT EVERY WIDTH, AND THAT IS THE WHOLE FIX FOR THE
+   MEASURED DEFECT OF 2026-08-16. Read this with the `.nav__panel` comment below; neither half works
+   alone.
+
+   `.shell__head` is a WRAPPING flex row with `justify-content: space-between`. That justification
+   only reaches a line that has two items on it, so the toggle sat at the END of the header while
+   the wordmark and the button shared one line, and jumped back to the START on the narrow widths
+   where the header wrapped and the button had its line to itself. **The button changed ends**, so
+   no fixed anchor on the panel could be right at both ends of the range: `inset-inline-end` threw
+   the panel 114.6px off the LEFT edge on a phone (fixed 2026-08-15, see `SiteNav.test.tsx`), and
+   `inset-inline-start` then threw it 114.64px off the RIGHT edge at every width from 446 to 1279 —
+   an 833px band in which the document scrolled sideways whenever the menu was open.
+
+   An auto inline-start margin absorbs the free space on the nav's own line, wrapped or not, so the
+   nav's end edge is the header's content end — `clientWidth - --space-5` — at EVERY width. The
+   button stops moving, and the panel's anchor is then correct everywhere by one piece of
+   arithmetic rather than by a width query. DESIGN.md §4b permits exactly one width query in this
+   product and it is spent on the burndown's riser labels; this rule adds none.
+
+   THE PRICE, ruled acceptable by the project owner on 2026-08-16: below 446px the header wraps and
+   the button now sits at the RIGHT of its own line beneath a left-aligned wordmark, where it used
+   to sit at the left. In the owner's words — "I rule for the option that works at both ends even
+   if it costs symmetry. An 833px band where a menu runs off screen is worse than an asymmetric
+   header." */
 .nav {
   position: relative;
   display: flex;
   align-items: center;
+  margin-inline-start: auto;
 }
 
 /* --------------------------------------------------------------------------
@@ -70,24 +95,31 @@
    DRAWER THAT PUSHES CONTENT: SPECIFICATION §13 asks for no cumulative layout shift, and a panel
    that displaces the page moves the §16 ad containers every time it opens.
 
-   IT ANCHORS TO THE START EDGE, AND THAT IS THE WHOLE FIX FOR A MEASURED PHONE DEFECT. This rule
-   said `inset-inline-end: 0` until 2026-08-15. The containing block is `.nav`, which is only as
-   wide as the toggle, and the toggle sits at the START of the header on a phone — so pinning the
-   panel's END edge to it pushed a 258px panel to a left edge of **-114.6px** at both 375 and 320.
-   Nearly half the menu was off the screen and four of the six links were invisible.
+   IT ANCHORS TO THE END EDGE, WHICH IS ONLY SAFE BECAUSE `.nav` NO LONGER MOVES. Read the comment
+   on `.nav` above before changing either. The panel's containing block is `.nav`, which is exactly
+   as wide as the toggle; `margin-inline-start: auto` holds that toggle against the header's
+   content end at every width, so this declaration puts the panel's right edge at
+   `clientWidth - --space-5` and its left edge at `clientWidth - 282` (258px of panel: 256px of
+   `--measure-list-column-min` plus its two 1px steel borders). That left edge is at or past 0 for
+   every viewport of 282px or more, and clears the header's own 24px padding from 306px up. Both
+   sit below the 320px narrowest phone in service, where it measures left 38, right 296.
 
-   Nothing reported it. Overflow to the LEFT creates no scrollable area, so `body.scrollWidth`,
-   `documentElement.scrollWidth` and `window.scrollTo(-9999, 0)` all read exactly as they do on a
-   clean page, and a reader could not pan to the missing half either.
+   BOTH EDGES HAVE BEEN WRONG HERE, AND EACH FIX CAUSED THE OTHER DEFECT. `inset-inline-end: 0`
+   with the button at the START of a wrapped header threw the panel to a left edge of -114.6px
+   (2026-08-15); `inset-inline-start: 0` with the button at the END threw it 114.64px off the right
+   (2026-08-16). Restoring the end anchor WITHOUT the auto margin above restores the first defect,
+   and the first defect is the invisible one: overflow to the LEFT creates no scrollable area, so
+   `body.scrollWidth`, `documentElement.scrollWidth` and `window.scrollTo(-9999, 0)` all read
+   exactly as they do on a clean page, and a reader cannot pan to the missing half either.
 
    NO WIDTH QUERY IS INVOLVED, and none may be — DESIGN.md §4b's single breakpoint governs the
    burndown's riser labels and nothing else. This is the base rule, so it applies below 80rem; the
    `.nav--inline` block below makes the panel `position: static` above it, where anchoring does
-   not apply at all. `SiteNav.test.tsx` carries the measurement and fails if the edge moves back. */
+   not apply at all. `SiteNav.test.tsx` carries both measurements and fails if either half goes. */
 .nav__panel {
   position: absolute;
   inset-block-start: 100%;
-  inset-inline-start: 0;
+  inset-inline-end: 0;
   z-index: 2;
   margin-block-start: var(--space-2);
   min-inline-size: var(--measure-list-column-min);

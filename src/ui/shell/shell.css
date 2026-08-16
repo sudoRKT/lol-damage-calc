@@ -63,6 +63,13 @@ body {
 
 /* ---- Masthead ---- */
 
+/* `space-between` ONLY REACHES A LINE THAT HAS TWO ITEMS ON IT, and this row wraps. Below 446px
+   the navigation gets a line to itself, where a lone item is justified to the START — so the menu
+   button used to change ends as the viewport crossed that width, which is what put the open menu
+   114.64px off the right edge at every width from 446 to 1279 (measured 2026-08-16). The button is
+   now held at the end of its line by `margin-inline-start: auto` on `.nav` in `nav.css`, which is
+   where the reasoning lives. Do not remove that margin on the grounds that this rule already
+   right-aligns the nav: at the widths where the header wraps, it does not. */
 .shell__head {
   display: flex;
   flex-wrap: wrap;

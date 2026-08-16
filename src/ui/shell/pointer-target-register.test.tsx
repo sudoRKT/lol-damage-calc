@@ -55,9 +55,15 @@
 // its neighbour, which is a real adjacent target), and the focused skip link OVERLAYS the wordmark
 // (so the probe past its right edge lands on the wordmark beneath, 57.95px away centre-to-centre).
 //
-// ONE REAL DEFECT, which is not a target-size defect at all — see `KNOWN_OVERFLOW` at the foot of
-// this file. The open navigation panel runs 114.64px off the RIGHT edge of the viewport at every
-// width from 446px to 1279px.
+// ONE REAL DEFECT, which was not a target-size defect at all: the open navigation panel ran
+// 114.64px off the RIGHT edge of the viewport at every width from 446px to 1279px. **IT WAS FIXED
+// ON 2026-08-16 and `KNOWN_OVERFLOW` at the foot of this file is now empty** — the toggle is held
+// against the end of the header by `margin-inline-start: auto` on `.nav`, so it no longer changes
+// ends and the panel's end anchor is right at every width. Re-measured at client widths 320, 375,
+// 426, 440, 446, 500, 753, 1264 and 1425 on `/` and `/checks/`, menu open and closed:
+// `documentElement.scrollWidth − clientWidth` is **0 at every one of them**, and the panel's right
+// edge is `clientWidth − 24` wherever the toggle is drawn. `shell/SiteNav.test.tsx` carries the
+// before-and-after tables and pins both halves of the fix.
 //
 // ═══ WHAT THIS FILE CAN AND CANNOT ENFORCE ═══
 //
@@ -337,13 +343,19 @@ const TARGETS: Record<string, Entry> = {
 };
 
 // ===========================================================================================
-// THE ONE DEFECT THIS SWEEP FOUND, WHICH IS NOT A TARGET-SIZE DEFECT
+// THE OVERFLOW QUARANTINE — EMPTY SINCE 2026-08-16, AND KEPT
 //
 // Kept in the tree rather than in a transcript, and kept as a list rather than deleted with its
 // entry, for the reason `KNOWN_DRIFT` exists: a red suite blocks every merge, so a found-but-
-// unfixed defect needs somewhere honest to sit. The test below asserts the entry is STILL REAL by
-// re-reading the stylesheet — so the day somebody fixes it, this file goes red and the entry has
-// to be removed deliberately rather than rotting here as a stale claim.
+// unfixed defect needs somewhere honest to sit. The test below asserts every entry is STILL REAL
+// by re-reading the stylesheet — so the day somebody fixes one, this file goes red and the entry
+// has to be removed deliberately rather than rotting here as a stale claim.
+//
+// **THAT IS EXACTLY WHAT HAPPENED.** The one entry — `.nav__panel` running 114.64px off the right
+// edge from 446px to 1279px — was fixed on 2026-08-16, its `inset-inline-start: 0` rule went, and
+// the check below went red and named it. The entry was removed and the list is now empty. An empty
+// quarantine is the state this list should be in; the tests below hold vacuously and are written
+// to, so the next entry inherits the same discipline rather than a deleted section.
 // ===========================================================================================
 
 interface Overflow {
@@ -356,42 +368,49 @@ interface Overflow {
   found: string;
 }
 
-const KNOWN_OVERFLOW: Record<string, Overflow> = {
-  'shell/nav.css .nav__panel runs off the RIGHT edge from 446px to 1279px': {
-    file: 'shell/nav.css',
-    rule: /\.nav__panel \{[\s\S]*?inset-inline-start:\s*0/,
-    overflowPx: 114.64,
-    atClientWidths: [446, 500, 753, 1264],
-    found:
-      '═══ THE 2026-08-15 FIX CLOSED ONE END OF THIS AND OPENED THE OTHER. ═══ ' +
-      '`SiteNav.test.tsx` records the original: `inset-inline-end: 0` on a panel whose containing ' +
-      'block is the toggle-sized `.nav` threw the panel to a left edge of **-114.6px** on a phone, ' +
-      'where the toggle sits at the START of the header. It was changed to `inset-inline-start: 0`. ' +
-      'MEASURED 2026-08-16, at client widths 446, 500, 753 and 1264 on /checks/ and /: ' +
-      '`.shell__head` is `justify-content: space-between`, so as soon as the wordmark and the ' +
-      'button fit on ONE LINE the button moves to the END of the header — and a panel pinned to ' +
-      'its START edge then runs off the RIGHT. The panel box is left 1120.64 → right 1378.64 ' +
-      'against a client width of 1264. **114.64px off screen, and it is the same 114.64px at every ' +
-      'one of the four widths**, because the figure is arithmetic and not layout: 258px of panel ' +
-      'minus 24px of header padding minus the 119.36px open button. All six links are cut: 105.64px ' +
-      'of every 240px link sits outside the viewport. ' +
-      'UNLIKE THE ORIGINAL, THIS ONE IS DETECTABLE — overflow to the RIGHT creates a scrollable ' +
-      'area, and `document.documentElement.scrollWidth` reads 1379 against a client width of 1264. ' +
-      'The page scrolls sideways whenever the menu is open in this band. ' +
-      'THE BAND IS BRACKETED, not estimated: at a client width of 440 the header still WRAPS (the ' +
-      'button returns to left 24, top 61.69) and there is no overflow at all; at 446 it does not ' +
-      'wrap and the overflow appears. The predicted threshold is 253.69 + 24 + 119.36 + 48 = ' +
-      '445.05px and the two brackets sit either side of it. The upper end is 80rem, where ' +
-      '`SiteNav` stops drawing the button. 375px and 320px are CLEAN and stay clean. ' +
-      'FIXING IT IS A LAYOUT DECISION, NOT A TYPO, which is why it is recorded rather than ' +
-      'silently changed: neither `inset-inline-start: 0` nor `inset-inline-end: 0` works at both ' +
-      'ends of the range, because the button itself moves from one end of the header to the other. ' +
-      'The options are (a) anchor the panel to the HEADER rather than to `.nav`, which puts it on ' +
-      'screen at every width but detaches it from the button on a laptop, (b) give `.nav` the same ' +
-      'wrap test the header does and swap the edge, which needs a measurement React currently ' +
-      'avoids on purpose, or (c) accept the overflow below 80rem. Raised, not taken.',
-  },
-};
+const KNOWN_OVERFLOW: Record<string, Overflow> = {};
+
+/**
+ * THE ENTRY THAT WAS HERE, KEPT AS PROSE BECAUSE THE MEASUREMENT IS WORTH MORE THAN THE DIFF.
+ *
+ * `shell/nav.css .nav__panel ran off the RIGHT edge from 446px to 1279px` — 114.64px, at client
+ * widths 446, 500, 753 and 1264, caused by `.nav__panel { … inset-inline-start: 0 }`. Fixed
+ * 2026-08-16; re-measured at nine client widths on two pages and the overflow is 0 at every one.
+ * The fix is `margin-inline-start: auto` on `.nav`, which stops the toggle changing ends of the
+ * header, plus the end anchor the panel had before 2026-08-15. Its reasoning is in `nav.css` and
+ * its before-and-after tables are in `SiteNav.test.tsx`.
+ *
+ * The sentence it carried, kept verbatim because it is what a reader needs to understand why one
+ * edge could not simply be swapped for the other:
+ *
+ * "FIXING IT IS A LAYOUT DECISION, NOT A TYPO … neither `inset-inline-start: 0` nor
+ * `inset-inline-end: 0` works at both ends of the range, because the button itself moves from one
+ * end of the header to the other. The options are (a) anchor the panel to the HEADER rather than
+ * to `.nav`, which puts it on screen at every width but detaches it from the button on a laptop,
+ * (b) give `.nav` the same wrap test the header does and swap the edge, which needs a measurement
+ * React currently avoids on purpose, or (c) accept the overflow below 80rem."
+ *
+ * ═══ THE OPTION TAKEN WAS A FOURTH, AND IT IS WHY THE THREE ABOVE ARE KEPT ═══
+ *
+ * All three accept that the button moves and compensate for it. The fourth REMOVES the movement:
+ * `margin-inline-start: auto` on `.nav` absorbs the free space on the nav's own line — wrapped or
+ * not, one item on the line or two — so the nav's end edge is the header's content end at every
+ * width, and the panel's end anchor is then correct everywhere by one piece of arithmetic.
+ *
+ * It beats (a) because (a) detaches the panel from its button at the widths where the header
+ * wraps: with the panel on the header's end edge and the button at left 24, at a 375px client
+ * width the two boxes would not even overlap horizontally, and a menu that does not touch the
+ * control that opened it is a comprehension defect traded for a layout one. It beats (b) because
+ * (b) needs a resize measurement in React, which `SiteNav` deliberately does not do (it watches
+ * `matchMedia`, which fires when the ANSWER changes, not on every pixel of a drag) and which no
+ * stylesheet sweep in this project can see. It beats (c) because the project owner ruled against
+ * (c) on 2026-08-16: "I rule for the option that works at both ends even if it costs symmetry. An
+ * 833px band where a menu runs off screen is worse than an asymmetric header."
+ *
+ * ITS PRICE, paid rather than hidden: below 446px the header wraps and the menu button now sits at
+ * the RIGHT of its own line beneath a left-aligned wordmark. That is the asymmetry the ruling
+ * bought, and it is the whole of what changed at 320 and 375, which were never the defect.
+ */
 
 // ===========================================================================================
 // THE HARNESS — every registered control, in one document, in the state it was measured in
@@ -556,15 +575,24 @@ describe('ui-site/pointer targets', () => {
   });
 });
 
-describe('ui-site/the overflow this sweep found', () => {
-  it('NAMES IT OUT LOUD ON EVERY RUN — a finding, not a failure', () => {
+describe('ui-site/the overflow quarantine', () => {
+  it('NAMES EVERY ENTRY OUT LOUD ON EVERY RUN — a finding, not a failure', () => {
+    // EMPTY SINCE 2026-08-16, so this prints nothing and the check below holds vacuously. That is
+    // deliberate: the assertion was `length > 0` while an entry sat here, which would have turned
+    // the file red for the crime of having nothing wrong with it. What is worth checking is not
+    // that a defect EXISTS but that any entry claiming to be one is fully stated — a bare count
+    // with no measurement behind it is how a quarantine list becomes folklore.
+    const thin: string[] = [];
     for (const [what, o] of Object.entries(KNOWN_OVERFLOW)) {
       console.warn(
         `\n  ${what}\n    ${o.overflowPx}px off the viewport at client widths ` +
           `${o.atClientWidths.join(', ')}.\n    ${o.found}\n`,
       );
+      if (!(o.overflowPx > 0)) thin.push(`${what}: no overflow figure`);
+      if (o.atClientWidths.length === 0) thin.push(`${what}: no client width it was measured at`);
+      if (!/20\d\d-\d\d-\d\d/.test(o.found)) thin.push(`${what}: the finding carries no date`);
     }
-    expect(Object.keys(KNOWN_OVERFLOW).length).toBeGreaterThan(0);
+    expect(thin).toEqual([]);
   });
 
   it('every entry still in the list is still real, checked against the stylesheet', () => {
@@ -578,13 +606,23 @@ describe('ui-site/the overflow this sweep found', () => {
     expect(stale).toEqual([]);
   });
 
-  it('the header really is space-between, which is the half of the cause that is not in nav.css', () => {
-    // Named separately because the defect lives in TWO files and reading either alone makes it
-    // look benign: `.nav__panel` anchors to the start of `.nav`, and `.shell__head` is what moves
-    // `.nav` from the start of the header to the end.
+  it('THE HEADER STILL WRAPS, which is why the auto margin in nav.css is load-bearing', () => {
+    // Named separately because the fix lives in TWO files and reading either alone makes the other
+    // look redundant. `.shell__head` is a WRAPPING row: `justify-content: space-between` puts the
+    // nav at the end while two items share a line, and does nothing at all on the narrow widths
+    // where the nav gets a line to itself. `margin-inline-start: auto` on `.nav` is what covers
+    // the second case — so anyone who deletes it because "the header already right-aligns the nav"
+    // has read this rule and not the wrap.
+    //
+    // This asserts the wrap is still there rather than that it is gone: if the header ever stops
+    // wrapping, the auto margin stops being the load-bearing half and this comment stops being
+    // true, which is a change that must be made deliberately.
     const css = readFileSync(join(UI, 'shell/shell.css'), 'utf8').replace(/\/\*[\s\S]*?\*\//g, '');
     const head = /\.shell__head \{([\s\S]*?)\n\}/.exec(css)?.[1] ?? '';
     expect(head).toMatch(/justify-content:\s*space-between/);
     expect(head).toMatch(/flex-wrap:\s*wrap/);
+
+    const nav = readFileSync(join(UI, 'shell/nav.css'), 'utf8').replace(/\/\*[\s\S]*?\*\//g, '');
+    expect(/\n\.nav \{([\s\S]*?)\n\}/.exec(nav)?.[1] ?? '').toMatch(/margin-inline-start:\s*auto/);
   });
 });

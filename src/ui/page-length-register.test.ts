@@ -100,10 +100,22 @@ interface PageLength {
  * one was 39% optimistic** — measured 10,375px → 10,177px at 375, and 5,619px → 5,619px at 1440,
  * because at desktop width that column already has room and there was never anything to recover.
  *
+ * ═══ AND 69px MORE ARRIVED AS A SIDE EFFECT OF AN OVERFLOW FIX, 2026-08-16 ═══
+ *
+ * 10,177px → 10,108px at 375, 12.53 → 12.45 screens. Nobody was working on page length: the combo
+ * area changed `.combo__lane--sequence` from `flex: 1 1 0` to `flex: 1 1 min-content` to close a
+ * horizontal overflow in a 441–640px band, and a lane that had been starved to a few pixels stopped
+ * stacking its step cards vertically. That area measured the panel shortening by 127.59px where the
+ * defect bit; the page keeps 69px of it at 375.
+ *
+ * **A page-length win that nobody was looking for, from a fix to a different defect**, and worth
+ * recording as the counterweight to this file's own premise: length drifts UP from many small
+ * additions, and it comes back the same way. 1440 did not move — 5,619px either side.
+ *
  * **What is achievable, stated as arithmetic rather than as a promise.** 11.07 screens at 375px is
  * 8,989px. The page is 10,375px. That is **1,386px to remove**, and every cause identified above
- * put together comes to **220px — 16% of it, all of it now taken**. The remaining 1,166px is not a
- * defect anybody can find; it is four detail panels each of which a reader may want. **Closing that gap is a design
+ * put together comes to **289px — 21% of it, all of it now taken**, counting the 69px an overflow
+ * fix returned by accident. The remaining 1,119px is not a defect anybody can find; it is four detail panels each of which a reader may want. **Closing that gap is a design
  * decision about collapsing detail panels on a phone, not a bug to fix**, and it belongs to the
  * project owner rather than to a measurement pass.
  */
@@ -126,9 +138,9 @@ const PAGES: PageLength[] = [
     path: '/calculator/',
     width: 375,
     height: 812,
-    scrollHeight: 10177,
-    screens: 12.53,
-    budget: 12.53,
+    scrollHeight: 10108,
+    screens: 12.45,
+    budget: 12.45,
     measured:
       'Lead, 2026-08-15, dev server, default scenario. Was 23.94 screens before the length pass, ' +
       '11.07 after it, 12.79 now. THE PHONE FIGURE HAS NEVER MET ITS TARGET — 8 screens was ' +

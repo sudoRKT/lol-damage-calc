@@ -42,8 +42,71 @@
   min-inline-size: 0;
 }
 
+/*
+ * THE SEQUENCE LANE ASKS FOR ONE CARD'S WIDTH BEFORE IT AGREES TO SHARE A LINE.
+ *
+ * ═══ THE DEFECT, MEASURED IN A REAL BROWSER 2026-08-16 ON /calculator/ ═══
+ *
+ * This rule was `flex: 1 1 0` — a basis of ZERO, so the lane asked for nothing and took only
+ * what the shelf lane left over. But `li.combo__step` is 138.16px and CANNOT shrink: it is
+ * `flex: 0 1 auto` with the automatic `min-width: auto`, and its width is set by the control
+ * row, which three WCAG-sized buttons make incompressible (see `.combo__step` below). A lane
+ * narrower than 138.16px therefore does not squeeze the card — the card hangs out of the lane,
+ * out of the panel, and out of the DOCUMENT, which SPECIFICATION §10 forbids. A basis of zero
+ * also means the line NEVER breaks on the sequence's account, so no width was narrow enough to
+ * make the lanes stack.
+ *
+ * `document.scrollWidth − document.clientWidth`, default four-step combo, menu closed. NOT
+ * `innerWidth`, which includes the scrollbar and reads 0 over a page that genuinely overflows.
+ * Eighteen client widths, each read back inside the measuring call and required to equal its
+ * target before the reading was kept — the browser pane is shared with other sessions:
+ *
+ *   | clientWidth | 320 | 375 | 400 | 426 | 440 | 441 | 481 | 500 | 520 | 560 | 600 | 640 |
+ *   |-------------|----:|----:|----:|----:|----:|----:|----:|----:|----:|----:|----:|----:|
+ *   | as built    |   0 |   0 |   0 |  84 |  70 |  69 |  29 |   0 |  90 |  50 |  10 |   0 |
+ *   | with this   |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |
+ *
+ *   | clientWidth | 656 | 800 | 960 | 1120 | 1264 | 1440 |   both rows are 0 throughout, and the
+ *   |-------------|----:|----:|----:|-----:|-----:|-----:|   two rules lay out identically: the
+ *   | either rule |   0 |   0 |   0 |    0 |    0 |    0 |   lane is already 142.86px at 656px,
+ *                                                             so a card fitted beside the shelf
+ *
+ * The furthest-right element outside any `.u-scroll-x` region was `li.combo__step` at every
+ * overflowing width — 510.06px against a 440px viewport, 610.30px against 520px. With the rule
+ * it is `<html>` itself at all eighteen widths, which is the page not scrolling sideways.
+ *
+ * THE BAND IS A SAWTOOTH RATHER THAN A RAMP, AND 500px IS CLEAN IN THE MIDDLE OF IT. The shelf
+ * rewraps as the page narrows, so the remainder handed to this lane jumps about: 6.86px of lane
+ * at 520px, 86.86px at 600px, and at 500px the shelf takes a line of its own and leaves the
+ * sequence the full 418px. That is why 520 is worse than 481, why a reading at 500 alone would
+ * have said there was nothing wrong, and why a sweep at 375 and 1440 reports a clean page.
+ *
+ * ═══ WHY `min-content` AND NOT A BREAKPOINT ═══
+ *
+ * DESIGN.md §4b permits exactly ONE width query in this product and it is the burndown's riser
+ * labels. This adds none. `min-content` is intrinsic sizing, not a design value: it resolves to
+ * the widest thing this lane holds, which IS one step card, so the lane asks for exactly one card
+ * and flexbox's own line-breaking does the rest. Where a card fits beside the shelf the two lanes
+ * stay side by side; where it does not the sequence wraps to its own line and takes the full
+ * width. Nothing here names a pixel, so a card that changes width carries the threshold with it.
+ *
+ * IT ALSO SHORTENS THE PAGE, because a 6.86px lane was stacking four cards vertically. The combo
+ * panel is 127.59px shorter wherever the rule bites: 519.11px → 391.52px at 426, 440, 441 and
+ * 481, and 478.31px → 350.72px at 520, 560, 600 and 640. Unchanged at every other width.
+ *
+ * THE CARD IS NOT SQUEEZED, WHICH WAS THE OTHER WAY TO CLOSE THIS AND IS THE WRONG ONE. Measured
+ * with the rule at all eighteen widths above: the step is 138.16 x 100.58px, `.combo__control` is
+ * 34.47 x 25.39px and `.combo__control--remove` 35.22 x 25.39px — every figure identical to the
+ * pre-fix build, so WCAG 2.2 AA 2.5.8 is untouched and the 2026-08-16 pointer sweep still holds.
+ *
+ * KNOWN LIMIT, STATED RATHER THAN PAPERED OVER: a lane narrower than one card still overflows,
+ * because a card cannot shrink and this rule does not make it. The narrowest lane this product
+ * draws is 238px at a 320px viewport, against a 138.16px card. A reader who raises text size far
+ * enough could still cross it; closing that needs the card itself to reflow, which is a bigger
+ * change than this defect warrants.
+ */
 .combo__lane--sequence {
-  flex: 1 1 0;
+  flex: 1 1 min-content;
 }
 
 .combo__eyebrow {

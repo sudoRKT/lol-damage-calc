@@ -55,6 +55,13 @@
 // was sent for: **the configuration panels do not overflow at any width measured.** The jumps come
 // from the combo sequence and from the disclosures.
 //
+// **DESIGN-AUDIT §6.5's OWN FIGURE — 579px at 375px on the DEFAULT scenario — DOES NOT REPRODUCE,
+// and that is a result rather than a failure to find it.** It was real when measured on 2026-08-14
+// and was closed by `fdb482d`, which confined the breakdown table's scroll to its own region. What
+// the default scenario reads today is 0px. **The §10 violation the audit recorded is nonetheless
+// still live** — at 622–702px, by a different mechanism, in states the default scenario does not
+// reach. Item 5 is not done; the sentence naming the table as its cause is.
+//
 // ═══ MEASUREMENT 3 — THE CAUSE, PROVED BY TOGGLING RATHER THAN ASSERTED ═══
 //
 // `.u-scroll-x` is `overflow-x: auto` and nothing else (`../primitives/primitives.css`). It is
@@ -105,6 +112,49 @@
 //
 // Below 400px the lanes stack and the sequence lane is full width, so it does not arise on a phone.
 // **`src/ui/combo/` is another area's and this is reported, not fixed.**
+//
+// ═══ MEASUREMENT 5 — THE WIDTH BAND WAS WIDENED AFTER THE LEAD CORRECTED THE METHOD ═══
+//
+// The tables above stopped at 640px, and a conclusion was drawn from there. **That was a gap, and
+// it was named by the lead rather than found here:** a sibling area measured a defect living in an
+// 833px-wide band that a sweep testing only 375 and 1440 steps straight over. Vary the WIDTH BAND
+// as well as the state. The band 656–1440 was then measured in the same dense state (10 combo
+// instances, every disclosure open, menu closed):
+//
+//   | clientWidth | 656 | 800 | 960 | 1120 | 1264 | 1440 |
+//   |-------------|----:|----:|----:|-----:|-----:|-----:|
+//   | as built    |  0  |  0  |  0  |   0  |   0  |   0  |
+//   | with the containment fix | 0 | 0 | 0 | 0 | 0 | 0 |
+//
+// Clean throughout, and NOTHING from `config/`, `picker/`, `items/` or `inputs/` exceeded the
+// viewport at any of the sixteen widths now measured (320, 360, 375, 400, 426, 440, 441, 481, 500,
+// 520, 560, 600, 640, 656, 800, 960, 1120, 1264, 1440).
+//
+// ═══ MEASUREMENT 6 — THE PHONE MENU, CORROBORATED RATHER THAN TAKEN ON REPORT ═══
+//
+// `shell/nav.css .nav__panel` is `src/ui/shell/`, ANOTHER AREA'S, and is recorded here only because
+// this register would otherwise read as though the band were clean. Re-measured independently with
+// the menu OPENED, which no sweep in this file does — the disclosure pass here explicitly excludes
+// the nav (`.filter(x => !x.closest('.nav'))`), which is exactly why it was never seen from here:
+//
+//   | clientWidth | overflow, menu closed | overflow, menu open | panel right edge | past viewport |
+//   |------------:|----------------------:|--------------------:|-----------------:|--------------:|
+//   |        1264 |                   0px |               115px |         1378.64  |  **114.64px** |
+//   |         500 |                   0px |               115px |          614.64  |  **114.64px** |
+//   |         440 |                  70px |                70px |          282.00  |      −158.00  |
+//   |         426 |                  84px |                84px |          282.00  |      −144.00  |
+//   |         360 |                   0px |                 0px |          282.00  |       −78.00  |
+//
+// 114.64px at both 500 and 1264 — constant, so it is arithmetic and not layout, exactly as reported.
+// At 440 and 426 the panel sits INSIDE the viewport, so the band's lower bracket holds; the 70px and
+// 84px there are MEASUREMENT 4's combo defect and are present with the menu shut.
+//
+// **AND ONE CONSEQUENCE THAT BELONGS TO THE LEAD.** `../responsive-overflow.test.tsx` carries
+// `.nav__panel` on its `MIN_WIDTH_ALLOWLIST` with the stated reason that it is "anchored to the
+// right edge of a full-width nav bar, so it grows LEFTWARDS into the page rather than off it". The
+// measurement above refutes that arithmetic: it grows RIGHTWARDS, off the page, by 114.64px at every
+// width from 446 to 1279. The exemption is known-false and should move or go with the fix. ═══ CLOSED 2026-08-16: THE FIX LANDED AND THE EXEMPTION IS CORRECTED. `.nav` now carries `margin-inline-start: auto`, so the toggle sits against the header's content end whether or not the header has wrapped, and the panel's end anchor is right at every width — measured 0 overflow at 320, 375, 426, 440, 446, 500, 753, 1264 and 1425, menu open and closed. The paragraph above is HISTORY, not a live finding. That file
+// is lead-only and is reported to, not edited.
 //
 // ═══ WHAT THIS FILE THEN CHECKS, WHICH IS ONLY WHAT THIS AREA OWNS ═══
 //
